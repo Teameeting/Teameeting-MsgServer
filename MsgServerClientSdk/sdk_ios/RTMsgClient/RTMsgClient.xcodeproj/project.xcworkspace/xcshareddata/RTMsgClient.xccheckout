@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C8BD21F4-0FC1-4658-BBCA-01F02C6B7DC2</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>1FEB6B4312F38E6224108269054AC4D2F0E806DC</key>
+		<string>https://github.com/DyncKevin/MsgServerClientSdkTools.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>sdk_ios/RTMsgClient/RTMsgClient.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>1FEB6B4312F38E6224108269054AC4D2F0E806DC</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/DyncKevin/MsgServerClientSdkTools.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>1FEB6B4312F38E6224108269054AC4D2F0E806DC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1FEB6B4312F38E6224108269054AC4D2F0E806DC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MsgServerClientSdkTools</string>
+		</dict>
+	</array>
+</dict>
+</plist>

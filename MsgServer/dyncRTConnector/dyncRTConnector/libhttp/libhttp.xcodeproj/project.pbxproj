@@ -1,0 +1,160 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		E6AF7B551C23FF010051B752 /* Android */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Android; sourceTree = "<group>"; };
+		E6AF7B561C23FF010051B752 /* http_auth */ = {isa = PBXFileReference; lastKnownFileType = folder; path = http_auth; sourceTree = "<group>"; };
+		E6AF7B571C23FF010051B752 /* http_common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = http_common.c; sourceTree = "<group>"; };
+		E6AF7B581C23FF010051B752 /* http_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http_common.h; sourceTree = "<group>"; };
+		E6AF7B591C23FF010051B752 /* http_excuter.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = http_excuter.c; sourceTree = "<group>"; };
+		E6AF7B5A1C23FF010051B752 /* http_excuter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http_excuter.h; sourceTree = "<group>"; };
+		E6AF7B5B1C23FF010051B752 /* http_generator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = http_generator.c; sourceTree = "<group>"; };
+		E6AF7B5C1C23FF010051B752 /* http_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http_generator.h; sourceTree = "<group>"; };
+		E6AF7B5D1C23FF010051B752 /* http_parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = http_parser.c; sourceTree = "<group>"; };
+		E6AF7B5E1C23FF010051B752 /* http_parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http_parser.h; sourceTree = "<group>"; };
+		E6AF7B5F1C23FF010051B752 /* makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		E6AF7B601C23FF020051B752 /* makefile-xilian */ = {isa = PBXFileReference; lastKnownFileType = text; path = "makefile-xilian"; sourceTree = "<group>"; };
+		E6AF7B611C23FF020051B752 /* win32 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = win32; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		E6AF7B4F1C23FF010051B752 = {
+			isa = PBXGroup;
+			children = (
+				E6AF7B551C23FF010051B752 /* Android */,
+				E6AF7B561C23FF010051B752 /* http_auth */,
+				E6AF7B571C23FF010051B752 /* http_common.c */,
+				E6AF7B581C23FF010051B752 /* http_common.h */,
+				E6AF7B591C23FF010051B752 /* http_excuter.c */,
+				E6AF7B5A1C23FF010051B752 /* http_excuter.h */,
+				E6AF7B5B1C23FF010051B752 /* http_generator.c */,
+				E6AF7B5C1C23FF010051B752 /* http_generator.h */,
+				E6AF7B5D1C23FF010051B752 /* http_parser.c */,
+				E6AF7B5E1C23FF010051B752 /* http_parser.h */,
+				E6AF7B5F1C23FF010051B752 /* makefile */,
+				E6AF7B601C23FF020051B752 /* makefile-xilian */,
+				E6AF7B611C23FF020051B752 /* win32 */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		E6AF7B541C23FF010051B752 /* libhttp */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = E6AF7B621C23FF020051B752 /* Build configuration list for PBXLegacyTarget "libhttp" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/hp/Boyuan/dyncRTConnector/dyncRTConnector/libhttp;
+			dependencies = (
+			);
+			name = libhttp;
+			passBuildSettingsInEnvironment = 1;
+			productName = libhttp;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		E6AF7B501C23FF010051B752 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = E6AF7B531C23FF010051B752 /* Build configuration list for PBXProject "libhttp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E6AF7B4F1C23FF010051B752;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E6AF7B541C23FF010051B752 /* libhttp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		E6AF7B511C23FF010051B752 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		E6AF7B521C23FF010051B752 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		E6AF7B631C23FF020051B752 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = libhttp;
+			};
+			name = Debug;
+		};
+		E6AF7B641C23FF020051B752 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = libhttp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E6AF7B531C23FF010051B752 /* Build configuration list for PBXProject "libhttp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6AF7B511C23FF010051B752 /* Debug */,
+				E6AF7B521C23FF010051B752 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6AF7B621C23FF020051B752 /* Build configuration list for PBXLegacyTarget "libhttp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6AF7B631C23FF020051B752 /* Debug */,
+				E6AF7B641C23FF020051B752 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E6AF7B501C23FF010051B752 /* Project object */;
+}

@@ -1,0 +1,57 @@
+# Copyright (c) 1999 Apple Computer, Inc.  All rights reserved.
+#  
+
+NAME = http
+COMPLILER 	:= /home/arm-2011.03/arm-2011.03/bin/arm-none-linux-gnueabi-
+C++ := $(COMPLILER)g++
+CC := $(COMPLILER)gcc
+AR := $(COMPLILER)ar
+RANLIB := $(COMPLILER)ranlib
+INCLUDE_FLAG = -include
+INCPATH = -I./
+LINK = $(LINKER)
+CCFLAGS += $(COMPILER_FLAGS) -g -Wall
+
+# OPTIMIZATION
+CCFLAGS += -O3
+
+# EACH DIRECTORY WITH HEADERS MUST BE APPENDED IN THIS MANNER TO THE CCFLAGS
+CCFLAGS += $(INCPATH)
+
+CCFLAGS += -DARM_LINUX_THREAD 
+
+C++FLAGS = $(CCFLAGS)
+
+SRC_DIR = ./
+SRC_BASE_DIR = ./talk/base
+
+CFILES = $(SRC_DIR)/http_common.c \
+		$(SRC_DIR)/http_excuter.c \
+		$(SRC_DIR)/http_generator.c \
+		$(SRC_DIR)/http_parser.c
+	
+CCFILES = \
+
+
+all: libhttp.a
+
+libhttp.a: $(CFILES:.c=.o) $(CCFILES:.cc=.o) $(CPPFILES:.cpp=.o)
+	$(AR)  -r libhttp.a $(CFILES:.c=.o) $(CCFILES:.cc=.o) $(CPPFILES:.cpp=.o)
+	$(RANLIB) libhttp.a
+
+install: 
+	install -m 664 libhttp.a ../lib_a/
+	
+clean:
+	rm -f libhttp.a $(CFILES:.c=.o) $(CCFILES:.cc=.o) $(CPPFILES:.cpp=.o)
+
+.SUFFIXES: .cc .cpp .c .o
+
+.cc.o:
+	$(C++) -c -o $*.o $(DEFINES) $(C++FLAGS) $*.cc
+	
+.cpp.o:
+	$(C++) -c -o $*.o $(DEFINES) $(C++FLAGS) $*.cpp
+
+.c.o:
+	$(CC) -c -o $*.o $(DEFINES) $(CCFLAGS) $*.c

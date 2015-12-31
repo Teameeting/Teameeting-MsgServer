@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E65B52F81C300AC600A5DE53 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = E65B52F71C300AC600A5DE53 /* main.mm */; };
+		E65B52FB1C300AC600A5DE53 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E65B52FA1C300AC600A5DE53 /* AppDelegate.mm */; };
+		E65B53011C300AC600A5DE53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E65B52FF1C300AC600A5DE53 /* Main.storyboard */; };
+		E65B53031C300AC600A5DE53 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E65B53021C300AC600A5DE53 /* Images.xcassets */; };
+		E65B53061C300AC600A5DE53 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65B53041C300AC600A5DE53 /* LaunchScreen.xib */; };
+		E65B53221C300CA300A5DE53 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E65B53211C300CA300A5DE53 /* ViewController.mm */; };
+		E65B53251C300EA300A5DE53 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65B53241C300EA300A5DE53 /* UIKit.framework */; };
+		E65B53271C300EAA00A5DE53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65B53261C300EAA00A5DE53 /* Foundation.framework */; };
+		E65B55521C314E9E00A5DE53 /* libRTMsgClientIos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E65B55501C314E8B00A5DE53 /* libRTMsgClientIos.a */; };
+		E65B55551C315A2C00A5DE53 /* MsgClientProtocolImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E65B55541C315A2C00A5DE53 /* MsgClientProtocolImpl.m */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E65B52F21C300AC600A5DE53 /* dyncRTMsgClientIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dyncRTMsgClientIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E65B52F61C300AC600A5DE53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E65B52F71C300AC600A5DE53 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		E65B52F91C300AC600A5DE53 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E65B52FA1C300AC600A5DE53 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		E65B52FC1C300AC600A5DE53 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E65B53001C300AC600A5DE53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E65B53021C300AC600A5DE53 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		E65B53051C300AC600A5DE53 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		E65B531D1C300C2F00A5DE53 /* TMMsgSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMMsgSender.h; sourceTree = "<group>"; };
+		E65B53211C300CA300A5DE53 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		E65B53231C300D8D00A5DE53 /* MsgClientProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgClientProtocol.h; sourceTree = "<group>"; };
+		E65B53241C300EA300A5DE53 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E65B53261C300EAA00A5DE53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E65B55501C314E8B00A5DE53 /* libRTMsgClientIos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRTMsgClientIos.a; sourceTree = "<group>"; };
+		E65B55531C315A2C00A5DE53 /* MsgClientProtocolImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgClientProtocolImpl.h; sourceTree = "<group>"; };
+		E65B55541C315A2C00A5DE53 /* MsgClientProtocolImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgClientProtocolImpl.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E65B52EF1C300AC600A5DE53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E65B55521C314E9E00A5DE53 /* libRTMsgClientIos.a in Frameworks */,
+				E65B53271C300EAA00A5DE53 /* Foundation.framework in Frameworks */,
+				E65B53251C300EA300A5DE53 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E65B52E91C300AC600A5DE53 = {
+			isa = PBXGroup;
+			children = (
+				E65B53261C300EAA00A5DE53 /* Foundation.framework */,
+				E65B53241C300EA300A5DE53 /* UIKit.framework */,
+				E65B52F41C300AC600A5DE53 /* dyncRTMsgClientIOS */,
+				E65B52F31C300AC600A5DE53 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E65B52F31C300AC600A5DE53 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E65B52F21C300AC600A5DE53 /* dyncRTMsgClientIOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E65B52F41C300AC600A5DE53 /* dyncRTMsgClientIOS */ = {
+			isa = PBXGroup;
+			children = (
+				E65B55531C315A2C00A5DE53 /* MsgClientProtocolImpl.h */,
+				E65B55541C315A2C00A5DE53 /* MsgClientProtocolImpl.m */,
+				E65B53211C300CA300A5DE53 /* ViewController.mm */,
+				E65B531B1C300C2F00A5DE53 /* include */,
+				E65B531E1C300C2F00A5DE53 /* lib_ios_a */,
+				E65B52F91C300AC600A5DE53 /* AppDelegate.h */,
+				E65B52FA1C300AC600A5DE53 /* AppDelegate.mm */,
+				E65B52FC1C300AC600A5DE53 /* ViewController.h */,
+				E65B52FF1C300AC600A5DE53 /* Main.storyboard */,
+				E65B53021C300AC600A5DE53 /* Images.xcassets */,
+				E65B53041C300AC600A5DE53 /* LaunchScreen.xib */,
+				E65B52F51C300AC600A5DE53 /* Supporting Files */,
+			);
+			path = dyncRTMsgClientIOS;
+			sourceTree = "<group>";
+		};
+		E65B52F51C300AC600A5DE53 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E65B52F61C300AC600A5DE53 /* Info.plist */,
+				E65B52F71C300AC600A5DE53 /* main.mm */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E65B531B1C300C2F00A5DE53 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E65B53231C300D8D00A5DE53 /* MsgClientProtocol.h */,
+				E65B531D1C300C2F00A5DE53 /* TMMsgSender.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E65B531E1C300C2F00A5DE53 /* lib_ios_a */ = {
+			isa = PBXGroup;
+			children = (
+				E65B55501C314E8B00A5DE53 /* libRTMsgClientIos.a */,
+			);
+			path = lib_ios_a;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E65B52F11C300AC600A5DE53 /* dyncRTMsgClientIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E65B53151C300AC600A5DE53 /* Build configuration list for PBXNativeTarget "dyncRTMsgClientIOS" */;
+			buildPhases = (
+				E65B52EE1C300AC600A5DE53 /* Sources */,
+				E65B52EF1C300AC600A5DE53 /* Frameworks */,
+				E65B52F01C300AC600A5DE53 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = dyncRTMsgClientIOS;
+			productName = dyncRTMsgClientIOS;
+			productReference = E65B52F21C300AC600A5DE53 /* dyncRTMsgClientIOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E65B52EA1C300AC600A5DE53 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = Dync;
+				TargetAttributes = {
+					E65B52F11C300AC600A5DE53 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = E65B52ED1C300AC600A5DE53 /* Build configuration list for PBXProject "dyncRTMsgClientIOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E65B52E91C300AC600A5DE53;
+			productRefGroup = E65B52F31C300AC600A5DE53 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E65B52F11C300AC600A5DE53 /* dyncRTMsgClientIOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E65B52F01C300AC600A5DE53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E65B53011C300AC600A5DE53 /* Main.storyboard in Resources */,
+				E65B53061C300AC600A5DE53 /* LaunchScreen.xib in Resources */,
+				E65B53031C300AC600A5DE53 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E65B52EE1C300AC600A5DE53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E65B55551C315A2C00A5DE53 /* MsgClientProtocolImpl.m in Sources */,
+				E65B52FB1C300AC600A5DE53 /* AppDelegate.mm in Sources */,
+				E65B52F81C300AC600A5DE53 /* main.mm in Sources */,
+				E65B53221C300CA300A5DE53 /* ViewController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E65B52FF1C300AC600A5DE53 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E65B53001C300AC600A5DE53 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E65B53041C300AC600A5DE53 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E65B53051C300AC600A5DE53 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E65B53131C300AC600A5DE53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E65B53141C300AC600A5DE53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E65B53161C300AC600A5DE53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/dyncRTMsgClientIOS/include",
+					"$(PROJECT_DIR)/dyncRTMsgClientIOS",
+				);
+				INFOPLIST_FILE = dyncRTMsgClientIOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dyncRTMsgClientIOS/lib_ios_a",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-fno-rtti";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f076ca58-afc7-4641-845c-bb68f67308ad";
+				VALID_ARCHS = "armv7 armv7s x86_64 arm64";
+			};
+			name = Debug;
+		};
+		E65B53171C300AC600A5DE53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/dyncRTMsgClientIOS/include",
+					"$(PROJECT_DIR)/dyncRTMsgClientIOS",
+				);
+				INFOPLIST_FILE = dyncRTMsgClientIOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/dyncRTMsgClientIOS/lib_ios_a",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-fno-rtti";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "f076ca58-afc7-4641-845c-bb68f67308ad";
+				VALID_ARCHS = "armv7 armv7s x86_64 arm64";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E65B52ED1C300AC600A5DE53 /* Build configuration list for PBXProject "dyncRTMsgClientIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E65B53131C300AC600A5DE53 /* Debug */,
+				E65B53141C300AC600A5DE53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E65B53151C300AC600A5DE53 /* Build configuration list for PBXNativeTarget "dyncRTMsgClientIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E65B53161C300AC600A5DE53 /* Debug */,
+				E65B53171C300AC600A5DE53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E65B52EA1C300AC600A5DE53 /* Project object */;
+}

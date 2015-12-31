@@ -1,0 +1,195 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		E6AF7C391C23FFC90051B752 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		E6AF7C3A1C23FFC90051B752 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		E6AF7C3B1C23FFC90051B752 /* adapters */ = {isa = PBXFileReference; lastKnownFileType = folder; path = adapters; sourceTree = "<group>"; };
+		E6AF7C3C1C23FFC90051B752 /* async.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = async.c; sourceTree = "<group>"; };
+		E6AF7C3D1C23FFC90051B752 /* async.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = async.h; sourceTree = "<group>"; };
+		E6AF7C3E1C23FFC90051B752 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		E6AF7C3F1C23FFC90051B752 /* COPYING */ = {isa = PBXFileReference; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		E6AF7C401C23FFC90051B752 /* dict.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dict.c; sourceTree = "<group>"; };
+		E6AF7C411C23FFC90051B752 /* dict.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dict.h; sourceTree = "<group>"; };
+		E6AF7C421C23FFC90051B752 /* examples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = examples; sourceTree = "<group>"; };
+		E6AF7C431C23FFC90051B752 /* fmacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fmacros.h; sourceTree = "<group>"; };
+		E6AF7C441C23FFC90051B752 /* hiredis.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hiredis.c; sourceTree = "<group>"; };
+		E6AF7C451C23FFC90051B752 /* hiredis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hiredis.h; sourceTree = "<group>"; };
+		E6AF7C461C23FFC90051B752 /* hiredis.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = hiredis.xcodeproj; sourceTree = "<group>"; };
+		E6AF7C491C23FFC90051B752 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E6AF7C4A1C23FFC90051B752 /* net.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = net.c; sourceTree = "<group>"; };
+		E6AF7C4B1C23FFC90051B752 /* net.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
+		E6AF7C4C1C23FFC90051B752 /* read.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = read.c; sourceTree = "<group>"; };
+		E6AF7C4D1C23FFC90051B752 /* read.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = read.h; sourceTree = "<group>"; };
+		E6AF7C4E1C23FFC90051B752 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E6AF7C4F1C23FFC90051B752 /* sds.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sds.c; sourceTree = "<group>"; };
+		E6AF7C501C23FFC90051B752 /* sds.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sds.h; sourceTree = "<group>"; };
+		E6AF7C511C23FFC90051B752 /* test.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test.c; sourceTree = "<group>"; };
+		E6AF7C521C23FFC90051B752 /* win32.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		E6AF7C331C23FFC90051B752 = {
+			isa = PBXGroup;
+			children = (
+				E6AF7C391C23FFC90051B752 /* .gitignore */,
+				E6AF7C3A1C23FFC90051B752 /* .travis.yml */,
+				E6AF7C3B1C23FFC90051B752 /* adapters */,
+				E6AF7C3C1C23FFC90051B752 /* async.c */,
+				E6AF7C3D1C23FFC90051B752 /* async.h */,
+				E6AF7C3E1C23FFC90051B752 /* CHANGELOG.md */,
+				E6AF7C3F1C23FFC90051B752 /* COPYING */,
+				E6AF7C401C23FFC90051B752 /* dict.c */,
+				E6AF7C411C23FFC90051B752 /* dict.h */,
+				E6AF7C421C23FFC90051B752 /* examples */,
+				E6AF7C431C23FFC90051B752 /* fmacros.h */,
+				E6AF7C441C23FFC90051B752 /* hiredis.c */,
+				E6AF7C451C23FFC90051B752 /* hiredis.h */,
+				E6AF7C461C23FFC90051B752 /* hiredis.xcodeproj */,
+				E6AF7C491C23FFC90051B752 /* Makefile */,
+				E6AF7C4A1C23FFC90051B752 /* net.c */,
+				E6AF7C4B1C23FFC90051B752 /* net.h */,
+				E6AF7C4C1C23FFC90051B752 /* read.c */,
+				E6AF7C4D1C23FFC90051B752 /* read.h */,
+				E6AF7C4E1C23FFC90051B752 /* README.md */,
+				E6AF7C4F1C23FFC90051B752 /* sds.c */,
+				E6AF7C501C23FFC90051B752 /* sds.h */,
+				E6AF7C511C23FFC90051B752 /* test.c */,
+				E6AF7C521C23FFC90051B752 /* win32.h */,
+			);
+			sourceTree = "<group>";
+		};
+		E6AF7C471C23FFC90051B752 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		E6AF7C381C23FFC90051B752 /* hiredis */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = E6AF7C541C23FFC90051B752 /* Build configuration list for PBXLegacyTarget "hiredis" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/hp/Boyuan/dyncRTConnector/dyncRTConnector/hiredis;
+			dependencies = (
+			);
+			name = hiredis;
+			passBuildSettingsInEnvironment = 1;
+			productName = hiredis;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		E6AF7C341C23FFC90051B752 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = E6AF7C371C23FFC90051B752 /* Build configuration list for PBXProject "hiredis 2" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E6AF7C331C23FFC90051B752;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E6AF7C471C23FFC90051B752 /* Products */;
+					ProjectRef = E6AF7C461C23FFC90051B752 /* hiredis.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E6AF7C381C23FFC90051B752 /* hiredis */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		E6AF7C351C23FFC90051B752 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		E6AF7C361C23FFC90051B752 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		E6AF7C551C23FFC90051B752 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = hiredis;
+			};
+			name = Debug;
+		};
+		E6AF7C561C23FFC90051B752 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = hiredis;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E6AF7C371C23FFC90051B752 /* Build configuration list for PBXProject "hiredis 2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6AF7C351C23FFC90051B752 /* Debug */,
+				E6AF7C361C23FFC90051B752 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6AF7C541C23FFC90051B752 /* Build configuration list for PBXLegacyTarget "hiredis" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6AF7C551C23FFC90051B752 /* Debug */,
+				E6AF7C561C23FFC90051B752 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E6AF7C341C23FFC90051B752 /* Project object */;
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>8BB3B129-75D3-4EC7-BDC7-A947AE8033B0</string>
+	<key>IDESourceControlProjectName</key>
+	<string>dyncRTMeeting</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>EF4F3A1BA36DF1AEEB0AF6883DD98EC5F107D2ED</key>
+		<string>https://github.com/DyncBoyuan/MsgServer.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>dyncRTMeeting/dyncRTMeeting.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>EF4F3A1BA36DF1AEEB0AF6883DD98EC5F107D2ED</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/DyncBoyuan/MsgServer.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>EF4F3A1BA36DF1AEEB0AF6883DD98EC5F107D2ED</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EF4F3A1BA36DF1AEEB0AF6883DD98EC5F107D2ED</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MsgServer</string>
+		</dict>
+	</array>
+</dict>
+</plist>
