@@ -42,16 +42,50 @@
 		E6390CF51C28F8F600AE4DD2 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF41C28F8F600AE4DD2 /* CoreServices.framework */; };
 		E6390CF71C28F96400AE4DD2 /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6390CF61C28F96400AE4DD2 /* scoped_autorelease_pool.mm */; };
 		E6390CF91C28FA3E00AE4DD2 /* maccocoathreadhelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6390CF81C28FA3E00AE4DD2 /* maccocoathreadhelper.mm */; };
-		E6A882BC1C3518D4005C619C /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882BD1C3518D4005C619C /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE91C28EFE800AE4DD2 /* RTMessage.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882BE1C3518D4005C619C /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BEC1C28EFE800AE4DD2 /* RTSignalMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882BF1C3518D4005C619C /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C4A1C28EFE800AE4DD2 /* messagehandler.cc */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882C01C3518D4005C619C /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C4C1C28EFE800AE4DD2 /* messagequeue.cc */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882C11C3518D4005C619C /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C9D1C28EFE800AE4DD2 /* thread.cc */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882C21C3518D4005C619C /* XTcpClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB41C28EFE800AE4DD2 /* XTcpClientImpl.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882C31C3518D4005C619C /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB61C28EFE800AE4DD2 /* XTcpTick.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882C41C3518D4005C619C /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E20D751C291FC800B2D81E /* XMsgClient.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
-		E6A882C51C3518D4005C619C /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E20D781C292B3000B2D81E /* XMsgProcesser.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882BC1C3518D4005C619C /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; };
+		E6A882BD1C3518D4005C619C /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE91C28EFE800AE4DD2 /* RTMessage.cpp */; };
+		E6A882BE1C3518D4005C619C /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BEC1C28EFE800AE4DD2 /* RTSignalMsg.cpp */; };
+		E6A882BF1C3518D4005C619C /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C4A1C28EFE800AE4DD2 /* messagehandler.cc */; };
+		E6A882C01C3518D4005C619C /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C4C1C28EFE800AE4DD2 /* messagequeue.cc */; };
+		E6A882C11C3518D4005C619C /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C9D1C28EFE800AE4DD2 /* thread.cc */; };
+		E6A882C21C3518D4005C619C /* XTcpClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB41C28EFE800AE4DD2 /* XTcpClientImpl.cpp */; };
+		E6A882C31C3518D4005C619C /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB61C28EFE800AE4DD2 /* XTcpTick.cpp */; };
+		E6A882C41C3518D4005C619C /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E20D751C291FC800B2D81E /* XMsgClient.cpp */; };
+		E6A882C51C3518D4005C619C /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E20D781C292B3000B2D81E /* XMsgProcesser.cpp */; };
+		E6A882DD1C3665F7005C619C /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882DE1C3665F7005C619C /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE91C28EFE800AE4DD2 /* RTMessage.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882DF1C3665F7005C619C /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BEC1C28EFE800AE4DD2 /* RTSignalMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E01C3665F7005C619C /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C4A1C28EFE800AE4DD2 /* messagehandler.cc */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E11C3665F7005C619C /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C4C1C28EFE800AE4DD2 /* messagequeue.cc */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E21C3665F7005C619C /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C9D1C28EFE800AE4DD2 /* thread.cc */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E31C3665F7005C619C /* XTcpClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB41C28EFE800AE4DD2 /* XTcpClientImpl.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E41C3665F7005C619C /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB61C28EFE800AE4DD2 /* XTcpTick.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E51C3665F7005C619C /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E20D751C291FC800B2D81E /* XMsgClient.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E61C3665F7005C619C /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6E20D781C292B3000B2D81E /* XMsgProcesser.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E6A882E71C366678005C619C /* maccocoathreadhelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6390CF81C28FA3E00AE4DD2 /* maccocoathreadhelper.mm */; };
+		E6A882E81C366678005C619C /* asyncfile.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390BF21C28EFE800AE4DD2 /* asyncfile.cc */; };
+		E6A882E91C366678005C619C /* asyncpacketsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390BF71C28EFE800AE4DD2 /* asyncpacketsocket.cc */; };
+		E6A882EA1C366678005C619C /* asyncresolverinterface.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390BF91C28EFE800AE4DD2 /* asyncresolverinterface.cc */; };
+		E6A882EB1C366678005C619C /* asyncsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390BFB1C28EFE800AE4DD2 /* asyncsocket.cc */; };
+		E6A882EC1C366678005C619C /* asynctcpsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390BFD1C28EFE800AE4DD2 /* asynctcpsocket.cc */; };
+		E6A882ED1C366678005C619C /* asyncudpsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390BFF1C28EFE800AE4DD2 /* asyncudpsocket.cc */; };
+		E6A882EE1C366678005C619C /* base64.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C041C28EFE800AE4DD2 /* base64.cc */; };
+		E6A882EF1C366678005C619C /* checks.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C0F1C28EFE800AE4DD2 /* checks.cc */; };
+		E6A882F01C366678005C619C /* criticalsection.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C141C28EFE800AE4DD2 /* criticalsection.cc */; };
+		E6A882F11C366678005C619C /* event.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C1B1C28EFE800AE4DD2 /* event.cc */; };
+		E6A882F21C366678005C619C /* event_tracer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C1D1C28EFE800AE4DD2 /* event_tracer.cc */; };
+		E6A882F31C366678005C619C /* ifaddrs-android.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C321C28EFE800AE4DD2 /* ifaddrs-android.cc */; };
+		E6A882F41C366678005C619C /* ipaddress.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C341C28EFE800AE4DD2 /* ipaddress.cc */; };
+		E6A882F51C366678005C619C /* logging.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C3C1C28EFE800AE4DD2 /* logging.cc */; };
+		E6A882F61C366678005C619C /* physicalsocketserver.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C5D1C28EFE800AE4DD2 /* physicalsocketserver.cc */; };
+		E6A882F71C366678005C619C /* platform_thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C601C28EFE800AE4DD2 /* platform_thread.cc */; };
+		E6A882F81C366678005C619C /* signalthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C781C28EFE800AE4DD2 /* signalthread.cc */; };
+		E6A882F91C366678005C619C /* sigslot.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C7A1C28EFE800AE4DD2 /* sigslot.cc */; };
+		E6A882FA1C366678005C619C /* socketaddress.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C811C28EFE800AE4DD2 /* socketaddress.cc */; };
+		E6A882FB1C366678005C619C /* stringencode.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C911C28EFE800AE4DD2 /* stringencode.cc */; };
+		E6A882FC1C366678005C619C /* timeutils.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390CA21C28EFE800AE4DD2 /* timeutils.cc */; };
+		E6A882FD1C3666B8005C619C /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6390CF61C28F96400AE4DD2 /* scoped_autorelease_pool.mm */; };
+		E6A882FE1C3666B8005C619C /* nethelpers.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6390C521C28EFE800AE4DD2 /* nethelpers.cc */; };
 		E6B625FC1C2964DC0014BED5 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF41C28F8F600AE4DD2 /* CoreServices.framework */; };
 		E6B625FD1C2964E40014BED5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF21C28F8D900AE4DD2 /* Foundation.framework */; };
 		E6B625FE1C29658A0014BED5 /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; };
@@ -101,6 +135,15 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		E6A882D21C366516005C619C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E6B6267B1C2982390014BED5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -338,6 +381,7 @@
 		E6390CF41C28F8F600AE4DD2 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		E6390CF61C28F96400AE4DD2 /* scoped_autorelease_pool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = scoped_autorelease_pool.mm; sourceTree = "<group>"; };
 		E6390CF81C28FA3E00AE4DD2 /* maccocoathreadhelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = maccocoathreadhelper.mm; sourceTree = "<group>"; };
+		E6A882D41C366516005C619C /* librtcmsgclient-tm-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-tm-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B625F81C2963A50014BED5 /* librtcmsgclient-mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B6267D1C2982390014BED5 /* librtcmsgclient-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E20D751C291FC800B2D81E /* XMsgClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgClient.cpp; sourceTree = "<group>"; };
@@ -354,6 +398,13 @@
 			files = (
 				E6390CF51C28F8F600AE4DD2 /* CoreServices.framework in Frameworks */,
 				E6390CF31C28F8D900AE4DD2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6A882D11C366516005C619C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +444,7 @@
 				E6390BD91C28E44400AE4DD2 /* dyncRTCMsgClient */,
 				E6B625F81C2963A50014BED5 /* librtcmsgclient-mac.a */,
 				E6B6267D1C2982390014BED5 /* librtcmsgclient-ios.a */,
+				E6A882D41C366516005C619C /* librtcmsgclient-tm-ios.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -700,6 +752,23 @@
 			productReference = E6390BD91C28E44400AE4DD2 /* dyncRTCMsgClient */;
 			productType = "com.apple.product-type.tool";
 		};
+		E6A882D31C366516005C619C /* rtcmsgclient-tm-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6A882DC1C366516005C619C /* Build configuration list for PBXNativeTarget "rtcmsgclient-tm-ios" */;
+			buildPhases = (
+				E6A882D01C366516005C619C /* Sources */,
+				E6A882D11C366516005C619C /* Frameworks */,
+				E6A882D21C366516005C619C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "rtcmsgclient-tm-ios";
+			productName = "librtcmsgclient-tm-ios";
+			productReference = E6A882D41C366516005C619C /* librtcmsgclient-tm-ios.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		E6B625F71C2963A50014BED5 /* rtcmsgclient-mac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6B625FB1C2963A50014BED5 /* Build configuration list for PBXNativeTarget "rtcmsgclient-mac" */;
@@ -746,6 +815,9 @@
 					E6390BD81C28E44400AE4DD2 = {
 						CreatedOnToolsVersion = 6.4;
 					};
+					E6A882D31C366516005C619C = {
+						CreatedOnToolsVersion = 7.2;
+					};
 					E6B625F71C2963A50014BED5 = {
 						CreatedOnToolsVersion = 6.4;
 					};
@@ -769,6 +841,7 @@
 				E6390BD81C28E44400AE4DD2 /* dyncRTCMsgClient */,
 				E6B625F71C2963A50014BED5 /* rtcmsgclient-mac */,
 				E6B6267C1C2982390014BED5 /* rtcmsgclient-ios */,
+				E6A882D31C366516005C619C /* rtcmsgclient-tm-ios */,
 			);
 		};
 /* End PBXProject section */
@@ -813,6 +886,23 @@
 				E6E20D771C291FC800B2D81E /* XMsgClient.cpp in Sources */,
 				E6390CD51C28EFE800AE4DD2 /* XTcpClientImpl.cpp in Sources */,
 				E6390CBB1C28EFE800AE4DD2 /* RTSignalMsg.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6A882D01C366516005C619C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6A882DD1C3665F7005C619C /* RTMeetMsg.cpp in Sources */,
+				E6A882DE1C3665F7005C619C /* RTMessage.cpp in Sources */,
+				E6A882DF1C3665F7005C619C /* RTSignalMsg.cpp in Sources */,
+				E6A882E01C3665F7005C619C /* messagehandler.cc in Sources */,
+				E6A882E11C3665F7005C619C /* messagequeue.cc in Sources */,
+				E6A882E21C3665F7005C619C /* thread.cc in Sources */,
+				E6A882E31C3665F7005C619C /* XTcpClientImpl.cpp in Sources */,
+				E6A882E41C3665F7005C619C /* XTcpTick.cpp in Sources */,
+				E6A882E51C3665F7005C619C /* XMsgClient.cpp in Sources */,
+				E6A882E61C3665F7005C619C /* XMsgProcesser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -861,6 +951,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6A882FD1C3666B8005C619C /* scoped_autorelease_pool.mm in Sources */,
+				E6A882FE1C3666B8005C619C /* nethelpers.cc in Sources */,
+				E6A882E71C366678005C619C /* maccocoathreadhelper.mm in Sources */,
+				E6A882E81C366678005C619C /* asyncfile.cc in Sources */,
+				E6A882E91C366678005C619C /* asyncpacketsocket.cc in Sources */,
+				E6A882EA1C366678005C619C /* asyncresolverinterface.cc in Sources */,
+				E6A882EB1C366678005C619C /* asyncsocket.cc in Sources */,
+				E6A882EC1C366678005C619C /* asynctcpsocket.cc in Sources */,
+				E6A882ED1C366678005C619C /* asyncudpsocket.cc in Sources */,
+				E6A882EE1C366678005C619C /* base64.cc in Sources */,
+				E6A882EF1C366678005C619C /* checks.cc in Sources */,
+				E6A882F01C366678005C619C /* criticalsection.cc in Sources */,
+				E6A882F11C366678005C619C /* event.cc in Sources */,
+				E6A882F21C366678005C619C /* event_tracer.cc in Sources */,
+				E6A882F31C366678005C619C /* ifaddrs-android.cc in Sources */,
+				E6A882F41C366678005C619C /* ipaddress.cc in Sources */,
+				E6A882F51C366678005C619C /* logging.cc in Sources */,
+				E6A882F61C366678005C619C /* physicalsocketserver.cc in Sources */,
+				E6A882F71C366678005C619C /* platform_thread.cc in Sources */,
+				E6A882F81C366678005C619C /* signalthread.cc in Sources */,
+				E6A882F91C366678005C619C /* sigslot.cc in Sources */,
+				E6A882FA1C366678005C619C /* socketaddress.cc in Sources */,
+				E6A882FB1C366678005C619C /* stringencode.cc in Sources */,
+				E6A882FC1C366678005C619C /* timeutils.cc in Sources */,
 				E6A882BC1C3518D4005C619C /* RTMeetMsg.cpp in Sources */,
 				E6A882BD1C3518D4005C619C /* RTMessage.cpp in Sources */,
 				E6A882BE1C3518D4005C619C /* RTSignalMsg.cpp in Sources */,
@@ -996,6 +1110,64 @@
 			};
 			name = Release;
 		};
+		E6A882DA1C366516005C619C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_TESTABILITY = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"CARBON_DEPRECATED=YES",
+					POSIX,
+					WEBRTC_MAC,
+					WEBRTC_POSIX,
+					WEBRTC_IOS,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/dyncRTCMsgClient/rtcmsgs",
+					"$(PROJECT_DIR)/dyncRTCMsgClient",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+			};
+			name = Debug;
+		};
+		E6A882DB1C366516005C619C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"CARBON_DEPRECATED=YES",
+					POSIX,
+					WEBRTC_MAC,
+					WEBRTC_POSIX,
+					WEBRTC_IOS,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/dyncRTCMsgClient/rtcmsgs",
+					"$(PROJECT_DIR)/dyncRTCMsgClient",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s x86_64 i386";
+			};
+			name = Release;
+		};
 		E6B625F91C2963A50014BED5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1115,6 +1287,15 @@
 			buildConfigurations = (
 				E6390BE11C28E44400AE4DD2 /* Debug */,
 				E6390BE21C28E44400AE4DD2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6A882DC1C366516005C619C /* Build configuration list for PBXNativeTarget "rtcmsgclient-tm-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6A882DA1C366516005C619C /* Debug */,
+				E6A882DB1C366516005C619C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

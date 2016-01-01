@@ -15,8 +15,8 @@
 		E65B53221C300CA300A5DE53 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E65B53211C300CA300A5DE53 /* ViewController.mm */; };
 		E65B53251C300EA300A5DE53 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65B53241C300EA300A5DE53 /* UIKit.framework */; };
 		E65B53271C300EAA00A5DE53 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65B53261C300EAA00A5DE53 /* Foundation.framework */; };
-		E65B55521C314E9E00A5DE53 /* libRTMsgClientIos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E65B55501C314E8B00A5DE53 /* libRTMsgClientIos.a */; };
-		E65B55551C315A2C00A5DE53 /* MsgClientProtocolImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E65B55541C315A2C00A5DE53 /* MsgClientProtocolImpl.m */; settings = {COMPILER_FLAGS = "-fno-rtti"; }; };
+		E65B55551C315A2C00A5DE53 /* MsgClientProtocolImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E65B55541C315A2C00A5DE53 /* MsgClientProtocolImpl.m */; };
+		E6A8831B1C366D62005C619C /* libSdkMsgClientIos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A8831A1C366D62005C619C /* libSdkMsgClientIos.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,9 +34,9 @@
 		E65B53231C300D8D00A5DE53 /* MsgClientProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgClientProtocol.h; sourceTree = "<group>"; };
 		E65B53241C300EA300A5DE53 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E65B53261C300EAA00A5DE53 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		E65B55501C314E8B00A5DE53 /* libRTMsgClientIos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRTMsgClientIos.a; sourceTree = "<group>"; };
 		E65B55531C315A2C00A5DE53 /* MsgClientProtocolImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgClientProtocolImpl.h; sourceTree = "<group>"; };
 		E65B55541C315A2C00A5DE53 /* MsgClientProtocolImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MsgClientProtocolImpl.m; sourceTree = "<group>"; };
+		E6A8831A1C366D62005C619C /* libSdkMsgClientIos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libSdkMsgClientIos.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,9 +44,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E65B55521C314E9E00A5DE53 /* libRTMsgClientIos.a in Frameworks */,
 				E65B53271C300EAA00A5DE53 /* Foundation.framework in Frameworks */,
 				E65B53251C300EA300A5DE53 /* UIKit.framework in Frameworks */,
+				E6A8831B1C366D62005C619C /* libSdkMsgClientIos.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +111,7 @@
 		E65B531E1C300C2F00A5DE53 /* lib_ios_a */ = {
 			isa = PBXGroup;
 			children = (
-				E65B55501C314E8B00A5DE53 /* libRTMsgClientIos.a */,
+				E6A8831A1C366D62005C619C /* libSdkMsgClientIos.a */,
 			);
 			path = lib_ios_a;
 			sourceTree = "<group>";
