@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="rtklog">
+      <UniqueIdentifier>{5cbc4e85-e85b-4e6a-9f9a-c216b2170f37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\talk\base\common.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\event.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\fileutils.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\logging.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\messagehandler.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\messagequeue.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\pathutils.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\stream.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\stringencode.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\stringutils.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\thread.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\timeutils.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\timing.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\urlencode.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\win32.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\talk\base\win32filesystem.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\rtklog.cc">
+      <Filter>rtklog</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\talk\base\basictypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\buffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\byteorder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\compile_assert.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\constructormagic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\criticalsection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\event.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\fileutils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\fileutils_mock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\logging.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\messagehandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\messagequeue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\move.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\nullsocketserver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\pathutils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\scoped_ptr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\scoped_ref_ptr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\signalthread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\sigslot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\stream.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\stringencode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\stringutils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\template_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\thread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\timeutils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\timing.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\urlencode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\win32.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\talk\base\win32filesystem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

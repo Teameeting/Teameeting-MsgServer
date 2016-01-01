@@ -1,0 +1,396 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXFileReference section */
+		E6FE46CE1BC7BF3300ED97ED /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = .DS_Store; sourceTree = "<group>"; };
+		E6FE46CF1BC7BF3300ED97ED /* Android */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Android; sourceTree = "<group>"; };
+		E6FE46D01BC7BF3300ED97ED /* atomic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomic.cpp; sourceTree = "<group>"; };
+		E6FE46D11BC7BF3300ED97ED /* atomic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomic.h; sourceTree = "<group>"; };
+		E6FE46D21BC7BF3300ED97ED /* base64.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
+		E6FE46D31BC7BF3300ED97ED /* base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		E6FE46D41BC7BF3300ED97ED /* CommonLib.vcproj.Eric-PC.Eric.user */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "CommonLib.vcproj.Eric-PC.Eric.user"; sourceTree = "<group>"; };
+		E6FE46D51BC7BF3300ED97ED /* ConfParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConfParser.cpp; sourceTree = "<group>"; };
+		E6FE46D61BC7BF3300ED97ED /* ConfParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfParser.h; sourceTree = "<group>"; };
+		E6FE46D71BC7BF3300ED97ED /* daemon.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = daemon.c; sourceTree = "<group>"; };
+		E6FE46D81BC7BF3300ED97ED /* daemon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = daemon.h; sourceTree = "<group>"; };
+		E6FE46D91BC7BF3300ED97ED /* DateTranslator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DateTranslator.cpp; sourceTree = "<group>"; };
+		E6FE46DA1BC7BF3300ED97ED /* DateTranslator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateTranslator.h; sourceTree = "<group>"; };
+		E6FE46DB1BC7BF3300ED97ED /* DssStopwatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DssStopwatch.h; sourceTree = "<group>"; };
+		E6FE46DC1BC7BF3300ED97ED /* epev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = epev.cpp; sourceTree = "<group>"; };
+		E6FE46DD1BC7BF3300ED97ED /* ev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ev.cpp; sourceTree = "<group>"; };
+		E6FE46DE1BC7BF3300ED97ED /* ev.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ev.h; sourceTree = "<group>"; };
+		E6FE46DF1BC7BF3300ED97ED /* EventContext.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = EventContext.cpp; sourceTree = "<group>"; };
+		E6FE46E01BC7BF3300ED97ED /* EventContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EventContext.h; sourceTree = "<group>"; };
+		E6FE46E11BC7BF3300ED97ED /* FastCopyMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastCopyMacros.h; sourceTree = "<group>"; };
+		E6FE46E21BC7BF3300ED97ED /* getopt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = getopt.c; sourceTree = "<group>"; };
+		E6FE46E31BC7BF3300ED97ED /* getopt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = getopt.h; sourceTree = "<group>"; };
+		E6FE46E41BC7BF3300ED97ED /* GetWord.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GetWord.c; sourceTree = "<group>"; };
+		E6FE46E51BC7BF3300ED97ED /* GetWord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetWord.h; sourceTree = "<group>"; };
+		E6FE46E61BC7BF3300ED97ED /* IdleTask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IdleTask.cpp; sourceTree = "<group>"; };
+		E6FE46E71BC7BF3300ED97ED /* IdleTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdleTask.h; sourceTree = "<group>"; };
+		E6FE46E81BC7BF3300ED97ED /* InternalStdLib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InternalStdLib.cpp; sourceTree = "<group>"; };
+		E6FE46E91BC7BF3300ED97ED /* libCommonUtilities.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCommonUtilities.a; sourceTree = "<group>"; };
+		E6FE46EA1BC7BF3300ED97ED /* LinkedList.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LinkedList.c; sourceTree = "<group>"; };
+		E6FE46EB1BC7BF3300ED97ED /* LinkedList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LinkedList.h; sourceTree = "<group>"; };
+		E6FE46EC1BC7BF3300ED97ED /* MakeDir.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = MakeDir.c; sourceTree = "<group>"; };
+		E6FE46ED1BC7BF3300ED97ED /* MakeDir.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MakeDir.h; sourceTree = "<group>"; };
+		E6FE46EE1BC7BF3300ED97ED /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E6FE46EF1BC7BF3300ED97ED /* Makefile.in */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
+		E6FE46F01BC7BF3300ED97ED /* Makefile.POSIX */ = {isa = PBXFileReference; lastKnownFileType = text; path = Makefile.POSIX; sourceTree = "<group>"; };
+		E6FE46F11BC7BF3300ED97ED /* md5.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
+		E6FE46F21BC7BF3300ED97ED /* md5.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
+		E6FE46F31BC7BF3300ED97ED /* md5digest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = md5digest.cpp; sourceTree = "<group>"; };
+		E6FE46F41BC7BF3300ED97ED /* md5digest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = md5digest.h; sourceTree = "<group>"; };
+		E6FE46F51BC7BF3300ED97ED /* MyAssert.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MyAssert.cpp; sourceTree = "<group>"; };
+		E6FE46F61BC7BF3300ED97ED /* MyAssert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyAssert.h; sourceTree = "<group>"; };
+		E6FE46F71BC7BF3300ED97ED /* mycondition.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mycondition.cpp; sourceTree = "<group>"; };
+		E6FE46F81BC7BF3300ED97ED /* mycondition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mycondition.h; sourceTree = "<group>"; };
+		E6FE46F91BC7BF3300ED97ED /* mymutex.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mymutex.cpp; sourceTree = "<group>"; };
+		E6FE46FA1BC7BF3300ED97ED /* mymutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mymutex.h; sourceTree = "<group>"; };
+		E6FE46FB1BC7BF3300ED97ED /* OS.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OS.cpp; sourceTree = "<group>"; };
+		E6FE46FC1BC7BF3300ED97ED /* OS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OS.h; sourceTree = "<group>"; };
+		E6FE46FD1BC7BF3300ED97ED /* OSArrayObjectDeleter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSArrayObjectDeleter.h; sourceTree = "<group>"; };
+		E6FE46FE1BC7BF3300ED97ED /* OSBufferPool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSBufferPool.cpp; sourceTree = "<group>"; };
+		E6FE46FF1BC7BF3300ED97ED /* OSBufferPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSBufferPool.h; sourceTree = "<group>"; };
+		E6FE47001BC7BF3300ED97ED /* OSCodeFragment.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSCodeFragment.cpp; sourceTree = "<group>"; };
+		E6FE47011BC7BF3300ED97ED /* OSCodeFragment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSCodeFragment.h; sourceTree = "<group>"; };
+		E6FE47021BC7BF3300ED97ED /* OSCond.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSCond.cpp; sourceTree = "<group>"; };
+		E6FE47031BC7BF3300ED97ED /* OSCond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSCond.h; sourceTree = "<group>"; };
+		E6FE47041BC7BF3300ED97ED /* OSFileSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSFileSource.cpp; sourceTree = "<group>"; };
+		E6FE47051BC7BF3300ED97ED /* OSFileSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSFileSource.h; sourceTree = "<group>"; };
+		E6FE47061BC7BF3300ED97ED /* OSHashTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSHashTable.h; sourceTree = "<group>"; };
+		E6FE47071BC7BF3300ED97ED /* OSHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSHeaders.h; sourceTree = "<group>"; };
+		E6FE47081BC7BF3300ED97ED /* OSHeap.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSHeap.cpp; sourceTree = "<group>"; };
+		E6FE47091BC7BF3300ED97ED /* OSHeap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSHeap.h; sourceTree = "<group>"; };
+		E6FE470A1BC7BF3300ED97ED /* OSMemory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSMemory.h; sourceTree = "<group>"; };
+		E6FE470B1BC7BF3300ED97ED /* OSMutex.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSMutex.cpp; sourceTree = "<group>"; };
+		E6FE470C1BC7BF3300ED97ED /* OSMutex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSMutex.h; sourceTree = "<group>"; };
+		E6FE470D1BC7BF3300ED97ED /* OSMutexRW.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSMutexRW.cpp; sourceTree = "<group>"; };
+		E6FE470E1BC7BF3300ED97ED /* OSMutexRW.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSMutexRW.h; sourceTree = "<group>"; };
+		E6FE470F1BC7BF3300ED97ED /* OSQueue.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSQueue.cpp; sourceTree = "<group>"; };
+		E6FE47101BC7BF3300ED97ED /* OSQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSQueue.h; sourceTree = "<group>"; };
+		E6FE47111BC7BF3300ED97ED /* OSRef.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSRef.cpp; sourceTree = "<group>"; };
+		E6FE47121BC7BF3300ED97ED /* OSRef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSRef.h; sourceTree = "<group>"; };
+		E6FE47131BC7BF3300ED97ED /* OSThread.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OSThread.cpp; sourceTree = "<group>"; };
+		E6FE47141BC7BF3300ED97ED /* OSThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OSThread.h; sourceTree = "<group>"; };
+		E6FE47151BC7BF3300ED97ED /* PathDelimiter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathDelimiter.h; sourceTree = "<group>"; };
+		E6FE47161BC7BF3300ED97ED /* PLDoubleLinkedList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PLDoubleLinkedList.h; sourceTree = "<group>"; };
+		E6FE47171BC7BF3300ED97ED /* QueryParamList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = QueryParamList.cpp; sourceTree = "<group>"; };
+		E6FE47181BC7BF3300ED97ED /* QueryParamList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QueryParamList.h; sourceTree = "<group>"; };
+		E6FE47191BC7BF3300ED97ED /* ResizeableStringFormatter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResizeableStringFormatter.cpp; sourceTree = "<group>"; };
+		E6FE471A1BC7BF3300ED97ED /* ResizeableStringFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResizeableStringFormatter.h; sourceTree = "<group>"; };
+		E6FE471B1BC7BF3300ED97ED /* RTComm 2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "RTComm 2.xcodeproj"; sourceTree = "<group>"; };
+		E6FE471E1BC7BF3300ED97ED /* RTComm.vcproj */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = RTComm.vcproj; sourceTree = "<group>"; };
+		E6FE471F1BC7BF3300ED97ED /* RTComm.vcproj.Eric-PC.Eric.user */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "RTComm.vcproj.Eric-PC.Eric.user"; sourceTree = "<group>"; };
+		E6FE47201BC7BF3300ED97ED /* RTComm.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = RTComm.xcodeproj; sourceTree = "<group>"; };
+		E6FE47231BC7BF3300ED97ED /* rtklog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rtklog.h; sourceTree = "<group>"; };
+		E6FE47241BC7BF3300ED97ED /* SafeStdLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SafeStdLib.h; sourceTree = "<group>"; };
+		E6FE47251BC7BF3300ED97ED /* SDPUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SDPUtils.cpp; sourceTree = "<group>"; };
+		E6FE47261BC7BF3300ED97ED /* SDPUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDPUtils.h; sourceTree = "<group>"; };
+		E6FE47271BC7BF3300ED97ED /* Socket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		E6FE47281BC7BF3300ED97ED /* Socket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		E6FE47291BC7BF3300ED97ED /* SocketUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SocketUtils.cpp; sourceTree = "<group>"; };
+		E6FE472A1BC7BF3300ED97ED /* SocketUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketUtils.h; sourceTree = "<group>"; };
+		E6FE472B1BC7BF3300ED97ED /* StopWatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StopWatch.h; sourceTree = "<group>"; };
+		E6FE472C1BC7BF3300ED97ED /* StringFormatter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StringFormatter.cpp; sourceTree = "<group>"; };
+		E6FE472D1BC7BF3300ED97ED /* StringFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringFormatter.h; sourceTree = "<group>"; };
+		E6FE472E1BC7BF3300ED97ED /* StringParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StringParser.cpp; sourceTree = "<group>"; };
+		E6FE472F1BC7BF3300ED97ED /* StringParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringParser.h; sourceTree = "<group>"; };
+		E6FE47301BC7BF3300ED97ED /* StringTranslator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StringTranslator.cpp; sourceTree = "<group>"; };
+		E6FE47311BC7BF3300ED97ED /* StringTranslator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringTranslator.h; sourceTree = "<group>"; };
+		E6FE47321BC7BF3300ED97ED /* StrPtrLen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrPtrLen.cpp; sourceTree = "<group>"; };
+		E6FE47331BC7BF3300ED97ED /* StrPtrLen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrPtrLen.h; sourceTree = "<group>"; };
+		E6FE47341BC7BF3300ED97ED /* SVector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVector.h; sourceTree = "<group>"; };
+		E6FE47351BC7BF3300ED97ED /* Task.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Task.cpp; sourceTree = "<group>"; };
+		E6FE47361BC7BF3300ED97ED /* Task.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
+		E6FE47371BC7BF3300ED97ED /* TCPListenerSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TCPListenerSocket.cpp; sourceTree = "<group>"; };
+		E6FE47381BC7BF3300ED97ED /* TCPListenerSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCPListenerSocket.h; sourceTree = "<group>"; };
+		E6FE47391BC7BF3300ED97ED /* TCPSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TCPSocket.cpp; sourceTree = "<group>"; };
+		E6FE473A1BC7BF3300ED97ED /* TCPSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TCPSocket.h; sourceTree = "<group>"; };
+		E6FE473B1BC7BF3300ED97ED /* tempcalls.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tempcalls.h; sourceTree = "<group>"; };
+		E6FE473C1BC7BF3300ED97ED /* TimeoutTask.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TimeoutTask.cpp; sourceTree = "<group>"; };
+		E6FE473D1BC7BF3300ED97ED /* TimeoutTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeoutTask.h; sourceTree = "<group>"; };
+		E6FE473E1BC7BF3300ED97ED /* Trim.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Trim.c; sourceTree = "<group>"; };
+		E6FE473F1BC7BF3300ED97ED /* Trim.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Trim.h; sourceTree = "<group>"; };
+		E6FE47401BC7BF3300ED97ED /* UDPDemuxer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UDPDemuxer.cpp; sourceTree = "<group>"; };
+		E6FE47411BC7BF3300ED97ED /* UDPDemuxer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPDemuxer.h; sourceTree = "<group>"; };
+		E6FE47421BC7BF3300ED97ED /* UDPSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
+		E6FE47431BC7BF3300ED97ED /* UDPSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
+		E6FE47441BC7BF3300ED97ED /* UDPSocketPool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocketPool.cpp; sourceTree = "<group>"; };
+		E6FE47451BC7BF3300ED97ED /* UDPSocketPool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDPSocketPool.h; sourceTree = "<group>"; };
+		E6FE47461BC7BF3300ED97ED /* UserAgentParser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UserAgentParser.cpp; sourceTree = "<group>"; };
+		E6FE47471BC7BF3300ED97ED /* UserAgentParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserAgentParser.h; sourceTree = "<group>"; };
+		E6FE47481BC7BF3300ED97ED /* win32ev.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = win32ev.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		E6FE46C81BC7BF3300ED97ED = {
+			isa = PBXGroup;
+			children = (
+				E6FE46CE1BC7BF3300ED97ED /* .DS_Store */,
+				E6FE46CF1BC7BF3300ED97ED /* Android */,
+				E6FE46D01BC7BF3300ED97ED /* atomic.cpp */,
+				E6FE46D11BC7BF3300ED97ED /* atomic.h */,
+				E6FE46D21BC7BF3300ED97ED /* base64.c */,
+				E6FE46D31BC7BF3300ED97ED /* base64.h */,
+				E6FE46D41BC7BF3300ED97ED /* CommonLib.vcproj.Eric-PC.Eric.user */,
+				E6FE46D51BC7BF3300ED97ED /* ConfParser.cpp */,
+				E6FE46D61BC7BF3300ED97ED /* ConfParser.h */,
+				E6FE46D71BC7BF3300ED97ED /* daemon.c */,
+				E6FE46D81BC7BF3300ED97ED /* daemon.h */,
+				E6FE46D91BC7BF3300ED97ED /* DateTranslator.cpp */,
+				E6FE46DA1BC7BF3300ED97ED /* DateTranslator.h */,
+				E6FE46DB1BC7BF3300ED97ED /* DssStopwatch.h */,
+				E6FE46DC1BC7BF3300ED97ED /* epev.cpp */,
+				E6FE46DD1BC7BF3300ED97ED /* ev.cpp */,
+				E6FE46DE1BC7BF3300ED97ED /* ev.h */,
+				E6FE46DF1BC7BF3300ED97ED /* EventContext.cpp */,
+				E6FE46E01BC7BF3300ED97ED /* EventContext.h */,
+				E6FE46E11BC7BF3300ED97ED /* FastCopyMacros.h */,
+				E6FE46E21BC7BF3300ED97ED /* getopt.c */,
+				E6FE46E31BC7BF3300ED97ED /* getopt.h */,
+				E6FE46E41BC7BF3300ED97ED /* GetWord.c */,
+				E6FE46E51BC7BF3300ED97ED /* GetWord.h */,
+				E6FE46E61BC7BF3300ED97ED /* IdleTask.cpp */,
+				E6FE46E71BC7BF3300ED97ED /* IdleTask.h */,
+				E6FE46E81BC7BF3300ED97ED /* InternalStdLib.cpp */,
+				E6FE46E91BC7BF3300ED97ED /* libCommonUtilities.a */,
+				E6FE46EA1BC7BF3300ED97ED /* LinkedList.c */,
+				E6FE46EB1BC7BF3300ED97ED /* LinkedList.h */,
+				E6FE46EC1BC7BF3300ED97ED /* MakeDir.c */,
+				E6FE46ED1BC7BF3300ED97ED /* MakeDir.h */,
+				E6FE46EE1BC7BF3300ED97ED /* Makefile */,
+				E6FE46EF1BC7BF3300ED97ED /* Makefile.in */,
+				E6FE46F01BC7BF3300ED97ED /* Makefile.POSIX */,
+				E6FE46F11BC7BF3300ED97ED /* md5.c */,
+				E6FE46F21BC7BF3300ED97ED /* md5.h */,
+				E6FE46F31BC7BF3300ED97ED /* md5digest.cpp */,
+				E6FE46F41BC7BF3300ED97ED /* md5digest.h */,
+				E6FE46F51BC7BF3300ED97ED /* MyAssert.cpp */,
+				E6FE46F61BC7BF3300ED97ED /* MyAssert.h */,
+				E6FE46F71BC7BF3300ED97ED /* mycondition.cpp */,
+				E6FE46F81BC7BF3300ED97ED /* mycondition.h */,
+				E6FE46F91BC7BF3300ED97ED /* mymutex.cpp */,
+				E6FE46FA1BC7BF3300ED97ED /* mymutex.h */,
+				E6FE46FB1BC7BF3300ED97ED /* OS.cpp */,
+				E6FE46FC1BC7BF3300ED97ED /* OS.h */,
+				E6FE46FD1BC7BF3300ED97ED /* OSArrayObjectDeleter.h */,
+				E6FE46FE1BC7BF3300ED97ED /* OSBufferPool.cpp */,
+				E6FE46FF1BC7BF3300ED97ED /* OSBufferPool.h */,
+				E6FE47001BC7BF3300ED97ED /* OSCodeFragment.cpp */,
+				E6FE47011BC7BF3300ED97ED /* OSCodeFragment.h */,
+				E6FE47021BC7BF3300ED97ED /* OSCond.cpp */,
+				E6FE47031BC7BF3300ED97ED /* OSCond.h */,
+				E6FE47041BC7BF3300ED97ED /* OSFileSource.cpp */,
+				E6FE47051BC7BF3300ED97ED /* OSFileSource.h */,
+				E6FE47061BC7BF3300ED97ED /* OSHashTable.h */,
+				E6FE47071BC7BF3300ED97ED /* OSHeaders.h */,
+				E6FE47081BC7BF3300ED97ED /* OSHeap.cpp */,
+				E6FE47091BC7BF3300ED97ED /* OSHeap.h */,
+				E6FE470A1BC7BF3300ED97ED /* OSMemory.h */,
+				E6FE470B1BC7BF3300ED97ED /* OSMutex.cpp */,
+				E6FE470C1BC7BF3300ED97ED /* OSMutex.h */,
+				E6FE470D1BC7BF3300ED97ED /* OSMutexRW.cpp */,
+				E6FE470E1BC7BF3300ED97ED /* OSMutexRW.h */,
+				E6FE470F1BC7BF3300ED97ED /* OSQueue.cpp */,
+				E6FE47101BC7BF3300ED97ED /* OSQueue.h */,
+				E6FE47111BC7BF3300ED97ED /* OSRef.cpp */,
+				E6FE47121BC7BF3300ED97ED /* OSRef.h */,
+				E6FE47131BC7BF3300ED97ED /* OSThread.cpp */,
+				E6FE47141BC7BF3300ED97ED /* OSThread.h */,
+				E6FE47151BC7BF3300ED97ED /* PathDelimiter.h */,
+				E6FE47161BC7BF3300ED97ED /* PLDoubleLinkedList.h */,
+				E6FE47171BC7BF3300ED97ED /* QueryParamList.cpp */,
+				E6FE47181BC7BF3300ED97ED /* QueryParamList.h */,
+				E6FE47191BC7BF3300ED97ED /* ResizeableStringFormatter.cpp */,
+				E6FE471A1BC7BF3300ED97ED /* ResizeableStringFormatter.h */,
+				E6FE471B1BC7BF3300ED97ED /* RTComm 2.xcodeproj */,
+				E6FE471E1BC7BF3300ED97ED /* RTComm.vcproj */,
+				E6FE471F1BC7BF3300ED97ED /* RTComm.vcproj.Eric-PC.Eric.user */,
+				E6FE47201BC7BF3300ED97ED /* RTComm.xcodeproj */,
+				E6FE47231BC7BF3300ED97ED /* rtklog.h */,
+				E6FE47241BC7BF3300ED97ED /* SafeStdLib.h */,
+				E6FE47251BC7BF3300ED97ED /* SDPUtils.cpp */,
+				E6FE47261BC7BF3300ED97ED /* SDPUtils.h */,
+				E6FE47271BC7BF3300ED97ED /* Socket.cpp */,
+				E6FE47281BC7BF3300ED97ED /* Socket.h */,
+				E6FE47291BC7BF3300ED97ED /* SocketUtils.cpp */,
+				E6FE472A1BC7BF3300ED97ED /* SocketUtils.h */,
+				E6FE472B1BC7BF3300ED97ED /* StopWatch.h */,
+				E6FE472C1BC7BF3300ED97ED /* StringFormatter.cpp */,
+				E6FE472D1BC7BF3300ED97ED /* StringFormatter.h */,
+				E6FE472E1BC7BF3300ED97ED /* StringParser.cpp */,
+				E6FE472F1BC7BF3300ED97ED /* StringParser.h */,
+				E6FE47301BC7BF3300ED97ED /* StringTranslator.cpp */,
+				E6FE47311BC7BF3300ED97ED /* StringTranslator.h */,
+				E6FE47321BC7BF3300ED97ED /* StrPtrLen.cpp */,
+				E6FE47331BC7BF3300ED97ED /* StrPtrLen.h */,
+				E6FE47341BC7BF3300ED97ED /* SVector.h */,
+				E6FE47351BC7BF3300ED97ED /* Task.cpp */,
+				E6FE47361BC7BF3300ED97ED /* Task.h */,
+				E6FE47371BC7BF3300ED97ED /* TCPListenerSocket.cpp */,
+				E6FE47381BC7BF3300ED97ED /* TCPListenerSocket.h */,
+				E6FE47391BC7BF3300ED97ED /* TCPSocket.cpp */,
+				E6FE473A1BC7BF3300ED97ED /* TCPSocket.h */,
+				E6FE473B1BC7BF3300ED97ED /* tempcalls.h */,
+				E6FE473C1BC7BF3300ED97ED /* TimeoutTask.cpp */,
+				E6FE473D1BC7BF3300ED97ED /* TimeoutTask.h */,
+				E6FE473E1BC7BF3300ED97ED /* Trim.c */,
+				E6FE473F1BC7BF3300ED97ED /* Trim.h */,
+				E6FE47401BC7BF3300ED97ED /* UDPDemuxer.cpp */,
+				E6FE47411BC7BF3300ED97ED /* UDPDemuxer.h */,
+				E6FE47421BC7BF3300ED97ED /* UDPSocket.cpp */,
+				E6FE47431BC7BF3300ED97ED /* UDPSocket.h */,
+				E6FE47441BC7BF3300ED97ED /* UDPSocketPool.cpp */,
+				E6FE47451BC7BF3300ED97ED /* UDPSocketPool.h */,
+				E6FE47461BC7BF3300ED97ED /* UserAgentParser.cpp */,
+				E6FE47471BC7BF3300ED97ED /* UserAgentParser.h */,
+				E6FE47481BC7BF3300ED97ED /* win32ev.cpp */,
+			);
+			sourceTree = "<group>";
+		};
+		E6FE471C1BC7BF3300ED97ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6FE47211BC7BF3300ED97ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		E6FE46CD1BC7BF3300ED97ED /* RTComm */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = E6FE474C1BC7BF3300ED97ED /* Build configuration list for PBXLegacyTarget "RTComm" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/hp/Boyuan/RTConn/RTComm;
+			dependencies = (
+			);
+			name = RTComm;
+			passBuildSettingsInEnvironment = 1;
+			productName = RTComm;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		E6FE46C91BC7BF3300ED97ED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = E6FE46CC1BC7BF3300ED97ED /* Build configuration list for PBXProject "RTComm 3" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E6FE46C81BC7BF3300ED97ED;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E6FE471C1BC7BF3300ED97ED /* Products */;
+					ProjectRef = E6FE471B1BC7BF3300ED97ED /* RTComm 2.xcodeproj */;
+				},
+				{
+					ProductGroup = E6FE47211BC7BF3300ED97ED /* Products */;
+					ProjectRef = E6FE47201BC7BF3300ED97ED /* RTComm.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E6FE46CD1BC7BF3300ED97ED /* RTComm */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		E6FE46CA1BC7BF3300ED97ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		E6FE46CB1BC7BF3300ED97ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		E6FE474D1BC7BF3300ED97ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = RTComm;
+			};
+			name = Debug;
+		};
+		E6FE474E1BC7BF3300ED97ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = RTComm;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E6FE46CC1BC7BF3300ED97ED /* Build configuration list for PBXProject "RTComm 3" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6FE46CA1BC7BF3300ED97ED /* Debug */,
+				E6FE46CB1BC7BF3300ED97ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6FE474C1BC7BF3300ED97ED /* Build configuration list for PBXLegacyTarget "RTComm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6FE474D1BC7BF3300ED97ED /* Debug */,
+				E6FE474E1BC7BF3300ED97ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E6FE46C91BC7BF3300ED97ED /* Project object */;
+}
