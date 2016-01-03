@@ -99,18 +99,18 @@ int XTcpClientImpl::SendMessageX(const char*pMsg, int nLen)
 		return -1;
 	
 	rtc::CritScope l(&m_csBuf);
-	if ((m_nBufOffset + nLen) > m_nBufLen)
+	while ((m_nBufOffset + nLen) > m_nBufLen)
 	{
-		m_nBufLen += kBufferSizeInBytes;
-		char* ptr = (char *)realloc(m_pBuffer, m_nBufLen);
-		if (ptr != NULL)
-		{// 重新申请内存成功
-			m_pBuffer = ptr;
-		}
-		else
-		{// 申请内存失败，清空原有的数据
-			m_nBufOffset = 0;
-		}
+		int newLen = m_nBufLen + kBufferSizeInBytes;
+		if (nLen > newLen)
+			newLen = m_nBufLen + nLen;
+		char* temp = new char[newLen];
+		if (temp == NULL)
+			continue;
+		memcpy(temp, m_pBuffer, m_nBufLen);
+		delete[] m_pBuffer;
+		m_pBuffer = temp;
+		m_nBufLen = newLen;
 	}
 	memcpy(m_pBuffer + m_nBufOffset, pMsg, nLen);
 	m_nBufOffset += nLen;

@@ -148,7 +148,7 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpClientImpl.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_io.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_epilog.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h \
- jni/..///webrtc/base/nethelpers.h \
+ jni/..///webrtc_normal/webrtc/base/nethelpers.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netdb.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/sys/socket.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/linux/socket.h \
@@ -161,19 +161,21 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpClientImpl.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_list.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_carray.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h \
- webrtc/base/asyncresolverinterface.h webrtc/base/sigslot.h \
+ jni/..///webrtc_normal/webrtc/base/asyncresolverinterface.h \
+ jni/..///webrtc_normal/webrtc/base/sigslot.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/set \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_set.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tree.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tree.c \
- webrtc/base/socketaddress.h \
+ jni/..///webrtc_normal/webrtc/base/socketaddress.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/vector \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_vector.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_vector.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_bvector.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/iosfwd \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_ioserr.h \
- webrtc/base/basictypes.h webrtc/base/ipaddress.h \
+ jni/..///webrtc_normal/webrtc/base/basictypes.h \
+ jni/..///webrtc_normal/webrtc/base/ipaddress.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netinet/in.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/endian.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/sys/endian.h \
@@ -187,8 +189,10 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpClientImpl.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/linux/ipv6.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netinet/in6.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/arpa/inet.h \
- webrtc/base/byteorder.h webrtc/base/signalthread.h \
- webrtc/base/constructormagic.h webrtc/base/thread.h \
+ jni/..///webrtc_normal/webrtc/base/byteorder.h \
+ jni/..///webrtc_normal/webrtc/base/signalthread.h \
+ jni/..///webrtc_normal/webrtc/base/constructormagic.h \
+ jni/..///webrtc_normal/webrtc/base/thread.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/algorithm \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_algo.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_heap.h \
@@ -196,36 +200,42 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpClientImpl.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_algo.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tempbuf.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tempbuf.c \
- webrtc/base/event.h webrtc/base/messagequeue.h \
+ jni/..///webrtc_normal/webrtc/base/event.h \
+ jni/..///webrtc_normal/webrtc/base/messagequeue.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/queue \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_queue.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.c \
- webrtc/base/criticalsection.h webrtc/base/atomicops.h \
- webrtc/base/thread_annotations.h webrtc/base/messagehandler.h \
- webrtc/base/scoped_ptr.h \
+ jni/..///webrtc_normal/webrtc/base/criticalsection.h \
+ jni/..///webrtc_normal/webrtc/base/atomicops.h \
+ jni/..///webrtc_normal/webrtc/base/thread_annotations.h \
+ jni/..///webrtc_normal/webrtc/base/messagehandler.h \
+ jni/..///webrtc_normal/webrtc/base/scoped_ptr.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h \
- webrtc/base/template_util.h webrtc/typedefs.h \
- webrtc/base/scoped_ref_ptr.h webrtc/base/socketserver.h \
- webrtc/base/socketfactory.h webrtc/base/socket.h \
+ jni/..///webrtc_normal/webrtc/base/template_util.h \
+ jni/..///webrtc_normal/webrtc/typedefs.h \
+ jni/..///webrtc_normal/webrtc/base/scoped_ref_ptr.h \
+ jni/..///webrtc_normal/webrtc/base/socketserver.h \
+ jni/..///webrtc_normal/webrtc/base/socketfactory.h \
+ jni/..///webrtc_normal/webrtc/base/socket.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/linux/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/asm/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/asm-generic/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/asm-generic/errno-base.h \
- webrtc/base/asyncsocket.h webrtc/base/common.h webrtc/base/timeutils.h \
- jni/..///webrtc/base/physicalsocketserver.h webrtc/base/asyncfile.h \
- jni/..///webrtc/base/scoped_ptr.h jni/..///webrtc/base/signalthread.h \
- jni/..///webrtc/base/sigslot.h jni/..///XTcpTick.h \
- jni/..///webrtc/base/thread.h jni/..///webrtc/base/common.h \
- jni/..///webrtc/base/logging.h \
+ jni/..///webrtc_normal/webrtc/base/asyncsocket.h \
+ jni/..///webrtc_normal/webrtc/base/common.h \
+ jni/..///webrtc_normal/webrtc/base/timeutils.h \
+ jni/..///webrtc_normal/webrtc/base/physicalsocketserver.h \
+ jni/..///webrtc_normal/webrtc/base/asyncfile.h jni/..///XTcpTick.h \
+ jni/..///webrtc_normal/webrtc/base/logging.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility \
- jni/..///webrtc/base/stringutils.h \
+ jni/..///webrtc_normal/webrtc/base/stringutils.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/ctype.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/ctype.h
 
@@ -529,7 +539,7 @@ jni/..///RTC_Export.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_config_compat_post.h:
 
-jni/..///webrtc/base/nethelpers.h:
+jni/..///webrtc_normal/webrtc/base/nethelpers.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netdb.h:
 
@@ -555,9 +565,9 @@ jni/..///webrtc/base/nethelpers.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h:
 
-webrtc/base/asyncresolverinterface.h:
+jni/..///webrtc_normal/webrtc/base/asyncresolverinterface.h:
 
-webrtc/base/sigslot.h:
+jni/..///webrtc_normal/webrtc/base/sigslot.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/set:
 
@@ -567,7 +577,7 @@ webrtc/base/sigslot.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tree.c:
 
-webrtc/base/socketaddress.h:
+jni/..///webrtc_normal/webrtc/base/socketaddress.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/vector:
 
@@ -581,9 +591,9 @@ webrtc/base/socketaddress.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_ioserr.h:
 
-webrtc/base/basictypes.h:
+jni/..///webrtc_normal/webrtc/base/basictypes.h:
 
-webrtc/base/ipaddress.h:
+jni/..///webrtc_normal/webrtc/base/ipaddress.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netinet/in.h:
 
@@ -611,13 +621,13 @@ webrtc/base/ipaddress.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/arpa/inet.h:
 
-webrtc/base/byteorder.h:
+jni/..///webrtc_normal/webrtc/base/byteorder.h:
 
-webrtc/base/signalthread.h:
+jni/..///webrtc_normal/webrtc/base/signalthread.h:
 
-webrtc/base/constructormagic.h:
+jni/..///webrtc_normal/webrtc/base/constructormagic.h:
 
-webrtc/base/thread.h:
+jni/..///webrtc_normal/webrtc/base/thread.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/algorithm:
 
@@ -633,9 +643,9 @@ webrtc/base/thread.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tempbuf.c:
 
-webrtc/base/event.h:
+jni/..///webrtc_normal/webrtc/base/event.h:
 
-webrtc/base/messagequeue.h:
+jni/..///webrtc_normal/webrtc/base/messagequeue.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/queue:
 
@@ -645,31 +655,31 @@ webrtc/base/messagequeue.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.c:
 
-webrtc/base/criticalsection.h:
+jni/..///webrtc_normal/webrtc/base/criticalsection.h:
 
-webrtc/base/atomicops.h:
+jni/..///webrtc_normal/webrtc/base/atomicops.h:
 
-webrtc/base/thread_annotations.h:
+jni/..///webrtc_normal/webrtc/base/thread_annotations.h:
 
-webrtc/base/messagehandler.h:
+jni/..///webrtc_normal/webrtc/base/messagehandler.h:
 
-webrtc/base/scoped_ptr.h:
+jni/..///webrtc_normal/webrtc/base/scoped_ptr.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h:
 
-webrtc/base/template_util.h:
+jni/..///webrtc_normal/webrtc/base/template_util.h:
 
-webrtc/typedefs.h:
+jni/..///webrtc_normal/webrtc/typedefs.h:
 
-webrtc/base/scoped_ref_ptr.h:
+jni/..///webrtc_normal/webrtc/base/scoped_ref_ptr.h:
 
-webrtc/base/socketserver.h:
+jni/..///webrtc_normal/webrtc/base/socketserver.h:
 
-webrtc/base/socketfactory.h:
+jni/..///webrtc_normal/webrtc/base/socketfactory.h:
 
-webrtc/base/socket.h:
+jni/..///webrtc_normal/webrtc/base/socket.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/errno.h:
 
@@ -683,29 +693,19 @@ webrtc/base/socket.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/asm-generic/errno-base.h:
 
-webrtc/base/asyncsocket.h:
+jni/..///webrtc_normal/webrtc/base/asyncsocket.h:
 
-webrtc/base/common.h:
+jni/..///webrtc_normal/webrtc/base/common.h:
 
-webrtc/base/timeutils.h:
+jni/..///webrtc_normal/webrtc/base/timeutils.h:
 
-jni/..///webrtc/base/physicalsocketserver.h:
+jni/..///webrtc_normal/webrtc/base/physicalsocketserver.h:
 
-webrtc/base/asyncfile.h:
-
-jni/..///webrtc/base/scoped_ptr.h:
-
-jni/..///webrtc/base/signalthread.h:
-
-jni/..///webrtc/base/sigslot.h:
+jni/..///webrtc_normal/webrtc/base/asyncfile.h:
 
 jni/..///XTcpTick.h:
 
-jni/..///webrtc/base/thread.h:
-
-jni/..///webrtc/base/common.h:
-
-jni/..///webrtc/base/logging.h:
+jni/..///webrtc_normal/webrtc/base/logging.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream:
 
@@ -715,7 +715,7 @@ jni/..///webrtc/base/logging.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility:
 
-jni/..///webrtc/base/stringutils.h:
+jni/..///webrtc_normal/webrtc/base/stringutils.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/ctype.h:
 
