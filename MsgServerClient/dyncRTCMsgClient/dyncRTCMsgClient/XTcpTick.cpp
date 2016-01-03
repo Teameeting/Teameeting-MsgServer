@@ -6,6 +6,7 @@
 #else
 #include <unistd.h>
 #endif
+#define EN_THREAD 0
 
 namespace rtc {
 class XTcpMgr
@@ -13,10 +14,17 @@ class XTcpMgr
 	{
 	public:
 		XTcpMgr() 
-			: m_bRunning(false)
-			, m_curThread(NULL){
+			: m_bRunning(false) {
+#if !EN_THREAD
+			m_bRunning = true;
+			this->Start();
+#endif
 		};
 		virtual ~XTcpMgr(){
+#if !EN_THREAD
+			m_bRunning = false;
+			this->Stop();
+#endif
 		};
 
 	public:
@@ -26,11 +34,13 @@ class XTcpMgr
 
 			CritScope cs(&m_csTick);
 			m_mapTick[pTick] = pTick;
+#if EN_THREAD
 			if (m_mapTick.size() == 1 && !m_bRunning)
 			{
 				m_bRunning = true;
 				this->Start();
 			}
+#endif
 
 		};
 
@@ -45,12 +55,13 @@ class XTcpMgr
 				pTick->OnFinish();
 				size = m_mapTick.size();
 			}
-			
+#if EN_THREAD
 			if (size == 0 && m_bRunning)
 			{
 				m_bRunning = false;
 				this->Stop();
 			}
+#endif
 		};
 
 	public:
@@ -59,16 +70,15 @@ class XTcpMgr
 #if WIN32
 			// Need to pump messages on our main thread on Windows.
 			Win32Thread w32_thread;
-			rtc::ThreadManager::Instance()->SetCurrentThread(&w32_thread);
+			//rtc::ThreadManager::Instance()->SetCurrentThread(&w32_thread);
 #endif
-			m_curThread = rtc::Thread::Current();
 			while (m_bRunning)
 			{
 				{// ProcessMessages
-					if (!this->IsCurrent())
-						this->ProcessMessages(1);
-
-					m_curThread->ProcessMessages(1);
+					this->ProcessMessages(1);
+#if WIN32
+					w32_thread.ProcessMessages(1);
+#endif
 				}
 				
 				{// OnTick
@@ -88,7 +98,6 @@ class XTcpMgr
 
 	private:
 		bool				m_bRunning;
-		Thread*				m_curThread;
 		CriticalSection		m_csTick;
 		typedef std::map<void*, XTcpTick*> MapTick;
 		MapTick				m_mapTick;

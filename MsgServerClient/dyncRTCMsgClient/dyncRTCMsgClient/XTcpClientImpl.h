@@ -10,6 +10,8 @@
 #include "webrtc/base/sigslot.h"
 #include "XTcpTick.h"
 
+
+
 class XTcpClientImpl
 	: public sigslot::has_slots < >
 	, public rtc::MessageHandler
@@ -62,5 +64,6 @@ public:
 	int					m_nBufLen;
 	int					m_nBufOffset;
 };
+
 
 #endif	// __XTCP_CLIENT_IMPL_H__

@@ -151,19 +151,21 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgProcesser.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h \
  rtcmsgs/RTSignalMsg.h rtcmsgs/RTMeetMsg.h rtcmsgs/RTMsg.h \
  rtcmsgs/RTMeetMsg.h rtcmsgs/RTMessage.h jni/..///XMsgCallback.h \
- jni/..///webrtc/base/logging.h \
- /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream \
- /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h \
- /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/string \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_hash.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_hash_fun.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_io.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_io.c \
+ jni/..///webrtc_normal/webrtc/base/logging.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility \
- webrtc/base/basictypes.h webrtc/base/criticalsection.h \
- webrtc/base/atomicops.h webrtc/base/constructormagic.h \
- webrtc/base/thread_annotations.h
+ jni/..///webrtc_normal/webrtc/base/basictypes.h \
+ jni/..///webrtc_normal/webrtc/base/criticalsection.h \
+ jni/..///webrtc_normal/webrtc/base/atomicops.h \
+ jni/..///webrtc_normal/webrtc/base/constructormagic.h \
+ jni/..///webrtc_normal/webrtc/base/thread_annotations.h
 
 jni/..///XMsgProcesser.h:
 
@@ -477,14 +479,6 @@ rtcmsgs/RTMessage.h:
 
 jni/..///XMsgCallback.h:
 
-jni/..///webrtc/base/logging.h:
-
-/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream:
-
-/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h:
-
-/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c:
-
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/string:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_hash.h:
@@ -495,14 +489,22 @@ jni/..///webrtc/base/logging.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_io.c:
 
+jni/..///webrtc_normal/webrtc/base/logging.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c:
+
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility:
 
-webrtc/base/basictypes.h:
+jni/..///webrtc_normal/webrtc/base/basictypes.h:
 
-webrtc/base/criticalsection.h:
+jni/..///webrtc_normal/webrtc/base/criticalsection.h:
 
-webrtc/base/atomicops.h:
+jni/..///webrtc_normal/webrtc/base/atomicops.h:
 
-webrtc/base/constructormagic.h:
+jni/..///webrtc_normal/webrtc/base/constructormagic.h:
 
-webrtc/base/thread_annotations.h:
+jni/..///webrtc_normal/webrtc/base/thread_annotations.h:

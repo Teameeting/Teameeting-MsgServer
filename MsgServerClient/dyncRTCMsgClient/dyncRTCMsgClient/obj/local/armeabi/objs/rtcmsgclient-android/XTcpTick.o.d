@@ -1,5 +1,6 @@
 obj/local/armeabi/objs/rtcmsgclient-android/XTcpTick.o: \
- jni/..///XTcpTick.cpp jni/..///XTcpTick.h jni/..///webrtc/base/thread.h \
+ jni/..///XTcpTick.cpp jni/..///XTcpTick.h \
+ jni/..///webrtc_normal/webrtc/base/thread.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/algorithm \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_prolog.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_cprolog.h \
@@ -163,25 +164,32 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpTick.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_vector.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_vector.c \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_bvector.h \
- webrtc/base/constructormagic.h webrtc/base/event.h \
- webrtc/base/basictypes.h webrtc/base/messagequeue.h \
+ jni/..///webrtc_normal/webrtc/base/constructormagic.h \
+ jni/..///webrtc_normal/webrtc/base/event.h \
+ jni/..///webrtc_normal/webrtc/base/basictypes.h \
+ jni/..///webrtc_normal/webrtc/base/messagequeue.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/queue \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_queue.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.c \
- webrtc/base/criticalsection.h webrtc/base/atomicops.h \
- webrtc/base/thread_annotations.h webrtc/base/messagehandler.h \
- webrtc/base/scoped_ptr.h \
+ jni/..///webrtc_normal/webrtc/base/criticalsection.h \
+ jni/..///webrtc_normal/webrtc/base/atomicops.h \
+ jni/..///webrtc_normal/webrtc/base/thread_annotations.h \
+ jni/..///webrtc_normal/webrtc/base/messagehandler.h \
+ jni/..///webrtc_normal/webrtc/base/scoped_ptr.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h \
- webrtc/base/template_util.h webrtc/typedefs.h \
- webrtc/base/scoped_ref_ptr.h webrtc/base/sigslot.h \
+ jni/..///webrtc_normal/webrtc/base/template_util.h \
+ jni/..///webrtc_normal/webrtc/typedefs.h \
+ jni/..///webrtc_normal/webrtc/base/scoped_ref_ptr.h \
+ jni/..///webrtc_normal/webrtc/base/sigslot.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/set \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_set.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tree.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tree.c \
- webrtc/base/socketserver.h webrtc/base/socketfactory.h \
- webrtc/base/socket.h \
+ jni/..///webrtc_normal/webrtc/base/socketserver.h \
+ jni/..///webrtc_normal/webrtc/base/socketfactory.h \
+ jni/..///webrtc_normal/webrtc/base/socket.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/errno.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/linux/errno.h \
@@ -207,13 +215,15 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpTick.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/linux/in6.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/linux/ipv6.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netinet/in6.h \
- webrtc/base/socketaddress.h \
+ jni/..///webrtc_normal/webrtc/base/socketaddress.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/iosfwd \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_ioserr.h \
- webrtc/base/ipaddress.h \
+ jni/..///webrtc_normal/webrtc/base/ipaddress.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netdb.h \
- webrtc/base/byteorder.h webrtc/base/asyncsocket.h webrtc/base/common.h \
- webrtc/base/timeutils.h \
+ jni/..///webrtc_normal/webrtc/base/byteorder.h \
+ jni/..///webrtc_normal/webrtc/base/asyncsocket.h \
+ jni/..///webrtc_normal/webrtc/base/common.h \
+ jni/..///webrtc_normal/webrtc/base/timeutils.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/map \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_map.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/unistd.h \
@@ -224,7 +234,7 @@ obj/local/armeabi/objs/rtcmsgclient-android/XTcpTick.o: \
 
 jni/..///XTcpTick.h:
 
-jni/..///webrtc/base/thread.h:
+jni/..///webrtc_normal/webrtc/base/thread.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/algorithm:
 
@@ -552,13 +562,13 @@ jni/..///webrtc/base/thread.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_bvector.h:
 
-webrtc/base/constructormagic.h:
+jni/..///webrtc_normal/webrtc/base/constructormagic.h:
 
-webrtc/base/event.h:
+jni/..///webrtc_normal/webrtc/base/event.h:
 
-webrtc/base/basictypes.h:
+jni/..///webrtc_normal/webrtc/base/basictypes.h:
 
-webrtc/base/messagequeue.h:
+jni/..///webrtc_normal/webrtc/base/messagequeue.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/queue:
 
@@ -568,27 +578,27 @@ webrtc/base/messagequeue.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.c:
 
-webrtc/base/criticalsection.h:
+jni/..///webrtc_normal/webrtc/base/criticalsection.h:
 
-webrtc/base/atomicops.h:
+jni/..///webrtc_normal/webrtc/base/atomicops.h:
 
-webrtc/base/thread_annotations.h:
+jni/..///webrtc_normal/webrtc/base/thread_annotations.h:
 
-webrtc/base/messagehandler.h:
+jni/..///webrtc_normal/webrtc/base/messagehandler.h:
 
-webrtc/base/scoped_ptr.h:
+jni/..///webrtc_normal/webrtc/base/scoped_ptr.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h:
 
-webrtc/base/template_util.h:
+jni/..///webrtc_normal/webrtc/base/template_util.h:
 
-webrtc/typedefs.h:
+jni/..///webrtc_normal/webrtc/typedefs.h:
 
-webrtc/base/scoped_ref_ptr.h:
+jni/..///webrtc_normal/webrtc/base/scoped_ref_ptr.h:
 
-webrtc/base/sigslot.h:
+jni/..///webrtc_normal/webrtc/base/sigslot.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/set:
 
@@ -598,11 +608,11 @@ webrtc/base/sigslot.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_tree.c:
 
-webrtc/base/socketserver.h:
+jni/..///webrtc_normal/webrtc/base/socketserver.h:
 
-webrtc/base/socketfactory.h:
+jni/..///webrtc_normal/webrtc/base/socketfactory.h:
 
-webrtc/base/socket.h:
+jni/..///webrtc_normal/webrtc/base/socket.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/errno.h:
 
@@ -654,23 +664,23 @@ webrtc/base/socket.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netinet/in6.h:
 
-webrtc/base/socketaddress.h:
+jni/..///webrtc_normal/webrtc/base/socketaddress.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/iosfwd:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_ioserr.h:
 
-webrtc/base/ipaddress.h:
+jni/..///webrtc_normal/webrtc/base/ipaddress.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/netdb.h:
 
-webrtc/base/byteorder.h:
+jni/..///webrtc_normal/webrtc/base/byteorder.h:
 
-webrtc/base/asyncsocket.h:
+jni/..///webrtc_normal/webrtc/base/asyncsocket.h:
 
-webrtc/base/common.h:
+jni/..///webrtc_normal/webrtc/base/common.h:
 
-webrtc/base/timeutils.h:
+jni/..///webrtc_normal/webrtc/base/timeutils.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/map:
 
