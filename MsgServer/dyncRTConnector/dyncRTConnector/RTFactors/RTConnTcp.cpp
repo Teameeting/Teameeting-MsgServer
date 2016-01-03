@@ -37,34 +37,34 @@ int RTConnTcp::DoProcessData(const char* pData, int nLen)
         return 0;
         }
     }
-    if (m_smsg._stype == SIGNALTYPE::keepalive) {
+    if (m_smsg._stype == SIGNALTYPE::reqkeepalive) {
         if (m_mmsg._from.length()>0) {
             OnKeepAlive(m_mmsg._from.c_str());
         } else {
             LE("keepalive params errors\n");
         }
-    } else if (m_smsg._stype == SIGNALTYPE::login) {
+    } else if (m_smsg._stype == SIGNALTYPE::reqlogin) {
         if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0) {
             OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str());
         } else {
             LE("login params errors\n");
         }
-    } else if (m_smsg._stype == SIGNALTYPE::sndmsg) {
+    } else if (m_smsg._stype == SIGNALTYPE::reqsndmsg) {
         if (m_mmsg._from.length()>0) {
             const char* pContentDump = strdup(m_mmsg.ToJson().c_str());
-            OnSndMsg(m_mmsg._from.c_str(), m_mmsg._mtype, pContentDump, (int)strlen(pContentDump));
+            OnSndMsg(m_mmsg._mtype, m_mmsg._mseq, m_mmsg._from.c_str(), pContentDump, (int)strlen(pContentDump));
             free((void*)pContentDump);
             pContentDump = NULL;
         } else {
             LE("sndmsg params errors\n");
         }
-    } else if (m_smsg._stype == SIGNALTYPE::getmsg) {
+    } else if (m_smsg._stype == SIGNALTYPE::reqgetmsg) {
         if (m_mmsg._from.length()>0) {
-            OnGetMsg(m_mmsg._from.c_str(), m_mmsg._mtype);
+            OnGetMsg(m_mmsg._mtype, m_mmsg._mseq, m_mmsg._from.c_str());
         } else {
             LE("getmsg params errors\n");
         }
-    } else if (m_smsg._stype == SIGNALTYPE::logout) {
+    } else if (m_smsg._stype == SIGNALTYPE::reqlogout) {
         if (m_mmsg._from.length()>0) {
             OnLogout(m_mmsg._from.c_str());
         } else {

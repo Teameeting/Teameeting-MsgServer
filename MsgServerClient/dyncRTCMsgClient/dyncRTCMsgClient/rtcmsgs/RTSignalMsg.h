@@ -14,11 +14,16 @@
 #include "RTMeetMsg.h"
 
 typedef enum _signaltype{
-    login = 1,
-    sndmsg,
-    getmsg,
-    logout,
-    keepalive,
+    reqlogin = 1,
+    resplogin,
+    reqsndmsg,
+    respsndmsg,
+    reqgetmsg,
+    respgetmsg,
+    reqlogout,
+    resplogout,
+    reqkeepalive,
+    respkeepalive,
     signaltype_invalid
 }SIGNALTYPE;
 

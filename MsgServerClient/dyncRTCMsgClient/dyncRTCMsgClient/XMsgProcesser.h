@@ -44,12 +44,12 @@ public:
     int DecodeRecvData(const char* pData, int nLen);
     int GetMemberToJson(const std::list<std::string> ulist, std::string& tousers);
 protected:
-    int DecodeLogin(MEETMSG& msg);
-    int DecodeSndMsg(MEETMSG& msg);
-    int DecodeGetMsg(MEETMSG& msg);
-    int DecodeLogout(MEETMSG& msg);
+    int DecodeLogin(SIGNALTYPE stype, MEETMSG& msg);
+    int DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg);
+    int DecodeGetMsg(SIGNALTYPE stype, MEETMSG& msg);
+    int DecodeLogout(SIGNALTYPE stype, MEETMSG& msg);
     int DecodeKeepAlive(MEETMSG& msg);
-    
+    long long GenericTransSeq();
 private:
     XMsgCallback    &m_callback;
 };

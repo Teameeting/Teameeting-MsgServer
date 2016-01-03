@@ -28,8 +28,8 @@ public:
     
 public:
     virtual void OnLogin(const char* pUserid, const char* pPass) = 0;
-    virtual void OnSndMsg(const char* pUserid, int mType, const char* pData, int dLen) = 0;
-    virtual void OnGetMsg(const char* pUserid, int mType) = 0;
+    virtual void OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen) = 0;
+    virtual void OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid) = 0;
     virtual void OnLogout(const char* pUserid) = 0;
     virtual void OnKeepAlive(const char* pUserid) = 0;
     virtual void OnResponse(const char*pData, int nLen)=0;

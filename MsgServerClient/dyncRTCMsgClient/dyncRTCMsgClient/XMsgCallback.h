@@ -13,10 +13,14 @@
 
 class XMsgCallback {
 public:
-    virtual void OnLogin(int code) = 0;
-    virtual void OnSndMsg(const std::string& msg) = 0;
-    virtual void OnGetMsg(const std::string& from, const std::string& msg) = 0;
-    virtual void OnLogout(int code) = 0;
+    virtual void OnReqLogin(int code, const std::string& status, const std::string& userid) = 0;
+    virtual void OnRespLogin(int code, const std::string& status, const std::string& userid) = 0;
+    virtual void OnReqSndMsg(const std::string& msg) = 0;
+    virtual void OnRespSndMsg(const std::string& msg) = 0;
+    virtual void OnReqGetMsg(const std::string& msg) = 0;
+    virtual void OnRespGetMsg(const std::string& msg) = 0;
+    virtual void OnReqLogout(int code, const std::string& status, const std::string& userid) = 0;
+    virtual void OnRespLogout(int code, const std::string& status, const std::string& userid) = 0;
 protected:
     virtual ~XMsgCallback(){}
 };

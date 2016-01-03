@@ -8,6 +8,7 @@
 
 #include "XMsgClient.h"
 #include "webrtc/base/logging.h"
+
 #define TIMEOUT_TS (60*1000)
 
 XMsgClient::XMsgClient()
@@ -114,60 +115,15 @@ int XMsgClient::Logout(const std::string& userid, const std::string& pass)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::CreateRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
+int XMsgClient::OptRoom(MEETCMD cmd, const std::string& userid, const std::string& pass, const std::string& roomid)
 {
+    if (cmd<=0 || cmd>=MEETCMD::meetcmd_invalid) {
+        return -1;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::create, 0, 0, 0);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::EnterRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::enter, 0, 0, 0);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::LeaveRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::leave, 0, 0, 0);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::DestroyRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::destroy, 0, 0, 0);
+        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", cmd, 0, 0, 0);
     } else {
         return -1;
     }

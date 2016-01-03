@@ -26,6 +26,8 @@ std::string MEETMSG::ToJson()
     jDoc.AddMember("action", MEETMSG::_action, jDoc.GetAllocator());
     jDoc.AddMember("tags", MEETMSG::_tags, jDoc.GetAllocator());
     jDoc.AddMember("type", MEETMSG::_type, jDoc.GetAllocator());
+    jDoc.AddMember("nmem", MEETMSG::_nmem, jDoc.GetAllocator());
+    jDoc.AddMember("ntime", MEETMSG::_ntime, jDoc.GetAllocator());
     jDoc.AddMember("mseq", MEETMSG::_mseq, jDoc.GetAllocator());
     jDoc.AddMember("from", MEETMSG::_from.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("room", MEETMSG::_room.c_str(), jDoc.GetAllocator());
@@ -83,6 +85,20 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _type = jsonReqDoc["type"].GetInt();
+    
+    
+    if(!(jsonReqDoc.HasMember("nmem") && jsonReqDoc["nmem"].IsInt()))
+    {
+        err.assign("parse nmem error");
+        return;
+    }
+    _nmem = jsonReqDoc["nmem"].GetInt();
+    if(!(jsonReqDoc.HasMember("ntime") && jsonReqDoc["ntime"].IsInt64()))
+    {
+        err.assign("parse ntime error");
+        return;
+    }
+    _ntime = jsonReqDoc["ntime"].GetInt64();
     if(!(jsonReqDoc.HasMember("mseq") && jsonReqDoc["mseq"].IsInt64()))
     {
         err.assign("parse mseq error");

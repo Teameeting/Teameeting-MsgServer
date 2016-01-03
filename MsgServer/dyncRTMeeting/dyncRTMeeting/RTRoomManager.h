@@ -31,11 +31,9 @@ public:
     static unsigned short   s_httpPort;
     static std::string      s_httpHost;
 public:
-    int EnterRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int DcommRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int CreateRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int HandleOptRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    
     void GenericMeetingSessionId(std::string& strId);
     bool Init();
     bool ConnectMsgQueue();
@@ -48,6 +46,12 @@ public:
     void ClearSessionLost(const std::string& uid);
     void ClearMsgQueueSession(const std::string& sid);
 private:
+    int EnterRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int CreateRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int RefreshRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    
     typedef std::map<const std::string, rtc::scoped_refptr<RTMeetingRoom> > MeetingRoomMap;
     RTRoomManager():m_pMsgQueueSession(NULL)
                 , m_pHttpSvrConn(NULL){

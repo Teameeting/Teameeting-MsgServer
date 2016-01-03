@@ -59,6 +59,7 @@
 		E62B56831C15A93500000672 /* RTConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTConnectionManager.h; sourceTree = "<group>"; };
 		E65B55601C328AD200A5DE53 /* RTObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTObserver.h; sourceTree = "<group>"; };
 		E65B55611C328AD200A5DE53 /* RTObserverConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTObserverConnection.h; sourceTree = "<group>"; };
+		E6A886591C394703005C619C /* StatusCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCode.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +96,7 @@
 		E62B55671C0D8E1800000672 /* dyncRTMsgQueue */ = {
 			isa = PBXGroup;
 			children = (
+				E6A886591C394703005C619C /* StatusCode.h */,
 				E65B555F1C328AD200A5DE53 /* RTBase */,
 				E62B56821C15A93500000672 /* RTConnectionManager.cpp */,
 				E62B56831C15A93500000672 /* RTConnectionManager.h */,

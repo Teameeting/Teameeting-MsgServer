@@ -13,18 +13,39 @@
 
 class MsgServerCallback : public XMsgCallback{
 public:
-    virtual void OnLogin(int code) {
-        LOG(INFO) << __FUNCTION__ << " code:" << code;
+    
+    virtual void OnReqLogin(int code, const std::string& status, const std::string& userid) {
+        LOG(INFO) << __FUNCTION__ << " code:" << code << " status:" << status << " userid:" << userid;
     }
-    virtual void OnSndMsg(const std::string& msg) {
+
+    virtual void OnRespLogin(int code, const std::string& status, const std::string& userid) {
+        LOG(INFO) << __FUNCTION__ << " code:" << code << " status:" << status << " userid:" << userid;
+    }
+
+    virtual void OnReqSndMsg(const std::string& msg) {
         LOG(INFO) << __FUNCTION__ << " msg:" << msg;
     }
-    virtual void OnGetMsg(const std::string& from, const std::string& msg) {
-        LOG(INFO) << __FUNCTION__ << "from:" << from << ", msg:" << msg;
+
+    virtual void OnRespSndMsg(const std::string& msg) {
+        LOG(INFO) << __FUNCTION__ << " msg:" << msg;
     }
-    virtual void OnLogout(int code) {
-        LOG(INFO) << __FUNCTION__ << " code:" << code;
+
+    virtual void OnReqGetMsg(const std::string& msg) {
+        LOG(INFO) << __FUNCTION__ << " msg:" << msg;
     }
+
+    virtual void OnRespGetMsg(const std::string& msg) {
+        LOG(INFO) << __FUNCTION__ << " msg:" << msg;
+    }
+
+    virtual void OnReqLogout(int code, const std::string& status, const std::string& userid) {
+        LOG(INFO) << __FUNCTION__ << " code:" << code << " status:" << status << " userid:" << userid;
+    }
+
+    virtual void OnRespLogout(int code, const std::string& status, const std::string& userid) {
+        LOG(INFO) << __FUNCTION__ << " code:" << code << " status:" << status << " userid:" << userid;
+    }
+
     virtual ~MsgServerCallback(){}
 };
 
@@ -44,17 +65,18 @@ int main(int argc, const char * argv[]) {
     std::string msg("hello world, are you ok?");
     client.Init(callback, server, port);
     LOG(INFO) << "connectted to server...";
+    while(client.Status()!=TcpState::CONNECTED)sleep(1);
     client.Login(userid, pass);
-    client.CreateRoom(userid, pass, roomid);
-    client.EnterRoom(userid, pass, roomid);
+    client.OptRoom(MEETCMD::create, userid, pass, roomid);
+    client.OptRoom(MEETCMD::enter, userid, pass, roomid);
     while (1) {
         //LOG(INFO) << "pClient->Status:" << client.Status();
         client.SndMsg(userid, pass, roomid, msg);
         rtc::Thread::SleepMs(3000);
         //break;
     }
-    client.LeaveRoom(userid, pass, roomid);
-    client.DestroyRoom(userid, pass, roomid);
+    client.OptRoom(MEETCMD::leave, userid, pass, roomid);
+    client.OptRoom(MEETCMD::destroy, userid, pass, roomid);
     client.Logout(userid, pass);
     rtc::Thread::SleepMs(3000);
     client.Unin();

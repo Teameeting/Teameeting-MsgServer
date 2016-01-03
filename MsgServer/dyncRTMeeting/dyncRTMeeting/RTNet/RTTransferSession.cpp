@@ -290,13 +290,13 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
     }
     switch (m_mmmsg._cmd) {
         case MEETCMD::enter:
+        case MEETCMD::leave:
+        case MEETCMD::create:
+        case MEETCMD::destroy:
+        case MEETCMD::refresh:
         {
-            //enter meeting
-            {
-                //check & auth
-            }
             std::string resp, tos, res;
-            int code = RTRoomManager::Instance()->EnterRoom(m_mmmsg, tos, res);
+            int code = RTRoomManager::Instance()->HandleOptRoom(m_mmmsg, tos, res);
             GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
             RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
         }
@@ -305,34 +305,7 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
         {
             //handle msgs
             std::string resp, tos, res;
-            int code = RTRoomManager::Instance()->DcommRoom(m_mmmsg, tos, res);
-            GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
-            RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
-        }
-            break;
-        case MEETCMD::leave:
-        {
-            //leave meeting
-            std::string resp, tos, res;
-            int code =RTRoomManager::Instance()->LeaveRoom(m_mmmsg, tos, res);
-            GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
-            RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
-        }
-            break;
-        case MEETCMD::create:
-        {
-            //create room
-            std::string resp, tos, res;
-            int code = RTRoomManager::Instance()->CreateRoom(m_mmmsg, tos, res);
-            GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
-            RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
-        }
-            break;
-        case MEETCMD::destroy:
-        {
-            //destroy room
-            std::string resp, tos, res;
-            int code = RTRoomManager::Instance()->DestroyRoom(m_mmmsg, tos, res);
+            int code = RTRoomManager::Instance()->HandleDcommRoom(m_mmmsg, tos, res);
             GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
             RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
         }
@@ -415,15 +388,10 @@ void RTTransferSession::GenericResponse(TRANSFERMODULE fmodule, TRANSMSG tmsg, M
 {
     switch (mmsg._cmd) {
         case MEETCMD::enter:
-            ResponseNotDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
-            break;
         case MEETCMD::leave:
-            ResponseNotDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
-            break;
         case MEETCMD::create:
-            ResponseNotDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
-            break;
         case MEETCMD::destroy:
+        case MEETCMD::refresh:
             ResponseNotDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
             break;
         case MEETCMD::dcomm:
@@ -441,18 +409,20 @@ void RTTransferSession::ResponseNotDcomm(TRANSFERMODULE fmodule, TRANSMSG tmsg, 
     long long seq = GenericTransSeq();
     meetmsg._mtype = mmsg._mtype;
     meetmsg._cmd = mmsg._cmd;
-    meetmsg._action = 0;
-    meetmsg._tags = 0;
-    meetmsg._type = 0;
-    meetmsg._mseq = seq;
+    meetmsg._action = mmsg._action;
+    meetmsg._tags = mmsg._tags;
+    meetmsg._type = mmsg._type;
+    meetmsg._mseq = mmsg._mseq;
     meetmsg._from = mmsg._from;
     meetmsg._room = mmsg._room;
-    meetmsg._sess = "";
+    meetmsg._sess = mmsg._sess;
     meetmsg._to = mmsg._from;
-    meetmsg._cont = "";
+    meetmsg._cont = mmsg._cont;
     meetmsg._pass = mmsg._pass;
     meetmsg._code = code;
     meetmsg._status = res;
+    meetmsg._nmem = mmsg._nmem;
+    meetmsg._ntime = mmsg._ntime;
     
     QUEUEMSG qmsg;
     qmsg._flag = 0;
@@ -480,15 +450,17 @@ void RTTransferSession::ResponseDcomm(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEE
     meetmsg._action = mmsg._action;
     meetmsg._tags = mmsg._tags;
     meetmsg._type = mmsg._type;
-    meetmsg._mseq = seq;
+    meetmsg._mseq = mmsg._mseq;
     meetmsg._from = mmsg._from;
     meetmsg._room = mmsg._room;
     meetmsg._sess = mmsg._sess;
-    meetmsg._to = mmsg._from;
+    meetmsg._to = "";
     meetmsg._cont = mmsg._cont;
     meetmsg._pass = mmsg._pass;
     meetmsg._code = code;
     meetmsg._status = res;
+    meetmsg._nmem = mmsg._nmem;
+    meetmsg._ntime = mmsg._ntime;
     
     QUEUEMSG qmsg;
     qmsg._flag = 0;
