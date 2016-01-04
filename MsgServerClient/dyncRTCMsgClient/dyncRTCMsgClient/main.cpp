@@ -45,6 +45,20 @@ public:
     virtual void OnRespLogout(int code, const std::string& status, const std::string& userid) {
         LOG(INFO) << __FUNCTION__ << " code:" << code << " status:" << status << " userid:" << userid;
     }
+    
+    virtual void OnMsgServerConnected() {
+        LOG(INFO) << __FUNCTION__ << " was called";
+    }
+
+    virtual void OnMsgServerDisconnect() {
+        LOG(INFO) << __FUNCTION__ << " was called";
+    }
+
+    virtual void OnMsgServerConnectionFailure() {
+        LOG(INFO) << __FUNCTION__ << " was called";
+    }
+
+
 
     virtual ~MsgServerCallback(){}
 };

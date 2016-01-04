@@ -213,16 +213,25 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 void XMsgClient::OnServerConnected()
 {
     LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerConnected();
+    }
 }
 
 void XMsgClient::OnServerDisconnect()
 {
     LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerDisconnect();
+    }
 }
 
 void XMsgClient::OnServerConnectionFailure()
 {
     LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerConnectionFailure();
+    }
 }
 
 void XMsgClient::OnTick()
@@ -251,7 +260,7 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
             memcpy(l, pMsg+offset, 4);
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
-            if (ll>0 && ll <= nLen) {
+            if (m_pMsgProcesser && ll>0 && ll <= nLen) {
                 int nlen = m_pMsgProcesser->DecodeRecvData((char *)(pMsg+offset), ll);
                 if (nlen == -1) {
                     break;

@@ -267,6 +267,20 @@ int XMsgProcesser::GetMemberToJson(const std::list<std::string> ulist, std::stri
     return 0;
 }
 
+void XMsgProcesser::ServerConnected()
+{
+    m_callback.OnMsgServerConnected();
+}
+
+void XMsgProcesser::ServerDisconnect()
+{
+    m_callback.OnMsgServerDisconnect();
+}
+
+void XMsgProcesser::ServerConnectionFailure()
+{
+    m_callback.OnMsgServerConnectionFailure();
+}
 
 long long XMsgProcesser::GenericTransSeq()
 {

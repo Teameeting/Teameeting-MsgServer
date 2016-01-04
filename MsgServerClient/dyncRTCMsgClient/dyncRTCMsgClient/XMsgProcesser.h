@@ -43,6 +43,12 @@ public:
     
     int DecodeRecvData(const char* pData, int nLen);
     int GetMemberToJson(const std::list<std::string> ulist, std::string& tousers);
+
+public:
+    //handle XTcpClient callback
+    void ServerConnected();
+    void ServerDisconnect();
+    void ServerConnectionFailure();
 protected:
     int DecodeLogin(SIGNALTYPE stype, MEETMSG& msg);
     int DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg);

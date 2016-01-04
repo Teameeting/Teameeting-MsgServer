@@ -21,6 +21,11 @@ public:
     virtual void OnRespGetMsg(const std::string& msg) = 0;
     virtual void OnReqLogout(int code, const std::string& status, const std::string& userid) = 0;
     virtual void OnRespLogout(int code, const std::string& status, const std::string& userid) = 0;
+    
+public:
+    virtual void OnMsgServerConnected() = 0;
+    virtual void OnMsgServerDisconnect() = 0;
+    virtual void OnMsgServerConnectionFailure() = 0;
 protected:
     virtual ~XMsgCallback(){}
 };
