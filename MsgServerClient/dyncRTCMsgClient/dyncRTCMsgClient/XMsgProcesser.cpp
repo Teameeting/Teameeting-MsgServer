@@ -216,7 +216,7 @@ int XMsgProcesser::DecodeLogin(SIGNALTYPE stype, MEETMSG& msg)
 
 int XMsgProcesser::DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg)
 {
-    const std::string tmsg(msg._cont);
+    const std::string tmsg(msg.ToJson());
     if (stype == SIGNALTYPE::reqsndmsg) {
         m_callback.OnReqSndMsg(tmsg);
     } else if (stype == SIGNALTYPE::respsndmsg) {
@@ -227,7 +227,7 @@ int XMsgProcesser::DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg)
 
 int XMsgProcesser::DecodeGetMsg(SIGNALTYPE stype, MEETMSG& msg)
 {
-    const std::string tmsg(msg._cont);
+    const std::string tmsg(msg.ToJson());
     if (stype == SIGNALTYPE::reqgetmsg) {
         m_callback.OnReqGetMsg(tmsg);
     } else if (stype == SIGNALTYPE::respgetmsg) {
