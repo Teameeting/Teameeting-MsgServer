@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <unistd.h>
 #include "webrtc/base/logging.h"
 #include "XMsgClient.h"
 #include "XMsgCallback.h"
