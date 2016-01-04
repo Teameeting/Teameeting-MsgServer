@@ -28,13 +28,13 @@ int RTConnTcp::DoProcessData(const char* pData, int nLen)
     m_smsg.GetMsg(sstr, err);
     if (err.length() > 0) {
         LE("%s err:%s\n", __FUNCTION__, err.c_str());
-        return 0;
+        return -1;
     }
     if (m_smsg._scont.length()>0) {
         m_mmsg.GetMsg(m_smsg._scont, err);
         if (err.length() > 0) {
         LE("%s err:%s\n", __FUNCTION__, err.c_str());
-        return 0;
+        return -1;
         }
     }
     if (m_smsg._stype == SIGNALTYPE::reqkeepalive) {
@@ -92,9 +92,10 @@ int RTConnTcp::ProcessData(const char* pData, int nLen)
             ll = (int)strtol(l, NULL, 10);
             if (ll>0 && ll <= nLen) {
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                if (nlen == 0) {
+                LI("DoProcessData msg nlen:%d, ll:%d\n", nlen, ll);
+                if (nlen < 0) { // the message length may be 0
                     break;
-                } else { // nlen == 0
+                } else { // nlen < 0
                     assert(nlen == ll);
                     offset += ll;
                     parsed += offset;

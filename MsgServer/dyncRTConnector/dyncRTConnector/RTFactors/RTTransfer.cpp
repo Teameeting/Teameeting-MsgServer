@@ -30,7 +30,7 @@ int RTTransfer::DoProcessData(const char *pData, int nLen)
     m_msg.GetMsg(str, err);
     if (err.length() > 0) {
         LE("%s err:%s\n", __FUNCTION__, err.c_str());
-        return 0;
+        return -1;
     }
     {
         if (m_msg._action == TRANSFERACTION::req) {
@@ -51,7 +51,7 @@ int RTTransfer::DoProcessData(const char *pData, int nLen)
             } else {
                 // ack failer
                 LE("msg ack failed, seq:%d, seq_ack:%d\n",m_msg._trans_seq, m_msg._trans_seq_ack);
-                return 0;
+                return -1;
             }
         } else if (m_msg._action == TRANSFERACTION::resp) {
             TRANSFERMSG ack_msg;
@@ -71,7 +71,7 @@ int RTTransfer::DoProcessData(const char *pData, int nLen)
             } else {
                 // ack failer
                 LE("msg ack failed, seq:%d, seq_ack:%d\n",m_msg._trans_seq, m_msg._trans_seq_ack);
-                return 0;
+                return -1;
             }
         } else {
             LE("msg action error!!!!!\n");
@@ -111,9 +111,10 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
             ll = (int)strtol(l, NULL, 10);
             if (ll>0 && ll <= nLen) {
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                if (nlen == 0) {
+                LI("Transfer DoProcessData msg nlen:%d, ll:%d\n", nlen, ll);
+                if (nlen < 0) { // the message length may be 0
                     break;
-                } else { // nlen == 0
+                } else { // nlen < 0
                     assert(nlen == ll);
                     offset += ll;
                     parsed += offset;
