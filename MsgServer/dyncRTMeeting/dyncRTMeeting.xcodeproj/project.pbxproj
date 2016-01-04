@@ -78,6 +78,7 @@
 		E6806CFF1C06DB3900C4AF8A /* RTMeeting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTMeeting.cpp; sourceTree = "<group>"; };
 		E6806D001C06DB3900C4AF8A /* RTMeeting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMeeting.h; sourceTree = "<group>"; };
 		E6A886581C3946E8005C619C /* StatusCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCode.h; sourceTree = "<group>"; };
+		E6A8865C1C3A5008005C619C /* RTMsgCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
 		E6FEA48B1C1E679D00128D45 /* RTRoomSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTRoomSession.cpp; sourceTree = "<group>"; };
 		E6FEA48C1C1E679D00128D45 /* RTRoomSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRoomSession.h; sourceTree = "<group>"; };
 		E6FEA48E1C1EC51500128D45 /* RTConnHttp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTConnHttp.cpp; sourceTree = "<group>"; };
@@ -138,6 +139,7 @@
 		E6806B8D1C06D93F00C4AF8A /* dyncRTMeeting */ = {
 			isa = PBXGroup;
 			children = (
+				E6A8865C1C3A5008005C619C /* RTMsgCommon.h */,
 				E6A886581C3946E8005C619C /* StatusCode.h */,
 				E65B555C1C3274FC00A5DE53 /* RTBase */,
 				E62B569C1C1974CC00000672 /* RTMsg.h */,

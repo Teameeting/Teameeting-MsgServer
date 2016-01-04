@@ -6,12 +6,13 @@
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
+#include <sstream>
 #include "RTTransfer.h"
 #include "http_common.h"
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
-#include <sstream>
+#include "RTMsgCommon.h"
 
 RTTransfer::RTTransfer()
 {
@@ -25,12 +26,21 @@ RTTransfer::~RTTransfer()
 
 int RTTransfer::DoProcessData(const char *pData, int nLen)
 {
+    if (nLen==0) {
+        return 0;
+    }
     memset((void*)&m_msg, 0, sizeof(TRANSFERMSG));
     std::string str(pData, nLen), err;
     m_msg.GetMsg(str, err);
     if (err.length() > 0) {
         LE("%s TRANSFERMSG err::%s\n", __FUNCTION__, err.c_str());
-        return -1;
+        if (err.compare(INVALID_JSON_PARAMS)==0) {
+            // Here means the msg not received totally
+            return -1;
+        } else {
+            // Here means the msg error
+            return nLen;
+        }
     }
     {
         // handle ack
@@ -52,7 +62,7 @@ int RTTransfer::DoProcessData(const char *pData, int nLen)
             } else {
                 // ack failer
                 LE("msg ack failed!!!!!,seq::%d, seq_ack:%d\n", m_msg._trans_seq, m_msg._trans_seq_ack);
-                return -1;
+                return nLen;
             }
         } else if (m_msg._action == TRANSFERACTION::resp) {
             TRANSFERMSG ack_msg;
@@ -72,7 +82,7 @@ int RTTransfer::DoProcessData(const char *pData, int nLen)
             } else {
                 // ack failer
                 LE("msg ack failed!!!!!,seq::%d, seq_ack:%d\n", m_msg._trans_seq, m_msg._trans_seq_ack);
-                return -1;
+                return nLen;
             }
         } else {
             LE("msg action error!!!!!\n");
@@ -101,6 +111,7 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
 {
     int parsed = 0;
     int ll = 0;
+    LI("RTTransfer::ProcessData nLen:%d, pData:%s\n", nLen, pData);
     while (parsed < nLen)
     {
         const char* pMsg = pData + parsed;
@@ -111,10 +122,10 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
             memcpy(l, pMsg+offset, 4);
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
-            if (ll>0 && ll <= nLen) {
+            if (ll>=0 && ll <= nLen) {  // the message length may be 0
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                LI("DoProcessData msg nlen:%d, lll:%d\n");
-                if (nlen < 0) {  // the message length may be 0
+                LI("DoProcessData msg nlen:%d, lll:%d\n", nlen, ll);
+                if (nlen < 0) {
                     break;
                 } else { // nlen < 0
                     assert(nlen == ll);

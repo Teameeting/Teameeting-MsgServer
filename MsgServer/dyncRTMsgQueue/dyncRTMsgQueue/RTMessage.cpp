@@ -13,6 +13,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
+#include "RTMsgCommon.h"
 
 std::string TRANSFERMSG::ToJson()
 {
@@ -43,7 +44,7 @@ void TRANSFERMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("action") && jsonReqDoc["action"].IsInt()))
@@ -118,7 +119,7 @@ void CONNMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("tag") && jsonReqDoc["tag"].IsInt()))
@@ -179,7 +180,7 @@ void TRANSMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
@@ -235,7 +236,7 @@ void QUEUEMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
@@ -290,7 +291,7 @@ void DISPATCHMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
@@ -345,7 +346,7 @@ void PUSHMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
@@ -403,7 +404,7 @@ void TOJSONUSER::GetMsg(const std::string &str, std::string &err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("u") && jsonReqDoc["u"].IsArray()))

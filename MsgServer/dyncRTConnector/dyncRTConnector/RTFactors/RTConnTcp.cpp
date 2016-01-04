@@ -9,6 +9,7 @@
 #include "RTConnTcp.h"
 #include "Assert.h"
 #include "rtklog.h"
+#include "RTMsgCommon.h"
 
 RTConnTcp::RTConnTcp()
 {
@@ -22,19 +23,34 @@ RTConnTcp::~RTConnTcp()
 
 int RTConnTcp::DoProcessData(const char* pData, int nLen)
 {
+    if (nLen==0) {
+        return 0;
+    }
     memset((void*)&m_smsg, 0, sizeof(SIGNALMSG));
     memset((void*)&m_mmsg, 0, sizeof(MEETMSG));
     std::string sstr(pData, nLen), err;
     m_smsg.GetMsg(sstr, err);
     if (err.length() > 0) {
         LE("%s err:%s\n", __FUNCTION__, err.c_str());
-        return -1;
+        if (err.compare(INVALID_JSON_PARAMS)==0) {
+            // Here means the msg not received totally
+            return -1;
+        } else {
+            // Here means the msg error
+            return nLen;
+        }
     }
     if (m_smsg._scont.length()>0) {
         m_mmsg.GetMsg(m_smsg._scont, err);
         if (err.length() > 0) {
-        LE("%s err:%s\n", __FUNCTION__, err.c_str());
-        return -1;
+            LE("%s err:%s\n", __FUNCTION__, err.c_str());
+            if (err.compare(INVALID_JSON_PARAMS)==0) {
+                // Here means the msg not received totally
+                return -1;
+            } else {
+                // Here means the msg error
+                return nLen;
+            }
         }
     }
     if (m_smsg._stype == SIGNALTYPE::reqkeepalive) {
@@ -80,6 +96,7 @@ int RTConnTcp::ProcessData(const char* pData, int nLen)
 {
     int parsed = 0;
     int ll = 0;
+    LI("RTConnTcp::ProcessData pData:%s\n", pData);
     while (parsed < nLen)
     {
         const char* pMsg = pData + parsed;
@@ -90,10 +107,10 @@ int RTConnTcp::ProcessData(const char* pData, int nLen)
             memcpy(l, pMsg+offset, 4);
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
-            if (ll>0 && ll <= nLen) {
+            if (ll>=0 && ll <= nLen) { // the message length may be 0
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
                 LI("DoProcessData msg nlen:%d, ll:%d\n", nlen, ll);
-                if (nlen < 0) { // the message length may be 0
+                if (nlen < 0) {
                     break;
                 } else { // nlen < 0
                     assert(nlen == ll);

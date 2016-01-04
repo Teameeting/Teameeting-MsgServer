@@ -91,6 +91,7 @@
 		E6806B761C06D57500C4AF8A /* RTTcp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTTcp.cpp; sourceTree = "<group>"; };
 		E6806B771C06D57500C4AF8A /* RTTcp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTTcp.h; sourceTree = "<group>"; };
 		E6A886571C39361A005C619C /* StatusCode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusCode.h; sourceTree = "<group>"; };
+		E6A8865A1C3A4DEA005C619C /* RTMsgCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +165,7 @@
 				E62B56941C17BFDC00000672 /* RTType.h */,
 				E62B569B1C195B7C00000672 /* RTMsg.h */,
 				E6A886571C39361A005C619C /* StatusCode.h */,
+				E6A8865A1C3A4DEA005C619C /* RTMsgCommon.h */,
 			);
 			path = dyncRTConnector;
 			sourceTree = "<group>";

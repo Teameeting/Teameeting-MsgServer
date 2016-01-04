@@ -13,6 +13,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
+#include "RTMsgCommon.h"
 
 std::string MEETMSG::ToJson()
 {
@@ -52,7 +53,7 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("mtype") && jsonReqDoc["mtype"].IsInt()))

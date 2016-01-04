@@ -13,6 +13,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
+#include "RTMsgCommon.h"
 
 std::string SIGNALMSG::ToJson()
 {
@@ -38,7 +39,7 @@ void SIGNALMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("stype") && jsonReqDoc["stype"].IsInt()))
