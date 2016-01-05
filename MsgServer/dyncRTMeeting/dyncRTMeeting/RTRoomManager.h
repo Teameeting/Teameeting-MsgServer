@@ -31,9 +31,11 @@ public:
     static unsigned short   s_httpPort;
     static std::string      s_httpHost;
 public:
+    
     int HandleOptRoom(MEETMSG& msg, std::string& tos, std::string& res);
     int HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    
+
+    int LoadExistRoom(int type);
     void GenericMeetingSessionId(std::string& strId);
     bool Init();
     bool ConnectMsgQueue();

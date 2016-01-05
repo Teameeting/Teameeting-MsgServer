@@ -128,7 +128,7 @@ int	RTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*
 	Assert(pConnIp != NULL && strlen(pConnIp)>0);
 	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
     
-    RTHiredis::Instance()->Connect();
+    RTHiredisLocal::Instance()->Connect();
     std::string mid;
     RTConnectionManager::Instance()->GenericSessionId(mid);
     RTConnectionManager::Instance()->SetMsgQueueId(mid);
