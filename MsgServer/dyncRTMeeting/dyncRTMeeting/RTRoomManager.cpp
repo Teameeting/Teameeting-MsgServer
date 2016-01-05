@@ -52,6 +52,7 @@ int RTRoomManager::HandleOptRoom(MEETMSG& msg, std::string& tos, std::string& re
 
 int RTRoomManager::EnterRoom(MEETMSG& msg, std::string& tos, std::string& res)
 {
+    msg._ntime = OS::Milliseconds();
     if (msg._from.length()==0 || msg._room.length()==0) {
         LE("invalid params error\n");
         res.assign(GetRTCommStatus(RTCommCode::_invparams));
@@ -71,7 +72,6 @@ int RTRoomManager::EnterRoom(MEETMSG& msg, std::string& tos, std::string& res)
         rMemNum = meetingRoom->GetRoomMemberNumber();
         sMemNum = meetingRoom->GetSesssionMemberNumber();
         msg._nmem = rMemNum;
-        msg._ntime = OS::Milliseconds();
 
         std::string users;
         if (!ChangeToJson(msg._from, users)) {
@@ -105,12 +105,12 @@ int RTRoomManager::EnterRoom(MEETMSG& msg, std::string& tos, std::string& res)
 
 int RTRoomManager::HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& res)
 {
+    msg._ntime = OS::Milliseconds();
     if (msg._from.length()==0 || msg._room.length()==0 || msg._to.length()==0) {
         LE("invalid params error\n");
         res.assign(GetRTCommStatus(RTCommCode::_invparams));
         return RTCommCode::_invparams;
     }
-    msg._ntime = OS::Milliseconds();
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
         LE("Room not exists\n");
@@ -184,6 +184,7 @@ int RTRoomManager::HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& 
 
 int RTRoomManager::LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res)
 {
+    msg._ntime = OS::Milliseconds();
     if (msg._from.length()==0 || msg._room.length()==0) {
         LE("invalid params error\n");
         res.assign(GetRTCommStatus(RTCommCode::_invparams));
@@ -203,7 +204,6 @@ int RTRoomManager::LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res)
         rMemNum = meetingRoom->GetRoomMemberNumber();
         sMemNum = meetingRoom->GetSesssionMemberNumber();
         msg._nmem = rMemNum;
-        msg._ntime = OS::Milliseconds();
         std::string users;
         if (!ChangeToJson(msg._from, users)) {
             tos = users;
@@ -231,6 +231,7 @@ int RTRoomManager::LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res)
 
 int RTRoomManager::CreateRoom(MEETMSG& msg, std::string& tos, std::string& res)
 {
+    msg._ntime = OS::Milliseconds();
     if (msg._from.length()==0 || msg._room.length()==0) {
         LE("invalid params error\n");
         res.assign(GetRTCommStatus(RTCommCode::_invparams));
@@ -243,7 +244,6 @@ int RTRoomManager::CreateRoom(MEETMSG& msg, std::string& tos, std::string& res)
         if (!ChangeToJson(msg._from, users)) {
             tos = users;
             msg._nmem = 0;
-            msg._ntime = OS::Milliseconds();
             res.assign(GetRTCommStatus(RTCommCode::_ok));
             LI("CreateRoom for roomid:%s\n", msg._room.c_str());
             return RTCommCode::_ok;
@@ -260,6 +260,7 @@ int RTRoomManager::CreateRoom(MEETMSG& msg, std::string& tos, std::string& res)
 
 int RTRoomManager::DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res)
 {
+    msg._ntime = OS::Milliseconds();
     if (msg._from.length()==0 || msg._room.length()==0) {
         LE("invalid params error\n");
         res.assign(GetRTCommStatus(RTCommCode::_invparams));
@@ -276,8 +277,6 @@ int RTRoomManager::DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res)
         std::string users;
         if (!ChangeToJson(msg._from, users)) {
             tos = users;
-            res.assign("ok");
-            msg._ntime = OS::Milliseconds();
         } else {
             res.assign(GetRTCommStatus(RTCommCode::_errtojson));
             return RTCommCode::_errtojson;
@@ -291,26 +290,48 @@ int RTRoomManager::DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res)
 int RTRoomManager::StartMeeting(MEETMSG& msg, std::string& tos, std::string& res)
 {
     LI("StartMeeting for roomid:%s\n", msg._room.c_str());
+    msg._ntime = OS::Milliseconds();
+    std::string users;
+    if (!ChangeToJson(msg._from, users)) {
+        tos = users;
+    } else {
+        res.assign(GetRTCommStatus(RTCommCode::_errtojson));
+        return RTCommCode::_errtojson;
+    }
     res.assign(GetRTCommStatus(RTCommCode::_ok));
     return RTCommCode::_ok;
 }
 
 int RTRoomManager::StopMeeting(MEETMSG& msg, std::string& tos, std::string& res)
 {
+    msg._ntime = OS::Milliseconds();
     LI("StopMeeting for roomid:%s\n", msg._room.c_str());
+    std::string users;
+    if (!ChangeToJson(msg._from, users)) {
+        tos = users;
+    } else {
+        res.assign(GetRTCommStatus(RTCommCode::_errtojson));
+        return RTCommCode::_errtojson;
+    }
     res.assign(GetRTCommStatus(RTCommCode::_ok));
     return RTCommCode::_ok;
 }
 
 int RTRoomManager::RefreshRoom(MEETMSG &msg, std::string &tos, std::string &res)
 {
+    msg._ntime = OS::Milliseconds();
     if (msg._from.length()==0 || msg._room.length()==0) {
         LE("invalid params error\n");
         res.assign(GetRTCommStatus(RTCommCode::_invparams));
         return RTCommCode::_invparams;
     }
-    msg._nmem = 0;
-    msg._ntime = OS::Milliseconds();
+    std::string users;
+    if (!ChangeToJson(msg._from, users)) {
+        tos = users;
+    } else {
+        res.assign(GetRTCommStatus(RTCommCode::_errtojson));
+        return RTCommCode::_errtojson;
+    }
     res.assign(GetRTCommStatus(RTCommCode::_ok));
     return RTCommCode::_ok;
 }
