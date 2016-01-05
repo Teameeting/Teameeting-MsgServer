@@ -551,7 +551,6 @@
 		E6A884CE1C369063005C619C /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
 		E6A884CF1C369063005C619C /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
 		E6A884D01C369063005C619C /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
-		E6A885F71C36996D005C619C /* librtclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = librtclient.a; sourceTree = "<group>"; };
 		E6B625F81C2963A50014BED5 /* librtcmsgclient-mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B6267D1C2982390014BED5 /* librtcmsgclient-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E20D751C291FC800B2D81E /* XMsgClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgClient.cpp; sourceTree = "<group>"; };
@@ -622,7 +621,6 @@
 		E6390BDB1C28E44400AE4DD2 /* dyncRTCMsgClient */ = {
 			isa = PBXGroup;
 			children = (
-				E6A885F61C36996D005C619C /* lib_in_rtc_ios_a */,
 				E6A8840A1C369063005C619C /* webrtc_normal */,
 				E6A883281C368FAE005C619C /* webrtc_tm */,
 				E6390BE31C28EFE800AE4DD2 /* RTC_Export.h */,
@@ -926,14 +924,6 @@
 				E6A884CC1C369063005C619C /* worker.h */,
 			);
 			path = base;
-			sourceTree = "<group>";
-		};
-		E6A885F61C36996D005C619C /* lib_in_rtc_ios_a */ = {
-			isa = PBXGroup;
-			children = (
-				E6A885F71C36996D005C619C /* librtclient.a */,
-			);
-			path = lib_in_rtc_ios_a;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1512,7 +1502,7 @@
 					"$(PROJECT_DIR)/dyncRTCMsgClient",
 					"$(PROJECT_DIR)/dyncRTCMsgClient/webrtc_tm",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1541,7 +1531,7 @@
 					"$(PROJECT_DIR)/dyncRTCMsgClient",
 					"$(PROJECT_DIR)/dyncRTCMsgClient/webrtc_tm",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

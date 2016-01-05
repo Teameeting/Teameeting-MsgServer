@@ -37,6 +37,10 @@ int RTRoomManager::HandleOptRoom(MEETMSG& msg, std::string& tos, std::string& re
             return CreateRoom(msg, tos, res);
         case MEETCMD::destroy:
             return DestroyRoom(msg, tos, res);
+        case MEETCMD::start:
+            return StartMeeting(msg, tos, res);
+        case MEETCMD::stop:
+            return StopMeeting(msg, tos, res);
         case MEETCMD::refresh:
             return RefreshRoom(msg, tos, res);
         default:
@@ -282,6 +286,20 @@ int RTRoomManager::DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res)
         res.assign(GetRTCommStatus(RTCommCode::_ok));
         return RTCommCode::_ok;
     }
+}
+
+int RTRoomManager::StartMeeting(MEETMSG& msg, std::string& tos, std::string& res)
+{
+    LI("StartMeeting for roomid:%s\n", msg._room.c_str());
+    res.assign(GetRTCommStatus(RTCommCode::_ok));
+    return RTCommCode::_ok;
+}
+
+int RTRoomManager::StopMeeting(MEETMSG& msg, std::string& tos, std::string& res)
+{
+    LI("StopMeeting for roomid:%s\n", msg._room.c_str());
+    res.assign(GetRTCommStatus(RTCommCode::_ok));
+    return RTCommCode::_ok;
 }
 
 int RTRoomManager::RefreshRoom(MEETMSG &msg, std::string &tos, std::string &res)

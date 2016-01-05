@@ -115,7 +115,7 @@ int XMsgClient::Logout(const std::string& userid, const std::string& pass)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::OptRoom(MEETCMD cmd, const std::string& userid, const std::string& pass, const std::string& roomid)
+int XMsgClient::OptRoom(MEETCMD cmd, const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& remain)
 {
     if (cmd<=0 || cmd>=MEETCMD::meetcmd_invalid) {
         return -1;
@@ -123,7 +123,7 @@ int XMsgClient::OptRoom(MEETCMD cmd, const std::string& userid, const std::strin
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", cmd, 0, 0, 0);
+        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", remain, cmd, 0, 0, 0);
     } else {
         return -1;
     }

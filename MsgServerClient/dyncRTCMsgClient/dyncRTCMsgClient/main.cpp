@@ -82,16 +82,18 @@ int main(int argc, const char * argv[]) {
     LOG(INFO) << "connectted to server...";
     while(client.Status()!=TcpState::CONNECTED)sleep(1);
     client.Login(userid, pass);
-    client.OptRoom(MEETCMD::create, userid, pass, roomid);
-    client.OptRoom(MEETCMD::enter, userid, pass, roomid);
+    client.OptRoom(MEETCMD::create, userid, pass, roomid, "");
+    client.OptRoom(MEETCMD::enter, userid, pass, roomid, "");
+    client.OptRoom(MEETCMD::start, userid, pass, roomid, "");
     while (1) {
         //LOG(INFO) << "pClient->Status:" << client.Status();
         client.SndMsg(userid, pass, roomid, msg);
         rtc::Thread::SleepMs(3000);
-        //break;
+        break;
     }
-    client.OptRoom(MEETCMD::leave, userid, pass, roomid);
-    client.OptRoom(MEETCMD::destroy, userid, pass, roomid);
+    client.OptRoom(MEETCMD::stop, userid, pass, roomid, "");
+    client.OptRoom(MEETCMD::leave, userid, pass, roomid, "");
+    client.OptRoom(MEETCMD::destroy, userid, pass, roomid, "");
     client.Logout(userid, pass);
     rtc::Thread::SleepMs(3000);
     client.Unin();

@@ -135,6 +135,8 @@ typedef enum _meetcmd{
     leave,
     create,
     destroy,
+    start,
+    stop,
     dcomm,
     refresh,
     meetcmd_invalid

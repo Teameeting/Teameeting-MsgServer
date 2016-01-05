@@ -293,6 +293,8 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
         case MEETCMD::leave:
         case MEETCMD::create:
         case MEETCMD::destroy:
+        case MEETCMD::start:
+        case MEETCMD::stop:
         case MEETCMD::refresh:
         {
             std::string resp, tos, res;
@@ -391,6 +393,8 @@ void RTTransferSession::GenericResponse(TRANSFERMODULE fmodule, TRANSMSG tmsg, M
         case MEETCMD::leave:
         case MEETCMD::create:
         case MEETCMD::destroy:
+        case MEETCMD::start:
+        case MEETCMD::stop:
         case MEETCMD::refresh:
             ResponseNotDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
             break;

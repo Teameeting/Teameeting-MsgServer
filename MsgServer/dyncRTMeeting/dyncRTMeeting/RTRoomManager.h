@@ -50,6 +50,8 @@ private:
     int LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res);
     int CreateRoom(MEETMSG& msg, std::string& tos, std::string& res);
     int DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    int StartMeeting(MEETMSG& msg, std::string& tos, std::string& res);
+    int StopMeeting(MEETMSG& msg, std::string& tos, std::string& res);
     int RefreshRoom(MEETMSG& msg, std::string& tos, std::string& res);
     
     typedef std::map<const std::string, rtc::scoped_refptr<RTMeetingRoom> > MeetingRoomMap;

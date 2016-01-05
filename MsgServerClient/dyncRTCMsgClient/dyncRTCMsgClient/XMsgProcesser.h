@@ -22,19 +22,7 @@ public:
     XMsgProcesser(XMsgCallback& cb):m_callback(cb){}
     ~XMsgProcesser(){}
 public:
-    int     _cmd;
-    int     _action;
-    int     _tags;
-    int     _type;
-    long long   _mseq;
-    std::string _from;
-    std::string _room;
-    std::string _sess;
-    std::string _to;
-    std::string _cont;
-    std::string _pass;
-    int     _code;
-    std::string _status;
+    
     int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass);
     int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& pass);
