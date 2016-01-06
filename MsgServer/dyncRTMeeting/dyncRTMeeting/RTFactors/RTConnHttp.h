@@ -15,7 +15,8 @@ public:
 
 	static void OnParsedHttpMessage(const void*pUserData, http_message* httpMsg);
 	void OnHttpMessage(http_message* httpMsg);
-    const char* GenerateRequest(const std::string& path, const std::string& data, int& outLen);
+    const char* GenerateRequest(http_method method, const std::string& path, const std::string& data, int& outLen);
+    const char* GenerateRequest(http_method method, const std::string& path, const std::string& data, int& outLen) const;
 
 public:
 	virtual void OnResponse(const char*pData, int nLen)=0;

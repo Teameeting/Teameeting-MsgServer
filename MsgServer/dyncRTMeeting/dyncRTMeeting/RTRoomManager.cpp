@@ -8,6 +8,7 @@
 
 #include "RTRoomManager.h"
 #include <assert.h>
+#include "atomic.h"
 #include "md5.h"
 #include "md5digest.h"
 #include "OSMutex.h"
@@ -16,10 +17,12 @@
 #include "RTMeetingRoom.h"
 #include "StatusCode.h"
 #include "RTHiredis.h"
+#include "RTHttpMsg.h"
 
 static char          s_curMicroSecStr[32];
 static unsigned char s_digest[16];
 static OSMutex       s_mutex;
+static unsigned int	 g_trans_id = 0;
 
 std::string RTRoomManager::s_msgQueueIp;
 unsigned short RTRoomManager::s_msgQueuePort;
@@ -27,126 +30,125 @@ std::string RTRoomManager::s_httpIp;
 unsigned short RTRoomManager::s_httpPort;
 std::string RTRoomManager::s_httpHost;
 
-int RTRoomManager::HandleOptRoom(MEETMSG& msg, std::string& tos, std::string& res)
+void RTRoomManager::HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    switch (msg._cmd) {
+    switch (mmsg._cmd) {
         case MEETCMD::enter:
-            return EnterRoom(msg, tos, res);
-        case MEETCMD::leave:
-            return LeaveRoom(msg, tos, res);
-        case MEETCMD::create:
-            return CreateRoom(msg, tos, res);
-        case MEETCMD::destroy:
-            return DestroyRoom(msg, tos, res);
-        case MEETCMD::start:
-            return StartMeeting(msg, tos, res);
-        case MEETCMD::stop:
-            return StopMeeting(msg, tos, res);
-        case MEETCMD::refresh:
-            return RefreshRoom(msg, tos, res);
-        default:
-            res.assign(GetRTCommStatus(RTCommCode::_invparams));
-            return RTCommCode::_invparams;
-    }
-}
-
-
-int RTRoomManager::EnterRoom(MEETMSG& msg, std::string& tos, std::string& res)
-{
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
-    }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
-    if (it == m_meetingRoomMap.end()) { // meeting not exists
-        LE("Room not exists\n");
-        res.assign(GetRTCommStatus(RTCommCode::_nexistroom));
-        return RTCommCode::_nexistroom;
-    } else { // meeting has exists
-        int rMemNum = 0, sMemNum = 0;
-        rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-        meetingRoom->AddMemberToRoom(msg._from);
-        rMemNum = meetingRoom->GetRoomMemberNumber();
-        sMemNum = meetingRoom->GetSesssionMemberNumber();
-        msg._nmem = sMemNum;
-
-        std::string users;
-        if (!ChangeToJson(msg._from, users)) {
-            tos = users;
-        } else {
-            res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-            return RTCommCode::_errtojson;
-
+        {
+            EnterRoom(tmsg, mmsg);
         }
-        // send to http
-        LI("RoomManager::EnterRoom roomMemNum:%d, sessMemNum:%d, from:%s, pass:%s, roomid:%s\n", rMemNum, sMemNum, msg._from.c_str(), msg._pass.c_str(), msg._room.c_str());
-        const char* sign = msg._pass.c_str();
-        const char* meetingid = msg._room.c_str();
-        char meetingMemNumber[4] = {0};
-        char sessionnumber[4] = {0};
-        sprintf(meetingMemNumber, "%d", rMemNum);
-        sprintf(sessionnumber, "%d", sMemNum);
-
-        m_pHttpSvrConn->HttpInsertUserMeetingRoom(sign, meetingid);
-        m_pHttpSvrConn->HttpUpdateRoomMemNumber(sign, meetingid, meetingMemNumber);
-        res.assign(GetRTCommStatus(RTCommCode::_ok));
-        return RTCommCode::_ok;
+            break;
+        case MEETCMD::leave:
+        {
+            LeaveRoom(tmsg, mmsg);
+        }
+            break;
+        case MEETCMD::create:
+        {
+            CreateRoom(tmsg, mmsg);
+        }
+            break;
+        case MEETCMD::destroy:
+        {
+            DestroyRoom(tmsg, mmsg);
+        }
+            break;
+        default:
+            LE("HandleOptRoom cmd [%d] not handle now\n", mmsg._cmd);
+            break;
     }
 }
 
-int RTRoomManager::HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& res)
+
+void RTRoomManager::HandleOptRoomWithData(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
 {
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0 || msg._to.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
+    switch (mmsg._cmd) {
+        case MEETCMD::enter:
+        {
+            OnEnterRoom(tmsg, mmsg, data);
+        }
+            break;
+        case MEETCMD::leave:
+        {
+            OnLeaveRoom(tmsg, mmsg, data);
+        }
+            break;
+        case MEETCMD::create:
+        {
+            OnCreateRoom(tmsg, mmsg, data);
+        }
+            break;
+        case MEETCMD::destroy:
+        {
+            OnDestroyRoom(tmsg, mmsg, data);
+        }
+            break;
+        default:
+            LE("HandleOptRoomWithData cmd [%d] not handle now\n", mmsg._cmd);
+            break;
     }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
+}
+
+
+void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
+{
+    std::string res, users, resp;
+    mmsg._ntime = OS::Milliseconds();
+    if (mmsg._from.length()==0 || mmsg._room.length()==0 || mmsg._to.length()==0) {
+        LE("invalid params error\n");
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    }
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
         LE("Room not exists\n");
-        res.assign(GetRTCommStatus(RTCommCode::_nexistroom));
-        return RTCommCode::_nexistroom;
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     } else { // meeting has exists
-        switch (msg._action) {
+        switch (mmsg._action) {
             case DCOMMACTION::msend:
             {
-                switch (msg._tags) {
+                switch (mmsg._tags) {
                     case SENDTAGS::talk:
                     {
-                        if (msg._to.at(0)=='a') {
+                        if (mmsg._to.at(0)=='a') {
                             //to all
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-                            std::string users;
-                            if (!meetingRoom->GetSessionMemberInJson(msg._from, users)) {
-                                tos = users;
-                                res.assign(GetRTCommStatus(RTCommCode::_ok));
-                                return RTCommCode::_ok;
+                            if (!meetingRoom->GetSessionMemberInJson(mmsg._from, users)) {
+                                GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+                                SendTransferData(resp, (int)resp.length());
+                                return;
                             } else {
-                                res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-                                return RTCommCode::_errtojson;
+                                ChangeToJson(mmsg._from, users);
+                                GenericResponse(tmsg, mmsg, RTCommCode::_errtojson, users, GetRTCommStatus(RTCommCode::_errtojson), resp);
+                                SendTransferData(resp, (int)resp.length());
+                                return;
                             }
-                        } else if (msg._to.at(0)=='u') {
+                        } else if (mmsg._to.at(0)=='u') {
                             //to userlist
                         }
                     }
                         break;
                     case SENDTAGS::chat:
                     {
-                    
+                        
                     }
                         break;
                     case SENDTAGS::lvmsg:
                     {
-                    
+                        
                     }
                         break;
                     default:
                     {
-                        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-                        return RTCommCode::_invparams;
+                        ChangeToJson(mmsg._from, users);
+                        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+                        SendTransferData(resp, (int)resp.length());
+                        return;
                     }
                         break;
                 }
@@ -154,279 +156,294 @@ int RTRoomManager::HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& 
                 break;
             case DCOMMACTION::dsett:
             {
-            
+                
             }
                 break;
             case DCOMMACTION::share:
             {
-            
+                
             }
                 break;
                 
             default:
             {
-                res.assign(GetRTCommStatus(RTCommCode::_invparams));
-                return RTCommCode::_invparams;
+                ChangeToJson(mmsg._from, users);
+                GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+                SendTransferData(resp, (int)resp.length());
+                return;
             }
                 break;
         }
-        res.assign(GetRTCommStatus(RTCommCode::_ok));
-        return RTCommCode::_ok;
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     }
 }
 
-int RTRoomManager::LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res)
+void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
-    }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
-    if (it == m_meetingRoomMap.end()) {
-        LE("room:%s not exists, ERROR CANNOT LEAVE!!!\n", msg._room.c_str());
-        res.assign(GetRTCommStatus(RTCommCode::_nexistroom));
-        return RTCommCode::_nexistroom;
+    if (m_pHttpSvrConn) {
+        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
     } else {
-        int rMemNum = 0, sMemNum = 0;
-        rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-        meetingRoom->DelMemberFmRomm(msg._from);
-        
-        rMemNum = meetingRoom->GetRoomMemberNumber();
-        sMemNum = meetingRoom->GetSesssionMemberNumber();
-        msg._nmem = sMemNum;
-        std::string users;
-        if (!ChangeToJson(msg._from, users)) {
-            tos = users;
-        } else {
-            res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-            return RTCommCode::_errtojson;
-        }
-        const char* sign = msg._pass.c_str();
-        const char* meetingid = msg._room.c_str();
-        const char* sessionid = meetingRoom->GetSessionId().c_str();
-        LI("RoomManager::LeaveRoom roomMemNum:%d, sessMemNum:%d, meetingid:%s, sign:%s, sessionid:%s\n", rMemNum, sMemNum, meetingid, sign, sessionid);
-        char meetingMemNumber[4] = {0};
-        char sessionnumber[4] = {0};
-        sprintf(meetingMemNumber, "%d", rMemNum);
-        sprintf(sessionnumber, "%d", sMemNum);
-
-        m_pHttpSvrConn->HttpUpdateRoomMemNumber(sign, meetingid, meetingMemNumber);
-
-        res.assign(GetRTCommStatus(RTCommCode::_ok));
-        return RTCommCode::_ok;
+        LE("EnterRoom m_pHttpSvrConn is NULL\n");
     }
 }
 
-int RTRoomManager::CreateRoom(MEETMSG& msg, std::string& tos, std::string& res)
+void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
-    }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
-    if (it == m_meetingRoomMap.end()) { // meeting not exists
-        m_meetingRoomMap.insert(make_pair(msg._room, new rtc::RefCountedObject<RTMeetingRoom>(msg._room, msg._from)));
-        LI("CmdHSet hi_room_owner_id room:%s, owner:%s\n", msg._room.c_str(), msg._from.c_str());
-        if (RTHiredisLocal::Instance()->CmdHSet(HI_ROOM_OWNER_ID, msg._room, msg._from)) {
-            LI("CmdHSet hi_room_owner_id ok\n");
-        } else {
-            LE("CmdHSet hi_room_owner_id failed\n");
-        }
-        std::string users;
-        if (!ChangeToJson(msg._from, users)) {
-            tos = users;
-            msg._nmem = 0;
-            res.assign(GetRTCommStatus(RTCommCode::_ok));
-            LI("CreateRoom for roomid:%s\n", msg._room.c_str());
-            return RTCommCode::_ok;
-        } else {
-            res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-            return RTCommCode::_errtojson;
-        }
-    } else { // meeting has exists
-        LE("the room has already exists roomid:%s\n", msg._room.c_str());
-        res.assign(GetRTCommStatus(RTCommCode::_existroom));
-        return RTCommCode::_existroom;
-    }
-}
-
-int RTRoomManager::DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res)
-{
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
-    }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
-    if (it == m_meetingRoomMap.end()) {
-        LE("room: ERROR NOT EXIST!!!\n");
-        res.assign(GetRTCommStatus(RTCommCode::_nexistroom));
-        return RTCommCode::_nexistroom;
+    if (m_pHttpSvrConn) {
+        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
     } else {
-        if (msg._from.compare(it->second->GetOwnerId())==0) {
-            RTHiredisLocal::Instance()->CmdHDel(HI_ROOM_OWNER_ID, msg._room, msg._from);
-            it->second->reset();
-            m_meetingRoomMap.erase(it);
-        }
-        std::string users;
-        if (!ChangeToJson(msg._from, users)) {
-            tos = users;
-        } else {
-            res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-            return RTCommCode::_errtojson;
-        }
-        LI("DestroyRoom for roomid:%s\n", msg._room.c_str());
-        res.assign(GetRTCommStatus(RTCommCode::_ok));
-        return RTCommCode::_ok;
+        LE("EnterRoom m_pHttpSvrConn is NULL\n");
     }
 }
 
-int RTRoomManager::StartMeeting(MEETMSG& msg, std::string& tos, std::string& res)
+void RTRoomManager::CreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    LI("StartMeeting for roomid:%s\n", msg._room.c_str());
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
+    if (m_pHttpSvrConn) {
+        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
+    } else {
+        LE("EnterRoom m_pHttpSvrConn is NULL\n");
     }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
+}
+
+void RTRoomManager::DestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
+{
+    if (m_pHttpSvrConn) {
+        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
+    } else {
+        LE("EnterRoom m_pHttpSvrConn is NULL\n");
+    }
+}
+
+void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+{
+    std::string res, users, resp;
+    mmsg._ntime = OS::Milliseconds();
+    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
+        LE("% invalid params error\n", __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    }
+    MEETINGMEMBERLIST memList;
+    std::string err;
+    memList.GetMsg(data, err);
+    if (err.length()>0) {
+        LE("%s json parse meeting member list error\n", __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    }
+    int rMemNum = 0, sMemNum = 0;
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
-        LE("Room not exists\n");
-        res.assign(GetRTCommStatus(RTCommCode::_nexistroom));
-        return RTCommCode::_nexistroom;
+        LE("% Room %s not exists\n", mmsg._room.c_str(), __FUNCTION__);
+        //rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
+        //m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.get()));
+        m_meetingRoomMap.insert(make_pair(mmsg._room, new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, "")));
+        rMemNum = 1;
+        it = m_meetingRoomMap.find(mmsg._room);
     } else { // meeting has exists
-        int rMemNum = 0, sMemNum = 0;
-        rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-        meetingRoom->CreateSession();
-        meetingRoom->AddMemberToSession("", msg._from);
-        rMemNum = meetingRoom->GetRoomMemberNumber();
-        sMemNum = meetingRoom->GetSesssionMemberNumber();
-        msg._nmem = sMemNum;
+        it->second->UpdateUserList(memList._uslist);
+        rMemNum = (int)memList._uslist.size() + 1;
+    }
+    
+    rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
+    meetingRoom->CreateSession();
+    meetingRoom->AddMemberToSession("", mmsg._from);
+    sMemNum = meetingRoom->GetSesssionMemberNumber();
+    mmsg._nmem = sMemNum;
         
-        std::string users;
-        if (!ChangeToJson(msg._from, users)) {
-            tos = users;
-        } else {
-            res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-            return RTCommCode::_errtojson;
-            
-        }
-        // send to http
-        LI("RoomManager::EnterRoom roomMemNum:%d, sessMemNum:%d, from:%s, pass:%s, roomid:%s\n", rMemNum, sMemNum, msg._from.c_str(), msg._pass.c_str(), msg._room.c_str());
-        const char* sign = msg._pass.c_str();
-        const char* meetingid = msg._room.c_str();
-        char meetingMemNumber[4] = {0};
-        const char* sessionid = meetingRoom->GetSessionId().c_str();
-        const char* sessionstatus = "1";
-        const char* sessiontype = "1";
-        char sessionnumber[4] = {0};
-        sprintf(meetingMemNumber, "%d", rMemNum);
-        sprintf(sessionnumber, "%d", sMemNum);
-        
-        m_pHttpSvrConn->HttpInsertSessionMeetingInfo(sign, meetingid, sessionid, sessionstatus, sessiontype, sessionnumber);
+    // send to http
+    LI("RoomManager::OnEnterRoom roomMemNum:%d, sessMemNum:%d, from:%s, pass:%s, roomid:%s\n", rMemNum, sMemNum, mmsg._from.c_str(), mmsg._pass.c_str(), mmsg._room.c_str());
+    const char* sign = mmsg._pass.c_str();
+    const char* meetingid = mmsg._room.c_str();
+    char meetingMemNumber[4] = {0};
+    char sessionnumber[4] = {0};
+    sprintf(meetingMemNumber, "%d", rMemNum);
+    sprintf(sessionnumber, "%d", sMemNum);
+    const char* sessionid = meetingRoom->GetSessionId().c_str();
+    const char* sessionstatus = "1";
+    const char* sessiontype = "1";
+
+    if (rMemNum>1) {
+        m_pHttpSvrConn->HttpInsertUserMeetingRoom(sign, meetingid);
         m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(sign, sessionid, sessionnumber);
         m_pHttpSvrConn->HttpUpdateUserMeetingJointime(sign, meetingid);
-        res.assign(GetRTCommStatus(RTCommCode::_ok));
-        return RTCommCode::_ok;
+        //m_pHttpSvrConn->HttpUpdateRoomMemNumber(sign, meetingid, meetingMemNumber);
+        
+        TOJSONUSER touser;
+        std::list<const std::string>::iterator  memIt = memList._uslist.begin();
+        for (; memIt!=memList._uslist.end(); memIt++) {
+            touser._us.push_front((*memIt));
+        }
+        users = touser.ToJson();
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    } else if (rMemNum==1) {
+        m_pHttpSvrConn->HttpInsertSessionMeetingInfo(sign, meetingid, sessionid, sessionstatus, sessiontype, sessionnumber);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     }
 }
 
-int RTRoomManager::StopMeeting(MEETMSG& msg, std::string& tos, std::string& res)
+void RTRoomManager::OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
 {
-    LI("StopMeeting for roomid:%s\n", msg._room.c_str());
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
+    std::string res, users, resp;
+    mmsg._ntime = OS::Milliseconds();
+    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
+        LE("% invalid params error\n", __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(msg._room);
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) {
-        LE("room:%s not exists, ERROR CANNOT LEAVE!!!\n", msg._room.c_str());
-        res.assign(GetRTCommStatus(RTCommCode::_nexistroom));
-        return RTCommCode::_nexistroom;
+        LE("OnLeaveRoom room:%s not exists, ERROR CANNOT LEAVE!!!\n", mmsg._room.c_str());
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     } else {
         int rMemNum = 0, sMemNum = 0;
         rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-        meetingRoom->DelMemberFmSession("", msg._from);
+        meetingRoom->DelMemberFmSession("", mmsg._from);
         
         rMemNum = meetingRoom->GetRoomMemberNumber();
         sMemNum = meetingRoom->GetSesssionMemberNumber();
-        msg._nmem = sMemNum;
-        std::string users;
-        if (!ChangeToJson(msg._from, users)) {
-            tos = users;
-        } else {
-            res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-            return RTCommCode::_errtojson;
-        }
-        const char* sign = msg._pass.c_str();
-        const char* meetingid = msg._room.c_str();
+        mmsg._nmem = sMemNum;
+        
+        const char* sign = mmsg._pass.c_str();
+        const char* meetingid = mmsg._room.c_str();
         const char* sessionid = meetingRoom->GetSessionId().c_str();
-        LI("RoomManager::LeaveRoom roomMemNum:%d, sessMemNum:%d, meetingid:%s, sign:%s, sessionid:%s\n", rMemNum, sMemNum, meetingid, sign, sessionid);
+        LI("RoomManager::OnLeaveRoom roomMemNum:%d, sessMemNum:%d, meetingid:%s, sign:%s, sessionid:%s\n", rMemNum, sMemNum, meetingid, sign, sessionid);
         char meetingMemNumber[4] = {0};
         char sessionnumber[4] = {0};
         sprintf(meetingMemNumber, "%d", rMemNum);
         sprintf(sessionnumber, "%d", sMemNum);
-        
+
         m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(sign, sessionid, sessionnumber);
         m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(sign, sessionid);
         meetingRoom->DestroySession();
-        res.assign(GetRTCommStatus(RTCommCode::_ok));
-        return RTCommCode::_ok;
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     }
 }
 
-int RTRoomManager::RefreshRoom(MEETMSG &msg, std::string &tos, std::string &res)
+void RTRoomManager::OnCreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
 {
-    msg._ntime = OS::Milliseconds();
-    if (msg._from.length()==0 || msg._room.length()==0) {
-        LE("invalid params error\n");
-        res.assign(GetRTCommStatus(RTCommCode::_invparams));
-        return RTCommCode::_invparams;
+    std::string res, users, resp;
+    mmsg._ntime = OS::Milliseconds();
+    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
+        LE("% invalid params error\n", __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     }
-    std::string users;
-    if (!ChangeToJson(msg._from, users)) {
-        tos = users;
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
+    if (it == m_meetingRoomMap.end()) { // meeting not exists
+        rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
+        m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.get()));
+        mRoom->AddMemberToRoom(mmsg._from);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    } else { // meeting has exists
+        LE("% the room has already exists roomid:%s\n", mmsg._room.c_str(), __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_existroom, users, GetRTCommStatus(RTCommCode::_existroom), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    }
+}
+
+void RTRoomManager::OnDestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+{
+    std::string res, users, resp;
+    mmsg._ntime = OS::Milliseconds();
+    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
+        LE("% invalid params error\n", __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    }
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
+    if (it == m_meetingRoomMap.end()) {
+        LE("% room: %s ERROR NOT EXIST!!!\n", mmsg._room.c_str(), __FUNCTION__);
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     } else {
-        res.assign(GetRTCommStatus(RTCommCode::_errtojson));
-        return RTCommCode::_errtojson;
+        MEETINGMEMBERLIST memList;
+        std::string err;
+        memList.GetMsg(data, err);
+        if (err.length()>0) {
+            LE("%s json parse meeting member list error\n", __FUNCTION__);
+            ChangeToJson(mmsg._from, users);
+            GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+            SendTransferData(resp, (int)resp.length());
+            return;
+        }
+        it->second->UpdateUserList(memList._uslist);
+        if (memList._uslist.size() == 0) {
+            it->second->reset();
+            m_meetingRoomMap.erase(it);
+        }
+        
+        LI("OnDestroyRoom for roomid:%s\n", mmsg._room.c_str());
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
     }
-    res.assign(GetRTCommStatus(RTCommCode::_ok));
-    return RTCommCode::_ok;
+}
+
+void RTRoomManager::OnStartMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+{
+    LI("OnStartMeeting return\n");
+}
+
+void RTRoomManager::OnStopMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+{
+    LI("OnStopMeeting return\n");
+}
+
+void RTRoomManager::OnRefreshRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+{
+    LI("OnRefreshRoom return\n");
+    /*
+    std::string res, users, resp;
+    mmsg._ntime = OS::Milliseconds();
+    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
+        LE("invalid params error\n");
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendTransferData(resp, (int)resp.length());
+        return;
+    }
+    ChangeToJson(mmsg._from, users);
+    GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+    SendTransferData(resp, (int)resp.length());
+    return;
+     */
 }
 
 
 /////////////////////////////////////////////////////////////
-
-int RTRoomManager::LoadExistRoom(int type)
-{
-    std::list<const std::string> roomList;
-    RTHiredisLocal::Instance()->CmdHKeys(HI_ROOM_OWNER_ID, &roomList);
-    std::list<const std::string> ownerList;
-    RTHiredisLocal::Instance()->CmdHVals(HI_ROOM_OWNER_ID, &ownerList);
-    
-    if (roomList.size()!=ownerList.size() || roomList.size()==0 || ownerList.size()==0) {
-        LE("LoadExistRoom roomList.size:%d, ownerList.size:%d\n", roomList.size(), ownerList.size());
-        return -1;
-    }
-    
-    m_meetingRoomMap.clear();
-    std::list<const std::string>::iterator roomIt = roomList.begin();
-    std::list<const std::string>::iterator ownerIt = ownerList.begin();
-    for (;roomIt!=roomList.end() && ownerIt!=ownerList.end();roomIt++,ownerIt++) {
-        LI("Load RoomId:%s, OwnerId:%s\n", (*roomIt).c_str(), (*ownerIt).c_str());
-        m_meetingRoomMap.insert(make_pair((*roomIt), new rtc::RefCountedObject<RTMeetingRoom>((*roomIt), (*ownerIt))));
-    }
-    
-    return 0;
-}
 
 void RTRoomManager::GenericMeetingSessionId(std::string& strId)
 {
@@ -443,6 +460,11 @@ void RTRoomManager::GenericMeetingSessionId(std::string& strId)
     MD5_Final(s_digest, &context);
     HashToString(s_digest, &hashStr);
     strId = hashStr.GetAsCString();
+}
+
+int RTRoomManager::GenericTransSeq()
+{
+    return atomic_add(&g_trans_id, 1);
 }
 
 bool RTRoomManager::Init()
@@ -466,9 +488,10 @@ bool RTRoomManager::ConnectMsgQueue()
 bool RTRoomManager::ConnectHttpSvrConn()
 {
     if (!m_pHttpSvrConn) {
-        m_pHttpSvrConn = new RTHttpSvrConn();
+        m_pHttpSvrConn = new rtc::RefCountedObject<RTHttpSvrConn>();
         m_pHttpSvrConn->SetHttpHost(s_httpIp, s_httpPort, s_httpHost);
     }
+    
     return true;
 }
 
@@ -536,4 +559,100 @@ void RTRoomManager::ClearMsgQueueSession(const std::string& sid)
     // here just make the pointer to NULL
     m_pMsgQueueSession = NULL;
     LI("RTRoomManager::ClearMsgQueueSession m_pMsgQueueSession=NULL sid:%s\n", sid.c_str());
+}
+
+
+void RTRoomManager::GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response)
+{
+    switch (mmsg._cmd) {
+        case MEETCMD::enter:
+        case MEETCMD::leave:
+        case MEETCMD::create:
+        case MEETCMD::destroy:
+        case MEETCMD::refresh:
+            ResponseNotDcomm(tmsg, mmsg, code, tos, res, response);
+            break;
+        case MEETCMD::dcomm:
+            ResponseDcomm(tmsg, mmsg, code, tos, res, response);
+            break;
+        default:
+            LE("mmsg._cmd error:%d !!!\n", mmsg._cmd);
+            break;
+    }
+}
+
+void RTRoomManager::ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response)
+{
+    MEETMSG meetmsg;
+    long long seq = GenericTransSeq();
+    meetmsg._mtype = mmsg._mtype;
+    meetmsg._cmd = mmsg._cmd;
+    meetmsg._action = mmsg._action;
+    meetmsg._tags = mmsg._tags;
+    meetmsg._type = mmsg._type;
+    meetmsg._mseq = mmsg._mseq;
+    meetmsg._from = mmsg._from;
+    meetmsg._room = mmsg._room;
+    meetmsg._sess = mmsg._sess;
+    meetmsg._to = mmsg._from;
+    meetmsg._cont = mmsg._cont;
+    meetmsg._pass = mmsg._pass;
+    meetmsg._code = code;
+    meetmsg._status = res;
+    meetmsg._nmem = mmsg._nmem;
+    meetmsg._ntime = mmsg._ntime;
+    
+    QUEUEMSG qmsg;
+    qmsg._flag = 0;
+    qmsg._touser = tos;
+    qmsg._connector = tmsg._connector;//which connector come from
+    qmsg._content = meetmsg.ToJson();
+    
+    TRANSFERMSG trmsg;
+    trmsg._action = TRANSFERACTION::req;
+    trmsg._fmodule = TRANSFERMODULE::mmeeting;
+    trmsg._type = TRANSFERTYPE::queue;
+    trmsg._trans_seq = seq;
+    trmsg._trans_seq_ack = 0;
+    trmsg._valid = 1;
+    trmsg._content = qmsg.ToJson();
+    response = trmsg.ToJson();
+}
+
+void RTRoomManager::ResponseDcomm(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response)
+{
+    MEETMSG meetmsg;
+    int seq = GenericTransSeq();
+    meetmsg._mtype = mmsg._mtype;
+    meetmsg._cmd = mmsg._cmd;
+    meetmsg._action = mmsg._action;
+    meetmsg._tags = mmsg._tags;
+    meetmsg._type = mmsg._type;
+    meetmsg._mseq = mmsg._mseq;
+    meetmsg._from = mmsg._from;
+    meetmsg._room = mmsg._room;
+    meetmsg._sess = mmsg._sess;
+    meetmsg._to = "";
+    meetmsg._cont = mmsg._cont;
+    meetmsg._pass = mmsg._pass;
+    meetmsg._code = code;
+    meetmsg._status = res;
+    meetmsg._nmem = mmsg._nmem;
+    meetmsg._ntime = mmsg._ntime;
+    
+    QUEUEMSG qmsg;
+    qmsg._flag = 0;
+    qmsg._touser = tos;
+    qmsg._connector = tmsg._connector;//which connector come from
+    qmsg._content = meetmsg.ToJson();
+    
+    TRANSFERMSG trmsg;
+    trmsg._action = TRANSFERACTION::req;
+    trmsg._fmodule = TRANSFERMODULE::mmeeting;
+    trmsg._type = TRANSFERTYPE::queue;
+    trmsg._trans_seq = seq;
+    trmsg._trans_seq_ack = 0;
+    trmsg._valid = 1;
+    trmsg._content = qmsg.ToJson();
+    response = trmsg.ToJson();
 }

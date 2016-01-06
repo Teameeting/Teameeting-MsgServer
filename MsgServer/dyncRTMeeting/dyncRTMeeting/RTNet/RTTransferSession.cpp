@@ -11,6 +11,7 @@
 #include "atomic.h"
 #include "RTRoomManager.h"
 #include "RTConnectionManager.h"
+#include "RTHttpSvrConn.h"
 
 #define TIMEOUT_TS (60*1000)
 static unsigned int	g_trans_id = 0;
@@ -293,23 +294,16 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
         case MEETCMD::leave:
         case MEETCMD::create:
         case MEETCMD::destroy:
-        case MEETCMD::start:
-        case MEETCMD::stop:
         case MEETCMD::refresh:
         {
-            std::string resp, tos, res;
-            int code = RTRoomManager::Instance()->HandleOptRoom(m_mmmsg, tos, res);
-            GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
-            RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
+            RTRoomManager::Instance()->HandleOptRoom(t_msg, m_mmmsg);
         }
             break;
         case MEETCMD::dcomm:
         {
             //handle msgs
-            std::string resp, tos, res;
-            int code = RTRoomManager::Instance()->HandleDcommRoom(m_mmmsg, tos, res);
-            GenericResponse(fmodule, t_msg, m_mmmsg, code, tos, res, resp);
-            RTRoomManager::Instance()->SendTransferData(resp, (int)resp.length());
+            std::string tos, res;
+            RTRoomManager::Instance()->HandleDcommRoom(t_msg, m_mmmsg);
         }
             break;
         default:
@@ -384,101 +378,4 @@ void RTTransferSession::OnEstablishConn()
 void RTTransferSession::OnEstablishAck()
 {
 
-}
-
-void RTTransferSession::GenericResponse(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response)
-{
-    switch (mmsg._cmd) {
-        case MEETCMD::enter:
-        case MEETCMD::leave:
-        case MEETCMD::create:
-        case MEETCMD::destroy:
-        case MEETCMD::start:
-        case MEETCMD::stop:
-        case MEETCMD::refresh:
-            ResponseNotDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
-            break;
-        case MEETCMD::dcomm:
-            ResponseDcomm(fmodule, tmsg, mmsg, code, tos, res, response);
-            break;
-        default:
-            LE("mmsg._cmd error:%d !!!\n", mmsg._cmd);
-            break;
-    }
-}
-
-void RTTransferSession::ResponseNotDcomm(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response)
-{
-    MEETMSG meetmsg;
-    long long seq = GenericTransSeq();
-    meetmsg._mtype = mmsg._mtype;
-    meetmsg._cmd = mmsg._cmd;
-    meetmsg._action = mmsg._action;
-    meetmsg._tags = mmsg._tags;
-    meetmsg._type = mmsg._type;
-    meetmsg._mseq = mmsg._mseq;
-    meetmsg._from = mmsg._from;
-    meetmsg._room = mmsg._room;
-    meetmsg._sess = mmsg._sess;
-    meetmsg._to = mmsg._from;
-    meetmsg._cont = mmsg._cont;
-    meetmsg._pass = mmsg._pass;
-    meetmsg._code = code;
-    meetmsg._status = res;
-    meetmsg._nmem = mmsg._nmem;
-    meetmsg._ntime = mmsg._ntime;
-    
-    QUEUEMSG qmsg;
-    qmsg._flag = 0;
-    qmsg._touser = tos;
-    qmsg._connector = tmsg._connector;//which connector come from
-    qmsg._content = meetmsg.ToJson();
-    
-    TRANSFERMSG trmsg;
-    trmsg._action = TRANSFERACTION::req;
-    trmsg._fmodule = TRANSFERMODULE::mmeeting;
-    trmsg._type = TRANSFERTYPE::queue;
-    trmsg._trans_seq = seq;
-    trmsg._trans_seq_ack = 0;
-    trmsg._valid = 1;
-    trmsg._content = qmsg.ToJson();
-    response = trmsg.ToJson();
-}
-
-void RTTransferSession::ResponseDcomm(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response)
-{
-    MEETMSG meetmsg;
-    int seq = GenericTransSeq();
-    meetmsg._mtype = mmsg._mtype;
-    meetmsg._cmd = mmsg._cmd;
-    meetmsg._action = mmsg._action;
-    meetmsg._tags = mmsg._tags;
-    meetmsg._type = mmsg._type;
-    meetmsg._mseq = mmsg._mseq;
-    meetmsg._from = mmsg._from;
-    meetmsg._room = mmsg._room;
-    meetmsg._sess = mmsg._sess;
-    meetmsg._to = "";
-    meetmsg._cont = mmsg._cont;
-    meetmsg._pass = mmsg._pass;
-    meetmsg._code = code;
-    meetmsg._status = res;
-    meetmsg._nmem = mmsg._nmem;
-    meetmsg._ntime = mmsg._ntime;
-    
-    QUEUEMSG qmsg;
-    qmsg._flag = 0;
-    qmsg._touser = tos;
-    qmsg._connector = tmsg._connector;//which connector come from
-    qmsg._content = meetmsg.ToJson();
-    
-    TRANSFERMSG trmsg;
-    trmsg._action = TRANSFERACTION::req;
-    trmsg._fmodule = TRANSFERMODULE::mmeeting;
-    trmsg._type = TRANSFERTYPE::queue;
-    trmsg._trans_seq = seq;
-    trmsg._trans_seq_ack = 0;
-    trmsg._valid = 1;
-    trmsg._content = qmsg.ToJson();
-    response = trmsg.ToJson();
 }

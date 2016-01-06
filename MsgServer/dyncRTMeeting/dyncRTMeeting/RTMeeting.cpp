@@ -136,7 +136,6 @@ int	RTMeeting::Start(const char*pConnAddr, unsigned short usConnPort, const char
     sprintf(addr, "%s %u", pConnAddr, usConnPort);
     RTConnectionManager::Instance()->GetAddrsList()->push_front(addr);
     
-    RTRoomManager::Instance()->LoadExistRoom(0);
     if (!(RTConnectionManager::Instance()->ConnectConnector())) {
         LE("Start to ConnectConnector failed\n");
         return -1;

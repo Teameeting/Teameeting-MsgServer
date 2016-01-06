@@ -40,6 +40,8 @@ public:
     const std::string& GetSessionId() { return m_sessionId; }
     void CreateSession();
     void DestroySession();
+    void UpdateUserList(std::list<const std::string>& ulist);
+    void AddUserToList(const std::string& userid);
     
     int GetSessionMemberInJson(const std::string from, std::string& users) { if(m_pRoomSession) return m_pRoomSession->GetMembersInJson(from, users); else return 0; }
     void ClearLostMember(const std::string& userid) { if (m_pRoomSession) m_pRoomSession->ClearLostMember(userid); }
@@ -54,6 +56,7 @@ private:
     std::string                     m_sessionId;
     RTRoomSession                   *m_pRoomSession;
     List                            m_roomMemList;
+    int                             m_maxRoomMem;
     
 };
 #endif /* defined(__dyncRTMeeting__RTMeetingRoom__) */

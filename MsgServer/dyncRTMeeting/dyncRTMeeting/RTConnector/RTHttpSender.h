@@ -3,6 +3,7 @@
 #include "RTTcp.h"
 #include "RTConnHttp.h"
 #include "OSMutex.h"
+#include "RTMessage.h"
 
 class RTHttpSender
 	: public RTTcp
@@ -10,6 +11,7 @@ class RTHttpSender
 {
 public:
 	RTHttpSender(void);
+    RTHttpSender(TRANSMSG& tmsg, MEETMSG& msg);
 	virtual ~RTHttpSender(void);
 
 public:
@@ -32,6 +34,9 @@ private:
 	int				m_nBufLen;
 	int				m_nBufOffset;
     OSMutex         m_mutex;
+    http_method     m_method;
+    TRANSMSG        m_transmsg;
+    MEETMSG         m_meetmsg;
 };
 
 #endif	// __RT_HTTP_SENDER_H__

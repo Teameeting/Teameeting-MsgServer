@@ -64,9 +64,7 @@ private:
     void EstablishAck();
     void OnEstablishConn();
     void OnEstablishAck();
-    void GenericResponse(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res,  std::string& response);
-    void ResponseNotDcomm(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response);
-    void ResponseDcomm(TRANSFERMODULE fmodule, TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response);
+    
 private:
     char			*m_pBuffer;
     int				m_nBufLen;

@@ -149,7 +149,11 @@ bool RTHiredis::CmdHGet(const std::string hid, const std::string key, std::strin
         }
         return false;
     }
-    HandleHReply(m_redisReply, NULL);
+    std::list<const std::string> ulist;
+    HandleHReply(m_redisReply, &ulist);
+    if (ulist.size()>0) {
+        value.assign(ulist.front());
+    }
     freeReplyObject((void*)m_redisReply);
     return true;
 }

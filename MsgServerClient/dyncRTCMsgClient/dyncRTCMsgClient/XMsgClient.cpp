@@ -160,6 +160,22 @@ int XMsgClient::SndMsgTo(const std::string& userid, const std::string& pass, con
     return SendEncodeMsg(outstr);
 }
 
+int XMsgClient::NotifyMsg(const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& msg)
+{
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
+        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::notify, SENDTYPE::msg);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+    
+    return SendEncodeMsg(outstr);
+}
+
 ////////////////////////////////////////////
 ////////////////private/////////////////////
 ////////////////////////////////////////////

@@ -22,6 +22,7 @@ RTMeetingRoom::RTMeetingRoom(const std::string mid, const std::string ownerid)
 , m_pRoomSession(NULL)
 {
     ListZero(&m_roomMemList);
+    ListAppend(&m_roomMemList, (void*)m_ownerId.c_str(), (int)m_ownerId.length());
 }
 
 RTMeetingRoom::~RTMeetingRoom()
@@ -49,6 +50,7 @@ bool RTMeetingRoom::AddMemberToRoom(const std::string uid)
 
 bool RTMeetingRoom::IsMemberInRoom(const std::string uid)
 {
+    OSMutexLocker locker(&m_mutex);
     if (m_roomMemList.count==0) {
         return false;
     }
@@ -106,6 +108,12 @@ void RTMeetingRoom::DestroySession()
         m_pRoomSession = NULL;
     }
 }
+
+void RTMeetingRoom::UpdateUserList(std::list<const std::string>& ulist)
+{
+
+}
+
 
 void RTMeetingRoom::CheckMembers()
 {

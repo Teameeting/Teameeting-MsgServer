@@ -1,15 +1,28 @@
 #include <stdio.h>
 #include "SocketUtils.h"
 #include "RTHttpSender.h"
+#include "RTRoomManager.h"
 
 
 RTHttpSender::RTHttpSender(void)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
+, m_method(HTTP_POST)
 {
 	m_nBufLen = kRequestBufferSizeInBytes;
 	m_pBuffer = new char[m_nBufLen];
+}
+
+RTHttpSender::RTHttpSender(TRANSMSG& tmsg, MEETMSG& msg)
+: m_pBuffer(NULL)
+, m_nBufLen(0)
+, m_nBufOffset(0)
+, m_method(HTTP_GET)
+, m_transmsg(tmsg)
+, m_meetmsg(msg)
+{
+
 }
 
 RTHttpSender::~RTHttpSender(void)
@@ -91,15 +104,24 @@ void RTHttpSender::OnRecvData(const char*pData, int nLen)
 
 void RTHttpSender::OnResponse(const char*pData, int nLen)
 {
-    //LI("OnResponse pData:%s\n", pData);
+    if (!pData || nLen<=0) {
+        LE("RTHttpSender::OnResponse pData nLen error\n");
+        return;
+    }
+    LI("OnResponse DataLen:%d, pData:%s\n", nLen, pData);
+    if (m_method == HTTP_GET) {
+        std::string data(pData, nLen);
+        RTRoomManager::Instance()->HandleOptRoomWithData(m_transmsg, m_meetmsg, data);
+    }
+    
 }
 
 
 void RTHttpSender::SendRequest(const char* pData, int nLen)
 {
     OSMutexLocker locker(&m_mutex);
-    //RTTcp::SendData(pData, nLen);
-    //if  (GetSocket()) {
-    //    GetSocket()->RequestEvent(EV_RE);
-    //}
+    RTTcp::SendData(pData, nLen);
+    if  (GetSocket()) {
+        GetSocket()->RequestEvent(EV_RE);
+    }
 }

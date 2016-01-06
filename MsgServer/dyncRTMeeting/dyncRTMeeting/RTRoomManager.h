@@ -32,29 +32,41 @@ public:
     static std::string      s_httpHost;
 public:
     
-    int HandleOptRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int HandleDcommRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    void HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    void HandleOptRoomWithData(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
 
-    int LoadExistRoom(int type);
+    void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    void LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    void CreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    void DestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    
     void GenericMeetingSessionId(std::string& strId);
     bool Init();
     bool ConnectMsgQueue();
     bool ConnectHttpSvrConn();
     void SendTransferData(const std::string strData, int nLen);
     void RefreshConnection();
+    const RTHttpSvrConn* GetHttpSvrConn() { return m_pHttpSvrConn; }
     
     void CheckMembers();
     void SyncHttpRequest();
     void ClearSessionLost(const std::string& uid);
     void ClearMsgQueueSession(const std::string& sid);
 private:
-    int EnterRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int LeaveRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int CreateRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int DestroyRoom(MEETMSG& msg, std::string& tos, std::string& res);
-    int StartMeeting(MEETMSG& msg, std::string& tos, std::string& res);
-    int StopMeeting(MEETMSG& msg, std::string& tos, std::string& res);
-    int RefreshRoom(MEETMSG& msg, std::string& tos, std::string& res);
+    void OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnCreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnDestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnStartMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnStopMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnRefreshRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    
+    
+    int GenericTransSeq();
+    void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res,  std::string& response);
+    void ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response);
+    void ResponseDcomm(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response);
     
     typedef std::map<const std::string, rtc::scoped_refptr<RTMeetingRoom> > MeetingRoomMap;
     RTRoomManager():m_pMsgQueueSession(NULL)
