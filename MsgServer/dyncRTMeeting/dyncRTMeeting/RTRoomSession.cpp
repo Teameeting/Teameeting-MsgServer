@@ -75,9 +75,9 @@ int RTRoomSession::GetMembersInJson(const std::string from, std::string& users)
     }
     ListElement* elem = NULL;
     TOJSONUSER touser;
-    LI("room session members:%d\n", m_sessMemList.count);
+    LI("sesssion  members:%d\n", m_sessMemList.count);
     while (ListNextElement(&m_sessMemList, &elem)!=NULL) {
-        LI("\t-->MeetingRoom members :%s\n", (char*)elem->content);
+        LI("\t-->RoomSession members :%s\n", (char*)elem->content);
         if (strcmp(from.c_str(), (const char*)elem->content)!=0) {
             touser._us.push_front((const char*)elem->content);
         }

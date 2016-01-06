@@ -8,6 +8,7 @@
 
 #include "RTRoomManager.h"
 #include <assert.h>
+#include <algorithm>
 #include "atomic.h"
 #include "md5.h"
 #include "md5digest.h"
@@ -118,7 +119,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         if (mmsg._to.at(0)=='a') {
                             //to all
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-                            if (!meetingRoom->GetSessionMemberInJson(mmsg._from, users)) {
+                            if (!meetingRoom->GetRoomMemberInJson(mmsg._from, users)) {
                                 GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
                                 return;
@@ -141,6 +142,26 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                     case SENDTAGS::lvmsg:
                     {
                         
+                    }
+                        break;
+                    case SENDTAGS::notify:
+                    {
+                        if (mmsg._to.at(0)=='a') {
+                            //to all
+                            rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
+                            if (!meetingRoom->GetRoomMemberInJson(mmsg._from, users)) {
+                                GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+                                SendTransferData(resp, (int)resp.length());
+                                return;
+                            } else {
+                                ChangeToJson(mmsg._from, users);
+                                GenericResponse(tmsg, mmsg, RTCommCode::_errtojson, users, GetRTCommStatus(RTCommCode::_errtojson), resp);
+                                SendTransferData(resp, (int)resp.length());
+                                return;
+                            }
+                        } else if (mmsg._to.at(0)=='u') {
+                            //to userlist
+                        }
                     }
                         break;
                     default:
@@ -238,26 +259,48 @@ void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
         SendTransferData(resp, (int)resp.length());
         return;
     }
+    std::list<const std::string>::iterator remoteFound = std::find(memList._uslist.begin(), memList._uslist.end(), mmsg._from);
+    bool localFound = false;
     int rMemNum = 0, sMemNum = 0;
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
-        LE("% Room %s not exists\n", mmsg._room.c_str(), __FUNCTION__);
+        LE("% Room %s not exists, new it\n", mmsg._room.c_str(), __FUNCTION__);
         //rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
         //m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.get()));
         m_meetingRoomMap.insert(make_pair(mmsg._room, new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, "")));
-        rMemNum = 1;
         it = m_meetingRoomMap.find(mmsg._room);
     } else { // meeting has exists
-        it->second->UpdateUserList(memList._uslist);
-        rMemNum = (int)memList._uslist.size() + 1;
+        localFound = it->second->IsMemberInRoom(mmsg._from);
     }
     
-    rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-    meetingRoom->CreateSession();
-    meetingRoom->AddMemberToSession("", mmsg._from);
-    sMemNum = meetingRoom->GetSesssionMemberNumber();
+    if (it==m_meetingRoomMap.end()) {
+        LE("m_meetingRoomMap not found Room %s ERRORRRRRRRRR\n", mmsg._room.c_str());
+        return;
+    }
+    
+    if (remoteFound!=memList._uslist.end() && !localFound) {
+        // this means user is in remote and not in local: after create room, owner enter
+        LI("[C][C]OnEnterRoom 1, after create room, owner enter\n");
+        it->second->UpdateUserList(memList._uslist);
+    } else if (remoteFound==memList._uslist.end() && !localFound) {
+        // this means user is not in remote and not in local: invite others join room first
+        LI("[C][C]OnEnterRoom 2, invite others join room first\n");
+        it->second->AddMemberToRoom(mmsg._from);
+    } else if (remoteFound!=memList._uslist.end() && localFound) {
+        // this means user is in remote and also in local: just enter room again
+        LI("[C][C]OnEnterRoom 3, just enter room again\n");
+    } else {
+        // this is error, user is not in remote, and it should not in local
+        LE("[C][C]OnEnterRoom 4, ENTER ERROR\n");
+    }
+    
+    // begin session or join session
+    it->second->CreateSession();
+    it->second->AddMemberToSession("", mmsg._from);
+    rMemNum = it->second->GetRoomMemberNumber();
+    sMemNum = it->second->GetSesssionMemberNumber();
     mmsg._nmem = sMemNum;
-        
+
     // send to http
     LI("RoomManager::OnEnterRoom roomMemNum:%d, sessMemNum:%d, from:%s, pass:%s, roomid:%s\n", rMemNum, sMemNum, mmsg._from.c_str(), mmsg._pass.c_str(), mmsg._room.c_str());
     const char* sign = mmsg._pass.c_str();
@@ -266,12 +309,16 @@ void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
     char sessionnumber[4] = {0};
     sprintf(meetingMemNumber, "%d", rMemNum);
     sprintf(sessionnumber, "%d", sMemNum);
-    const char* sessionid = meetingRoom->GetSessionId().c_str();
+    const char* sessionid = it->second->GetSessionId().c_str();
     const char* sessionstatus = "1";
     const char* sessiontype = "1";
 
-    if (rMemNum>1) {
+    if (remoteFound==memList._uslist.end()) { //user NOT in room
+        LI("[C][C]OnEnterRoom 2, InsertUserMeetingRoom\n");
         m_pHttpSvrConn->HttpInsertUserMeetingRoom(sign, meetingid);
+    }
+    
+    if (rMemNum>1) {
         m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(sign, sessionid, sessionnumber);
         m_pHttpSvrConn->HttpUpdateUserMeetingJointime(sign, meetingid);
         //m_pHttpSvrConn->HttpUpdateRoomMemNumber(sign, meetingid, meetingMemNumber);
@@ -354,14 +401,13 @@ void RTRoomManager::OnCreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& dat
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
         rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
-        m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.get()));
-        mRoom->AddMemberToRoom(mmsg._from);
+        m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.release()));
         ChangeToJson(mmsg._from, users);
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
         SendTransferData(resp, (int)resp.length());
         return;
     } else { // meeting has exists
-        LE("% the room has already exists roomid:%s\n", mmsg._room.c_str(), __FUNCTION__);
+        LE("% the room has already exists roomid:%s\n", __FUNCTION__, mmsg._room.c_str());
         ChangeToJson(mmsg._from, users);
         GenericResponse(tmsg, mmsg, RTCommCode::_existroom, users, GetRTCommStatus(RTCommCode::_existroom), resp);
         SendTransferData(resp, (int)resp.length());
@@ -382,7 +428,7 @@ void RTRoomManager::OnDestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& da
     }
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) {
-        LE("% room: %s ERROR NOT EXIST!!!\n", mmsg._room.c_str(), __FUNCTION__);
+        LE("% room: %s ERROR NOT EXIST!!!\n", __FUNCTION__, mmsg._room.c_str());
         ChangeToJson(mmsg._from, users);
         GenericResponse(tmsg, mmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
         SendTransferData(resp, (int)resp.length());
@@ -531,7 +577,7 @@ void RTRoomManager::CheckMembers()
     MeetingRoomMap::iterator it = m_meetingRoomMap.begin();
     for (; it!=m_meetingRoomMap.end(); it++) {
         rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-        LI("meetingRoom member.number:%d\n", meetingRoom->GetSesssionMemberNumber());
+        LI("meetingRoom roomMember:%d, sessMember:%d\n", meetingRoom->GetRoomMemberNumber(), meetingRoom->GetSesssionMemberNumber());
     }
 #endif
 }
