@@ -123,6 +123,7 @@ bool RTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, R
 {
     if (uid.length()==0 || !pInfo) return false;
     GetConnectionInfo()->insert(make_pair(uid, pInfo));
+    LI("RTConnectionManager::AddUser %s\n", uid.c_str());
     RTHiredisLocal::Instance()->CmdHSet(HI_USER_CONNECTOR_ID, uid, ConnectorId());
     return true;
 }

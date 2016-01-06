@@ -158,6 +158,7 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             pci->connType = CONNECTIONTYPE::_ctcp;
             pci->flag = 1;
             std::string uid(pUserid);
+            LI("OnLogin Uid:%s\n", uid.c_str());
             RTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
             m_userId = pUserid;
         } else {

@@ -48,7 +48,7 @@
  *                              u:[]
  *                          action: send, dsett, share
  *                              send:
- *                                  tags: talk, chat, lvmsg
+ *                                  tags: talk, chat, lvmsg, notify
  *                                  type: msg, file, pic, emoj, aud, vid
  *                                  content: {}
  *                              dsett:
@@ -135,10 +135,8 @@ typedef enum _meetcmd{
     leave,
     create,
     destroy,
-    start,
-    stop,
-    dcomm,
     refresh,
+    dcomm,
     meetcmd_invalid
 }MEETCMD;
 
@@ -153,6 +151,7 @@ typedef enum _sendtags{
     talk=1,
     chat,
     lvmsg,
+    notify,
     sendtags_invalid
 }SENDTAGS;
 
