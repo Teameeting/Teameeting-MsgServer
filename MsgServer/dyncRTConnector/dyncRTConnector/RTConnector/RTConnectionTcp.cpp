@@ -249,6 +249,7 @@ void RTConnectionTcp::OnLogout(const char* pUserid)
 
 void RTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
+    LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
     RTTcp::UpdateTimer();
     {
         std::string resp;

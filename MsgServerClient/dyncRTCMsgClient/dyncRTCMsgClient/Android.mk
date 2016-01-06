@@ -57,7 +57,7 @@ LOCAL_SRC_FILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 ## Widows (call host-path,/cygdrive/path/to/your/file/libstlport_shared.so) 	
 #		   
 #LOCAL_LDLIBS := -llog -lz 
-LOCAL_CFLAGS := -std=gnu++11 -DPOSIX -D__UCLIBC__ -DWEBRTC_LINUX -DWEBRTC_ANDROID -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS -fno-rtti
+LOCAL_CFLAGS := -std=gnu++11 -DPOSIX -D__UCLIBC__ -DWEBRTC_LINUX -DWEBRTC_ANDROID -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS
 
 LOCAL_C_INCLUDES += ./ \
 										./rtcmsgs \

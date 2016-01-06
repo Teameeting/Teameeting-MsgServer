@@ -237,7 +237,8 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgClient.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c \
- /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/android/log.h
 
 jni/..///XMsgClient.h:
 
@@ -732,3 +733,5 @@ jni/..///webrtc_normal/webrtc/base/logging.h:
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c:
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/utility:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/android/log.h:

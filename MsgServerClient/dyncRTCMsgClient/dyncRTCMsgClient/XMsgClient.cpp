@@ -9,11 +9,19 @@
 #include "XMsgClient.h"
 #include "webrtc/base/logging.h"
 
+#ifdef WEBRTC_ANDROID
+#include <android/log.h>
+#define  LOG_TAG    "Teameeting"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#endif
+
 #define TIMEOUT_TS (60*1000)
 
 XMsgClient::XMsgClient()
 : m_pClient(NULL)
 , m_pMsgProcesser(NULL)
+, m_lastUpdateTime(0)
 {
     
 }
