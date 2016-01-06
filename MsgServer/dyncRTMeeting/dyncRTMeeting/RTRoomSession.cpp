@@ -43,6 +43,7 @@ bool RTRoomSession::AddMemberToSession(const std::string uid)
 
 bool RTRoomSession::IsMemberInSession(const std::string uid)
 {
+    OSMutexLocker locker(&m_mutex);
     if (m_sessMemList.count==0) {
         return false;
     }

@@ -9,6 +9,7 @@
 #include "XMsgProcesser.h"
 #include "webrtc/base/logging.h"
 
+static long long  g_msgs_id = 3;
 
 int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass)
 {
@@ -28,8 +29,10 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     m_msg._pass = pass;
     m_msg._code = 0;
     m_msg._status = "";
+    m_msg._nmem = 0;
+    m_msg._ntime = 0;
     
-    s_msg._stype = SIGNALTYPE::login;
+    s_msg._stype = SIGNALTYPE::reqlogin;
     s_msg._scont = m_msg.ToJson();
     
     outstr = s_msg.ToJson();
@@ -45,7 +48,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     m_msg._action = action;
     m_msg._tags = tags;
     m_msg._type = type;
-    m_msg._mseq = 1;
+    m_msg._mseq = GenericTransSeq();
     m_msg._from = userid;
     m_msg._room = roomid;
     m_msg._sess = "";
@@ -54,8 +57,10 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     m_msg._pass = pass;
     m_msg._code = 0;
     m_msg._status = "";
+    m_msg._nmem = 0;
+    m_msg._ntime = 0;
     
-    s_msg._stype = SIGNALTYPE::sndmsg;
+    s_msg._stype = SIGNALTYPE::reqsndmsg;
     s_msg._scont = m_msg.ToJson();
     
     outstr = s_msg.ToJson();
@@ -71,7 +76,7 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
     m_msg._action = 0;
     m_msg._tags = 0;
     m_msg._type = 0;
-    m_msg._mseq = 0;
+    m_msg._mseq = GenericTransSeq();
     m_msg._from = userid;
     m_msg._room = "";
     m_msg._sess = "";
@@ -80,8 +85,10 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
     m_msg._pass = pass;
     m_msg._code = 0;
     m_msg._status = "";
+    m_msg._nmem = 0;
+    m_msg._ntime = 0;
     
-    s_msg._stype = SIGNALTYPE::getmsg;
+    s_msg._stype = SIGNALTYPE::reqgetmsg;
     s_msg._scont = m_msg.ToJson();
     
     outstr = s_msg.ToJson();
@@ -97,7 +104,7 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     m_msg._action = 0;
     m_msg._tags = 0;
     m_msg._type = 0;
-    m_msg._mseq = 0;
+    m_msg._mseq = 1;
     m_msg._from = userid;
     m_msg._room = "";
     m_msg._sess = "";
@@ -106,8 +113,10 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     m_msg._pass = pass;
     m_msg._code = 0;
     m_msg._status = "";
+    m_msg._nmem = 0;
+    m_msg._ntime = 0;
     
-    s_msg._stype = SIGNALTYPE::logout;
+    s_msg._stype = SIGNALTYPE::reqlogout;
     s_msg._scont = m_msg.ToJson();
     
     outstr = s_msg.ToJson();
@@ -123,7 +132,7 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr)
     m_msg._action = 0;
     m_msg._tags = 0;
     m_msg._type = 0;
-    m_msg._mseq = 0;
+    m_msg._mseq = 2;
     m_msg._from = "aliver";
     m_msg._room = "";
     m_msg._sess = "";
@@ -132,8 +141,10 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr)
     m_msg._pass = "";
     m_msg._code = 0;
     m_msg._status = "";
+    m_msg._nmem = 0;
+    m_msg._ntime = 0;
     
-    s_msg._stype = SIGNALTYPE::keepalive;
+    s_msg._stype = SIGNALTYPE::reqkeepalive;
     s_msg._scont = m_msg.ToJson();
     
     outstr = s_msg.ToJson();
@@ -161,23 +172,28 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         return -1;
     }
     switch (smsg._stype) {
-        case SIGNALTYPE::login:
-            DecodeLogin(mmsg);
+        case SIGNALTYPE::reqlogin:
+        case SIGNALTYPE::resplogin:
+            DecodeLogin(smsg._stype, mmsg);
             break;
             
-        case SIGNALTYPE::sndmsg:
-            DecodeSndMsg(mmsg);
+        case SIGNALTYPE::reqsndmsg:
+        case SIGNALTYPE::respsndmsg:
+            DecodeSndMsg(smsg._stype, mmsg);
             break;
             
-        case SIGNALTYPE::getmsg:
-            DecodeGetMsg(mmsg);
+        case SIGNALTYPE::reqgetmsg:
+        case SIGNALTYPE::respgetmsg:
+            DecodeGetMsg(smsg._stype, mmsg);
             break;
             
-        case SIGNALTYPE::logout:
-            DecodeLogout(mmsg);
+        case SIGNALTYPE::reqlogout:
+        case SIGNALTYPE::resplogout:
+            DecodeLogout(smsg._stype, mmsg);
             break;
             
-        case SIGNALTYPE::keepalive:
+        case SIGNALTYPE::reqkeepalive:
+        case SIGNALTYPE::respkeepalive:
             DecodeKeepAlive(mmsg);
             break;
             
@@ -188,39 +204,51 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
     return nLen;
 }
 
-int XMsgProcesser::DecodeLogin(MEETMSG& msg)
+int XMsgProcesser::DecodeLogin(SIGNALTYPE stype, MEETMSG& msg)
 {
-    int code = 0;
-    m_callback.OnLogin(code);
+    if (stype == SIGNALTYPE::reqlogin) {
+        m_callback.OnReqLogin(msg._code, msg._status, msg._from);
+    } else if (stype == SIGNALTYPE::resplogin) {
+        m_callback.OnRespLogin(msg._code, msg._status, msg._from);
+    }
     return 0;
 }
 
-int XMsgProcesser::DecodeSndMsg(MEETMSG& msg)
+int XMsgProcesser::DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg)
 {
-    const std::string tmsg(msg._cont);
-    m_callback.OnSndMsg(tmsg);
+    const std::string tmsg(msg.ToJson());
+    if (stype == SIGNALTYPE::reqsndmsg) {
+        m_callback.OnReqSndMsg(tmsg);
+    } else if (stype == SIGNALTYPE::respsndmsg) {
+        m_callback.OnRespSndMsg(tmsg);
+    }
     return 0;
 }
 
-int XMsgProcesser::DecodeGetMsg(MEETMSG& msg)
+int XMsgProcesser::DecodeGetMsg(SIGNALTYPE stype, MEETMSG& msg)
 {
-    const std::string tmsg(msg._cont);
-    const std::string from(msg._from);
-    m_callback.OnGetMsg(from, tmsg);
+    const std::string tmsg(msg.ToJson());
+    if (stype == SIGNALTYPE::reqgetmsg) {
+        m_callback.OnReqGetMsg(tmsg);
+    } else if (stype == SIGNALTYPE::respgetmsg) {
+        m_callback.OnRespGetMsg(tmsg);
+    }
     return 0;
 }
 
-int XMsgProcesser::DecodeLogout(MEETMSG& msg)
+int XMsgProcesser::DecodeLogout(SIGNALTYPE stype, MEETMSG& msg)
 {
-    int code = 0;
-    m_callback.OnLogout(code);
+    if (stype == SIGNALTYPE::reqlogout) {
+        m_callback.OnReqLogout(msg._code, msg._status, msg._from);
+    } else if (stype == SIGNALTYPE::resplogout) {
+        m_callback.OnRespLogout(msg._code, msg._status, msg._from);
+    }
     return 0;
 }
 
 int XMsgProcesser::DecodeKeepAlive(MEETMSG& msg)
 {
-    const std::string tmsg(msg._cont);
-    m_callback.OnSndMsg(tmsg);
+    
     return 0;
 }
 
@@ -238,3 +266,24 @@ int XMsgProcesser::GetMemberToJson(const std::list<std::string> ulist, std::stri
     tousers = touser.ToJson();
     return 0;
 }
+
+void XMsgProcesser::ServerConnected()
+{
+    m_callback.OnMsgServerConnected();
+}
+
+void XMsgProcesser::ServerDisconnect()
+{
+    m_callback.OnMsgServerDisconnect();
+}
+
+void XMsgProcesser::ServerConnectionFailure()
+{
+    m_callback.OnMsgServerConnectionFailure();
+}
+
+long long XMsgProcesser::GenericTransSeq()
+{
+    return ++g_msgs_id;
+}
+

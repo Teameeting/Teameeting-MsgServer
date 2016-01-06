@@ -278,7 +278,6 @@ void RTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::string
         std::string id(dmsg._touser);
         LI("OnTypeDispatch id:%s, msg:%s\n", id.c_str(), msg.c_str());
         m_dispatchConnection.DispatchMsg(id, msg);
-        
     }
 }
 

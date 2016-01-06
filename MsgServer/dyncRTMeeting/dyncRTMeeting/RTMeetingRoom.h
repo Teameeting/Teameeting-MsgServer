@@ -41,8 +41,10 @@ public:
     void CreateSession();
     void DestroySession();
     
-    int GetSessionMemberInJson(const std::string from, std::string& users) { return m_pRoomSession->GetMembersInJson(from, users); }
-    void ClearLostMember(const std::string& userid) { m_pRoomSession->ClearLostMember(userid); }
+    int GetSessionMemberInJson(const std::string from, std::string& users) { if(m_pRoomSession) return m_pRoomSession->GetMembersInJson(from, users); else return 0; }
+    void ClearLostMember(const std::string& userid) { if (m_pRoomSession) m_pRoomSession->ClearLostMember(userid); }
+    
+    const std::string& GetOwnerId() { return m_ownerId; }
 public:
     void CheckMembers();
 private:

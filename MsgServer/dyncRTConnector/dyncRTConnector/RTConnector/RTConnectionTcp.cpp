@@ -10,6 +10,7 @@
 #include "RTConnectionManager.h"
 #include "RTHiredis.h"
 #include "atomic.h"
+#include "StatusCode.h"
 
 static unsigned int	g_trans_id = 0;
 
@@ -33,6 +34,46 @@ int RTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg)
 {
     RTConnTcp::SendResponse(200, msg);
     return 0;
+}
+
+void RTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, const std::string& status, std::string& resp)
+{
+    SIGNALMSG s_msg;
+    MEETMSG m_msg;
+    
+    m_msg._mtype = mtype;
+    m_msg._cmd = 0;
+    m_msg._from = "";
+    m_msg._room = "";
+    m_msg._sess = "";
+    m_msg._to = "";
+    m_msg._action = 0;
+    m_msg._tags = 0;
+    m_msg._type = 0;
+    m_msg._cont = "";
+    m_msg._pass = "";
+    m_msg._mseq = mseq;
+    m_msg._code = code;
+    m_msg._status = status;
+    m_msg._nmem = 0;
+    m_msg._ntime = OS::Milliseconds();
+    
+    if (stype == SIGNALTYPE::reqkeepalive) {
+        s_msg._stype = SIGNALTYPE::respkeepalive;
+    }else if (stype == SIGNALTYPE::reqsndmsg) {
+        s_msg._stype = SIGNALTYPE::respsndmsg;
+    }else if (stype == SIGNALTYPE::reqgetmsg) {
+        s_msg._stype = SIGNALTYPE::respgetmsg;
+    }else if (stype == SIGNALTYPE::reqlogin) {
+        s_msg._stype = SIGNALTYPE::resplogin;
+    }else if (stype == SIGNALTYPE::reqlogout) {
+        s_msg._stype = SIGNALTYPE::resplogout;
+    }else {
+        s_msg._stype = SIGNALTYPE::signaltype_invalid;
+    }
+    s_msg._scont = m_msg.ToJson();
+    
+    resp = s_msg.ToJson();
 }
 
 //* For RCTcp
@@ -121,63 +162,30 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             m_userId = pUserid;
         } else {
             LE("new ConnectionInfo error!!!\n");
+            std::string resp;
+            GenericResponse(SIGNALTYPE::reqlogin, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, GetRTCommStatus(RTCommCode::_errconninfo), resp);
+            SendResponse(0, resp.c_str());
+            return;
+
         }
     }
     
     {
         // send response
-        SIGNALMSG s_msg;
-        MEETMSG m_msg;
-        m_msg._mtype = MSGTYPE::meeting;
-        m_msg._cmd = 0;
-        m_msg._from = pUserid;
-        m_msg._room = "";
-        m_msg._sess = sid;
-        m_msg._to = "";
-        m_msg._action = 1;
-        m_msg._tags = 1;
-        m_msg._type = 1;
-        m_msg._cont = "";
-        m_msg._pass = pPass;
-        m_msg._mseq = GenericTransSeq();
-        m_msg._code = 0;
-        m_msg._status = "ok";
-        
-        s_msg._stype = SIGNALTYPE::login;
-        s_msg._scont = m_msg.ToJson();
-        
-        std::string s = s_msg.ToJson();
-        SendResponse(200, s.c_str());
+        std::string resp;
+        GenericResponse(SIGNALTYPE::reqlogin, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendResponse(0, resp.c_str());
+        return;
     }
 }
 
-void RTConnectionTcp::OnSndMsg(const char* pUserid, int mType, const char* pData, int dLen)
+void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)
 {
-    int seq = GenericTransSeq();
     if (!pData) {
         LE("%s invalid params\n", __FUNCTION__);
-        SIGNALMSG s_msg;
-        MEETMSG m_msg;
-        m_msg._mtype = MSGTYPE::meeting;
-        m_msg._cmd = 0;
-        m_msg._from = pUserid;
-        m_msg._room = "";
-        m_msg._sess = "";
-        m_msg._to = "";
-        m_msg._action = 1;
-        m_msg._tags = 1;
-        m_msg._type = 1;
-        m_msg._cont = "failed";
-        m_msg._pass = "";
-        m_msg._mseq = seq;
-        m_msg._code = 100;
-        m_msg._status = "failed";
-        
-        s_msg._stype = SIGNALTYPE::sndmsg;
-        s_msg._scont = m_msg.ToJson();
-        
-        std::string s = s_msg.ToJson();
-        SendResponse(300, s.c_str());
+        std::string resp;
+        GenericResponse(SIGNALTYPE::reqsndmsg, mType, mseq, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
+        SendResponse(0, resp.c_str());
         return;
     }
     
@@ -207,36 +215,25 @@ void RTConnectionTcp::OnSndMsg(const char* pUserid, int mType, const char* pData
         pmi->pModule->SendTransferData(s.c_str(), (int)s.length());
     } else {
         LE("pmi->pModule is NULL\n");
+        std::string resp;
+        GenericResponse(SIGNALTYPE::reqsndmsg, mType, mseq, RTCommCode::_errmoduinfo, GetRTCommStatus(RTCommCode::_errmoduinfo), resp);
+        SendResponse(0, resp.c_str());
+        return;
     }
     {
-        SIGNALMSG s_msg;
-        MEETMSG m_msg;
-        m_msg._mtype = MSGTYPE::meeting;
-        m_msg._cmd = 0;
-        m_msg._from = pUserid;
-        m_msg._room = "";
-        m_msg._sess = "";
-        m_msg._to = "";
-        m_msg._action = 1;
-        m_msg._tags = 1;
-        m_msg._type = 1;
-        m_msg._cont = "ok";
-        m_msg._pass = "";
-        m_msg._mseq = seq;
-        m_msg._code = 0;
-        m_msg._status = "ok";
-        
-        s_msg._stype = SIGNALTYPE::sndmsg;
-        s_msg._scont = m_msg.ToJson();
-        
-        std::string s = s_msg.ToJson();
-        SendResponse(200, s.c_str());
+        std::string resp;
+        GenericResponse(SIGNALTYPE::reqsndmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendResponse(0, resp.c_str());
+        return;
     }
 }
 
-void RTConnectionTcp::OnGetMsg(const char* pUserid, int mType)
+void RTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
 {
-
+    std::string resp;
+    GenericResponse(SIGNALTYPE::reqgetmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+    SendResponse(0, resp.c_str());
+    return;
 }
 
 void RTConnectionTcp::OnLogout(const char* pUserid)
@@ -244,35 +241,21 @@ void RTConnectionTcp::OnLogout(const char* pUserid)
     std::string uid(pUserid);
     RTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, uid);
     m_userId = "";
+    std::string resp;
+    GenericResponse(SIGNALTYPE::reqlogout, MSGTYPE::meeting, 1, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+    SendResponse(0, resp.c_str());
+    return;
 }
 
 void RTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
+    LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
     RTTcp::UpdateTimer();
-
     {
-        SIGNALMSG s_msg;
-        MEETMSG m_msg;
-        m_msg._mtype = MSGTYPE::meeting;
-        m_msg._cmd = 0;
-        m_msg._from = "";
-        m_msg._room = "";
-        m_msg._sess = "";
-        m_msg._to = "";
-        m_msg._action = 0;
-        m_msg._tags = 0;
-        m_msg._type = 0;
-        m_msg._cont = "alive ok";
-        m_msg._pass = "";
-        m_msg._mseq = 1;
-        m_msg._code = 0;
-        m_msg._status = "ok";
-
-        s_msg._stype = SIGNALTYPE::keepalive;
-        s_msg._scont = m_msg.ToJson();
-
-        std::string s = s_msg.ToJson();
-        SendResponse(200, s.c_str());
+        std::string resp;
+        GenericResponse(SIGNALTYPE::reqkeepalive, MSGTYPE::meeting, 2, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendResponse(0, resp.c_str());
+        return;
     }
 }
 

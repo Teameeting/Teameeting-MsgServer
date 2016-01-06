@@ -63,7 +63,11 @@ SInt64 RTTcp::Run()
 	// So return -1.
 	if(events&Task::kTimeoutEvent || events&Task::kKillEvent)
 	{
-        LI("timtoutEvent or killEvent\n");
+        if (events&Task::kTimeoutEvent) {
+            LI("%s timeout \n", __FUNCTION__);
+        } else {
+            LI("%s kill \n", __FUNCTION__);
+        }
         std::map<RTTcp*, RTObserverConnection*>::iterator it = m_mapConnectObserver.find(this);
         if (it != m_mapConnectObserver.end()) {
             LI("Tcp::Run find Disconnection\n");
@@ -154,10 +158,10 @@ SInt64 RTTcp::Run()
     // At this point, however, the session is DEAD.
     std::map<RTTcp*, RTObserverConnection*>::iterator it = m_mapConnectObserver.find(this);
     if (it != m_mapConnectObserver.end()) {
-        LI("Tcp::Run find Disconnection\n");
+        LI("Tcp::Run SessionOffline  find Disconnection\n");
         RTObserverConnection *conn = it->second;
         if (conn) {
-            LI("Tcp::Run notify Disconnection\n");
+            LI("Tcp::Run SessionOffline notify Disconnection\n");
             conn->ConnectionDisconnected();
         }
     }

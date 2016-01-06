@@ -8,11 +8,20 @@
 
 #include "XMsgClient.h"
 #include "webrtc/base/logging.h"
+
+#ifdef WEBRTC_ANDROID
+#include <android/log.h>
+#define  LOG_TAG    "Teameeting"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#endif
+
 #define TIMEOUT_TS (60*1000)
 
 XMsgClient::XMsgClient()
 : m_pClient(NULL)
 , m_pMsgProcesser(NULL)
+, m_lastUpdateTime(0)
 {
     
 }
@@ -114,60 +123,15 @@ int XMsgClient::Logout(const std::string& userid, const std::string& pass)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::CreateRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
+int XMsgClient::OptRoom(MEETCMD cmd, const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& remain)
 {
+    if (cmd<=0 || cmd>=MEETCMD::meetcmd_invalid) {
+        return -1;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::create, 0, 0, 0);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::EnterRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::enter, 0, 0, 0);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::LeaveRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::leave, 0, 0, 0);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::DestroyRoom(const std::string& userid, const std::string& pass, const std::string& roomid)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", "", MEETCMD::destroy, 0, 0, 0);
+        m_pMsgProcesser->EncodeSndMsg(outstr, userid, pass, roomid, "", remain, cmd, 0, 0, 0);
     } else {
         return -1;
     }
@@ -257,16 +221,25 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 void XMsgClient::OnServerConnected()
 {
     LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerConnected();
+    }
 }
 
 void XMsgClient::OnServerDisconnect()
 {
     LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerDisconnect();
+    }
 }
 
 void XMsgClient::OnServerConnectionFailure()
 {
     LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerConnectionFailure();
+    }
 }
 
 void XMsgClient::OnTick()
@@ -295,7 +268,7 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
             memcpy(l, pMsg+offset, 4);
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
-            if (ll>0 && ll <= nLen) {
+            if (m_pMsgProcesser && ll>0 && ll <= nLen) {
                 int nlen = m_pMsgProcesser->DecodeRecvData((char *)(pMsg+offset), ll);
                 if (nlen == -1) {
                     break;

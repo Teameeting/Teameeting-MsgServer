@@ -72,7 +72,7 @@ RTConnectionManager::ModuleInfo* RTConnectionManager::findConnectorInfoById(cons
     
     std::string connectorid;
     std::string sessionid;
-    if (RTHiredis::Instance()->CmdHGet(HI_USER_CONNECTOR_ID, userid, connectorid) && connectorid.length()>0) {
+    if (RTHiredisLocal::Instance()->CmdHGet(HI_USER_CONNECTOR_ID, userid, connectorid) && connectorid.length()>0) {
         TypeModuleSessionInfoLists* infoList = GetTypeModuleSessionInfo();
         TypeModuleSessionInfoLists::iterator it = infoList->begin();
         TypeModuleSessionInfo* t_pInfo = NULL;

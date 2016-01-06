@@ -1,13 +1,13 @@
 //
 //  RTMeetMsg.h
-//  dyncRTMeeting
+//  dyncRTConnector
 //
 //  Created by hp on 11/26/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef dyncRTMeeting_RTMeetMsg_h
-#define dyncRTMeeting_RTMeetMsg_h
+#ifndef dyncRTConnector_RTMeetMsg_h
+#define dyncRTConnector_RTMeetMsg_h
 
 /*
  *  Http:
@@ -27,8 +27,10 @@
  *              code:result code
  *              status:result
  *              mtype: meet, callcenter, p2p
+ *              nmem: the number of members
+ *              ntime: the time of this message
  *              meet:
- *                  cmd: enter, leave, dcomm, create, destroy
+ *                  cmd: enter, leave, dcomm, create, destroy, refresh
  *                      enter:
  *                          from: userid
  *                          room: roomid
@@ -73,7 +75,9 @@
  *              optional  content: {}
  *              optional  pass:    {}
  *              optional  code:    {}
- *              optional status:   {}
+ *              optional  status:  {}
+ *              optional  nmem:    {}
+ *              optional  ntime:   {}
  *          }
  *      e.g. mtype: meet
  *          {
@@ -91,6 +95,8 @@
  *              pass:123
  *              code:200
  *              status:ok
+ *              nmem:0
+ *              ntime:0
  *          }
  *      interface
  *          /login          POST
@@ -113,7 +119,9 @@
  *               optional type,
  *               optional content,
  *               optional code,
- *               optional status)
+ *               optional status,
+ *               optional nmem,
+ *               optional ntime)
  *
  *      if 'sess' is null, means you are not in any sessions.
  *      when 'action' is 'send', 'tags' means you are talking in the session or just chatting out of session with someone or maybe leaving a message to someone not online.
@@ -127,7 +135,10 @@ typedef enum _meetcmd{
     leave,
     create,
     destroy,
+    start,
+    stop,
     dcomm,
+    refresh,
     meetcmd_invalid
 }MEETCMD;
 
@@ -166,11 +177,13 @@ typedef enum _sharetype{
 }SHARETYPE;
 
 typedef struct _meetmsg{
-    MSGTYPE _mtype;
-    int     _cmd;
-    int     _action;
-    int     _tags;
-    int     _type;
+    MSGTYPE     _mtype;
+    int         _cmd;
+    int         _action;
+    int         _tags;
+    int         _type;
+    int         _nmem;
+    long long   _ntime;
     long long   _mseq;
     std::string _from;
     std::string _room;
@@ -178,10 +191,10 @@ typedef struct _meetmsg{
     std::string _to;
     std::string _cont;
     std::string _pass;
-    int     _code;
+    int         _code;
     std::string _status;
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
 }MEETMSG;
 
-#endif  // dyncRTMsg_RTMeetMsg_h
+#endif  // dyncRTConnector_RTMeetMsg_h

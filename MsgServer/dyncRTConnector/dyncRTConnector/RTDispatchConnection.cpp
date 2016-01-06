@@ -30,7 +30,7 @@ void RTDispatchConnection::DispatchMsg(const std::string& uid, const std::string
         RTConnectionTcp *ct = dynamic_cast<RTConnectionTcp*>(pci->pConn);
         if (ct) {
             SIGNALMSG smsg;
-            smsg._stype = SIGNALTYPE::getmsg;
+            smsg._stype = SIGNALTYPE::reqsndmsg;
             smsg._scont = msg;
             ct->SendDispatch(uid, (const std::string&)smsg.ToJson());
         }

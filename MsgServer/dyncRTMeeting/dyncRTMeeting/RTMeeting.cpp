@@ -14,6 +14,7 @@
 #include "RTConnectionManager.h"
 #include "RTRoomManager.h"
 #include <iostream>
+#include "RTHiredis.h"
 
 static bool         g_inited = false;
 static const char*	g_pVersion = "0.01.20150810";
@@ -125,6 +126,7 @@ int	RTMeeting::Start(const char*pConnAddr, unsigned short usConnPort, const char
     RTRoomManager::s_httpIp = pHttpAddr;
     RTRoomManager::s_httpPort = usHttpPort;
 
+    RTHiredisLocal::Instance()->Connect();
     std::string mid;
     RTConnectionManager::Instance()->GenericSessionId(mid);
     RTConnectionManager::Instance()->SetMeetingId(mid);
@@ -134,6 +136,7 @@ int	RTMeeting::Start(const char*pConnAddr, unsigned short usConnPort, const char
     sprintf(addr, "%s %u", pConnAddr, usConnPort);
     RTConnectionManager::Instance()->GetAddrsList()->push_front(addr);
     
+    RTRoomManager::Instance()->LoadExistRoom(0);
     if (!(RTConnectionManager::Instance()->ConnectConnector())) {
         LE("Start to ConnectConnector failed\n");
         return -1;

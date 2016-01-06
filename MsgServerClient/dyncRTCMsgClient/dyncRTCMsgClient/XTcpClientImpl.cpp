@@ -90,7 +90,7 @@ void XTcpClientImpl::Disconnect()
 
 int XTcpClientImpl::SendMessageX(std::string&strMsg)
 {
-	return SendMessageX(strMsg.c_str(), strMsg.length());
+	return SendMessageX(strMsg.c_str(), (int)strMsg.length());
 }
 
 int XTcpClientImpl::SendMessageX(const char*pMsg, int nLen)
@@ -137,7 +137,7 @@ void XTcpClientImpl::OnTick()
 				memmove(m_pBuffer + sent, m_pBuffer, m_nBufOffset);
 			}
 
-			m_rCallback.OnMessageSent(sent);
+			m_rCallback.OnMessageSent((int)sent);
 		}
 	}
 
