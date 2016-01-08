@@ -25,6 +25,22 @@ class RTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<RTMeetingRoo
 public:
     RTMeetingRoom(const std::string mid, const std::string ownerid);
     ~RTMeetingRoom();
+    
+    typedef struct _notify_msgs{
+        int seq;
+        long long pubTime;
+        std::string notifyMsg;
+        std::string publisher;
+        _notify_msgs() {
+            seq = 0;
+            pubTime = 0;
+            notifyMsg = "";
+            publisher = "";
+        }
+    }NotifyMsg;
+    
+    typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
+    
     bool AddMemberToRoom(const std::string uid);
     bool IsMemberInRoom(const std::string uid);
     bool DelMemberFmRoom(const std::string uid);
@@ -48,38 +64,22 @@ public:
     void ClearLostMember(const std::string& userid) { if (m_pRoomSession) m_pRoomSession->ClearLostMember(userid); }
     
     int AddNotifyMsg(const std::string pubsher, const std::string msg);
-    int DelNotifyMsg(int msgid);
-    int ShouldNotify(const std::string userid, std::string& msgNo, std::string& msgPub);
-    int Notify(const std::string userid, std::string& msg);
-    void NotifyDone(const std::string userid, std::string& msgPub, int msgid);
+    int DelNotifyMsg(const std::string pubsher);
+    RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
     
     const std::string& GetOwnerId() { return m_ownerId; }
+    
+    
 public:
     void CheckMembers();
     
 private:
     int GenericNotifySeq();
     void GenericMeetingSessionId(std::string& strId);
-    typedef struct _notify_msgs{
-        int seq;
-        long long pubTime;
-        std::string notifyMsg;
-        std::list<std::string> notified;
-        _notify_msgs() {
-            seq = 0;
-            pubTime = 0;
-            notifyMsg = "";
-            notified.clear();
-        }
-    }NotifyMsg;
     
-    typedef struct _notify_users{
-        
-    }NotifyUsers;
-    
-    typedef std::map<std::string, std::list<NotifyMsg*>* > RoomNotifyMsgs;
     
     OSMutex                         m_mutex;
+    OSMutex                         m_notifyMutex;
     const std::string               m_roomId;
     const std::string               m_ownerId;
     std::string                     m_sessionId;

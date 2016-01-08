@@ -38,8 +38,6 @@ public:
 
     void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
     void LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
-    void CreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
-    void DestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
     
     void GenericMeetingSessionId(std::string& strId);
     bool Init();
@@ -56,10 +54,6 @@ public:
 private:
     void OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     void OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void OnCreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void OnDestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void OnStartMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void OnStopMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     void OnRefreshRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     
     
