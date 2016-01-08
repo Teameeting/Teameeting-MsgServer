@@ -17,9 +17,11 @@
 #include "RTMessage.h"
 #include "XMsgCallback.h"
 
+class XMsgClientHelper;
+
 class XMsgProcesser{
 public:
-    XMsgProcesser(XMsgCallback& cb):m_callback(cb){}
+    XMsgProcesser(XMsgCallback& cb, XMsgClientHelper& helper):m_callback(cb), m_helper(helper){}
     ~XMsgProcesser(){}
 public:
     
@@ -37,6 +39,7 @@ public:
     void ServerConnected();
     void ServerDisconnect();
     void ServerConnectionFailure();
+    
 protected:
     int DecodeLogin(SIGNALTYPE stype, MEETMSG& msg);
     int DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg);
@@ -45,7 +48,8 @@ protected:
     int DecodeKeepAlive(MEETMSG& msg);
     long long GenericTransSeq();
 private:
-    XMsgCallback    &m_callback;
+    XMsgCallback        &m_callback;
+    XMsgClientHelper    &m_helper;
 };
 
 #endif /* defined(__dyncRTCMsgClient__XMsgProcesser__) */

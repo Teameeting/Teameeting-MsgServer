@@ -8,6 +8,7 @@
 
 #include "XMsgProcesser.h"
 #include "webrtc/base/logging.h"
+#include "XMsgClient.h"
 
 static long long  g_msgs_id = 3;
 
@@ -206,10 +207,10 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 
 int XMsgProcesser::DecodeLogin(SIGNALTYPE stype, MEETMSG& msg)
 {
-    if (stype == SIGNALTYPE::reqlogin) {
-        m_callback.OnReqLogin(msg._code, msg._status, msg._from);
-    } else if (stype == SIGNALTYPE::resplogin) {
-        m_callback.OnRespLogin(msg._code, msg._status, msg._from);
+    if (msg._code == 0) {
+        ServerConnected();
+    } else {
+        m_helper.OnLogin(msg._code, msg._status, msg._from);
     }
     return 0;
 }
@@ -238,17 +239,12 @@ int XMsgProcesser::DecodeGetMsg(SIGNALTYPE stype, MEETMSG& msg)
 
 int XMsgProcesser::DecodeLogout(SIGNALTYPE stype, MEETMSG& msg)
 {
-    if (stype == SIGNALTYPE::reqlogout) {
-        m_callback.OnReqLogout(msg._code, msg._status, msg._from);
-    } else if (stype == SIGNALTYPE::resplogout) {
-        m_callback.OnRespLogout(msg._code, msg._status, msg._from);
-    }
+    
     return 0;
 }
 
 int XMsgProcesser::DecodeKeepAlive(MEETMSG& msg)
 {
-    
     return 0;
 }
 

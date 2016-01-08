@@ -47,14 +47,37 @@ public:
     int GetSessionMemberInJson(const std::string from, std::string& users) { if(m_pRoomSession) return m_pRoomSession->GetMembersInJson(from, users); else return 0; }
     void ClearLostMember(const std::string& userid) { if (m_pRoomSession) m_pRoomSession->ClearLostMember(userid); }
     
+    int AddNotifyMsg(const std::string pubsher, const std::string msg);
+    int DelNotifyMsg(int msgid);
+    int ShouldNotify(const std::string userid, std::string& msgNo, std::string& msgPub);
+    int Notify(const std::string userid, std::string& msg);
+    void NotifyDone(const std::string userid, std::string& msgPub, int msgid);
+    
     const std::string& GetOwnerId() { return m_ownerId; }
 public:
     void CheckMembers();
+    
 private:
+    int GenericNotifySeq();
+    void GenericMeetingSessionId(std::string& strId);
+    typedef struct _notify_msgs{
+        int seq;
+        long long pubTime;
+        std::string notifyMsg;
+        std::list<std::string> notified;
+        _notify_msgs() {
+            seq = 0;
+            pubTime = 0;
+            notifyMsg = "";
+            notified.clear();
+        }
+    }NotifyMsg;
     
-    typedef struct _room_notify_msgs{
+    typedef struct _notify_users{
+        
+    }NotifyUsers;
     
-    }RoomNotifyMsgs;
+    typedef std::map<std::string, std::list<NotifyMsg*>* > RoomNotifyMsgs;
     
     OSMutex                         m_mutex;
     const std::string               m_roomId;
@@ -63,6 +86,7 @@ private:
     RTRoomSession                   *m_pRoomSession;
     List                            m_roomMemList;
     int                             m_maxRoomMem;
+    RoomNotifyMsgs                  m_roomNotifyMsgs;
     
 };
 #endif /* defined(__dyncRTMeeting__RTMeetingRoom__) */
