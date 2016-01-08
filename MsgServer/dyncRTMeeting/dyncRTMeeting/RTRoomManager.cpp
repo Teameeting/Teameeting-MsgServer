@@ -149,6 +149,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         if (mmsg._to.at(0)=='a') {
                             //to all
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
+                            meetingRoom->AddNotifyMsg(mmsg._from, mmsg._cont);
                             if (!meetingRoom->GetRoomMemberInJson(mmsg._from, users)) {
                                 GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
@@ -281,7 +282,8 @@ void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
     if (remoteFound!=memList._uslist.end() && !localFound) {
         // this means user is in remote and not in local: after create room, owner enter
         LI("[C][C]OnEnterRoom 1, after create room, owner enter\n");
-        it->second->UpdateUserList(memList._uslist);
+        //it->second->UpdateUserList(memList._uslist);
+        it->second->AddMemberToRoom(mmsg._from);
     } else if (remoteFound==memList._uslist.end() && !localFound) {
         // this means user is not in remote and not in local: invite others join room first
         LI("[C][C]OnEnterRoom 2, invite others join room first\n");
@@ -324,21 +326,38 @@ void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
         //m_pHttpSvrConn->HttpUpdateRoomMemNumber(sign, meetingid, meetingMemNumber);
         
         TOJSONUSER touser;
-        std::list<const std::string>::iterator  memIt = memList._uslist.begin();
-        for (; memIt!=memList._uslist.end(); memIt++) {
-            touser._us.push_front((*memIt));
-        }
-        users = touser.ToJson();
+        //std::list<const std::string>::iterator  memIt = memList._uslist.begin();
+        //for (; memIt!=memList._uslist.end(); memIt++) {
+        //    touser._us.push_front((*memIt));
+        //}
+        //users = touser.ToJson();
+        users.assign("");
+        it->second->GetRoomMemberInJson(mmsg._from, users);
+        mmsg._cont = mmsg._from + "Enter Room!";
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
         SendTransferData(resp, (int)resp.length());
-        return;
     } else if (rMemNum==1) {
         m_pHttpSvrConn->HttpInsertSessionMeetingInfo(sign, meetingid, sessionid, sessionstatus, sessiontype, sessionnumber);
         ChangeToJson(mmsg._from, users);
+        mmsg._cont = "You Enter Room!";
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
         SendTransferData(resp, (int)resp.length());
+    }
+    std::string msgNo, msgPub;
+    int msgSeq;
+    if ((msgSeq=it->second->ShouldNotify(mmsg._from, msgNo, msgPub))>0) {
+        users.assign("");
+        std::string content = msgPub + " publish " + msgNo;
+        mmsg._cont = content;
+        ChangeToJson(mmsg._from, users);
+        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
+        SendTransferData(resp, (int)resp.length());
+        it->second->NotifyDone(mmsg._from, msgPub, msgSeq);
+    } else {
+        LI("There is no notify msg for user:%s\n", mmsg._from.c_str());
         return;
     }
+    
 }
 
 void RTRoomManager::OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
@@ -380,7 +399,9 @@ void RTRoomManager::OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
         m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(sign, sessionid, sessionnumber);
         m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(sign, sessionid);
         meetingRoom->DestroySession();
-        ChangeToJson(mmsg._from, users);
+        users.assign("");
+        it->second->GetRoomMemberInJson(mmsg._from, users);
+        mmsg._cont = mmsg._from + "Leave Room!";
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
         SendTransferData(resp, (int)resp.length());
         return;
@@ -403,6 +424,7 @@ void RTRoomManager::OnCreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& dat
         rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
         m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.release()));
         ChangeToJson(mmsg._from, users);
+        mmsg._cont = "You create Room!";
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
         SendTransferData(resp, (int)resp.length());
         return;
@@ -452,6 +474,7 @@ void RTRoomManager::OnDestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& da
         
         LI("OnDestroyRoom for roomid:%s\n", mmsg._room.c_str());
         ChangeToJson(mmsg._from, users);
+        mmsg._cont = "You destroy Room!";
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
         SendTransferData(resp, (int)resp.length());
         return;

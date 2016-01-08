@@ -46,7 +46,7 @@ int RTTcp::SendTransferData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+5];
+        char* ptr = new char[nLen+6];//sprintf will add 1 int the end
         sprintf(ptr, "$%4d%s", nLen, pData);
         ListAppend(&m_listSend, ptr, nLen+5);
     }
