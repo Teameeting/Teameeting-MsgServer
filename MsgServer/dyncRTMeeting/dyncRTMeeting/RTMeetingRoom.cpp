@@ -6,15 +6,23 @@
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#include "RTMeetingRoom.h"
-#include "rtklog.h"
-#include "RTRoomManager.h"
+#include <algorithm>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
-#include <algorithm>
+#include "RTMeetingRoom.h"
+#include "rtklog.h"
+#include "atomic.h"
+#include "RTRoomManager.h"
+
+static unsigned int	 s_notify_msg_id = 0;
+
+int RTMeetingRoom::GenericNotifySeq()
+{
+    return atomic_add(&s_notify_msg_id, 1);
+}
 
 RTMeetingRoom::RTMeetingRoom(const std::string mid, const std::string ownerid)
 : m_roomId(mid)
@@ -162,7 +170,6 @@ void RTMeetingRoom::UpdateUserList(std::list<const std::string>& ulist)
     }
 }
 
-
 void RTMeetingRoom::CheckMembers()
 {
     OSMutexLocker locker(&m_mutex);
@@ -174,4 +181,85 @@ void RTMeetingRoom::CheckMembers()
     while (ListNextElement(&m_roomMemList, &elem)!=NULL) {
         LI("\t-->MeetingRoom members :%s\n", (char*)elem->content);
     }
+}
+
+int RTMeetingRoom::AddNotifyMsg(const std::string pubsher, const std::string msg)
+{
+    RoomNotifyMsgs::iterator it = m_roomNotifyMsgs.find(pubsher);
+    if (it == m_roomNotifyMsgs.end()) {
+        std::list<NotifyMsg*>* msgList = new std::list<NotifyMsg*>();
+        NotifyMsg* noMsg = new NotifyMsg();
+        noMsg->seq = GenericNotifySeq();
+        noMsg->pubTime = OS::Milliseconds();
+        noMsg->notifyMsg = msg;
+        noMsg->notified.push_back(pubsher);
+        msgList->push_back(noMsg);
+        m_roomNotifyMsgs.insert(make_pair(pubsher, msgList));
+        LI("RTMeetingRoom::AddNotifyMsg pubsher:%s, msg:%s\n", pubsher.c_str(), msg.c_str());
+    } else {
+        
+    }
+    
+    return 0;
+}
+
+int RTMeetingRoom::DelNotifyMsg(int msgid)
+{
+    return 0;
+}
+
+int RTMeetingRoom::ShouldNotify(const std::string userid, std::string& msgNo, std::string& msgPub)
+{
+    RoomNotifyMsgs::iterator rit = m_roomNotifyMsgs.begin();
+    for (; rit!=m_roomNotifyMsgs.end(); rit++) {
+        std::string publisher = rit->first;
+        std::list<NotifyMsg*>* l = rit->second;
+        LI("RTMeetingRoom::ShouldNotify 1 find notify msg:%s\n", msgNo.c_str());
+        if (l) {
+            std::list<NotifyMsg*>::iterator lit = l->begin();
+            LI("RTMeetingRoom::ShouldNotify 2 find notify msg:%s\n", msgNo.c_str());
+            for (; lit!=l->end(); lit++) {
+                NotifyMsg* pMsg = *lit;
+                LI("RTMeetingRoom::ShouldNotify 3 find notify msg:%s\n", msgNo.c_str());
+                if (pMsg) {
+                    LI("RTMeetingRoom::ShouldNotify 4 find notify msg:%s\n", msgNo.c_str());
+                    std::list<std::string>::iterator mit = std::find(pMsg->notified.begin(), pMsg->notified.end(), userid);
+                    if (mit==pMsg->notified.end()) {
+                        msgNo = pMsg->notifyMsg;
+                        msgPub = publisher;
+                        LI("RTMeetingRoom::ShouldNotify find notify msg:%s\n", msgNo.c_str());
+                        return pMsg->seq;
+                    }
+                }
+            }
+        }
+    }
+    LI("RTMeetingRoom::ShouldNotify did not find notify msg\n");
+    return 0;
+}
+
+int RTMeetingRoom::Notify(const std::string userid, std::string& msg)
+{
+    return 0;
+}
+
+void RTMeetingRoom::NotifyDone(const std::string userid, std::string& msgPub, int msgid)
+{
+    RoomNotifyMsgs::iterator rit = m_roomNotifyMsgs.find(msgPub);
+    if (rit!=m_roomNotifyMsgs.end()) {
+        std::list<NotifyMsg*>* l = rit->second;
+        if (l) {
+            std::list<NotifyMsg*>::iterator lit = l->begin();
+            for (; lit!=l->end(); lit++) {
+                NotifyMsg* pMsg = *lit;
+                if (pMsg && (pMsg->seq == msgid)) {
+                    pMsg->notified.push_back(userid);
+                    LE("RTMeetingRoom::NotifyDone [success]:userid:%s, msgPub:%s, msgid:%d", userid.c_str(), msgPub.c_str(), msgid);
+                    return;
+                }
+            }
+        }
+    }
+    LE("RTMeetingRoom::NotifyDone [failed]:userid:%s, msgPub:%s, msgid:%d", userid.c_str(), msgPub.c_str(), msgid);
+    return;
 }
