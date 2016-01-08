@@ -44,16 +44,6 @@ void RTRoomManager::HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             LeaveRoom(tmsg, mmsg);
         }
             break;
-        case MEETCMD::create:
-        {
-            CreateRoom(tmsg, mmsg);
-        }
-            break;
-        case MEETCMD::destroy:
-        {
-            DestroyRoom(tmsg, mmsg);
-        }
-            break;
         default:
             LE("HandleOptRoom cmd [%d] not handle now\n", mmsg._cmd);
             break;
@@ -72,16 +62,6 @@ void RTRoomManager::HandleOptRoomWithData(TRANSMSG& tmsg, MEETMSG& mmsg, std::st
         case MEETCMD::leave:
         {
             OnLeaveRoom(tmsg, mmsg, data);
-        }
-            break;
-        case MEETCMD::create:
-        {
-            OnCreateRoom(tmsg, mmsg, data);
-        }
-            break;
-        case MEETCMD::destroy:
-        {
-            OnDestroyRoom(tmsg, mmsg, data);
         }
             break;
         default:
@@ -150,7 +130,9 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                             //to all
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
                             meetingRoom->AddNotifyMsg(mmsg._from, mmsg._cont);
-                            if (!meetingRoom->GetRoomMemberInJson(mmsg._from, users)) {
+                            if (!meetingRoom->GetSessionMemberInJson(mmsg._from, users)) {
+                                LI("SENDTAGS::notify send to others:%s\n", users.c_str());
+                                mmsg._tags = SENDTAGS::notify;//send to room other members;
                                 GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
                                 return;
@@ -213,24 +195,6 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 }
 
 void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
-{
-    if (m_pHttpSvrConn) {
-        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
-    } else {
-        LE("EnterRoom m_pHttpSvrConn is NULL\n");
-    }
-}
-
-void RTRoomManager::CreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
-{
-    if (m_pHttpSvrConn) {
-        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
-    } else {
-        LE("EnterRoom m_pHttpSvrConn is NULL\n");
-    }
-}
-
-void RTRoomManager::DestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
     if (m_pHttpSvrConn) {
         m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
@@ -343,20 +307,23 @@ void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
         SendTransferData(resp, (int)resp.length());
     }
-    std::string msgNo, msgPub;
-    int msgSeq;
-    if ((msgSeq=it->second->ShouldNotify(mmsg._from, msgNo, msgPub))>0) {
-        users.assign("");
-        std::string content = msgPub + " publish " + msgNo;
-        mmsg._cont = content;
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
-        SendTransferData(resp, (int)resp.length());
-        it->second->NotifyDone(mmsg._from, msgPub, msgSeq);
-    } else {
-        LI("There is no notify msg for user:%s\n", mmsg._from.c_str());
-        return;
+    
+    RTMeetingRoom::RoomNotifyMsgs msgMaps(it->second->GetRoomNotifyMsgsMap());
+    LI("EnterRoom msgMaps size:%d\n", (int)msgMaps.size());
+    RTMeetingRoom::RoomNotifyMsgs::iterator mit = msgMaps.begin();
+    for (; mit!=msgMaps.end(); mit++) {
+        if (mit->second->publisher.compare(mmsg._from)!=0) {
+            LI("other %s send to me!!!\n", mit->second->publisher.c_str());
+            mmsg._cont = mit->second->notifyMsg;
+            mmsg._tags = SENDTAGS::notify;
+            ChangeToJson(mmsg._from, users);
+            GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
+            SendTransferData(resp, (int)resp.length());
+        } else {
+            LI("%s NOT send to myself!!!\n", mit->second->publisher.c_str());
+        }
     }
+    
     
 }
 
@@ -404,91 +371,9 @@ void RTRoomManager::OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
         mmsg._cont = mmsg._from + "Leave Room!";
         GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
         SendTransferData(resp, (int)resp.length());
+        it->second->DelNotifyMsg(mmsg._from);
         return;
     }
-}
-
-void RTRoomManager::OnCreateRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
-{
-    std::string res, users, resp;
-    mmsg._ntime = OS::Milliseconds();
-    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
-        LE("% invalid params error\n", __FUNCTION__);
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
-    if (it == m_meetingRoomMap.end()) { // meeting not exists
-        rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
-        m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.release()));
-        ChangeToJson(mmsg._from, users);
-        mmsg._cont = "You create Room!";
-        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    } else { // meeting has exists
-        LE("% the room has already exists roomid:%s\n", __FUNCTION__, mmsg._room.c_str());
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_existroom, users, GetRTCommStatus(RTCommCode::_existroom), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    }
-}
-
-void RTRoomManager::OnDestroyRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
-{
-    std::string res, users, resp;
-    mmsg._ntime = OS::Milliseconds();
-    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
-        LE("% invalid params error\n", __FUNCTION__);
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
-    if (it == m_meetingRoomMap.end()) {
-        LE("% room: %s ERROR NOT EXIST!!!\n", __FUNCTION__, mmsg._room.c_str());
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    } else {
-        MEETINGMEMBERLIST memList;
-        std::string err;
-        memList.GetMsg(data, err);
-        if (err.length()>0) {
-            LE("%s json parse meeting member list error\n", __FUNCTION__);
-            ChangeToJson(mmsg._from, users);
-            GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-            SendTransferData(resp, (int)resp.length());
-            return;
-        }
-        it->second->UpdateUserList(memList._uslist);
-        if (memList._uslist.size() == 0) {
-            it->second->reset();
-            m_meetingRoomMap.erase(it);
-        }
-        
-        LI("OnDestroyRoom for roomid:%s\n", mmsg._room.c_str());
-        ChangeToJson(mmsg._from, users);
-        mmsg._cont = "You destroy Room!";
-        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    }
-}
-
-void RTRoomManager::OnStartMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
-{
-    LI("OnStartMeeting return\n");
-}
-
-void RTRoomManager::OnStopMeeting(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
-{
-    LI("OnStopMeeting return\n");
 }
 
 void RTRoomManager::OnRefreshRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
