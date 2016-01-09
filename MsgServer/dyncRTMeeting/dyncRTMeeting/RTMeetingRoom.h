@@ -39,6 +39,12 @@ public:
         }
     }NotifyMsg;
     
+    typedef enum _get_members_status {
+        GMS_NIL = 0,
+        GMS_WAITTING,
+        GMS_DONE
+    }GetMembersStatus;
+    
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
     
     bool AddMemberToRoom(const std::string uid);
@@ -56,6 +62,7 @@ public:
     const std::string& GetSessionId() { return m_sessionId; }
     void CreateSession();
     void DestroySession();
+    void SetGetMembersStatus(GetMembersStatus status){m_eGetMembersStatus = status;};
     void UpdateUserList(std::list<const std::string>& ulist);
     void AddUserToList(const std::string& userid);
     
@@ -84,6 +91,7 @@ private:
     const std::string               m_ownerId;
     std::string                     m_sessionId;
     RTRoomSession                   *m_pRoomSession;
+    GetMembersStatus                m_eGetMembersStatus;
     List                            m_roomMemList;
     int                             m_maxRoomMem;
     RoomNotifyMsgs                  m_roomNotifyMsgs;

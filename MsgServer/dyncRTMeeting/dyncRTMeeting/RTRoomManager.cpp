@@ -56,7 +56,7 @@ void RTRoomManager::HandleOptRoomWithData(TRANSMSG& tmsg, MEETMSG& mmsg, std::st
     switch (mmsg._cmd) {
         case MEETCMD::enter:
         {
-            OnEnterRoom(tmsg, mmsg, data);
+            OnGetMemberList(tmsg, mmsg, data);
         }
             break;
         case MEETCMD::leave:
@@ -109,6 +109,10 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                                 SendTransferData(resp, (int)resp.length());
                                 return;
                             }
+                            
+                            //@Eric
+                            //* 1, Check GetMembersStatus is Waitting
+                            // Need to save msg to msgList for other member(not in room) when Got members form http.
                         } else if (mmsg._to.at(0)=='u') {
                             //to userlist
                         }
@@ -187,127 +191,38 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 
 void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    if (m_pHttpSvrConn) {
-        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
-    } else {
-        LE("EnterRoom m_pHttpSvrConn is NULL\n");
-    }
-}
-
-void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
-{
-    if (m_pHttpSvrConn) {
-        m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
-    } else {
-        LE("EnterRoom m_pHttpSvrConn is NULL\n");
-    }
-}
-
-void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
-{
-    std::string res, users, resp;
-    mmsg._ntime = OS::Milliseconds();
-    if (mmsg._from.length()==0 || mmsg._room.length()==0) {
-        LE("% invalid params error\n", __FUNCTION__);
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    }
-    MEETINGMEMBERLIST memList;
-    std::string err;
-    memList.GetMsg(data, err);
-    if (err.length()>0) {
-        LE("%s json parse meeting member list error\n", __FUNCTION__);
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    }
-    std::list<const std::string>::iterator remoteFound = std::find(memList._uslist.begin(), memList._uslist.end(), mmsg._from);
-    bool localFound = false;
-    int rMemNum = 0, sMemNum = 0;
+    //@Eric
+    //* 1, Find Room
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
         LE("% Room %s not exists, new it\n", mmsg._room.c_str(), __FUNCTION__);
-        //rtc::scoped_ptr<RTMeetingRoom> mRoom(new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, ""));
-        //m_meetingRoomMap.insert(make_pair(mmsg._room, mRoom.get()));
         m_meetingRoomMap.insert(make_pair(mmsg._room, new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, "")));
         it = m_meetingRoomMap.find(mmsg._room);
-    } else { // meeting has exists
-        localFound = it->second->IsMemberInRoom(mmsg._from);
-    }
-    
-    if (it==m_meetingRoomMap.end()) {
-        LE("m_meetingRoomMap not found Room %s ERRORRRRRRRRR\n", mmsg._room.c_str());
-        return;
-    }
-    
-    if (remoteFound!=memList._uslist.end() && !localFound) {
-        // this means user is in remote and not in local: after create room, owner enter
-        LI("[C][C]OnEnterRoom 1, after create room, owner enter\n");
-        //it->second->UpdateUserList(memList._uslist);
-        it->second->AddMemberToRoom(mmsg._from);
-    } else if (remoteFound==memList._uslist.end() && !localFound) {
-        // this means user is not in remote and not in local: invite others join room first
-        LI("[C][C]OnEnterRoom 2, invite others join room first\n");
-        it->second->AddMemberToRoom(mmsg._from);
-    } else if (remoteFound!=memList._uslist.end() && localFound) {
-        // this means user is in remote and also in local: just enter room again
-        LI("[C][C]OnEnterRoom 3, just enter room again\n");
-    } else {
-        // this is error, user is not in remote, and it should not in local
-        LE("[C][C]OnEnterRoom 4, ENTER ERROR\n");
-    }
-    
-    // begin session or join session
-    it->second->CreateSession();
-    it->second->AddMemberToSession("", mmsg._from);
-    rMemNum = it->second->GetRoomMemberNumber();
-    sMemNum = it->second->GetSesssionMemberNumber();
-    mmsg._nmem = sMemNum;
-
-    // send to http
-    LI("RoomManager::OnEnterRoom roomMemNum:%d, sessMemNum:%d, from:%s, pass:%s, roomid:%s\n", rMemNum, sMemNum, mmsg._from.c_str(), mmsg._pass.c_str(), mmsg._room.c_str());
-    const char* sign = mmsg._pass.c_str();
-    const char* meetingid = mmsg._room.c_str();
-    char meetingMemNumber[4] = {0};
-    char sessionnumber[4] = {0};
-    sprintf(meetingMemNumber, "%d", rMemNum);
-    sprintf(sessionnumber, "%d", sMemNum);
-    const char* sessionid = it->second->GetSessionId().c_str();
-    const char* sessionstatus = "1";
-    const char* sessiontype = "1";
-
-    if (remoteFound==memList._uslist.end()) { //user NOT in room
-        LI("[C][C]OnEnterRoom 2, InsertUserMeetingRoom\n");
-        m_pHttpSvrConn->HttpInsertUserMeetingRoom(sign, meetingid);
-    }
-    
-    if (rMemNum>1) {
-        m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(sign, sessionid, sessionnumber);
-        m_pHttpSvrConn->HttpUpdateUserMeetingJointime(sign, meetingid);
-        //m_pHttpSvrConn->HttpUpdateRoomMemNumber(sign, meetingid, meetingMemNumber);
         
-        TOJSONUSER touser;
-        //std::list<const std::string>::iterator  memIt = memList._uslist.begin();
-        //for (; memIt!=memList._uslist.end(); memIt++) {
-        //    touser._us.push_front((*memIt));
-        //}
-        //users = touser.ToJson();
-        users.assign("");
-        it->second->GetRoomMemberInJson(mmsg._from, users);
-        mmsg._cont = mmsg._from + "Enter Room!";
-        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
-        SendTransferData(resp, (int)resp.length());
-    } else if (rMemNum==1) {
-        m_pHttpSvrConn->HttpInsertSessionMeetingInfo(sign, meetingid, sessionid, sessionstatus, sessiontype, sessionnumber);
-        ChangeToJson(mmsg._from, users);
-        mmsg._cont = "You Enter Room!";
-        GenericResponse(tmsg, mmsg, RTCommCode::_ok, users, res, resp);
-        SendTransferData(resp, (int)resp.length());
+        //@Eric
+        //* Get room member list from httpSvr.
+        if (m_pHttpSvrConn) {
+            m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
+        } else {
+            LE("EnterRoom m_pHttpSvrConn is NULL\n");
+        }
+        //@Eric
+        //* Set GetMembersStatus to Waitting.
+        it->second->SetGetMembersStatus(RTMeetingRoom::GMS_WAITTING);
     }
     
+    //@Eric
+    //* 2, Add member to RoomList.
+    if (!it->second->AddMemberToRoom(mmsg._from)) {
+        assert(false);
+    }
+
+    //@Eric
+    //* 3, Notify Other members, i'm online.
+    
+    //@Eric
+    //* 4, Notify myself
+    std::string res, users, resp;
     RTMeetingRoom::RoomNotifyMsgs msgMaps(it->second->GetRoomNotifyMsgsMap());
     LI("EnterRoom msgMaps size:%d\n", (int)msgMaps.size());
     RTMeetingRoom::RoomNotifyMsgs::iterator mit = msgMaps.begin();
@@ -324,6 +239,48 @@ void RTRoomManager::OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data
         }
     }
     
+    //@Eric
+    //* 5, Enter room done!
+    // Need send back event to client?
+    //////////////////////////
+    
+}
+
+void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
+{
+    //@Eric
+    //* 1, Remove myself in Room MemberList;
+    //
+    
+    //@Eric
+    //* 2, Notify Other members
+    //
+    
+    //@Eric
+    //* 3, Check size of Room MemberList is 0?
+    // If 0, maybe release this room?
+    // If GetMembersStatus is Waitting, need waitting for http response!!!
+    
+    //@Eric
+    //* 4, Leave room done!
+    // Need send back event to client?
+}
+
+void RTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+{
+    //@Eric
+    //* 1, Update room member list.
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
+    if (it == m_meetingRoomMap.end()) { // meeting not exists
+        assert(false);  // Maybe has some error!!!
+    }
+    
+    //@Eric
+    //* 2, Set GetMembersStatus to Done, and notify other members(not in room) meeting is opened.
+    it->second->SetGetMembersStatus(RTMeetingRoom::GMS_DONE);
+    
+    //@Eric
+    //* 3, Check msgs list, and send to notify other members(not in room)
     
 }
 
