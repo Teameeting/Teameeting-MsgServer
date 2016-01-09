@@ -52,7 +52,7 @@ public:
     void ClearSessionLost(const std::string& uid);
     void ClearMsgQueueSession(const std::string& sid);
 private:
-    void OnEnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     void OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     void OnRefreshRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     
