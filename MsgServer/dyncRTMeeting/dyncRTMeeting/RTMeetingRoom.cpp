@@ -29,6 +29,7 @@ RTMeetingRoom::RTMeetingRoom(const std::string mid, const std::string ownerid)
 , m_sessionId("")
 , m_ownerId(ownerid)
 , m_pRoomSession(NULL)
+, m_eGetMembersStatus(GMS_NIL)
 {
     ListZero(&m_roomMemList);
     //ListAppend(&m_roomMemList, (void*)m_ownerId.c_str(), (int)m_ownerId.length());
