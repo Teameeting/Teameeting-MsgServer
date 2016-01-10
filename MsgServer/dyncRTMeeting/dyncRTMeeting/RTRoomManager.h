@@ -15,9 +15,11 @@
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
 #include "RTMeetMsg.h"
+#include "RTSignalMsg.h"
 #include "RTTransferSession.h"
 #include "RTMeetingRoom.h"
 #include "RTHttpSvrConn.h"
+#include "RTHttpCmd.h"
 
 class RTRoomManager{
 public:
@@ -33,7 +35,7 @@ public:
 public:
     
     void HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
-    void HandleOptRoomWithData(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void HandleOptRoomWithData(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     void HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
 
     void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
@@ -53,14 +55,11 @@ public:
     void ClearMsgQueueSession(const std::string& sid);
 private:
     void OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void OnLeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void OnRefreshRoom(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    
     
     int GenericTransSeq();
-    void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res,  std::string& response);
-    void ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response);
-    void ResponseDcomm(TRANSMSG tmsg, MEETMSG mmsg, int code, const std::string& tos, const std::string& res, std::string& response);
+    void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res,  std::string& response);
+    void ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
+    void ResponseDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
     
     typedef std::map<const std::string, rtc::scoped_refptr<RTMeetingRoom> > MeetingRoomMap;
     RTRoomManager():m_pMsgQueueSession(NULL)

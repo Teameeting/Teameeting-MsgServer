@@ -29,10 +29,7 @@ void RTDispatchConnection::DispatchMsg(const std::string& uid, const std::string
     } else if (pci && pci->pConn && pci->pConn->IsLiveSession() && pci->connType == CONNECTIONTYPE::_ctcp) {
         RTConnectionTcp *ct = dynamic_cast<RTConnectionTcp*>(pci->pConn);
         if (ct) {
-            SIGNALMSG smsg;
-            smsg._stype = SIGNALTYPE::reqsndmsg;
-            smsg._scont = msg;
-            ct->SendDispatch(uid, (const std::string&)smsg.ToJson());
+            ct->SendDispatch(uid, msg);
         }
     } else {
         LE("DispatchMsg error\n");

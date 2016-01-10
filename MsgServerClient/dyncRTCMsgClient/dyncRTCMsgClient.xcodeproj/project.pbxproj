@@ -15,6 +15,8 @@
 		E6390CD61C28EFE800AE4DD2 /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390CB61C28EFE800AE4DD2 /* XTcpTick.cpp */; };
 		E6390CF31C28F8D900AE4DD2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF21C28F8D900AE4DD2 /* Foundation.framework */; };
 		E6390CF51C28F8F600AE4DD2 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF41C28F8F600AE4DD2 /* CoreServices.framework */; };
+		E699C0C61C412AF90006DCEE /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E699C0C21C412AEA0006DCEE /* messagehandler.cc */; };
+		E699C0C71C412AF90006DCEE /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E699C0C31C412AEA0006DCEE /* messagequeue.cc */; };
 		E6A882BC1C3518D4005C619C /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; };
 		E6A882BD1C3518D4005C619C /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE91C28EFE800AE4DD2 /* RTMessage.cpp */; };
 		E6A882BE1C3518D4005C619C /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BEC1C28EFE800AE4DD2 /* RTSignalMsg.cpp */; };
@@ -351,6 +353,9 @@
 		E6390CE31C28F0B100AE4DD2 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
 		E6390CF21C28F8D900AE4DD2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E6390CF41C28F8F600AE4DD2 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		E699C0C21C412AEA0006DCEE /* messagehandler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagehandler.cc; sourceTree = "<group>"; };
+		E699C0C31C412AEA0006DCEE /* messagequeue.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagequeue.cc; sourceTree = "<group>"; };
+		E699C0C81C412F7E0006DCEE /* RTMsgCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
 		E6A882D41C366516005C619C /* librtcmsgclient-tm-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-tm-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6A883861C368FAE005C619C /* messagehandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagehandler.h; sourceTree = "<group>"; };
 		E6A883881C368FAE005C619C /* messagequeue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagequeue.h; sourceTree = "<group>"; };
@@ -621,6 +626,7 @@
 		E6390BDB1C28E44400AE4DD2 /* dyncRTCMsgClient */ = {
 			isa = PBXGroup;
 			children = (
+				E699C0C81C412F7E0006DCEE /* RTMsgCommon.h */,
 				E6A8840A1C369063005C619C /* webrtc_normal */,
 				E6A883281C368FAE005C619C /* webrtc_tm */,
 				E6390BE31C28EFE800AE4DD2 /* RTC_Export.h */,
@@ -700,6 +706,8 @@
 		E6A8832A1C368FAE005C619C /* base */ = {
 			isa = PBXGroup;
 			children = (
+				E699C0C21C412AEA0006DCEE /* messagehandler.cc */,
+				E699C0C31C412AEA0006DCEE /* messagequeue.cc */,
 				E6A883861C368FAE005C619C /* messagehandler.h */,
 				E6A883881C368FAE005C619C /* messagequeue.h */,
 				E6A883DA1C368FAE005C619C /* thread.h */,
@@ -1266,6 +1274,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E699C0C61C412AF90006DCEE /* messagehandler.cc in Sources */,
+				E699C0C71C412AF90006DCEE /* messagequeue.cc in Sources */,
 				E6A885CE1C369134005C619C /* RTMeetMsg.cpp in Sources */,
 				E6A885CF1C369134005C619C /* RTMessage.cpp in Sources */,
 				E6A885D01C369134005C619C /* RTSignalMsg.cpp in Sources */,

@@ -10,6 +10,7 @@
 #define StatusCode_h
 
 #include <string>
+#include <vector>
 
 typedef enum _rtcomm_code{
     _ok = 0,
@@ -24,7 +25,7 @@ typedef enum _rtcomm_code{
     _invalid
 }RTCommCode;
 
-static std::string RTCommStatus[] = {
+static std::vector<std::string> RTCommStatus = {
     "ok",
     "invparams",
     "errconninfo",
@@ -65,7 +66,30 @@ int GetRTCommCode(std::string& status) {
 }
 
 std::string GetRTCommStatus(int code) {
-    return RTCommStatus[code];
+    switch(code) {
+        case RTCommCode::_ok:
+            return "ok";
+        case RTCommCode::_invparams:
+            return "invparams";
+        case RTCommCode::_errconninfo:
+            return "errconninfo";
+        case RTCommCode::_errmoduinfo:
+            return "errmoduinfo";
+        case RTCommCode::_errtojson:
+            return "errtojson";
+        case RTCommCode::_nexistroom:
+            return "nexistroom";
+        case RTCommCode::_nexistmem:
+            return "nexistmem";
+        case RTCommCode::_existroom:
+            return "existroom";
+        case RTCommCode::_existmem:
+            return "existmem";
+        case RTCommCode::_invalid:
+            return "invalid";
+        default:
+            return "";
+    }
 }
 
 

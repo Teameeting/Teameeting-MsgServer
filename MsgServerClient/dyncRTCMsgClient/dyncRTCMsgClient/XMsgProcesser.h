@@ -27,7 +27,7 @@ public:
     
     int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass);
     int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type);
-    int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& pass);
+    int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& pass, int cmd);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& pass);
     int EncodeKeepAlive(std::string& outstr);
     
@@ -41,10 +41,10 @@ public:
     void ServerConnectionFailure();
     
 protected:
-    int DecodeLogin(SIGNALTYPE stype, MEETMSG& msg);
-    int DecodeSndMsg(SIGNALTYPE stype, MEETMSG& msg);
-    int DecodeGetMsg(SIGNALTYPE stype, MEETMSG& msg);
-    int DecodeLogout(SIGNALTYPE stype, MEETMSG& msg);
+    int DecodeLogin(MEETMSG& msg);
+    int DecodeSndMsg(MEETMSG& msg);
+    int DecodeGetMsg(MEETMSG& msg);
+    int DecodeLogout(MEETMSG& msg);
     int DecodeKeepAlive(MEETMSG& msg);
     long long GenericTransSeq();
 private:

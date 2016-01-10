@@ -126,7 +126,7 @@ void RTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg)
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingInfo send msg:%s\n", pmsg);
-        RTHttpSender *sender = new RTHttpSender(tmsg, msg);
+        RTHttpSender *sender = new RTHttpSender(HTTPCMD::_get_meeting_info, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -143,7 +143,7 @@ void RTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg) const
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingInfo send msg:%s\n", pmsg);
-        RTHttpSender *sender = new RTHttpSender(tmsg, msg);
+        RTHttpSender *sender = new RTHttpSender(HTTPCMD::_get_meeting_info, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -160,7 +160,7 @@ void RTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg)
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingMemberList send msg:%s\n", pmsg);
-        RTHttpSender *sender = new RTHttpSender(tmsg, msg);
+        RTHttpSender *sender = new RTHttpSender(HTTPCMD::_get_member_list, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -177,7 +177,7 @@ void RTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg) const
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingMemberList send msg:%s\n", pmsg);
-        RTHttpSender *sender = new RTHttpSender(tmsg, msg);
+        RTHttpSender *sender = new RTHttpSender(HTTPCMD::_get_member_list, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);

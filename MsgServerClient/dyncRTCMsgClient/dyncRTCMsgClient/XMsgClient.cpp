@@ -80,11 +80,11 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& msg)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::GetMsg()
+int XMsgClient::GetMsg(GETCMD cmd)
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeGetMsg(outstr, m_Uid, m_Token);
+        m_pMsgProcesser->EncodeGetMsg(outstr, m_Uid, m_Token, cmd);
     } else {
         return -1;
     }
@@ -309,5 +309,9 @@ void XMsgClient::OnLogin(int code, const std::string& status, const std::string&
     if (code!=0) {
         Login();
     }
-    Login();
+}
+
+void XMsgClient::OnLogout(int code, const std::string& status, const std::string& userid)
+{
+    
 }

@@ -292,9 +292,6 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
     switch (m_mmmsg._cmd) {
         case MEETCMD::enter:
         case MEETCMD::leave:
-        case MEETCMD::create:
-        case MEETCMD::destroy:
-        case MEETCMD::refresh:
         {
             RTRoomManager::Instance()->HandleOptRoom(t_msg, m_mmmsg);
         }

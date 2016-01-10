@@ -17,4 +17,10 @@ typedef enum _msgtype{
     msgtype_invalid
 }MSGTYPE;
 
+typedef enum _messagetype{
+    request=1,
+    response,
+    messagetype_invalid
+}MESSAGETYPE;
+
 #endif // dyncRTMsgClient_RTMsg_h

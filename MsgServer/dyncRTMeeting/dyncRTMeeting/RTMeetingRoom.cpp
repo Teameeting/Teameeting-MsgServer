@@ -24,163 +24,167 @@ int RTMeetingRoom::GenericNotifySeq()
     return atomic_add(&s_notify_msg_id, 1);
 }
 
-RTMeetingRoom::RTMeetingRoom(const std::string mid, const std::string ownerid)
+RTMeetingRoom::RTMeetingRoom(const std::string sid, const std::string mid, const std::string ownerid)
 : m_roomId(mid)
-, m_sessionId("")
+, m_sessionId(sid)
 , m_ownerId(ownerid)
-, m_pRoomSession(NULL)
 , m_eGetMembersStatus(GMS_NIL)
 {
-    ListZero(&m_roomMemList);
-    //ListAppend(&m_roomMemList, (void*)m_ownerId.c_str(), (int)m_ownerId.length());
+    m_roomMembers.clear();
 }
 
 RTMeetingRoom::~RTMeetingRoom()
 {
-    if (m_pRoomSession) {
-        delete m_pRoomSession;
-        m_pRoomSession = NULL;
+    RoomMembers::iterator rit = m_roomMembers.begin();
+    for (; rit!=m_roomMembers.end(); rit++) {
+        if (rit->second) {
+            delete rit->second;
+            rit->second = NULL;
+        }
     }
-    ListEmpty(&m_roomMemList);
+    m_roomMembers.clear();
 }
 
 bool RTMeetingRoom::AddMemberToRoom(const std::string uid)
 {
     OSMutexLocker locker(&m_mutex);
-    if (IsMemberInRoom(uid)) {
-        LI("user: %s ALREADY in room: %s\n", uid.c_str(), m_roomId.c_str());
-        return false;
-    } else {
-        const char* str = (const char*)strdup(uid.c_str());
-        ListAppend(&m_roomMemList, (void*)str, (int)strlen(str));
+    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    if (rit==m_roomMembers.end()) {
+        m_roomMembers.insert(make_pair(uid, new RoomMember(uid, MS_INMEETING)));
         LI("user: %s ADDOK room: %s\n", uid.c_str(), m_roomId.c_str());
         return true;
+    } else {
+        return false;
     }
 }
 
 bool RTMeetingRoom::IsMemberInRoom(const std::string uid)
 {
     OSMutexLocker locker(&m_mutex);
-    if (m_roomMemList.count==0) {
+    if (m_roomMembers.size()==0) {
         return false;
     }
-    return (!!ListFindItem(&m_roomMemList, (void*)uid.c_str(), stringcompare));
+    return (m_roomMembers.find(uid)!=m_roomMembers.end());
 }
 
 
 bool RTMeetingRoom::DelMemberFmRoom(const std::string uid)
 {
     OSMutexLocker locker(&m_mutex);
-    if (IsMemberInRoom(uid)) {
-        if (ListRemoveItem(&m_roomMemList, (void*)uid.c_str(), stringcompare)) {
-            LI("user: %s DELOK room: %s\n", uid.c_str(), m_roomId.c_str());
-            return true;
-        } else {
-            LI("user: %s DEL FAILED room: %s\n", uid.c_str(), m_roomId.c_str());
-            return false;
-        }
-    } else {
-        LI("user: %s NOT in room: %s\n", uid.c_str(), m_roomId.c_str());
+    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    if (rit==m_roomMembers.end()) {
         return false;
+    } else {
+        if (rit->second) {
+            delete rit->second;
+            rit->second = NULL;
+        }
+        m_roomMembers.erase(rit);
+        return true;
     }
-}
-
-bool RTMeetingRoom::AddMemberToSession(const std::string sid, const std::string uid)
-{
-    return m_pRoomSession->AddMemberToSession(uid);
-}
-
-bool RTMeetingRoom::DelMemberFmSession(const std::string sid, const std::string uid)
-{
-    return m_pRoomSession->DelMemberFmSession(uid);
 }
 
 int RTMeetingRoom::GetRoomMemberInJson(const std::string from, std::string& users)
 {
     OSMutexLocker locker(&m_mutex);
-    if (m_roomMemList.count==0) {
+    if (m_roomMembers.size()==0) {
         return -1;
     }
-    ListElement* elem = NULL;
+
     TOJSONUSER touser;
-    LI("room members:%d\n", m_roomMemList.count);
-    while (ListNextElement(&m_roomMemList, &elem)!=NULL) {
-        LI("\t-->MeetingRoom members :%s\n", (char*)elem->content);
-        if (strcmp(from.c_str(), (const char*)elem->content)!=0) {
-            touser._us.push_front((const char*)elem->content);
+    LI("room members:%d\n", m_roomMembers.size());
+    RoomMembers::iterator rit = m_roomMembers.find(from);
+    for (; rit!=m_roomMembers.end(); rit++) {
+        if (rit->first.compare(from)!=0) {
+            touser._us.push_front(rit->first);
         }
     }
     users = touser.ToJson();
     return 0;
 }
 
-void RTMeetingRoom::CreateSession()
-{
-    OSMutexLocker  locker(&m_mutex);
-    if (m_pRoomSession) {
-        return;
-    }
-    if (m_pRoomSession == NULL) {
-        RTRoomManager::Instance()->GenericMeetingSessionId(m_sessionId);
-        m_pRoomSession = new RTRoomSession(m_sessionId);
-    }
-}
-
-void RTMeetingRoom::DestroySession()
-{
-    OSMutexLocker  locker(&m_mutex);
-    if (!m_pRoomSession) {
-        return;
-    }
-    if (m_pRoomSession->GetSessionMemberNumber() == 0) {
-        delete m_pRoomSession;
-        m_pRoomSession = NULL;
-    }
-}
-
-void RTMeetingRoom::UpdateUserList(std::list<const std::string>& ulist)
+int RTMeetingRoom::GetRoomMemberMeetingInJson(const std::string from, std::string& users)
 {
     OSMutexLocker locker(&m_mutex);
-    LI("before UpdateUserList count:%d\n", m_roomMemList.count);
-    if (ulist.size() == m_roomMemList.count) {
-        LI("UpdateUserList equal mem count:%d\n", m_roomMemList.count);
+    if (m_roomMembers.size()==0) {
+        return -1;
+    }
+    
+    TOJSONUSER touser;
+    LI("room members:%d\n", m_roomMembers.size());
+    RoomMembers::iterator rit = m_roomMembers.find(from);
+    for (; rit!=m_roomMembers.end(); rit++) {
+        if (rit->second && rit->second->_uid.compare(from) && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
+            touser._us.push_front(rit->first);
+        }
+    }
+    users = touser.ToJson();
+    return 0;
+}
+
+void RTMeetingRoom::UpdateMemberStatus(const std::string& uid, MemberStatus status)
+{
+    OSMutexLocker locker(&m_mutex);
+    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    if (rit!=m_roomMembers.end()) {
+        rit->second->_memStatus = status;
+        LI("UpdateMemberStatus member %s status:%d\n", uid.c_str(), status);
+    }
+}
+
+void RTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
+{
+    OSMutexLocker locker(&m_mutex);
+    LI("before UpdateMemberList size:%d\n", m_roomMembers.size());
+    if (ulist.size() == m_roomMembers.size()) {
+        LI("UpdateMemberList equal mem count:%d\n", m_roomMembers.size());
         return;
-    } else if (ulist.size()>m_roomMemList.count) {
+    } else if (ulist.size()>m_roomMembers.size()) {
         std::list<const std::string>::iterator ait = ulist.begin();
         for (; ait!=ulist.end(); ait++) {
             AddMemberToRoom((*ait));
         }
-        LI("UpdateUserList add mem count:%d\n", m_roomMemList.count);
-    } else if (ulist.size()<m_roomMemList.count) {
-        ListElement* elem = NULL;
+        LI("UpdateMemberList add mem count:%d\n", m_roomMembers.size());
+    } else if (ulist.size()<m_roomMembers.size()) {
         std::list<const std::string> tmpList;
-        while (ListNextElement(&m_roomMemList, &elem)!=NULL) {
-            LI("\t-->MeetingRoom members :%s\n", (char*)elem->content);
-            if ((char*)elem->content) {
-                std::list<const std::string>::iterator t = std::find(ulist.begin(), ulist.end(), (char*)elem->content);
-                if (t==ulist.end()) {
-                    tmpList.push_back((char*)elem->content);
-                }
+        RoomMembers::iterator rit = m_roomMembers.begin();
+        for (; rit!=m_roomMembers.end(); rit++) {
+            std::list<const std::string>::iterator t = std::find(ulist.begin(), ulist.end(), rit->first);
+            if (t==ulist.end()) {
+                tmpList.push_back(rit->first);
             }
         }
+        
         std::list<const std::string>::iterator dit = tmpList.begin();
         for (; dit!=tmpList.end(); dit++) {
             DelMemberFmRoom((*dit));
         }
-        LI("UpdateUserList del mem count:%d\n", m_roomMemList.count);
+        LI("UpdateMemberList del mem count:%d\n", m_roomMembers.size());
     }
+}
+
+void RTMeetingRoom::AddMsgToWaiting(MEETMSG msg)
+{
+    OSMutexLocker locker(&m_waitingMutex);
+    m_waitingMsgs.push_front(msg);
+}
+
+void RTMeetingRoom::SendWaitingMsgs()
+{
+    // move to thread process
+    OSMutexLocker locker(&m_waitingMutex);
+    
 }
 
 void RTMeetingRoom::CheckMembers()
 {
     OSMutexLocker locker(&m_mutex);
-    if (m_roomMemList.count==0) {
+    if (m_roomMembers.size()==0) {
         return;
     }
-    ListElement* elem = NULL;
-    LI("MeetingRoom members:%d\n", m_roomMemList.count);
-    while (ListNextElement(&m_roomMemList, &elem)!=NULL) {
-        LI("\t-->MeetingRoom members :%s\n", (char*)elem->content);
+    RoomMembers::iterator rit = m_roomMembers.begin();
+    for (; rit!=m_roomMembers.end(); rit++) {
+        LI("\t-->MeetingRoom members :%s\n", rit->first.c_str());
     }
 }
 

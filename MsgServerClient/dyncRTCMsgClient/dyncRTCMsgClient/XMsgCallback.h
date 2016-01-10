@@ -13,10 +13,8 @@
 
 class XMsgCallback {
 public:
-    virtual void OnReqSndMsg(const std::string& msg) = 0;
-    virtual void OnRespSndMsg(const std::string& msg) = 0;
-    virtual void OnReqGetMsg(const std::string& msg) = 0;
-    virtual void OnRespGetMsg(const std::string& msg) = 0;
+    virtual void OnSndMsg(const std::string& msg) = 0;
+    virtual void OnGetMsg(const std::string& msg) = 0;
     
 public:
     virtual void OnMsgServerConnected() = 0;

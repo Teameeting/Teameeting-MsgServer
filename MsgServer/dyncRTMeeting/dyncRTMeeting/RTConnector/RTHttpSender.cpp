@@ -10,19 +10,21 @@ RTHttpSender::RTHttpSender(void)
 , m_nBufOffset(0)
 , m_method(HTTP_POST)
 {
+    SetTimer(20*1000);
 	m_nBufLen = kRequestBufferSizeInBytes;
 	m_pBuffer = new char[m_nBufLen];
 }
 
-RTHttpSender::RTHttpSender(TRANSMSG& tmsg, MEETMSG& msg)
+RTHttpSender::RTHttpSender(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& msg)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
 , m_method(HTTP_GET)
+, m_cmd(cmd)
 , m_transmsg(tmsg)
 , m_meetmsg(msg)
 {
-
+    SetTimer(30*1000);
 }
 
 RTHttpSender::~RTHttpSender(void)
@@ -111,7 +113,7 @@ void RTHttpSender::OnResponse(const char*pData, int nLen)
     LI("OnResponse DataLen:%d, pData:%s\n", nLen, pData);
     if (m_method == HTTP_GET) {
         std::string data(pData, nLen);
-        RTRoomManager::Instance()->HandleOptRoomWithData(m_transmsg, m_meetmsg, data);
+        RTRoomManager::Instance()->HandleOptRoomWithData(m_cmd, m_transmsg, m_meetmsg, data);
     }
     
 }

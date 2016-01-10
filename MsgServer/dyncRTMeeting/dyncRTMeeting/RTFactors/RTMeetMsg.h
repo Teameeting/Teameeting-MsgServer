@@ -1,13 +1,13 @@
 //
 //  RTMeetMsg.h
-//  dyncRTMeeting
+//  dyncRTCMsgClient
 //
 //  Created by hp on 11/26/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef dyncRTMeeting_RTMeetMsg_h
-#define dyncRTMeeting_RTMeetMsg_h
+#ifndef dyncRTCMsgClient_RTMeetMsg_h
+#define dyncRTCMsgClient_RTMeetMsg_h
 
 /*
  *  Http:
@@ -30,19 +30,16 @@
  *              nmem: the number of members
  *              ntime: the time of this message
  *              meet:
- *                  cmd: enter, leave, dcomm, create, destroy, refresh
+ *                  cmd: enter, leave, dcomm
  *                      enter:
  *                          from: userid
  *                          room: roomid
- *                          sess: sessid
  *                      leave:
  *                          from: userid
  *                          room: roomid
- *                          sess: sessid
  *                      dcomm:
  *                          from: userid
  *                          room: roomid
- *                          sess: sessid
  *                          to: a, u
  *                              a:[]
  *                              u:[]
@@ -62,12 +59,11 @@
  *
  *      MSG:
  *          {
- *              required  mseq:    {room+num}
+ *              required  mseq:    {num}
  *              required  mtype:   [meet,callcenter,p2p]
  *              required  cmd:     {}
  *              required  from:    {}
  *              required  room:    {}
- *              optional  sess:    {}
  *              optional  to:      {a:[],u:[]}
  *              optional  action:  []
  *              optional  tags:    []
@@ -86,7 +82,6 @@
  *              cmd:dcomm
  *              from:test001
  *              room:asdf1234id
- *              sess:1234asdf
  *              to:{[u:test002]}
  *              action:send
  *              tags:talk
@@ -112,7 +107,6 @@
  *               required cmd,
  *               required from,
  *               required room,
- *               optional sess,
  *               optional to: {all,ulist:[]},
  *               optional action,
  *               optional tags,
@@ -133,9 +127,6 @@
 typedef enum _meetcmd{
     enter=1,
     leave,
-    create,
-    destroy,
-    refresh,
     dcomm,
     meetcmd_invalid
 }MEETCMD;
@@ -175,8 +166,14 @@ typedef enum _sharetype{
     sharetype_invalid
 }SHARETYPE;
 
+typedef enum _getcmd{
+    getcmd_invalid=1
+}GETCMD;
+
 typedef struct _meetmsg{
     MSGTYPE     _mtype;
+    MESSAGETYPE _messagetype;
+    int         _signaltype;
     int         _cmd;
     int         _action;
     int         _tags;
@@ -186,7 +183,6 @@ typedef struct _meetmsg{
     long long   _mseq;
     std::string _from;
     std::string _room;
-    std::string _sess;
     std::string _to;
     std::string _cont;
     std::string _pass;
@@ -196,4 +192,4 @@ typedef struct _meetmsg{
     void GetMsg(const std::string& str, std::string& err);
 }MEETMSG;
 
-#endif  // dyncRTMsg_RTMeetMsg_h
+#endif  // dyncRTCMsgClient_RTMeetMsg_h

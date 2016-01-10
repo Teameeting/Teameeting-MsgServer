@@ -21,6 +21,7 @@ public:
     ~XMsgClientHelper() {}
     
     virtual void OnLogin(int code, const std::string& status, const std::string& userid) = 0;
+    virtual void OnLogout(int code, const std::string& status, const std::string& userid) = 0;
 };
 
 class XMsgClient : public XTcpClientCallback, public XMsgClientHelper{
@@ -32,7 +33,7 @@ public:
     int Unin();
     
     int SndMsg(const std::string& roomid, const std::string& msg);
-    int GetMsg();
+    int GetMsg(GETCMD cmd);
 
     int OptRoom(MEETCMD cmd, const std::string& roomid, const std::string& remain);
     int SndMsgTo(const std::string& roomid, const std::string& msg, const std::list<std::string>& ulist);
@@ -53,6 +54,7 @@ public:
     
     // For XMsgClientHelper
     virtual void OnLogin(int code, const std::string& status, const std::string& userid);
+    virtual void OnLogout(int code, const std::string& status, const std::string& userid);
 private:
     int Login();
     int Logout();
