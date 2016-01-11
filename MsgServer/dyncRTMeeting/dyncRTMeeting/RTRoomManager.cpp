@@ -107,7 +107,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                                 meetingRoom->AddMsgToWaiting(mmsg);
                                 return;
                             }
-                            if (!meetingRoom->GetRoomMemberInJson(mmsg._from, users)) {
+                            if (!meetingRoom->GetRoomMemberMeetingJson(mmsg._from, users)) {
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
                                 if (m_pHttpSvrConn) {
@@ -140,7 +140,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                             //to all
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
                             meetingRoom->AddNotifyMsg(mmsg._from, mmsg._cont);
-                            if (!meetingRoom->GetRoomMemberMeetingInJson(mmsg._from, users)) {
+                            if (!meetingRoom->GetRoomMemberMeetingJson(mmsg._from, users)) {
                                 LI("SENDTAGS::notify send to others:%s\n", users.c_str());
                                 mmsg._tags = SENDTAGS::notify;//send to room other members;
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
@@ -215,15 +215,11 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     
     //@Eric
     //* 2, Add member to RoomList.
-    if (!it->second->AddMemberToRoom(mmsg._from)) {
-        assert(false);
-    }
-    //m_pHttpSvrConn->HttpInsertUserMeetingRoom(sign, meetingid);
-    
+    it->second->AddMemberToRoom(mmsg._from);
 
     //@Eric
     //* 3, Notify Other members, i'm online.
-    if (!it->second->GetRoomMemberInJson(mmsg._from, users)) {
+    if (!it->second->GetRoomMemberMeetingJson(mmsg._from, users)) {
         if (users.length()>0) {
             LI("notify users :%s i am in room\n", users.c_str());
             mmsg._cont = mmsg._from + " enter room!";
@@ -272,15 +268,9 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 1, Remove myself in Room MemberList;
     //
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
-    if (it == m_meetingRoomMap.end()) { // meeting not exists
-        LE("% Room %s not exists, you can not leave\n", mmsg._room.c_str(), __FUNCTION__);
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    } else {
-        if (!it->second->DelMemberFmRoom(mmsg._from)) {
-            assert(false);
+    if (it != m_meetingRoomMap.end()) {
+        if (it->second) {
+            it->second->UpdateMemberStatus(mmsg._from, RTMeetingRoom::MemberStatus::MS_OUTMEETING);
         }
     }
     //@Eric
@@ -289,7 +279,7 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     users.assign("");
     res.assign("");
     resp.assign("");
-    if (!it->second->GetRoomMemberInJson(mmsg._from, users)) {
+    if (!it->second->GetRoomMemberMeetingJson(mmsg._from, users)) {
         if (users.length()>0) {
             LI("notify users :%s i am out room\n", users.c_str());
             mmsg._cont = mmsg._from + " leave room!";
@@ -299,13 +289,13 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     }
     
     //@Eric
-    //* 3, Check size of Room MemberList is 0?
+    //* 3, Check size of Room MemberList offline is 0?
     // If 0, maybe release this room?
     // If GetMembersStatus is Waitting, need waitting for http response!!!
     if (it->second->GetGetMembersStatus()==RTMeetingRoom::GetMembersStatus::GMS_WAITTING) {
         //send wait event
     }
-    
+    it->second->DelNotifyMsg(mmsg._from);
     //@Eric
     //* 4, Leave room done!
     // Need send back event to client?
@@ -314,7 +304,7 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     mmsg._cont = "you leave room!";
     GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
     SendTransferData(resp, (int)resp.length());
-    it->second->DelNotifyMsg(mmsg._from);
+    
 }
 
 void RTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
@@ -322,15 +312,15 @@ void RTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& 
     //@Eric
     //* 1, Update room member list.
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
-    if (it == m_meetingRoomMap.end()) { // meeting not exists
-        assert(false);  // Maybe has some error!!!
-    } else {
+    if (it != m_meetingRoomMap.end()) { // meeting not exists
+        
         MEETINGMEMBERLIST memList;
         std::string err;
         memList.GetMsg(data, err);
         if (err.length()==0) {
             it->second->UpdateMemberList(memList._uslist);
         } else {
+            assert(false);
             LE("OnGetMemberList error:%s\n", err.c_str());
         }
     }
@@ -431,8 +421,7 @@ void RTRoomManager::CheckMembers()
     }
     MeetingRoomMap::iterator it = m_meetingRoomMap.begin();
     for (; it!=m_meetingRoomMap.end(); it++) {
-        rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-        LI("meetingRoom roomMember:%d\n", meetingRoom->GetRoomMemberNumber());
+        LI("meetingRoom roomMember:%d, online:%d\n", it->second->GetRoomMemberNumber(), it->second->GetRoomMemberOnline());
     }
 #endif
 }
@@ -446,6 +435,13 @@ void RTRoomManager::ClearSessionLost(const std::string& uid)
 {
     if (m_meetingRoomMap.size()==0) {
         return;
+    }
+    MeetingRoomMap::iterator it = m_meetingRoomMap.begin();
+    for (; it!=m_meetingRoomMap.end(); it++) {
+        if (it->second && it->second->IsMemberInRoom(uid)) {
+            it->second->UpdateMemberStatus(uid, RTMeetingRoom::MemberStatus::MS_OUTMEETING);
+            break;
+        }
     }
     
 }

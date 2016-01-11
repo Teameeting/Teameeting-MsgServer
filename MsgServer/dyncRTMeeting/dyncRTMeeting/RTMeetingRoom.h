@@ -63,24 +63,21 @@ public:
     
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
     
-    bool AddMemberToRoom(const std::string uid);
+    void AddMemberToRoom(const std::string uid);
+    void UpdateMemberStatus(const std::string& uid, MemberStatus status);
     bool IsMemberInRoom(const std::string uid);
-    bool DelMemberFmRoom(const std::string uid);
-    bool AddMemberToSession(const std::string sid, const std::string uid);
-    bool DelMemberFmSession(const std::string sid, const std::string uid);
+    void DelMemberFmRoom(const std::string uid);
     int  GetRoomMemberNumber() { return (int)m_roomMembers.size(); }
+    int  GetRoomMemberOnline();
     
-    
-    void CreateSession();
-    void DestroySession();
     void SetGetMembersStatus(GetMembersStatus status){ m_eGetMembersStatus = status; }
     GetMembersStatus GetGetMembersStatus() { return m_eGetMembersStatus; }
-    void UpdateMemberStatus(const std::string& uid, MemberStatus status);
+    
     void AddUserToList(const std::string& userid);
     void UpdateMemberList(std::list<const std::string>& ulist);
     
-    int GetRoomMemberInJson(const std::string from, std::string& users);
-    int GetRoomMemberMeetingInJson(const std::string from, std::string& users);
+    int GetRoomMemberJson(const std::string from, std::string& users);
+    int GetRoomMemberMeetingJson(const std::string from, std::string& users);
     
     int AddNotifyMsg(const std::string pubsher, const std::string msg);
     int DelNotifyMsg(const std::string pubsher);
@@ -90,7 +87,6 @@ public:
     
     const std::string& GetOwnerId() { return m_ownerId; }
     const std::string& GetSessionId() { return m_sessionId; }
-    
     
 public:
     void CheckMembers();

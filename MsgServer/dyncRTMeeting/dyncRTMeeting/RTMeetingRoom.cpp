@@ -45,16 +45,15 @@ RTMeetingRoom::~RTMeetingRoom()
     m_roomMembers.clear();
 }
 
-bool RTMeetingRoom::AddMemberToRoom(const std::string uid)
+void RTMeetingRoom::AddMemberToRoom(const std::string uid)
 {
     OSMutexLocker locker(&m_mutex);
     RoomMembers::iterator rit = m_roomMembers.find(uid);
-    if (rit==m_roomMembers.end()) {
+    if (rit!=m_roomMembers.end()) {
+        rit->second->_memStatus = MS_INMEETING;
+    } else {
         m_roomMembers.insert(make_pair(uid, new RoomMember(uid, MS_INMEETING)));
         LI("user: %s ADDOK room: %s\n", uid.c_str(), m_roomId.c_str());
-        return true;
-    } else {
-        return false;
     }
 }
 
@@ -68,23 +67,20 @@ bool RTMeetingRoom::IsMemberInRoom(const std::string uid)
 }
 
 
-bool RTMeetingRoom::DelMemberFmRoom(const std::string uid)
+void RTMeetingRoom::DelMemberFmRoom(const std::string uid)
 {
     OSMutexLocker locker(&m_mutex);
     RoomMembers::iterator rit = m_roomMembers.find(uid);
-    if (rit==m_roomMembers.end()) {
-        return false;
-    } else {
+    if (rit!=m_roomMembers.end()) {
         if (rit->second) {
             delete rit->second;
             rit->second = NULL;
         }
         m_roomMembers.erase(rit);
-        return true;
     }
 }
 
-int RTMeetingRoom::GetRoomMemberInJson(const std::string from, std::string& users)
+int RTMeetingRoom::GetRoomMemberJson(const std::string from, std::string& users)
 {
     OSMutexLocker locker(&m_mutex);
     if (m_roomMembers.size()==0) {
@@ -103,7 +99,7 @@ int RTMeetingRoom::GetRoomMemberInJson(const std::string from, std::string& user
     return 0;
 }
 
-int RTMeetingRoom::GetRoomMemberMeetingInJson(const std::string from, std::string& users)
+int RTMeetingRoom::GetRoomMemberMeetingJson(const std::string from, std::string& users)
 {
     OSMutexLocker locker(&m_mutex);
     if (m_roomMembers.size()==0) {
@@ -130,6 +126,19 @@ void RTMeetingRoom::UpdateMemberStatus(const std::string& uid, MemberStatus stat
         rit->second->_memStatus = status;
         LI("UpdateMemberStatus member %s status:%d\n", uid.c_str(), status);
     }
+}
+
+int RTMeetingRoom::GetRoomMemberOnline()
+{
+    int online = 0;
+    RoomMembers::iterator rit = m_roomMembers.begin();
+    for (; rit!=m_roomMembers.end(); rit++) {
+        if (rit->second && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
+            online++;
+        }
+    }
+    LI("room members:%d, online member:%d\n", m_roomMembers.size(), online);
+    return online;
 }
 
 void RTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
