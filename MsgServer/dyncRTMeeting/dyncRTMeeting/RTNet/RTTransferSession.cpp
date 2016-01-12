@@ -21,6 +21,9 @@ RTTransferSession::RTTransferSession()
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
+, m_lastUpdateTime(0)
+, m_moduleId("")
+, m_transferSessId("")
 {
     AddObserver(this);
 }
@@ -78,6 +81,7 @@ void RTTransferSession::Disconn()
 bool RTTransferSession::RefreshTime()
 {
     UInt64 now = OS::Milliseconds();
+    LE("RTTransferSession::RefreshTime now:%llu, lastTime:%llu\n", now, m_lastUpdateTime);
     if (m_lastUpdateTime <= now) {
         m_lastUpdateTime = now  + TIMEOUT_TS;
         RTTcp::UpdateTimer();

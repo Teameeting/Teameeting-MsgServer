@@ -39,6 +39,7 @@ public:
     void ServerConnected();
     void ServerDisconnect();
     void ServerConnectionFailure();
+    void ServerState(MSTcpState state);
     
 protected:
     int DecodeLogin(MEETMSG& msg);

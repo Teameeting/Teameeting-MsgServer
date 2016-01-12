@@ -9,6 +9,9 @@ RTHttpSender::RTHttpSender(void)
 , m_nBufLen(0)
 , m_nBufOffset(0)
 , m_method(HTTP_POST)
+, m_cmd(_http_cmd_invalid)
+, m_transmsg()
+, m_meetmsg()
 {
     SetTimer(20*1000);
 	m_nBufLen = kRequestBufferSizeInBytes;

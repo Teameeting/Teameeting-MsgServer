@@ -47,6 +47,7 @@ public:
     virtual void OnServerConnected();
     virtual void OnServerDisconnect();
     virtual void OnServerConnectionFailure();
+    virtual void OnServerState(TcpState state);
     
     virtual void OnTick();
     virtual void OnMessageSent(int err);

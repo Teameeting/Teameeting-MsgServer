@@ -18,6 +18,7 @@ RTTransferSession::RTTransferSession()
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
+, m_transferSessId("")
 {
     AddObserver(this);
 }

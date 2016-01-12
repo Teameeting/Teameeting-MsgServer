@@ -34,6 +34,9 @@ public:
                     break;
                 case MEETCMD::dcomm:
                     LOG(INFO) << mmsg._cont;
+                    if (mmsg._tags==notify) {
+                        LOG(INFO) << "RECV TAGS:" << mmsg._cont;
+                    }
                     break;
             }
         } else if (mmsg._messagetype==MESSAGETYPE::response) {
@@ -78,6 +81,10 @@ public:
     virtual void OnMsgServerConnectionFailure() {
         LOG(INFO) << __FUNCTION__ << " was called";
     }
+    
+    virtual void OnMsgServerState(MSTcpState state) {
+        LOG(INFO) << __FUNCTION__ << " was called, state:" << state;
+    }
 
     virtual ~MsgServerCallback(){}
 };
@@ -103,8 +110,9 @@ int main(int argc, const char * argv[]) {
     while (1) {
         //LOG(INFO) << "pClient->Status:" << client.Status();
         client.SndMsg(roomid, msg);
+        client.NotifyMsg(roomid, "tagstagstagstags");
         rtc::Thread::SleepMs(3000);
-        break;
+        //break;
     }
     client.OptRoom(MEETCMD::leave, roomid, "");
     rtc::Thread::SleepMs(3000);

@@ -264,6 +264,11 @@ void XMsgProcesser::ServerConnectionFailure()
     m_callback.OnMsgServerConnectionFailure();
 }
 
+void XMsgProcesser::ServerState(MSTcpState state)
+{
+    m_callback.OnMsgServerState(state);
+}
+
 long long XMsgProcesser::GenericTransSeq()
 {
     return ++g_msgs_id;

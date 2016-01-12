@@ -63,10 +63,11 @@ public:
     
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
     
-    void AddMemberToRoom(const std::string uid);
+    void AddMemberToRoom(const std::string& uid, MemberStatus status);
+    void SyncRoomMember(const std::string& uid, MemberStatus status);
     void UpdateMemberStatus(const std::string& uid, MemberStatus status);
-    bool IsMemberInRoom(const std::string uid);
-    void DelMemberFmRoom(const std::string uid);
+    bool IsMemberInRoom(const std::string& uid);
+    void DelMemberFmRoom(const std::string& uid);
     int  GetRoomMemberNumber() { return (int)m_roomMembers.size(); }
     int  GetRoomMemberOnline();
     

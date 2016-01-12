@@ -75,21 +75,16 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
     std::string res, users, resp;
     mmsg._ntime = OS::Milliseconds();
-    if (mmsg._from.length()==0 || mmsg._room.length()==0 || mmsg._to.length()==0) {
+    if (mmsg._room.length()==0) {
         LE("invalid params error\n");
         ChangeToJson(mmsg._from, users);
         GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
         SendTransferData(resp, (int)resp.length());
         return;
     }
+    LI("HandleDcommRoom from:%s, cont:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
-    if (it == m_meetingRoomMap.end()) { // meeting not exists
-        LE("Room not exists\n");
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_nexistroom, users, GetRTCommStatus(RTCommCode::_nexistroom), resp);
-        SendTransferData(resp, (int)resp.length());
-        return;
-    } else { // meeting has exists
+    if (it != m_meetingRoomMap.end()) {
         switch (mmsg._action) {
             case DCOMMACTION::msend:
             {
@@ -104,10 +99,12 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
                             if (meetingRoom->GetGetMembersStatus()!=RTMeetingRoom::GetMembersStatus::GMS_DONE) {
                                 //store message
+                                LI("=======HandleDcommRoom=========GetGetMembersStatus WAITING...\n");
                                 meetingRoom->AddMsgToWaiting(mmsg);
                                 return;
                             }
                             if (!meetingRoom->GetRoomMemberMeetingJson(mmsg._from, users)) {
+                                LI("=========>>>HandleDcommRoom from:%s, to users:%s\n", mmsg._from.c_str(), users.c_str());
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
                                 if (m_pHttpSvrConn) {
@@ -117,6 +114,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                                 }
                                 return;
                             } else {
+                                LE("=======HandleDcommRoom========= no member in room, users:%s\n", users.c_str());
                                 // no member in room
                             }
                         } else if (mmsg._to.at(0)=='u') {
@@ -203,19 +201,20 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         
         //@Eric
         //* Get room member list from httpSvr.
+        //* Set GetMembersStatus to Waitting.
         if (m_pHttpSvrConn) {
             m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
+            it->second->SetGetMembersStatus(RTMeetingRoom::GMS_WAITTING);
         } else {
             LE("EnterRoom m_pHttpSvrConn is NULL\n");
+            assert(false);
         }
-        //@Eric
-        //* Set GetMembersStatus to Waitting.
-        it->second->SetGetMembersStatus(RTMeetingRoom::GMS_WAITTING);
     }
     
     //@Eric
     //* 2, Add member to RoomList.
-    it->second->AddMemberToRoom(mmsg._from);
+    LI("EnterRoom add %s to Room, set status inmeeting\n", mmsg._from.c_str());
+    it->second->AddMemberToRoom(mmsg._from, RTMeetingRoom::MemberStatus::MS_INMEETING);
 
     //@Eric
     //* 3, Notify Other members, i'm online.
@@ -312,8 +311,7 @@ void RTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& 
     //@Eric
     //* 1, Update room member list.
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
-    if (it != m_meetingRoomMap.end()) { // meeting not exists
-        
+    if (it != m_meetingRoomMap.end()) {
         MEETINGMEMBERLIST memList;
         std::string err;
         memList.GetMsg(data, err);

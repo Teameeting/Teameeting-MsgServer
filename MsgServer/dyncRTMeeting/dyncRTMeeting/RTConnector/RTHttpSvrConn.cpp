@@ -8,6 +8,9 @@ RTHttpSvrConn::RTHttpSvrConn(void)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
+, m_httpHost("")
+, m_httpIp("")
+, m_httpPort(0)
 {
 	m_nBufLen = kRequestBufferSizeInBytes;
 	m_pBuffer = new char[m_nBufLen];

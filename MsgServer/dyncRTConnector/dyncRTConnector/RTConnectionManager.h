@@ -160,7 +160,10 @@ public:
     std::string& ConnectorPort() { return m_connectorPort; }
     std::string& ConnectorId() { return m_connectorId; }
 private:
-    RTConnectionManager() : m_lastUpdateTime("RTConnectionManager") { }
+    RTConnectionManager() : m_connectorIp(""),
+                            m_connectorPort(""),
+                            m_connectorId(""),
+                            m_lastUpdateTime("RTConnectionManager") { }
     ~RTConnectionManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;

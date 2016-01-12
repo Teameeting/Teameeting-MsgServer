@@ -11,6 +11,13 @@
 
 #include <string>
 
+enum MSTcpState{
+    MSNOT_CONNECTED,
+    MSRESOLVING,
+    MSCONNECTTING,
+    MSCONNECTED
+};
+
 class XMsgCallback {
 public:
     virtual void OnSndMsg(const std::string& msg) = 0;
@@ -20,6 +27,7 @@ public:
     virtual void OnMsgServerConnected() = 0;
     virtual void OnMsgServerDisconnect() = 0;
     virtual void OnMsgServerConnectionFailure() = 0;
+    virtual void OnMsgServerState(MSTcpState state) = 0;
 protected:
     virtual ~XMsgCallback(){}
 };
