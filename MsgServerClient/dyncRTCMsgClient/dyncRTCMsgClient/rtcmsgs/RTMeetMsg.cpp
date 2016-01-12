@@ -13,6 +13,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
+#include "RTMsgCommon.h"
 
 std::string MEETMSG::ToJson()
 {
@@ -22,6 +23,8 @@ std::string MEETMSG::ToJson()
     
     jDoc.SetObject();
     jDoc.AddMember("mtype", MEETMSG::_mtype, jDoc.GetAllocator());
+    jDoc.AddMember("messagetype", MEETMSG::_messagetype, jDoc.GetAllocator());
+    jDoc.AddMember("signaltype", MEETMSG::_signaltype, jDoc.GetAllocator());
     jDoc.AddMember("cmd", MEETMSG::_cmd, jDoc.GetAllocator());
     jDoc.AddMember("action", MEETMSG::_action, jDoc.GetAllocator());
     jDoc.AddMember("tags", MEETMSG::_tags, jDoc.GetAllocator());
@@ -31,7 +34,6 @@ std::string MEETMSG::ToJson()
     jDoc.AddMember("mseq", MEETMSG::_mseq, jDoc.GetAllocator());
     jDoc.AddMember("from", MEETMSG::_from.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("room", MEETMSG::_room.c_str(), jDoc.GetAllocator());
-    jDoc.AddMember("sess", MEETMSG::_sess.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("to", MEETMSG::_to.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("cont", MEETMSG::_cont.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("pass", MEETMSG::_pass.c_str(), jDoc.GetAllocator());
@@ -52,7 +54,7 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign("parse error");
+        err.assign(INVALID_JSON_PARAMS);
         return;
     }
     if(!(jsonReqDoc.HasMember("mtype") && jsonReqDoc["mtype"].IsInt()))
@@ -61,6 +63,18 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _mtype = (MSGTYPE)jsonReqDoc["mtype"].GetInt();
+    if(!(jsonReqDoc.HasMember("messagetype") && jsonReqDoc["messagetype"].IsInt()))
+    {
+        err.assign("parse messagetype error");
+        return;
+    }
+    _messagetype = (MESSAGETYPE)jsonReqDoc["messagetype"].GetInt();
+    if(!(jsonReqDoc.HasMember("signaltype") && jsonReqDoc["signaltype"].IsInt()))
+    {
+        err.assign("parse signaltype error");
+        return;
+    }
+    _signaltype = jsonReqDoc["signaltype"].GetInt();
     if(!(jsonReqDoc.HasMember("cmd") && jsonReqDoc["cmd"].IsInt()))
     {
         err.assign("parse cmd error");
@@ -117,12 +131,6 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _room = jsonReqDoc["room"].GetString();
-    if(!(jsonReqDoc.HasMember("sess") && jsonReqDoc["sess"].IsString()))
-    {
-        err.assign("parse sess error");
-        return;
-    }
-    _sess = jsonReqDoc["sess"].GetString();
     if(!(jsonReqDoc.HasMember("to") && jsonReqDoc["to"].IsString()))
     {
         err.assign("parse to error");

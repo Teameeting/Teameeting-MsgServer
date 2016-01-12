@@ -164,7 +164,7 @@ obj/local/armeabi/objs/rtcmsgclient-android/rtcmsgs/RTMeetMsg.o: \
  rapidjson/writer.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdio \
  rapidjson/stringbuffer.h rapidjson/rapidjson.h rapidjson/prettywriter.h \
- rapidjson/writer.h
+ rapidjson/writer.h RTMsgCommon.h
 
 /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stdio.h:
 
@@ -505,3 +505,5 @@ rapidjson/rapidjson.h:
 rapidjson/prettywriter.h:
 
 rapidjson/writer.h:
+
+RTMsgCommon.h:

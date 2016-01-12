@@ -22,6 +22,8 @@ RTTransferSession::RTTransferSession()
 , m_nBufLen(0)
 , m_nBufOffset(0)
 , m_lastUpdateTime(0)
+, m_moduleId("")
+, m_transferSessId("")
 {
     AddObserver(this);
 }

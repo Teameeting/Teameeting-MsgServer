@@ -33,17 +33,25 @@ XMsgClient::~XMsgClient()
 
 int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string& token, const std::string& server, int port, bool bAutoConnect)
 {
+    if (!m_pMsgProcesser) {
+        m_pMsgProcesser = new XMsgProcesser(cb, *this);
+    }
+    if (!m_pMsgProcesser) {
+        return -1;
+    }
+    
     if (!m_pClient) {
         m_pClient = XTcpClient::Create(*this);
     }
     if (!m_pClient) {
+        if (m_pMsgProcesser) {
+            delete m_pMsgProcesser;
+            m_pMsgProcesser = NULL;
+        }
         return -1;
     }
     m_pClient->Connect(server, port, bAutoConnect);
-    m_pMsgProcesser = new XMsgProcesser(cb, *this);
-    if (!m_pMsgProcesser) {
-        return -1;
-    }
+    
     m_Uid = uid;
     m_Token = token;
     return 0;
@@ -51,12 +59,12 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
 
 int XMsgClient::Unin()
 {
-    if (m_pMsgProcesser) {
-        delete m_pMsgProcesser;
-        m_pMsgProcesser = NULL;
-    }
     if (m_pClient) {
         m_pClient->Disconnect();
+        if (m_pMsgProcesser) {
+            delete m_pMsgProcesser;
+            m_pMsgProcesser = NULL;
+        }
         delete m_pClient;
         m_pClient = NULL;
     }
@@ -80,11 +88,11 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& msg)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::GetMsg()
+int XMsgClient::GetMsg(GETCMD cmd)
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeGetMsg(outstr, m_Uid, m_Token);
+        m_pMsgProcesser->EncodeGetMsg(outstr, m_Uid, m_Token, cmd);
     } else {
         return -1;
     }
@@ -258,6 +266,14 @@ void XMsgClient::OnServerConnectionFailure()
     }
 }
 
+void XMsgClient::OnServerState(TcpState state)
+{
+    LOG(INFO) << __FUNCTION__ << " was called";
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerState((MSTcpState)state);
+    }
+}
+
 void XMsgClient::OnTick()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
@@ -309,5 +325,9 @@ void XMsgClient::OnLogin(int code, const std::string& status, const std::string&
     if (code!=0) {
         Login();
     }
-    Login();
+}
+
+void XMsgClient::OnLogout(int code, const std::string& status, const std::string& userid)
+{
+    
 }

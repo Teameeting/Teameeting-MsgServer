@@ -18,12 +18,12 @@
 #include "refcount.h"
 #include "scoped_ptr.h"
 #include "scoped_ref_ptr.h"
-#include "RTRoomSession.h"
 #include "OSMutex.h"
+#include "RTMeetMsg.h"
 
 class RTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<RTMeetingRoom> >{
 public:
-    RTMeetingRoom(const std::string mid, const std::string ownerid);
+    RTMeetingRoom(const std::string sid, const std::string mid, const std::string ownerid);
     ~RTMeetingRoom();
     
     typedef struct _notify_msgs{
@@ -39,6 +39,22 @@ public:
         }
     }NotifyMsg;
     
+    typedef enum _member_status{
+        MS_NIL=0,
+        MS_INMEETING,
+        MS_OUTMEETING,
+    }MemberStatus;
+    
+    typedef struct _room_member{
+        std::string _uid;
+        MemberStatus  _memStatus;
+        _room_member(const std::string& uid, MemberStatus memStatus) {
+            _uid = uid;
+            _memStatus = memStatus;
+        }
+    }RoomMember;
+    typedef std::map<const std::string, RoomMember*> RoomMembers;
+    
     typedef enum _get_members_status {
         GMS_NIL = 0,
         GMS_WAITTING,
@@ -47,35 +63,31 @@ public:
     
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
     
-    bool AddMemberToRoom(const std::string uid);
-    bool IsMemberInRoom(const std::string uid);
-    bool DelMemberFmRoom(const std::string uid);
-    bool AddMemberToSession(const std::string sid, const std::string uid);
-    bool DelMemberFmSession(const std::string sid, const std::string uid);
-    int  GetRoomMemberNumber() { return (int)m_roomMemList.count; }
-    int  GetSesssionMemberNumber() {
-        if (m_pRoomSession)
-            return m_pRoomSession->GetSessionMemberNumber();
-        else
-            return 0;
-    }
-    const std::string& GetSessionId() { return m_sessionId; }
-    void CreateSession();
-    void DestroySession();
-    void SetGetMembersStatus(GetMembersStatus status){m_eGetMembersStatus = status;};
-    void UpdateUserList(std::list<const std::string>& ulist);
-    void AddUserToList(const std::string& userid);
+    void AddMemberToRoom(const std::string& uid, MemberStatus status);
+    void SyncRoomMember(const std::string& uid, MemberStatus status);
+    void UpdateMemberStatus(const std::string& uid, MemberStatus status);
+    bool IsMemberInRoom(const std::string& uid);
+    void DelMemberFmRoom(const std::string& uid);
+    int  GetRoomMemberNumber() { return (int)m_roomMembers.size(); }
+    int  GetRoomMemberOnline();
     
-    int GetRoomMemberInJson(const std::string from, std::string& users);
-    int GetSessionMemberInJson(const std::string from, std::string& users) { if(m_pRoomSession) return m_pRoomSession->GetMembersInJson(from, users); else return 0; }
-    void ClearLostMember(const std::string& userid) { if (m_pRoomSession) m_pRoomSession->ClearLostMember(userid); }
+    void SetGetMembersStatus(GetMembersStatus status){ m_eGetMembersStatus = status; }
+    GetMembersStatus GetGetMembersStatus() { return m_eGetMembersStatus; }
+    
+    void AddUserToList(const std::string& userid);
+    void UpdateMemberList(std::list<const std::string>& ulist);
+    
+    int GetRoomMemberJson(const std::string from, std::string& users);
+    int GetRoomMemberMeetingJson(const std::string from, std::string& users);
     
     int AddNotifyMsg(const std::string pubsher, const std::string msg);
     int DelNotifyMsg(const std::string pubsher);
     RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
+    void AddMsgToWaiting(MEETMSG msg);
+    void SendWaitingMsgs();
     
     const std::string& GetOwnerId() { return m_ownerId; }
-    
+    const std::string& GetSessionId() { return m_sessionId; }
     
 public:
     void CheckMembers();
@@ -84,17 +96,17 @@ private:
     int GenericNotifySeq();
     void GenericMeetingSessionId(std::string& strId);
     
-    
     OSMutex                         m_mutex;
     OSMutex                         m_notifyMutex;
+    OSMutex                         m_waitingMutex;
     const std::string               m_roomId;
     const std::string               m_ownerId;
     std::string                     m_sessionId;
-    RTRoomSession                   *m_pRoomSession;
     GetMembersStatus                m_eGetMembersStatus;
-    List                            m_roomMemList;
+    RoomMembers                     m_roomMembers;
     int                             m_maxRoomMem;
     RoomNotifyMsgs                  m_roomNotifyMsgs;
+    std::list<MEETMSG>              m_waitingMsgs;
     
 };
 #endif /* defined(__dyncRTMeeting__RTMeetingRoom__) */

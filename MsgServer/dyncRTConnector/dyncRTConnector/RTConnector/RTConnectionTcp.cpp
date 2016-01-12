@@ -38,14 +38,14 @@ int RTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg)
 
 void RTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, const std::string& status, std::string& resp)
 {
-    SIGNALMSG s_msg;
     MEETMSG m_msg;
     
     m_msg._mtype = mtype;
+    m_msg._messagetype = MESSAGETYPE::response;
+    m_msg._signaltype = stype;
     m_msg._cmd = 0;
     m_msg._from = "";
     m_msg._room = "";
-    m_msg._sess = "";
     m_msg._to = "";
     m_msg._action = 0;
     m_msg._tags = 0;
@@ -58,22 +58,7 @@ void RTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long
     m_msg._nmem = 0;
     m_msg._ntime = OS::Milliseconds();
     
-    if (stype == SIGNALTYPE::reqkeepalive) {
-        s_msg._stype = SIGNALTYPE::respkeepalive;
-    }else if (stype == SIGNALTYPE::reqsndmsg) {
-        s_msg._stype = SIGNALTYPE::respsndmsg;
-    }else if (stype == SIGNALTYPE::reqgetmsg) {
-        s_msg._stype = SIGNALTYPE::respgetmsg;
-    }else if (stype == SIGNALTYPE::reqlogin) {
-        s_msg._stype = SIGNALTYPE::resplogin;
-    }else if (stype == SIGNALTYPE::reqlogout) {
-        s_msg._stype = SIGNALTYPE::resplogout;
-    }else {
-        s_msg._stype = SIGNALTYPE::signaltype_invalid;
-    }
-    s_msg._scont = m_msg.ToJson();
-    
-    resp = s_msg.ToJson();
+    resp = m_msg.ToJson();
 }
 
 //* For RCTcp
@@ -164,7 +149,7 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
         } else {
             LE("new ConnectionInfo error!!!\n");
             std::string resp;
-            GenericResponse(SIGNALTYPE::reqlogin, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, GetRTCommStatus(RTCommCode::_errconninfo), resp);
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, GetRTCommStatus(RTCommCode::_errconninfo), resp);
             SendResponse(0, resp.c_str());
             return;
 
@@ -174,7 +159,7 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
     {
         // send response
         std::string resp;
-        GenericResponse(SIGNALTYPE::reqlogin, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+        GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
         SendResponse(0, resp.c_str());
         return;
     }
@@ -185,7 +170,7 @@ void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUseri
     if (!pData) {
         LE("%s invalid params\n", __FUNCTION__);
         std::string resp;
-        GenericResponse(SIGNALTYPE::reqsndmsg, mType, mseq, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
+        GenericResponse(SIGNALTYPE::sndmsg, mType, mseq, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
         SendResponse(0, resp.c_str());
         return;
     }
@@ -217,13 +202,13 @@ void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUseri
     } else {
         LE("pmi->pModule is NULL\n");
         std::string resp;
-        GenericResponse(SIGNALTYPE::reqsndmsg, mType, mseq, RTCommCode::_errmoduinfo, GetRTCommStatus(RTCommCode::_errmoduinfo), resp);
+        GenericResponse(SIGNALTYPE::sndmsg, mType, mseq, RTCommCode::_errmoduinfo, GetRTCommStatus(RTCommCode::_errmoduinfo), resp);
         SendResponse(0, resp.c_str());
         return;
     }
     {
         std::string resp;
-        GenericResponse(SIGNALTYPE::reqsndmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+        GenericResponse(SIGNALTYPE::sndmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
         SendResponse(0, resp.c_str());
         return;
     }
@@ -232,7 +217,7 @@ void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUseri
 void RTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
 {
     std::string resp;
-    GenericResponse(SIGNALTYPE::reqgetmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+    GenericResponse(SIGNALTYPE::getmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
     SendResponse(0, resp.c_str());
     return;
 }
@@ -243,7 +228,7 @@ void RTConnectionTcp::OnLogout(const char* pUserid)
     RTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, uid);
     m_userId = "";
     std::string resp;
-    GenericResponse(SIGNALTYPE::reqlogout, MSGTYPE::meeting, 1, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+    GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
     SendResponse(0, resp.c_str());
     return;
 }
@@ -254,7 +239,7 @@ void RTConnectionTcp::OnKeepAlive(const char *pUserid)
     RTTcp::UpdateTimer();
     {
         std::string resp;
-        GenericResponse(SIGNALTYPE::reqkeepalive, MSGTYPE::meeting, 2, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+        GenericResponse(SIGNALTYPE::keepalive, MSGTYPE::meeting, 2, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
         SendResponse(0, resp.c_str());
         return;
     }

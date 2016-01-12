@@ -114,6 +114,7 @@ bool RTConnectionManager::DelModuleInfo(const std::string& sid)
     if (it!=GetModuleInfo()->end()) {
         pmi = it->second;
         if (pmi && pmi->othModuleType == TRANSFERMODULE::mmsgqueue) {
+            LE("RTConnectionManager::DelModuleInfo sid:%s\n", sid.c_str());
             RTRoomManager::Instance()->ClearMsgQueueSession(sid);
         }
         GetModuleInfo()->erase(sid);

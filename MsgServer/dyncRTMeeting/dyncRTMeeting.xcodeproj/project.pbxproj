@@ -25,7 +25,7 @@
 		E6806CDA1C06DAAC00C4AF8A /* RTTcp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6806C291C06DAAA00C4AF8A /* RTTcp.cpp */; };
 		E6806D011C06DB3900C4AF8A /* RTMeeting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6806CFF1C06DB3900C4AF8A /* RTMeeting.cpp */; };
 		E699C0BB1C3CDE870006DCEE /* RTHttpMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E699C0BA1C3CDE870006DCEE /* RTHttpMsg.cpp */; };
-		E6FEA48D1C1E679D00128D45 /* RTRoomSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FEA48B1C1E679D00128D45 /* RTRoomSession.cpp */; };
+		E699C0CB1C4266430006DCEE /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E699C0C91C4266430006DCEE /* RTSignalMsg.cpp */; };
 		E6FEA4901C1EC51500128D45 /* RTConnHttp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FEA48E1C1EC51500128D45 /* RTConnHttp.cpp */; };
 		E6FEA4931C1EC51D00128D45 /* RTHttpSvrConn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FEA4911C1EC51D00128D45 /* RTHttpSvrConn.cpp */; };
 /* End PBXBuildFile section */
@@ -80,10 +80,11 @@
 		E6806D001C06DB3900C4AF8A /* RTMeeting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMeeting.h; sourceTree = "<group>"; };
 		E699C0B91C3CC5030006DCEE /* RTHttpMsg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTHttpMsg.h; sourceTree = "<group>"; };
 		E699C0BA1C3CDE870006DCEE /* RTHttpMsg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTHttpMsg.cpp; sourceTree = "<group>"; };
+		E699C0C91C4266430006DCEE /* RTSignalMsg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTSignalMsg.cpp; sourceTree = "<group>"; };
+		E699C0CA1C4266430006DCEE /* RTSignalMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSignalMsg.h; sourceTree = "<group>"; };
+		E699C0CC1C426FCC0006DCEE /* RTHttpCmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTHttpCmd.h; sourceTree = "<group>"; };
 		E6A886581C3946E8005C619C /* StatusCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCode.h; sourceTree = "<group>"; };
 		E6A8865C1C3A5008005C619C /* RTMsgCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
-		E6FEA48B1C1E679D00128D45 /* RTRoomSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTRoomSession.cpp; sourceTree = "<group>"; };
-		E6FEA48C1C1E679D00128D45 /* RTRoomSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTRoomSession.h; sourceTree = "<group>"; };
 		E6FEA48E1C1EC51500128D45 /* RTConnHttp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTConnHttp.cpp; sourceTree = "<group>"; };
 		E6FEA48F1C1EC51500128D45 /* RTConnHttp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTConnHttp.h; sourceTree = "<group>"; };
 		E6FEA4911C1EC51D00128D45 /* RTHttpSvrConn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTHttpSvrConn.cpp; sourceTree = "<group>"; };
@@ -163,8 +164,7 @@
 				E62B56961C1813EF00000672 /* RTMeetingRoom.h */,
 				E62B56981C18151C00000672 /* RTRoomManager.cpp */,
 				E62B56991C18151C00000672 /* RTRoomManager.h */,
-				E6FEA48B1C1E679D00128D45 /* RTRoomSession.cpp */,
-				E6FEA48C1C1E679D00128D45 /* RTRoomSession.h */,
+				E699C0CC1C426FCC0006DCEE /* RTHttpCmd.h */,
 			);
 			path = dyncRTMeeting;
 			sourceTree = "<group>";
@@ -194,6 +194,8 @@
 		E6806C231C06DAAA00C4AF8A /* RTFactors */ = {
 			isa = PBXGroup;
 			children = (
+				E699C0C91C4266430006DCEE /* RTSignalMsg.cpp */,
+				E699C0CA1C4266430006DCEE /* RTSignalMsg.h */,
 				E6FEA48E1C1EC51500128D45 /* RTConnHttp.cpp */,
 				E6FEA48F1C1EC51500128D45 /* RTConnHttp.h */,
 				E62B567D1C1580BB00000672 /* RTMeetMsg.cpp */,
@@ -269,7 +271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E62B56971C1813EF00000672 /* RTMeetingRoom.cpp in Sources */,
-				E6FEA48D1C1E679D00128D45 /* RTRoomSession.cpp in Sources */,
 				E62B56871C15A9D800000672 /* RTConnectionManager.cpp in Sources */,
 				E6806CD91C06DAAC00C4AF8A /* RTHiredis.cpp in Sources */,
 				E62B566C1C1158B200000672 /* RTMessage.cpp in Sources */,
@@ -280,6 +281,7 @@
 				E62B567E1C1580BB00000672 /* RTMeetMsg.cpp in Sources */,
 				E6FEA4931C1EC51D00128D45 /* RTHttpSvrConn.cpp in Sources */,
 				E62B555B1C0D477500000672 /* RTTransfer.cpp in Sources */,
+				E699C0CB1C4266430006DCEE /* RTSignalMsg.cpp in Sources */,
 				E699C0BB1C3CDE870006DCEE /* RTHttpMsg.cpp in Sources */,
 				E6806D011C06DB3900C4AF8A /* RTMeeting.cpp in Sources */,
 				E62B569A1C18151C00000672 /* RTRoomManager.cpp in Sources */,

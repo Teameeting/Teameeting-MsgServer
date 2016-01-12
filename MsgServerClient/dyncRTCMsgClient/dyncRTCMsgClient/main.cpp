@@ -15,19 +15,58 @@
 class MsgServerCallback : public XMsgCallback{
 public:
     
-    virtual void OnReqSndMsg(const std::string& msg) {
-        LOG(INFO) << __FUNCTION__ << " msg:" << msg;
+    virtual void OnSndMsg(const std::string& msg) {
+        //LOG(INFO) << __FUNCTION__ << " msg:" << msg;
+        MEETMSG mmsg;
+        std::string err;
+        mmsg.GetMsg(msg, err);
+        if (err.length()>0) {
+            LOG(INFO) << "OnSndMsg err:" << err;
+            return;
+        }
+        if (mmsg._messagetype==MESSAGETYPE::request) {
+            switch(mmsg._cmd) {
+                case MEETCMD::enter:
+                    LOG(INFO) << mmsg._cont;
+                    break;
+                case MEETCMD::leave:
+                    LOG(INFO) << mmsg._cont;
+                    break;
+                case MEETCMD::dcomm:
+                    LOG(INFO) << mmsg._cont;
+                    if (mmsg._tags==notify) {
+                        LOG(INFO) << "RECV TAGS:" << mmsg._cont;
+                    }
+                    break;
+            }
+        } else if (mmsg._messagetype==MESSAGETYPE::response) {
+            switch(mmsg._cmd) {
+                case MEETCMD::enter:
+                    if (mmsg._code==0) {
+                        LOG(INFO) << mmsg._status << " ,cont:" << mmsg._cont;
+                    } else {
+                        LOG(INFO) << "code:" << mmsg._code << ", status:" << mmsg._status;
+                    }
+                    break;
+                case MEETCMD::leave:
+                    if (mmsg._code==0) {
+                        LOG(INFO) << mmsg._status << " ,cont:" << mmsg._cont;
+                    } else {
+                        LOG(INFO) << "code:" << mmsg._code << ", status:" << mmsg._status;
+                    }
+                    break;
+                case MEETCMD::dcomm:
+                    if (mmsg._code==0) {
+                        LOG(INFO) << mmsg._status << " ,cont:" << mmsg._cont;
+                    } else {
+                        LOG(INFO) << "code:" << mmsg._code << ", status:" << mmsg._status;
+                    }
+                    break;
+            }
+        }
     }
 
-    virtual void OnRespSndMsg(const std::string& msg) {
-        LOG(INFO) << __FUNCTION__ << " msg:" << msg;
-    }
-
-    virtual void OnReqGetMsg(const std::string& msg) {
-        LOG(INFO) << __FUNCTION__ << " msg:" << msg;
-    }
-
-    virtual void OnRespGetMsg(const std::string& msg) {
+    virtual void OnGetMsg(const std::string& msg) {
         LOG(INFO) << __FUNCTION__ << " msg:" << msg;
     }
     
@@ -41,6 +80,10 @@ public:
 
     virtual void OnMsgServerConnectionFailure() {
         LOG(INFO) << __FUNCTION__ << " was called";
+    }
+    
+    virtual void OnMsgServerState(MSTcpState state) {
+        LOG(INFO) << __FUNCTION__ << " was called, state:" << state;
     }
 
     virtual ~MsgServerCallback(){}
@@ -61,18 +104,17 @@ int main(int argc, const char * argv[]) {
     std::string roomid("400000000436");
     std::string msg("hello world, are you ok?");
     client.Init(callback, userid, pass, server, port);
-    LOG(INFO) << "connectted to server...";
     while(client.Status()!=TcpState::CONNECTED)sleep(1);
-    //client.OptRoom(MEETCMD::create, userid, pass, roomid, "");
+    LOG(INFO) << "connectted to server...";
     client.OptRoom(MEETCMD::enter, roomid, "");
     while (1) {
         //LOG(INFO) << "pClient->Status:" << client.Status();
         client.SndMsg(roomid, msg);
+        client.NotifyMsg(roomid, "tagstagstagstags");
         rtc::Thread::SleepMs(3000);
-        break;
+        //break;
     }
     client.OptRoom(MEETCMD::leave, roomid, "");
-    //client.OptRoom(MEETCMD::destroy, userid, pass, roomid, "");
     rtc::Thread::SleepMs(3000);
     client.Unin();
     LOG(INFO) << "bye bye client...";
