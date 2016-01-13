@@ -43,13 +43,13 @@ void RTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long
     m_msg._mtype = mtype;
     m_msg._messagetype = MESSAGETYPE::response;
     m_msg._signaltype = stype;
-    m_msg._cmd = 0;
+    m_msg._cmd = MEETCMD::meetcmd_invalid;
     m_msg._from = "";
     m_msg._room = "";
     m_msg._to = "";
-    m_msg._action = 0;
-    m_msg._tags = 0;
-    m_msg._type = 0;
+    m_msg._action = DCOMMACTION::dcommaction_invalid;
+    m_msg._tags = SENDTAGS::sendtags_invalid;
+    m_msg._type = SENDTYPE::sendtype_invalid;
     m_msg._cont = "";
     m_msg._pass = "";
     m_msg._mseq = mseq;
