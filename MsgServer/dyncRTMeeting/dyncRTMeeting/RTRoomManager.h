@@ -41,7 +41,6 @@ public:
     void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
     void LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
     
-    void GenericMeetingSessionId(std::string& strId);
     bool Init();
     bool ConnectMsgQueue();
     bool ConnectHttpSvrConn();
