@@ -16,6 +16,14 @@
 #include "rtklog.h"
 #include "atomic.h"
 #include "RTRoomManager.h"
+#include "md5.h"
+#include "md5digest.h"
+#include "OSMutex.h"
+#include "OS.h"
+
+static char          s_curMicroSecStr[32];
+static unsigned char s_digest[16];
+static OSMutex       s_mutex;
 
 static unsigned int	 s_notify_msg_id = 0;
 
@@ -24,9 +32,9 @@ int RTMeetingRoom::GenericNotifySeq()
     return atomic_add(&s_notify_msg_id, 1);
 }
 
-RTMeetingRoom::RTMeetingRoom(const std::string sid, const std::string mid, const std::string ownerid)
+RTMeetingRoom::RTMeetingRoom(const std::string mid, const std::string ownerid)
 : m_roomId(mid)
-, m_sessionId(sid)
+, m_sessionId("")
 , m_ownerId(ownerid)
 , m_eGetMembersStatus(GMS_NIL)
 {
@@ -48,6 +56,10 @@ RTMeetingRoom::~RTMeetingRoom()
 void RTMeetingRoom::AddMemberToRoom(const std::string& uid, MemberStatus status)
 {
     OSMutexLocker locker(&m_mutex);
+    if (GetRoomMemberOnline()==0) {
+        m_sessionId.assign("");
+        GenericMeetingSessionId(m_sessionId);
+    }
     RoomMembers::iterator rit = m_roomMembers.find(uid);
     if (rit!=m_roomMembers.end()) {
         LI("AddMemberToRoom %s to room status:%d\n", uid.c_str(), status);
@@ -88,6 +100,9 @@ void RTMeetingRoom::DelMemberFmRoom(const std::string& uid)
             rit->second = NULL;
         }
         m_roomMembers.erase(rit);
+    }
+    if (GetRoomMemberOnline()==0) {
+        m_sessionId.assign("");
     }
 }
 
@@ -178,7 +193,11 @@ void RTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
         for (; dit!=tmpList.end(); dit++) {
             DelMemberFmRoom((*dit));
         }
+        
         LI("UpdateMemberList del mem count:%d\n", m_roomMembers.size());
+    }
+    if (GetRoomMemberOnline()==0) {
+        m_sessionId.assign("");
     }
 }
 
@@ -224,9 +243,28 @@ int RTMeetingRoom::DelNotifyMsg(const std::string pubsher)
     OSMutexLocker locker(&m_notifyMutex);
     RoomNotifyMsgs::iterator mit = m_roomNotifyMsgs.find(pubsher);
     if (mit!=m_roomNotifyMsgs.end()) {
+        LI("%s leave RTMeetingRoom::DelNotifyMsg NotifyMsg....", pubsher.c_str());
         delete mit->second;
         mit->second = NULL;
         m_roomNotifyMsgs.erase(pubsher);
     }
     return 0;
+}
+
+
+void RTMeetingRoom::GenericMeetingSessionId(std::string& strId)
+{
+    SInt64 curTime = OS::Microseconds();
+    MD5_CTX context;
+    StrPtrLen hashStr;
+    Assert(RTRoomManager::s_msgQueueIp.length()>0);
+    memset(s_curMicroSecStr, 0, 128);
+    memset(s_digest, 0, 16);
+    qtss_sprintf(s_curMicroSecStr, "%lld", curTime);
+    MD5_Init(&context);
+    MD5_Update(&context, (unsigned char*)s_curMicroSecStr, (unsigned int)strlen((const char*)s_curMicroSecStr));
+    MD5_Update(&context, (unsigned char*)RTRoomManager::s_msgQueueIp.c_str(), (unsigned int)RTRoomManager::s_msgQueueIp.length());
+    MD5_Final(s_digest, &context);
+    HashToString(s_digest, &hashStr);
+    strId = hashStr.GetAsCString();
 }

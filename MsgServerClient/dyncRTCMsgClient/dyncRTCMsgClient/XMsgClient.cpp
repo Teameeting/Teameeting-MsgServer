@@ -112,7 +112,7 @@ int XMsgClient::OptRoom(MEETCMD cmd, const std::string& roomid, const std::strin
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "", remain, cmd, 0, 0, 0);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "", remain, cmd, DCOMMACTION::dcommaction_invalid, SENDTAGS::sendtags_invalid, SENDTYPE::sendtype_invalid);
     } else {
         return -1;
     }

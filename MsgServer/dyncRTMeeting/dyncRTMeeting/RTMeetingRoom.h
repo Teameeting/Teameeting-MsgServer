@@ -11,7 +11,11 @@
 
 #include <stdio.h>
 #include <iostream>
+#ifdef WEBRTC_MAC
+#include <ext/hash_map>
+#else
 #include <map>
+#endif
 #include <string>
 #include <list>
 #include "LinkedList.h"
@@ -23,7 +27,7 @@
 
 class RTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<RTMeetingRoom> >{
 public:
-    RTMeetingRoom(const std::string sid, const std::string mid, const std::string ownerid);
+    RTMeetingRoom(const std::string mid, const std::string ownerid);
     ~RTMeetingRoom();
     
     typedef struct _notify_msgs{
@@ -53,7 +57,11 @@ public:
             _memStatus = memStatus;
         }
     }RoomMember;
+#ifdef WEBRTC_MAC
+    typedef __gnu__cxx::hashmap<const std::string, RoomMember*> RoomMembers;
+#else
     typedef std::map<const std::string, RoomMember*> RoomMembers;
+#endif
     
     typedef enum _get_members_status {
         GMS_NIL = 0,
@@ -61,7 +69,12 @@ public:
         GMS_DONE
     }GetMembersStatus;
     
+#ifdef WEBRTC_MAC
+    typedef __gnu__cxx::hashmap<std::string, NotifyMsg*>  RoomNotifyMsgs;
+#else
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
+#endif
+    
     
     void AddMemberToRoom(const std::string& uid, MemberStatus status);
     void SyncRoomMember(const std::string& uid, MemberStatus status);

@@ -27,24 +27,12 @@ RTHttpSvrConn::~RTHttpSvrConn(void)
 ////////////////////////////////////////////////////
 
 //* HTTP_POST
-void RTHttpSvrConn::HttpUpdateRoomMemNumber(const char* sign, const char* meetingid, const char* meetingMemNumber)
-{
-    int outLen = 0;
-    char data[512] = {0};
-    sprintf(data, "sign=%s&meetingid=%s&meetingMemNumber=%s", sign, meetingid, meetingMemNumber);
-    const char* msg = GenerateRequest(HTTP_POST, "meeting/updateRoomMemNumber", data, outLen);
-    if (msg && outLen>0) {
-        SendData(msg, outLen);
-        free((void*)msg);
-        msg = NULL;
-    }
-}
 
-void RTHttpSvrConn::HttpInsertMeetingMsg(const char* sign, const char* meetingid, const char* messageid, const char* messagetype, const char* sessionid, const char* strMsg, const char* userid)
+void RTHttpSvrConn::HttpInsertMeetingMsg(const char* sign, const char* meetingid, const char* messagetype, const char* sessionid, const char* strMsg, const char* userid)
 {
     int outLen = 0;
     char data[512] = {0};
-    sprintf(data, "sign=%s&meetingid=%s&messageid=%s&messagetype=%s&sessionid=%s&strMsg=%s&userid=%s", sign, meetingid, messageid, messagetype, sessionid, strMsg, userid);
+    sprintf(data, "sign=%s&meetingid=%s&messagetype=%s&sessionid=%s&strMsg=%s&userid=%s", sign, meetingid, messagetype, sessionid, strMsg, userid);
     const char* msg = GenerateRequest(HTTP_POST, "meeting/insertMeetingMsg", data, outLen);
     if (msg && outLen>0) {
         SendData(msg, outLen);
@@ -98,19 +86,6 @@ void RTHttpSvrConn::HttpUpdateUserMeetingJointime(const char* sign, const char* 
     char data[512] = {0};
     sprintf(data, "sign=%s&meetingid=%s", sign, meetingid);
     const char* msg = GenerateRequest(HTTP_POST, "meeting/updateUserMeetingJointime", data, outLen);
-    if (msg && outLen>0) {
-        SendData(msg, outLen);
-        free((void*)msg);
-        msg = NULL;
-    }
-}
-
-void RTHttpSvrConn::HttpInsertUserMeetingRoom(const char* sign, const char* meetingid)
-{
-    int outLen = 0;
-    char data[512] = {0};
-    sprintf(data, "sign=%s&meetingid=%s", sign, meetingid);
-    const char* msg = GenerateRequest(HTTP_POST, "meeting/insertUserMeetingRoom", data, outLen);
     if (msg && outLen>0) {
         SendData(msg, outLen);
         free((void*)msg);
