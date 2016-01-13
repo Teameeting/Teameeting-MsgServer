@@ -81,7 +81,7 @@ void RTTransferSession::Disconn()
 bool RTTransferSession::RefreshTime()
 {
     UInt64 now = OS::Milliseconds();
-    LE("RTTransferSession::RefreshTime now:%llu, lastTime:%llu\n", now, m_lastUpdateTime);
+    //LE("RTTransferSession::RefreshTime now:%llu, lastTime:%llu\n", now, m_lastUpdateTime);
     if (m_lastUpdateTime <= now) {
         m_lastUpdateTime = now  + TIMEOUT_TS;
         RTTcp::UpdateTimer();

@@ -246,13 +246,13 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 
 void XMsgClient::OnServerConnected()
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     Login();
 }
 
 void XMsgClient::OnServerDisconnect()
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
         m_pMsgProcesser->ServerDisconnect();
     }
@@ -260,7 +260,7 @@ void XMsgClient::OnServerDisconnect()
 
 void XMsgClient::OnServerConnectionFailure()
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
         m_pMsgProcesser->ServerConnectionFailure();
     }
@@ -268,7 +268,7 @@ void XMsgClient::OnServerConnectionFailure()
 
 void XMsgClient::OnServerState(TcpState state)
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
         m_pMsgProcesser->ServerState((MSTcpState)state);
     }

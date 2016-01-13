@@ -147,10 +147,10 @@ int RTMeetingRoom::GetRoomMemberOnline()
     int online = 0;
     RoomMembers::iterator rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
-        LI("RTMeetingRoom::GetRoomMemberOnline find!!!\n");
+        //LI("RTMeetingRoom::GetRoomMemberOnline find!!!\n");
         if (rit->second && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
             online++;
-            LI("RTMeetingRoom::GetRoomMemberOnline find!!! online:%d\n", online);
+            //LI("RTMeetingRoom::GetRoomMemberOnline find!!! online:%d\n", online);
         }
     }
     LI("room members:%d, online member:%d\n", m_roomMembers.size(), online);

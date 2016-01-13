@@ -95,12 +95,14 @@ int main(int argc, const char * argv[]) {
     rtc::LogMessage::LogToDebug(rtc::INFO);
     XMsgClient client;
     MsgServerCallback callback;
-    const std::string server("192.168.7.27");
+    const std::string server("192.168.7.39");
     int port = 9210;
     //bool autoConnect = true;
     LOG(INFO) << "begin connect to server...";
-    std::string userid("9a4f3730-f643-422a-a3a1-eae557060a90");
-    std::string pass("a405f2ad61030c3e354a144137213f819d32516896d7ed883d1dfb05dcd993bd8578d422bbf1e84f5cce15316374a217");
+    //std::string userid("9a4f3730-f643-422a-a3a1-eae557060a90");
+    //std::string pass("a405f2ad61030c3e354a144137213f819d32516896d7ed883d1dfb05dcd993bd8578d422bbf1e84f5cce15316374a217");
+    std::string userid("8ca64d158a505876");
+    std::string pass("7d6a1cafeb40616ddf0c7d490771330f98a8741ae92fc450a28b2a27ebf9156a");
     std::string roomid("400000000436");
     std::string msg("hello world, are you ok?");
     client.Init(callback, userid, pass, server, port);
