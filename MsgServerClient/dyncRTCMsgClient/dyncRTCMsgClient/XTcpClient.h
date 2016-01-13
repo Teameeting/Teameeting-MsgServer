@@ -15,7 +15,6 @@ public:
 	virtual void OnServerConnected() = 0;
 	virtual void OnServerDisconnect() = 0;
 	virtual void OnServerConnectionFailure() = 0;
-    virtual void OnServerState(TcpState state) = 0;
 
 	virtual void OnTick() = 0;
 	virtual void OnMessageSent(int err) = 0;

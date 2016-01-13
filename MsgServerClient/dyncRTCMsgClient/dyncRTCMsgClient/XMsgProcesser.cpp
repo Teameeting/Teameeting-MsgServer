@@ -202,6 +202,7 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 int XMsgProcesser::DecodeLogin(MEETMSG& msg)
 {
     if (msg._code == 0) {
+        ServerState(MSCONNECTED);
         ServerConnected();
     } else {
         m_helper.OnLogin(msg._code, msg._status, msg._from);

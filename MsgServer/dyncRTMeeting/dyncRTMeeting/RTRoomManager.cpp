@@ -77,12 +77,9 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     mmsg._ntime = OS::Milliseconds();
     if (mmsg._room.length()==0) {
         LE("invalid params error\n");
-        ChangeToJson(mmsg._from, users);
-        GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-        SendTransferData(resp, (int)resp.length());
+        //
         return;
     }
-    LI("HandleDcommRoom from:%s, cont:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it != m_meetingRoomMap.end()) {
         switch (mmsg._action) {
@@ -154,10 +151,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         break;
                     default:
                     {
-                        ChangeToJson(mmsg._from, users);
-                        GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-                        SendTransferData(resp, (int)resp.length());
-                        return;
+                        
                     }
                         break;
                 }
@@ -176,10 +170,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                 
             default:
             {
-                ChangeToJson(mmsg._from, users);
-                GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_invparams, users, GetRTCommStatus(RTCommCode::_invparams), resp);
-                SendTransferData(resp, (int)resp.length());
-                return;
+                
             }
                 break;
         }
@@ -255,6 +246,7 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     res.assign("");
     resp.assign("");
     mmsg._cont = "you enter room";
+    mmsg._tags = 0;
     ChangeToJson(mmsg._from, users);
     GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
     SendTransferData(resp, (int)resp.length());

@@ -122,7 +122,6 @@ int RTMeetingRoom::GetRoomMemberMeetingJson(const std::string from, std::string&
     
     RoomMembers::iterator rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) { //_uid.compare(from)==0--->from, !=0--->others
-        LI("[][][][][][][]RTMeetingRoom::GetRoomMemberMeetingJson meeting uid:%s, from:%s\n", rit->second->_uid.c_str(), from.c_str());
         if (rit->second && rit->second->_uid.compare(from) && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
             touser._us.push_front(rit->first);
         }
@@ -147,10 +146,8 @@ int RTMeetingRoom::GetRoomMemberOnline()
     int online = 0;
     RoomMembers::iterator rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
-        LI("RTMeetingRoom::GetRoomMemberOnline find!!!\n");
         if (rit->second && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
             online++;
-            LI("RTMeetingRoom::GetRoomMemberOnline find!!! online:%d\n", online);
         }
     }
     LI("room members:%d, online member:%d\n", m_roomMembers.size(), online);

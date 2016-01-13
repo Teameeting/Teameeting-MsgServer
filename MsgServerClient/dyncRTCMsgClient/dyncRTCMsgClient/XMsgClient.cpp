@@ -51,6 +51,7 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
         return -1;
     }
     m_pClient->Connect(server, port, bAutoConnect);
+    m_pMsgProcesser->ServerState(MSCONNECTTING);
     
     m_Uid = uid;
     m_Token = token;
@@ -246,31 +247,25 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 
 void XMsgClient::OnServerConnected()
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     Login();
 }
 
 void XMsgClient::OnServerDisconnect()
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerDisconnect();
     }
 }
 
 void XMsgClient::OnServerConnectionFailure()
 {
-    LOG(INFO) << __FUNCTION__ << " was called";
+    //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
+        m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerConnectionFailure();
-    }
-}
-
-void XMsgClient::OnServerState(TcpState state)
-{
-    LOG(INFO) << __FUNCTION__ << " was called";
-    if (m_pMsgProcesser) {
-        m_pMsgProcesser->ServerState((MSTcpState)state);
     }
 }
 
