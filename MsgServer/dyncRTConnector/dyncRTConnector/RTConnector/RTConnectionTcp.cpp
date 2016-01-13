@@ -201,25 +201,14 @@ void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUseri
         pmi->pModule->SendTransferData(s.c_str(), (int)s.length());
     } else {
         LE("pmi->pModule is NULL\n");
-        std::string resp;
-        GenericResponse(SIGNALTYPE::sndmsg, mType, mseq, RTCommCode::_errmoduinfo, GetRTCommStatus(RTCommCode::_errmoduinfo), resp);
-        SendResponse(0, resp.c_str());
-        return;
-    }
-    {
-        std::string resp;
-        GenericResponse(SIGNALTYPE::sndmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
-        SendResponse(0, resp.c_str());
+        Assert(false);
         return;
     }
 }
 
 void RTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
 {
-    std::string resp;
-    GenericResponse(SIGNALTYPE::getmsg, mType, mseq, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
-    SendResponse(0, resp.c_str());
-    return;
+    
 }
 
 void RTConnectionTcp::OnLogout(const char* pUserid)
@@ -237,12 +226,6 @@ void RTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
     LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
     RTTcp::UpdateTimer();
-    {
-        std::string resp;
-        GenericResponse(SIGNALTYPE::keepalive, MSGTYPE::meeting, 2, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
-        SendResponse(0, resp.c_str());
-        return;
-    }
 }
 
 void RTConnectionTcp::OnResponse(const char*pData, int nLen)

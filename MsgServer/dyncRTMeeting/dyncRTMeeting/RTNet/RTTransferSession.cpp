@@ -81,7 +81,6 @@ void RTTransferSession::Disconn()
 bool RTTransferSession::RefreshTime()
 {
     UInt64 now = OS::Milliseconds();
-    //LE("RTTransferSession::RefreshTime now:%llu, lastTime:%llu\n", now, m_lastUpdateTime);
     if (m_lastUpdateTime <= now) {
         m_lastUpdateTime = now  + TIMEOUT_TS;
         RTTcp::UpdateTimer();
@@ -278,6 +277,7 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
     t_msg.GetMsg(str, err);
     if (err.length() > 0) {
         LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
         return;
     }
     //the users connection lost
@@ -291,6 +291,7 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
     m_mmmsg.GetMsg(t_msg._content.c_str(), err);
     if (err.length() > 0) {
         LE("%s MEETMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
         return;
     }
     switch (m_mmmsg._cmd) {

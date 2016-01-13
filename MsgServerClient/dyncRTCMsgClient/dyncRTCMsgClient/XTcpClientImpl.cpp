@@ -42,7 +42,6 @@ XTcpClientImpl::XTcpClientImpl(XTcpClientCallback &rCallback)
 	XTcpTick::Open();
 	m_nBufLen = kBufferSizeInBytes;
 	m_pBuffer = new char[m_nBufLen];
-    m_rCallback.OnServerState(m_nState);
 }
 
 
@@ -165,7 +164,6 @@ void XTcpClientImpl::OnMessage(rtc::Message* msg)
 void XTcpClientImpl::DoResolver()
 {
 	m_nState = RESOLVING;
-    m_rCallback.OnServerState(m_nState);
 	if (!m_asynResolver)
 	{
 		m_asynResolver = new rtc::AsyncResolver();
@@ -177,7 +175,6 @@ void XTcpClientImpl::DoResolver()
 void XTcpClientImpl::DoConnect()
 {
 	m_nState = CONNECTTING;
-    m_rCallback.OnServerState(m_nState);
 	m_asynSock.reset(CreateClientSocket(m_svrSockAddr.ipaddr().family()));
 	InitSocketSignals();
 
@@ -195,7 +192,6 @@ void XTcpClientImpl::Close()
 		m_asynResolver = NULL;
 	}
 	m_nState = NOT_CONNECTED;
-    m_rCallback.OnServerState(m_nState);
 }
 void XTcpClientImpl::InitSocketSignals()
 {
@@ -222,7 +218,6 @@ bool XTcpClientImpl::ConnectControlSocket()
 void XTcpClientImpl::OnConnect(rtc::AsyncSocket* socket)
 {
 	m_nState = CONNECTED;
-    m_rCallback.OnServerState(m_nState);
 	m_rCallback.OnServerConnected();
 }
 
@@ -283,7 +278,6 @@ void XTcpClientImpl::OnResolveResult(rtc::AsyncResolverInterface* resolver)
 		m_asynResolver->Destroy(false);
 		m_asynResolver = NULL;
 		m_nState = NOT_CONNECTED;
-        m_rCallback.OnServerState(m_nState);
 	}
 	else {
 		m_svrSockAddr = m_asynResolver->address();
