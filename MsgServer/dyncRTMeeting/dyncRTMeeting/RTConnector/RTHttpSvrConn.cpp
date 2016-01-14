@@ -67,11 +67,11 @@ void RTHttpSvrConn::HttpUpdateSessionMeetingEndtime(const char* sign, const char
     }
 }
 
-void RTHttpSvrConn::HttpUpdateSessionMeetingNumber(const char* sign, const char* sessionid, const char* sessionnumber)
+void RTHttpSvrConn::HttpUpdateSessionMeetingNumber(const char* sign, const char* sessionid, const char* sessionnumber, const char* meetingid)
 {
     int outLen = 0;
     char data[512] = {0};
-    sprintf(data, "sign=%s&sessionid=%s&sessionnumber=%s", sign, sessionid, sessionnumber);
+    sprintf(data, "sign=%s&sessionid=%s&sessionnumber=%s&meetingid=%s", sign, sessionid, sessionnumber, meetingid);
     const char* msg = GenerateRequest(HTTP_POST, "meeting/updateSessionMeetingNumber", data, outLen);
     if (msg && outLen>0) {
         SendData(msg, outLen);

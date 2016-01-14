@@ -93,8 +93,8 @@ public:
     int GetRoomMemberJson(const std::string from, std::string& users);
     int GetRoomMemberMeetingJson(const std::string from, std::string& users);
     
-    int AddNotifyMsg(const std::string pubsher, const std::string msg);
-    int DelNotifyMsg(const std::string pubsher);
+    int AddNotifyMsg(const std::string pubsher, const std::string pubid);
+    int DelNotifyMsg(const std::string pubsher, std::string& pubid);
     RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
     void AddMsgToWaiting(MEETMSG msg);
     void SendWaitingMsgs();
