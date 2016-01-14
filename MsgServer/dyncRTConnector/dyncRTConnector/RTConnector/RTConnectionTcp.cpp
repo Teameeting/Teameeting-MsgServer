@@ -119,14 +119,14 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
 {
     {
         //check & auth
-        
-        //std::string uid;
-        //m_rtHiredis.CmdGet(pPass, uid);
-        //if (uid.length()>0 && uid.compare(pUserid) == 0) {
-        //login ok send response
-        //} else {
-        //login failed
-        //}
+        std::string pass;
+        RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
+        if (pass.compare(pPass)!=0) {
+            LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
+            return;
+        }
+        m_userId = pUserid;
+        m_token = pPass;
     }
     std::string sid;
     {
@@ -145,7 +145,6 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             std::string uid(pUserid);
             LI("OnLogin Uid:%s\n", uid.c_str());
             RTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
-            m_userId = pUserid;
         } else {
             LE("new ConnectionInfo error!!!\n");
             std::string resp;
@@ -169,9 +168,6 @@ void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUseri
 {
     if (!pData) {
         LE("%s invalid params\n", __FUNCTION__);
-        std::string resp;
-        GenericResponse(SIGNALTYPE::sndmsg, mType, mseq, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
-        SendResponse(0, resp.c_str());
         return;
     }
     
@@ -213,9 +209,12 @@ void RTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUseri
 
 void RTConnectionTcp::OnLogout(const char* pUserid)
 {
-    std::string uid(pUserid);
-    RTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, uid);
-    m_userId = "";
+    if (!pUserid) {
+        return;
+    }
+    RTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid);
+    m_userId.assign("");
+    m_token.assign("");
     std::string resp;
     GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
     SendResponse(0, resp.c_str());
@@ -236,8 +235,8 @@ void RTConnectionTcp::OnResponse(const char*pData, int nLen)
 void RTConnectionTcp::ConnectionDisconnected()
 {
     if (m_userId.length()) {
-        LI("RTConnectionTcp::ConnectionDisconnected DelUser m_userId:%s\n", m_userId.c_str());
-        RTConnectionManager::Instance()->ConnectionLostNotify(m_userId);
+        LI("RTConnectionTcp::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
+        RTConnectionManager::Instance()->ConnectionLostNotify(m_userId, m_token);
     } else {
         LE("RTConnectionTcp::ConnectionDisconnected m_userId.length is 0\n");
     }

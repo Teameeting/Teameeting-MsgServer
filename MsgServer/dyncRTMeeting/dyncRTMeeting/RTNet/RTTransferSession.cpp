@@ -282,8 +282,8 @@ void RTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& s
     }
     //the users connection lost
     if (t_msg._flag == 1) {
-        OnConnectionLostNotify(t_msg._touser);
-        LE("user %s lost connection\n", t_msg._touser.c_str());
+        OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
+        LE("user %s token:%s lost connection\n", t_msg._touser.c_str(), t_msg._content.c_str());
         return;
     }
     MEETMSG m_mmmsg;
@@ -335,9 +335,9 @@ void RTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& st
 /**
  *  User connection lost, clear user in the meeting
  */
-void RTTransferSession::OnConnectionLostNotify(const std::string& uid)
+void RTTransferSession::OnConnectionLostNotify(const std::string& uid, const std::string& token, const std::string& connector)
 {
-    RTRoomManager::Instance()->ClearSessionLost(uid);
+    RTRoomManager::Instance()->ClearSessionLost(uid, token, connector);
 }
 
 /**

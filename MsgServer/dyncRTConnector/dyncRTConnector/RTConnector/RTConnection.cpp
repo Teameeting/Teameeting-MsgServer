@@ -91,16 +91,16 @@ void RTConnection::OnLogin(const char* pUserid, const char* pPass)
         //pPass is token, read token from redis
         //get userid compare userid and pUserid
         //exist ok, not exist not ok
-        ok = true;
+        
 #if 0
         std::string pass;
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
-        if (pass.length()>0 && pass.compare(pPass) == 0) {
-            //login ok send response
-            ok = true;
-        } else {
-            //login failed
+        if (pass.compare(pPass)!=0) {
+            LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
+            return;
         }
+        m_userId = pUserid;
+        m_token = pPass;
 #endif
     }
     //if (ok) {
@@ -121,7 +121,6 @@ void RTConnection::OnLogin(const char* pUserid, const char* pPass)
             pci->flag = 1;
             std::string uid(pUserid);
             RTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_chttp, uid, pci);
-            m_userId = uid;
         } else {
             LE("new ConnectionInfo error!!!\n");
         }
@@ -241,8 +240,8 @@ void RTConnection::OnResponse(const char*pData, int nLen)
 void RTConnection::ConnectionDisconnected()
 {
     if (m_userId.length()) {
-        LI("RTConnection::ConnectionDisconnected DelUser m_userId:%s\n", m_userId.c_str());
-        RTConnectionManager::Instance()->ConnectionLostNotify(m_userId);
+        LI("RTConnection::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
+        RTConnectionManager::Instance()->ConnectionLostNotify(m_userId, m_token);
     } else {
         LE("RTConnection::ConnectionDisconnected m_userId.length is 0\n");
     }

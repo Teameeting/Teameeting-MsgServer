@@ -153,7 +153,7 @@ public:
     bool AddUser(CONNECTIONTYPE type, const std::string& uid, ConnectionInfo* pInfo);
     bool DelUser(CONNECTIONTYPE type, const std::string& uid);
     
-    void ConnectionLostNotify(const std::string& uid);
+    void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
     
     std::string& ConnectorIp() { return m_connectorIp; }

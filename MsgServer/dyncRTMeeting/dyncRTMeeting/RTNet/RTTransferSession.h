@@ -37,7 +37,7 @@ public:
         
 public:
     void EstablishConnection();
-    void OnConnectionLostNotify(const std::string& uid);
+        void OnConnectionLostNotify(const std::string& uid, const std::string& token, const std::string& connector);
 
 // from RTTcp
 public:
