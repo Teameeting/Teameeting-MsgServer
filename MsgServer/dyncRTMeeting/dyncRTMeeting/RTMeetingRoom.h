@@ -99,6 +99,7 @@ public:
     void AddMsgToWaiting(MEETMSG msg);
     void SendWaitingMsgs();
     
+    const std::string& GetRoomId() { return m_roomId; }
     const std::string& GetOwnerId() { return m_ownerId; }
     const std::string& GetSessionId() { return m_sessionId; }
     

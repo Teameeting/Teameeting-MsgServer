@@ -137,11 +137,11 @@ bool RTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid)
     return true;
 }
 
-void RTConnectionManager::ConnectionLostNotify(const std::string& uid)
+void RTConnectionManager::ConnectionLostNotify(const std::string& uid, const std::string& token)
 {
     ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
     if (pmi && pmi->pModule) {
-        pmi->pModule->ConnectionLostNotify(uid);
+        pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
         LE("pmi->pModule is NULL\n");
     }

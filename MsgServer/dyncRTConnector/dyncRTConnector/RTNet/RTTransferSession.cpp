@@ -103,14 +103,14 @@ void RTTransferSession::SendTransferData(const char* pData, int nLen)
     GetSocket()->RequestEvent(EV_RE);
 }
 
-void RTTransferSession::ConnectionLostNotify(const std::string& uid)
+void RTTransferSession::ConnectionLostNotify(const std::string& uid, const std::string& token)
 {
     TRANSFERMSG t_trmsg;
     TRANSMSG t_msg;
     t_msg._flag = 1;
     t_msg._touser = uid;
     t_msg._connector = RTConnectionManager::Instance()->ConnectorId();
-    t_msg._content = "";
+    t_msg._content = token;
     
     t_trmsg._action = TRANSFERACTION::req;
     t_trmsg._fmodule = TRANSFERMODULE::mconnector;

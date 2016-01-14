@@ -49,6 +49,7 @@ private:
     int				m_nBufOffset;
     std::string     m_connectorId;
     std::string     m_userId;
+    std::string     m_token;
 };
 
 #endif /* defined(__dyncRTConnector__RTConnectionTcp__) */

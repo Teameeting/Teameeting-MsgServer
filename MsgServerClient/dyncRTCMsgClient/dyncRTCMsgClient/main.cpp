@@ -25,42 +25,36 @@ public:
             return;
         }
         if (mmsg._messagetype==MESSAGETYPE::request) {
-            switch(mmsg._cmd) {
-                case MEETCMD::enter:
-                    LOG(INFO) << mmsg._cont;
+            switch(mmsg._tags) {
+                case SENDTAGS::sendtags_talk:
+                {
+                    LOG(INFO) << "sendtags_talk " << mmsg._cont;
+                }
                     break;
-                case MEETCMD::leave:
-                    LOG(INFO) << mmsg._cont;
+                case SENDTAGS::sendtags_enter:
+                {
+                    LOG(INFO) << "sendtags_enter " << mmsg._cont;
+                }
                     break;
-                case MEETCMD::dcomm:
-                    LOG(INFO) << mmsg._cont;
-                    if (mmsg._tags==notify) {
-                        LOG(INFO) << "RECV TAGS:" << mmsg._cont;
-                    }
+                case SENDTAGS::sendtags_leave:
+                {
+                    LOG(INFO) << "sendtags_leave " << mmsg._cont;
+                }
                     break;
-            }
-        } else if (mmsg._messagetype==MESSAGETYPE::response) {
-            switch(mmsg._cmd) {
-                case MEETCMD::enter:
-                    if (mmsg._code==0) {
-                        LOG(INFO) << mmsg._status << " ,cont:" << mmsg._cont;
-                    } else {
-                        LOG(INFO) << "code:" << mmsg._code << ", status:" << mmsg._status;
-                    }
+                case SENDTAGS::sendtags_subscribe:
+                {
+                    LOG(INFO) << "sendtags_subscribe " << mmsg._cont;
+                }
                     break;
-                case MEETCMD::leave:
-                    if (mmsg._code==0) {
-                        LOG(INFO) << mmsg._status << " ,cont:" << mmsg._cont;
-                    } else {
-                        LOG(INFO) << "code:" << mmsg._code << ", status:" << mmsg._status;
-                    }
+                case SENDTAGS::sendtags_unsubscribe:
+                {
+                    LOG(INFO) << "sendtags_unsubscribe " << mmsg._cont;
+                }
                     break;
-                case MEETCMD::dcomm:
-                    if (mmsg._code==0) {
-                        LOG(INFO) << mmsg._status << " ,cont:" << mmsg._cont;
-                    } else {
-                        LOG(INFO) << "code:" << mmsg._code << ", status:" << mmsg._status;
-                    }
+                default:
+                {
+                    
+                }
                     break;
             }
         }

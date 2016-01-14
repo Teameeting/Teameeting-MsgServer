@@ -78,7 +78,7 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& msg)
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::talk, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
     } else {
         return -1;
     }
@@ -130,7 +130,7 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& msg, cons
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::string tousers;
         m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, tousers, msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::talk, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, tousers, msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
     } else {
         return -1;
     }
@@ -146,7 +146,7 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& msg)
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::notify, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_subscribe, SENDTYPE::msg);
     } else {
         return -1;
     }

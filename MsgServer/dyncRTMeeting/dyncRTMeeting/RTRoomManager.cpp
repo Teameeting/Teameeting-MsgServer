@@ -83,7 +83,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             case DCOMMACTION::msend:
             {
                 switch (mmsg._tags) {
-                    case SENDTAGS::talk:
+                    case SENDTAGS::sendtags_talk:
                     {
                         if (mmsg._to.at(0)=='a') {
                             //to all
@@ -93,12 +93,12 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
                             if (meetingRoom->GetGetMembersStatus()!=RTMeetingRoom::GetMembersStatus::GMS_DONE) {
                                 //store message
-                                LI("=======HandleDcommRoom=========GetGetMembersStatus WAITING...\n");
+                                LI("==>HandleDcommRoom GetGetMembersStatus WAITING...\n");
                                 meetingRoom->AddMsgToWaiting(mmsg);
                                 return;
                             }
                             if (!meetingRoom->GetRoomMemberJson(mmsg._from, users)) {
-                                LI("=========>>>HandleDcommRoom from:%s, to users:%s\n", mmsg._from.c_str(), users.c_str());
+                                LI("==>HandleDcommRoom from:%s, to users:%s\n", mmsg._from.c_str(), users.c_str());
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
                                 if (m_pHttpSvrConn) {
@@ -106,7 +106,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                                 }
                                 return;
                             } else {
-                                LE("=======HandleDcommRoom========= no member in room, users:%s\n", users.c_str());
+                                LE("==>HandleDcommRoom no member in room, users:%s\n", users.c_str());
                                 // no member in room
                             }
                         } else if (mmsg._to.at(0)=='u') {
@@ -114,27 +114,26 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         }
                     }
                         break;
-                    case SENDTAGS::chat:
+                    case SENDTAGS::sendtags_enter:
                     {
                         
                     }
                         break;
-                    case SENDTAGS::lvmsg:
+                    case SENDTAGS::sendtags_leave:
                     {
                         
                     }
                         break;
-                    case SENDTAGS::notify:
+                    case SENDTAGS::sendtags_subscribe:
                     {
-                        LI("SENDTAGS::notify  to is:%s\n", mmsg._to.c_str());
                         if (mmsg._to.at(0)=='a') {
                             //send to member in meeting
                             rtc::scoped_refptr<RTMeetingRoom> meetingRoom = it->second;
-                            LI("SENDTAGS::notify add from:%s, publishid:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
+                            LI("==>HandleDcommRoom notify add from:%s, publishid:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
                             meetingRoom->AddNotifyMsg(mmsg._from, mmsg._cont);
                             if (!meetingRoom->GetRoomMemberMeetingJson(mmsg._from, users)) {
-                                LI("SENDTAGS::notify send to others:%s, publishId:%s\n", users.c_str(), mmsg._cont.c_str());
-                                mmsg._tags = SENDTAGS::notify;//send to room other members;
+                                LI("==>HandleDcommRoom notify send to others:%s, publishId:%s\n", users.c_str(), mmsg._cont.c_str());
+                                //notify to room other members in meeting;
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
                                 SendTransferData(resp, (int)resp.length());
                                 return;
@@ -144,6 +143,11 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         } else if (mmsg._to.at(0)=='u') {
                             //to userlist
                         }
+                    }
+                        break;
+                    case SENDTAGS::sendtags_unsubscribe:
+                    {
+                    
                     }
                         break;
                     default:
@@ -172,7 +176,7 @@ void RTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                 break;
         }
     } else {
-        LE("DCOMM not find a room.......\n");
+        LE("==>HandleDcommRoom not find a room.......\n");
     }
 }
 
@@ -184,7 +188,7 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 1, Find Room
     MeetingRoomMap::iterator it = m_meetingRoomMap.find(mmsg._room);
     if (it == m_meetingRoomMap.end()) { // meeting not exists
-        LE("% Room %s not exists, new it\n", mmsg._room.c_str(), __FUNCTION__);
+        LE("==>EnterRoom % Room %s not exists, new it\n", mmsg._room.c_str(), __FUNCTION__);
         m_meetingRoomMap.insert(make_pair(mmsg._room, new rtc::RefCountedObject<RTMeetingRoom>(mmsg._room, "")));
         it = m_meetingRoomMap.find(mmsg._room);
         
@@ -195,14 +199,14 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             m_pHttpSvrConn->HttpGetMeetingMemberList(tmsg, mmsg);
             it->second->SetGetMembersStatus(RTMeetingRoom::GMS_WAITTING);
         } else {
-            LE("EnterRoom m_pHttpSvrConn is NULL\n");
+            LE("==>EnterRoom m_pHttpSvrConn is NULL\n");
             assert(false);
         }
     }
     
     //@Eric
     //* 2, Add member to RoomList.
-    LI("EnterRoom add %s to Room, set status inmeeting\n", mmsg._from.c_str());
+    LI("==>EnterRoom add %s to Room, set status inmeeting\n", mmsg._from.c_str());
     it->second->AddMemberToRoom(mmsg._from, RTMeetingRoom::MemberStatus::MS_INMEETING);
     int online = it->second->GetRoomMemberOnline();
     if (online==1) {
@@ -221,9 +225,10 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 3, Notify Other members, i'm online.
     if (!it->second->GetRoomMemberJson(mmsg._from, users)) {
         if (users.length()>0) {
-            LI("notify users :%s i am in room\n", users.c_str());
+            LI("==>EnterRoom notify users :%s i am in room\n", users.c_str());
             mmsg._nmem = online;
             mmsg._cont = mmsg._from + " enter room!";
+            mmsg._tags = SENDTAGS::sendtags_enter;
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
             SendTransferData(resp, (int)resp.length());
         }
@@ -234,18 +239,18 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     res.assign("");
     resp.assign("");
     RTMeetingRoom::RoomNotifyMsgs msgMaps(it->second->GetRoomNotifyMsgsMap());
-    LI("EnterRoom msgMaps size:%d\n", (int)msgMaps.size());
+    LI("==>EnterRoom msgMaps size:%d\n", (int)msgMaps.size());
     RTMeetingRoom::RoomNotifyMsgs::iterator mit = msgMaps.begin();
     for (; mit!=msgMaps.end(); mit++) {
         if (mit->second->publisher.compare(mmsg._from)!=0) {
-            LI("other %s send publish id:%s to me!!!\n", mit->second->publisher.c_str(), mit->second->notifyMsg.c_str());
+            LI("==>EnterRoom other %s send publish id:%s to %s!!!\n", mit->second->publisher.c_str(), mit->second->notifyMsg.c_str(), mmsg._from.c_str());
             mmsg._cont = mit->second->notifyMsg;
-            mmsg._tags = SENDTAGS::notify;
+            mmsg._tags = SENDTAGS::sendtags_subscribe;
             ChangeToJson(mmsg._from, users);
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, res, resp);
             SendTransferData(resp, (int)resp.length());
         } else {
-            LI("%s NOT send to myself!!!\n", mit->second->publisher.c_str());
+            LI("==>EnterRoom %s NOT send to myself!!!\n", mit->second->publisher.c_str());
         }
     }
     
@@ -253,15 +258,17 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 5, Enter room done!
     // Need send back event to client?
     //////////////////////////
+#if 0
     users.assign("");
     res.assign("");
     resp.assign("");
     mmsg._cont = "you enter room";
-    mmsg._tags = 0;
+    mmsg._tags = SENDTAGS::sendtags_enter;
     mmsg._nmem = online;
     ChangeToJson(mmsg._from, users);
     GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
     SendTransferData(resp, (int)resp.length());
+#endif
 }
 
 void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
@@ -286,9 +293,10 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     resp.assign("");
     if (!it->second->GetRoomMemberJson(mmsg._from, users)) {
         if (users.length()>0) {
-            LI("notify users :%s i am out room\n", users.c_str());
+            LI("==>LeaveRoom notify users :%s i am out room\n", users.c_str());
             mmsg._cont = mmsg._from + " leave room!";
             mmsg._nmem = online;
+            mmsg._tags = SENDTAGS::sendtags_leave;
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
             SendTransferData(resp, (int)resp.length());
         }
@@ -301,13 +309,13 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     if (it->second->GetGetMembersStatus()==RTMeetingRoom::GetMembersStatus::GMS_WAITTING) {
         //send wait event
     }
-    LI("%s leave delete notify msg\n", mmsg._from.c_str());
+    LI("==>LeaveRoom %s leave delete notify msg\n", mmsg._from.c_str());
     std::string pubid;
     it->second->DelNotifyMsg(mmsg._from, pubid);
     it->second->GetRoomMemberMeetingJson(mmsg._from, users);
-    mmsg._tags = SENDTAGS::notify;
+    mmsg._tags = SENDTAGS::sendtags_unsubscribe;
     mmsg._cont = pubid;
-    LI("RTRoomManager::LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
+    LI("==>LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
     GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
     SendTransferData(resp, (int)resp.length());
     if (m_pHttpSvrConn) {
@@ -324,13 +332,15 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //@Eric
     //* 4, Leave room done!
     // Need send back event to client?
+#if 0
     users.assign("");
     ChangeToJson(mmsg._from, users);
-    mmsg._tags = SENDTAGS::talk;
+    mmsg._tags = SENDTAGS::sendtags_leave;
     mmsg._cont = "you leave room!";
     mmsg._nmem = online;
     GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
     SendTransferData(resp, (int)resp.length());
+#endif
     
 }
 
@@ -440,7 +450,7 @@ void RTRoomManager::SyncHttpRequest()
     
 }
 
-void RTRoomManager::ClearSessionLost(const std::string& uid)
+void RTRoomManager::ClearSessionLost(const std::string& uid, const std::string& token, const std::string& connector)
 {
     if (m_meetingRoomMap.size()==0) {
         return;
@@ -449,18 +459,35 @@ void RTRoomManager::ClearSessionLost(const std::string& uid)
     for (; it!=m_meetingRoomMap.end(); it++) {
         if (it->second && it->second->IsMemberInRoom(uid)) {
             it->second->UpdateMemberStatus(uid, RTMeetingRoom::MemberStatus::MS_OUTMEETING);
-            std::string users;
-            it->second->DelNotifyMsg(uid, users);
-            //LI("RTRoomManager::LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
-            //GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
-            //SendTransferData(resp, (int)resp.length());
-            if (it->second->GetRoomMemberOnline()==0) {
+            int online = it->second->GetRoomMemberOnline();
+            char strOnline[4] = {0};
+            std::string pubid, users, resp, cont;
+            sprintf(strOnline, "%d", online);
+            std::string roomid = it->second->GetRoomId();
+            
+            // notify member in meeting publishid
+            it->second->GetRoomMemberMeetingJson(uid, users);
+            it->second->DelNotifyMsg(uid, pubid);
+            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_subscribe, online, pubid, users, resp);
+            SendTransferData(resp, (int)resp.length());
+            LI("ClearSessionLost publish resp:%s\n", resp.c_str());
+            
+            // notify member having room uid leaving
+            users.assign("");
+            it->second->GetRoomMemberJson(uid, users);
+            cont = uid + " leave room";
+            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_leave, online, cont, users, resp);
+            SendTransferData(resp, (int)resp.length());
+            LI("ClearSessionLost msg resp:%s\n", resp.c_str());
+            
+            if (m_pHttpSvrConn) {
+                m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(token.c_str(), it->second->GetSessionId().c_str(), strOnline, it->second->GetRoomId().c_str());
+            }
+            if (online==0) {
                 if (m_pHttpSvrConn) {
-                    //m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(mmsg._pass.c_str(), it->second->GetSessionId().c_str());
-                    //m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(mmsg._pass.c_str(), it->second->GetSessionId().c_str(), mem);
+                    m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(token.c_str(), it->second->GetSessionId().c_str());
                 }
             }
-            
             break;
         }
     }
@@ -490,6 +517,46 @@ void RTRoomManager::GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msg
             LE("mmsg._cmd error:%d !!!\n", mmsg._cmd);
             break;
     }
+}
+
+void RTRoomManager::GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, SENDTAGS tags, int nmem, const std::string& cont, const std::string& tos, std::string& response)
+{
+    LI("GenericConnLostResponse cont:%s\n", cont.c_str());
+    MEETMSG meetmsg;
+    long long seq = GenericTransSeq();
+    meetmsg._mtype = MSGTYPE::meeting;
+    meetmsg._messagetype = MESSAGETYPE::request;
+    meetmsg._signaltype = SIGNALTYPE::sndmsg;
+    meetmsg._cmd = MEETCMD::leave;
+    meetmsg._action = DCOMMACTION::msend;
+    meetmsg._tags = tags;
+    meetmsg._type = SENDTYPE::msg;
+    meetmsg._mseq = 0;
+    meetmsg._from = uid;
+    meetmsg._room = roomid;
+    meetmsg._to = "";
+    meetmsg._cont = cont;
+    meetmsg._pass = "";
+    meetmsg._code = RTCommCode::_ok;
+    meetmsg._status = GetRTCommStatus(RTCommCode::_ok);
+    meetmsg._nmem = nmem;
+    meetmsg._ntime = OS::Milliseconds();
+    
+    QUEUEMSG qmsg;
+    qmsg._flag = 0;
+    qmsg._touser = tos;
+    qmsg._connector = connector;//which connector come from
+    qmsg._content = meetmsg.ToJson();
+    
+    TRANSFERMSG trmsg;
+    trmsg._action = TRANSFERACTION::req;
+    trmsg._fmodule = TRANSFERMODULE::mmeeting;
+    trmsg._type = TRANSFERTYPE::queue;
+    trmsg._trans_seq = seq;
+    trmsg._trans_seq_ack = 0;
+    trmsg._valid = 1;
+    trmsg._content = qmsg.ToJson();
+    response = trmsg.ToJson();
 }
 
 void RTRoomManager::ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response)
