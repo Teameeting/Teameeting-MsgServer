@@ -226,24 +226,25 @@ void RTMeetingRoom::CheckMembers()
     }
 }
 
-int RTMeetingRoom::AddNotifyMsg(const std::string pubsher, const std::string msg)
+int RTMeetingRoom::AddNotifyMsg(const std::string pubsher, const std::string pubid)
 {
     OSMutexLocker locker(&m_notifyMutex);
     NotifyMsg* notifyMsg = new NotifyMsg();
     notifyMsg->seq = GenericNotifySeq();
     notifyMsg->pubTime = OS::Milliseconds();
-    notifyMsg->notifyMsg = msg;
+    notifyMsg->notifyMsg = pubid;
     notifyMsg->publisher = pubsher;
     m_roomNotifyMsgs.insert(make_pair(pubsher, notifyMsg));
     return 0;
 }
 
-int RTMeetingRoom::DelNotifyMsg(const std::string pubsher)
+int RTMeetingRoom::DelNotifyMsg(const std::string pubsher, std::string& pubid)
 {
     OSMutexLocker locker(&m_notifyMutex);
     RoomNotifyMsgs::iterator mit = m_roomNotifyMsgs.find(pubsher);
     if (mit!=m_roomNotifyMsgs.end()) {
         LI("%s leave RTMeetingRoom::DelNotifyMsg NotifyMsg....", pubsher.c_str());
+        pubid = mit->second->notifyMsg;
         delete mit->second;
         mit->second = NULL;
         m_roomNotifyMsgs.erase(pubsher);

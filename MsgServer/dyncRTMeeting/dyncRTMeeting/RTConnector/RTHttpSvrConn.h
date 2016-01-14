@@ -27,7 +27,7 @@ public:
     void HttpInsertMeetingMsg(const char* sign, const char* meetingid, const char* messagetype, const char* sessionid, const char* strMsg, const char* userid);
     void HttpInsertSessionMeetingInfo(const char* sign, const char* meetingid, const char* sessionid, const char* sessionstatus, const char* sessiontype, const char* sessionnumber);
     void HttpUpdateSessionMeetingEndtime(const char* sign, const char* sessionid);
-    void HttpUpdateSessionMeetingNumber(const char* sign, const char* sessionid, const char* sessionnumber);
+    void HttpUpdateSessionMeetingNumber(const char* sign, const char* sessionid, const char* sessionnumber, const char* meetingid);
     void HttpUpdateUserMeetingJointime(const char* sign, const char* meetingid);
     
     //* HTTP_GET
