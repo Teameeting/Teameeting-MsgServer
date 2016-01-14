@@ -31,7 +31,7 @@ public:
     void Disconn();
     
     void SendTransferData(const char* pData, int nLen);
-    void ConnectionLostNotify(const std::string& uid);
+    void ConnectionLostNotify(const std::string& uid, const std::string& token);
     
     void TestConnection();
         

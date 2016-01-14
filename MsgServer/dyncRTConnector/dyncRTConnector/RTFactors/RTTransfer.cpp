@@ -109,7 +109,7 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
 {
     int parsed = 0;
     int ll = 0;
-    LI("RTConnTcp::ProcessData pData:%s\n", pData);
+    LI("RTTransfer::ProcessData pData:%s\n", pData);
     while (parsed < nLen)
     {
         const char* pMsg = pData + parsed;

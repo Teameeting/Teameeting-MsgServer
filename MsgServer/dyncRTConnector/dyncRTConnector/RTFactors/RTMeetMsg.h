@@ -45,7 +45,7 @@
  *                              u:[]
  *                          action: send, dsett, share
  *                              send:
- *                                  tags: talk, chat, lvmsg, notify
+ *                                  tags: talk, enter, leave, subscribe, unsubscribe,invalid
  *                                  type: msg, file, pic, emoj, aud, vid
  *                                  content: {}
  *                              dsett:
@@ -139,10 +139,11 @@ typedef enum _dcommaction{
 }DCOMMACTION;
 
 typedef enum _sendtags{
-    talk=1,
-    chat,
-    lvmsg,
-    notify,
+    sendtags_talk=1,
+    sendtags_enter,
+    sendtags_leave,
+    sendtags_subscribe,
+    sendtags_unsubscribe,
     sendtags_invalid
 }SENDTAGS;
 
