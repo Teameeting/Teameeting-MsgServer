@@ -357,7 +357,8 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
         int offset = 0;
         if (*(pMsg+offset) == '$') {
             offset += 1;
-            char l[4] = {0};
+            char l[5] = {0};
+            memset(l, 0x00, 5);
             memcpy(l, pMsg+offset, 4);
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
@@ -366,12 +367,15 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
                 if (nlen == -1) {
                     break;
                 } else { // nlen == 0
-                    assert(nlen == ll);
                     offset += ll;
                     parsed += offset;
                 }
             } else { // ll>0 && ll <= nLen
-                LOG(LS_ERROR) << "Get Msg Len Error!!!";
+#ifdef WEBRTC_ANDROID
+                LOGI("XMsgClient::OnMessageRecv Get Msg Len Error!!!, ll:%d, nLen:%d, parsed:%d\n", ll, nLen, parsed);
+#else
+                std::cout << "XMsgClient::OnMessageRecv Get Msg Len Error!!!, ll:" << ll << ", nLen:" << nLen << ", parsed:" << parsed << std::endl;
+#endif
             }
         }
     }
