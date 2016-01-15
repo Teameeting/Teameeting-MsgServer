@@ -109,31 +109,38 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
 {
     int parsed = 0;
     int ll = 0;
-    LI("RTTransfer::ProcessData pData:%s\n", pData);
+    std::string strData(pData, nLen);
+    
     while (parsed < nLen)
     {
+        
         const char* pMsg = pData + parsed;
         int offset = 0;
+        std::string strMsg(pMsg);
+
         if (*(pMsg+offset) == '$') {
             offset += 1;
-            char l[4] = {0};
+            char l[5] = {0};
+            memset(l, 0x00, 5);
             memcpy(l, pMsg+offset, 4);
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
             if (ll>=0 && ll <= nLen) { // the message length may be 0
+                std::string strMsgOff(pMsg+offset, ll);
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                LI("Transfer DoProcessData msg nlen:%d, ll:%d\n", nlen, ll);
+                std::cout << "RTTransfer::ProcessData Msg======>>>>msg nlen:" << nlen << ", nlen:" << ", ll:" << ll << ", l:" << l << ", strMsgOffset:" << strMsgOff << std::endl;
                 if (nlen < 0) {
                     break;
                 } else { // nlen < 0
-                    assert(nlen == ll);
                     offset += ll;
                     parsed += offset;
                 }
             } else { // ll>0 && ll <= nLen
-                LE("Get Msg Len Error!!!\n");
+                LE("RTTransfer::ProcessData Get Msg Len Error!!!, ll:%d, nLen:%d, parsed:%d\n", ll, nLen, parsed);
             }
         }
     }
+    std::cout << "RTTransfer::ProcessData RECV nLen:" << nLen << ", parsed:" << parsed << std::endl;
+    
     return parsed;
 }
