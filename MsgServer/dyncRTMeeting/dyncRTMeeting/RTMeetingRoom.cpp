@@ -158,6 +158,7 @@ void RTMeetingRoom::UpdateMemberStatus(const std::string& uid, MemberStatus stat
 
 int RTMeetingRoom::GetRoomMemberOnline()
 {
+    OSMutexLocker locker(&m_mutex);
     int online = 0;
     RoomMembers::iterator rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {

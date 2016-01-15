@@ -75,6 +75,8 @@ SInt64 RTTcp::Run()
                 LI("Tcp::Run notify Disconnection\n");
                 conn->ConnectionDisconnected();
             }
+        } else {
+            LE("didNOT FIND TIMEOUT OR KILLED CLIENT return -1\n");
         }
 		return -1;
 	}
@@ -163,6 +165,8 @@ SInt64 RTTcp::Run()
             LI("Tcp::Run SessionOffline notify Disconnection\n");
             conn->ConnectionDisconnected();
         }
+    } else {
+        LE("didNOT FIND session offline CLIENT return -1\n");
     }
     return -1;
 }

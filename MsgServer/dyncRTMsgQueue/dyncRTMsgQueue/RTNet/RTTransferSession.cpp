@@ -376,7 +376,7 @@ void RTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& s
         //find connector and dispatch to it
         std::string st = trmsg.ToJson();
         //connector moduleId
-        RTConnectionManager::ModuleInfo* pmi = RTConnectionManager::Instance()->findConnectorInfoById(dmsg._touser);
+        RTConnectionManager::ModuleInfo* pmi = RTConnectionManager::Instance()->findConnectorInfoById(dmsg._touser, qmsg._connector);
         if (pmi && pmi->pModule) {
             pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
         } else {

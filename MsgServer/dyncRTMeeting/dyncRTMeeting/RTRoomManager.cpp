@@ -240,35 +240,28 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     resp.assign("");
     RTMeetingRoom::RoomNotifyMsgs msgMaps(it->second->GetRoomNotifyMsgsMap());
     LI("==>EnterRoom msgMaps size:%d\n", (int)msgMaps.size());
+    std::string strSelf = mmsg._from;
     RTMeetingRoom::RoomNotifyMsgs::iterator mit = msgMaps.begin();
     for (; mit!=msgMaps.end(); mit++) {
         if (mit->second->publisher.compare(mmsg._from)!=0) {
             LI("==>EnterRoom other %s send publish id:%s to %s!!!\n", mit->second->publisher.c_str(), mit->second->notifyMsg.c_str(), mmsg._from.c_str());
+            mmsg._from = mit->second->publisher;
             mmsg._cont = mit->second->notifyMsg;
             mmsg._tags = SENDTAGS::sendtags_subscribe;
-            ChangeToJson(mmsg._from, users);
+            ChangeToJson(strSelf, users);
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, res, resp);
             SendTransferData(resp, (int)resp.length());
         } else {
             LI("==>EnterRoom %s NOT send to myself!!!\n", mit->second->publisher.c_str());
         }
     }
+    mmsg._from = strSelf;
     
     //@Eric
     //* 5, Enter room done!
     // Need send back event to client?
     //////////////////////////
-#if 0
-    users.assign("");
-    res.assign("");
-    resp.assign("");
-    mmsg._cont = "you enter room";
-    mmsg._tags = SENDTAGS::sendtags_enter;
-    mmsg._nmem = online;
-    ChangeToJson(mmsg._from, users);
-    GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
-    SendTransferData(resp, (int)resp.length());
-#endif
+
 }
 
 void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
@@ -283,6 +276,9 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         if (it->second) {
             it->second->UpdateMemberStatus(mmsg._from, RTMeetingRoom::MemberStatus::MS_OUTMEETING);
         }
+    } else {
+        // not find room
+        return;
     }
     //@Eric
     //* 2, Notify Other members
@@ -332,15 +328,6 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //@Eric
     //* 4, Leave room done!
     // Need send back event to client?
-#if 0
-    users.assign("");
-    ChangeToJson(mmsg._from, users);
-    mmsg._tags = SENDTAGS::sendtags_leave;
-    mmsg._cont = "you leave room!";
-    mmsg._nmem = online;
-    GenericResponse(tmsg, mmsg, MESSAGETYPE::response, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
-    SendTransferData(resp, (int)resp.length());
-#endif
     
 }
 
@@ -359,6 +346,9 @@ void RTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& 
             assert(false);
             LE("OnGetMemberList error:%s\n", err.c_str());
         }
+    } else {
+        // not find room
+        return;
     }
     
     //@Eric
