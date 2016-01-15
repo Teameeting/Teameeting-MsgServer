@@ -123,6 +123,10 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
         if (pass.compare(pPass)!=0) {
             LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
+            // send response
+            std::string resp;
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
+            SendResponse(0, resp.c_str());
             return;
         }
         m_userId = pUserid;
@@ -145,6 +149,11 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             std::string uid(pUserid);
             LI("OnLogin Uid:%s\n", uid.c_str());
             RTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
+            // send response
+            std::string resp;
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+            SendResponse(0, resp.c_str());
+            return;
         } else {
             LE("new ConnectionInfo error!!!\n");
             std::string resp;
@@ -155,13 +164,6 @@ void RTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
         }
     }
     
-    {
-        // send response
-        std::string resp;
-        GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
-        SendResponse(0, resp.c_str());
-        return;
-    }
 }
 
 void RTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)

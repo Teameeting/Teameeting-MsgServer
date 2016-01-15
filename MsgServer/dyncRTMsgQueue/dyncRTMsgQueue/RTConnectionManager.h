@@ -104,7 +104,7 @@ public:
     ModuleInfo*       findConnectorInfo(const std::string& userid);
     ModuleInfo*       findModuleInfo(const std::string& userid, TRANSFERMODULE module);
     ModuleInfo*       findModuleInfoBySid(const std::string& sid);
-    ModuleInfo*       findConnectorInfoById(const std::string& userid);
+    ModuleInfo*       findConnectorInfoById(const std::string& userid, const std::string& connector);
     
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
     bool DelModuleInfo(const std::string& sid);

@@ -11,7 +11,6 @@
 #include "md5.h"
 #include "md5digest.h"
 #include "OSMutex.h"
-#include "RTHiredis.h"
 
 
 static char          s_curMicroSecStr[32];
@@ -66,26 +65,30 @@ RTConnectionManager::ModuleInfo* RTConnectionManager::findModuleInfoBySid(const 
     return pInfo;
 }
 
-RTConnectionManager::ModuleInfo* RTConnectionManager::findConnectorInfoById(const std::string& userid)
+RTConnectionManager::ModuleInfo* RTConnectionManager::findConnectorInfoById(const std::string& userid, const std::string& connector)
 {
-    RTConnectionManager::ModuleInfo* pInfo = NULL;
-    
-    std::string connectorid;
-    std::string sessionid;
-    if (RTHiredisLocal::Instance()->CmdHGet(HI_USER_CONNECTOR_ID, userid, connectorid) && connectorid.length()>0) {
-        TypeModuleSessionInfoLists* infoList = GetTypeModuleSessionInfo();
-        TypeModuleSessionInfoLists::iterator it = infoList->begin();
-        TypeModuleSessionInfo* t_pInfo = NULL;
-        for (; it!=infoList->end(); it++) {
-            t_pInfo = *it;
-            if (t_pInfo && t_pInfo->moduleId.compare(connectorid) == 0) {
-                sessionid = t_pInfo->sessionIds.front();
-                LI("find transfer sessionid:%s", sessionid.c_str());
-                break;
-            }
+    if (userid.length()==0 || connector.length()==0) {
+        if (userid.length()==0) {
+            LE("findConnectorInfoById userid.length is 0\n");
         }
-    } else {
-        LE("RTHiredis CmdHGet error\n");
+        if (connector.length()==0) {
+            LE("findConnectorInfoById connector.length is 0\n");
+        }
+        return NULL;
+    }
+    RTConnectionManager::ModuleInfo* pInfo = NULL;
+    std::string sessionid;
+    
+    TypeModuleSessionInfoLists* infoList = GetTypeModuleSessionInfo();
+    TypeModuleSessionInfoLists::iterator it = infoList->begin();
+    TypeModuleSessionInfo* t_pInfo = NULL;
+    for (; it!=infoList->end(); it++) {
+        t_pInfo = *it;
+        if (t_pInfo && t_pInfo->moduleId.compare(connector) == 0) {
+            sessionid = t_pInfo->sessionIds.front();
+            LI("find transfer sessionid:%s", sessionid.c_str());
+            break;
+        }
     }
     if (sessionid.length()>0) {
         pInfo = findModuleInfoBySid(sessionid);

@@ -58,7 +58,7 @@ public:
         }
     }RoomMember;
 #ifdef WEBRTC_MAC
-    typedef __gnu__cxx::hashmap<const std::string, RoomMember*> RoomMembers;
+    typedef __gnu_cxx::hash_map<const std::string, RoomMember*> RoomMembers;
 #else
     typedef std::map<const std::string, RoomMember*> RoomMembers;
 #endif
@@ -70,7 +70,7 @@ public:
     }GetMembersStatus;
     
 #ifdef WEBRTC_MAC
-    typedef __gnu__cxx::hashmap<std::string, NotifyMsg*>  RoomNotifyMsgs;
+    typedef __gnu_cxx::hash_map<std::string, NotifyMsg*>  RoomNotifyMsgs;
 #else
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
 #endif

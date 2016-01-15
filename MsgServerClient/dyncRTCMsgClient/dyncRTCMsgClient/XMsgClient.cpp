@@ -53,8 +53,11 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
     m_pClient->Connect(server, port, bAutoConnect);
     m_pMsgProcesser->ServerState(MSCONNECTTING);
     
-    m_Uid = uid;
-    m_Token = token;
+    m_uid = uid;
+    m_token = token;
+    m_server = server;
+    m_port = port;
+    m_autoConnect = bAutoConnect;
     return 0;
 }
 
@@ -78,7 +81,7 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& msg)
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
     } else {
         return -1;
     }
@@ -93,7 +96,7 @@ int XMsgClient::GetMsg(GETCMD cmd)
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeGetMsg(outstr, m_Uid, m_Token, cmd);
+        m_pMsgProcesser->EncodeGetMsg(outstr, m_uid, m_token, cmd);
     } else {
         return -1;
     }
@@ -112,7 +115,7 @@ int XMsgClient::OptRoom(MEETCMD cmd, const std::string& roomid, const std::strin
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "", remain, cmd, DCOMMACTION::dcommaction_invalid, SENDTAGS::sendtags_invalid, SENDTYPE::sendtype_invalid);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, roomid, "", remain, cmd, DCOMMACTION::dcommaction_invalid, SENDTAGS::sendtags_invalid, SENDTYPE::sendtype_invalid);
     } else {
         return -1;
     }
@@ -130,7 +133,7 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& msg, cons
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::string tousers;
         m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, tousers, msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, roomid, tousers, msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
     } else {
         return -1;
     }
@@ -146,7 +149,7 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& msg)
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_Uid, m_Token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_subscribe, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_subscribe, SENDTYPE::msg);
     } else {
         return -1;
     }
@@ -165,14 +168,19 @@ int XMsgClient::Login()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeLogin(outstr, m_Uid, m_Token);
+        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-    
+
+#ifdef WEBRTC_ANDROID
+    LOGI("XMsgClient::Login call SendEncodeMsg\n");
+#else
+    std::cout << "XMsgClient::Login call SendEncodeMsg" << std::endl;
+#endif
     return SendEncodeMsg(outstr);
 }
 
@@ -180,7 +188,7 @@ int XMsgClient::Logout()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeLogout(outstr, m_Uid, m_Token);
+        m_pMsgProcesser->EncodeLogout(outstr, m_uid, m_token);
     } else {
         return -1;
     }
@@ -249,6 +257,7 @@ void XMsgClient::OnServerConnected()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
     Login();
+    KeepAlive();
 }
 
 void XMsgClient::OnServerDisconnect()
@@ -258,6 +267,36 @@ void XMsgClient::OnServerDisconnect()
         m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerDisconnect();
     }
+
+    {
+        rtc::Thread::SleepMs(3000);
+        if (m_pClient) {
+            if (m_pClient->Status()==CONNECTED) {
+#ifdef WEBRTC_ANDROID
+                LOGI("XMsgClient::OnServerDisconnect Status()==CONNECTED...");
+#else
+                std::cout << "XMsgClient::OnServerDisconnect Status()==CONNECTED..." << std::endl;
+#endif
+                return;
+            }
+#ifdef WEBRTC_ANDROID
+            LOGI("XMsgClient::OnServerDisconnect Connect again...");
+#else
+            std::cout << "XMsgClient::OnServerDisconnect Connect again..." << std::endl;
+#endif
+            m_pClient->Connect(m_server, m_port, m_autoConnect);
+        }
+        if (m_pMsgProcesser) {
+#ifdef WEBRTC_ANDROID
+            LOGI("XMsgClient::OnServerDisconnect state MSCONNECTTING again...");
+#else
+            std::cout << "XMsgClient::OnServerDisconnect state MSCONNECTTING again..." << std::endl;
+#endif
+            m_pMsgProcesser->ServerState(MSCONNECTTING);
+        }
+    }
+    
+
 }
 
 void XMsgClient::OnServerConnectionFailure()
@@ -266,6 +305,33 @@ void XMsgClient::OnServerConnectionFailure()
     if (m_pMsgProcesser) {
         m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerConnectionFailure();
+    }
+    {
+        rtc::Thread::SleepMs(3000);
+        if (m_pClient) {
+            if (m_pClient->Status()==CONNECTED) {
+#ifdef WEBRTC_ANDROID
+                LOGI("XMsgClient::OnServerConnectionFailure Status()==CONNECTED...");
+#else
+                std::cout << "XMsgClient::OnServerConnectionFailure Status()==CONNECTED..." << std::endl;
+#endif
+                return;
+            }
+#ifdef WEBRTC_ANDROID
+            LOGI("XMsgClient::OnServerConnectionFailure Connect again...");
+#else
+            std::cout << "XMsgClient::OnServerConnectionFailure Connect again..." << std::endl;
+#endif
+            m_pClient->Connect(m_server, m_port, m_autoConnect);
+        }
+        if (m_pMsgProcesser) {
+#ifdef WEBRTC_ANDROID
+            LOGI("XMsgClient::OnServerConnectionFailure state MSCONNECTTING again...");
+#else
+            std::cout << "XMsgClient::OnServerConnectionFailure state MSCONNECTTING again..." << std::endl;
+#endif
+            m_pMsgProcesser->ServerState(MSCONNECTTING);
+        }
     }
 }
 
@@ -317,9 +383,15 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
 
 void XMsgClient::OnLogin(int code, const std::string& status, const std::string& userid)
 {
+#ifdef WEBRTC_ANDROID
+    LOGI("XMsgClient::OnLogin code:%d\n", code);
+#else
+    std::cout << "XMsgClient::OnLogin code:" << code << std::endl;
+#endif
     if (code!=0) {
         Login();
     }
+    KeepAlive();
 }
 
 void XMsgClient::OnLogout(int code, const std::string& status, const std::string& userid)
