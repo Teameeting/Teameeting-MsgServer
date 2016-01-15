@@ -50,14 +50,14 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
         }
         return -1;
     }
-    m_pClient->Connect(server, port, bAutoConnect);
-    m_pMsgProcesser->ServerState(MSCONNECTTING);
-    
     m_uid = uid;
     m_token = token;
     m_server = server;
     m_port = port;
     m_autoConnect = bAutoConnect;
+    m_pClient->Connect(server, port, bAutoConnect);
+    m_pMsgProcesser->ServerState(MSCONNECTTING);
+    
     return 0;
 }
 
@@ -249,6 +249,38 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
     }
 }
 
+int XMsgClient::TryToConnect()
+{
+    rtc::Thread::SleepMs(3000);
+    if (m_pClient) {
+        if (m_pClient->Status()==CONNECTED) {
+#ifdef WEBRTC_ANDROID
+            LOGI("XMsgClient::TryToConnect Status()==CONNECTED...");
+#else
+            std::cout << "XMsgClient::TryToConnect Status()==CONNECTED..." << std::endl;
+#endif
+            return 0;
+        }
+#ifdef WEBRTC_ANDROID
+        LOGI("XMsgClient::TryToConnect Connect again...");
+#else
+        std::cout << "XMsgClient::TryToConnect Connect again..." << std::endl;
+#endif
+        m_autoConnect = true;
+        m_pClient->Connect(m_server, m_port, m_autoConnect);
+    }
+    if (m_pMsgProcesser) {
+#ifdef WEBRTC_ANDROID
+        LOGI("XMsgClient::TryToConnect state MSCONNECTTING again...");
+#else
+        std::cout << "XMsgClient::TryToConnect state MSCONNECTTING again..." << std::endl;
+#endif
+        m_pMsgProcesser->ServerState(MSCONNECTTING);
+    }
+    return 0;
+}
+
+
 //////////////////////////////////////////////////
 //////////////XTcpClientCallback//////////////////
 //////////////////////////////////////////////////
@@ -267,36 +299,6 @@ void XMsgClient::OnServerDisconnect()
         m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerDisconnect();
     }
-
-    {
-        rtc::Thread::SleepMs(3000);
-        if (m_pClient) {
-            if (m_pClient->Status()==CONNECTED) {
-#ifdef WEBRTC_ANDROID
-                LOGI("XMsgClient::OnServerDisconnect Status()==CONNECTED...");
-#else
-                std::cout << "XMsgClient::OnServerDisconnect Status()==CONNECTED..." << std::endl;
-#endif
-                return;
-            }
-#ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::OnServerDisconnect Connect again...");
-#else
-            std::cout << "XMsgClient::OnServerDisconnect Connect again..." << std::endl;
-#endif
-            m_pClient->Connect(m_server, m_port, m_autoConnect);
-        }
-        if (m_pMsgProcesser) {
-#ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::OnServerDisconnect state MSCONNECTTING again...");
-#else
-            std::cout << "XMsgClient::OnServerDisconnect state MSCONNECTTING again..." << std::endl;
-#endif
-            m_pMsgProcesser->ServerState(MSCONNECTTING);
-        }
-    }
-    
-
 }
 
 void XMsgClient::OnServerConnectionFailure()
@@ -306,39 +308,16 @@ void XMsgClient::OnServerConnectionFailure()
         m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerConnectionFailure();
     }
-    {
-        rtc::Thread::SleepMs(3000);
-        if (m_pClient) {
-            if (m_pClient->Status()==CONNECTED) {
-#ifdef WEBRTC_ANDROID
-                LOGI("XMsgClient::OnServerConnectionFailure Status()==CONNECTED...");
-#else
-                std::cout << "XMsgClient::OnServerConnectionFailure Status()==CONNECTED..." << std::endl;
-#endif
-                return;
-            }
-#ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::OnServerConnectionFailure Connect again...");
-#else
-            std::cout << "XMsgClient::OnServerConnectionFailure Connect again..." << std::endl;
-#endif
-            m_pClient->Connect(m_server, m_port, m_autoConnect);
-        }
-        if (m_pMsgProcesser) {
-#ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::OnServerConnectionFailure state MSCONNECTTING again...");
-#else
-            std::cout << "XMsgClient::OnServerConnectionFailure state MSCONNECTTING again..." << std::endl;
-#endif
-            m_pMsgProcesser->ServerState(MSCONNECTTING);
-        }
-    }
 }
 
 void XMsgClient::OnTick()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
-    RefreshTime();
+    if (m_pClient && m_pClient->Status()==NOT_CONNECTED) {
+        TryToConnect();
+    } else if (m_pClient->Status()==CONNECTED) {
+        RefreshTime();
+    }
 }
 
 void XMsgClient::OnMessageSent(int err)

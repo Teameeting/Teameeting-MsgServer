@@ -110,7 +110,7 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
 {
     int parsed = 0;
     int ll = 0;
-    LI("RTTransfer::ProcessData pData:%s\n", pData);
+
     while (parsed < nLen)
     {
         const char* pMsg = pData + parsed;
@@ -123,9 +123,8 @@ int RTTransfer::ProcessData(const char* pData, int nLen)
             offset += 4;
             ll = (int)strtol(l, NULL, 10);
             if (ll>=0 && ll <= nLen) {  // the message length may be 0
-                std::string strMsgOff(pMsg+offset, ll);
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                std::cout << "RTTransfer::ProcessData Msg======>>>>msg nlen:" << nlen << ", nlen:" << ", ll:" << ll << ", l:" << l << ", strMsgOffset:" << strMsgOff << std::endl;
+                std::cout << "RTTransfer::ProcessData Msg======>>>>msg nlen:" << nlen << ", nlen:" << ", ll:" << ll << ", l:" << l << std::endl;
                 if (nlen < 0) {
                     break;
                 } else { // nlen < 0
