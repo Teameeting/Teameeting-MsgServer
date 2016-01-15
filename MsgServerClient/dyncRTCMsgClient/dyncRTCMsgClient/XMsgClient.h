@@ -65,8 +65,11 @@ private:
     XTcpClient*              m_pClient;
     XMsgProcesser*           m_pMsgProcesser;
     uint32                   m_lastUpdateTime;
-    std::string              m_Uid;
-    std::string              m_Token;
+    std::string              m_uid;
+    std::string              m_token;
+    std::string              m_server;
+    int                      m_port;
+    bool                     m_autoConnect;
 };
 
 

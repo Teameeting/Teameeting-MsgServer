@@ -8,6 +8,16 @@
 #include "webrtc/base/win32socketserver.h"
 #endif
 
+#ifdef WEBRTC_ANDROID
+#include <android/log.h>
+#define  LOG_TAG    "Teameeting"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#else
+#include <iostream>
+#include <string>
+#endif
+
 const int kDefaultServerPort = 80;
 const int kReconnectDelay = 2000;
 const int kBufferSizeInBytes = 2048;
@@ -185,6 +195,11 @@ void XTcpClientImpl::DoConnect()
 }
 void XTcpClientImpl::Close()
 {
+#ifdef WEBRTC_ANDROID
+    LOGI("XTcpClientImpl::Close was called\n");
+#else
+    std::cout << "XTcpClientImpl::Close was called" << std::endl;
+#endif
 	if (m_asynSock.get() != NULL)
 		m_asynSock->Close();
 	if (m_asynResolver != NULL) {
@@ -217,6 +232,11 @@ bool XTcpClientImpl::ConnectControlSocket()
 
 void XTcpClientImpl::OnConnect(rtc::AsyncSocket* socket)
 {
+#ifdef WEBRTC_ANDROID
+    LOGI("XTcpClientImpl::OnConnect was called\n");
+#else
+    std::cout << "XTcpClientImpl::OnConnect was called" << std::endl;
+#endif
 	m_nState = CONNECTED;
 	m_rCallback.OnServerConnected();
 }
@@ -234,6 +254,11 @@ void XTcpClientImpl::OnRead(rtc::AsyncSocket* socket)
 
 void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 {
+#ifdef WEBRTC_ANDROID
+    LOGI("XTcpClientImpl::OnClose was called\n");
+#else
+    std::cout << "XTcpClientImpl::OnClose was called" << std::endl;
+#endif
 	socket->Close();
 
 #ifdef WIN32
@@ -262,6 +287,11 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 		if (m_bAutoConnect)
 		{// Auto Connect...
 			LOG(WARNING) << "Connection refused; retrying in 2 seconds";
+#ifdef WEBRTC_ANDROID
+            LOGI("XTcpClientImpl::OnClose call Auto Connect\n");
+#else
+            std::cout << "XTcpClientImpl::OnClose call Auto Connect" << std::endl;
+#endif
 			rtc::Thread::Current()->PostDelayed(kReconnectDelay, this, 0);
 		} 
 		else
