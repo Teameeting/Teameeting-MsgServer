@@ -170,6 +170,25 @@ int RTMeetingRoom::GetRoomMemberOnline()
     return online;
 }
 
+bool RTMeetingRoom::IsMemberInMeeting(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutex);
+    if (m_roomMembers.size()==0) {
+        return false;
+    }
+    return ((m_roomMembers.find(uid)!=m_roomMembers.end()) && (MemberStatus::MS_INMEETING == GetRoomMemberStatus(uid)));
+}
+
+RTMeetingRoom::MemberStatus RTMeetingRoom::GetRoomMemberStatus(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutex);
+    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    if (rit!=m_roomMembers.end()) {
+        return rit->second->_memStatus;
+    }
+    return MemberStatus::MS_NIL;
+}
+
 void RTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
 {
     OSMutexLocker locker(&m_mutex);

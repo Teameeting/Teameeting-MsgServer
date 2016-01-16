@@ -50,11 +50,11 @@ RTConnectionManager::ModuleInfo* RTConnectionManager::findModuleInfo(const std::
     return pInfo;
 }
 
-RTConnectionManager::ConnectionInfo* RTConnectionManager::findConnectionInfoById(const std::string& cid)
+RTConnectionManager::ConnectionInfo* RTConnectionManager::findConnectionInfoById(const std::string& uid)
 {
     RTConnectionManager::ConnectionInfo* pInfo = NULL;
     RTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
-    RTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(cid);
+    RTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
     if (it!=maps->end()) {
         pInfo = it->second;
     }
@@ -63,15 +63,20 @@ RTConnectionManager::ConnectionInfo* RTConnectionManager::findConnectionInfoById
 
 bool RTConnectionManager::AddModuleInfo(RTConnectionManager::ModuleInfo* pmi, const std::string& sid)
 {
+    DelModuleInfo(sid);
     GetModuleInfo()->insert(make_pair(sid, pmi));
     return true;
 }
 
 bool RTConnectionManager::DelModuleInfo(const std::string& sid)
 {
-    ModuleInfoMaps::iterator it = GetModuleInfo()->find(sid);
-    if (it!=GetModuleInfo()->end()) {
-        GetModuleInfo()->erase(sid);
+    RTConnectionManager::ModuleInfoMaps* maps = GetModuleInfo();
+    RTConnectionManager::ModuleInfoMaps::iterator it = maps->find(sid);
+    if (it!=maps->end()) {
+        RTConnectionManager::ModuleInfo *p = it->second;
+        delete p;
+        p = NULL;
+        maps->erase(sid);
     }
     return true;
 }
@@ -122,18 +127,22 @@ bool RTConnectionManager::DelTypeModuleSession(const std::string& sid)
 bool RTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, RTConnectionManager::ConnectionInfo* pInfo)
 {
     if (uid.length()==0 || !pInfo) return false;
+    DelUser(type, uid);
     GetConnectionInfo()->insert(make_pair(uid, pInfo));
-    LI("RTConnectionManager::AddUser %s\n", uid.c_str());
-    RTHiredisLocal::Instance()->CmdHSet(HI_USER_CONNECTOR_ID, uid, ConnectorId());
     return true;
 }
 
 bool RTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid)
 {
     if (uid.length()==0) return false;
-    std::string res;
-    GetConnectionInfo()->erase(uid);
-    RTHiredisLocal::Instance()->CmdHDel(HI_USER_CONNECTOR_ID, uid, res);
+    RTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
+    RTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
+    if (it!=maps->end()) {
+        RTConnectionManager::ConnectionInfo* p = it->second;
+        delete p;
+        p = NULL;
+        maps->erase(uid);
+    }
     return true;
 }
 

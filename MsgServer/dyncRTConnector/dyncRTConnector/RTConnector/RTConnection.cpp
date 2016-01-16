@@ -216,7 +216,8 @@ void RTConnection::OnLogout(const char* pUserid)
         //write to hiredis
         std::string uid(pUserid);
         RTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid);
-        m_userId = "";
+        m_userId.assign("");
+        m_token.assign("");
     }
     {
         //send response

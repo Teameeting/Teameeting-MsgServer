@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "OSMutex.h"
 
 class RTDispatchConnection{
 public:
@@ -20,6 +21,7 @@ public:
     static std::string     m_connIp;
     static std::string     m_connPort;
 private:
+    OSMutex                m_mutex;
 };
 
 #endif /* defined(__dyncRTConnector__RTDispatchConnection__) */

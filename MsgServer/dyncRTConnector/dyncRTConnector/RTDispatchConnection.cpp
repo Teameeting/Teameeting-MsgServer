@@ -18,21 +18,28 @@ std::string RTDispatchConnection::m_connPort;
 
 void RTDispatchConnection::DispatchMsg(const std::string& uid, const std::string& msg)
 {
-    std::string cid;
     //find connector
+    OSMutexLocker locker(&m_mutex);
     RTConnectionManager::ConnectionInfo* pci = RTConnectionManager::Instance()->findConnectionInfoById(uid);
-    if (pci && pci->pConn && pci->pConn->IsLiveSession() && pci->connType == CONNECTIONTYPE::_chttp) {
-        RTConnection *c = dynamic_cast<RTConnection*>(pci->pConn);
-        if (c) {
-            c->SendDispatch(uid, msg);
+    if (!pci) {
+        LI("Dispatch user:%s not login, need push msg\n", uid.c_str());
+        return;
+    } else { //!pci
+        if (pci->pConn && pci->pConn->IsLiveSession()) {
+            if (pci->connType == CONNECTIONTYPE::_chttp) {
+                RTConnection *c = dynamic_cast<RTConnection*>(pci->pConn);
+                if (c) {
+                    c->SendDispatch(uid, msg);
+                }
+            } else if (pci->connType == CONNECTIONTYPE::_ctcp) {
+                RTConnectionTcp *ct = dynamic_cast<RTConnectionTcp*>(pci->pConn);
+                if (ct) {
+                    ct->SendDispatch(uid, msg);
+                }
+            }
+        } else { //pci->pConn
+            LE("DispatchMsg user:%s session not live, need push msg\n", uid.c_str());
         }
-    } else if (pci && pci->pConn && pci->pConn->IsLiveSession() && pci->connType == CONNECTIONTYPE::_ctcp) {
-        RTConnectionTcp *ct = dynamic_cast<RTConnectionTcp*>(pci->pConn);
-        if (ct) {
-            ct->SendDispatch(uid, msg);
-        }
-    } else {
-        LE("DispatchMsg error\n");
-        RTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid);
     }
+    
 }

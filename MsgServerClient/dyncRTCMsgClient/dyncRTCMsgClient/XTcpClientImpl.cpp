@@ -169,6 +169,11 @@ void XTcpClientImpl::OnMessage(rtc::Message* msg)
 	{
 		DoResolver();
 	}
+    else if(msg->message_id == 1001) {
+        if(Status()) {
+            
+        }
+    }
 }
 
 void XTcpClientImpl::DoResolver()
@@ -191,7 +196,9 @@ void XTcpClientImpl::DoConnect()
 	bool ret = ConnectControlSocket();
 	if (!ret) {
 		m_rCallback.OnServerConnectionFailure();
-	}
+    } else {
+        CurThread()->PostDelayed(30*1000, this, 1001);
+    }
 }
 void XTcpClientImpl::Close()
 {

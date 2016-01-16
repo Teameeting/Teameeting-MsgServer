@@ -144,11 +144,14 @@ public:
     }
     
     ModuleInfo*       findModuleInfo(const std::string& userid, TRANSFERMODULE module);
-    ConnectionInfo*   findConnectionInfoById(const std::string& cid);
+    ConnectionInfo*   findConnectionInfoById(const std::string& uid);
     
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
     bool DelModuleInfo(const std::string& sid);
     bool AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid);
+    
+    //if session lost, del session
+    //if programer lost, del module
     bool DelTypeModuleSession(const std::string& sid);
     bool AddUser(CONNECTIONTYPE type, const std::string& uid, ConnectionInfo* pInfo);
     bool DelUser(CONNECTIONTYPE type, const std::string& uid);
