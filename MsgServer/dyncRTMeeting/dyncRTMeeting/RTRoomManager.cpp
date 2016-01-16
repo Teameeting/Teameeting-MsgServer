@@ -228,7 +228,7 @@ void RTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         if (users.length()>0) {
             LI("==>EnterRoom notify users :%s i am in room\n", users.c_str());
             mmsg._nmem = online;
-            mmsg._cont = mmsg._from + " enter room!";
+            mmsg._cont = mmsg._from;
             mmsg._tags = SENDTAGS::sendtags_enter;
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
             SendTransferData(resp, (int)resp.length());
@@ -291,7 +291,7 @@ void RTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     if (!it->second->GetRoomMemberJson(mmsg._from, users)) {
         if (users.length()>0) {
             LI("==>LeaveRoom notify users :%s i am out room\n", users.c_str());
-            mmsg._cont = mmsg._from + " leave room!";
+            mmsg._cont = mmsg._from;
             mmsg._nmem = online;
             mmsg._tags = SENDTAGS::sendtags_leave;
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
@@ -448,7 +448,7 @@ void RTRoomManager::ClearSessionLost(const std::string& uid, const std::string& 
     }
     MeetingRoomMap::iterator it = m_meetingRoomMap.begin();
     for (; it!=m_meetingRoomMap.end(); it++) {
-        if (it->second && it->second->IsMemberInRoom(uid)) {
+        if (it->second && it->second->IsMemberInMeeting(uid)) {
             it->second->UpdateMemberStatus(uid, RTMeetingRoom::MemberStatus::MS_OUTMEETING);
             int online = it->second->GetRoomMemberOnline();
             char strOnline[4] = {0};
@@ -459,14 +459,14 @@ void RTRoomManager::ClearSessionLost(const std::string& uid, const std::string& 
             // notify member in meeting publishid
             it->second->GetRoomMemberMeetingJson(uid, users);
             it->second->DelNotifyMsg(uid, pubid);
-            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_subscribe, online, pubid, users, resp);
+            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
             SendTransferData(resp, (int)resp.length());
             LI("ClearSessionLost publish resp:%s\n", resp.c_str());
             
             // notify member having room uid leaving
             users.assign("");
             it->second->GetRoomMemberJson(uid, users);
-            cont = uid + " leave room";
+            cont = uid;
             GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_leave, online, cont, users, resp);
             SendTransferData(resp, (int)resp.length());
             LI("ClearSessionLost msg resp:%s\n", resp.c_str());
