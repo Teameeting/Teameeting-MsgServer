@@ -54,9 +54,13 @@ CRTConnectionManager::ConnectionInfo* CRTConnectionManager::findConnectionInfoBy
 {
     CRTConnectionManager::ConnectionInfo* pInfo = NULL;
     CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
+    LI("findConnection show find uid:%s\n", uid.c_str());
+    ShowConnectionInfo();
     CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
     if (it!=maps->end()) {
         pInfo = it->second;
+    } else {
+        LI("findConnection after show NOOOOOOT find uid:%s\n", uid.c_str());
     }
     return pInfo;
 }
@@ -132,6 +136,8 @@ bool CRTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, 
         ConnectionLostNotify(uid, token);
     }
     GetConnectionInfo()->insert(make_pair(uid, pInfo));
+    LI("AddUser: show addUser\n");
+    ShowConnectionInfo();
     return true;
 }
 
@@ -140,6 +146,8 @@ bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, 
     if (uid.length()==0) return false;
     CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
     CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
+    LI("DelUser: show: delUser\n");
+    ShowConnectionInfo();
     if (it!=maps->end()) {
         CRTConnectionManager::ConnectionInfo* p = it->second;
         token = p->_token;
@@ -156,6 +164,7 @@ void CRTConnectionManager::ConnectionLostNotify(const std::string& uid, const st
 {
     ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
     if (pmi && pmi->pModule) {
+        LI("CRTConnectionManager::ConnectionLostNotify uid:%s, token:%s\n", uid.c_str(), token.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
         LE("pmi->pModule is NULL\n");
@@ -167,4 +176,16 @@ void CRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
     DelModuleInfo(sid);
     DelTypeModuleSession(sid);
     LI("RTConnectionManager::TransferSessionLostNotify sessionid:%s\n", sid.c_str());
+}
+
+void CRTConnectionManager::ShowConnectionInfo()
+{
+    CRTConnectionManager::ConnectionInfo* pInfo = NULL;
+    CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
+    CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->begin();
+    LI("ShowConnectionInfo size:%d\n", (int)maps->size());
+    for (; it!=maps->end(); it++) {
+        pInfo = it->second;
+        LI("userid:%s, uid:%s, token:%s\n", it->first.c_str(), pInfo->_userId.c_str(), pInfo->_token.c_str());
+    }
 }

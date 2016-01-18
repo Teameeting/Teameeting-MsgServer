@@ -75,6 +75,16 @@ public:
     typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
 #endif
     
+    // not sending msgs
+    typedef struct _waiting_msg{
+        int             _wtype;
+        int             _wtags;
+        std::string     _wmsg;
+        _waiting_msg(int wtype, int wtags, std::string& wmsg):
+        _wtype(wtype),_wtags(wtags),_wmsg(wmsg){}
+    }WaitingMsg;
+    typedef std::list<WaitingMsg> WaitingMsgsList;
+    
     
     void AddMemberToRoom(const std::string& uid, MemberStatus status);
     void SyncRoomMember(const std::string& uid, MemberStatus status);
@@ -98,7 +108,8 @@ public:
     int AddNotifyMsg(const std::string pubsher, const std::string pubid);
     int DelNotifyMsg(const std::string pubsher, std::string& pubid);
     RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
-    void AddMsgToWaiting(MEETMSG msg);
+    
+    void AddWaitingMsgToList(int type, int tag, std::string& msg);
     void SendWaitingMsgs();
     
     const std::string& GetRoomId() { return m_roomId; }
@@ -114,7 +125,7 @@ private:
     
     OSMutex                         m_mutex;
     OSMutex                         m_notifyMutex;
-    OSMutex                         m_waitingMutex;
+    OSMutex                         m_wmsgMutex;
     const std::string               m_roomId;
     const std::string               m_ownerId;
     std::string                     m_sessionId;
@@ -122,7 +133,7 @@ private:
     RoomMembers                     m_roomMembers;
     int                             m_maxRoomMem;
     RoomNotifyMsgs                  m_roomNotifyMsgs;
-    std::list<MEETMSG>              m_waitingMsgs;
+    WaitingMsgsList                 m_waitingMsgsList;
     
 };
 #endif /* defined(__MsgServerMeeting__MRTMeetingRoom__) */

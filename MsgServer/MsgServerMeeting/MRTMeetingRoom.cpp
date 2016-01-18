@@ -238,18 +238,6 @@ void MRTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
     }
 }
 
-void MRTMeetingRoom::AddMsgToWaiting(MEETMSG msg)
-{
-    OSMutexLocker locker(&m_waitingMutex);
-    m_waitingMsgs.push_front(msg);
-}
-
-void MRTMeetingRoom::SendWaitingMsgs()
-{
-    // move to thread process
-    OSMutexLocker locker(&m_waitingMutex);
-    
-}
 
 void MRTMeetingRoom::CheckMembers()
 {
@@ -289,6 +277,28 @@ int MRTMeetingRoom::DelNotifyMsg(const std::string pubsher, std::string& pubid)
     return 0;
 }
 
+void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, std::string& msg)
+{
+    OSMutexLocker locker(&m_wmsgMutex);
+    LI("===>>>MRTMeetingRoom::AddWaitingMsgToList size:%d, msg:%s\n", (int)m_waitingMsgsList.size(), msg.c_str());
+    //m_waitingMsgsList.push_back(WaitingMsg(type, tag, msg));
+}
+
+void MRTMeetingRoom::SendWaitingMsgs()
+{
+    OSMutexLocker locker(&m_wmsgMutex);
+    return;
+    if (m_waitingMsgsList.size()==0) {
+        return;
+    }
+    WaitingMsgsList::iterator wit = m_waitingMsgsList.begin();
+    for (; wit!=m_waitingMsgsList.end(); wit++) {
+        LI("===>>>MRTMeetingRoom::SendWaitingMsgs size:%d, msg:%s\n", (int)m_waitingMsgsList.size(), wit->_wmsg.c_str());
+        MRTRoomManager::Instance()->SendTransferData(wit->_wmsg.c_str(), (int)wit->_wmsg.length());
+        m_waitingMsgsList.pop_front();
+    }
+    
+}
 
 void MRTMeetingRoom::GenericMeetingSessionId(std::string& strId)
 {
