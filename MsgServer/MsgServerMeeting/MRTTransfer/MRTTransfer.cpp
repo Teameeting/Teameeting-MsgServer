@@ -124,7 +124,6 @@ int MRTTransfer::ProcessData(const char* pData, int nLen)
             ll = (int)strtol(l, NULL, 10);
             if (ll>=0 && ll <= nLen) {  // the message length may be 0
                 int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                std::cout << "RTTransfer::ProcessData Msg======>>>>msg nlen:" << nlen << ", nlen:" << ", ll:" << ll << ", l:" << l << std::endl;
                 if (nlen < 0) {
                     break;
                 } else { // nlen < 0
@@ -136,6 +135,5 @@ int MRTTransfer::ProcessData(const char* pData, int nLen)
             }
         }
     }
-    std::cout << "RTTransfer::ProcessData RECV nLen:" << nLen << ", parsed:" << parsed << std::endl;
     return parsed;
 }

@@ -117,6 +117,7 @@ SInt64 RTTcp::Run()
 			if((elem = m_listSend.first) != NULL) 
 			{ 
 				UInt32 theLengthSent = 0;
+                LI("========Tcp::Run socket.send msg:%s\n", (char*)elem->content);
 				OS_Error err = fSocket.Send((char*)elem->content, elem->size, &theLengthSent);
 				if (err == EAGAIN)
 				{

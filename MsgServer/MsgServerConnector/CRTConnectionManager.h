@@ -165,6 +165,8 @@ public:
     std::string& ConnectorIp() { return m_connectorIp; }
     std::string& ConnectorPort() { return m_connectorPort; }
     std::string& ConnectorId() { return m_connectorId; }
+public:
+    void ShowConnectionInfo();
 private:
     CRTConnectionManager() : m_connectorIp(""),
                             m_connectorPort(""),

@@ -66,6 +66,7 @@ private:
     // <userid, MeetingRoomId> in meeting user-roomid map
     typedef std::map<const std::string, const std::string> UserMeetingRoomIdMap;
     
+    
     void AddUserMeetingRoomId(const std::string& uid, const std::string& roomid) {
         OSMutexLocker locker(&m_mutexUser);
         UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
@@ -115,7 +116,6 @@ private:
     MRTTransferSession          *m_pMsgQueueSession;
     MeetingRoomMap              m_meetingRoomMap;
     UserMeetingRoomIdMap        m_userMeetingRoomIdMap;
-    
     
 };
 
