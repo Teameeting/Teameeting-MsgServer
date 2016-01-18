@@ -25,14 +25,14 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::strin
         LI("Dispatch user:%s not login, need push msg\n", uid.c_str());
         return;
     } else { //!pci
-        if (pci->pConn && pci->pConn->IsLiveSession()) {
-            if (pci->connType == CONNECTIONTYPE::_chttp) {
-                CRTConnection *c = dynamic_cast<CRTConnection*>(pci->pConn);
+        if (pci->_pConn && pci->_pConn->IsLiveSession()) {
+            if (pci->_connType == CONNECTIONTYPE::_chttp) {
+                CRTConnection *c = dynamic_cast<CRTConnection*>(pci->_pConn);
                 if (c) {
                     c->SendDispatch(uid, msg);
                 }
-            } else if (pci->connType == CONNECTIONTYPE::_ctcp) {
-                CRTConnectionTcp *ct = dynamic_cast<CRTConnectionTcp*>(pci->pConn);
+            } else if (pci->_connType == CONNECTIONTYPE::_ctcp) {
+                CRTConnectionTcp *ct = dynamic_cast<CRTConnectionTcp*>(pci->_pConn);
                 if (ct) {
                     ct->SendDispatch(uid, msg);
                 }

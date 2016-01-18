@@ -11,9 +11,12 @@
 
 #ifdef WEBRTC_ANDROID
 #include <android/log.h>
-#define  LOG_TAG    "Teameeting"
+#define  LOG_TAG    "XMsgClient"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#else
+#include <iostream>
+#include <string>
 #endif
 
 #define TIMEOUT_TS (60*1000)
@@ -249,37 +252,6 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
     }
 }
 
-int XMsgClient::TryToConnect()
-{
-    rtc::Thread::SleepMs(3000);
-    if (m_pClient) {
-        if (m_pClient->Status()==CONNECTED) {
-#ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::TryToConnect Status()==CONNECTED...");
-#else
-            std::cout << "XMsgClient::TryToConnect Status()==CONNECTED..." << std::endl;
-#endif
-            return 0;
-        }
-#ifdef WEBRTC_ANDROID
-        LOGI("XMsgClient::TryToConnect Connect again...");
-#else
-        std::cout << "XMsgClient::TryToConnect Connect again..." << std::endl;
-#endif
-        m_autoConnect = true;
-        m_pClient->Connect(m_server, m_port, m_autoConnect);
-    }
-    if (m_pMsgProcesser) {
-#ifdef WEBRTC_ANDROID
-        LOGI("XMsgClient::TryToConnect state MSCONNECTTING again...");
-#else
-        std::cout << "XMsgClient::TryToConnect state MSCONNECTTING again..." << std::endl;
-#endif
-        m_pMsgProcesser->ServerState(MSCONNECTTING);
-    }
-    return 0;
-}
-
 
 //////////////////////////////////////////////////
 //////////////XTcpClientCallback//////////////////
@@ -313,9 +285,7 @@ void XMsgClient::OnServerConnectionFailure()
 void XMsgClient::OnTick()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
-    if (m_pClient && m_pClient->Status()==NOT_CONNECTED) {
-        TryToConnect();
-    } else if (m_pClient->Status()==CONNECTED) {
+    if (m_pClient->Status()==CONNECTED) {
         RefreshTime();
     }
 }
@@ -351,9 +321,9 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
                 }
             } else { // ll>0 && ll <= nLen
 #ifdef WEBRTC_ANDROID
-                LOGI("XMsgClient::OnMessageRecv Get Msg Len Error!!!, ll:%d, nLen:%d, parsed:%d\n", ll, nLen, parsed);
+                LOGI("XMsgClient::OnMessageRecv Error!!!, ll:%d, nLen:%d, parsed:%d\n", ll, nLen, parsed);
 #else
-                std::cout << "XMsgClient::OnMessageRecv Get Msg Len Error!!!, ll:" << ll << ", nLen:" << nLen << ", parsed:" << parsed << std::endl;
+                std::cout << "XMsgClient::OnMessageRecv Error!!!, ll:" << ll << ", nLen:" << nLen << ", parsed:" << parsed << std::endl;
 #endif
             }
         }
@@ -366,11 +336,6 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
 
 void XMsgClient::OnLogin(int code, const std::string& status, const std::string& userid)
 {
-#ifdef WEBRTC_ANDROID
-    LOGI("XMsgClient::OnLogin code:%d\n", code);
-#else
-    std::cout << "XMsgClient::OnLogin code:" << code << std::endl;
-#endif
     if (code!=0) {
         Login();
     }

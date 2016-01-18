@@ -50,11 +50,11 @@ public:
     }MemberStatus;
     
     typedef struct _room_member{
-        std::string _uid;
-        MemberStatus  _memStatus;
-        _room_member(const std::string& uid, MemberStatus memStatus) {
-            _uid = uid;
-            _memStatus = memStatus;
+        MemberStatus    _memStatus;
+        std::string     _uid;
+        _room_member(MemberStatus memStatus, const std::string& uid)
+                    : _memStatus(memStatus)
+                    , _uid(uid){
         }
     }RoomMember;
 #ifdef WEBRTC_MAC
@@ -90,6 +90,7 @@ public:
     void AddUserToList(const std::string& userid);
     void UpdateMemberList(std::list<const std::string>& ulist);
     
+    int GetAllRoomMemberJson(std::string& users);
     int GetRoomMemberJson(const std::string from, std::string& users);
     int GetRoomMemberMeetingJson(const std::string from, std::string& users);
     bool IsMemberInMeeting(const std::string& uid);

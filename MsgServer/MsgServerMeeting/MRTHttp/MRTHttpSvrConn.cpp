@@ -93,6 +93,19 @@ void MRTHttpSvrConn::HttpUpdateUserMeetingJointime(const char* sign, const char*
     }
 }
 
+void MRTHttpSvrConn::HttpUpdateSessionMeetingStatus(const char* sign, const char* sessionid, const char* sessionstatus)
+{
+    int outLen = 0;
+    char data[512] = {0};
+    sprintf(data, "sign=%s&sessionid=%s&sessionstatus=%s", sign, sessionid, sessionstatus);
+    const char* msg = GenerateRequest(HTTP_POST, "meeting/updateSessionMeetingStatus", data, outLen);
+    if (msg && outLen>0) {
+        SendData(msg, outLen);
+        free((void*)msg);
+        msg = NULL;
+    }
+}
+
 
 //* HTTP_GET
 void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg)

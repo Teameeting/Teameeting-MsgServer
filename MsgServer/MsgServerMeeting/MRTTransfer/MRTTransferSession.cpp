@@ -60,7 +60,7 @@ void MRTTransferSession::Unit()
 
 bool MRTTransferSession::Connect(const std::string addr, int port)
 {
-    if (addr.empty() || port < 8192) {
+    if (addr.empty() || port < 2048) {
         LE("%s invalid params addr:%s, port:%d\n", __FUNCTION__, addr.c_str(), port);
         return false;
     }

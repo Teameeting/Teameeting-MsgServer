@@ -39,21 +39,22 @@ public:
     
     //store the user id and connection
     typedef struct _ConnectionInfo{
-        std::string     connId;
-        std::string     connAddr;
-        std::string     connPort;
-        std::string     userId;
-        RTTcp*          pConn;
-        CONNECTIONTYPE  connType;
-        int             flag;
-        _ConnectionInfo() {
-            connId = "";
-            connAddr = "";
-            connPort = "";
-            userId = "";
-            pConn = NULL;
-            connType = connectiontype_invalid;
-            flag = 0;
+        std::string     _connId;
+        std::string     _connAddr;
+        std::string     _connPort;
+        std::string     _userId;
+        std::string     _token;
+        RTTcp*          _pConn;
+        CONNECTIONTYPE  _connType;
+        int             _flag;
+        _ConnectionInfo():_connId("")
+                        , _connAddr("")
+                        , _connPort("")
+                        , _userId("")
+                        , _token("")
+                        , _pConn(NULL)
+                        , _connType(connectiontype_invalid)
+                        , _flag(0){
         }
     }ConnectionInfo;
     
@@ -154,7 +155,9 @@ public:
     //if programer lost, del module
     bool DelTypeModuleSession(const std::string& sid);
     bool AddUser(CONNECTIONTYPE type, const std::string& uid, ConnectionInfo* pInfo);
-    bool DelUser(CONNECTIONTYPE type, const std::string& uid);
+    // return true means delete one
+    // return false means not delete
+    bool DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token);
     
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);

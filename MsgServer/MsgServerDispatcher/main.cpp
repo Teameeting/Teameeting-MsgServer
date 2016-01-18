@@ -27,8 +27,8 @@ int main(int argc, const char * argv[]) {
     const char* plocal = "192.168.7.27";
     StrPtrLen pConnIp((char*)plocal);
     StrPtrLen pModuleIp((char*)plocal);
-    unsigned short pConnPort = 9288;
-    unsigned short pModulePort = 29288;
+    unsigned short pConnPort = 6620;
+    unsigned short pModulePort = 6640;
     pMsgQueue->Start(pConnIp.GetAsCString(), pConnPort, pModuleIp.GetAsCString(), pModulePort);
     while (true) {
         pMsgQueue->DoTick();

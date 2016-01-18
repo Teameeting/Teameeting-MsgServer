@@ -111,7 +111,7 @@ bool DRTConnectionManager::ConnectConnector()
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
         printf("ip:%s, port:%u\n", ip, port);
-        if (strlen(ip)>0 && port > 8192) {
+        if (strlen(ip)>0 && port > 2048) {
             DoConnectConnector(ip, port);
         }
     }
