@@ -127,23 +127,29 @@ bool CRTConnectionManager::DelTypeModuleSession(const std::string& sid)
 bool CRTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, CRTConnectionManager::ConnectionInfo* pInfo)
 {
     if (uid.length()==0 || !pInfo) return false;
-    DelUser(type, uid);
+    std::string token;
+    if(DelUser(type, uid, token)) {
+        ConnectionLostNotify(uid, token);
+    }
     GetConnectionInfo()->insert(make_pair(uid, pInfo));
     return true;
 }
 
-bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid)
+bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token)
 {
     if (uid.length()==0) return false;
     CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
     CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
     if (it!=maps->end()) {
         CRTConnectionManager::ConnectionInfo* p = it->second;
+        token = p->_token;
         delete p;
         p = NULL;
         maps->erase(uid);
+        return true;
+    } else {
+        return false;
     }
-    return true;
 }
 
 void CRTConnectionManager::ConnectionLostNotify(const std::string& uid, const std::string& token)
@@ -154,7 +160,6 @@ void CRTConnectionManager::ConnectionLostNotify(const std::string& uid, const st
     } else {
         LE("pmi->pModule is NULL\n");
     }
-    DelUser(CONNECTIONTYPE::connectiontype_invalid, uid);
 }
 
 void CRTConnectionManager::TransferSessionLostNotify(const std::string& sid)

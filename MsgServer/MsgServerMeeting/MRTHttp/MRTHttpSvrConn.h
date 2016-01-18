@@ -29,6 +29,7 @@ public:
     void HttpUpdateSessionMeetingEndtime(const char* sign, const char* sessionid);
     void HttpUpdateSessionMeetingNumber(const char* sign, const char* sessionid, const char* sessionnumber, const char* meetingid);
     void HttpUpdateUserMeetingJointime(const char* sign, const char* meetingid);
+    void HttpUpdateSessionMeetingStatus(const char* sign, const char* sessionid, const char* sessionstatus);
     
     //* HTTP_GET
     void HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg);

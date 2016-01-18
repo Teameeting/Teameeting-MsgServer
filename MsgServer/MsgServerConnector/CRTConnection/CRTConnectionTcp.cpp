@@ -139,13 +139,14 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
         if (pci) {
             CRTConnectionManager::Instance()->GenericSessionId(sid);
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
-            pci->connId = sid;
-            pci->connAddr = CRTConnectionManager::Instance()->ConnectorIp();
-            pci->connPort = CRTConnectionManager::Instance()->ConnectorPort();
-            pci->userId = pUserid;
-            pci->pConn = this;
-            pci->connType = CONNECTIONTYPE::_ctcp;
-            pci->flag = 1;
+            pci->_connId = sid;
+            pci->_connAddr = CRTConnectionManager::Instance()->ConnectorIp();
+            pci->_connPort = CRTConnectionManager::Instance()->ConnectorPort();
+            pci->_userId = pUserid;
+            pci->_token = pPass;
+            pci->_pConn = this;
+            pci->_connType = CONNECTIONTYPE::_ctcp;
+            pci->_flag = 1;
             std::string uid(pUserid);
             LI("OnLogin Uid:%s\n", uid.c_str());
             CRTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
@@ -214,7 +215,8 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
     if (!pUserid) {
         return;
     }
-    CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid);
+    std::string token;
+    CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
     m_userId.assign("");
     m_token.assign("");
     std::string resp;
@@ -236,11 +238,14 @@ void CRTConnectionTcp::OnResponse(const char*pData, int nLen)
 
 void CRTConnectionTcp::ConnectionDisconnected()
 {
-    if (m_userId.length()) {
+    if (m_userId.length()>0) {
         LI("RTConnectionTcp::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
+        std::string token;
+        CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, m_userId, token);
         CRTConnectionManager::Instance()->ConnectionLostNotify(m_userId, m_token);
     } else {
         LE("RTConnectionTcp::ConnectionDisconnected m_userId.length is 0\n");
+        Assert(false);
     }
 }
 

@@ -111,14 +111,14 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass)
         if (pci) {
             CRTConnectionManager::Instance()->GenericSessionId(sid);
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
-            pci->connId = sid;
-            pci->connAddr = CRTConnectionManager::Instance()->ConnectorIp();
-            pci->connPort = CRTConnectionManager::Instance()->ConnectorPort();
-            pci->userId = pUserid;
-            //pci->pConn = this;
-            pci->pConn = NULL;
-            pci->connType = CONNECTIONTYPE::_chttp;
-            pci->flag = 1;
+            pci->_connId = sid;
+            pci->_connAddr = CRTConnectionManager::Instance()->ConnectorIp();
+            pci->_connPort = CRTConnectionManager::Instance()->ConnectorPort();
+            pci->_userId = pUserid;
+            pci->_token = pPass;
+            pci->_pConn = NULL;
+            pci->_connType = CONNECTIONTYPE::_chttp;
+            pci->_flag = 1;
             std::string uid(pUserid);
             CRTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_chttp, uid, pci);
         } else {
@@ -215,7 +215,8 @@ void CRTConnection::OnLogout(const char* pUserid)
         //logout
         //write to hiredis
         std::string uid(pUserid);
-        CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid);
+        std::string token;
+        CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid, token);
         m_userId.assign("");
         m_token.assign("");
     }
@@ -242,6 +243,8 @@ void CRTConnection::ConnectionDisconnected()
 {
     if (m_userId.length()) {
         LI("RTConnection::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
+        std::string token;
+        CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, m_userId, token);
         CRTConnectionManager::Instance()->ConnectionLostNotify(m_userId, m_token);
     } else {
         LE("RTConnection::ConnectionDisconnected m_userId.length is 0\n");

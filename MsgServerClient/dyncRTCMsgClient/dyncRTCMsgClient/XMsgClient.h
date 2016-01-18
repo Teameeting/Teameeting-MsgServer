@@ -61,7 +61,6 @@ private:
     bool RefreshTime();
     int KeepAlive();
     int SendEncodeMsg(std::string& msg);
-    int TryToConnect();
 private:
     XTcpClient*              m_pClient;
     XMsgProcesser*           m_pMsgProcesser;

@@ -24,7 +24,7 @@ public:
     void DisConn();
     
     void SetHostAddr(const char* host, int port) {
-        if(!host || port <= 1024) {
+        if(!host || port <= 2048) {
             LE("RTHiredis SetHostAddr failed\n");
          return;
         }
