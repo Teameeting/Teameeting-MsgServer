@@ -28,11 +28,11 @@ int main(int argc, const char * argv[]) {
     StrPtrLen pModuleIp((char*)plocal);
     StrPtrLen pConnTcpIp((char*)plocal);
     StrPtrLen pHttpIp((char*)"192.168.7.45");
-    unsigned short pConnPort = 8892;
-    unsigned short pModulePort = 9288;
-    unsigned short pConnTcpPort = 9210;
-    unsigned short pHttpPort = 6379;
-    pConnector->Start(pLanIp.GetAsCString(), pConnPort, pModuleIp.GetAsCString(), pModulePort, pConnTcpIp.GetAsCString(), pConnTcpPort, pHttpIp.GetAsCString(), pHttpPort);
+    unsigned short pConnPort = 6610;
+    unsigned short pModulePort = 6620;
+    unsigned short pConnTcpPort = 6630;
+    unsigned short pRedisPort = 6379;
+    pConnector->Start(pLanIp.GetAsCString(), pConnPort, pModuleIp.GetAsCString(), pModulePort, pConnTcpIp.GetAsCString(), pConnTcpPort, pHttpIp.GetAsCString(), pRedisPort);
     while (true) {
         pConnector->DoTick();
         sleep(1);

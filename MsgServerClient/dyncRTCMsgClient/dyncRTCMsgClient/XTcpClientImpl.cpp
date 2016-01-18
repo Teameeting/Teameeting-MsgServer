@@ -10,16 +10,14 @@
 
 #ifdef WEBRTC_ANDROID
 #include <android/log.h>
-#define  LOG_TAG    "Teameeting"
+#define  LOG_TAG    "XTcpClientImpl"
 #define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-#else
-#include <iostream>
-#include <string>
 #endif
 
 const int kDefaultServerPort = 80;
 const int kReconnectDelay = 2000;
+const int kTryReconnectDelay = 3000;
 const int kBufferSizeInBytes = 2048;
 
 rtc::AsyncSocket* CreateClientSocket(int family) {
@@ -169,9 +167,15 @@ void XTcpClientImpl::OnMessage(rtc::Message* msg)
 	{
 		DoResolver();
 	}
-    else if(msg->message_id == 1001) {
-        if(Status()) {
-            
+    else if(msg->message_id == 1001)
+    { //1001 try to reconnect
+        if(Status()!=CONNECTED) {
+#ifdef WEBRTC_ANDROID
+            LOGI("XTcpClientImpl::OnMessage receive 1001, reconnect after 2s...\n");
+#else
+            LOG(WARNING) << "XTcpClientImpl::OnMessage receive 1001, reconnect after 2s...";
+#endif
+            rtc::Thread::Current()->PostDelayed(kReconnectDelay, this, 0);
         }
     }
 }
@@ -195,18 +199,17 @@ void XTcpClientImpl::DoConnect()
 
 	bool ret = ConnectControlSocket();
 	if (!ret) {
+#ifdef WEBRTC_ANDROID
+        LOGI("XTcpClientImpl::DoConnect false, try to reconnect after 3s...\n");
+#else
+        LOG(WARNING) << "XTcpClientImpl::DoConnect false, try to reconnect after 3s...";
+#endif
 		m_rCallback.OnServerConnectionFailure();
-    } else {
-        CurThread()->PostDelayed(30*1000, this, 1001);
+        CurThread()->PostDelayed(kTryReconnectDelay, this, 1001);
     }
 }
 void XTcpClientImpl::Close()
 {
-#ifdef WEBRTC_ANDROID
-    LOGI("XTcpClientImpl::Close was called\n");
-#else
-    std::cout << "XTcpClientImpl::Close was called" << std::endl;
-#endif
 	if (m_asynSock.get() != NULL)
 		m_asynSock->Close();
 	if (m_asynResolver != NULL) {
@@ -239,11 +242,6 @@ bool XTcpClientImpl::ConnectControlSocket()
 
 void XTcpClientImpl::OnConnect(rtc::AsyncSocket* socket)
 {
-#ifdef WEBRTC_ANDROID
-    LOGI("XTcpClientImpl::OnConnect was called\n");
-#else
-    std::cout << "XTcpClientImpl::OnConnect was called" << std::endl;
-#endif
 	m_nState = CONNECTED;
 	m_rCallback.OnServerConnected();
 }
@@ -261,11 +259,6 @@ void XTcpClientImpl::OnRead(rtc::AsyncSocket* socket)
 
 void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 {
-#ifdef WEBRTC_ANDROID
-    LOGI("XTcpClientImpl::OnClose was called\n");
-#else
-    std::cout << "XTcpClientImpl::OnClose was called" << std::endl;
-#endif
 	socket->Close();
 
 #ifdef WIN32
@@ -294,11 +287,6 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 		if (m_bAutoConnect)
 		{// Auto Connect...
 			LOG(WARNING) << "Connection refused; retrying in 2 seconds";
-#ifdef WEBRTC_ANDROID
-            LOGI("XTcpClientImpl::OnClose call Auto Connect\n");
-#else
-            std::cout << "XTcpClientImpl::OnClose call Auto Connect" << std::endl;
-#endif
 			rtc::Thread::Current()->PostDelayed(kReconnectDelay, this, 0);
 		} 
 		else

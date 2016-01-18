@@ -10,6 +10,16 @@
 #include "webrtc/base/logging.h"
 #include "XMsgClient.h"
 
+#ifdef WEBRTC_ANDROID
+#include <android/log.h>
+#define  LOG_TAG    "XMsgProcesser"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#else
+#include <iostream>
+#include <string>
+#endif
+
 static long long  g_msgs_id = 3;
 
 int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass)
@@ -202,9 +212,19 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 int XMsgProcesser::DecodeLogin(MEETMSG& msg)
 {
     if (msg._code == 0) {
+#ifdef WEBRTC_ANDROID
+        LOGI("XMsgProcesser::DecodeLogin login ok\n");
+#else
+        std::cout << "XMsgProcesser::DecodeLogin login ok" << std::endl;
+#endif
         ServerState(MSCONNECTED);
         ServerConnected();
     } else {
+#ifdef WEBRTC_ANDROID
+        LOGI("XMsgProcesser::DecodeLogin login failed\n");
+#else
+        std::cout << "XMsgProcesser::DecodeLogin login failed" << std::endl;
+#endif
         m_helper.OnLogin(msg._code, msg._status, msg._from);
     }
     return 0;

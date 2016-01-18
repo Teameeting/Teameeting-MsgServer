@@ -208,10 +208,12 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 2, Add member to RoomList.
     LI("==>EnterRoom add %s to Room, set status inmeeting\n", mmsg._from.c_str());
     it->second->AddMemberToRoom(mmsg._from, MRTMeetingRoom::MemberStatus::MS_INMEETING);
+    AddUserMeetingRoomId(mmsg._from, mmsg._room);
     int online = it->second->GetRoomMemberOnline();
     if (online==1) {
         if (m_pHttpSvrConn) {
             m_pHttpSvrConn->HttpInsertSessionMeetingInfo(mmsg._pass.c_str(), mmsg._room.c_str(), it->second->GetSessionId().c_str(), "0", "0", "1");
+            m_pHttpSvrConn->HttpUpdateSessionMeetingStatus(mmsg._pass.c_str(), it->second->GetSessionId().c_str(), "1");
         }
     } else {
         if (m_pHttpSvrConn) {
@@ -223,10 +225,10 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     LI("==>EnterRoom roomid:%s, session id:%s\n",mmsg._room.c_str(), it->second->GetSessionId().c_str());
 
     //@Eric
-    //* 3, Notify Other members, i'm online.
-    if (!it->second->GetRoomMemberJson(mmsg._from, users)) {
+    //* 3, Notify all members, i'm online.
+    if (!it->second->GetAllRoomMemberJson(users)) {
         if (users.length()>0) {
-            LI("==>EnterRoom notify users :%s i am in room\n", users.c_str());
+            LI("==>EnterRoom notify users :%s i am in room, online mem:%d\n", users.c_str(), online);
             mmsg._nmem = online;
             mmsg._cont = mmsg._from;
             mmsg._tags = SENDTAGS::sendtags_enter;
@@ -276,6 +278,7 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     if (it != m_meetingRoomMap.end()) {
         if (it->second) {
             it->second->UpdateMemberStatus(mmsg._from, MRTMeetingRoom::MemberStatus::MS_OUTMEETING);
+            DelUserMeetingRoomId(mmsg._from);
         }
     } else {
         // not find room
@@ -288,9 +291,9 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     users.assign("");
     res.assign("");
     resp.assign("");
-    if (!it->second->GetRoomMemberJson(mmsg._from, users)) {
+    if (!it->second->GetAllRoomMemberJson(users)) {
         if (users.length()>0) {
-            LI("==>LeaveRoom notify users :%s i am out room\n", users.c_str());
+            LI("==>LeaveRoom notify users :%s i am out room, online mem:%d\n", users.c_str(), online);
             mmsg._cont = mmsg._from;
             mmsg._nmem = online;
             mmsg._tags = SENDTAGS::sendtags_leave;
@@ -323,6 +326,7 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     if (online==0) {
         if (m_pHttpSvrConn) {
             m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(mmsg._pass.c_str(), it->second->GetSessionId().c_str());
+            m_pHttpSvrConn->HttpUpdateSessionMeetingStatus(mmsg._pass.c_str(), it->second->GetSessionId().c_str(), "2");
         }
     }
     
@@ -446,40 +450,44 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
     if (m_meetingRoomMap.size()==0) {
         return;
     }
-    MeetingRoomMap::iterator it = m_meetingRoomMap.begin();
-    for (; it!=m_meetingRoomMap.end(); it++) {
-        if (it->second && it->second->IsMemberInMeeting(uid)) {
-            it->second->UpdateMemberStatus(uid, MRTMeetingRoom::MemberStatus::MS_OUTMEETING);
-            int online = it->second->GetRoomMemberOnline();
-            char strOnline[4] = {0};
-            std::string pubid, users, resp, cont;
-            sprintf(strOnline, "%d", online);
-            std::string roomid = it->second->GetRoomId();
-            
-            // notify member in meeting publishid
-            it->second->GetRoomMemberMeetingJson(uid, users);
-            it->second->DelNotifyMsg(uid, pubid);
-            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
-            SendTransferData(resp, (int)resp.length());
-            LI("ClearSessionLost publish resp:%s\n", resp.c_str());
-            
-            // notify member having room uid leaving
-            users.assign("");
-            it->second->GetRoomMemberJson(uid, users);
-            cont = uid;
-            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_leave, online, cont, users, resp);
-            SendTransferData(resp, (int)resp.length());
-            LI("ClearSessionLost msg resp:%s\n", resp.c_str());
-            
-            if (m_pHttpSvrConn) {
-                m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(token.c_str(), it->second->GetSessionId().c_str(), strOnline, it->second->GetRoomId().c_str());
-            }
-            if (online==0) {
-                if (m_pHttpSvrConn) {
-                    m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(token.c_str(), it->second->GetSessionId().c_str());
-                }
-            }
-            break;
+    const std::string roomid = GetUserMeetingRoomId(uid);
+    if (roomid.length()==0) {
+        return;
+    }
+    MeetingRoomMap::iterator it = m_meetingRoomMap.find(roomid);
+    if (it==m_meetingRoomMap.end()) {
+        return;
+    }
+
+    it->second->UpdateMemberStatus(uid, MRTMeetingRoom::MemberStatus::MS_OUTMEETING);
+    DelUserMeetingRoomId(uid);
+    int online = it->second->GetRoomMemberOnline();
+    char strOnline[4] = {0};
+    std::string pubid, users, resp, cont;
+    sprintf(strOnline, "%d", online);
+        
+    // notify member in meeting publishid
+    it->second->GetRoomMemberMeetingJson(uid, users);
+    it->second->DelNotifyMsg(uid, pubid);
+    GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
+    SendTransferData(resp, (int)resp.length());
+    LI("ClearSessionLost publish resp:%s\n", resp.c_str());
+        
+    // notify member having room uid leaving
+    users.assign("");
+    it->second->GetRoomMemberJson(uid, users);
+    cont = uid;
+    GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_leave, online, cont, users, resp);
+    SendTransferData(resp, (int)resp.length());
+    LI("ClearSessionLost msg resp:%s\n", resp.c_str());
+    
+    if (m_pHttpSvrConn) {
+        m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(token.c_str(), it->second->GetSessionId().c_str(), strOnline, it->second->GetRoomId().c_str());
+    }
+    if (online==0) {
+        if (m_pHttpSvrConn) {
+            m_pHttpSvrConn->HttpUpdateSessionMeetingEndtime(token.c_str(), it->second->GetSessionId().c_str());
+            m_pHttpSvrConn->HttpUpdateSessionMeetingStatus(token.c_str(), it->second->GetSessionId().c_str(), "2");
         }
     }
     

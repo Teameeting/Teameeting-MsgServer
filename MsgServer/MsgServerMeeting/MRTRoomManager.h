@@ -61,7 +61,37 @@ private:
     void ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
     void ResponseDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
     
+    // <roomid, MeetingRoom> all the rooms map
     typedef std::map<const std::string, rtc::scoped_refptr<MRTMeetingRoom> > MeetingRoomMap;
+    // <userid, MeetingRoomId> in meeting user-roomid map
+    typedef std::map<const std::string, const std::string> UserMeetingRoomIdMap;
+    
+    void AddUserMeetingRoomId(const std::string& uid, const std::string& roomid) {
+        OSMutexLocker locker(&m_mutexUser);
+        UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
+        if (uit!=m_userMeetingRoomIdMap.end()) {
+            m_userMeetingRoomIdMap.erase(uid);
+        }
+        m_userMeetingRoomIdMap.insert(make_pair(uid, roomid));
+    }
+    void DelUserMeetingRoomId(const std::string& uid) {
+        OSMutexLocker locker(&m_mutexUser);
+        UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
+        if (uit!=m_userMeetingRoomIdMap.end()) {
+            m_userMeetingRoomIdMap.erase(uid);
+        }
+    }
+    const std::string GetUserMeetingRoomId(const std::string& uid) {
+        OSMutexLocker locker(&m_mutexUser);
+        UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
+        if (uit!=m_userMeetingRoomIdMap.end()) {
+            return uit->second;
+        }
+        return "";
+    }
+    
+    int ChangeToJson(const std::string from, std::string& users);
+    
     MRTRoomManager():m_pMsgQueueSession(NULL)
                 , m_pHttpSvrConn(NULL){
         
@@ -79,12 +109,14 @@ private:
         //delete map members;
     }
     
-    int ChangeToJson(const std::string from, std::string& users);
+    OSMutex                     m_mutexHttp;
+    OSMutex                     m_mutexUser;
+    MRTHttpSvrConn              *m_pHttpSvrConn;
+    MRTTransferSession          *m_pMsgQueueSession;
+    MeetingRoomMap              m_meetingRoomMap;
+    UserMeetingRoomIdMap        m_userMeetingRoomIdMap;
     
-    MRTTransferSession    *m_pMsgQueueSession;
-    MeetingRoomMap       m_meetingRoomMap;
-    OSMutex                   m_mutexHttp;
-    MRTHttpSvrConn        *m_pHttpSvrConn;
+    
 };
 
 #endif /* defined(__MsgServerMeeting__MRTRoomManager__) */

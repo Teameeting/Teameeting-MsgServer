@@ -28,8 +28,8 @@ int main(int argc, const char * argv[]) {
     StrPtrLen pConnAddr((char*)plocal);
     StrPtrLen pQueueAddr((char*)plocal);
     StrPtrLen pHttpAddr((char*)"192.168.7.45");
-    unsigned short pConnPort = 9288;
-    unsigned short pQueuePort = 29288;
+    unsigned short pConnPort = 6620;
+    unsigned short pQueuePort = 6640;
     unsigned short pHttpPort = 8055;
     pMeeting->Start(pConnAddr.GetAsCString(), pConnPort, pQueueAddr.GetAsCString(), pQueuePort, pHttpAddr.GetAsCString(), pHttpPort);
     while (true) {
