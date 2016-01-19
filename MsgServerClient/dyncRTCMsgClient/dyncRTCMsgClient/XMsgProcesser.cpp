@@ -138,7 +138,7 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     return 0;
 }
 
-int XMsgProcesser::EncodeKeepAlive(std::string& outstr)
+int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& userid)
 {
     SIGNALMSG s_msg;
     MEETMSG m_msg;
@@ -150,7 +150,7 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr)
     m_msg._tags = SENDTAGS::sendtags_invalid;
     m_msg._type = SENDTYPE::sendtype_invalid;
     m_msg._mseq = 2;
-    m_msg._from = "aliver";
+    m_msg._from = userid;
     m_msg._room = "";
     m_msg._to = "";
     m_msg._cont = "";
@@ -211,22 +211,7 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 
 int XMsgProcesser::DecodeLogin(MEETMSG& msg)
 {
-    if (msg._code == 0) {
-#ifdef WEBRTC_ANDROID
-        LOGI("XMsgProcesser::DecodeLogin login ok\n");
-#else
-        std::cout << "XMsgProcesser::DecodeLogin login ok" << std::endl;
-#endif
-        ServerState(MSCONNECTED);
-        ServerConnected();
-    } else {
-#ifdef WEBRTC_ANDROID
-        LOGI("XMsgProcesser::DecodeLogin login failed\n");
-#else
-        std::cout << "XMsgProcesser::DecodeLogin login failed" << std::endl;
-#endif
-        m_helper.OnLogin(msg._code, msg._status, msg._from);
-    }
+    m_helper.OnLogin(msg._code, msg._status, msg._from);
     return 0;
 }
 

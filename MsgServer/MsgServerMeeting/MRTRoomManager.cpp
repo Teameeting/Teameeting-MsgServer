@@ -217,13 +217,13 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             m_pHttpSvrConn->HttpInsertSessionMeetingInfo(mmsg._pass.c_str(), mmsg._room.c_str(), it->second->GetSessionId().c_str(), "0", "0", "1");
             m_pHttpSvrConn->HttpUpdateSessionMeetingStatus(mmsg._pass.c_str(), it->second->GetSessionId().c_str(), "1");
         }
-    } else {
-        if (m_pHttpSvrConn) {
-            char mem[4] = {0};
-            sprintf(mem, "%d", online);
-            m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(mmsg._pass.c_str(), it->second->GetSessionId().c_str(), mem, mmsg._room.c_str());
-        }
     }
+    if (m_pHttpSvrConn) {
+        char mem[4] = {0};
+        sprintf(mem, "%d", online);
+        m_pHttpSvrConn->HttpUpdateSessionMeetingNumber(mmsg._pass.c_str(), it->second->GetSessionId().c_str(), mem, mmsg._room.c_str());
+    }
+    
     LI("==>EnterRoom roomid:%s, session id:%s\n",mmsg._room.c_str(), it->second->GetSessionId().c_str());
 
     //@Eric
@@ -235,7 +235,6 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                 //store message
                 LI("==>HandleDcommRoom GetGetMembersStatus WAITING...\n");
                 it->second->AddWaitingMsgToList(1, 1, tmsg, mmsg);
-                return;
             } else {
                 mmsg._nmem = online;
                 mmsg._cont = mmsg._from;
@@ -307,7 +306,6 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                 //store message
                 LI("==>HandleDcommRoom GetGetMembersStatus WAITING...\n");
                 it->second->AddWaitingMsgToList(1, 1, tmsg, mmsg);
-                return;
             } else {
                 mmsg._cont = mmsg._from;
                 mmsg._nmem = online;

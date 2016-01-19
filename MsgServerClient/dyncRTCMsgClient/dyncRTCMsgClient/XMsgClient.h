@@ -40,7 +40,7 @@ public:
     
     int NotifyMsg(const std::string& roomid, const std::string& msg);
     
-    TcpState Status() { if(m_pClient) return m_pClient->Status();else return NOT_CONNECTED; }
+    MSTcpState MSStatus() { return m_msTcpState; }
     
 public:
     // For XTcpClientCallback
@@ -62,7 +62,7 @@ private:
     int KeepAlive();
     int SendEncodeMsg(std::string& msg);
 private:
-    XTcpClient*              m_pClient;
+    XTcpClientImpl*          m_pClientImpl;
     XMsgProcesser*           m_pMsgProcesser;
     uint32                   m_lastUpdateTime;
     std::string              m_uid;
@@ -70,6 +70,7 @@ private:
     std::string              m_server;
     int                      m_port;
     bool                     m_autoConnect;
+    MSTcpState               m_msTcpState;
 };
 
 
