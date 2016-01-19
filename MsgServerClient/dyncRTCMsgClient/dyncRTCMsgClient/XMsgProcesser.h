@@ -29,7 +29,7 @@ public:
     int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& pass, int cmd);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& pass);
-    int EncodeKeepAlive(std::string& outstr);
+    int EncodeKeepAlive(std::string& outstr, const std::string& userid);
     
     int DecodeRecvData(const char* pData, int nLen);
     int GetMemberToJson(const std::list<std::string> ulist, std::string& tousers);

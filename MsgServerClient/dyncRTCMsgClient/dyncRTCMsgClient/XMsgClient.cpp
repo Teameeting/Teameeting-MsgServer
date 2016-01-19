@@ -22,9 +22,15 @@
 #define TIMEOUT_TS (60*1000)
 
 XMsgClient::XMsgClient()
-: m_pClient(NULL)
+: m_pClientImpl(NULL)
 , m_pMsgProcesser(NULL)
 , m_lastUpdateTime(0)
+, m_uid("")
+, m_token("")
+, m_server("")
+, m_port(0)
+, m_autoConnect(true)
+, m_msTcpState(MSNOT_CONNECTED)
 {
     
 }
@@ -43,10 +49,10 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
         return -1;
     }
     
-    if (!m_pClient) {
-        m_pClient = XTcpClient::Create(*this);
+    if (!m_pClientImpl) {
+        m_pClientImpl = new XTcpClientImpl(*this);// XTcpClient::Create(*this);
     }
-    if (!m_pClient) {
+    if (!m_pClientImpl) {
         if (m_pMsgProcesser) {
             delete m_pMsgProcesser;
             m_pMsgProcesser = NULL;
@@ -58,7 +64,8 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
     m_server = server;
     m_port = port;
     m_autoConnect = bAutoConnect;
-    m_pClient->Connect(server, port, bAutoConnect);
+    m_pClientImpl->Connect(server, port, bAutoConnect);
+    m_msTcpState = MSCONNECTTING;
     m_pMsgProcesser->ServerState(MSCONNECTTING);
     
     return 0;
@@ -66,14 +73,14 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
 
 int XMsgClient::Unin()
 {
-    if (m_pClient) {
-        m_pClient->Disconnect();
+    if (m_pClientImpl) {
+        m_pClientImpl->Disconnect();
         if (m_pMsgProcesser) {
             delete m_pMsgProcesser;
             m_pMsgProcesser = NULL;
         }
-        delete m_pClient;
-        m_pClient = NULL;
+        delete m_pClientImpl;
+        m_pClientImpl = NULL;
     }
     
     return 0;
@@ -218,8 +225,8 @@ int XMsgClient::KeepAlive()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeKeepAlive(outstr);
+        //outstr, userid
+        m_pMsgProcesser->EncodeKeepAlive(outstr, m_uid);
     } else {
         return -1;
     }
@@ -235,8 +242,13 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
     char* ptr = new char[msg.length()+6];//sprintf will add 1 in the end
     if (ptr) {
         sprintf(ptr, "$%4d%s", (int)msg.length(), msg.c_str());
-        if (m_pClient && TcpState::CONNECTED==m_pClient->Status()) {
-            m_pClient->SendMessageX(ptr, (int)strlen(ptr));
+        if (TcpState::NOT_CONNECTED==m_pClientImpl->Status()) {
+            m_pClientImpl->Connect(m_server, m_port, m_autoConnect);
+            m_msTcpState = MSCONNECTTING;
+            m_pMsgProcesser->ServerState(MSCONNECTTING);
+        }
+        if (m_pClientImpl) {
+            m_pClientImpl->SendMessageX(ptr, (int)strlen(ptr));
             delete ptr;
             ptr = NULL;
             return 0;
@@ -268,6 +280,7 @@ void XMsgClient::OnServerDisconnect()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
+        m_msTcpState = MSNOT_CONNECTED;
         m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerDisconnect();
     }
@@ -277,6 +290,7 @@ void XMsgClient::OnServerConnectionFailure()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pMsgProcesser) {
+        m_msTcpState = MSNOT_CONNECTED;
         m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
         m_pMsgProcesser->ServerConnectionFailure();
     }
@@ -285,9 +299,7 @@ void XMsgClient::OnServerConnectionFailure()
 void XMsgClient::OnTick()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
-    if (m_pClient->Status()==CONNECTED) {
-        RefreshTime();
-    }
+    RefreshTime();
 }
 
 void XMsgClient::OnMessageSent(int err)
@@ -336,7 +348,16 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
 
 void XMsgClient::OnLogin(int code, const std::string& status, const std::string& userid)
 {
-    if (code!=0) {
+#ifdef WEBRTC_ANDROID
+    LOGI("XMsgClient::OnLogin code:%d, userid:%s\n", code, userid.c_str());
+#else
+    std::cout << "XMsgClient::OnLogin code:" << code << ", userid:" << userid << std::endl;
+#endif
+    if (code == 0) {
+        m_msTcpState = MSCONNECTED;
+        m_pMsgProcesser->ServerState(MSCONNECTED);
+        m_pMsgProcesser->ServerConnected();
+    } else {
         Login();
     }
     KeepAlive();

@@ -13,7 +13,6 @@
 
 enum MSTcpState{
     MSNOT_CONNECTED,
-    MSRESOLVING,
     MSCONNECTTING,
     MSCONNECTED
 };

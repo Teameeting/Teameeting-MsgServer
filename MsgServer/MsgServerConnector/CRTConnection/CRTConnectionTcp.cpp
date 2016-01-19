@@ -119,6 +119,8 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
 {
     {
         //check & auth
+        /*
+        // may has error
         std::string pass;
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
         if (pass.compare(pPass)!=0) {
@@ -128,10 +130,10 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
             SendResponse(0, resp.c_str());
             return;
-        }
-        m_userId = pUserid;
-        m_token = pPass;
+        }*/
     }
+    m_userId = pUserid;
+    m_token = pPass;
     std::string sid;
     {
         //store userid & pass
