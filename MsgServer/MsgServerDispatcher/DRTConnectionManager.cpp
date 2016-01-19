@@ -44,7 +44,7 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfo(const std
 {
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     DRTConnectionManager::ModuleInfoMaps* maps = GetModuleInfo();
-    DRTConnectionManager::ModuleInfoMaps::iterator it = maps->begin();
+    DRTConnectionManager::ModuleInfoMapsIt it = maps->begin();
     for (; it!=maps->end(); it++) {
         if (it->second && it->second->othModuleType == module) {
             pInfo = it->second;
@@ -58,7 +58,7 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfoBySid(cons
 {
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     DRTConnectionManager::ModuleInfoMaps* maps = GetModuleInfo();
-    DRTConnectionManager::ModuleInfoMaps::iterator it = maps->find(sid);
+    DRTConnectionManager::ModuleInfoMapsIt it = maps->find(sid);
     if (it!=maps->end()) {
         pInfo = it->second;
     }
@@ -135,7 +135,7 @@ bool DRTConnectionManager::DoConnectConnector(const std::string ip, unsigned sho
 void DRTConnectionManager::RefreshConnection()
 {
     ModuleInfo* pmi = NULL;
-    ModuleInfoMaps::iterator it = GetModuleInfo()->begin();
+    ModuleInfoMapsIt it = GetModuleInfo()->begin();
     for (; it!=GetModuleInfo()->end(); it++) {
         pmi = it->second;
         if (pmi && pmi->othModuleType == TRANSFERMODULE::mconnector) {
@@ -154,7 +154,7 @@ bool DRTConnectionManager::AddModuleInfo(DRTConnectionManager::ModuleInfo* pmi, 
 
 bool DRTConnectionManager::DelModuleInfo(const std::string& sid)
 {
-    ModuleInfoMaps::iterator it = GetModuleInfo()->find(sid);
+    ModuleInfoMapsIt it = GetModuleInfo()->find(sid);
     if (it!=GetModuleInfo()->end()) {
         GetModuleInfo()->erase(sid);
     }

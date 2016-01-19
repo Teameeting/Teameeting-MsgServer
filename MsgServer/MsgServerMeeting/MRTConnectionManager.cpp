@@ -41,7 +41,7 @@ MRTConnectionManager::ModuleInfo* MRTConnectionManager::findModuleInfo(const std
 {
     MRTConnectionManager::ModuleInfo* pInfo = NULL;
     MRTConnectionManager::ModuleInfoMaps* maps = GetModuleInfo();
-    MRTConnectionManager::ModuleInfoMaps::iterator it = maps->begin();
+    MRTConnectionManager::ModuleInfoMapsIt it = maps->begin();
     for (; it!=maps->end(); it++) {
         if ((it->second) && (it->second)->othModuleType == module) {
             pInfo = it->second;
@@ -90,7 +90,7 @@ void MRTConnectionManager::RefreshConnection()
         return;
     }
     ModuleInfo* pmi = NULL;
-    ModuleInfoMaps::iterator it = GetModuleInfo()->begin();
+    ModuleInfoMapsIt it = GetModuleInfo()->begin();
     for (; it!=GetModuleInfo()->end(); it++) {
         pmi = it->second;
         if (pmi && pmi->othModuleType == TRANSFERMODULE::mconnector) {
@@ -111,7 +111,7 @@ bool MRTConnectionManager::AddModuleInfo(MRTConnectionManager::ModuleInfo* pmi, 
 bool MRTConnectionManager::DelModuleInfo(const std::string& sid)
 {
     ModuleInfo* pmi = NULL;
-    ModuleInfoMaps::iterator it = GetModuleInfo()->find(sid);
+    ModuleInfoMapsIt it = GetModuleInfo()->find(sid);
     if (it!=GetModuleInfo()->end()) {
         pmi = it->second;
         if (pmi && pmi->othModuleType == TRANSFERMODULE::mmsgqueue) {
