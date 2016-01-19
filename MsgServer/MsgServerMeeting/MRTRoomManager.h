@@ -11,7 +11,8 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <map>
+#include <unordered_map>
+#include <utility>
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
 #include "RTMeetMsg.h"
@@ -58,18 +59,22 @@ private:
     int GenericTransSeq();
     void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res,  std::string& response);
     void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, SENDTAGS tags, int nmem, const std::string& cont, const std::string& tos, std::string& response);
-    void ResponseNotDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
-    void ResponseDcomm(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
+    void ResponseSndMsg(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, const std::string& res, std::string& response);
+    
     
     // <roomid, MeetingRoom> all the rooms map
-    typedef std::map<const std::string, rtc::scoped_refptr<MRTMeetingRoom> > MeetingRoomMap;
+    typedef std::unordered_map<std::string, rtc::scoped_refptr<MRTMeetingRoom> > MeetingRoomMap;
+    typedef MeetingRoomMap::iterator MeetingRoomMapIt;
+
     // <userid, MeetingRoomId> in meeting user-roomid map
-    typedef std::map<const std::string, const std::string> UserMeetingRoomIdMap;
+    typedef std::unordered_map<std::string, const std::string> UserMeetingRoomIdMap;
+    typedef UserMeetingRoomIdMap::iterator UserMeetingRoomIdMapIt;
     
+    void SendWaitingMsgs(MeetingRoomMapIt mit);
     
     void AddUserMeetingRoomId(const std::string& uid, const std::string& roomid) {
         OSMutexLocker locker(&m_mutexUser);
-        UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
+        UserMeetingRoomIdMapIt uit = m_userMeetingRoomIdMap.find(uid);
         if (uit!=m_userMeetingRoomIdMap.end()) {
             m_userMeetingRoomIdMap.erase(uid);
         }
@@ -77,14 +82,14 @@ private:
     }
     void DelUserMeetingRoomId(const std::string& uid) {
         OSMutexLocker locker(&m_mutexUser);
-        UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
+        UserMeetingRoomIdMapIt uit = m_userMeetingRoomIdMap.find(uid);
         if (uit!=m_userMeetingRoomIdMap.end()) {
             m_userMeetingRoomIdMap.erase(uid);
         }
     }
     const std::string GetUserMeetingRoomId(const std::string& uid) {
         OSMutexLocker locker(&m_mutexUser);
-        UserMeetingRoomIdMap::iterator uit = m_userMeetingRoomIdMap.find(uid);
+        UserMeetingRoomIdMapIt uit = m_userMeetingRoomIdMap.find(uid);
         if (uit!=m_userMeetingRoomIdMap.end()) {
             return uit->second;
         }

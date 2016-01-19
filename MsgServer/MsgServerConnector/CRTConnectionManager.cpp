@@ -39,7 +39,7 @@ CRTConnectionManager::ModuleInfo* CRTConnectionManager::findModuleInfo(const std
 {
     CRTConnectionManager::ModuleInfo *pInfo = NULL;
     CRTConnectionManager::ModuleInfoMaps* maps = GetModuleInfo();
-    CRTConnectionManager::ModuleInfoMaps::iterator it = maps->begin();
+    CRTConnectionManager::ModuleInfoMapsIt it = maps->begin();
     for (; it!=maps->end(); it++) {
         if (it->second && it->second->othModuleType == module) {
             pInfo = it->second;
@@ -56,7 +56,7 @@ CRTConnectionManager::ConnectionInfo* CRTConnectionManager::findConnectionInfoBy
     CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
     LI("findConnection show find uid:%s\n", uid.c_str());
     ShowConnectionInfo();
-    CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
+    CRTConnectionManager::ConnectionInfoMapsIt it = maps->find(uid);
     if (it!=maps->end()) {
         pInfo = it->second;
     } else {
@@ -75,7 +75,7 @@ bool CRTConnectionManager::AddModuleInfo(CRTConnectionManager::ModuleInfo* pmi, 
 bool CRTConnectionManager::DelModuleInfo(const std::string& sid)
 {
     CRTConnectionManager::ModuleInfoMaps* maps = GetModuleInfo();
-    CRTConnectionManager::ModuleInfoMaps::iterator it = maps->find(sid);
+    CRTConnectionManager::ModuleInfoMapsIt it = maps->find(sid);
     if (it!=maps->end()) {
         CRTConnectionManager::ModuleInfo *p = it->second;
         delete p;
@@ -145,7 +145,7 @@ bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, 
 {
     if (uid.length()==0) return false;
     CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
-    CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->find(uid);
+    CRTConnectionManager::ConnectionInfoMapsIt it = maps->find(uid);
     LI("DelUser: show: delUser\n");
     ShowConnectionInfo();
     if (it!=maps->end()) {
@@ -182,7 +182,7 @@ void CRTConnectionManager::ShowConnectionInfo()
 {
     CRTConnectionManager::ConnectionInfo* pInfo = NULL;
     CRTConnectionManager::ConnectionInfoMaps* maps = GetConnectionInfo();
-    CRTConnectionManager::ConnectionInfoMaps::iterator it = maps->begin();
+    CRTConnectionManager::ConnectionInfoMapsIt it = maps->begin();
     LI("ShowConnectionInfo size:%d\n", (int)maps->size());
     for (; it!=maps->end(); it++) {
         pInfo = it->second;

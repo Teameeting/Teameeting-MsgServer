@@ -7,7 +7,9 @@
 #include "Task.h"
 #include "TimeoutTask.h"
 #include "RTObserverConnection.h"
-#include <map>
+#include <unordered_map>
+#include <utility>
+
 enum
 {
     kFirstTCPSessionID     = 1,    //UInt32
@@ -59,8 +61,10 @@ private:
 
 	List				m_listSend;
     
-    std::map<RTTcp*, RTObserverConnection*> m_mapConnectObserver;
-
+    typedef std::unordered_map<RTTcp*, RTObserverConnection*> ObserverConnectionMap;
+    typedef ObserverConnectionMap::iterator ObserverConnectionMapIt;
+    ObserverConnectionMap m_mapConnectObserver;
+    std::pair<ObserverConnectionMapIt, bool> m_OCMItPair;
 	static unsigned int	 sSessionIDCounter;
 };
 

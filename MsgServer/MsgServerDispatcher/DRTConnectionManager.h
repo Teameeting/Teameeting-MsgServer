@@ -11,7 +11,8 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <map>
+#include <unordered_map>
+#include <utility>
 #include <list>
 #include "RTMessage.h"
 
@@ -66,7 +67,8 @@ public:
         }
     }UserSessionInfo;
     
-    typedef std::map< std::string, ModuleInfo* >     ModuleInfoMaps;
+    typedef std::unordered_map< std::string, ModuleInfo* >     ModuleInfoMaps;
+    typedef ModuleInfoMaps::iterator ModuleInfoMapsIt;
     
     //<user_id, UserModuleTypeInfo>
     typedef std::list<TypeModuleSessionInfo*> TypeModuleSessionInfoLists;
@@ -74,7 +76,8 @@ public:
     //check list and map which is better
     typedef std::list<UserSessionInfo*> UserSessionInfoLists;
     
-    typedef std::map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
+    typedef std::unordered_map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
+    typedef UserSessionInfoMaps::iterator UserSessionInfoMapsIt;
     
     
     static ModuleInfoMaps*  GetModuleInfo() {

@@ -11,11 +11,8 @@
 
 #include <stdio.h>
 #include <iostream>
-#ifdef WEBRTC_MAC
-#include <ext/hash_map>
-#else
-#include <map>
-#endif
+#include <unordered_map>
+#include <utility>
 #include <string>
 #include <list>
 #include "LinkedList.h"
@@ -24,6 +21,7 @@
 #include "scoped_ref_ptr.h"
 #include "OSMutex.h"
 #include "RTMeetMsg.h"
+#include "RTMessage.h"
 
 class MRTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<MRTMeetingRoom> >{
 public:
@@ -57,11 +55,9 @@ public:
                     , _uid(uid){
         }
     }RoomMember;
-#ifdef WEBRTC_MAC
-    typedef __gnu_cxx::hash_map<const std::string, RoomMember*> RoomMembers;
-#else
-    typedef std::map<const std::string, RoomMember*> RoomMembers;
-#endif
+
+    typedef std::unordered_map<std::string, RoomMember*> RoomMembers;
+    typedef RoomMembers::iterator RoomMembersIt;
     
     typedef enum _get_members_status {
         GMS_NIL = 0,
@@ -69,19 +65,18 @@ public:
         GMS_DONE
     }GetMembersStatus;
     
-#ifdef WEBRTC_MAC
-    typedef __gnu_cxx::hash_map<std::string, NotifyMsg*>  RoomNotifyMsgs;
-#else
-    typedef std::map<std::string, NotifyMsg*>  RoomNotifyMsgs;
-#endif
+    typedef std::unordered_map<std::string, NotifyMsg*>  RoomNotifyMsgs;
+    typedef RoomNotifyMsgs::iterator RoomNotifyMsgsIt;
+
     
     // not sending msgs
     typedef struct _waiting_msg{
         int             _wtype;
         int             _wtags;
-        std::string     _wmsg;
-        _waiting_msg(int wtype, int wtags, std::string& wmsg):
-        _wtype(wtype),_wtags(wtags),_wmsg(wmsg){}
+        TRANSMSG        _wtmsg;
+        MEETMSG         _wmsg;
+        _waiting_msg(int wtype, int wtags, TRANSMSG& wtmsg, MEETMSG& wmsg):
+        _wtype(wtype),_wtags(wtags),_wtmsg(wtmsg),_wmsg(wmsg){}
     }WaitingMsg;
     typedef std::list<WaitingMsg> WaitingMsgsList;
     
@@ -109,8 +104,8 @@ public:
     int DelNotifyMsg(const std::string pubsher, std::string& pubid);
     RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
     
-    void AddWaitingMsgToList(int type, int tag, std::string& msg);
-    void SendWaitingMsgs();
+    void AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEETMSG& mmsg);
+    WaitingMsgsList& GetWaitingMsgs() { return m_waitingMsgsList; }
     
     const std::string& GetRoomId() { return m_roomId; }
     const std::string& GetOwnerId() { return m_ownerId; }
