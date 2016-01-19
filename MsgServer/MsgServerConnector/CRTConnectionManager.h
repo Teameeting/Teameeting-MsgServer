@@ -11,7 +11,8 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <map>
+#include <unordered_map>
+#include <utility>
 #include <list>
 #include "CRTTransferSession.h"
 #include "RTMessage.h"
@@ -93,16 +94,19 @@ public:
     }UserSessionInfo;
     
     //<transfer_session_id, module_info>
-    typedef std::map< std::string, ModuleInfo* >     ModuleInfoMaps;
+    typedef std::unordered_map< std::string, ModuleInfo* >     ModuleInfoMaps;
+    typedef ModuleInfoMaps::iterator ModuleInfoMapsIt;
     //<user_id, connection_info>
-    typedef std::map< std::string, ConnectionInfo* > ConnectionInfoMaps;
+    typedef std::unordered_map< std::string, ConnectionInfo* > ConnectionInfoMaps;
+    typedef ConnectionInfoMaps::iterator ConnectionInfoMapsIt;
     //<user_id, UserModuleTypeInfo>
     typedef std::list<TypeModuleSessionInfo*> TypeModuleSessionInfoLists;
     
     //check list and map which is better
     typedef std::list<UserSessionInfo*> UserSessionInfoLists;
     
-    typedef std::map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
+    typedef std::unordered_map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
+    typedef UserSessionInfoMaps::iterator UserSessionInfoMapsIt;
     
     
     static ModuleInfoMaps*  GetModuleInfo() {

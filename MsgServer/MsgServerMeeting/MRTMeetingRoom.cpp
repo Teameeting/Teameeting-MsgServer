@@ -43,7 +43,7 @@ MRTMeetingRoom::MRTMeetingRoom(const std::string mid, const std::string ownerid)
 
 MRTMeetingRoom::~MRTMeetingRoom()
 {
-    RoomMembers::iterator rit = m_roomMembers.begin();
+    RoomMembersIt rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
         if (rit->second) {
             delete rit->second;
@@ -60,7 +60,7 @@ void MRTMeetingRoom::AddMemberToRoom(const std::string& uid, MemberStatus status
         m_sessionId.assign("");
         GenericMeetingSessionId(m_sessionId);
     }
-    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    RoomMembersIt rit = m_roomMembers.find(uid);
     if (rit!=m_roomMembers.end()) {
         LI("AddMemberToRoom %s to room status:%d\n", uid.c_str(), status);
         rit->second->_memStatus = status;
@@ -73,7 +73,7 @@ void MRTMeetingRoom::AddMemberToRoom(const std::string& uid, MemberStatus status
 void MRTMeetingRoom::SyncRoomMember(const std::string& uid, MemberStatus status)
 {
     OSMutexLocker locker(&m_mutex);
-    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    RoomMembersIt rit = m_roomMembers.find(uid);
     if (rit==m_roomMembers.end()) {
         m_roomMembers.insert(make_pair(uid, new RoomMember(status, uid)));
         LI("offline user: %s ADDOK room: %s\n", uid.c_str(), m_roomId.c_str());
@@ -93,7 +93,7 @@ bool MRTMeetingRoom::IsMemberInRoom(const std::string& uid)
 void MRTMeetingRoom::DelMemberFmRoom(const std::string& uid)
 {
     OSMutexLocker locker(&m_mutex);
-    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    RoomMembersIt rit = m_roomMembers.find(uid);
     if (rit!=m_roomMembers.end()) {
         if (rit->second) {
             delete rit->second;
@@ -115,7 +115,7 @@ int MRTMeetingRoom::GetRoomMemberJson(const std::string from, std::string& users
 
     TOJSONUSER touser;
     LI("room members:%d\n", m_roomMembers.size());
-    RoomMembers::iterator rit = m_roomMembers.begin();
+    RoomMembersIt rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
         if (rit->first.compare(from)!=0) {
             touser._us.push_front(rit->first);
@@ -134,9 +134,9 @@ int MRTMeetingRoom::GetAllRoomMemberJson(std::string& users)
     
     TOJSONUSER touser;
     LI("all room members:%d\n", m_roomMembers.size());
-    RoomMembers::iterator rit = m_roomMembers.begin();
+    RoomMembersIt rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
-            touser._us.push_front(rit->first);
+        touser._us.push_front(rit->first);
     }
     users = touser.ToJson();
     return 0;
@@ -152,7 +152,7 @@ int MRTMeetingRoom::GetRoomMemberMeetingJson(const std::string from, std::string
     
     TOJSONUSER touser;
     
-    RoomMembers::iterator rit = m_roomMembers.begin();
+    RoomMembersIt rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) { //_uid.compare(from)==0--->from, !=0--->others
         if (rit->second && rit->second->_uid.compare(from) && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
             touser._us.push_front(rit->first);
@@ -166,7 +166,7 @@ int MRTMeetingRoom::GetRoomMemberMeetingJson(const std::string from, std::string
 void MRTMeetingRoom::UpdateMemberStatus(const std::string& uid, MemberStatus status)
 {
     OSMutexLocker locker(&m_mutex);
-    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    RoomMembersIt rit = m_roomMembers.find(uid);
     if (rit!=m_roomMembers.end()) {
         rit->second->_memStatus = status;
         LI("UpdateMemberStatus member %s status:%d\n", uid.c_str(), status);
@@ -177,7 +177,7 @@ int MRTMeetingRoom::GetRoomMemberOnline()
 {
     OSMutexLocker locker(&m_mutex);
     int online = 0;
-    RoomMembers::iterator rit = m_roomMembers.begin();
+    RoomMembersIt rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
         if (rit->second && rit->second->_memStatus==MemberStatus::MS_INMEETING) {
             online++;
@@ -199,7 +199,7 @@ bool MRTMeetingRoom::IsMemberInMeeting(const std::string& uid)
 MRTMeetingRoom::MemberStatus MRTMeetingRoom::GetRoomMemberStatus(const std::string& uid)
 {
     OSMutexLocker locker(&m_mutex);
-    RoomMembers::iterator rit = m_roomMembers.find(uid);
+    RoomMembersIt rit = m_roomMembers.find(uid);
     if (rit!=m_roomMembers.end()) {
         return rit->second->_memStatus;
     }
@@ -218,7 +218,7 @@ void MRTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
         LI("UpdateMemberList add mem count:%d\n", m_roomMembers.size());
     } else if (ulist.size()<m_roomMembers.size()) {
         std::list<const std::string> tmpList;
-        RoomMembers::iterator rit = m_roomMembers.begin();
+        RoomMembersIt rit = m_roomMembers.begin();
         for (; rit!=m_roomMembers.end(); rit++) {
             std::list<const std::string>::iterator t = std::find(ulist.begin(), ulist.end(), rit->first);
             if (t==ulist.end()) {
@@ -245,7 +245,7 @@ void MRTMeetingRoom::CheckMembers()
     if (m_roomMembers.size()==0) {
         return;
     }
-    RoomMembers::iterator rit = m_roomMembers.begin();
+    RoomMembersIt rit = m_roomMembers.begin();
     for (; rit!=m_roomMembers.end(); rit++) {
         LI("\t-->MeetingRoom members :%s\n", rit->first.c_str());
     }
@@ -277,27 +277,11 @@ int MRTMeetingRoom::DelNotifyMsg(const std::string pubsher, std::string& pubid)
     return 0;
 }
 
-void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, std::string& msg)
+void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEETMSG& mmsg)
 {
     OSMutexLocker locker(&m_wmsgMutex);
-    LI("===>>>MRTMeetingRoom::AddWaitingMsgToList size:%d, msg:%s\n", (int)m_waitingMsgsList.size(), msg.c_str());
-    //m_waitingMsgsList.push_back(WaitingMsg(type, tag, msg));
-}
-
-void MRTMeetingRoom::SendWaitingMsgs()
-{
-    OSMutexLocker locker(&m_wmsgMutex);
-    return;
-    if (m_waitingMsgsList.size()==0) {
-        return;
-    }
-    WaitingMsgsList::iterator wit = m_waitingMsgsList.begin();
-    for (; wit!=m_waitingMsgsList.end(); wit++) {
-        LI("===>>>MRTMeetingRoom::SendWaitingMsgs size:%d, msg:%s\n", (int)m_waitingMsgsList.size(), wit->_wmsg.c_str());
-        MRTRoomManager::Instance()->SendTransferData(wit->_wmsg.c_str(), (int)wit->_wmsg.length());
-        m_waitingMsgsList.pop_front();
-    }
-    
+    LI("===>>>MRTMeetingRoom::AddWaitingMsgToList size:%d\n", (int)m_waitingMsgsList.size());
+    m_waitingMsgsList.push_back(WaitingMsg(type, tag, tmsg, mmsg));
 }
 
 void MRTMeetingRoom::GenericMeetingSessionId(std::string& strId)

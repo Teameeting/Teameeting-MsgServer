@@ -67,7 +67,7 @@ SInt64 RTTcp::Run()
         } else {
             LI("%s kill \n", __FUNCTION__);
         }
-        std::map<RTTcp*, RTObserverConnection*>::iterator it = m_mapConnectObserver.find(this);
+        ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
         if (it != m_mapConnectObserver.end()) {
             LI("Tcp::Run find Disconnection\n");
             RTObserverConnection *conn = it->second;
@@ -158,7 +158,7 @@ SInt64 RTTcp::Run()
     // is holding onto a reference to this session, just reschedule the timeout.
     //
     // At this point, however, the session is DEAD.
-    std::map<RTTcp*, RTObserverConnection*>::iterator it = m_mapConnectObserver.find(this);
+    ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
     if (it != m_mapConnectObserver.end()) {
         LI("Tcp::Run SessionOffline find Disconnection\n");
         RTObserverConnection *conn = it->second;
@@ -174,7 +174,11 @@ SInt64 RTTcp::Run()
 
 void RTTcp::AddObserver(RTObserverConnection* conn)
 {
-    m_mapConnectObserver.insert(std::make_pair(this, conn));
+    m_OCMItPair = m_mapConnectObserver.insert(std::make_pair(this, conn));
+    if (!m_OCMItPair.second) {
+        m_mapConnectObserver.erase(this);
+        m_mapConnectObserver.insert(std::make_pair(this, conn));
+    }
 }
 
 void RTTcp::DelObserver(RTObserverConnection* conn)
