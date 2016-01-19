@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <utility>
 #include <string>
+#include <set>
 #include <list>
 #include "LinkedList.h"
 #include "refcount.h"
@@ -46,18 +47,11 @@ public:
         MS_INMEETING,
         MS_OUTMEETING,
     }MemberStatus;
-    
-    typedef struct _room_member{
-        MemberStatus    _memStatus;
-        std::string     _uid;
-        _room_member(MemberStatus memStatus, const std::string& uid)
-                    : _memStatus(memStatus)
-                    , _uid(uid){
-        }
-    }RoomMember;
 
-    typedef std::unordered_map<std::string, RoomMember*> RoomMembers;
-    typedef RoomMembers::iterator RoomMembersIt;
+    typedef std::set<std::string>    RoomMembers;
+    typedef RoomMembers::iterator       RoomMembersIt;
+    typedef std::set<std::string>    MeetingMembers;
+    typedef MeetingMembers::iterator    MeetingMembersIt;
     
     typedef enum _get_members_status {
         GMS_NIL = 0,
@@ -83,11 +77,13 @@ public:
     
     void AddMemberToRoom(const std::string& uid, MemberStatus status);
     void SyncRoomMember(const std::string& uid, MemberStatus status);
-    void UpdateMemberStatus(const std::string& uid, MemberStatus status);
+    /*void UpdateMemberStatus(const std::string& uid, MemberStatus status);*/
     bool IsMemberInRoom(const std::string& uid);
     void DelMemberFmRoom(const std::string& uid);
     int  GetRoomMemberNumber() { return (int)m_roomMembers.size(); }
     int  GetRoomMemberOnline();
+    void AddMemberToMeeting(const std::string& uid);
+    void DelMemberFmMeeting(const std::string& uid);
     
     void SetGetMembersStatus(GetMembersStatus status){ m_eGetMembersStatus = status; }
     GetMembersStatus GetGetMembersStatus() { return m_eGetMembersStatus; }
@@ -97,7 +93,15 @@ public:
     
     int GetAllRoomMemberJson(std::string& users);
     int GetRoomMemberJson(const std::string from, std::string& users);
-    int GetRoomMemberMeetingJson(const std::string from, std::string& users);
+    int GetAllMeetingMemberJson(std::string& users);
+    int GetMeetingMemberJson(const std::string from, std::string& users);
+    void ResetSessionId() {
+        OSMutexLocker locker(&m_mutex);
+        if (m_meetingMembers.empty()) {
+            m_sessionId.assign("");
+        }
+    }
+    
     bool IsMemberInMeeting(const std::string& uid);
     MemberStatus GetRoomMemberStatus(const std::string& uid);
     int AddNotifyMsg(const std::string pubsher, const std::string pubid);
@@ -126,7 +130,7 @@ private:
     std::string                     m_sessionId;
     GetMembersStatus                m_eGetMembersStatus;
     RoomMembers                     m_roomMembers;
-    int                             m_maxRoomMem;
+    MeetingMembers                  m_meetingMembers;
     RoomNotifyMsgs                  m_roomNotifyMsgs;
     WaitingMsgsList                 m_waitingMsgsList;
     
