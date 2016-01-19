@@ -100,7 +100,7 @@ int main(int argc, const char * argv[]) {
     std::string roomid("400000000436");
     std::string msg("hello world, are you ok?");
     client.Init(callback, userid, pass, server, port);
-    while(client.Status()!=TcpState::CONNECTED)sleep(1);
+    while(client.MSStatus()!=MSTcpState::MSCONNECTED)sleep(1);
     LOG(INFO) << "connectted to server...";
     client.OptRoom(MEETCMD::enter, roomid, "");
     while (1) {
