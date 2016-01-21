@@ -1,0 +1,728 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E62B56741C12CDB900000672 /* ev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48561BC7BF9C00ED97ED /* ev.cpp */; };
+		E6FE48C81BC7BF9D00ED97ED /* atomic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48491BC7BF9C00ED97ED /* atomic.cpp */; };
+		E6FE48C91BC7BF9D00ED97ED /* atomic.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE484A1BC7BF9C00ED97ED /* atomic.h */; };
+		E6FE48CA1BC7BF9D00ED97ED /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE484B1BC7BF9C00ED97ED /* base64.c */; };
+		E6FE48CB1BC7BF9D00ED97ED /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE484C1BC7BF9C00ED97ED /* base64.h */; };
+		E6FE48CC1BC7BF9D00ED97ED /* ConfParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE484E1BC7BF9C00ED97ED /* ConfParser.cpp */; };
+		E6FE48CD1BC7BF9D00ED97ED /* ConfParser.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE484F1BC7BF9C00ED97ED /* ConfParser.h */; };
+		E6FE48CE1BC7BF9D00ED97ED /* daemon.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48501BC7BF9C00ED97ED /* daemon.c */; };
+		E6FE48CF1BC7BF9D00ED97ED /* daemon.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48511BC7BF9C00ED97ED /* daemon.h */; };
+		E6FE48D01BC7BF9D00ED97ED /* DateTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48521BC7BF9C00ED97ED /* DateTranslator.cpp */; };
+		E6FE48D11BC7BF9D00ED97ED /* DateTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48531BC7BF9C00ED97ED /* DateTranslator.h */; };
+		E6FE48D21BC7BF9D00ED97ED /* DssStopwatch.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48541BC7BF9C00ED97ED /* DssStopwatch.h */; };
+		E6FE48D51BC7BF9D00ED97ED /* ev.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48571BC7BF9C00ED97ED /* ev.h */; };
+		E6FE48D61BC7BF9D00ED97ED /* EventContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48581BC7BF9C00ED97ED /* EventContext.cpp */; };
+		E6FE48D71BC7BF9D00ED97ED /* EventContext.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48591BC7BF9C00ED97ED /* EventContext.h */; };
+		E6FE48D81BC7BF9D00ED97ED /* FastCopyMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE485A1BC7BF9C00ED97ED /* FastCopyMacros.h */; };
+		E6FE48D91BC7BF9D00ED97ED /* getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE485B1BC7BF9C00ED97ED /* getopt.c */; };
+		E6FE48DA1BC7BF9D00ED97ED /* getopt.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE485C1BC7BF9C00ED97ED /* getopt.h */; };
+		E6FE48DB1BC7BF9D00ED97ED /* GetWord.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE485D1BC7BF9C00ED97ED /* GetWord.c */; };
+		E6FE48DC1BC7BF9D00ED97ED /* GetWord.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE485E1BC7BF9C00ED97ED /* GetWord.h */; };
+		E6FE48DD1BC7BF9D00ED97ED /* IdleTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE485F1BC7BF9C00ED97ED /* IdleTask.cpp */; };
+		E6FE48DE1BC7BF9D00ED97ED /* IdleTask.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48601BC7BF9C00ED97ED /* IdleTask.h */; };
+		E6FE48DF1BC7BF9E00ED97ED /* InternalStdLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48611BC7BF9C00ED97ED /* InternalStdLib.cpp */; };
+		E6FE48E11BC7BF9E00ED97ED /* LinkedList.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48631BC7BF9C00ED97ED /* LinkedList.c */; };
+		E6FE48E21BC7BF9E00ED97ED /* LinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48641BC7BF9C00ED97ED /* LinkedList.h */; };
+		E6FE48E31BC7BF9E00ED97ED /* MakeDir.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48651BC7BF9C00ED97ED /* MakeDir.c */; };
+		E6FE48E41BC7BF9E00ED97ED /* MakeDir.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48661BC7BF9C00ED97ED /* MakeDir.h */; };
+		E6FE48E51BC7BF9E00ED97ED /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48671BC7BF9C00ED97ED /* Makefile */; };
+		E6FE48E61BC7BF9E00ED97ED /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE486A1BC7BF9C00ED97ED /* md5.c */; };
+		E6FE48E71BC7BF9E00ED97ED /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE486B1BC7BF9C00ED97ED /* md5.h */; };
+		E6FE48E81BC7BF9E00ED97ED /* md5digest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE486C1BC7BF9C00ED97ED /* md5digest.cpp */; };
+		E6FE48E91BC7BF9E00ED97ED /* md5digest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE486D1BC7BF9C00ED97ED /* md5digest.h */; };
+		E6FE48EA1BC7BF9E00ED97ED /* MyAssert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE486E1BC7BF9C00ED97ED /* MyAssert.cpp */; };
+		E6FE48EB1BC7BF9E00ED97ED /* MyAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE486F1BC7BF9C00ED97ED /* MyAssert.h */; };
+		E6FE48EC1BC7BF9E00ED97ED /* mycondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48701BC7BF9C00ED97ED /* mycondition.cpp */; };
+		E6FE48ED1BC7BF9E00ED97ED /* mycondition.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48711BC7BF9C00ED97ED /* mycondition.h */; };
+		E6FE48EE1BC7BF9E00ED97ED /* mymutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48721BC7BF9C00ED97ED /* mymutex.cpp */; };
+		E6FE48EF1BC7BF9E00ED97ED /* mymutex.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48731BC7BF9C00ED97ED /* mymutex.h */; };
+		E6FE48F01BC7BF9E00ED97ED /* OS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48741BC7BF9C00ED97ED /* OS.cpp */; };
+		E6FE48F11BC7BF9E00ED97ED /* OS.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48751BC7BF9C00ED97ED /* OS.h */; };
+		E6FE48F21BC7BF9E00ED97ED /* OSArrayObjectDeleter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48761BC7BF9C00ED97ED /* OSArrayObjectDeleter.h */; };
+		E6FE48F31BC7BF9F00ED97ED /* OSBufferPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48771BC7BF9C00ED97ED /* OSBufferPool.cpp */; };
+		E6FE48F41BC7BF9F00ED97ED /* OSBufferPool.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48781BC7BF9C00ED97ED /* OSBufferPool.h */; };
+		E6FE48F51BC7BF9F00ED97ED /* OSCodeFragment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48791BC7BF9C00ED97ED /* OSCodeFragment.cpp */; };
+		E6FE48F61BC7BF9F00ED97ED /* OSCodeFragment.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE487A1BC7BF9C00ED97ED /* OSCodeFragment.h */; };
+		E6FE48F71BC7BF9F00ED97ED /* OSCond.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE487B1BC7BF9C00ED97ED /* OSCond.cpp */; };
+		E6FE48F81BC7BF9F00ED97ED /* OSCond.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE487C1BC7BF9C00ED97ED /* OSCond.h */; };
+		E6FE48F91BC7BF9F00ED97ED /* OSFileSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE487D1BC7BF9C00ED97ED /* OSFileSource.cpp */; };
+		E6FE48FA1BC7BF9F00ED97ED /* OSFileSource.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE487E1BC7BF9C00ED97ED /* OSFileSource.h */; };
+		E6FE48FB1BC7BF9F00ED97ED /* OSHashTable.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE487F1BC7BF9C00ED97ED /* OSHashTable.h */; };
+		E6FE48FC1BC7BF9F00ED97ED /* OSHeaders.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48801BC7BF9C00ED97ED /* OSHeaders.h */; };
+		E6FE48FD1BC7BF9F00ED97ED /* OSHeap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48811BC7BF9C00ED97ED /* OSHeap.cpp */; };
+		E6FE48FE1BC7BF9F00ED97ED /* OSHeap.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48821BC7BF9C00ED97ED /* OSHeap.h */; };
+		E6FE48FF1BC7BF9F00ED97ED /* OSMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48831BC7BF9C00ED97ED /* OSMemory.h */; };
+		E6FE49001BC7BF9F00ED97ED /* OSMutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48841BC7BF9C00ED97ED /* OSMutex.cpp */; };
+		E6FE49011BC7BF9F00ED97ED /* OSMutex.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48851BC7BF9C00ED97ED /* OSMutex.h */; };
+		E6FE49021BC7BF9F00ED97ED /* OSMutexRW.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48861BC7BF9C00ED97ED /* OSMutexRW.cpp */; };
+		E6FE49031BC7BF9F00ED97ED /* OSMutexRW.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48871BC7BF9C00ED97ED /* OSMutexRW.h */; };
+		E6FE49041BC7BFA000ED97ED /* OSQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48881BC7BF9C00ED97ED /* OSQueue.cpp */; };
+		E6FE49051BC7BFA000ED97ED /* OSQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48891BC7BF9C00ED97ED /* OSQueue.h */; };
+		E6FE49061BC7BFA000ED97ED /* OSRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE488A1BC7BF9C00ED97ED /* OSRef.cpp */; };
+		E6FE49071BC7BFA000ED97ED /* OSRef.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE488B1BC7BF9C00ED97ED /* OSRef.h */; };
+		E6FE49081BC7BFA000ED97ED /* OSThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE488C1BC7BF9C00ED97ED /* OSThread.cpp */; };
+		E6FE49091BC7BFA000ED97ED /* OSThread.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE488D1BC7BF9C00ED97ED /* OSThread.h */; };
+		E6FE490A1BC7BFA000ED97ED /* PathDelimiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE488E1BC7BF9C00ED97ED /* PathDelimiter.h */; };
+		E6FE490B1BC7BFA000ED97ED /* PLDoubleLinkedList.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE488F1BC7BF9C00ED97ED /* PLDoubleLinkedList.h */; };
+		E6FE490C1BC7BFA000ED97ED /* QueryParamList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48901BC7BF9C00ED97ED /* QueryParamList.cpp */; };
+		E6FE490D1BC7BFA000ED97ED /* QueryParamList.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48911BC7BF9C00ED97ED /* QueryParamList.h */; };
+		E6FE490E1BC7BFA000ED97ED /* ResizeableStringFormatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48921BC7BF9C00ED97ED /* ResizeableStringFormatter.cpp */; };
+		E6FE490F1BC7BFA000ED97ED /* ResizeableStringFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48931BC7BF9C00ED97ED /* ResizeableStringFormatter.h */; };
+		E6FE49101BC7BFA000ED97ED /* rtklog.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48A21BC7BF9C00ED97ED /* rtklog.h */; };
+		E6FE49111BC7BFA000ED97ED /* SafeStdLib.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48A31BC7BF9C00ED97ED /* SafeStdLib.h */; };
+		E6FE49121BC7BFA100ED97ED /* SDPUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48A41BC7BF9C00ED97ED /* SDPUtils.cpp */; };
+		E6FE49131BC7BFA100ED97ED /* SDPUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48A51BC7BF9C00ED97ED /* SDPUtils.h */; };
+		E6FE49141BC7BFA100ED97ED /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48A61BC7BF9C00ED97ED /* Socket.cpp */; };
+		E6FE49151BC7BFA100ED97ED /* Socket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48A71BC7BF9C00ED97ED /* Socket.h */; };
+		E6FE49161BC7BFA100ED97ED /* SocketUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48A81BC7BF9C00ED97ED /* SocketUtils.cpp */; };
+		E6FE49171BC7BFA100ED97ED /* SocketUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48A91BC7BF9C00ED97ED /* SocketUtils.h */; };
+		E6FE49181BC7BFA100ED97ED /* StopWatch.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48AA1BC7BF9C00ED97ED /* StopWatch.h */; };
+		E6FE49191BC7BFA100ED97ED /* StringFormatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48AB1BC7BF9C00ED97ED /* StringFormatter.cpp */; };
+		E6FE491A1BC7BFA100ED97ED /* StringFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48AC1BC7BF9C00ED97ED /* StringFormatter.h */; };
+		E6FE491B1BC7BFA100ED97ED /* StringParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48AD1BC7BF9C00ED97ED /* StringParser.cpp */; };
+		E6FE491C1BC7BFA100ED97ED /* StringParser.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48AE1BC7BF9C00ED97ED /* StringParser.h */; };
+		E6FE491D1BC7BFA100ED97ED /* StringTranslator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48AF1BC7BF9C00ED97ED /* StringTranslator.cpp */; };
+		E6FE491E1BC7BFA100ED97ED /* StringTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48B01BC7BF9C00ED97ED /* StringTranslator.h */; };
+		E6FE491F1BC7BFA100ED97ED /* StrPtrLen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48B11BC7BF9C00ED97ED /* StrPtrLen.cpp */; };
+		E6FE49201BC7BFA200ED97ED /* StrPtrLen.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48B21BC7BF9C00ED97ED /* StrPtrLen.h */; };
+		E6FE49211BC7BFA200ED97ED /* SVector.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48B31BC7BF9C00ED97ED /* SVector.h */; };
+		E6FE49221BC7BFA200ED97ED /* Task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48B41BC7BF9C00ED97ED /* Task.cpp */; };
+		E6FE49231BC7BFA200ED97ED /* Task.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48B51BC7BF9C00ED97ED /* Task.h */; };
+		E6FE49241BC7BFA200ED97ED /* TCPListenerSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48B61BC7BF9C00ED97ED /* TCPListenerSocket.cpp */; };
+		E6FE49251BC7BFA200ED97ED /* TCPListenerSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48B71BC7BF9C00ED97ED /* TCPListenerSocket.h */; };
+		E6FE49261BC7BFA200ED97ED /* TCPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48B81BC7BF9C00ED97ED /* TCPSocket.cpp */; };
+		E6FE49271BC7BFA200ED97ED /* TCPSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48B91BC7BF9C00ED97ED /* TCPSocket.h */; };
+		E6FE49281BC7BFA200ED97ED /* tempcalls.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48BA1BC7BF9C00ED97ED /* tempcalls.h */; };
+		E6FE49291BC7BFA200ED97ED /* TimeoutTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48BB1BC7BF9C00ED97ED /* TimeoutTask.cpp */; };
+		E6FE492A1BC7BFA200ED97ED /* TimeoutTask.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48BC1BC7BF9C00ED97ED /* TimeoutTask.h */; };
+		E6FE492B1BC7BFA200ED97ED /* Trim.c in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48BD1BC7BF9C00ED97ED /* Trim.c */; };
+		E6FE492C1BC7BFA200ED97ED /* Trim.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48BE1BC7BF9C00ED97ED /* Trim.h */; };
+		E6FE492D1BC7BFA300ED97ED /* UDPDemuxer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48BF1BC7BF9C00ED97ED /* UDPDemuxer.cpp */; };
+		E6FE492E1BC7BFA300ED97ED /* UDPDemuxer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48C01BC7BF9C00ED97ED /* UDPDemuxer.h */; };
+		E6FE492F1BC7BFA300ED97ED /* UDPSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48C11BC7BF9C00ED97ED /* UDPSocket.cpp */; };
+		E6FE49301BC7BFA300ED97ED /* UDPSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48C21BC7BF9D00ED97ED /* UDPSocket.h */; };
+		E6FE49311BC7BFA300ED97ED /* UDPSocketPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48C31BC7BF9D00ED97ED /* UDPSocketPool.cpp */; };
+		E6FE49321BC7BFA300ED97ED /* UDPSocketPool.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48C41BC7BF9D00ED97ED /* UDPSocketPool.h */; };
+		E6FE49331BC7BFA300ED97ED /* UserAgentParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6FE48C51BC7BF9D00ED97ED /* UserAgentParser.cpp */; };
+		E6FE49341BC7BFA300ED97ED /* UserAgentParser.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE48C61BC7BF9D00ED97ED /* UserAgentParser.h */; };
+		E6FE493C1BC7BFE100ED97ED /* PlatformHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE49391BC7BFE100ED97ED /* PlatformHeader.h */; };
+		E6FE493D1BC7BFE100ED97ED /* revision.h in Headers */ = {isa = PBXBuildFile; fileRef = E6FE493A1BC7BFE100ED97ED /* revision.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E6FE463A1BC7BEED00ED97ED /* librtcomm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librtcomm.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6FE48481BC7BF9C00ED97ED /* Android.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
+		E6FE48491BC7BF9C00ED97ED /* atomic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = atomic.cpp; sourceTree = "<group>"; };
+		E6FE484A1BC7BF9C00ED97ED /* atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomic.h; sourceTree = "<group>"; };
+		E6FE484B1BC7BF9C00ED97ED /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
+		E6FE484C1BC7BF9C00ED97ED /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		E6FE484D1BC7BF9C00ED97ED /* CommonLib.vcproj.Eric-PC.Eric.user */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "CommonLib.vcproj.Eric-PC.Eric.user"; sourceTree = "<group>"; };
+		E6FE484E1BC7BF9C00ED97ED /* ConfParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfParser.cpp; sourceTree = "<group>"; };
+		E6FE484F1BC7BF9C00ED97ED /* ConfParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfParser.h; sourceTree = "<group>"; };
+		E6FE48501BC7BF9C00ED97ED /* daemon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = daemon.c; sourceTree = "<group>"; };
+		E6FE48511BC7BF9C00ED97ED /* daemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = daemon.h; sourceTree = "<group>"; };
+		E6FE48521BC7BF9C00ED97ED /* DateTranslator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DateTranslator.cpp; sourceTree = "<group>"; };
+		E6FE48531BC7BF9C00ED97ED /* DateTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTranslator.h; sourceTree = "<group>"; };
+		E6FE48541BC7BF9C00ED97ED /* DssStopwatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DssStopwatch.h; sourceTree = "<group>"; };
+		E6FE48551BC7BF9C00ED97ED /* epev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = epev.cpp; sourceTree = "<group>"; };
+		E6FE48561BC7BF9C00ED97ED /* ev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ev.cpp; sourceTree = "<group>"; };
+		E6FE48571BC7BF9C00ED97ED /* ev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ev.h; sourceTree = "<group>"; };
+		E6FE48581BC7BF9C00ED97ED /* EventContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventContext.cpp; sourceTree = "<group>"; };
+		E6FE48591BC7BF9C00ED97ED /* EventContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventContext.h; sourceTree = "<group>"; };
+		E6FE485A1BC7BF9C00ED97ED /* FastCopyMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastCopyMacros.h; sourceTree = "<group>"; };
+		E6FE485B1BC7BF9C00ED97ED /* getopt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getopt.c; sourceTree = "<group>"; };
+		E6FE485C1BC7BF9C00ED97ED /* getopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getopt.h; sourceTree = "<group>"; };
+		E6FE485D1BC7BF9C00ED97ED /* GetWord.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GetWord.c; sourceTree = "<group>"; };
+		E6FE485E1BC7BF9C00ED97ED /* GetWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetWord.h; sourceTree = "<group>"; };
+		E6FE485F1BC7BF9C00ED97ED /* IdleTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdleTask.cpp; sourceTree = "<group>"; };
+		E6FE48601BC7BF9C00ED97ED /* IdleTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdleTask.h; sourceTree = "<group>"; };
+		E6FE48611BC7BF9C00ED97ED /* InternalStdLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InternalStdLib.cpp; sourceTree = "<group>"; };
+		E6FE48621BC7BF9C00ED97ED /* libCommonUtilities.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCommonUtilities.a; sourceTree = "<group>"; };
+		E6FE48631BC7BF9C00ED97ED /* LinkedList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LinkedList.c; sourceTree = "<group>"; };
+		E6FE48641BC7BF9C00ED97ED /* LinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkedList.h; sourceTree = "<group>"; };
+		E6FE48651BC7BF9C00ED97ED /* MakeDir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MakeDir.c; sourceTree = "<group>"; };
+		E6FE48661BC7BF9C00ED97ED /* MakeDir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeDir.h; sourceTree = "<group>"; };
+		E6FE48671BC7BF9C00ED97ED /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		E6FE48681BC7BF9C00ED97ED /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
+		E6FE48691BC7BF9C00ED97ED /* Makefile.POSIX */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.POSIX; sourceTree = "<group>"; };
+		E6FE486A1BC7BF9C00ED97ED /* md5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
+		E6FE486B1BC7BF9C00ED97ED /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
+		E6FE486C1BC7BF9C00ED97ED /* md5digest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = md5digest.cpp; sourceTree = "<group>"; };
+		E6FE486D1BC7BF9C00ED97ED /* md5digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5digest.h; sourceTree = "<group>"; };
+		E6FE486E1BC7BF9C00ED97ED /* MyAssert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyAssert.cpp; sourceTree = "<group>"; };
+		E6FE486F1BC7BF9C00ED97ED /* MyAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAssert.h; sourceTree = "<group>"; };
+		E6FE48701BC7BF9C00ED97ED /* mycondition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mycondition.cpp; sourceTree = "<group>"; };
+		E6FE48711BC7BF9C00ED97ED /* mycondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mycondition.h; sourceTree = "<group>"; };
+		E6FE48721BC7BF9C00ED97ED /* mymutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mymutex.cpp; sourceTree = "<group>"; };
+		E6FE48731BC7BF9C00ED97ED /* mymutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mymutex.h; sourceTree = "<group>"; };
+		E6FE48741BC7BF9C00ED97ED /* OS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OS.cpp; sourceTree = "<group>"; };
+		E6FE48751BC7BF9C00ED97ED /* OS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OS.h; sourceTree = "<group>"; };
+		E6FE48761BC7BF9C00ED97ED /* OSArrayObjectDeleter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSArrayObjectDeleter.h; sourceTree = "<group>"; };
+		E6FE48771BC7BF9C00ED97ED /* OSBufferPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSBufferPool.cpp; sourceTree = "<group>"; };
+		E6FE48781BC7BF9C00ED97ED /* OSBufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSBufferPool.h; sourceTree = "<group>"; };
+		E6FE48791BC7BF9C00ED97ED /* OSCodeFragment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSCodeFragment.cpp; sourceTree = "<group>"; };
+		E6FE487A1BC7BF9C00ED97ED /* OSCodeFragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSCodeFragment.h; sourceTree = "<group>"; };
+		E6FE487B1BC7BF9C00ED97ED /* OSCond.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSCond.cpp; sourceTree = "<group>"; };
+		E6FE487C1BC7BF9C00ED97ED /* OSCond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSCond.h; sourceTree = "<group>"; };
+		E6FE487D1BC7BF9C00ED97ED /* OSFileSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSFileSource.cpp; sourceTree = "<group>"; };
+		E6FE487E1BC7BF9C00ED97ED /* OSFileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSFileSource.h; sourceTree = "<group>"; };
+		E6FE487F1BC7BF9C00ED97ED /* OSHashTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSHashTable.h; sourceTree = "<group>"; };
+		E6FE48801BC7BF9C00ED97ED /* OSHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSHeaders.h; sourceTree = "<group>"; };
+		E6FE48811BC7BF9C00ED97ED /* OSHeap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSHeap.cpp; sourceTree = "<group>"; };
+		E6FE48821BC7BF9C00ED97ED /* OSHeap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSHeap.h; sourceTree = "<group>"; };
+		E6FE48831BC7BF9C00ED97ED /* OSMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSMemory.h; sourceTree = "<group>"; };
+		E6FE48841BC7BF9C00ED97ED /* OSMutex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSMutex.cpp; sourceTree = "<group>"; };
+		E6FE48851BC7BF9C00ED97ED /* OSMutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSMutex.h; sourceTree = "<group>"; };
+		E6FE48861BC7BF9C00ED97ED /* OSMutexRW.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSMutexRW.cpp; sourceTree = "<group>"; };
+		E6FE48871BC7BF9C00ED97ED /* OSMutexRW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSMutexRW.h; sourceTree = "<group>"; };
+		E6FE48881BC7BF9C00ED97ED /* OSQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSQueue.cpp; sourceTree = "<group>"; };
+		E6FE48891BC7BF9C00ED97ED /* OSQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSQueue.h; sourceTree = "<group>"; };
+		E6FE488A1BC7BF9C00ED97ED /* OSRef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSRef.cpp; sourceTree = "<group>"; };
+		E6FE488B1BC7BF9C00ED97ED /* OSRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSRef.h; sourceTree = "<group>"; };
+		E6FE488C1BC7BF9C00ED97ED /* OSThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OSThread.cpp; sourceTree = "<group>"; };
+		E6FE488D1BC7BF9C00ED97ED /* OSThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSThread.h; sourceTree = "<group>"; };
+		E6FE488E1BC7BF9C00ED97ED /* PathDelimiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathDelimiter.h; sourceTree = "<group>"; };
+		E6FE488F1BC7BF9C00ED97ED /* PLDoubleLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PLDoubleLinkedList.h; sourceTree = "<group>"; };
+		E6FE48901BC7BF9C00ED97ED /* QueryParamList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QueryParamList.cpp; sourceTree = "<group>"; };
+		E6FE48911BC7BF9C00ED97ED /* QueryParamList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryParamList.h; sourceTree = "<group>"; };
+		E6FE48921BC7BF9C00ED97ED /* ResizeableStringFormatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResizeableStringFormatter.cpp; sourceTree = "<group>"; };
+		E6FE48931BC7BF9C00ED97ED /* ResizeableStringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResizeableStringFormatter.h; sourceTree = "<group>"; };
+		E6FE489D1BC7BF9C00ED97ED /* RTComm.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = RTComm.vcproj; sourceTree = "<group>"; };
+		E6FE489E1BC7BF9C00ED97ED /* RTComm.vcproj.Eric-PC.Eric.user */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "RTComm.vcproj.Eric-PC.Eric.user"; sourceTree = "<group>"; };
+		E6FE489F1BC7BF9C00ED97ED /* RTComm.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = RTComm.xcodeproj; sourceTree = "<group>"; };
+		E6FE48A21BC7BF9C00ED97ED /* rtklog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtklog.h; sourceTree = "<group>"; };
+		E6FE48A31BC7BF9C00ED97ED /* SafeStdLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeStdLib.h; sourceTree = "<group>"; };
+		E6FE48A41BC7BF9C00ED97ED /* SDPUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDPUtils.cpp; sourceTree = "<group>"; };
+		E6FE48A51BC7BF9C00ED97ED /* SDPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPUtils.h; sourceTree = "<group>"; };
+		E6FE48A61BC7BF9C00ED97ED /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		E6FE48A71BC7BF9C00ED97ED /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		E6FE48A81BC7BF9C00ED97ED /* SocketUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocketUtils.cpp; sourceTree = "<group>"; };
+		E6FE48A91BC7BF9C00ED97ED /* SocketUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketUtils.h; sourceTree = "<group>"; };
+		E6FE48AA1BC7BF9C00ED97ED /* StopWatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StopWatch.h; sourceTree = "<group>"; };
+		E6FE48AB1BC7BF9C00ED97ED /* StringFormatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringFormatter.cpp; sourceTree = "<group>"; };
+		E6FE48AC1BC7BF9C00ED97ED /* StringFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFormatter.h; sourceTree = "<group>"; };
+		E6FE48AD1BC7BF9C00ED97ED /* StringParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringParser.cpp; sourceTree = "<group>"; };
+		E6FE48AE1BC7BF9C00ED97ED /* StringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringParser.h; sourceTree = "<group>"; };
+		E6FE48AF1BC7BF9C00ED97ED /* StringTranslator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringTranslator.cpp; sourceTree = "<group>"; };
+		E6FE48B01BC7BF9C00ED97ED /* StringTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringTranslator.h; sourceTree = "<group>"; };
+		E6FE48B11BC7BF9C00ED97ED /* StrPtrLen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StrPtrLen.cpp; sourceTree = "<group>"; };
+		E6FE48B21BC7BF9C00ED97ED /* StrPtrLen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StrPtrLen.h; sourceTree = "<group>"; };
+		E6FE48B31BC7BF9C00ED97ED /* SVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVector.h; sourceTree = "<group>"; };
+		E6FE48B41BC7BF9C00ED97ED /* Task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task.cpp; sourceTree = "<group>"; };
+		E6FE48B51BC7BF9C00ED97ED /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
+		E6FE48B61BC7BF9C00ED97ED /* TCPListenerSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPListenerSocket.cpp; sourceTree = "<group>"; };
+		E6FE48B71BC7BF9C00ED97ED /* TCPListenerSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPListenerSocket.h; sourceTree = "<group>"; };
+		E6FE48B81BC7BF9C00ED97ED /* TCPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TCPSocket.cpp; sourceTree = "<group>"; };
+		E6FE48B91BC7BF9C00ED97ED /* TCPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCPSocket.h; sourceTree = "<group>"; };
+		E6FE48BA1BC7BF9C00ED97ED /* tempcalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tempcalls.h; sourceTree = "<group>"; };
+		E6FE48BB1BC7BF9C00ED97ED /* TimeoutTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeoutTask.cpp; sourceTree = "<group>"; };
+		E6FE48BC1BC7BF9C00ED97ED /* TimeoutTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeoutTask.h; sourceTree = "<group>"; };
+		E6FE48BD1BC7BF9C00ED97ED /* Trim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Trim.c; sourceTree = "<group>"; };
+		E6FE48BE1BC7BF9C00ED97ED /* Trim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Trim.h; sourceTree = "<group>"; };
+		E6FE48BF1BC7BF9C00ED97ED /* UDPDemuxer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPDemuxer.cpp; sourceTree = "<group>"; };
+		E6FE48C01BC7BF9C00ED97ED /* UDPDemuxer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPDemuxer.h; sourceTree = "<group>"; };
+		E6FE48C11BC7BF9C00ED97ED /* UDPSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocket.cpp; sourceTree = "<group>"; };
+		E6FE48C21BC7BF9D00ED97ED /* UDPSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocket.h; sourceTree = "<group>"; };
+		E6FE48C31BC7BF9D00ED97ED /* UDPSocketPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPSocketPool.cpp; sourceTree = "<group>"; };
+		E6FE48C41BC7BF9D00ED97ED /* UDPSocketPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPSocketPool.h; sourceTree = "<group>"; };
+		E6FE48C51BC7BF9D00ED97ED /* UserAgentParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UserAgentParser.cpp; sourceTree = "<group>"; };
+		E6FE48C61BC7BF9D00ED97ED /* UserAgentParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAgentParser.h; sourceTree = "<group>"; };
+		E6FE48C71BC7BF9D00ED97ED /* win32ev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = win32ev.cpp; sourceTree = "<group>"; };
+		E6FE49391BC7BFE100ED97ED /* PlatformHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlatformHeader.h; sourceTree = "<group>"; };
+		E6FE493A1BC7BFE100ED97ED /* revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = revision.h; sourceTree = "<group>"; };
+		E6FE493B1BC7BFE100ED97ED /* Win32header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Win32header.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E6FE46371BC7BEED00ED97ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E6FE46311BC7BEED00ED97ED = {
+			isa = PBXGroup;
+			children = (
+				E6FE49391BC7BFE100ED97ED /* PlatformHeader.h */,
+				E6FE493A1BC7BFE100ED97ED /* revision.h */,
+				E6FE493B1BC7BFE100ED97ED /* Win32header.h */,
+				E6FE48461BC7BF9C00ED97ED /* RTComm */,
+				E6FE463B1BC7BEED00ED97ED /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E6FE463B1BC7BEED00ED97ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6FE463A1BC7BEED00ED97ED /* librtcomm.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6FE48461BC7BF9C00ED97ED /* RTComm */ = {
+			isa = PBXGroup;
+			children = (
+				E6FE48471BC7BF9C00ED97ED /* Android */,
+				E6FE48491BC7BF9C00ED97ED /* atomic.cpp */,
+				E6FE484A1BC7BF9C00ED97ED /* atomic.h */,
+				E6FE484B1BC7BF9C00ED97ED /* base64.c */,
+				E6FE484C1BC7BF9C00ED97ED /* base64.h */,
+				E6FE484D1BC7BF9C00ED97ED /* CommonLib.vcproj.Eric-PC.Eric.user */,
+				E6FE484E1BC7BF9C00ED97ED /* ConfParser.cpp */,
+				E6FE484F1BC7BF9C00ED97ED /* ConfParser.h */,
+				E6FE48501BC7BF9C00ED97ED /* daemon.c */,
+				E6FE48511BC7BF9C00ED97ED /* daemon.h */,
+				E6FE48521BC7BF9C00ED97ED /* DateTranslator.cpp */,
+				E6FE48531BC7BF9C00ED97ED /* DateTranslator.h */,
+				E6FE48541BC7BF9C00ED97ED /* DssStopwatch.h */,
+				E6FE48551BC7BF9C00ED97ED /* epev.cpp */,
+				E6FE48561BC7BF9C00ED97ED /* ev.cpp */,
+				E6FE48571BC7BF9C00ED97ED /* ev.h */,
+				E6FE48581BC7BF9C00ED97ED /* EventContext.cpp */,
+				E6FE48591BC7BF9C00ED97ED /* EventContext.h */,
+				E6FE485A1BC7BF9C00ED97ED /* FastCopyMacros.h */,
+				E6FE485B1BC7BF9C00ED97ED /* getopt.c */,
+				E6FE485C1BC7BF9C00ED97ED /* getopt.h */,
+				E6FE485D1BC7BF9C00ED97ED /* GetWord.c */,
+				E6FE485E1BC7BF9C00ED97ED /* GetWord.h */,
+				E6FE485F1BC7BF9C00ED97ED /* IdleTask.cpp */,
+				E6FE48601BC7BF9C00ED97ED /* IdleTask.h */,
+				E6FE48611BC7BF9C00ED97ED /* InternalStdLib.cpp */,
+				E6FE48621BC7BF9C00ED97ED /* libCommonUtilities.a */,
+				E6FE48631BC7BF9C00ED97ED /* LinkedList.c */,
+				E6FE48641BC7BF9C00ED97ED /* LinkedList.h */,
+				E6FE48651BC7BF9C00ED97ED /* MakeDir.c */,
+				E6FE48661BC7BF9C00ED97ED /* MakeDir.h */,
+				E6FE48671BC7BF9C00ED97ED /* Makefile */,
+				E6FE48681BC7BF9C00ED97ED /* Makefile.in */,
+				E6FE48691BC7BF9C00ED97ED /* Makefile.POSIX */,
+				E6FE486A1BC7BF9C00ED97ED /* md5.c */,
+				E6FE486B1BC7BF9C00ED97ED /* md5.h */,
+				E6FE486C1BC7BF9C00ED97ED /* md5digest.cpp */,
+				E6FE486D1BC7BF9C00ED97ED /* md5digest.h */,
+				E6FE486E1BC7BF9C00ED97ED /* MyAssert.cpp */,
+				E6FE486F1BC7BF9C00ED97ED /* MyAssert.h */,
+				E6FE48701BC7BF9C00ED97ED /* mycondition.cpp */,
+				E6FE48711BC7BF9C00ED97ED /* mycondition.h */,
+				E6FE48721BC7BF9C00ED97ED /* mymutex.cpp */,
+				E6FE48731BC7BF9C00ED97ED /* mymutex.h */,
+				E6FE48741BC7BF9C00ED97ED /* OS.cpp */,
+				E6FE48751BC7BF9C00ED97ED /* OS.h */,
+				E6FE48761BC7BF9C00ED97ED /* OSArrayObjectDeleter.h */,
+				E6FE48771BC7BF9C00ED97ED /* OSBufferPool.cpp */,
+				E6FE48781BC7BF9C00ED97ED /* OSBufferPool.h */,
+				E6FE48791BC7BF9C00ED97ED /* OSCodeFragment.cpp */,
+				E6FE487A1BC7BF9C00ED97ED /* OSCodeFragment.h */,
+				E6FE487B1BC7BF9C00ED97ED /* OSCond.cpp */,
+				E6FE487C1BC7BF9C00ED97ED /* OSCond.h */,
+				E6FE487D1BC7BF9C00ED97ED /* OSFileSource.cpp */,
+				E6FE487E1BC7BF9C00ED97ED /* OSFileSource.h */,
+				E6FE487F1BC7BF9C00ED97ED /* OSHashTable.h */,
+				E6FE48801BC7BF9C00ED97ED /* OSHeaders.h */,
+				E6FE48811BC7BF9C00ED97ED /* OSHeap.cpp */,
+				E6FE48821BC7BF9C00ED97ED /* OSHeap.h */,
+				E6FE48831BC7BF9C00ED97ED /* OSMemory.h */,
+				E6FE48841BC7BF9C00ED97ED /* OSMutex.cpp */,
+				E6FE48851BC7BF9C00ED97ED /* OSMutex.h */,
+				E6FE48861BC7BF9C00ED97ED /* OSMutexRW.cpp */,
+				E6FE48871BC7BF9C00ED97ED /* OSMutexRW.h */,
+				E6FE48881BC7BF9C00ED97ED /* OSQueue.cpp */,
+				E6FE48891BC7BF9C00ED97ED /* OSQueue.h */,
+				E6FE488A1BC7BF9C00ED97ED /* OSRef.cpp */,
+				E6FE488B1BC7BF9C00ED97ED /* OSRef.h */,
+				E6FE488C1BC7BF9C00ED97ED /* OSThread.cpp */,
+				E6FE488D1BC7BF9C00ED97ED /* OSThread.h */,
+				E6FE488E1BC7BF9C00ED97ED /* PathDelimiter.h */,
+				E6FE488F1BC7BF9C00ED97ED /* PLDoubleLinkedList.h */,
+				E6FE48901BC7BF9C00ED97ED /* QueryParamList.cpp */,
+				E6FE48911BC7BF9C00ED97ED /* QueryParamList.h */,
+				E6FE48921BC7BF9C00ED97ED /* ResizeableStringFormatter.cpp */,
+				E6FE48931BC7BF9C00ED97ED /* ResizeableStringFormatter.h */,
+				E6FE489D1BC7BF9C00ED97ED /* RTComm.vcproj */,
+				E6FE489E1BC7BF9C00ED97ED /* RTComm.vcproj.Eric-PC.Eric.user */,
+				E6FE489F1BC7BF9C00ED97ED /* RTComm.xcodeproj */,
+				E6FE48A21BC7BF9C00ED97ED /* rtklog.h */,
+				E6FE48A31BC7BF9C00ED97ED /* SafeStdLib.h */,
+				E6FE48A41BC7BF9C00ED97ED /* SDPUtils.cpp */,
+				E6FE48A51BC7BF9C00ED97ED /* SDPUtils.h */,
+				E6FE48A61BC7BF9C00ED97ED /* Socket.cpp */,
+				E6FE48A71BC7BF9C00ED97ED /* Socket.h */,
+				E6FE48A81BC7BF9C00ED97ED /* SocketUtils.cpp */,
+				E6FE48A91BC7BF9C00ED97ED /* SocketUtils.h */,
+				E6FE48AA1BC7BF9C00ED97ED /* StopWatch.h */,
+				E6FE48AB1BC7BF9C00ED97ED /* StringFormatter.cpp */,
+				E6FE48AC1BC7BF9C00ED97ED /* StringFormatter.h */,
+				E6FE48AD1BC7BF9C00ED97ED /* StringParser.cpp */,
+				E6FE48AE1BC7BF9C00ED97ED /* StringParser.h */,
+				E6FE48AF1BC7BF9C00ED97ED /* StringTranslator.cpp */,
+				E6FE48B01BC7BF9C00ED97ED /* StringTranslator.h */,
+				E6FE48B11BC7BF9C00ED97ED /* StrPtrLen.cpp */,
+				E6FE48B21BC7BF9C00ED97ED /* StrPtrLen.h */,
+				E6FE48B31BC7BF9C00ED97ED /* SVector.h */,
+				E6FE48B41BC7BF9C00ED97ED /* Task.cpp */,
+				E6FE48B51BC7BF9C00ED97ED /* Task.h */,
+				E6FE48B61BC7BF9C00ED97ED /* TCPListenerSocket.cpp */,
+				E6FE48B71BC7BF9C00ED97ED /* TCPListenerSocket.h */,
+				E6FE48B81BC7BF9C00ED97ED /* TCPSocket.cpp */,
+				E6FE48B91BC7BF9C00ED97ED /* TCPSocket.h */,
+				E6FE48BA1BC7BF9C00ED97ED /* tempcalls.h */,
+				E6FE48BB1BC7BF9C00ED97ED /* TimeoutTask.cpp */,
+				E6FE48BC1BC7BF9C00ED97ED /* TimeoutTask.h */,
+				E6FE48BD1BC7BF9C00ED97ED /* Trim.c */,
+				E6FE48BE1BC7BF9C00ED97ED /* Trim.h */,
+				E6FE48BF1BC7BF9C00ED97ED /* UDPDemuxer.cpp */,
+				E6FE48C01BC7BF9C00ED97ED /* UDPDemuxer.h */,
+				E6FE48C11BC7BF9C00ED97ED /* UDPSocket.cpp */,
+				E6FE48C21BC7BF9D00ED97ED /* UDPSocket.h */,
+				E6FE48C31BC7BF9D00ED97ED /* UDPSocketPool.cpp */,
+				E6FE48C41BC7BF9D00ED97ED /* UDPSocketPool.h */,
+				E6FE48C51BC7BF9D00ED97ED /* UserAgentParser.cpp */,
+				E6FE48C61BC7BF9D00ED97ED /* UserAgentParser.h */,
+				E6FE48C71BC7BF9D00ED97ED /* win32ev.cpp */,
+			);
+			path = RTComm;
+			sourceTree = "<group>";
+		};
+		E6FE48471BC7BF9C00ED97ED /* Android */ = {
+			isa = PBXGroup;
+			children = (
+				E6FE48481BC7BF9C00ED97ED /* Android.mk */,
+			);
+			path = Android;
+			sourceTree = "<group>";
+		};
+		E6FE48A01BC7BF9C00ED97ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E6FE46381BC7BEED00ED97ED /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6FE490F1BC7BFA000ED97ED /* ResizeableStringFormatter.h in Headers */,
+				E6FE48F11BC7BF9E00ED97ED /* OS.h in Headers */,
+				E6FE491C1BC7BFA100ED97ED /* StringParser.h in Headers */,
+				E6FE48DC1BC7BF9D00ED97ED /* GetWord.h in Headers */,
+				E6FE49251BC7BFA200ED97ED /* TCPListenerSocket.h in Headers */,
+				E6FE48DE1BC7BF9D00ED97ED /* IdleTask.h in Headers */,
+				E6FE48FC1BC7BF9F00ED97ED /* OSHeaders.h in Headers */,
+				E6FE49101BC7BFA000ED97ED /* rtklog.h in Headers */,
+				E6FE49181BC7BFA100ED97ED /* StopWatch.h in Headers */,
+				E6FE48EB1BC7BF9E00ED97ED /* MyAssert.h in Headers */,
+				E6FE49281BC7BFA200ED97ED /* tempcalls.h in Headers */,
+				E6FE48EF1BC7BF9E00ED97ED /* mymutex.h in Headers */,
+				E6FE491E1BC7BFA100ED97ED /* StringTranslator.h in Headers */,
+				E6FE490D1BC7BFA000ED97ED /* QueryParamList.h in Headers */,
+				E6FE49051BC7BFA000ED97ED /* OSQueue.h in Headers */,
+				E6FE492C1BC7BFA200ED97ED /* Trim.h in Headers */,
+				E6FE49031BC7BF9F00ED97ED /* OSMutexRW.h in Headers */,
+				E6FE49131BC7BFA100ED97ED /* SDPUtils.h in Headers */,
+				E6FE48FE1BC7BF9F00ED97ED /* OSHeap.h in Headers */,
+				E6FE49301BC7BFA300ED97ED /* UDPSocket.h in Headers */,
+				E6FE48CD1BC7BF9D00ED97ED /* ConfParser.h in Headers */,
+				E6FE48C91BC7BF9D00ED97ED /* atomic.h in Headers */,
+				E6FE48FF1BC7BF9F00ED97ED /* OSMemory.h in Headers */,
+				E6FE48CF1BC7BF9D00ED97ED /* daemon.h in Headers */,
+				E6FE48D81BC7BF9D00ED97ED /* FastCopyMacros.h in Headers */,
+				E6FE492A1BC7BFA200ED97ED /* TimeoutTask.h in Headers */,
+				E6FE48E71BC7BF9E00ED97ED /* md5.h in Headers */,
+				E6FE49151BC7BFA100ED97ED /* Socket.h in Headers */,
+				E6FE490A1BC7BFA000ED97ED /* PathDelimiter.h in Headers */,
+				E6FE48E91BC7BF9E00ED97ED /* md5digest.h in Headers */,
+				E6FE48FB1BC7BF9F00ED97ED /* OSHashTable.h in Headers */,
+				E6FE48D71BC7BF9D00ED97ED /* EventContext.h in Headers */,
+				E6FE48FA1BC7BF9F00ED97ED /* OSFileSource.h in Headers */,
+				E6FE48ED1BC7BF9E00ED97ED /* mycondition.h in Headers */,
+				E6FE49091BC7BFA000ED97ED /* OSThread.h in Headers */,
+				E6FE49011BC7BF9F00ED97ED /* OSMutex.h in Headers */,
+				E6FE48E21BC7BF9E00ED97ED /* LinkedList.h in Headers */,
+				E6FE48F41BC7BF9F00ED97ED /* OSBufferPool.h in Headers */,
+				E6FE491A1BC7BFA100ED97ED /* StringFormatter.h in Headers */,
+				E6FE48DA1BC7BF9D00ED97ED /* getopt.h in Headers */,
+				E6FE49231BC7BFA200ED97ED /* Task.h in Headers */,
+				E6FE48D21BC7BF9D00ED97ED /* DssStopwatch.h in Headers */,
+				E6FE48CB1BC7BF9D00ED97ED /* base64.h in Headers */,
+				E6FE49321BC7BFA300ED97ED /* UDPSocketPool.h in Headers */,
+				E6FE490B1BC7BFA000ED97ED /* PLDoubleLinkedList.h in Headers */,
+				E6FE48D51BC7BF9D00ED97ED /* ev.h in Headers */,
+				E6FE48F61BC7BF9F00ED97ED /* OSCodeFragment.h in Headers */,
+				E6FE48F81BC7BF9F00ED97ED /* OSCond.h in Headers */,
+				E6FE493C1BC7BFE100ED97ED /* PlatformHeader.h in Headers */,
+				E6FE49171BC7BFA100ED97ED /* SocketUtils.h in Headers */,
+				E6FE49341BC7BFA300ED97ED /* UserAgentParser.h in Headers */,
+				E6FE49111BC7BFA000ED97ED /* SafeStdLib.h in Headers */,
+				E6FE49271BC7BFA200ED97ED /* TCPSocket.h in Headers */,
+				E6FE48E41BC7BF9E00ED97ED /* MakeDir.h in Headers */,
+				E6FE493D1BC7BFE100ED97ED /* revision.h in Headers */,
+				E6FE49071BC7BFA000ED97ED /* OSRef.h in Headers */,
+				E6FE48F21BC7BF9E00ED97ED /* OSArrayObjectDeleter.h in Headers */,
+				E6FE48D11BC7BF9D00ED97ED /* DateTranslator.h in Headers */,
+				E6FE492E1BC7BFA300ED97ED /* UDPDemuxer.h in Headers */,
+				E6FE49211BC7BFA200ED97ED /* SVector.h in Headers */,
+				E6FE49201BC7BFA200ED97ED /* StrPtrLen.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E6FE46391BC7BEED00ED97ED /* rtcomm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6FE463E1BC7BEED00ED97ED /* Build configuration list for PBXNativeTarget "rtcomm" */;
+			buildPhases = (
+				E6FE46361BC7BEED00ED97ED /* Sources */,
+				E6FE46371BC7BEED00ED97ED /* Frameworks */,
+				E6FE46381BC7BEED00ED97ED /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = rtcomm;
+			productName = libstaticrtcomm;
+			productReference = E6FE463A1BC7BEED00ED97ED /* librtcomm.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E6FE46321BC7BEED00ED97ED /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = hp;
+				TargetAttributes = {
+					E6FE46391BC7BEED00ED97ED = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = E6FE46351BC7BEED00ED97ED /* Build configuration list for PBXProject "rtcomm" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E6FE46311BC7BEED00ED97ED;
+			productRefGroup = E6FE463B1BC7BEED00ED97ED /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E6FE48A01BC7BF9C00ED97ED /* Products */;
+					ProjectRef = E6FE489F1BC7BF9C00ED97ED /* RTComm.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E6FE46391BC7BEED00ED97ED /* rtcomm */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E6FE46361BC7BEED00ED97ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E62B56741C12CDB900000672 /* ev.cpp in Sources */,
+				E6FE492B1BC7BFA200ED97ED /* Trim.c in Sources */,
+				E6FE48E51BC7BF9E00ED97ED /* Makefile in Sources */,
+				E6FE49121BC7BFA100ED97ED /* SDPUtils.cpp in Sources */,
+				E6FE49001BC7BF9F00ED97ED /* OSMutex.cpp in Sources */,
+				E6FE491B1BC7BFA100ED97ED /* StringParser.cpp in Sources */,
+				E6FE48F91BC7BF9F00ED97ED /* OSFileSource.cpp in Sources */,
+				E6FE48F71BC7BF9F00ED97ED /* OSCond.cpp in Sources */,
+				E6FE49041BC7BFA000ED97ED /* OSQueue.cpp in Sources */,
+				E6FE492D1BC7BFA300ED97ED /* UDPDemuxer.cpp in Sources */,
+				E6FE49081BC7BFA000ED97ED /* OSThread.cpp in Sources */,
+				E6FE49241BC7BFA200ED97ED /* TCPListenerSocket.cpp in Sources */,
+				E6FE490C1BC7BFA000ED97ED /* QueryParamList.cpp in Sources */,
+				E6FE48FD1BC7BF9F00ED97ED /* OSHeap.cpp in Sources */,
+				E6FE48DB1BC7BF9D00ED97ED /* GetWord.c in Sources */,
+				E6FE49161BC7BFA100ED97ED /* SocketUtils.cpp in Sources */,
+				E6FE48D61BC7BF9D00ED97ED /* EventContext.cpp in Sources */,
+				E6FE48F01BC7BF9E00ED97ED /* OS.cpp in Sources */,
+				E6FE491D1BC7BFA100ED97ED /* StringTranslator.cpp in Sources */,
+				E6FE49061BC7BFA000ED97ED /* OSRef.cpp in Sources */,
+				E6FE49331BC7BFA300ED97ED /* UserAgentParser.cpp in Sources */,
+				E6FE49021BC7BF9F00ED97ED /* OSMutexRW.cpp in Sources */,
+				E6FE48D91BC7BF9D00ED97ED /* getopt.c in Sources */,
+				E6FE48F31BC7BF9F00ED97ED /* OSBufferPool.cpp in Sources */,
+				E6FE48F51BC7BF9F00ED97ED /* OSCodeFragment.cpp in Sources */,
+				E6FE48DD1BC7BF9D00ED97ED /* IdleTask.cpp in Sources */,
+				E6FE48D01BC7BF9D00ED97ED /* DateTranslator.cpp in Sources */,
+				E6FE48CA1BC7BF9D00ED97ED /* base64.c in Sources */,
+				E6FE48EA1BC7BF9E00ED97ED /* MyAssert.cpp in Sources */,
+				E6FE49191BC7BFA100ED97ED /* StringFormatter.cpp in Sources */,
+				E6FE48E81BC7BF9E00ED97ED /* md5digest.cpp in Sources */,
+				E6FE48EE1BC7BF9E00ED97ED /* mymutex.cpp in Sources */,
+				E6FE490E1BC7BFA000ED97ED /* ResizeableStringFormatter.cpp in Sources */,
+				E6FE491F1BC7BFA100ED97ED /* StrPtrLen.cpp in Sources */,
+				E6FE49291BC7BFA200ED97ED /* TimeoutTask.cpp in Sources */,
+				E6FE48CE1BC7BF9D00ED97ED /* daemon.c in Sources */,
+				E6FE48C81BC7BF9D00ED97ED /* atomic.cpp in Sources */,
+				E6FE48E31BC7BF9E00ED97ED /* MakeDir.c in Sources */,
+				E6FE48CC1BC7BF9D00ED97ED /* ConfParser.cpp in Sources */,
+				E6FE49141BC7BFA100ED97ED /* Socket.cpp in Sources */,
+				E6FE48EC1BC7BF9E00ED97ED /* mycondition.cpp in Sources */,
+				E6FE492F1BC7BFA300ED97ED /* UDPSocket.cpp in Sources */,
+				E6FE49261BC7BFA200ED97ED /* TCPSocket.cpp in Sources */,
+				E6FE49221BC7BFA200ED97ED /* Task.cpp in Sources */,
+				E6FE48E61BC7BF9E00ED97ED /* md5.c in Sources */,
+				E6FE48E11BC7BF9E00ED97ED /* LinkedList.c in Sources */,
+				E6FE48DF1BC7BF9E00ED97ED /* InternalStdLib.cpp in Sources */,
+				E6FE49311BC7BFA300ED97ED /* UDPSocketPool.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E6FE463C1BC7BEED00ED97ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E6FE463D1BC7BEED00ED97ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E6FE463F1BC7BEED00ED97ED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = MAC;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RTComm",
+				);
+				PRODUCT_NAME = rtcomm;
+			};
+			name = Debug;
+		};
+		E6FE46401BC7BEED00ED97ED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = MAC;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RTComm",
+				);
+				PRODUCT_NAME = rtcomm;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E6FE46351BC7BEED00ED97ED /* Build configuration list for PBXProject "rtcomm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6FE463C1BC7BEED00ED97ED /* Debug */,
+				E6FE463D1BC7BEED00ED97ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6FE463E1BC7BEED00ED97ED /* Build configuration list for PBXNativeTarget "rtcomm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6FE463F1BC7BEED00ED97ED /* Debug */,
+				E6FE46401BC7BEED00ED97ED /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E6FE46321BC7BEED00ED97ED /* Project object */;
+}
