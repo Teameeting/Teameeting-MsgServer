@@ -23,7 +23,7 @@ int main(int argc, const char * argv[]) {
     CRTConnector::PrintVersion();
     CRTConnector::Initialize(1024);
     CRTConnector* pConnector = CRTConnector::Inst();
-    const char* plocal = "127.0.0.1";
+    const char* plocal = "192.168.7.27";
     StrPtrLen pLanIp((char*)plocal);
     StrPtrLen pModuleIp((char*)plocal);
     StrPtrLen pConnTcpIp((char*)plocal);
@@ -36,7 +36,7 @@ int main(int argc, const char * argv[]) {
         return -1;
     unsigned short pConnPort = 6610;
     unsigned short pModulePort = 6620;
-    unsigned short pConnTcpPort = 6630;
+    unsigned short pConnTcpPort = 9210;
     unsigned short pRedisPort = 6379;
     pConnector->Start(ppLanIp, pConnPort, ppModuleIp, pModulePort, ppConnTcpIp, pConnTcpPort, ppHttpIp, pRedisPort);
     delete ppLanIp;

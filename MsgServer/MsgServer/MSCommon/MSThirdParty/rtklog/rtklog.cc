@@ -53,7 +53,7 @@ public:
 protected:
 	RtkLog(void):pStream(NULL)
 	{
-		//talk_base::LogMessage::LogToDebug(talk_base::LS_VERBOSE);
+		talk_base::LogMessage::LogToDebug(talk_base::LS_VERBOSE);
 		OpenStream(NULL, L_NORMAL);
 	};
 	~RtkLog(void)
