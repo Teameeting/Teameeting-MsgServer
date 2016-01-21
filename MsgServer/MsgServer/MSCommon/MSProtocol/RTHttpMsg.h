@@ -12,7 +12,8 @@
 #include <string>
 #include <list>
 
-typedef struct _meetingInfo{
+typedef struct _meetingInfo MEETINGINFO;
+struct _meetingInfo{
     std::string meetingid;
     std::string userid;
     std::string meetname;
@@ -21,16 +22,19 @@ typedef struct _meetingInfo{
     int         pushable;
     int         meettype1;
     int         memnumber;
-    long long   crttime;
+    int64_t     crttime;
+    _meetingInfo();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}MEETINGINFO;
+};
 
-typedef struct _meetingMemberList{
-    std::list<const std::string> _uslist;
+typedef struct _meetingMemberList MEETINGMEMBERLIST;
+struct _meetingMemberList{
+    std::list<std::string> _uslist;
+    _meetingMemberList();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}MEETINGMEMBERLIST;
+};
 
 
 #endif /* RTHttpMsg_h */

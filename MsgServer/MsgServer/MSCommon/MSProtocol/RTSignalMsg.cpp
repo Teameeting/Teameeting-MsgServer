@@ -15,16 +15,20 @@
 #include "rapidjson/prettywriter.h"
 #include "RTMsgCommon.h"
 
+_signalmsg::_signalmsg()
+    : _stype(signaltype_invalid)
+      , _scont(""){}
+
 std::string SIGNALMSG::ToJson()
 {
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("stype", SIGNALMSG::_stype, jDoc.GetAllocator());
     jDoc.AddMember("scont", SIGNALMSG::_scont.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;

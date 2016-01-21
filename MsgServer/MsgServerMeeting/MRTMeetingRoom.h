@@ -28,7 +28,7 @@ class MRTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<MRTMeetingR
 public:
     MRTMeetingRoom(const std::string mid, const std::string ownerid);
     ~MRTMeetingRoom();
-    
+
     typedef struct _notify_msgs{
         int seq;
         long long pubTime;
@@ -41,7 +41,7 @@ public:
             publisher = "";
         }
     }NotifyMsg;
-    
+
     typedef enum _member_status{
         MS_NIL=0,
         MS_INMEETING,
@@ -52,17 +52,17 @@ public:
     typedef RoomMembers::iterator       RoomMembersIt;
     typedef std::set<std::string>    MeetingMembers;
     typedef MeetingMembers::iterator    MeetingMembersIt;
-    
+
     typedef enum _get_members_status {
         GMS_NIL = 0,
         GMS_WAITTING,
         GMS_DONE
     }GetMembersStatus;
-    
+
     typedef std::unordered_map<std::string, NotifyMsg*>  RoomNotifyMsgs;
     typedef RoomNotifyMsgs::iterator RoomNotifyMsgsIt;
 
-    
+
     // not sending msgs
     typedef struct _waiting_msg{
         int             _wtype;
@@ -73,8 +73,8 @@ public:
         _wtype(wtype),_wtags(wtags),_wtmsg(wtmsg),_wmsg(wmsg){}
     }WaitingMsg;
     typedef std::list<WaitingMsg> WaitingMsgsList;
-    
-    
+
+
     void AddMemberToRoom(const std::string& uid, MemberStatus status);
     void SyncRoomMember(const std::string& uid, MemberStatus status);
     /*void UpdateMemberStatus(const std::string& uid, MemberStatus status);*/
@@ -84,13 +84,13 @@ public:
     int  GetRoomMemberOnline();
     void AddMemberToMeeting(const std::string& uid);
     void DelMemberFmMeeting(const std::string& uid);
-    
+
     void SetGetMembersStatus(GetMembersStatus status){ m_eGetMembersStatus = status; }
     GetMembersStatus GetGetMembersStatus() { return m_eGetMembersStatus; }
-    
+
     void AddUserToList(const std::string& userid);
-    void UpdateMemberList(std::list<const std::string>& ulist);
-    
+    void UpdateMemberList(std::list<std::string>& ulist);
+
     int GetAllRoomMemberJson(std::string& users);
     int GetRoomMemberJson(const std::string from, std::string& users);
     int GetAllMeetingMemberJson(std::string& users);
@@ -101,27 +101,27 @@ public:
             m_sessionId.assign("");
         }
     }
-    
+
     bool IsMemberInMeeting(const std::string& uid);
     MemberStatus GetRoomMemberStatus(const std::string& uid);
     int AddNotifyMsg(const std::string pubsher, const std::string pubid);
     int DelNotifyMsg(const std::string pubsher, std::string& pubid);
     RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
-    
+
     void AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEETMSG& mmsg);
     WaitingMsgsList& GetWaitingMsgs() { return m_waitingMsgsList; }
-    
+
     const std::string& GetRoomId() { return m_roomId; }
     const std::string& GetOwnerId() { return m_ownerId; }
     const std::string& GetSessionId() { return m_sessionId; }
-    
+
 public:
     void CheckMembers();
-    
+
 private:
     int GenericNotifySeq();
     void GenericMeetingSessionId(std::string& strId);
-    
+
     OSMutex                         m_mutex;
     OSMutex                         m_notifyMutex;
     OSMutex                         m_wmsgMutex;
@@ -133,6 +133,6 @@ private:
     MeetingMembers                  m_meetingMembers;
     RoomNotifyMsgs                  m_roomNotifyMsgs;
     WaitingMsgsList                 m_waitingMsgsList;
-    
+
 };
 #endif /* defined(__MsgServerMeeting__MRTMeetingRoom__) */

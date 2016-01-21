@@ -37,7 +37,7 @@ public:
             pModule = NULL;
         }
     }ModuleInfo;
-    
+
     //store the user id and connection
     typedef struct _ConnectionInfo{
         std::string     _connId;
@@ -58,7 +58,7 @@ public:
                         , _flag(0){
         }
     }ConnectionInfo;
-    
+
     //store  module usage information
     //meet meet123456  session123456
     //msgqueue queue123456  session234567
@@ -72,7 +72,7 @@ public:
             sessionIds.clear();
         }
     }TypeModuleSessionInfo;
-    
+
     //match the module type and session id
     typedef struct _TypeSessionInfo{
         TRANSFERMODULE moduleType;
@@ -82,7 +82,7 @@ public:
             sessionId = "";
         }
     }TypeSessionInfo;
-    
+
     //store which session the user use most
     typedef struct _UserSessionInfo{
         std::string userId;
@@ -92,48 +92,23 @@ public:
             typeSessionInfo.clear();
         }
     }UserSessionInfo;
-    
+
     //<transfer_session_id, module_info>
-    typedef std::unordered_map< std::string, ModuleInfo* >     ModuleInfoMaps;
-    typedef ModuleInfoMaps::iterator ModuleInfoMapsIt;
+    typedef std::unordered_map< std::string, ModuleInfo* >      ModuleInfoMaps;
+    typedef ModuleInfoMaps::iterator                            ModuleInfoMapsIt;
     //<user_id, connection_info>
-    typedef std::unordered_map< std::string, ConnectionInfo* > ConnectionInfoMaps;
-    typedef ConnectionInfoMaps::iterator ConnectionInfoMapsIt;
+    typedef std::unordered_map< std::string, ConnectionInfo* >  ConnectionInfoMaps;
+    typedef ConnectionInfoMaps::iterator                        ConnectionInfoMapsIt;
     //<user_id, UserModuleTypeInfo>
-    typedef std::list<TypeModuleSessionInfo*> TypeModuleSessionInfoLists;
-    
+    typedef std::list<TypeModuleSessionInfo*>                   TypeModuleSessionInfoLists;
+
     //check list and map which is better
-    typedef std::list<UserSessionInfo*> UserSessionInfoLists;
-    
-    typedef std::unordered_map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
-    typedef UserSessionInfoMaps::iterator UserSessionInfoMapsIt;
-    
-    
-    static ModuleInfoMaps*  GetModuleInfo() {
-        static ModuleInfoMaps  s_ModuleInfoMap;
-        return &s_ModuleInfoMap;
-    }
-    
-    static ConnectionInfoMaps* GetConnectionInfo() {
-        static ConnectionInfoMaps s_ConnectionInfoMap;
-        return &s_ConnectionInfoMap;
-    }
-    
-    static TypeModuleSessionInfoLists* GetTypeModuleSessionInfo() {
-        static TypeModuleSessionInfoLists s_TypeModuleSessionInfoList;
-        return &s_TypeModuleSessionInfoList;
-    }
-    
-    static UserSessionInfoLists* GetUserSessionInfoList() {
-        static UserSessionInfoLists s_UserSessionInfoList;
-        return &s_UserSessionInfoList;
-    }
-    
-    static UserSessionInfoMaps* GetUserSessionInfoMap() {
-        static UserSessionInfoMaps s_UserSessionInfoMap;
-        return &s_UserSessionInfoMap;
-    }
-    
+    typedef std::list<UserSessionInfo*>                         UserSessionInfoLists;
+
+    typedef std::unordered_map<std::string, std::list<TypeSessionInfo*> >   UserSessionInfoMaps;
+    typedef UserSessionInfoMaps::iterator                                   UserSessionInfoMapsIt;
+
+
     /**
      *
      */
@@ -141,20 +116,20 @@ public:
         static CRTConnectionManager s_manager;
         return &s_manager;
     }
-    
+
     void    GenericSessionId(std::string& strId);
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
         m_connectorPort = port;
         m_connectorId = Id;
     }
-    
+
     ModuleInfo*       findModuleInfo(const std::string& userid, TRANSFERMODULE module);
     ConnectionInfo*   findConnectionInfoById(const std::string& uid);
-    
+
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
     bool DelModuleInfo(const std::string& sid);
     bool AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid);
-    
+
     //if session lost, del session
     //if programer lost, del module
     bool DelTypeModuleSession(const std::string& sid);
@@ -162,10 +137,10 @@ public:
     // return true means delete one
     // return false means not delete
     bool DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token);
-    
+
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
-    
+
     std::string& ConnectorIp() { return m_connectorIp; }
     std::string& ConnectorPort() { return m_connectorPort; }
     std::string& ConnectorId() { return m_connectorId; }

@@ -9,7 +9,7 @@
 #ifndef __MsgServerConnector__CRTConnListener__
 #define __MsgServerConnector__CRTConnListener__
 
-#include "TcpListenerSocket.h"
+#include "TCPListenerSocket.h"
 
 class CRTConnListener
 : public TCPListenerSocket
@@ -17,7 +17,7 @@ class CRTConnListener
 public:
     CRTConnListener(){};
     virtual ~CRTConnListener(void){};
-    
+
 public:
     //sole job of this object is to implement this function
     virtual Task*   GetSessionTask(int osSocket, struct sockaddr_in* addr);

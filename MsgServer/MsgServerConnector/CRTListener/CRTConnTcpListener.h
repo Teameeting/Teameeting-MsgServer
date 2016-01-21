@@ -9,7 +9,7 @@
 #ifndef __MsgServerConnector__CRTConnTcpListener__
 #define __MsgServerConnector__CRTConnTcpListener__
 
-#include "TcpListenerSocket.h"
+#include "TCPListenerSocket.h"
 
 class CRTConnTcpListener
 : public TCPListenerSocket

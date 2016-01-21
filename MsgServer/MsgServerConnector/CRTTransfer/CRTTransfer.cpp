@@ -29,8 +29,10 @@ int CRTTransfer::DoProcessData(const char *pData, int nLen)
     if (nLen==0) {
         return 0;
     }
-    memset((void*)&m_msg, 0, sizeof(TRANSFERMSG));
-    std::string str(pData, nLen), err;
+    OSMutexLocker locker(&m_mutexMsg);
+    TRANSFERMSG m_msg;
+
+    std::string str(pData, nLen), err("");
     m_msg.GetMsg(str, err);
     if (err.length() > 0) {
         LE("%s err:%s\n", __FUNCTION__, err.c_str());
@@ -110,10 +112,10 @@ int CRTTransfer::ProcessData(const char* pData, int nLen)
     int parsed = 0;
     int ll = 0;
     std::string strData(pData, nLen);
-    
+
     while (parsed < nLen)
     {
-        
+
         const char* pMsg = pData + parsed;
         int offset = 0;
         std::string strMsg(pMsg);
