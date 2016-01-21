@@ -39,7 +39,7 @@ int CRTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg
 void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, const std::string& status, std::string& resp)
 {
     MEETMSG m_msg;
-    
+
     m_msg._mtype = mtype;
     m_msg._messagetype = MESSAGETYPE::response;
     m_msg._signaltype = stype;
@@ -57,7 +57,7 @@ void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long lon
     m_msg._status = status;
     m_msg._nmem = 0;
     m_msg._ntime = OS::Milliseconds();
-    
+
     resp = m_msg.ToJson();
 }
 
@@ -82,15 +82,15 @@ void CRTConnectionTcp::OnRecvData(const char*pData, int nLen)
                 continue;
             }
         }
-        
+
         memcpy(m_pBuffer + m_nBufOffset, pData, nLen);
         m_nBufOffset += nLen;
     }
-    
+
     {//
         int parsed = 0;
         parsed = CRTConnTcp::ProcessData(m_pBuffer, m_nBufOffset);
-        
+
         if(parsed > 0)
         {
             m_nBufOffset -= parsed;
@@ -140,6 +140,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
             CRTConnectionManager::Instance()->GenericSessionId(sid);
+            LI("==============GenericSessioNid sid:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;
             pci->_connAddr = CRTConnectionManager::Instance()->ConnectorIp();
@@ -166,7 +167,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
 
         }
     }
-    
+
 }
 
 void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)
@@ -175,19 +176,19 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
         LE("%s invalid params\n", __FUNCTION__);
         return;
     }
-    
+
     //no matter mType is meet or callcenter or p2p or others
     //the following code should be same
     //find an TrasnferSession By mtype
     //transfer msg by TransferSession
-    
+
     TRANSFERMSG t_trmsg;
     TRANSMSG t_msg;
     t_msg._flag = 0;
     t_msg._touser = "";
     t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
     t_msg._content = pData;
-    
+
     t_trmsg._action = TRANSFERACTION::req;
     t_trmsg._fmodule = TRANSFERMODULE::mconnector;
     t_trmsg._type = TRANSFERTYPE::trans;
@@ -195,7 +196,7 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
     t_trmsg._trans_seq_ack = 0;
     t_trmsg._valid = 1;
     t_trmsg._content = t_msg.ToJson();
-    
+
     const std::string s = t_trmsg.ToJson();
     CRTConnectionManager::ModuleInfo* pmi = CRTConnectionManager::Instance()->findModuleInfo(pUserid, (TRANSFERMODULE)mType);
     if (pmi && pmi->pModule) {
@@ -209,7 +210,7 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
 
 void CRTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
 {
-    
+
 }
 
 void CRTConnectionTcp::OnLogout(const char* pUserid)

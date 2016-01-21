@@ -1,6 +1,6 @@
 #include "CRTConnection.h"
 #include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"	
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "CRTConnectionManager.h"
 #include "RTMessage.h"
@@ -61,7 +61,7 @@ void CRTConnection::OnRecvData(const char*pData, int nLen)
 	{//
 		int parsed = 0;
 		parsed = CRTConnHttp::ProcessData(m_pBuffer, m_nBufOffset);
-	
+
 		if(parsed > 0)
 		{
 			m_nBufOffset -= parsed;
@@ -91,7 +91,7 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass)
         //pPass is token, read token from redis
         //get userid compare userid and pUserid
         //exist ok, not exist not ok
-        
+
 #if 0
         std::string pass;
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
@@ -110,6 +110,7 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass)
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
             CRTConnectionManager::Instance()->GenericSessionId(sid);
+            LI("=================SESSIONID:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;
             pci->_connAddr = CRTConnectionManager::Instance()->ConnectorIp();
@@ -164,7 +165,7 @@ void CRTConnection::OnSndMsg(const char* pUserid, int mType, const char* pData, 
     t_msg._touser = "";
     t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
     t_msg._content = pData;
-    
+
     t_trmsg._action = TRANSFERACTION::req;
     t_trmsg._fmodule = TRANSFERMODULE::mconnector;
     t_trmsg._type = TRANSFERTYPE::trans;
@@ -172,7 +173,7 @@ void CRTConnection::OnSndMsg(const char* pUserid, int mType, const char* pData, 
     t_trmsg._trans_seq_ack = 0;
     t_trmsg._valid = 1;
     t_trmsg._content = t_msg.ToJson();
-    
+
     const std::string s = t_trmsg.ToJson();
     CRTConnectionManager::ModuleInfo* pmi = CRTConnectionManager::Instance()->findModuleInfo(pUserid, (TRANSFERMODULE)mType);
     if (pmi && pmi->pModule) {
@@ -200,12 +201,12 @@ void CRTConnection::OnGetMsg(const char* pUserid, int mType)
         rapidjson::StringBuffer  jsonStr;
         rapidjson::Writer<rapidjson::StringBuffer>   jsonWriter(jsonStr);
         jsonDoc.SetObject();
-        
+
         jsonDoc.AddMember("getmsg", "success", jsonDoc.GetAllocator());
         jsonDoc.Accept(jsonWriter);
-        
+
         SendResponse(HPS_OK, jsonStr.GetString());
-        
+
     }
 }
 
@@ -226,10 +227,10 @@ void CRTConnection::OnLogout(const char* pUserid)
         rapidjson::StringBuffer   jsonStr;
         rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStr);
         jsonDoc.SetObject();
-        
+
         jsonDoc.AddMember("logout", "success", jsonDoc.GetAllocator());
         jsonDoc.Accept(jsonWriter);
-        
+
         SendResponse(HPS_OK, jsonStr.GetString());
     }
 }

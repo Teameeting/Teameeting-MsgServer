@@ -19,19 +19,28 @@
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
     L_Init(5, NULL);
-    
+
     LI("Hello, Meeting!!!");
     MRTMeeting::PrintVersion();
     MRTMeeting::Initialize(1024);
     MRTMeeting* pMeeting = MRTMeeting::Inst();
-    const char* plocal = "192.168.7.27";
+    const char* plocal = "127.0.0.1";
     StrPtrLen pConnAddr((char*)plocal);
     StrPtrLen pQueueAddr((char*)plocal);
     StrPtrLen pHttpAddr((char*)"192.168.7.45");
+    char* ppConnAddr = pConnAddr.GetAsCString();
+    char* ppQueueAddr = pQueueAddr.GetAsCString();
+    char* ppHttpAddr = pHttpAddr.GetAsCString();
     unsigned short pConnPort = 6620;
     unsigned short pQueuePort = 6640;
     unsigned short pHttpPort = 8055;
-    pMeeting->Start(pConnAddr.GetAsCString(), pConnPort, pQueueAddr.GetAsCString(), pQueuePort, pHttpAddr.GetAsCString(), pHttpPort);
+    pMeeting->Start(ppConnAddr, pConnPort, ppQueueAddr, pQueuePort, ppHttpAddr, pHttpPort);
+    delete ppConnAddr;
+    ppConnAddr = NULL;
+    delete ppQueueAddr;
+    ppQueueAddr = NULL;
+    delete ppHttpAddr;
+    ppHttpAddr = NULL;
     while (true) {
         pMeeting->DoTick();
         sleep(1);

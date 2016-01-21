@@ -14,13 +14,33 @@
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
 #include "RTMsgCommon.h"
+#include "RTSignalMsg.h"
+
+_meetmsg::_meetmsg()
+    : _mtype(msgtype_invalid)
+      , _messagetype(messagetype_invalid)
+      , _signaltype(signaltype_invalid)
+      , _cmd(meetcmd_invalid)
+      , _action(dcommaction_invalid)
+      , _tags(sendtags_invalid)
+      , _type(sendtype_invalid)
+      , _nmem(0)
+      , _ntime(0)
+      , _mseq(0)
+      , _from("")
+      , _room("")
+      , _to("")
+      , _cont("")
+      , _pass("")
+      , _code(0)
+      , _status(""){}
 
 std::string MEETMSG::ToJson()
 {
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("mtype", MEETMSG::_mtype, jDoc.GetAllocator());
     jDoc.AddMember("messagetype", MEETMSG::_messagetype, jDoc.GetAllocator());
@@ -39,7 +59,7 @@ std::string MEETMSG::ToJson()
     jDoc.AddMember("pass", MEETMSG::_pass.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("code", MEETMSG::_code, jDoc.GetAllocator());
     jDoc.AddMember("status", MEETMSG::_status.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -99,8 +119,8 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _type = jsonReqDoc["type"].GetInt();
-    
-    
+
+
     if(!(jsonReqDoc.HasMember("nmem") && jsonReqDoc["nmem"].IsInt()))
     {
         err.assign("parse nmem error");
@@ -113,12 +133,12 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _ntime = jsonReqDoc["ntime"].GetInt64();
-    if(!(jsonReqDoc.HasMember("mseq") && jsonReqDoc["mseq"].IsInt64()))
+    if(!(jsonReqDoc.HasMember("mseq") && jsonReqDoc["mseq"].IsUint64()))
     {
         err.assign("parse mseq error");
         return;
     }
-    _mseq = jsonReqDoc["mseq"].GetInt64();
+    _mseq = jsonReqDoc["mseq"].GetUint64();
     if(!(jsonReqDoc.HasMember("from") && jsonReqDoc["from"].IsString()))
     {
         err.assign("parse from error");

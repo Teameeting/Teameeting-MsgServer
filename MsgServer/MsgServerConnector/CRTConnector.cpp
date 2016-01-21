@@ -12,12 +12,11 @@
 #include "SocketUtils.h"
 #include "TimeoutTask.h"
 #include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"	
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "RTHiredis.h"
 #include "CRTConnectionManager.h"
 #include "CRTDispatchConnection.h"
-
 
 static bool		g_inited = false;
 static char*	g_pVersion = (char*)"0.01.20150810";
@@ -59,7 +58,7 @@ void CRTConnector::Initialize(int evTbSize)
 		SInt32 numProcessors = 0;
 		numProcessors = OS::GetNumProcessors();
 		LI("Processer core Num:%lu\n",numProcessors);
-		// Event thread need 1 position; 
+		// Event thread need 1 position;
 		numShortTaskThreads = numProcessors*2 - 1;
 		if(numShortTaskThreads == 0)
 			numShortTaskThreads = 2;
@@ -110,7 +109,7 @@ CRTConnector::CRTConnector(void)
 , m_pModuleListener(NULL)
 , m_pConnTcpListener(NULL)
 {
-    
+
 }
 
 CRTConnector::~CRTConnector(void)
@@ -138,11 +137,11 @@ int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char
     Assert(pConnTcpAddr != NULL && strlen(pConnTcpAddr));
     Assert(pHttpAddr != NULL && strlen(pHttpAddr));
 	//1, Check lan addr.
-    RTHiredisLocal::Instance()->Connect();
-    
+    //RTHiredisLocal::Instance()->Connect();
+
     LI("Start set HttpAddr:%s, port:%u\n", pHttpAddr, usHttpPort);
-    RTHiredisRemote::Instance()->SetHostAddr(pHttpAddr, usHttpPort);
-    RTHiredisRemote::Instance()->Connect();
+    //RTHiredisRemote::Instance()->SetHostAddr(pHttpAddr, usHttpPort);
+    //RTHiredisRemote::Instance()->Connect();
 
     std::string ssid;
 	CRTConnection::gStrAddr = pLanIP;
@@ -150,6 +149,7 @@ int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char
     CRTDispatchConnection::m_connIp = pLanIP;
     CRTDispatchConnection::m_connPort = usConnPort;
     CRTConnectionManager::Instance()->GenericSessionId(ssid);
+    LI("============ssssssssssssssssssssssssssssssid:%s\n", ssid.c_str());
     CRTConnectionManager::Instance()->SetConnectorInfo(pLanIP, usConnPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
 
@@ -175,12 +175,12 @@ int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char
 		LI("Start Connector Conn service:(%d) ok...,socketFD:%d\n", usConnPort, m_pConnListener->GetSocketFD());
 		m_pConnListener->RequestEvent(EV_RE);
 	}
-    
+
     if (usModulePort == 0) {
         LE("Connector server meet need ...!!");
         Assert(false);
     }
-    
+
     if (usModulePort > 0) {
         m_pModuleListener = new CRTModuleListener();
         OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
@@ -193,7 +193,7 @@ int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char
         LI("Start Connector Module service:(%d) ok...,socketFD:%d\n", usModulePort, m_pModuleListener->GetSocketFD());
         m_pModuleListener->RequestEvent(EV_RE);
     }
-    
+
     if (usConnTcpPort == 0) {
         LE("Connector server meet need ...!!!!");
         Assert(false);

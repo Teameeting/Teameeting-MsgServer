@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
+#include <string.h>
 #include "CRTConnTcp.h"
-#include "Assert.h"
 #include "rtklog.h"
 #include "RTMsgCommon.h"
 
@@ -26,9 +26,10 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
     if (nLen==0) {
         return 0;
     }
-    memset((void*)&m_smsg, 0, sizeof(SIGNALMSG));
-    memset((void*)&m_mmsg, 0, sizeof(MEETMSG));
-    std::string sstr(pData, nLen), err;
+    OSMutexLocker locker(&m_mutexMsg);
+    SIGNALMSG m_smsg;
+    MEETMSG m_mmsg;
+    std::string sstr(pData, nLen), err("");
     m_smsg.GetMsg(sstr, err);
     if (err.length() > 0) {
         LE("%s err:%s\n", __FUNCTION__, err.c_str());

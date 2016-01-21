@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include "RTMeetMsg.h"
-
+#include "OSMutex.h"
 
 class CRTConnHttp
 {
@@ -33,7 +33,7 @@ private:
 	bool		m_bAuthed;
 	int			m_nTimer;
 	http_method	m_nHttpMethod;
-    MEETMSG     m_mmsg;
+    OSMutex     m_mutexMsg;
 };
 
 #endif	// __MsgServerConnector_CRTCONNHTTP_H__

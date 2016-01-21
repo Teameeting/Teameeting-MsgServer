@@ -126,7 +126,7 @@ int MRTMeetingRoom::GetAllRoomMemberJson(std::string& users)
     if (m_roomMembers.empty()) {
         return -1;
     }
-    
+
     TOJSONUSER touser;
     LI("all room members:%d\n", m_roomMembers.size());
     RoomMembersIt rit = m_roomMembers.begin();
@@ -144,7 +144,7 @@ int MRTMeetingRoom::GetMeetingMemberJson(const std::string from, std::string& us
         LE("GetMeetingMemberJson member is 0\n");
         return -1;
     }
-    
+
     TOJSONUSER touser;
     LI("meeting members:%d\n", m_roomMembers.size());
     MeetingMembersIt mit = m_meetingMembers.begin();
@@ -163,7 +163,7 @@ int MRTMeetingRoom::GetAllMeetingMemberJson(std::string& users)
         LE("GetAllMeetingMemberJson member is 0\n");
         return -1;
     }
-    
+
     TOJSONUSER touser;
     LI("all meeting members:%d\n", m_roomMembers.size());
     MeetingMembersIt mit = m_meetingMembers.begin();
@@ -204,27 +204,27 @@ MRTMeetingRoom::MemberStatus MRTMeetingRoom::GetRoomMemberStatus(const std::stri
     }
 }
 
-void MRTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
+void MRTMeetingRoom::UpdateMemberList(std::list<std::string>& ulist)
 {
     OSMutexLocker locker(&m_mutex);
     LI("before UpdateMemberList size:%d\n", m_roomMembers.size());
     if (ulist.size()>=m_roomMembers.size()) {
-        std::list<const std::string>::iterator ait = ulist.begin();
+        std::list<std::string>::iterator ait = ulist.begin();
         for (; ait!=ulist.end(); ait++) {
             SyncRoomMember((*ait), MemberStatus::MS_OUTMEETING);
         }
         LI("UpdateMemberList add member count:%d\n", m_roomMembers.size());
     } else if (ulist.size()<m_roomMembers.size()) {
-        std::list<const std::string> tmpList;
+        std::list<std::string> tmpList;
         RoomMembersIt rit = m_roomMembers.begin();
         for (; rit!=m_roomMembers.end(); rit++) {
-            std::list<const std::string>::iterator t = std::find(ulist.begin(), ulist.end(), (*rit));
+            std::list<std::string>::iterator t = std::find(ulist.begin(), ulist.end(), (*rit));
             if (t==ulist.end()) {
                 tmpList.push_back(*rit);
             }
         }
-        
-        std::list<const std::string>::iterator dit = tmpList.begin();
+
+        std::list<std::string>::iterator dit = tmpList.begin();
         for (; dit!=tmpList.end(); dit++) {
             DelMemberFmRoom((*dit));
         }
@@ -235,7 +235,7 @@ void MRTMeetingRoom::UpdateMemberList(std::list<const std::string>& ulist)
 
 void MRTMeetingRoom::CheckMembers()
 {
-    
+
 }
 
 int MRTMeetingRoom::AddNotifyMsg(const std::string pubsher, const std::string pubid)
@@ -285,5 +285,9 @@ void MRTMeetingRoom::GenericMeetingSessionId(std::string& strId)
     MD5_Update(&context, (unsigned char*)MRTRoomManager::s_msgQueueIp.c_str(), (unsigned int)MRTRoomManager::s_msgQueueIp.length());
     MD5_Final(s_digest, &context);
     HashToString(s_digest, &hashStr);
-    strId = hashStr.GetAsCString();
+    char* p = hashStr.GetAsCString();
+    strId = p;
+    delete p;
+    p = NULL;
+    hashStr.Delete();
 }

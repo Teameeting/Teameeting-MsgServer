@@ -9,7 +9,7 @@
 #ifndef __MsgServerDispatcher__DRTModuleListener__
 #define __MsgServerDispatcher__DRTModuleListener__
 
-#include "TcpListenerSocket.h"
+#include "TCPListenerSocket.h"
 
 class DRTModuleListener
 : public TCPListenerSocket
@@ -17,7 +17,7 @@ class DRTModuleListener
 public:
     DRTModuleListener(){};
     virtual ~DRTModuleListener(void){};
-    
+
 public:
     //sole job of this object is to implement this function
     virtual Task*   GetSessionTask(int osSocket, struct sockaddr_in* addr);
