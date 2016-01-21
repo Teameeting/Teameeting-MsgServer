@@ -32,14 +32,14 @@ CRTTransferSession::~CRTTransferSession()
 void CRTTransferSession::Init()
 {
     TCPSocket* socket = this->GetSocket();
-    
+
     socket->Open();
-    
+
     socket->InitNonBlocking(socket->GetSocketFD());
     socket->NoDelay();
     socket->KeepAlive();
     socket->SetSocketBufSize(96L * 1024L);
-    
+
     socket->SetTask(this);
     this->SetTimer(120*1000);
 }
@@ -71,7 +71,7 @@ void CRTTransferSession::Disconn()
 
 void CRTTransferSession::TestConnection()
 {
-    
+
 }
 
 void CRTTransferSession::EstablishConnection()
@@ -84,15 +84,15 @@ void CRTTransferSession::EstablishConnection()
     t_msg._trans_seq = GenericTransSeq();
     t_msg._trans_seq_ack = 0;
     t_msg._valid = 1;
-    
+
     c_msg._tag = CONNTAG::co_msg;
     c_msg._msg = "hello";
     c_msg._id = "";
     c_msg._msgid = "";
     c_msg._moduleid = "";
-    
+
     t_msg._content = c_msg.ToJson();
-    
+
     std::string s = t_msg.ToJson();
     SendTransferData(s.c_str(), (int)s.length());
 }
@@ -111,7 +111,7 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
     t_msg._touser = uid;
     t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
     t_msg._content = token;
-    
+
     t_trmsg._action = TRANSFERACTION::req;
     t_trmsg._fmodule = TRANSFERMODULE::mconnector;
     t_trmsg._type = TRANSFERTYPE::trans;
@@ -119,7 +119,7 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
     t_trmsg._trans_seq_ack = 0;
     t_trmsg._valid = 1;
     t_trmsg._content = t_msg.ToJson();
-    
+
     const std::string s = t_trmsg.ToJson();
     SendTransferData(s.c_str(), (int)s.length());
     LI("Send user :%s ConnectionLostNotify to meeting module\n", uid.c_str());
@@ -146,15 +146,15 @@ void CRTTransferSession::OnRecvData(const char*pData, int nLen)
                 continue;
             }
         }
-        
+
         memcpy(m_pBuffer + m_nBufOffset, pData, nLen);
         m_nBufOffset += nLen;
     }
-    
+
     {//
         int parsed = 0;
         parsed = CRTTransfer::ProcessData(m_pBuffer, m_nBufOffset);
-        
+
         if(parsed > 0)
         {
             m_nBufOffset -= parsed;
@@ -197,6 +197,10 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
     CONNMSG c_msg;
     std::string err;
     c_msg.GetMsg(str, err);
+    if (err.length()>0) {
+        LE("CRTTransferSession::OnTypeConn GetMsg err:%s\n", err.c_str());
+        return;
+    }
     if ((c_msg._tag == CONNTAG::co_msg) && c_msg._msg.compare("hello") == 0) {
         // when other connect to ME:
         // generate TransferSessionId
@@ -204,8 +208,9 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         TRANSFERMSG t_msg;
         std::string trid;
         CRTConnectionManager::Instance()->GenericSessionId(trid);
+        LI("======gENERICsESSIONID:%s\n", trid.c_str());
         m_transferSessId = trid;
-        
+
         t_msg._action = TRANSFERACTION::req;
         //this is for transfer
         t_msg._fmodule = TRANSFERMODULE::mconnector;
@@ -213,12 +218,12 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         t_msg._trans_seq = GenericTransSeq();
         t_msg._trans_seq_ack = 0;
         t_msg._valid = 1;
-        
+
         c_msg._tag = CONNTAG::co_id;
         c_msg._id = trid;
         //send self connector to other
         c_msg._moduleid = CRTConnectionManager::Instance()->ConnectorId();
-        
+
         t_msg._content = c_msg.ToJson();
         std::string s = t_msg.ToJson();
         SendTransferData(s.c_str(), (int)s.length());
@@ -238,12 +243,12 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
                 //store which moudle connect to this connector
                 //c_msg._moduleid: store other's module id
                 CRTConnectionManager::Instance()->AddTypeModuleSession(fmodule, c_msg._moduleid, m_transferSessId);
-                LI("store the other's module id:%s, transfersessid:%s\n", c_msg._moduleid.c_str(), c_msg._id.c_str());
+                LI("store the other's module fmodule:%d, id:%s, transfersessid:%s\n", (int)fmodule,  c_msg._moduleid.c_str(), c_msg._id.c_str());
             } else {
                 LE("new ModuleInfo error!!!\n");
             }
         }
-        
+
     } else if (c_msg._tag == CONNTAG::co_keepalive) {
         this->RTTcp::UpdateTimer();
     } else {

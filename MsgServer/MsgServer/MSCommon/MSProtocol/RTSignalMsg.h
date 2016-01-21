@@ -22,11 +22,13 @@ typedef enum _signaltype{
     signaltype_invalid
 }SIGNALTYPE;
 
-typedef struct _signalmsg{
+typedef struct _signalmsg SIGNALMSG;
+struct _signalmsg{
     SIGNALTYPE _stype;
     std::string _scont;
+    _signalmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}SIGNALMSG;
+};
 
 #endif /* defined(__dyncRTConnector__RTSignalMsg__) */

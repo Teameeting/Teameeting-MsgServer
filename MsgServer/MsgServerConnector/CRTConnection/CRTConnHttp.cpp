@@ -3,7 +3,7 @@
 #include "md5digest.h"
 #include "rtklog.h"
 #include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"	
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
 #include <stdlib.h>
@@ -67,7 +67,7 @@ char* CRTConnHttp::GenerateResponse(int code, const std::string&params, const ch
 
 	//
 	http_generator_add_header(httpMsg, HPR_ACCESS_CONTROL_ALLOW_ORIGIN, "*", 1);
-	
+
 	if(params.length() > 0)
 	{
 		http_generator_add_header(httpMsg, HPR_PRAGMA, params.c_str(), (int)params.length());
@@ -95,7 +95,7 @@ void CRTConnHttp::SendResponse(int code, const std::string&params, const char*pD
 
 	//
 	http_generator_add_header(httpMsg, HPR_ACCESS_CONTROL_ALLOW_ORIGIN, "*", 1);
-	
+
 	if(params.length() > 0)
 	{
 		http_generator_add_header(httpMsg, HPR_PRAGMA, params.c_str(), (int)params.length());
@@ -108,7 +108,7 @@ void CRTConnHttp::SendResponse(int code, const std::string&params, const char*pD
 
 	int nLen = 0;
 	char* pMsg = http_generator_tostring(httpMsg, &nLen);
-	
+
 	OnResponse(pMsg, nLen);
 
 	free(pMsg);
@@ -123,7 +123,7 @@ void CRTConnHttp::SendResponse(int code, const std::string&strContent)
 
 	//
 	http_generator_add_header(httpMsg, HPR_ACCESS_CONTROL_ALLOW_ORIGIN, "*", 1);
-	
+
 	if(strContent.length() > 0)
 	{
 		http_generator_set_content(httpMsg, strContent.c_str(), (int)strContent.length(), "text/json");
@@ -131,7 +131,7 @@ void CRTConnHttp::SendResponse(int code, const std::string&strContent)
 
 	int nLen = 0;
 	char* pMsg = http_generator_tostring(httpMsg, &nLen);
-	
+
 	OnResponse(pMsg, nLen);
 
 	free(pMsg);
@@ -142,7 +142,7 @@ void CRTConnHttp::SendResponse(int code, const std::string&strContent)
 
 void CRTConnHttp::OnHttpMessage(http_message* httpMsg)
 {
-    
+
 	const char* pPath = httpMsg->request_path;
 	//const char* pQuery = httpMsg->query_string;
 	const char* pContent = httpMsg->body;
@@ -152,8 +152,9 @@ void CRTConnHttp::OnHttpMessage(http_message* httpMsg)
 		//SendResponse(HPS_NOT_ACCEPTABLE, "");
         return;
     }
-    memset((void*)&m_mmsg, 0, sizeof(MEETMSG));
-    std::string str(pContent, nContentLen), err;
+    OSMutexLocker locker(&m_mutexMsg);
+    MEETMSG m_mmsg;
+    std::string str(pContent, nContentLen), err("");
     m_mmsg.GetMsg(str, err);
     if (err.length() > 0) {
         LE("OnHttpMessage pContent error:%s\n", err.c_str());

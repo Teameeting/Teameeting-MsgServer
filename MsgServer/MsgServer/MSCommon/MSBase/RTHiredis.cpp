@@ -18,7 +18,7 @@ void RTHiredis::Connect(int timeout)
         } else {
             m_sTimeout = t;
             m_msTimeout = timeout % 1000;
-        
+
         }
     }
     struct timeval st_timeout = { m_sTimeout, m_msTimeout * 1000 }; // 1.5 seconds
@@ -149,7 +149,7 @@ bool RTHiredis::CmdHGet(const std::string hid, const std::string key, std::strin
         }
         return false;
     }
-    std::list<const std::string> ulist;
+    std::list<std::string> ulist;
     HandleHReply(m_redisReply, &ulist);
     if (ulist.size()>0) {
         value.assign(ulist.front());
@@ -216,7 +216,7 @@ bool RTHiredis::CmdHLen(const std::string hid, int* len)
     return true;
 }
 
-bool RTHiredis::CmdHKeys(const std::string hid, std::list<const std::string>* ress)
+bool RTHiredis::CmdHKeys(const std::string hid, std::list<std::string>* ress)
 {
     if (!m_redisContext || hid.empty()) {
         return false;
@@ -234,7 +234,7 @@ bool RTHiredis::CmdHKeys(const std::string hid, std::list<const std::string>* re
     return true;
 }
 
-bool RTHiredis::CmdHVals(const std::string hid, std::list<const std::string>* ress)
+bool RTHiredis::CmdHVals(const std::string hid, std::list<std::string>* ress)
 {
     if (!m_redisContext || hid.empty()) {
         return false;
@@ -309,7 +309,7 @@ bool RTHiredis::HandleReply(redisReply* reply, std::string* res)
     return true;
 }
 
-bool RTHiredis::HandleHReply(redisReply* reply, std::list<const std::string>* ress)
+bool RTHiredis::HandleHReply(redisReply* reply, std::list<std::string>* ress)
 {
     switch (reply->type) {
         case REDIS_REPLY_STRING:

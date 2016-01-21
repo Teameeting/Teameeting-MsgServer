@@ -15,12 +15,23 @@
 #include "rapidjson/prettywriter.h"
 #include "RTMsgCommon.h"
 
+_meetingInfo::_meetingInfo()
+    : meetingid("")
+      , userid("")
+      , meetname("")
+      , meetdesc("")
+      , meetusable(0)
+      , pushable(0)
+      , meettype1(0)
+      , memnumber(0)
+      , crttime(0){}
+
 std::string MEETINGINFO::ToJson()
 {
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("meetingid", MEETINGINFO::meetingid.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("userid", MEETINGINFO::userid.c_str(), jDoc.GetAllocator());
@@ -31,7 +42,7 @@ std::string MEETINGINFO::ToJson()
     jDoc.AddMember("meettype1", MEETINGINFO::meettype1, jDoc.GetAllocator());
     jDoc.AddMember("memnumber", MEETINGINFO::memnumber, jDoc.GetAllocator());
     jDoc.AddMember("crttime", MEETINGINFO::crttime, jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -98,7 +109,7 @@ void MEETINGINFO::GetMsg(const std::string& str, std::string& err)
         return;
     }
     memnumber = jsonReqDoc["memnumber"].GetInt();
-    if(!(jsonReqDoc.HasMember("crttime") && jsonReqDoc["crttime"].IsInt()))
+    if(!(jsonReqDoc.HasMember("crttime") && jsonReqDoc["crttime"].IsInt64()))
     {
         err.assign("parse crttime error");
         return;
@@ -106,23 +117,24 @@ void MEETINGINFO::GetMsg(const std::string& str, std::string& err)
     crttime = jsonReqDoc["crttime"].GetInt64();
 }
 
-
+_meetingMemberList::_meetingMemberList()
+    : _uslist(){}
 
 std::string MEETINGMEMBERLIST::ToJson()
 {
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     rapidjson::Value mems(rapidjson::kArrayType);
-    std::list<const std::string>::iterator it = MEETINGMEMBERLIST::_uslist.begin();
+    std::list<std::string>::iterator it = MEETINGMEMBERLIST::_uslist.begin();
     for (; it!=MEETINGMEMBERLIST::_uslist.end(); it++) {
         mems.PushBack((*it).c_str(), jDoc.GetAllocator());
     }
-    
+
     jDoc.SetObject();
     jDoc.AddMember("meetingMemberList", mems, jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;

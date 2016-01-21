@@ -171,7 +171,8 @@ typedef enum _getcmd{
     getcmd_invalid=1
 }GETCMD;
 
-typedef struct _meetmsg{
+typedef struct _meetmsg MEETMSG;
+struct _meetmsg{
     MSGTYPE     _mtype;
     MESSAGETYPE _messagetype;
     int         _signaltype;
@@ -180,8 +181,8 @@ typedef struct _meetmsg{
     int         _tags;
     int         _type;
     int         _nmem;
-    long long   _ntime;
-    long long   _mseq;
+    int64_t     _ntime;
+    uint64_t    _mseq;
     std::string _from;
     std::string _room;
     std::string _to;
@@ -189,8 +190,9 @@ typedef struct _meetmsg{
     std::string _pass;
     int         _code;
     std::string _status;
+    _meetmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}MEETMSG;
+};
 
 #endif  // dyncRTCMsgClient_RTMeetMsg_h

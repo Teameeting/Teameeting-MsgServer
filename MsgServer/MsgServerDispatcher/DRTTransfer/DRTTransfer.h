@@ -13,14 +13,15 @@
 #include "RTMessage.h"
 #include "rtklog.h"
 #include <string>
+#include "OSMutex.h"
 
 class DRTTransfer{
 public:
     DRTTransfer();
     virtual ~DRTTransfer();
-    
+
     int ProcessData(const char* pData, int nLen);
-    
+
 public:
     virtual void OnTransfer(const std::string& str) = 0;
     virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str) = 0;
@@ -28,11 +29,11 @@ public:
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str) = 0;
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str) = 0;
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    
+
 private:
     int DoProcessData(const char* pData, int nLen);
 private:
-    TRANSFERMSG m_msg;
+    OSMutex     m_mutexMsg;
 };
 
 #endif /* defined(__MsgServerDispatcher__DRTTransfer__) */

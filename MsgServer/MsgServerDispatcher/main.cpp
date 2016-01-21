@@ -19,17 +19,23 @@
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
     L_Init(0, NULL);
-    
+
     LI("Hello, MsgQueue!!!");
     DRTMsgQueue::PrintVersion();
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
-    const char* plocal = "192.168.7.27";
+    const char* plocal = "127.0.0.1";
     StrPtrLen pConnIp((char*)plocal);
     StrPtrLen pModuleIp((char*)plocal);
+    char* ppConnIp = pConnIp.GetAsCString();
+    char* ppModuleIp = pModuleIp.GetAsCString();
     unsigned short pConnPort = 6620;
     unsigned short pModulePort = 6640;
-    pMsgQueue->Start(pConnIp.GetAsCString(), pConnPort, pModuleIp.GetAsCString(), pModulePort);
+    pMsgQueue->Start(ppConnIp, pConnPort, ppModuleIp, pModulePort);
+    delete ppConnIp;
+    ppConnIp = NULL;
+    delete ppModuleIp;
+    ppModuleIp = NULL;
     while (true) {
         pMsgQueue->DoTick();
         sleep(1);

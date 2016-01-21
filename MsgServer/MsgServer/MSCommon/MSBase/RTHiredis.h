@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <list>
+#include <string>
 #include "hiredis.h"
 #include "rtklog.h"
 
@@ -22,7 +23,7 @@ public:
     // 1s = 1000ms = 1000 000us = 1000 000 000ns;
     void Connect(int mstimeout = -1);
     void DisConn();
-    
+
     void SetHostAddr(const char* host, int port) {
         if(!host || port <= 2048) {
             LE("RTHiredis SetHostAddr failed\n");
@@ -31,7 +32,7 @@ public:
         m_host.assign(host);
         m_port = port;
     }
-    
+
     void CmdPing();
     bool CmdSet(const std::string key, const std::string value);
     bool CmdGet(const std::string key, std::string& value);
@@ -41,8 +42,8 @@ public:
     bool CmdHDel(const std::string hid, const std::string key, std::string& res);
     bool CmdHExists(const std::string hid, const std::string key, std::string& res);
     bool CmdHLen(const std::string hid, int* len);
-    bool CmdHKeys(const std::string hid, std::list<const std::string>* ress);
-    bool CmdHVals(const std::string hid, std::list<const std::string>* ress);
+    bool CmdHKeys(const std::string hid, std::list<std::string>* ress);
+    bool CmdHVals(const std::string hid, std::list<std::string>* ress);
     virtual void MakeAbstract() = 0;
 protected:
     RTHiredis():
@@ -54,8 +55,8 @@ protected:
     virtual ~RTHiredis(){ DisConn(); }
 private:
     bool HandleReply(redisReply* reply, std::string* res);
-    bool HandleHReply(redisReply* reply, std::list<const std::string>* res);
-    
+    bool HandleHReply(redisReply* reply, std::list<std::string>* res);
+
     redisContext* m_redisContext;
     std::string m_host;
     int m_port;
