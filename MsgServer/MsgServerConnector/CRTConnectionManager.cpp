@@ -11,7 +11,6 @@
 #include "md5.h"
 #include "md5digest.h"
 #include "OSMutex.h"
-#include "RTHiredis.h"
 #include <algorithm>
 
 static char          s_curMicroSecStr[32] = {0};

@@ -10,10 +10,9 @@
 #include "SocketUtils.h"
 #include "TimeoutTask.h"
 #include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"	
+#include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "DRTConnectionManager.h"
-#include "RTHiredis.h"
 
 
 static bool         g_inited = false;
@@ -56,7 +55,7 @@ void DRTMsgQueue::Initialize(int evTbSize)
 		SInt32 numProcessors = 0;
 		numProcessors = OS::GetNumProcessors();
 		LI("Processer core Num:%lu\n",numProcessors);
-		// Event thread need 1 position; 
+		// Event thread need 1 position;
 		numShortTaskThreads = numProcessors*2 - 1;
 		if(numShortTaskThreads == 0)
 			numShortTaskThreads = 2;
@@ -115,25 +114,24 @@ DRTMsgQueue::~DRTMsgQueue(void)
         delete m_pTransferSession;
         m_pTransferSession = NULL;
     }
-    
+
     if (m_pModuleListener) {
         delete m_pModuleListener;
         m_pModuleListener = NULL;
     }
 }
 
-int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pModuleIp, unsigned short usModulePort)
+int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort)
 {
 	Assert(g_inited);
 	Assert(pConnIp != NULL && strlen(pConnIp)>0);
-	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
-    
-    RTHiredisLocal::Instance()->Connect();
+	Assert(pDispIp != NULL && strlen(pDispIp)>0);
+
     std::string mid;
     DRTConnectionManager::Instance()->GenericSessionId(mid);
     DRTConnectionManager::Instance()->SetMsgQueueId(mid);
     LI("[][]MsgQueueId:%s\n", mid.c_str());
-    
+
 	if(usConnPort == 0)
 	{
 		LE("MsgQueue server need usConnPort...!");
@@ -145,54 +143,41 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
         char addr[24] = {0};
         sprintf(addr, "%s %u", pConnIp, usConnPort);
         DRTConnectionManager::Instance()->GetAddrsList()->push_front(addr);
-        
+
         if (!(DRTConnectionManager::Instance()->ConnectConnector())) {
             LE("Start to ConnectConnector failed\n");
             return -1;
         }
 	}
-    
-    if(usModulePort == 0)
+
+    if(usDispPort == 0)
 	{
-		LE("MsgQueue server need usModulePort...!!");
+		LE("MsgQueue server need usDispPort...!!");
 		Assert(false);
 	}
 
-	if(usModulePort > 0)
+	if(usDispPort > 0)
 	{
         m_pModuleListener = new DRTModuleListener();
-        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
+        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usDispPort);
         if (err!=OS_NoErr)
         {
-            LE("CreateMeetingListener error port=%d \n", usModulePort);
+            LE("CreateMeetingListener error port=%d \n", usDispPort);
             delete m_pModuleListener;
             m_pModuleListener=NULL;
             return -1;
         }
-        LI("Start MsgQueue service meet:(%d) ok...,socketFD:%d\n", usModulePort, m_pModuleListener->GetSocketFD());
+        LI("Start MsgQueue service meet:(%d) ok...,socketFD:%d\n", usDispPort, m_pModuleListener->GetSocketFD());
         m_pModuleListener->RequestEvent(EV_RE);
 	}
-    
+
    return 0;
 }
 
 void DRTMsgQueue::DoTick()
 {
+#if 1
     DRTConnectionManager::Instance()->RefreshConnection();
-#if 0
-    std::list<const std::string> ks;
-    std::list<const std::string> vs;
-    RTHiredis::Instance()->CmdHLen(HI_USER_CONNECTOR_ID, NULL);
-    RTHiredis::Instance()->CmdHKeys(HI_USER_CONNECTOR_ID, &ks);
-    RTHiredis::Instance()->CmdHVals(HI_USER_CONNECTOR_ID, &vs);
-    std::list<const std::string>::iterator ki = ks.begin();
-    std::list<const std::string>::iterator vi = vs.begin();
-    for (; ki!=ks.end(); ki++) {
-        LI("ki:%s\n", (*ki).c_str());
-    }
-    for (; vi!=vs.end(); vi++) {
-        LI("vi:%s\n", (*vi).c_str());
-    }
 #endif
 }
 

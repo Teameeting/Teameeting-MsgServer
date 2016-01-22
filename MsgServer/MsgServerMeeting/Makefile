@@ -15,7 +15,6 @@
 
 
 
-
 am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'
 am__make_running_with_option = \
   case $${target_option-} in \
@@ -82,8 +81,7 @@ subdir = .
 DIST_COMMON = INSTALL NEWS README AUTHORS ChangeLog \
 	$(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/configure $(am__configure_deps) \
-	$(srcdir)/config.h.in depcomp $(noinst_HEADERS) COPYING \
-	install-sh missing
+	$(srcdir)/config.h.in depcomp COPYING install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -146,7 +144,6 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-HEADERS = $(noinst_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) \
 	$(LISP)config.h.in
 # Read a list of newline-separated strings from the standard input,
@@ -281,6 +278,7 @@ AM_CFLAGS = -g -O0 -std=gnu++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES_
 MsgServerMeeting_LDFLAGS = -static-libgcc
 AM_CPPFLAGS = $(AM_CFLAGS) -I$(top_srcdir)/ -I$(top_srcdir)/MRTHttp/ \
 	-I$(top_srcdir)/MRTTransfer/ \
+	-I$(top_srcdir)/../MsgServer/MSCommon/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
@@ -290,10 +288,6 @@ AM_CPPFLAGS = $(AM_CFLAGS) -I$(top_srcdir)/ -I$(top_srcdir)/MRTHttp/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
-noinst_HEADERS = $(top_srcdir)/../MsgServer/MSCommon/PlatformHeader.h \
-			   $(top_srcdir)/../MsgServer/MSCommon/revision.h \
-			   $(top_srcdir)/../MsgServer/MSCommon/sigslot.h
-
 MsgServerMeeting_SOURCES = $(top_srcdir)/MRTHttp/MRTConnHttp.cpp \
 						   $(top_srcdir)/MRTHttp/MRTHttp.cpp \
 						   $(top_srcdir)/MRTHttp/MRTHttpSender.cpp \
@@ -813,7 +807,7 @@ distcleancheck: distclean
 	       exit 1; } >&2
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(HEADERS) config.h
+all-am: Makefile $(PROGRAMS) config.h
 installdirs:
 	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \

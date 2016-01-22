@@ -5,7 +5,6 @@
 #include "CRTConnectionManager.h"
 #include "RTMessage.h"
 #include "atomic.h"
-#include "RTHiredis.h"
 
 static unsigned int	g_trans_id = 0;
 
@@ -88,10 +87,6 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass)
     bool ok = false;
     {
         //check & auth
-        //pPass is token, read token from redis
-        //get userid compare userid and pUserid
-        //exist ok, not exist not ok
-
 #if 0
         std::string pass;
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
@@ -214,7 +209,6 @@ void CRTConnection::OnLogout(const char* pUserid)
 {
     {
         //logout
-        //write to hiredis
         std::string uid(pUserid);
         std::string token;
         CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid, token);

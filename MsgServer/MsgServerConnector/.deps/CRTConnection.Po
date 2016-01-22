@@ -172,11 +172,7 @@ CRTConnection.o: CRTConnection/CRTConnection.cpp \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  CRTDispatchConnection.h ../MsgServer/MSCommon/MSCommon/RTType.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h \
- ../MsgServer/MSCommon/MSBase/RTHiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h
 
 /usr/include/stdc-predef.h:
 
@@ -643,13 +639,3 @@ CRTDispatchConnection.h:
 ../MsgServer/MSCommon/MSCommon/RTType.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h:
-
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:

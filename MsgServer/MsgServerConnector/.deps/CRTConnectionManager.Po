@@ -158,10 +158,6 @@ CRTConnectionManager.o: CRTConnectionManager.cpp \
  ../MsgServer/MSCommon/MSCommon/RTType.h /usr/include/assert.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/md5.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/md5digest.h \
- ../MsgServer/MSCommon/MSBase/RTHiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h \
  /usr/include/c++/4.8.2/algorithm /usr/include/c++/4.8.2/bits/stl_algo.h \
  /usr/include/c++/4.8.2/bits/algorithmfwd.h \
  /usr/include/c++/4.8.2/bits/stl_heap.h \
@@ -617,16 +613,6 @@ CRTDispatchConnection.h:
 ../MsgServer/MSCommon/MSThirdParty/RTComm/md5.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/md5digest.h:
-
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:
 
 /usr/include/c++/4.8.2/algorithm:
 

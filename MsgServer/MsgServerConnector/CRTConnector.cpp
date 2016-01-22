@@ -14,7 +14,6 @@
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
-#include "RTHiredis.h"
 #include "CRTConnectionManager.h"
 #include "CRTDispatchConnection.h"
 
@@ -129,50 +128,45 @@ CRTConnector::~CRTConnector(void)
 	}
 }
 
-int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char*pModuleAddr, unsigned short usModulePort, const char*pConnTcpAddr, unsigned short usConnTcpPort, const char* pHttpAddr, unsigned short usHttpPort)
+int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
+                  , const char*pModuleIp, unsigned short usModulePort
+                  , const char*pCliConIp, unsigned short usCliConPort
+                  , const char*pHttpIp, unsigned short usHttpPort)
 {
 	Assert(g_inited);
-	Assert(pLanIP != NULL && strlen(pLanIP)>0);
-	Assert(pModuleAddr != NULL && strlen(pModuleAddr)>0);
-    Assert(pConnTcpAddr != NULL && strlen(pConnTcpAddr));
-    Assert(pHttpAddr != NULL && strlen(pHttpAddr));
-	//1, Check lan addr.
-    //RTHiredisLocal::Instance()->Connect();
-
-    LI("Start set HttpAddr:%s, port:%u\n", pHttpAddr, usHttpPort);
-    //RTHiredisRemote::Instance()->SetHostAddr(pHttpAddr, usHttpPort);
-    //RTHiredisRemote::Instance()->Connect();
+	Assert(pWebConIp != NULL && strlen(pWebConIp)>0);
+	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
+    Assert(pCliConIp != NULL && strlen(pCliConIp)>0);
+    Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
 
     std::string ssid;
-	CRTConnection::gStrAddr = pLanIP;
-    CRTConnection::gUsPort = usConnPort;
-    CRTDispatchConnection::m_connIp = pLanIP;
-    CRTDispatchConnection::m_connPort = usConnPort;
+	CRTConnection::gStrAddr = pWebConIp;
+    CRTConnection::gUsPort = usWebConPort;
+    CRTDispatchConnection::m_connIp = pWebConIp;
+    CRTDispatchConnection::m_connPort = usWebConPort;
     CRTConnectionManager::Instance()->GenericSessionId(ssid);
-    LI("============ssssssssssssssssssssssssssssssid:%s\n", ssid.c_str());
-    CRTConnectionManager::Instance()->SetConnectorInfo(pLanIP, usConnPort, ssid.c_str());
+    CRTConnectionManager::Instance()->SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
 
-
-	if(usConnPort == 0)
+	if(usWebConPort == 0)
 	{
 		LE("Connector server conn need ...!");
 		Assert(false);
 	}
 
-	if(usConnPort > 0)
+	if(usWebConPort > 0)
 	{
 		m_pConnListener = new CRTConnListener();
-		OS_Error err = m_pConnListener->Initialize(INADDR_ANY, usConnPort);
+		OS_Error err = m_pConnListener->Initialize(INADDR_ANY, usWebConPort);
 		if (err!=OS_NoErr)
 		{
-			LE("CreateConnListener error port=%d \n", usConnPort);
+			LE("CreateConnListener error port=%d \n", usWebConPort);
 			delete m_pConnListener;
 			m_pConnListener=NULL;
 
 			return -1;
 		}
-		LI("Start Connector Conn service:(%d) ok...,socketFD:%d\n", usConnPort, m_pConnListener->GetSocketFD());
+		LI("Start Connector Conn service:(%d) ok...,socketFD:%d\n", usWebConPort, m_pConnListener->GetSocketFD());
 		m_pConnListener->RequestEvent(EV_RE);
 	}
 
@@ -194,20 +188,20 @@ int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char
         m_pModuleListener->RequestEvent(EV_RE);
     }
 
-    if (usConnTcpPort == 0) {
+    if (usCliConPort == 0) {
         LE("Connector server meet need ...!!!!");
         Assert(false);
     }
-    if (usConnTcpPort > 0) {
+    if (usCliConPort > 0) {
         m_pConnTcpListener = new CRTConnTcpListener();
-        OS_Error err = m_pConnTcpListener->Initialize(INADDR_ANY, usConnTcpPort);
+        OS_Error err = m_pConnTcpListener->Initialize(INADDR_ANY, usCliConPort);
         if (err!=OS_NoErr) {
-            LE("CreateConnTcpListener error port:%d\n", usConnTcpPort);
+            LE("CreateConnTcpListener error port:%d\n", usCliConPort);
             delete m_pConnTcpListener;
             m_pConnTcpListener = NULL;
             return -1;
         }
-        LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usConnTcpPort, m_pConnTcpListener->GetSocketFD());
+        LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
     }
     if (usHttpPort == 0) {
@@ -224,19 +218,7 @@ int	CRTConnector::Start(const char*pLanIP, unsigned short usConnPort, const char
 void CRTConnector::DoTick()
 {
 #if 0
-    std::list<const std::string> ks;
-    std::list<const std::string> vs;
-    RTHiredis::Instance()->CmdHLen(HI_USER_CONNECTOR_ID, NULL);
-    RTHiredis::Instance()->CmdHKeys(HI_USER_CONNECTOR_ID, &ks);
-    RTHiredis::Instance()->CmdHVals(HI_USER_CONNECTOR_ID, &vs);
-    std::list<const std::string>::iterator ki = ks.begin();
-    std::list<const std::string>::iterator vi = vs.begin();
-    for (; ki!=ks.end(); ki++) {
-        LI("ki:%s\n", (*ki).c_str());
-    }
-    for (; vi!=vs.end(); vi++) {
-        LI("vi:%s\n", (*vi).c_str());
-    }
+
 #endif
 }
 

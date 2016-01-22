@@ -102,9 +102,9 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libMSCommon_a_AR = $(AR) $(ARFLAGS)
 libMSCommon_a_LIBADD =
-am_libMSCommon_a_OBJECTS = sigslot.$(OBJEXT) RTHiredis.$(OBJEXT) \
-	RTTcp.$(OBJEXT) RTHttpMsg.$(OBJEXT) RTMeetMsg.$(OBJEXT) \
-	RTMessage.$(OBJEXT) RTSignalMsg.$(OBJEXT)
+am_libMSCommon_a_OBJECTS = sigslot.$(OBJEXT) config_parser.$(OBJEXT) \
+	RTHiredis.$(OBJEXT) RTTcp.$(OBJEXT) RTHttpMsg.$(OBJEXT) \
+	RTMeetMsg.$(OBJEXT) RTMessage.$(OBJEXT) RTSignalMsg.$(OBJEXT)
 libMSCommon_a_OBJECTS = $(am_libMSCommon_a_OBJECTS)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -293,9 +293,11 @@ AM_CPPFLAGS = $(AM_CFLAGS) -I$(top_srcdir)/MSCommon/MSBase/ \
 	-I$(top_srcdir)/MSCommon/MSThirdParty/rtklog/
 noinst_HEADERS = $(top_srcdir)/MSCommon/PlatformHeader.h \
 			   $(top_srcdir)/MSCommon/revision.h \
-			   $(top_srcdir)/MSCommon/sigslot.h
+			   $(top_srcdir)/MSCommon/sigslot.h \
+			   $(top_srcdir)/MSCommon/config_parser.h
 
 libMSCommon_a_SOURCES = $(top_srcdir)/MSCommon/sigslot.cc \
+					  $(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp \
@@ -378,6 +380,7 @@ include ./$(DEPDIR)/RTMeetMsg.Po
 include ./$(DEPDIR)/RTMessage.Po
 include ./$(DEPDIR)/RTSignalMsg.Po
 include ./$(DEPDIR)/RTTcp.Po
+include ./$(DEPDIR)/config_parser.Po
 include ./$(DEPDIR)/sigslot.Po
 
 .cc.o:
@@ -407,6 +410,20 @@ sigslot.obj: $(top_srcdir)/MSCommon/sigslot.cc
 #	$(AM_V_CXX)source='$(top_srcdir)/MSCommon/sigslot.cc' object='sigslot.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o sigslot.obj `if test -f '$(top_srcdir)/MSCommon/sigslot.cc'; then $(CYGPATH_W) '$(top_srcdir)/MSCommon/sigslot.cc'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/MSCommon/sigslot.cc'; fi`
+
+config_parser.o: $(top_srcdir)/MSCommon/config_parser.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT config_parser.o -MD -MP -MF $(DEPDIR)/config_parser.Tpo -c -o config_parser.o `test -f '$(top_srcdir)/MSCommon/config_parser.cpp' || echo '$(srcdir)/'`$(top_srcdir)/MSCommon/config_parser.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/config_parser.Tpo $(DEPDIR)/config_parser.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/MSCommon/config_parser.cpp' object='config_parser.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o config_parser.o `test -f '$(top_srcdir)/MSCommon/config_parser.cpp' || echo '$(srcdir)/'`$(top_srcdir)/MSCommon/config_parser.cpp
+
+config_parser.obj: $(top_srcdir)/MSCommon/config_parser.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT config_parser.obj -MD -MP -MF $(DEPDIR)/config_parser.Tpo -c -o config_parser.obj `if test -f '$(top_srcdir)/MSCommon/config_parser.cpp'; then $(CYGPATH_W) '$(top_srcdir)/MSCommon/config_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/MSCommon/config_parser.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/config_parser.Tpo $(DEPDIR)/config_parser.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/MSCommon/config_parser.cpp' object='config_parser.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o config_parser.obj `if test -f '$(top_srcdir)/MSCommon/config_parser.cpp'; then $(CYGPATH_W) '$(top_srcdir)/MSCommon/config_parser.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/MSCommon/config_parser.cpp'; fi`
 
 RTHiredis.o: $(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RTHiredis.o -MD -MP -MF $(DEPDIR)/RTHiredis.Tpo -c -o RTHiredis.o `test -f '$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp' || echo '$(srcdir)/'`$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp

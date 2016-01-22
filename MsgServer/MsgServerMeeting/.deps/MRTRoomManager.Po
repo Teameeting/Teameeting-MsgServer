@@ -205,10 +205,6 @@ MRTRoomManager.o: MRTRoomManager.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/md5digest.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
  ../MsgServer/MSCommon/MSCommon/StatusCode.h \
- ../MsgServer/MSCommon/MSBase/RTHiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h \
  ../MsgServer/MSCommon/MSProtocol/RTHttpMsg.h
 
 /usr/include/stdc-predef.h:
@@ -760,15 +756,5 @@ MRTHttp/MRTHttpCmd.h:
 ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h:
 
 ../MsgServer/MSCommon/MSCommon/StatusCode.h:
-
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTHttpMsg.h:

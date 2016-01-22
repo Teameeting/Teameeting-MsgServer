@@ -217,11 +217,7 @@ MRTMeeting.o: MRTMeeting.cpp /usr/include/stdc-predef.h MRTMeeting.h \
  MRTHttp/MRTHttpSvrConn.h MRTHttp/MRTHttp.h MRTHttp/MRTConnHttp.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
  /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_map.h \
- /usr/include/c++/4.8.2/bits/stl_multimap.h MRTHttp/MRTHttpCmd.h \
- ../MsgServer/MSCommon/MSBase/RTHiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h
+ /usr/include/c++/4.8.2/bits/stl_multimap.h MRTHttp/MRTHttpCmd.h
 
 /usr/include/stdc-predef.h:
 
@@ -808,13 +804,3 @@ MRTHttp/MRTConnHttp.h:
 /usr/include/c++/4.8.2/bits/stl_multimap.h:
 
 MRTHttp/MRTHttpCmd.h:
-
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:

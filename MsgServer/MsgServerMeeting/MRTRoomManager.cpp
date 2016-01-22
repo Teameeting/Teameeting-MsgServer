@@ -17,7 +17,6 @@
 #include "rtklog.h"
 #include "MRTMeetingRoom.h"
 #include "StatusCode.h"
-#include "RTHiredis.h"
 #include "RTHttpMsg.h"
 
 static unsigned int	 g_trans_id = 0;

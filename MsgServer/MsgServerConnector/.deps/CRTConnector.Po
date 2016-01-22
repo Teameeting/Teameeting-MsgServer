@@ -176,15 +176,11 @@ CRTConnector.o: CRTConnector.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/prettywriter.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/writer.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/stringbuffer.h \
- ../MsgServer/MSCommon/MSBase/RTHiredis.h /usr/include/c++/4.8.2/list \
+ CRTConnectionManager.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
- /usr/include/c++/4.8.2/bits/list.tcc \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
- CRTConnectionManager.h CRTTransfer/CRTTransferSession.h \
+ /usr/include/c++/4.8.2/bits/list.tcc CRTTransfer/CRTTransferSession.h \
  CRTTransfer/CRTTransfer.h ../MsgServer/MSCommon/MSProtocol/RTMessage.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  CRTDispatchConnection.h ../MsgServer/MSCommon/MSCommon/RTType.h \
  CRTDispatchConnection.h
 
@@ -654,7 +650,7 @@ CRTConnection/CRTConnHttp.h:
 
 ../MsgServer/MSCommon/MSThirdParty/rapidjson/stringbuffer.h:
 
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
+CRTConnectionManager.h:
 
 /usr/include/c++/4.8.2/list:
 
@@ -662,23 +658,13 @@ CRTConnection/CRTConnHttp.h:
 
 /usr/include/c++/4.8.2/bits/list.tcc:
 
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
-
-CRTConnectionManager.h:
-
 CRTTransfer/CRTTransferSession.h:
 
 CRTTransfer/CRTTransfer.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMessage.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
 
 CRTDispatchConnection.h:
 

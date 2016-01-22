@@ -8,7 +8,6 @@
 
 #include "CRTConnectionTcp.h"
 #include "CRTConnectionManager.h"
-#include "RTHiredis.h"
 #include "atomic.h"
 #include "StatusCode.h"
 
@@ -120,7 +119,6 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
     {
         //check & auth
         /*
-        // may has error
         std::string pass;
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
         if (pass.compare(pPass)!=0) {
