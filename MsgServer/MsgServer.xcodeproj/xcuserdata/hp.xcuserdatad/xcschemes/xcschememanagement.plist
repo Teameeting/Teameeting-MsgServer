@@ -6,28 +6,38 @@
 	<dict>
 		<key>MSCommon.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>4</integer>
 		</dict>
 		<key>MsgServer.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
 		<key>MsgServerConnector.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 		<key>MsgServerDispatcher.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>2</integer>
 		</dict>
 		<key>MsgServerMeeting.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -53,6 +63,46 @@
 			<true/>
 		</dict>
 		<key>E66B59CD1C4A516B0053161E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08C781C53217E00D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08C801C5321A800D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08C881C5321C000D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08C901C5321CD00D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08C981C5323B700D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08CA01C5323C300D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08CA81C5323D600D1BB6D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6B08CB01C5323DF00D1BB6D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -10,10 +10,6 @@
 		E66B59B01C4A506D0053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59AF1C4A506D0053161E /* main.cpp */; };
 		E66B59BB1C4A50C90053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59BA1C4A50C90053161E /* main.cpp */; };
 		E66B59C61C4A50F10053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59C51C4A50F10053161E /* main.cpp */; };
-		E66B5B7A1C4A55B10053161E /* libhiredis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59D51C4A55B00053161E /* libhiredis.a */; };
-		E66B5B7B1C4A55B10053161E /* libhttp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59D61C4A55B00053161E /* libhttp.a */; };
-		E66B5B7C1C4A55B10053161E /* librtcomm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59D71C4A55B00053161E /* librtcomm.a */; };
-		E66B5B7D1C4A55B10053161E /* librtklog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59D81C4A55B00053161E /* librtklog.a */; };
 		E66B5B7F1C4A55B10053161E /* RTHiredis.h in Headers */ = {isa = PBXBuildFile; fileRef = E66B59DB1C4A55B00053161E /* RTHiredis.h */; };
 		E66B5B801C4A55B10053161E /* RTObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E66B59DC1C4A55B00053161E /* RTObserver.h */; };
 		E66B5B811C4A55B10053161E /* RTObserverConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = E66B59DD1C4A55B00053161E /* RTObserverConnection.h */; };
@@ -34,9 +30,6 @@
 		E66B5CBC1C4A5B1B0053161E /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59E61C4A55B00053161E /* RTMessage.cpp */; };
 		E66B5CBD1C4A5B1B0053161E /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59EA1C4A55B00053161E /* RTSignalMsg.cpp */; };
 		E66B5CBE1C4A5B1B0053161E /* sigslot.cc in Sources */ = {isa = PBXBuildFile; fileRef = E66B5B771C4A55B10053161E /* sigslot.cc */; };
-		E66B5CEB1C4A5F7F0053161E /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B5CEA1C4A5F7F0053161E /* libMSCommon.a */; };
-		E66B5CEC1C4A5F7F0053161E /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B5CEA1C4A5F7F0053161E /* libMSCommon.a */; };
-		E66B5CED1C4A5F7F0053161E /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B5CEA1C4A5F7F0053161E /* libMSCommon.a */; };
 		E66B5D361C4A74410053161E /* CRTConnectionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B5D301C4A74410053161E /* CRTConnectionManager.cpp */; };
 		E66B5D371C4A74410053161E /* CRTConnector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B5D321C4A74410053161E /* CRTConnector.cpp */; };
 		E66B5D381C4A74410053161E /* CRTDispatchConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B5D341C4A74410053161E /* CRTDispatchConnection.cpp */; };
@@ -65,7 +58,48 @@
 		E66B5DA21C4A7E180053161E /* MRTTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B5D961C4A7E180053161E /* MRTTransfer.cpp */; };
 		E66B5DA31C4A7E180053161E /* MRTTransferSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B5D981C4A7E180053161E /* MRTTransferSession.cpp */; };
 		E66B5DA71C4A80640053161E /* RTHttpMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B5DA41C4A80410053161E /* RTHttpMsg.cpp */; };
+		E6B08C741C5320D200D1BB6D /* config_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08C721C5320D200D1BB6D /* config_parser.cpp */; };
+		E6B08CE71C5327DA00D1BB6D /* libhiredis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B08CDD1C53271B00D1BB6D /* libhiredis.a */; };
+		E6B08CE81C5327DA00D1BB6D /* libhttp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B08CE01C53271B00D1BB6D /* libhttp.a */; };
+		E6B08CE91C5327DA00D1BB6D /* librtcomm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B08CE31C53271B00D1BB6D /* librtcomm.a */; };
+		E6B08CEA1C5327DA00D1BB6D /* librtklog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B08CE61C53271B00D1BB6D /* librtklog.a */; };
+		E6B08CEB1C53288700D1BB6D /* config_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08C721C5320D200D1BB6D /* config_parser.cpp */; };
+		E6B08CEC1C53289000D1BB6D /* config_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = E6B08C731C5320D200D1BB6D /* config_parser.h */; };
+		E6B08CED1C5328A600D1BB6D /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59CE1C4A516B0053161E /* libMSCommon.a */; };
+		E6B08CEE1C5328AC00D1BB6D /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59CE1C4A516B0053161E /* libMSCommon.a */; };
+		E6B08CEF1C5328B200D1BB6D /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59CE1C4A516B0053161E /* libMSCommon.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E6B08CDC1C53271B00D1BB6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6B08CCE1C53271A00D1BB6D /* hiredis.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6806A401C05645900C4AF8A;
+			remoteInfo = hiredis;
+		};
+		E6B08CDF1C53271B00D1BB6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6B08CD11C53271A00D1BB6D /* http.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6FE4D341BC7E1FC00ED97ED;
+			remoteInfo = http;
+		};
+		E6B08CE21C53271B00D1BB6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6B08CD41C53271A00D1BB6D /* rtcomm.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6FE463A1BC7BEED00ED97ED;
+			remoteInfo = rtcomm;
+		};
+		E6B08CE51C53271B00D1BB6D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6B08CD81C53271A00D1BB6D /* rtklog.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E6FE49C71BC7C8C500ED97ED;
+			remoteInfo = rtklog;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		E66B59AB1C4A506D0053161E /* CopyFiles */ = {
@@ -129,7 +163,6 @@
 		E66B5B761C4A55B10053161E /* revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = revision.h; sourceTree = "<group>"; };
 		E66B5B771C4A55B10053161E /* sigslot.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sigslot.cc; sourceTree = "<group>"; };
 		E66B5B781C4A55B10053161E /* sigslot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sigslot.h; sourceTree = "<group>"; };
-		E66B5CEA1C4A5F7F0053161E /* libMSCommon.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMSCommon.a; sourceTree = "<group>"; };
 		E66B5D301C4A74410053161E /* CRTConnectionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRTConnectionManager.cpp; sourceTree = "<group>"; };
 		E66B5D311C4A74410053161E /* CRTConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRTConnectionManager.h; sourceTree = "<group>"; };
 		E66B5D321C4A74410053161E /* CRTConnector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRTConnector.cpp; sourceTree = "<group>"; };
@@ -187,6 +220,15 @@
 		E66B5D991C4A7E180053161E /* MRTTransferSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRTTransferSession.h; sourceTree = "<group>"; };
 		E66B5DA41C4A80410053161E /* RTHttpMsg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTHttpMsg.cpp; sourceTree = "<group>"; };
 		E66B5DA51C4A80410053161E /* RTHttpMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTHttpMsg.h; sourceTree = "<group>"; };
+		E6B08C721C5320D200D1BB6D /* config_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = config_parser.cpp; sourceTree = "<group>"; };
+		E6B08C731C5320D200D1BB6D /* config_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config_parser.h; sourceTree = "<group>"; };
+		E6B08CCE1C53271A00D1BB6D /* hiredis.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hiredis.xcodeproj; path = MsgServer/MSCommon/MSThirdParty/hiredis.xcodeproj; sourceTree = "<group>"; };
+		E6B08CD11C53271A00D1BB6D /* http.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = http.xcodeproj; path = MsgServer/MSCommon/MSThirdParty/http.xcodeproj; sourceTree = "<group>"; };
+		E6B08CD41C53271A00D1BB6D /* rtcomm.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = rtcomm.xcodeproj; path = MsgServer/MSCommon/MSThirdParty/rtcomm.xcodeproj; sourceTree = "<group>"; };
+		E6B08CD81C53271A00D1BB6D /* rtklog.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = rtklog.xcodeproj; path = MsgServer/MSCommon/MSThirdParty/rtklog.xcodeproj; sourceTree = "<group>"; };
+		E6B08CF01C532A0500D1BB6D /* connector.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = connector.conf; path = connector/connector.conf; sourceTree = "<group>"; };
+		E6B08CF11C532A1C00D1BB6D /* dispatcher.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dispatcher.conf; path = dispatcher/dispatcher.conf; sourceTree = "<group>"; };
+		E6B08CF21C532A2E00D1BB6D /* meeting.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = meeting.conf; path = meeting/meeting.conf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,7 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66B5CEB1C4A5F7F0053161E /* libMSCommon.a in Frameworks */,
+				E6B08CED1C5328A600D1BB6D /* libMSCommon.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66B5CEC1C4A5F7F0053161E /* libMSCommon.a in Frameworks */,
+				E6B08CEE1C5328AC00D1BB6D /* libMSCommon.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66B5CED1C4A5F7F0053161E /* libMSCommon.a in Frameworks */,
+				E6B08CEF1C5328B200D1BB6D /* libMSCommon.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,10 +260,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66B5B7D1C4A55B10053161E /* librtklog.a in Frameworks */,
-				E66B5B7C1C4A55B10053161E /* librtcomm.a in Frameworks */,
-				E66B5B7A1C4A55B10053161E /* libhiredis.a in Frameworks */,
-				E66B5B7B1C4A55B10053161E /* libhttp.a in Frameworks */,
+				E6B08CE71C5327DA00D1BB6D /* libhiredis.a in Frameworks */,
+				E6B08CE81C5327DA00D1BB6D /* libhttp.a in Frameworks */,
+				E6B08CE91C5327DA00D1BB6D /* librtcomm.a in Frameworks */,
+				E6B08CEA1C5327DA00D1BB6D /* librtklog.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,7 +273,10 @@
 		E66B59961C4A50360053161E = {
 			isa = PBXGroup;
 			children = (
-				E66B5CE91C4A5F7F0053161E /* MSCommonLib */,
+				E6B08CCE1C53271A00D1BB6D /* hiredis.xcodeproj */,
+				E6B08CD11C53271A00D1BB6D /* http.xcodeproj */,
+				E6B08CD41C53271A00D1BB6D /* rtcomm.xcodeproj */,
+				E6B08CD81C53271A00D1BB6D /* rtklog.xcodeproj */,
 				E66B59D21C4A55B00053161E /* MsgServer */,
 				E66B59AE1C4A506D0053161E /* MsgServerConnector */,
 				E66B59B91C4A50C90053161E /* MsgServerDispatcher */,
@@ -254,6 +299,7 @@
 		E66B59AE1C4A506D0053161E /* MsgServerConnector */ = {
 			isa = PBXGroup;
 			children = (
+				E6B08CF01C532A0500D1BB6D /* connector.conf */,
 				E66B5D541C4A749B0053161E /* CRTConnection */,
 				E66B5D5D1C4A749B0053161E /* CRTListener */,
 				E66B5D641C4A749B0053161E /* CRTTransfer */,
@@ -271,6 +317,7 @@
 		E66B59B91C4A50C90053161E /* MsgServerDispatcher */ = {
 			isa = PBXGroup;
 			children = (
+				E6B08CF11C532A1C00D1BB6D /* dispatcher.conf */,
 				E66B5D721C4A79FF0053161E /* DRTConnectionManager.cpp */,
 				E66B5D731C4A79FF0053161E /* DRTConnectionManager.h */,
 				E66B5D741C4A79FF0053161E /* DRTListener */,
@@ -285,6 +332,7 @@
 		E66B59C41C4A50F10053161E /* MsgServerMeeting */ = {
 			isa = PBXGroup;
 			children = (
+				E6B08CF21C532A2E00D1BB6D /* meeting.conf */,
 				E66B5D831C4A7E180053161E /* MRTConnectionManager.cpp */,
 				E66B5D841C4A7E180053161E /* MRTConnectionManager.h */,
 				E66B5D851C4A7E180053161E /* MRTHttp */,
@@ -311,6 +359,8 @@
 		E66B59D31C4A55B00053161E /* MSCommon */ = {
 			isa = PBXGroup;
 			children = (
+				E6B08C721C5320D200D1BB6D /* config_parser.cpp */,
+				E6B08C731C5320D200D1BB6D /* config_parser.h */,
 				E66B59D41C4A55B00053161E /* lib_a */,
 				E66B59D91C4A55B00053161E /* MSBase */,
 				E66B59E01C4A55B00053161E /* MSCommon */,
@@ -371,15 +421,6 @@
 				E66B59EB1C4A55B00053161E /* RTSignalMsg.h */,
 			);
 			path = MSProtocol;
-			sourceTree = "<group>";
-		};
-		E66B5CE91C4A5F7F0053161E /* MSCommonLib */ = {
-			isa = PBXGroup;
-			children = (
-				E66B5CEA1C4A5F7F0053161E /* libMSCommon.a */,
-			);
-			name = MSCommonLib;
-			path = MsgServer/MSCommonLib;
 			sourceTree = "<group>";
 		};
 		E66B5D541C4A749B0053161E /* CRTConnection */ = {
@@ -468,6 +509,38 @@
 			path = MRTTransfer;
 			sourceTree = "<group>";
 		};
+		E6B08CCF1C53271A00D1BB6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6B08CDD1C53271B00D1BB6D /* libhiredis.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B08CD21C53271A00D1BB6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6B08CE01C53271B00D1BB6D /* libhttp.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B08CD51C53271A00D1BB6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6B08CE31C53271B00D1BB6D /* librtcomm.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6B08CD91C53271A00D1BB6D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6B08CE61C53271B00D1BB6D /* librtklog.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -475,6 +548,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B08CEC1C53289000D1BB6D /* config_parser.h in Headers */,
 				E66B5B811C4A55B10053161E /* RTObserverConnection.h in Headers */,
 				E66B5B841C4A55B10053161E /* RTType.h in Headers */,
 				E66B5CA81C4A55B10053161E /* sigslot.h in Headers */,
@@ -596,6 +670,24 @@
 			mainGroup = E66B59961C4A50360053161E;
 			productRefGroup = E66B59A01C4A50360053161E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E6B08CCF1C53271A00D1BB6D /* Products */;
+					ProjectRef = E6B08CCE1C53271A00D1BB6D /* hiredis.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B08CD21C53271A00D1BB6D /* Products */;
+					ProjectRef = E6B08CD11C53271A00D1BB6D /* http.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B08CD51C53271A00D1BB6D /* Products */;
+					ProjectRef = E6B08CD41C53271A00D1BB6D /* rtcomm.xcodeproj */;
+				},
+				{
+					ProductGroup = E6B08CD91C53271A00D1BB6D /* Products */;
+					ProjectRef = E6B08CD81C53271A00D1BB6D /* rtklog.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E66B59AC1C4A506D0053161E /* MsgServerConnector */,
@@ -605,6 +697,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E6B08CDD1C53271B00D1BB6D /* libhiredis.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhiredis.a;
+			remoteRef = E6B08CDC1C53271B00D1BB6D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E6B08CE01C53271B00D1BB6D /* libhttp.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libhttp.a;
+			remoteRef = E6B08CDF1C53271B00D1BB6D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E6B08CE31C53271B00D1BB6D /* librtcomm.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = librtcomm.a;
+			remoteRef = E6B08CE21C53271B00D1BB6D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E6B08CE61C53271B00D1BB6D /* librtklog.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = librtklog.a;
+			remoteRef = E6B08CE51C53271B00D1BB6D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E66B59A91C4A506D0053161E /* Sources */ = {
@@ -621,6 +744,7 @@
 				E66B5D6C1C4A749B0053161E /* CRTConnTcp.cpp in Sources */,
 				E66B5D6D1C4A749B0053161E /* CRTConnListener.cpp in Sources */,
 				E66B5D6E1C4A749B0053161E /* CRTConnTcpListener.cpp in Sources */,
+				E6B08C741C5320D200D1BB6D /* config_parser.cpp in Sources */,
 				E66B5D361C4A74410053161E /* CRTConnectionManager.cpp in Sources */,
 				E66B5D701C4A749B0053161E /* CRTTransfer.cpp in Sources */,
 				E66B5D381C4A74410053161E /* CRTDispatchConnection.cpp in Sources */,
@@ -662,6 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B08CEB1C53288700D1BB6D /* config_parser.cpp in Sources */,
 				E66B5DA71C4A80640053161E /* RTHttpMsg.cpp in Sources */,
 				E66B5CB91C4A5B1B0053161E /* RTHiredis.cpp in Sources */,
 				E66B5CBA1C4A5B1B0053161E /* RTTcp.cpp in Sources */,
@@ -930,10 +1055,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/lib_a",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -954,10 +1076,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/lib_a",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
