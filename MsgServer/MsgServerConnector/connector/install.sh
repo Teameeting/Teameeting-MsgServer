@@ -24,7 +24,7 @@ cp -f connector.sh $SYS_BIN_PATH/connector.sh
 chmod 755 $SYS_BIN_PATH/connector.sh
 
 cp -f connector.conf $TARGET_CONF_PATH/
-cp -f MsgServerConnector $TARGET_BIN_PATH/
+cp -f bin/MsgServerConnector $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
 printf "UnInstall program....\r\n"

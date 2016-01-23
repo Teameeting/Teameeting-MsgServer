@@ -24,7 +24,7 @@ cp -f dispatcher.sh $SYS_BIN_PATH/dispatcher.sh
 chmod 755 $SYS_BIN_PATH/dispatcher.sh
 
 cp -f dispatcher.conf $TARGET_CONF_PATH/
-cp -f MsgServerDispatcher $TARGET_BIN_PATH/
+cp -f bin/MsgServerDispatcher $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
 printf "UnInstall program....\r\n"
