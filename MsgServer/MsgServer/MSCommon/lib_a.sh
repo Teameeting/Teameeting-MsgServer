@@ -1,58 +1,92 @@
 #!/bin/sh
 
-echo "[]rm all *.a"
-rm lib_linux_a/*
+##############################################################
+###################    parameter    ##########################
+##############################################################
+LIB_CUR_PATH=`pwd`
+LIB_LINUX_PATH=$LIB_CUR_PATH/lib_linux_a
+LIB_BASE_PATH=$LIB_CUR_PATH/MSThirdParty
+echo  "lib cur   path:" $LIB_CUR_PATH
+echo  "lib linux path:" $LIB_LINUX_PATH
+echo  "lib base  path:" $LIB_BASE_PATH
 
-echo "[]generic libhiredis.a..."
-cd MSThirdParty/hiredis/
-make clean && make
-if [ $? -eq 0 ]
-then
-    cp libhiredis.a ../../lib_linux_a/
-    echo "[]generic libhiredis.a ok: " $?
-else
-    echo "[]generic libhiredis.a error: " $?
-    exit
-fi
-cd ../../
+LIB_SRC_PATH=
+LIB_NAME=
 
-echo "[]generic libhttp.a..."
-cd MSThirdParty/libhttp/
-make clean && make
-if [ $? -eq 0 ]
-then
-    cp libhttp.a ../../lib_linux_a/
-    echo "[]generic libhttp.a ok: " $?
-else
-    echo "[]generic libhttp.a error: " $?
-    exit
-fi
-cd ../../
+##############################################################
+###################    function    ###########################
+##############################################################
 
-echo "[]generic libRtComm.a..."
-cd MSThirdParty/RTComm/
-make clean && make
-if [ $? -eq 0 ]
-then
-    cp libRtComm.a ../../lib_linux_a/
-    echo "[]generic libRtComm.a ok: " $?
-else
-    echo "[]generic libRtComm.a error: " $?
-    exit
-fi
-cd ../../
+###################clean up all libs #########################
+function cleanup()
+{
+    if [ "$PARAM_CLEAN"x = "yes"x ]
+    then
+        echo "[]rm all *.a"
+        if [ -d $LIB_LINUX_PATH ]
+        then
+            rm $LIB_LINUX_PATH/*
+        else
+            echo "dir $LIB_LINUX_PATH not exist..."
+        fi
+    fi
+}
 
-echo "[]generic librtklog.a..."
-cd MSThirdParty/rtklog/
-make clean && make
-if [ $? -eq 0 ]
-then
-    cp librtklog.a ../../lib_linux_a/
-    echo "[]generic librtklog.a ok: " $?
-else
-    echo "[]generic librtklog.a error: " $?
-    exit
-fi
-cd ../../
+###################build all libs #########################
+###################LIB_SRC_PATH ###########################
+###################LIB_NAME ###############################
+function build_lib()
+{
+    cd $1
+    echo "[]generic $2..."
+    if [ "$PARAM_CLEAN"x = "yes"x ]
+    then
+        make clean
+    fi
+    make
+    if [ $? -eq 0 ]
+    then
+        cp $1/$2 $LIB_LINUX_PATH/
+        echo "build $2 ok: " $?
+        cd $LIB_BASE_PATH
+    else
+        echo "build $2 err: " $?
+        exit
+    fi
+}
+
+##############################################################
+####################    program    ###########################
+##############################################################
+
+####################    cleanning all libs  ##########################
+cleanup
+
+####################    building libhiredis  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/hiredis
+LIB_NAME=libhiredis.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+sleep 1
+
+####################    building libhttp  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/libhttp
+LIB_NAME=libhttp.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+sleep 1
+
+####################    building libRtComm  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/RTComm
+LIB_NAME=libRtComm.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+sleep 1
+
+####################    building librtklog  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/rtklog
+LIB_NAME=librtklog.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+sleep 1
 
 echo "[]generic lib.a ok"
+sleep 1
+echo "[]generic lib.a ok"
+sleep 1

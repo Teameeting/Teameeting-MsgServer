@@ -31,9 +31,9 @@ BUILD_NAME=
 PREFIX_PATH=
 THIRDPARTY_LIB_PATH=
 
-PARAM_FORCE="no"
-PARAM_CLEAN="no"
-PARAM_LOGNAME=$CUR_DATE
+export PARAM_FORCE="no"
+export PARAM_CLEAN="no"
+export PARAM_LOGNAME=$CUR_DATE
 
 while getopts "c:f:l:h" arg
 do
@@ -68,6 +68,7 @@ function log2f()
         echo -e "just support two params hahaha~~~"
 	fi
 }
+export function log2f
 
 ###################log info ###############################
 function loginfo()
@@ -82,6 +83,7 @@ function loginfo()
         echo -e "\033[1;34m just support two params hahaha~~~ \033[0m"
 	fi
 }
+export function loginfo
 
 ###################log error ###############################
 function logerr()
@@ -96,6 +98,7 @@ function logerr()
         echo -e "\033[1;34m just support two params hahaha~~~ \033[0m"
 	fi
 }
+export function logerr
 
 ###################shell_backup ###############################
 function shell_backup()
