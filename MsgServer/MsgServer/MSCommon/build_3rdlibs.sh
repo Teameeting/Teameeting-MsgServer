@@ -13,6 +13,7 @@ echo  "lib base  path:" $LIB_BASE_PATH
 LIB_SRC_PATH=
 LIB_NAME=
 
+
 ##############################################################
 ###################    function    ###########################
 ##############################################################
@@ -22,12 +23,12 @@ function cleanup()
 {
     if [ "$PARAM_CLEAN"x = "yes"x ]
     then
-        echo "[]rm all *.a"
+        loginfo "[]rm all *.a"
         if [ -d $LIB_LINUX_PATH ]
         then
             rm $LIB_LINUX_PATH/*
         else
-            echo "dir $LIB_LINUX_PATH not exist..."
+            loginfo "dir $LIB_LINUX_PATH not exist..."
         fi
     fi
 }
@@ -38,7 +39,7 @@ function cleanup()
 function build_lib()
 {
     cd $1
-    echo "[]generic $2..."
+    loginfo "[]generic $2..."
     if [ "$PARAM_CLEAN"x = "yes"x ]
     then
         make clean
@@ -47,10 +48,10 @@ function build_lib()
     if [ $? -eq 0 ]
     then
         cp $1/$2 $LIB_LINUX_PATH/
-        echo "build $2 ok: " $?
+        loginfo "build $2 ok: " $?
         cd $LIB_BASE_PATH
     else
-        echo "build $2 err: " $?
+        loginfo "build $2 err: " $?
         exit
     fi
 }
@@ -59,6 +60,7 @@ function build_lib()
 ####################    program    ###########################
 ##############################################################
 
+loginfo
 ####################    cleanning all libs  ##########################
 cleanup
 
@@ -90,3 +92,4 @@ echo "[]generic lib.a ok"
 sleep 1
 echo "[]generic lib.a ok"
 sleep 1
+loginfo

@@ -5,13 +5,13 @@
 ##############################################################
 function shell_usage()
 {
-    echo "################## USAGE: $0 [-cfh] [-l log name]"
+    echo "################## USAGE: $0 [-cflh]"
     sleep 1
-    echo "################## USAGE: -c clean"
+    echo "################## USAGE: -c [yes/no] clean"
     sleep 1
-    echo "################## USAGE: -f force config"
+    echo "################## USAGE: -f [yes/no] force config"
     sleep 1
-    echo "################## USAGE: -l log file name"
+    echo "################## USAGE: -l [file name] log file name"
     sleep 1
     echo "################## USAGE: -h help usage"
     sleep 1
@@ -33,22 +33,33 @@ THIRDPARTY_LIB_PATH=
 
 export PARAM_FORCE="no"
 export PARAM_CLEAN="no"
-export PARAM_LOGNAME=$CUR_DATE
+export PARAM_LOG=""
+export LOG_FILE=""
+PARAM_LOGNAME=$CUR_DATE
 
 while getopts "c:f:l:h" arg
 do
     case $arg in
-        c)  PARAM_CLEAN="yes";;
-        f)  PARAM_FORCE="yes";;
-        l)  PARAM_LOGNAME=$OPTARG;;
+        c)  PARAM_CLEAN=$OPTARG;;
+        f)  PARAM_FORCE=$OPTARG;;
+        l)  PARAM_LOGNAME=$OPTARG
+            PARAM_LOG=$OPTARG;;
         h)  shell_usage $0;;
         ?)  shell_usage $0;;
     esac
 done
 
-LOG_FILE=$CUR_PATH/log/log-$PARAM_LOGNAME
-touch $LOG_FILE
+echo "param_clean:" $PARAM_CLEAN
+echo "param_force:" $PARAM_FORCE
+echo "param_logname:" $PARAM_LOGNAME
+echo "param_log:" $PARAM_LOG
 
+if [ "$PARAM_LOG"x != ""x ]
+then
+    LOG_FILE=$CUR_PATH/log/log-$PARAM_LOGNAME
+    touch $LOG_FILE
+    echo "need log"
+fi
 echo "LOG_FILE: " $LOG_FILE
 
 ##############################################################
@@ -58,6 +69,12 @@ echo "LOG_FILE: " $LOG_FILE
 ###################log to file ###############################
 function log2f()
 {
+    if [ "$PARAM_LOG"x = ""x ]
+    then
+        echo -e "PLEASE GIVE THE LOG NAME"
+        echo -e "IF YOU INVOKE function log2f"
+        shell_usage
+    fi
 	if [ $# -eq 0 ]; then
         echo -e "[LOG]Date: $CUR_DATE" >> $LOG_FILE
 	elif [ $# -eq 1 ]; then
@@ -68,37 +85,62 @@ function log2f()
         echo -e "just support two params hahaha~~~"
 	fi
 }
-export function log2f
+export -f log2f
 
 ###################log info ###############################
 function loginfo()
 {
 	if [ $# -eq 0 ]; then
         echo -e "\033[1;34m [INFO]Date: $CUR_DATE \033[0m"
+        if [ "$PARAM_LOG"x != ""x ]
+        then
+            echo -e "[LOG]Date: $CUR_DATE" >> $LOG_FILE
+        fi
 	elif [ $# -eq 1 ]; then
         echo -e "\033[1;34m [INFO]$CUR_DATE: $1 \033[0m"
+        if [ "$PARAM_LOG"x != ""x ]
+        then
+            echo -e "[LOG]$CURTIME: $1" >> $LOG_FILE
+        fi
 	elif [ $# -eq 2 ]; then
         echo -e "\033[1;34m [INFO]$CUR_DATE: $1 $2 \033[0m"
+        if [ "$PARAM_LOG"x != ""x ]
+        then
+            echo -e "[LOG]$CURTIME: $1 $2" >> $LOG_FILE
+        fi
 	else
         echo -e "\033[1;34m just support two params hahaha~~~ \033[0m"
 	fi
 }
-export function loginfo
+export -f loginfo
 
 ###################log error ###############################
 function logerr()
 {
 	if [ $# -eq 0 ]; then
         echo -e "\033[0;31m [ERR]Date: $CUR_DATE \033[0m"
+        if [ "$PARAM_LOG"x != ""x ]
+        then
+            echo -e "[LOG]Date: $CUR_DATE" >> $LOG_FILE
+        fi
 	elif [ $# -eq 1 ]; then
         echo -e "\033[0;31m [ERR]$CUR_DATE: $1 \033[0m"
+        if [ "$PARAM_LOG"x != ""x ]
+        then
+            echo -e "[LOG]$CURTIME: $1" >> $LOG_FILE
+        fi
 	elif [ $# -eq 2 ]; then
         echo -e "\033[0;31m [ERR]$CUR_DATE: $1 $2 \033[0m"
+        if [ "$PARAM_LOG"x != ""x ]
+        then
+            echo -e "[LOG]$CURTIME: $1 $2" >> $LOG_FILE
+        fi
 	else
         echo -e "\033[1;34m just support two params hahaha~~~ \033[0m"
 	fi
 }
-export function logerr
+export -f logerr
+
 
 ###################shell_backup ###############################
 function shell_backup()
@@ -109,6 +151,7 @@ function shell_backup()
 ###################start log ###############################
 function start_log()
 {
+    loginfo
 	loginfo "##########################  LOG START BUILDING ################################"
 }
 
@@ -116,6 +159,7 @@ function start_log()
 function end_log()
 {
 	loginfo "##########################  LOG END BUILDING ################################"
+    loginfo
 }
 
 
@@ -129,7 +173,7 @@ function build_3rdpartylibs()
         if [ -d $1 ]
         then
             cd $1
-            ./lib_a.sh
+            ./build_3rdlibs.sh
             if [ $? -eq 0 ]
             then
                 loginfo "build $2 ok: " $?
@@ -173,6 +217,7 @@ function build_mscommonlib()
             if [ $? -eq 0 ]
             then
                 cp $3/*.a $2/
+                cp *.a $2/
                 loginfo "build $4 ok: " $?
                 cd $BASE_PATH
             else
