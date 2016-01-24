@@ -141,6 +141,75 @@ function logerr()
 }
 export -f logerr
 
+###################tar src.tar src###############################
+function tar_tar()
+{
+     if [ $# -eq 1 ] && [ -d $1 ]
+     then
+         if [ -f $1.tar ]
+         then
+             loginfo "$1.tar exist, mv $1.tar $1.tar.bak..."
+             mv $1.tar $1.tar.bak
+         fi
+         tar -cvf $1.tar $1
+         if [ $? -eq 0 ]
+         then
+             loginfo "tar $1 ok...:" $?
+         else
+             logerr "tar $1 err...:" $?
+         fi
+     else
+         logerr "params error or $1 not exist..."
+     fi
+}
+export -f tar_tar
+
+###################tar src.tar.gz src###############################
+function tar_tar_gz()
+{
+     if [ $# -eq 1 ] && [ -d $1 ]
+     then
+         if [ -f $1.tar.gz ]
+         then
+             loginfo "$1.tar.gz exist, mv $1.tar.gz $1.tar.gz.bak..."
+             mv $1.tar.gz $1.tar.gz.bak
+         fi
+         tar -zcvf $1.tar.gz $1
+         if [ $? -eq 0 ]
+         then
+             loginfo "tar $1 ok...:" $?
+         else
+             logerr "tar $1 err...:" $?
+         fi
+     else
+         logerr "params error or $1 not exist..."
+     fi
+}
+export -f tar_tar_gz
+
+###################tar src.tar.bz2 src###############################
+function tar_tar_bz2()
+{
+     if [ $# -eq 1 ] && [ -d $1 ]
+     then
+         if [ -f $1.tar.bz2 ]
+         then
+             loginfo "$1.tar.bz2 exist, mv $1.tar.bz2 $1.tar.bz2.bak..."
+             mv $1.tar.bz2 $1.tar.bz2.bak
+         fi
+         tar -jcvf $1.tar.bz2 $1
+         if [ $? -eq 0 ]
+         then
+             loginfo "tar $1 ok...:" $?
+         else
+             logerr "tar $1 err...:" $?
+         fi
+     else
+         logerr "params error or $1 not exist..."
+     fi
+}
+export -f tar_tar_bz2
+
 
 ###################shell_backup ###############################
 function shell_backup()
@@ -295,18 +364,24 @@ SRC_PATH=$BASE_PATH/MsgServerConnector
 BUILD_NAME=MsgServerConnector
 PREFIX_PATH=$SRC_PATH/connector
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+cd $SRC_PATH
+tar_tar_bz2 connector
 
 ####################    building msgserverdispatcher    ###########################
 SRC_PATH=$BASE_PATH/MsgServerDispatcher
 BUILD_NAME=MsgServerDispatcher
 PREFIX_PATH=$SRC_PATH/dispatcher
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+cd $SRC_PATH
+tar_tar_bz2 dispatcher
 
 ####################    building msgservermeeting    ###########################
 SRC_PATH=$BASE_PATH/MsgServerMeeting
 BUILD_NAME=MsgServerMeeting
 PREFIX_PATH=$SRC_PATH/meeting
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+cd $SRC_PATH
+tar_tar_bz2 meeting
 
 end_log
 loginfo "build all bin successfully..."
