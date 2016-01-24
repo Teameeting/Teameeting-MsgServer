@@ -3,6 +3,7 @@
 #include "MRTHttpSender.h"
 #include "MRTRoomManager.h"
 
+#define HTTP_SENDER_TIMEOUT (60000)
 
 MRTHttpSender::MRTHttpSender(void)
 : m_pBuffer(NULL)
@@ -13,7 +14,7 @@ MRTHttpSender::MRTHttpSender(void)
 , m_transmsg()
 , m_meetmsg()
 {
-    SetTimer(60*1000);
+    SetTimer(HTTP_SENDER_TIMEOUT);
 	m_nBufLen = kRequestBufferSizeInBytes;
 	m_pBuffer = new char[m_nBufLen];
 }
@@ -27,7 +28,7 @@ MRTHttpSender::MRTHttpSender(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& msg)
 , m_transmsg(tmsg)
 , m_meetmsg(msg)
 {
-    SetTimer(60*1000);
+    SetTimer(HTTP_SENDER_TIMEOUT);
 }
 
 MRTHttpSender::~MRTHttpSender(void)
@@ -46,9 +47,8 @@ bool MRTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short p
     }
     socket->InitNonBlocking(socket->GetSocketFD());
     socket->NoDelay();
-    socket->SetSocketBufSize(96L * 1024L);
+    socket->SetSocketBufSize(10L * 1024L);//10k
     socket->SetTask(this);
-    //this->SetTimer(5*1000);
     OS_Error err;
     do{
         sleep(1);

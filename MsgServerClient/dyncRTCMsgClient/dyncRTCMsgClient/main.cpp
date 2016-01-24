@@ -90,7 +90,7 @@ int main(int argc, const char * argv[]) {
     XMsgClient client;
     MsgServerCallback callback;
     const std::string server("192.168.7.39");
-    int port = 9210;
+    int port = 6630;
     //bool autoConnect = true;
     LOG(INFO) << "begin connect to server...";
     //std::string userid("9a4f3730-f643-422a-a3a1-eae557060a90");
@@ -106,7 +106,11 @@ int main(int argc, const char * argv[]) {
     while (1) {
         //LOG(INFO) << "pClient->Status:" << client.Status();
         client.SndMsg(roomid, msg);
-        client.NotifyMsg(roomid, "tagstagstagstags");
+        client.NotifyMsg(roomid, sendtags_subscribe, "tagstagstagstags");
+        client.NotifyMsg(roomid, sendtags_audioset, "on");
+        client.NotifyMsg(roomid, sendtags_videoset, "off");
+        client.NotifyMsg(roomid, sendtags_videoset, "on");
+        client.NotifyMsg(roomid, sendtags_audioset, "off");
         rtc::Thread::SleepMs(3000);
         //break;
     }
