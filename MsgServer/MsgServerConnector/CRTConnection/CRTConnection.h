@@ -27,7 +27,7 @@ public:
 
 public:
 	//* For RTConnHttp
-    virtual void OnLogin(const char* pUserid, const char* pPass);
+    virtual void OnLogin(const char* pUserid, const char* pPass, const char* pNname);
     virtual void OnSndMsg(const char* pUserid, int mType, const char* pData, int dLen);
     virtual void OnGetMsg(const char* pUserid, int mType);
     virtual void OnLogout(const char* pUserid);
@@ -45,6 +45,7 @@ private:
     std::string     m_connectorId;
     std::string     m_userId;
     std::string     m_token;
+    std::string     m_nname;
     OSMutex         m_mutex;
 };
 

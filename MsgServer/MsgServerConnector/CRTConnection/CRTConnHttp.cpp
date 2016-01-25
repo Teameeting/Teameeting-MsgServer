@@ -163,8 +163,8 @@ void CRTConnHttp::OnHttpMessage(http_message* httpMsg)
     }
 
     if (strcmp(pPath, "/login") == 0) {
-        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0) {
-            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str());
+        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0 && m_mmsg._nname.length()>0) {
+            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str(), m_mmsg._nname.c_str());
         } else {
             LE("login params errors\n");
         }

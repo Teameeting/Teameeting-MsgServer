@@ -20,8 +20,8 @@ public:
     XMsgClientHelper() {}
     ~XMsgClientHelper() {}
     
-    virtual void OnLogin(int code, const std::string& status, const std::string& userid) = 0;
-    virtual void OnLogout(int code, const std::string& status, const std::string& userid) = 0;
+    virtual void OnLogin(int code, const std::string& userid) = 0;
+    virtual void OnLogout(int code, const std::string& userid) = 0;
 };
 
 class XMsgClient : public XTcpClientCallback, public XMsgClientHelper{
@@ -29,16 +29,16 @@ public:
     XMsgClient();
     ~XMsgClient();
     
-    int Init(XMsgCallback& cb, const std::string& uid, const std::string& token, const std::string& server, int port, bool bAutoConnect=true);
+    int Init(XMsgCallback& cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port, bool bAutoConnect=true);
     int Unin();
     
-    int SndMsg(const std::string& roomid, const std::string& msg);
+    int SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg);
     int GetMsg(GETCMD cmd);
 
-    int OptRoom(MEETCMD cmd, const std::string& roomid, const std::string& remain);
-    int SndMsgTo(const std::string& roomid, const std::string& msg, const std::list<std::string>& ulist);
+    int OptRoom(MEETCMD cmd, const std::string& roomid, const std::string& rname, const std::string& remain);
+    int SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::list<std::string>& ulist);
     
-    int NotifyMsg(const std::string& roomid, SENDTAGS tags, const std::string& msg);
+    int NotifyMsg(const std::string& roomid, const std::string& rname, SENDTAGS tags, const std::string& msg);
     
     MSTcpState MSStatus() { return m_msTcpState; }
     
@@ -53,8 +53,8 @@ public:
     virtual void OnMessageRecv(const char*pData, int nLen);
     
     // For XMsgClientHelper
-    virtual void OnLogin(int code, const std::string& status, const std::string& userid);
-    virtual void OnLogout(int code, const std::string& status, const std::string& userid);
+    virtual void OnLogin(int code, const std::string& userid);
+    virtual void OnLogout(int code, const std::string& userid);
 private:
     int Login();
     int Logout();
@@ -67,6 +67,7 @@ private:
     uint32                   m_lastUpdateTime;
     std::string              m_uid;
     std::string              m_token;
+    std::string              m_nname;
     std::string              m_server;
     int                      m_port;
     bool                     m_autoConnect;

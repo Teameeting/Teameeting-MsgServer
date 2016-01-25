@@ -35,7 +35,7 @@ int CRTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg
     return 0;
 }
 
-void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, const std::string& status, std::string& resp)
+void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, std::string& resp)
 {
     MEETMSG m_msg;
 
@@ -53,7 +53,8 @@ void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long lon
     m_msg._pass = "";
     m_msg._mseq = mseq;
     m_msg._code = code;
-    m_msg._status = status;
+    m_msg._nname = m_nname;
+    m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = OS::Milliseconds();
 
@@ -114,7 +115,7 @@ void CRTConnectionTcp::OnLcsEvent()
 
 
 //* For RTConnTcp
-void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
+void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const char* pNname)
 {
     {
         //check & auth
@@ -132,6 +133,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
     }
     m_userId = pUserid;
     m_token = pPass;
+    m_nname = pNname;
     std::string sid;
     {
         //store userid & pass
@@ -153,13 +155,13 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             CRTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
             // send response
             std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, resp);
             SendResponse(0, resp.c_str());
             return;
         } else {
             LE("new ConnectionInfo error!!!\n");
             std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, GetRTCommStatus(RTCommCode::_errconninfo), resp);
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, resp);
             SendResponse(0, resp.c_str());
             return;
 
@@ -220,8 +222,9 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
     CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
     m_userId.assign("");
     m_token.assign("");
+    m_nname.assign("");
     std::string resp;
-    GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+    GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, resp);
     SendResponse(0, resp.c_str());
     return;
 }

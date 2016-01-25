@@ -22,7 +22,7 @@
 
 static long long  g_msgs_id = 3;
 
-int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass)
+int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& nname)
 {
     SIGNALMSG s_msg;
     MEETMSG m_msg;
@@ -40,7 +40,8 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     m_msg._cont = "";
     m_msg._pass = pass;
     m_msg._code = 0;
-    m_msg._status = "";
+    m_msg._nname = nname;
+    m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
     
@@ -51,7 +52,7 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     return 0;
 }
 
-int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& roomid, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type)
+int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& nname, const std::string& roomid, const std::string& rname, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type)
 {
     SIGNALMSG s_msg;
     MEETMSG m_msg;
@@ -69,7 +70,8 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     m_msg._cont = msg;
     m_msg._pass = pass;
     m_msg._code = 0;
-    m_msg._status = "";
+    m_msg._nname = nname;
+    m_msg._rname = rname;
     m_msg._nmem = 0;
     m_msg._ntime = 0;
     
@@ -98,7 +100,8 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
     m_msg._cont = "";
     m_msg._pass = pass;
     m_msg._code = 0;
-    m_msg._status = "";
+    m_msg._nname = "";
+    m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
     
@@ -127,7 +130,8 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     m_msg._cont = "";
     m_msg._pass = pass;
     m_msg._code = 0;
-    m_msg._status = "";
+    m_msg._nname = "";
+    m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
     
@@ -156,7 +160,8 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     m_msg._cont = "";
     m_msg._pass = "";
     m_msg._code = 0;
-    m_msg._status = "";
+    m_msg._nname = "";
+    m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
     
@@ -211,7 +216,7 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 
 int XMsgProcesser::DecodeLogin(MEETMSG& msg)
 {
-    m_helper.OnLogin(msg._code, msg._status, msg._from);
+    m_helper.OnLogin(msg._code, msg._from);
     return 0;
 }
 

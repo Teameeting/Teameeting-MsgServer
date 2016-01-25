@@ -22,7 +22,7 @@ public:
 	void OnHttpMessage(http_message* httpMsg);
 
 public:
-    virtual void OnLogin(const char* pUserid, const char* pPass) = 0;
+    virtual void OnLogin(const char* pUserid, const char* pPass, const char* pNname) = 0;
     virtual void OnSndMsg(const char* pUserid, int mType, const char* pData, int dLen) = 0;
     virtual void OnGetMsg(const char* pUserid, int mType) = 0;
     virtual void OnLogout(const char* pUserid) = 0;

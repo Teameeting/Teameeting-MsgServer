@@ -190,8 +190,9 @@ struct _meetmsg{
     std::string _to;
     std::string _cont;
     std::string _pass;
+    std::string _nname;/*nickname*/
+    std::string _rname;/*roomname*/
     int         _code;
-    std::string _status;
     _meetmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);

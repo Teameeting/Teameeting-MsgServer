@@ -37,8 +37,9 @@ std::string MEETMSG::ToJson()
     jDoc.AddMember("to", MEETMSG::_to.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("cont", MEETMSG::_cont.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("pass", MEETMSG::_pass.c_str(), jDoc.GetAllocator());
+    jDoc.AddMember("nname", MEETMSG::_nname.c_str(), jDoc.GetAllocator());
+    jDoc.AddMember("rname", MEETMSG::_rname.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("code", MEETMSG::_code, jDoc.GetAllocator());
-    jDoc.AddMember("status", MEETMSG::_status.c_str(), jDoc.GetAllocator());
     
     jDoc.Accept(writer);
     std::string s = sb.GetString();
@@ -149,18 +150,24 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _pass = jsonReqDoc["pass"].GetString();
+    if(!(jsonReqDoc.HasMember("nname") && jsonReqDoc["nname"].IsString()))
+    {
+        err.assign("parse nname error");
+        return;
+    }
+    _nname = jsonReqDoc["nname"].GetString();
+    if(!(jsonReqDoc.HasMember("rname") && jsonReqDoc["rname"].IsString()))
+    {
+        err.assign("parse rname error");
+        return;
+    }
+    _rname = jsonReqDoc["rname"].GetString();
     if(!(jsonReqDoc.HasMember("code") && jsonReqDoc["code"].IsInt()))
     {
         err.assign("parse code error");
         return;
     }
     _code = jsonReqDoc["code"].GetInt();
-    if(!(jsonReqDoc.HasMember("status") && jsonReqDoc["status"].IsString()))
-    {
-        err.assign("parse status error");
-        return;
-    }
-    _status = jsonReqDoc["status"].GetString();
 }
 
 

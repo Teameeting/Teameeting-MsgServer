@@ -28,7 +28,7 @@ public:
     void SendResponse(int code, const std::string&strContent);
 
 public:
-    virtual void OnLogin(const char* pUserid, const char* pPass) = 0;
+    virtual void OnLogin(const char* pUserid, const char* pPass, const char* pNname) = 0;
     virtual void OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen) = 0;
     virtual void OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid) = 0;
     virtual void OnLogout(const char* pUserid) = 0;

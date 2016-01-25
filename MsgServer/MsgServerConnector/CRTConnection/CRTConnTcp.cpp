@@ -61,8 +61,8 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
             LE("keepalive params errors\n");
         }
     } else if (m_smsg._stype == SIGNALTYPE::login) {
-        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0) {
-            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str());
+        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0 && m_mmsg._nname.length()>0) {
+            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str(), m_mmsg._nname.c_str());
         } else {
             LE("login params errors\n");
         }

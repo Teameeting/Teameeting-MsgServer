@@ -189,8 +189,9 @@ typedef struct _meetmsg{
     std::string _to;
     std::string _cont;
     std::string _pass;
+    std::string _nname;
+    std::string _rname;
     int         _code;
-    std::string _status;
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
 }MEETMSG;
