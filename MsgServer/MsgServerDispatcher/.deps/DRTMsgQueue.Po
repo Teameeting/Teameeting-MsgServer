@@ -171,10 +171,7 @@ DRTMsgQueue.o: DRTMsgQueue.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/prettywriter.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/writer.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/stringbuffer.h \
- DRTConnectionManager.h ../MsgServer/MSCommon/MSBase/RTHiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h
+ DRTConnectionManager.h
 
 /usr/include/stdc-predef.h:
 
@@ -635,13 +632,3 @@ DRTTransfer/DRTTransfer.h:
 ../MsgServer/MSCommon/MSThirdParty/rapidjson/stringbuffer.h:
 
 DRTConnectionManager.h:
-
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:

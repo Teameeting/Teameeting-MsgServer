@@ -144,6 +144,8 @@ typedef enum _sendtags{
     sendtags_leave,
     sendtags_subscribe,
     sendtags_unsubscribe,
+    sendtags_audioset,
+    sendtags_videoset,
     sendtags_invalid
 }SENDTAGS;
 

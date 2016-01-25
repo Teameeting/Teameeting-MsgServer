@@ -31,7 +31,7 @@ public:
 	static MRTMeeting* Inst();
 
 public:
-	int		Start(const char* pConnAddr, unsigned short usConnPort, const char*pQueueAddr, unsigned short usQueuePort, const char* pHttpAddr, unsigned short usHttpPort);
+	int		Start(const char* pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort, const char* pHttpIp, unsigned short usHttpPort);
 	void	DoTick();
 	void	Stop();
 

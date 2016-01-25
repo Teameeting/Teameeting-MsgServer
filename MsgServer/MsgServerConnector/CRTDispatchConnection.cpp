@@ -16,6 +16,11 @@
 std::string CRTDispatchConnection::m_connIp;
 std::string CRTDispatchConnection::m_connPort;
 
+bool CRTDispatchConnection::IsUserLive(const std::string& uid)
+{
+    return true;
+}
+
 void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::string& msg)
 {
     //find connector
@@ -42,4 +47,10 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::strin
         }
     }
     
+}
+
+
+void CRTDispatchConnection::PushMsg(const std::string& uid, const std::string& msg)
+{
+
 }

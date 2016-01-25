@@ -13,7 +13,7 @@ class CRTConnector
 protected:
 	CRTConnector(void);
 public:
-    
+
 	virtual ~CRTConnector(void);
 
 	/* 打印服务版本号
@@ -33,17 +33,17 @@ public:
 	 *
 	 */
 	static CRTConnector* Inst();
-    
+
 public:
-	int		Start(const char*pLanIP, unsigned short usConnPort
-                  , const char*pModuleAddr, unsigned short usModulePort
-                  , const char*pConnTcpAddr, unsigned short usConnTcpPort
-                  , const char*pHttpAddr, unsigned short usHttpPort);
+	int		Start(const char*pWebConIp, unsigned short usWebConPort
+                  , const char*pModuleIp, unsigned short usModulePort
+                  , const char*pCliConIp, unsigned short usCliConPort
+                  , const char*pHttpIp, unsigned short usHttpPort);
 	void	DoTick();
 	void	Stop();
 
 private:
-    
+
 	CRTConnListener		*m_pConnListener;
     CRTModuleListener    *m_pModuleListener;
     CRTConnTcpListener   *m_pConnTcpListener;

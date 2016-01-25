@@ -154,12 +154,12 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& msg, cons
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& msg)
+int XMsgClient::NotifyMsg(const std::string& roomid, SENDTAGS tags, const std::string& msg)
 {
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_subscribe, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, roomid, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, tags, SENDTYPE::msg);
     } else {
         return -1;
     }

@@ -16,9 +16,11 @@ AM_CPPFLAGS+= -I$(top_srcdir)/MSCommon/MSBase/ \
 
 noinst_HEADERS=$(top_srcdir)/MSCommon/PlatformHeader.h \
 			   $(top_srcdir)/MSCommon/revision.h \
-			   $(top_srcdir)/MSCommon/sigslot.h
+			   $(top_srcdir)/MSCommon/sigslot.h \
+			   $(top_srcdir)/MSCommon/config_parser.h
 
 libMSCommon_a_SOURCES=$(top_srcdir)/MSCommon/sigslot.cc \
+					  $(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp \

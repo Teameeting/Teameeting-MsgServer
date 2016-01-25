@@ -17,7 +17,6 @@
 #include "rtklog.h"
 #include "MRTMeetingRoom.h"
 #include "StatusCode.h"
-#include "RTHiredis.h"
 #include "RTHttpMsg.h"
 
 static unsigned int	 g_trans_id = 0;
@@ -131,7 +130,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                             //send to member in meeting
                             rtc::scoped_refptr<MRTMeetingRoom> meetingRoom = it->second;
                             LI("==>HandleDcommRoom notify add from:%s, publishid:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
-                            meetingRoom->AddNotifyMsg(mmsg._from, mmsg._cont);
+                            meetingRoom->AddPublishIdMsg(mmsg._from, (SENDTAGS)mmsg._tags, mmsg._cont);
                             if (!meetingRoom->GetMeetingMemberJson(mmsg._from, users)) {
                                 LI("==>HandleDcommRoom notify send to others:%s, publishId:%s\n", users.c_str(), mmsg._cont.c_str());
                                 //notify to room other members in meeting;
@@ -149,7 +148,51 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         break;
                     case SENDTAGS::sendtags_unsubscribe:
                     {
-
+                        
+                    }
+                        break;
+                    case SENDTAGS::sendtags_audioset:
+                    {
+                        if (mmsg._to.at(0)=='a') {
+                            //send to member in meeting
+                            rtc::scoped_refptr<MRTMeetingRoom> meetingRoom = it->second;
+                            LI("==>HandleDcommRoom notify add from:%s, audioset:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
+                            meetingRoom->AddAudioSetMsg(mmsg._from, (SENDTAGS)mmsg._tags, mmsg._cont);
+                            if (!meetingRoom->GetMeetingMemberJson(mmsg._from, users)) {
+                                LI("==>HandleDcommRoom notify send to others:%s, audioset:%s\n", users.c_str(), mmsg._cont.c_str());
+                                //notify to room other members in meeting;
+                                GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+                                
+                                SendTransferData(resp, (int)resp.length());
+                                return;
+                            } else {
+                                //no member in meeting
+                            }
+                        } else if (mmsg._to.at(0)=='u') {
+                            //to userlist
+                        }
+                    }
+                        break;
+                    case SENDTAGS::sendtags_videoset:
+                    {
+                        if (mmsg._to.at(0)=='a') {
+                            //send to member in meeting
+                            rtc::scoped_refptr<MRTMeetingRoom> meetingRoom = it->second;
+                            LI("==>HandleDcommRoom notify add from:%s, videoset:%s\n", mmsg._from.c_str(), mmsg._cont.c_str());
+                            meetingRoom->AddVideoSetMsg(mmsg._from, (SENDTAGS)mmsg._tags, mmsg._cont);
+                            if (!meetingRoom->GetMeetingMemberJson(mmsg._from, users)) {
+                                LI("==>HandleDcommRoom notify send to others:%s, videoset:%s\n", users.c_str(), mmsg._cont.c_str());
+                                //notify to room other members in meeting;
+                                GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+                                
+                                SendTransferData(resp, (int)resp.length());
+                                return;
+                            } else {
+                                //no member in meeting
+                            }
+                        } else if (mmsg._to.at(0)=='u') {
+                            //to userlist
+                        }
                     }
                         break;
                     default:
@@ -249,16 +292,50 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     users.assign("");
     res.assign("");
     resp.assign("");
-    MRTMeetingRoom::RoomNotifyMsgs msgMaps(it->second->GetRoomNotifyMsgsMap());
-    LI("==>EnterRoom msgMaps size:%d\n", (int)msgMaps.size());
     std::string strSelf = mmsg._from;
-    MRTMeetingRoom::RoomNotifyMsgs::iterator mit = msgMaps.begin();
+    MRTMeetingRoom::PublishIdMsgs msgMaps(it->second->GetPublishIdMsgsMap());
+    LI("==>EnterRoom publishIdMsgMaps size:%d\n", (int)msgMaps.size());
+    MRTMeetingRoom::PublishIdMsgs::iterator mit = msgMaps.begin();
     for (; mit!=msgMaps.end(); mit++) {
-        if (mit->second->publisher.compare(mmsg._from)!=0) {
-            LI("==>EnterRoom other %s send publish id:%s to %s!!!\n", mit->second->publisher.c_str(), mit->second->notifyMsg.c_str(), mmsg._from.c_str());
+        if (mit->second->publisher.compare(strSelf)!=0) {
+            LI("==>EnterRoom other %s send publish id:%s to %s!!!\n", mit->second->publisher.c_str(), mit->second->notifyMsg.c_str(), strSelf.c_str());
             mmsg._from = mit->second->publisher;
             mmsg._cont = mit->second->notifyMsg;
             mmsg._tags = SENDTAGS::sendtags_subscribe;
+            ChangeToJson(strSelf, users);
+            GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, res, resp);
+            SendTransferData(resp, (int)resp.length());
+        } else {
+            LI("==>EnterRoom %s NOT send to myself!!!\n", mit->second->publisher.c_str());
+        }
+    }
+    
+    MRTMeetingRoom::AudioSetMsgs audioMsgMaps(it->second->GetAudioSetMsgsMap());
+    LI("==>EnterRoom AudioSetMsgMaps size:%d\n", (int)audioMsgMaps.size());
+    MRTMeetingRoom::AudioSetMsgs::iterator amit = audioMsgMaps.begin();
+    for (; amit!=audioMsgMaps.end(); mit++) {
+        if (amit->second->publisher.compare(strSelf)!=0) {
+            LI("==>EnterRoom other %s send audioset:%s to %s!!!\n", amit->second->publisher.c_str(), amit->second->notifyMsg.c_str(), strSelf.c_str());
+            mmsg._from = amit->second->publisher;
+            mmsg._cont = amit->second->notifyMsg;
+            mmsg._tags = SENDTAGS::sendtags_audioset;
+            ChangeToJson(strSelf, users);
+            GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, res, resp);
+            SendTransferData(resp, (int)resp.length());
+        } else {
+            LI("==>EnterRoom %s NOT send to myself!!!\n", mit->second->publisher.c_str());
+        }
+    }
+    
+    MRTMeetingRoom::VideoSetMsgs videoMsgMaps(it->second->GetVideoSetMsgsMap());
+    LI("==>EnterRoom videoSetMsgMaps size:%d\n", (int)videoMsgMaps.size());
+    MRTMeetingRoom::PublishIdMsgs::iterator vmit = videoMsgMaps.begin();
+    for (; vmit!=videoMsgMaps.end(); mit++) {
+        if (vmit->second->publisher.compare(strSelf)!=0) {
+            LI("==>EnterRoom other %s send videoSet:%s to %s!!!\n", vmit->second->publisher.c_str(), vmit->second->notifyMsg.c_str(), strSelf.c_str());
+            mmsg._from = vmit->second->publisher;
+            mmsg._cont = vmit->second->notifyMsg;
+            mmsg._tags = SENDTAGS::sendtags_videoset;
             ChangeToJson(strSelf, users);
             GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, res, resp);
             SendTransferData(resp, (int)resp.length());
@@ -326,14 +403,18 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         //send wait event
     }
     LI("==>LeaveRoom %s leave delete notify msg\n", mmsg._from.c_str());
-    std::string pubid;
-    it->second->DelNotifyMsg(mmsg._from, pubid);
-    it->second->GetMeetingMemberJson(mmsg._from, users);
-    mmsg._tags = SENDTAGS::sendtags_unsubscribe;
-    mmsg._cont = pubid;
-    LI("==>LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
-    GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
-    SendTransferData(resp, (int)resp.length());
+    std::string pubid("");
+    it->second->DelPublishIdMsg(mmsg._from, pubid);
+    if (pubid.length()>0) {
+        it->second->GetMeetingMemberJson(mmsg._from, users);
+        mmsg._tags = SENDTAGS::sendtags_unsubscribe;
+        mmsg._cont = pubid;
+        LI("==>LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
+        GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendTransferData(resp, (int)resp.length());
+    }
+    it->second->DelAudioSetMsg(mmsg._from);
+    it->second->DelVideoSetMsg(mmsg._from);
 
     if (m_pHttpSvrConn) {
         char mem[4] = {0};
@@ -483,16 +564,20 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
     DelUserMeetingRoomId(uid);
     int online = it->second->GetRoomMemberOnline();
     char strOnline[4] = {0};
-    std::string pubid, users, resp, cont;
+    std::string pubid(""), users(""), resp(""), cont("");
     sprintf(strOnline, "%d", online);
 
     // notify member in meeting publishid
-    it->second->GetMeetingMemberJson(uid, users);
-    it->second->DelNotifyMsg(uid, pubid);
-    GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
-    SendTransferData(resp, (int)resp.length());
-    LI("ClearSessionLost publish resp:%s\n", resp.c_str());
-
+    it->second->DelPublishIdMsg(uid, pubid);
+    if (pubid.length()>0) {
+        it->second->GetMeetingMemberJson(uid, users);
+        GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
+        SendTransferData(resp, (int)resp.length());
+        LI("ClearSessionLost clear publishId:%s\n", pubid.c_str());
+    }
+    it->second->DelAudioSetMsg(uid);
+    it->second->DelVideoSetMsg(uid);
+    
     // notify member having room uid leaving
     users.assign("");
     it->second->GetRoomMemberJson(uid, users);
@@ -503,7 +588,6 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
         //store message
         LI("==>ClearSessionLost GetGetMembersStatus WAITING...\n");
         //it->second->AddWaitingMsgToList(1, 1, resp);
-        //return;
     } else {
 
     }
