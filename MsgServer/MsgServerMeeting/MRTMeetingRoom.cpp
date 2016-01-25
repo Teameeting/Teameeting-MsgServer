@@ -25,13 +25,6 @@ static char          s_curMicroSecStr[32];
 static unsigned char s_digest[16];
 static OSMutex       s_mutex;
 
-static unsigned int	 s_notify_msg_id = 0;
-
-int MRTMeetingRoom::GenericNotifySeq()
-{
-    return atomic_add(&s_notify_msg_id, 1);
-}
-
 MRTMeetingRoom::MRTMeetingRoom(const std::string mid, const std::string ownerid)
 : m_roomId(mid)
 , m_sessionId("")
@@ -178,7 +171,6 @@ int MRTMeetingRoom::GetAllMeetingMemberJson(std::string& users)
 int MRTMeetingRoom::GetRoomMemberOnline()
 {
     OSMutexLocker locker(&m_mutex);
-    LI("room members:%d, online member:%d\n", m_roomMembers.size(), m_meetingMembers.size());
     return (int)m_meetingMembers.size();
 }
 
@@ -238,31 +230,131 @@ void MRTMeetingRoom::CheckMembers()
 
 }
 
-int MRTMeetingRoom::AddNotifyMsg(const std::string pubsher, const std::string pubid)
+int MRTMeetingRoom::AddPublishIdMsg(const std::string pubsher, SENDTAGS tags, const std::string content)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    NotifyMsg* notifyMsg = new NotifyMsg();
-    notifyMsg->seq = GenericNotifySeq();
-    notifyMsg->pubTime = OS::Milliseconds();
-    notifyMsg->notifyMsg = pubid;
-    notifyMsg->publisher = pubsher;
-    m_roomNotifyMsgs.insert(make_pair(pubsher, notifyMsg));
+    if (m_publishIdMsgs.size()==0) {
+        NotifyMsg* notifyMsg = new NotifyMsg();
+        notifyMsg->tags = tags;
+        notifyMsg->notifyMsg = content;
+        notifyMsg->publisher = pubsher;
+        m_publishIdMsgs.insert(make_pair(pubsher, notifyMsg));
+        return 0;
+    }
+    PublishIdMsgs::iterator mit = m_publishIdMsgs.find(pubsher);
+    if (mit!=m_publishIdMsgs.end()) {
+        LI("%s RTMeetingRoom::AddPublishIdMsg NotifyMsg....", pubsher.c_str());
+        mit->second->notifyMsg = content;
+    } else {
+        NotifyMsg* notifyMsg = new NotifyMsg();
+        notifyMsg->tags = tags;
+        notifyMsg->notifyMsg = content;
+        notifyMsg->publisher = pubsher;
+        m_publishIdMsgs.insert(make_pair(pubsher, notifyMsg));
+    }
+
     return 0;
 }
 
-int MRTMeetingRoom::DelNotifyMsg(const std::string pubsher, std::string& pubid)
+int MRTMeetingRoom::DelPublishIdMsg(const std::string pubsher, std::string& pubid)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    RoomNotifyMsgs::iterator mit = m_roomNotifyMsgs.find(pubsher);
-    if (mit!=m_roomNotifyMsgs.end()) {
-        LI("%s leave RTMeetingRoom::DelNotifyMsg NotifyMsg....", pubsher.c_str());
+    if (m_publishIdMsgs.size()==0) {
+        return 0;
+    }
+    PublishIdMsgs::iterator mit = m_publishIdMsgs.find(pubsher);
+    if (mit!=m_publishIdMsgs.end()) {
+        LI("%s leave RTMeetingRoom::DelPublishIdMsg NotifyMsg....", pubsher.c_str());
         pubid = mit->second->notifyMsg;
         delete mit->second;
         mit->second = NULL;
-        m_roomNotifyMsgs.erase(pubsher);
+        m_publishIdMsgs.erase(pubsher);
     }
     return 0;
 }
+
+int MRTMeetingRoom::AddAudioSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content)
+{
+    OSMutexLocker locker(&m_notifyMutex);
+    if (m_audioSetMsgs.size()==0) {
+        NotifyMsg* notifyMsg = new NotifyMsg();
+        notifyMsg->tags = tags;
+        notifyMsg->notifyMsg = content;
+        notifyMsg->publisher = pubsher;
+        m_audioSetMsgs.insert(make_pair(pubsher, notifyMsg));
+        return 0;
+    }
+    AudioSetMsgs::iterator mit = m_audioSetMsgs.find(pubsher);
+    if (mit!=m_audioSetMsgs.end()) {
+        LI("%s RTMeetingRoom::AddAudioSetMsg NotifyMsg....", pubsher.c_str());
+        mit->second->notifyMsg = content;
+    } else {
+        NotifyMsg* notifyMsg = new NotifyMsg();
+        notifyMsg->tags = tags;
+        notifyMsg->notifyMsg = content;
+        notifyMsg->publisher = pubsher;
+        m_audioSetMsgs.insert(make_pair(pubsher, notifyMsg));
+    }
+    return 0;
+}
+
+int MRTMeetingRoom::DelAudioSetMsg(const std::string pubsher)
+{
+    OSMutexLocker locker(&m_notifyMutex);
+    if (m_audioSetMsgs.size()==0) {
+        return 0;
+    }
+    AudioSetMsgs::iterator mit = m_audioSetMsgs.find(pubsher);
+    if (mit!=m_audioSetMsgs.end()) {
+        LI("%s leave RTMeetingRoom::DelAudioSetMsg NotifyMsg....", pubsher.c_str());
+        delete mit->second;
+        mit->second = NULL;
+        m_audioSetMsgs.erase(pubsher);
+    }
+    return 0;
+}
+
+int MRTMeetingRoom::AddVideoSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content)
+{
+    OSMutexLocker locker(&m_notifyMutex);
+    if (m_videoSetMsgs.size()==0) {
+        NotifyMsg* notifyMsg = new NotifyMsg();
+        notifyMsg->tags = tags;
+        notifyMsg->notifyMsg = content;
+        notifyMsg->publisher = pubsher;
+        m_videoSetMsgs.insert(make_pair(pubsher, notifyMsg));
+        return 0;
+    }
+    VideoSetMsgs::iterator mit = m_videoSetMsgs.find(pubsher);
+    if (mit!=m_videoSetMsgs.end()) {
+        LI("%s RTMeetingRoom::AddVideoSetMsg NotifyMsg....", pubsher.c_str());
+        mit->second->notifyMsg = content;
+    } else {
+        NotifyMsg* notifyMsg = new NotifyMsg();
+        notifyMsg->tags = tags;
+        notifyMsg->notifyMsg = content;
+        notifyMsg->publisher = pubsher;
+        m_videoSetMsgs.insert(make_pair(pubsher, notifyMsg));
+    }
+    return 0;
+}
+
+int MRTMeetingRoom::DelVideoSetMsg(const std::string pubsher)
+{
+    OSMutexLocker locker(&m_notifyMutex);
+    if (m_videoSetMsgs.size()==0) {
+        return 0;
+    }
+    VideoSetMsgs::iterator mit = m_videoSetMsgs.find(pubsher);
+    if (mit!=m_videoSetMsgs.end()) {
+        LI("%s leave RTMeetingRoom::DelVideoSetMsg NotifyMsg....", pubsher.c_str());
+        delete mit->second;
+        mit->second = NULL;
+        m_videoSetMsgs.erase(pubsher);
+    }
+    return 0;
+}
+
 
 void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEETMSG& mmsg)
 {

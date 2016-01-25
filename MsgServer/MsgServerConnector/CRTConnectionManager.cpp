@@ -11,7 +11,6 @@
 #include "md5.h"
 #include "md5digest.h"
 #include "OSMutex.h"
-#include "RTHiredis.h"
 #include <algorithm>
 
 static char          s_curMicroSecStr[32] = {0};
@@ -171,13 +170,13 @@ bool CRTConnectionManager::DelTypeModuleSession(const std::string& sid)
 bool CRTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, CRTConnectionManager::ConnectionInfo* pInfo)
 {
     OSMutexLocker locker(&s_mutexConnection);
+    if (uid.length()==0 || !pInfo) return false;
     if (s_ConnectionInfoMap.size()==0) {
         s_ConnectionInfoMap.insert(make_pair(uid, pInfo));
         LI("AddUser: show addUser\n");
         ShowConnectionInfo();
         return true;
     }
-    if (uid.length()==0 || !pInfo) return false;
     std::string token;
     if(DelUser(type, uid, token)) {
         ConnectionLostNotify(uid, token);
@@ -191,8 +190,8 @@ bool CRTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, 
 bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token)
 {
     OSMutexLocker locker(&s_mutexConnection);
-    if (s_ConnectionInfoMap.size()==0) { return false; }
     if (uid.length()==0) return false;
+    if (s_ConnectionInfoMap.size()==0) { return false; }
     CRTConnectionManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
     LI("DelUser: show: delUser\n");
     ShowConnectionInfo();
@@ -202,6 +201,8 @@ bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, 
         delete p;
         p = NULL;
         s_ConnectionInfoMap.erase(uid);
+        LI("DelUser: show: after delUser\n");
+        ShowConnectionInfo();
         return true;
     } else {
         return false;

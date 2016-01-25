@@ -159,10 +159,6 @@ CRTConnectionTcp.o: CRTConnection/CRTConnectionTcp.cpp \
  /usr/include/net/if.h CRTTransfer/CRTTransfer.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  CRTDispatchConnection.h ../MsgServer/MSCommon/MSCommon/RTType.h \
- ../MsgServer/MSCommon/MSBase/RTHiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h \
- ../MsgServer/MSCommon/MSThirdParty/hiredis/read.h \
- /usr/include/sys/time.h ../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h \
  ../MsgServer/MSCommon/MSCommon/StatusCode.h
 
@@ -595,16 +591,6 @@ CRTTransfer/CRTTransfer.h:
 CRTDispatchConnection.h:
 
 ../MsgServer/MSCommon/MSCommon/RTType.h:
-
-../MsgServer/MSCommon/MSBase/RTHiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/hiredis.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/read.h:
-
-/usr/include/sys/time.h:
-
-../MsgServer/MSCommon/MSThirdParty/hiredis/sds.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h:
 

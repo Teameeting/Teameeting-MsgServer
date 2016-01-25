@@ -29,10 +29,10 @@ public:
 	 *
 	 */
 	static DRTMsgQueue* Inst();
-    
+
 
 public:
-	int		Start(const char*pConnIp, unsigned short usConnPort, const char*pModuleIp, unsigned short usModulePort);
+	int		Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort);
 	void	DoTick();
 	void	Stop();
 

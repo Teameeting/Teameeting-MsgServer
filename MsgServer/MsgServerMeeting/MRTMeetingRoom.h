@@ -28,18 +28,14 @@ class MRTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<MRTMeetingR
 public:
     MRTMeetingRoom(const std::string mid, const std::string ownerid);
     ~MRTMeetingRoom();
-
     typedef struct _notify_msgs{
-        int seq;
-        long long pubTime;
+        SENDTAGS    tags;
         std::string notifyMsg;
         std::string publisher;
-        _notify_msgs() {
-            seq = 0;
-            pubTime = 0;
-            notifyMsg = "";
-            publisher = "";
-        }
+        _notify_msgs()
+            :tags(sendtags_invalid)
+            ,notifyMsg("")
+            ,publisher(""){}
     }NotifyMsg;
 
     typedef enum _member_status{
@@ -59,9 +55,12 @@ public:
         GMS_DONE
     }GetMembersStatus;
 
-    typedef std::unordered_map<std::string, NotifyMsg*>  RoomNotifyMsgs;
-    typedef RoomNotifyMsgs::iterator RoomNotifyMsgsIt;
-
+    typedef std::unordered_map<std::string, NotifyMsg*>  PublishIdMsgs;
+    typedef PublishIdMsgs::iterator PublishIdMsgsIt;
+    typedef std::unordered_map<std::string, NotifyMsg*>  AudioSetMsgs;
+    typedef AudioSetMsgs::iterator AudioSetMsgsIt;
+    typedef std::unordered_map<std::string, NotifyMsg*>  VideoSetMsgs;
+    typedef VideoSetMsgs::iterator VideoSetMsgsIt;
 
     // not sending msgs
     typedef struct _waiting_msg{
@@ -104,9 +103,18 @@ public:
 
     bool IsMemberInMeeting(const std::string& uid);
     MemberStatus GetRoomMemberStatus(const std::string& uid);
-    int AddNotifyMsg(const std::string pubsher, const std::string pubid);
-    int DelNotifyMsg(const std::string pubsher, std::string& pubid);
-    RoomNotifyMsgs& GetRoomNotifyMsgsMap() { return m_roomNotifyMsgs; }
+    
+    int AddPublishIdMsg(const std::string pubsher, SENDTAGS tags, const std::string content);
+    int DelPublishIdMsg(const std::string pubsher, std::string& pubid);
+    PublishIdMsgs& GetPublishIdMsgsMap() { return m_publishIdMsgs; }
+    
+    int AddAudioSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content);
+    int DelAudioSetMsg(const std::string pubsher);
+    AudioSetMsgs& GetAudioSetMsgsMap() { return m_audioSetMsgs; }
+    
+    int AddVideoSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content);
+    int DelVideoSetMsg(const std::string pubsher);
+    VideoSetMsgs& GetVideoSetMsgsMap() { return m_videoSetMsgs; }
 
     void AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEETMSG& mmsg);
     WaitingMsgsList& GetWaitingMsgs() { return m_waitingMsgsList; }
@@ -119,7 +127,6 @@ public:
     void CheckMembers();
 
 private:
-    int GenericNotifySeq();
     void GenericMeetingSessionId(std::string& strId);
 
     OSMutex                         m_mutex;
@@ -131,7 +138,9 @@ private:
     GetMembersStatus                m_eGetMembersStatus;
     RoomMembers                     m_roomMembers;
     MeetingMembers                  m_meetingMembers;
-    RoomNotifyMsgs                  m_roomNotifyMsgs;
+    PublishIdMsgs                   m_publishIdMsgs;
+    AudioSetMsgs                    m_audioSetMsgs;
+    VideoSetMsgs                    m_videoSetMsgs;
     WaitingMsgsList                 m_waitingMsgsList;
 
 };

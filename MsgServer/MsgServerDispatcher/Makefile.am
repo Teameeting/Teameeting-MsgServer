@@ -9,7 +9,8 @@ AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/DRTListener/ \
 			 -I$(top_srcdir)/DRTTransfer/
 
-AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
+AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
@@ -18,10 +19,6 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
-
-noinst_HEADERS=$(top_srcdir)/../MsgServer/MSCommon/PlatformHeader.h \
-			   $(top_srcdir)/../MsgServer/MSCommon/revision.h \
-			   $(top_srcdir)/../MsgServer/MSCommon/sigslot.h
 
 MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
 						   $(top_srcdir)/DRTTransfer/DRTTransfer.cpp \

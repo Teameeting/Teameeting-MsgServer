@@ -38,7 +38,7 @@ public:
     int OptRoom(MEETCMD cmd, const std::string& roomid, const std::string& remain);
     int SndMsgTo(const std::string& roomid, const std::string& msg, const std::list<std::string>& ulist);
     
-    int NotifyMsg(const std::string& roomid, const std::string& msg);
+    int NotifyMsg(const std::string& roomid, SENDTAGS tags, const std::string& msg);
     
     MSTcpState MSStatus() { return m_msTcpState; }
     

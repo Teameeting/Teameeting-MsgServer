@@ -91,6 +91,15 @@ main.o: main.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8.2/bits/basic_ios.tcc \
  /usr/include/c++/4.8.2/bits/ostream.tcc /usr/include/c++/4.8.2/istream \
  /usr/include/c++/4.8.2/bits/istream.tcc \
+ ../MsgServer/MSCommon/config_parser.h /usr/include/c++/4.8.2/map \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/alloc_traits.h \
+ /usr/include/c++/4.8.2/bits/ptr_traits.h \
+ /usr/include/c++/4.8.2/bits/stl_map.h /usr/include/c++/4.8.2/tuple \
+ /usr/include/c++/4.8.2/utility /usr/include/c++/4.8.2/bits/stl_relops.h \
+ /usr/include/c++/4.8.2/array /usr/include/c++/4.8.2/stdexcept \
+ /usr/include/c++/4.8.2/bits/uses_allocator.h \
+ /usr/include/c++/4.8.2/bits/stl_multimap.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h MRTMeeting.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/TCPListenerSocket.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/TCPSocket.h \
@@ -141,12 +150,7 @@ main.o: main.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
  ../MsgServer/MSCommon/MSBase/RTObserver.h \
- /usr/include/c++/4.8.2/unordered_map /usr/include/c++/4.8.2/utility \
- /usr/include/c++/4.8.2/bits/stl_relops.h /usr/include/c++/4.8.2/tuple \
- /usr/include/c++/4.8.2/array /usr/include/c++/4.8.2/stdexcept \
- /usr/include/c++/4.8.2/bits/uses_allocator.h \
- /usr/include/c++/4.8.2/bits/alloc_traits.h \
- /usr/include/c++/4.8.2/bits/ptr_traits.h \
+ /usr/include/c++/4.8.2/unordered_map \
  /usr/include/c++/4.8.2/bits/hashtable.h \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
  /usr/include/c++/4.8.2/bits/unordered_map.h MRTTransfer/MRTTransfer.h \
@@ -410,6 +414,32 @@ main.o: main.cpp /usr/include/stdc-predef.h \
 
 /usr/include/c++/4.8.2/bits/istream.tcc:
 
+../MsgServer/MSCommon/config_parser.h:
+
+/usr/include/c++/4.8.2/map:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/alloc_traits.h:
+
+/usr/include/c++/4.8.2/bits/ptr_traits.h:
+
+/usr/include/c++/4.8.2/bits/stl_map.h:
+
+/usr/include/c++/4.8.2/tuple:
+
+/usr/include/c++/4.8.2/utility:
+
+/usr/include/c++/4.8.2/bits/stl_relops.h:
+
+/usr/include/c++/4.8.2/array:
+
+/usr/include/c++/4.8.2/stdexcept:
+
+/usr/include/c++/4.8.2/bits/uses_allocator.h:
+
+/usr/include/c++/4.8.2/bits/stl_multimap.h:
+
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
 
 MRTMeeting.h:
@@ -537,22 +567,6 @@ MRTTransfer/MRTTransferSession.h:
 ../MsgServer/MSCommon/MSBase/RTObserver.h:
 
 /usr/include/c++/4.8.2/unordered_map:
-
-/usr/include/c++/4.8.2/utility:
-
-/usr/include/c++/4.8.2/bits/stl_relops.h:
-
-/usr/include/c++/4.8.2/tuple:
-
-/usr/include/c++/4.8.2/array:
-
-/usr/include/c++/4.8.2/stdexcept:
-
-/usr/include/c++/4.8.2/bits/uses_allocator.h:
-
-/usr/include/c++/4.8.2/bits/alloc_traits.h:
-
-/usr/include/c++/4.8.2/bits/ptr_traits.h:
 
 /usr/include/c++/4.8.2/bits/hashtable.h:
 
