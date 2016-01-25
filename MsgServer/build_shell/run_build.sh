@@ -154,6 +154,7 @@ function tar_tar()
          tar -cvf $1.tar $1
          if [ $? -eq 0 ]
          then
+             cp $1.tar $CUR_PATH
              loginfo "tar $1 ok...:" $?
          else
              logerr "tar $1 err...:" $?
@@ -177,6 +178,7 @@ function tar_tar_gz()
          tar -zcvf $1.tar.gz $1
          if [ $? -eq 0 ]
          then
+             cp $1.tar.gz $CUR_PATH
              loginfo "tar $1 ok...:" $?
          else
              logerr "tar $1 err...:" $?
@@ -200,6 +202,7 @@ function tar_tar_bz2()
          tar -jcvf $1.tar.bz2 $1
          if [ $? -eq 0 ]
          then
+             cp $1.tar.bz2 $CUR_PATH
              loginfo "tar $1 ok...:" $?
          else
              logerr "tar $1 err...:" $?
@@ -382,6 +385,15 @@ PREFIX_PATH=$SRC_PATH/meeting
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
 cd $SRC_PATH
 tar_tar_bz2 meeting
+
+####################    taring all.tar.bz2 to msgserver    ###########################
+loginfo "tar all the bin program..."
+sleep 1
+cd $CUR_PATH
+cp *.tar.bz2 msgserver
+tar -jcvf msgserver.tar.bz2 msgserver
+loginfo "tar all the bin program ok..."
+sleep 1
 
 end_log
 loginfo "build all bin successfully..."
