@@ -105,7 +105,7 @@ public:
     MemberStatus GetRoomMemberStatus(const std::string& uid);
     
     int AddPublishIdMsg(const std::string pubsher, SENDTAGS tags, const std::string content);
-    int DelPublishIdMsg(const std::string pubsher);
+    int DelPublishIdMsg(const std::string pubsher, std::string& pubid);
     PublishIdMsgs& GetPublishIdMsgsMap() { return m_publishIdMsgs; }
     
     int AddAudioSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content);

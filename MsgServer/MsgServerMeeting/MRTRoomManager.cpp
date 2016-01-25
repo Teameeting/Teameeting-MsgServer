@@ -403,7 +403,16 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         //send wait event
     }
     LI("==>LeaveRoom %s leave delete notify msg\n", mmsg._from.c_str());
-    it->second->DelPublishIdMsg(mmsg._from);
+    std::string pubid("");
+    it->second->DelPublishIdMsg(mmsg._from, pubid);
+    if (pubid.length()>0) {
+        it->second->GetMeetingMemberJson(mmsg._from, users);
+        mmsg._tags = SENDTAGS::sendtags_unsubscribe;
+        mmsg._cont = pubid;
+        LI("==>LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
+        GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, GetRTCommStatus(RTCommCode::_ok), resp);
+        SendTransferData(resp, (int)resp.length());
+    }
     it->second->DelAudioSetMsg(mmsg._from);
     it->second->DelVideoSetMsg(mmsg._from);
 
@@ -555,11 +564,17 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
     DelUserMeetingRoomId(uid);
     int online = it->second->GetRoomMemberOnline();
     char strOnline[4] = {0};
-    std::string pubid, users, resp, cont;
+    std::string pubid(""), users(""), resp(""), cont("");
     sprintf(strOnline, "%d", online);
 
     // notify member in meeting publishid
-    it->second->DelPublishIdMsg(uid);
+    it->second->DelPublishIdMsg(uid, pubid);
+    if (pubid.length()>0) {
+        it->second->GetMeetingMemberJson(uid, users);
+        GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
+        SendTransferData(resp, (int)resp.length());
+        LI("ClearSessionLost clear publishId:%s\n", pubid.c_str());
+    }
     it->second->DelAudioSetMsg(uid);
     it->second->DelVideoSetMsg(uid);
     
@@ -573,7 +588,6 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
         //store message
         LI("==>ClearSessionLost GetGetMembersStatus WAITING...\n");
         //it->second->AddWaitingMsgToList(1, 1, resp);
-        //return;
     } else {
 
     }

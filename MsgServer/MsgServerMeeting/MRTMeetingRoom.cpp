@@ -171,7 +171,6 @@ int MRTMeetingRoom::GetAllMeetingMemberJson(std::string& users)
 int MRTMeetingRoom::GetRoomMemberOnline()
 {
     OSMutexLocker locker(&m_mutex);
-    LI("room members:%d, online member:%d\n", m_roomMembers.size(), m_meetingMembers.size());
     return (int)m_meetingMembers.size();
 }
 
@@ -257,7 +256,7 @@ int MRTMeetingRoom::AddPublishIdMsg(const std::string pubsher, SENDTAGS tags, co
     return 0;
 }
 
-int MRTMeetingRoom::DelPublishIdMsg(const std::string pubsher)
+int MRTMeetingRoom::DelPublishIdMsg(const std::string pubsher, std::string& pubid)
 {
     OSMutexLocker locker(&m_notifyMutex);
     if (m_publishIdMsgs.size()==0) {
@@ -266,6 +265,7 @@ int MRTMeetingRoom::DelPublishIdMsg(const std::string pubsher)
     PublishIdMsgs::iterator mit = m_publishIdMsgs.find(pubsher);
     if (mit!=m_publishIdMsgs.end()) {
         LI("%s leave RTMeetingRoom::DelPublishIdMsg NotifyMsg....", pubsher.c_str());
+        pubid = mit->second->notifyMsg;
         delete mit->second;
         mit->second = NULL;
         m_publishIdMsgs.erase(pubsher);
