@@ -103,8 +103,9 @@ am__v_AR_1 =
 libMSCommon_a_AR = $(AR) $(ARFLAGS)
 libMSCommon_a_LIBADD =
 am_libMSCommon_a_OBJECTS = sigslot.$(OBJEXT) config_parser.$(OBJEXT) \
-	RTHiredis.$(OBJEXT) RTTcp.$(OBJEXT) RTHttpMsg.$(OBJEXT) \
-	RTMeetMsg.$(OBJEXT) RTMessage.$(OBJEXT) RTSignalMsg.$(OBJEXT)
+	RTHiredis.$(OBJEXT) RTTcp.$(OBJEXT) RTJSBuffer.$(OBJEXT) \
+	RTHttpMsg.$(OBJEXT) RTMeetMsg.$(OBJEXT) RTMessage.$(OBJEXT) \
+	RTSignalMsg.$(OBJEXT)
 libMSCommon_a_OBJECTS = $(am_libMSCommon_a_OBJECTS)
 AM_V_P = $(am__v_P_$(V))
 am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))
@@ -300,6 +301,7 @@ libMSCommon_a_SOURCES = $(top_srcdir)/MSCommon/sigslot.cc \
 					  $(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
+				$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMeetMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMessage.cpp \
@@ -376,6 +378,7 @@ distclean-compile:
 
 include ./$(DEPDIR)/RTHiredis.Po
 include ./$(DEPDIR)/RTHttpMsg.Po
+include ./$(DEPDIR)/RTJSBuffer.Po
 include ./$(DEPDIR)/RTMeetMsg.Po
 include ./$(DEPDIR)/RTMessage.Po
 include ./$(DEPDIR)/RTSignalMsg.Po
@@ -452,6 +455,20 @@ RTTcp.obj: $(top_srcdir)/MSCommon/MSBase/RTTcp.cpp
 #	$(AM_V_CXX)source='$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp' object='RTTcp.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RTTcp.obj `if test -f '$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp'; then $(CYGPATH_W) '$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp'; fi`
+
+RTJSBuffer.o: $(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RTJSBuffer.o -MD -MP -MF $(DEPDIR)/RTJSBuffer.Tpo -c -o RTJSBuffer.o `test -f '$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp' || echo '$(srcdir)/'`$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/RTJSBuffer.Tpo $(DEPDIR)/RTJSBuffer.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp' object='RTJSBuffer.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RTJSBuffer.o `test -f '$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp' || echo '$(srcdir)/'`$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp
+
+RTJSBuffer.obj: $(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RTJSBuffer.obj -MD -MP -MF $(DEPDIR)/RTJSBuffer.Tpo -c -o RTJSBuffer.obj `if test -f '$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp'; then $(CYGPATH_W) '$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/RTJSBuffer.Tpo $(DEPDIR)/RTJSBuffer.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp' object='RTJSBuffer.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o RTJSBuffer.obj `if test -f '$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp'; then $(CYGPATH_W) '$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp'; fi`
 
 RTHttpMsg.o: $(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT RTHttpMsg.o -MD -MP -MF $(DEPDIR)/RTHttpMsg.Tpo -c -o RTHttpMsg.o `test -f '$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp' || echo '$(srcdir)/'`$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp

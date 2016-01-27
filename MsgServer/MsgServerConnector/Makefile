@@ -99,6 +99,8 @@ am_MsgServerConnector_OBJECTS = CRTConnHttp.$(OBJEXT) \
 	CRTConnectionTcp.$(OBJEXT) CRTConnListener.$(OBJEXT) \
 	CRTConnTcpListener.$(OBJEXT) CRTModuleListener.$(OBJEXT) \
 	CRTTransfer.$(OBJEXT) CRTTransferSession.$(OBJEXT) \
+	CORTConnHttp.$(OBJEXT) CORTHttp.$(OBJEXT) \
+	CORTHttpSender.$(OBJEXT) CORTHttpSvrConn.$(OBJEXT) \
 	CRTConnectionManager.$(OBJEXT) CRTConnector.$(OBJEXT) \
 	CRTDispatchConnection.$(OBJEXT) main.$(OBJEXT)
 MsgServerConnector_OBJECTS = $(am_MsgServerConnector_OBJECTS)
@@ -279,7 +281,7 @@ AM_CFLAGS = -g -O0 -std=c++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES__
 MsgServerConnector_LDFLAGS = -static-libgcc
 AM_CPPFLAGS = $(AM_CFLAGS) -I$(top_srcdir)/ \
 	-I$(top_srcdir)/CRTConnection/ -I$(top_srcdir)/CRTListener/ \
-	-I$(top_srcdir)/CRTTransfer/ \
+	-I$(top_srcdir)/CRTTransfer/ -I$(top_srcdir)/CRTHttp/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 	-I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
@@ -299,6 +301,10 @@ MsgServerConnector_SOURCES = $(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/CRTListener/CRTModuleListener.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransfer.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp \
+			 			   $(top_srcdir)/CRTHttp/CORTConnHttp.cpp \
+			 			   $(top_srcdir)/CRTHttp/CORTHttp.cpp \
+			 			   $(top_srcdir)/CRTHttp/CORTHttpSender.cpp \
+			 			   $(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp \
 						   $(top_srcdir)/CRTConnectionManager.cpp \
 						   $(top_srcdir)/CRTConnector.cpp \
 						   $(top_srcdir)/CRTDispatchConnection.cpp \
@@ -414,6 +420,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/CORTConnHttp.Po
+include ./$(DEPDIR)/CORTHttp.Po
+include ./$(DEPDIR)/CORTHttpSender.Po
+include ./$(DEPDIR)/CORTHttpSvrConn.Po
 include ./$(DEPDIR)/CRTConnHttp.Po
 include ./$(DEPDIR)/CRTConnListener.Po
 include ./$(DEPDIR)/CRTConnTcp.Po
@@ -567,6 +577,62 @@ CRTTransferSession.obj: $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp
 #	$(AM_V_CXX)source='$(top_srcdir)/CRTTransfer/CRTTransferSession.cpp' object='CRTTransferSession.obj' libtool=no \
 #	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
 #	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CRTTransferSession.obj `if test -f '$(top_srcdir)/CRTTransfer/CRTTransferSession.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTTransfer/CRTTransferSession.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTTransfer/CRTTransferSession.cpp'; fi`
+
+CORTConnHttp.o: $(top_srcdir)/CRTHttp/CORTConnHttp.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTConnHttp.o -MD -MP -MF $(DEPDIR)/CORTConnHttp.Tpo -c -o CORTConnHttp.o `test -f '$(top_srcdir)/CRTHttp/CORTConnHttp.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTConnHttp.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTConnHttp.Tpo $(DEPDIR)/CORTConnHttp.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTConnHttp.cpp' object='CORTConnHttp.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTConnHttp.o `test -f '$(top_srcdir)/CRTHttp/CORTConnHttp.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTConnHttp.cpp
+
+CORTConnHttp.obj: $(top_srcdir)/CRTHttp/CORTConnHttp.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTConnHttp.obj -MD -MP -MF $(DEPDIR)/CORTConnHttp.Tpo -c -o CORTConnHttp.obj `if test -f '$(top_srcdir)/CRTHttp/CORTConnHttp.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTConnHttp.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTConnHttp.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTConnHttp.Tpo $(DEPDIR)/CORTConnHttp.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTConnHttp.cpp' object='CORTConnHttp.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTConnHttp.obj `if test -f '$(top_srcdir)/CRTHttp/CORTConnHttp.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTConnHttp.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTConnHttp.cpp'; fi`
+
+CORTHttp.o: $(top_srcdir)/CRTHttp/CORTHttp.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTHttp.o -MD -MP -MF $(DEPDIR)/CORTHttp.Tpo -c -o CORTHttp.o `test -f '$(top_srcdir)/CRTHttp/CORTHttp.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTHttp.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTHttp.Tpo $(DEPDIR)/CORTHttp.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTHttp.cpp' object='CORTHttp.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTHttp.o `test -f '$(top_srcdir)/CRTHttp/CORTHttp.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTHttp.cpp
+
+CORTHttp.obj: $(top_srcdir)/CRTHttp/CORTHttp.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTHttp.obj -MD -MP -MF $(DEPDIR)/CORTHttp.Tpo -c -o CORTHttp.obj `if test -f '$(top_srcdir)/CRTHttp/CORTHttp.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTHttp.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTHttp.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTHttp.Tpo $(DEPDIR)/CORTHttp.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTHttp.cpp' object='CORTHttp.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTHttp.obj `if test -f '$(top_srcdir)/CRTHttp/CORTHttp.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTHttp.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTHttp.cpp'; fi`
+
+CORTHttpSender.o: $(top_srcdir)/CRTHttp/CORTHttpSender.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTHttpSender.o -MD -MP -MF $(DEPDIR)/CORTHttpSender.Tpo -c -o CORTHttpSender.o `test -f '$(top_srcdir)/CRTHttp/CORTHttpSender.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTHttpSender.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTHttpSender.Tpo $(DEPDIR)/CORTHttpSender.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTHttpSender.cpp' object='CORTHttpSender.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTHttpSender.o `test -f '$(top_srcdir)/CRTHttp/CORTHttpSender.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTHttpSender.cpp
+
+CORTHttpSender.obj: $(top_srcdir)/CRTHttp/CORTHttpSender.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTHttpSender.obj -MD -MP -MF $(DEPDIR)/CORTHttpSender.Tpo -c -o CORTHttpSender.obj `if test -f '$(top_srcdir)/CRTHttp/CORTHttpSender.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTHttpSender.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTHttpSender.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTHttpSender.Tpo $(DEPDIR)/CORTHttpSender.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTHttpSender.cpp' object='CORTHttpSender.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTHttpSender.obj `if test -f '$(top_srcdir)/CRTHttp/CORTHttpSender.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTHttpSender.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTHttpSender.cpp'; fi`
+
+CORTHttpSvrConn.o: $(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTHttpSvrConn.o -MD -MP -MF $(DEPDIR)/CORTHttpSvrConn.Tpo -c -o CORTHttpSvrConn.o `test -f '$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTHttpSvrConn.Tpo $(DEPDIR)/CORTHttpSvrConn.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp' object='CORTHttpSvrConn.o' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTHttpSvrConn.o `test -f '$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp
+
+CORTHttpSvrConn.obj: $(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp
+	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CORTHttpSvrConn.obj -MD -MP -MF $(DEPDIR)/CORTHttpSvrConn.Tpo -c -o CORTHttpSvrConn.obj `if test -f '$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp'; fi`
+	$(AM_V_at)$(am__mv) $(DEPDIR)/CORTHttpSvrConn.Tpo $(DEPDIR)/CORTHttpSvrConn.Po
+#	$(AM_V_CXX)source='$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp' object='CORTHttpSvrConn.obj' libtool=no \
+#	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) \
+#	$(AM_V_CXX_no)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o CORTHttpSvrConn.obj `if test -f '$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp'; then $(CYGPATH_W) '$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp'; else $(CYGPATH_W) '$(srcdir)/$(top_srcdir)/CRTHttp/CORTHttpSvrConn.cpp'; fi`
 
 CRTConnectionManager.o: $(top_srcdir)/CRTConnectionManager.cpp
 	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT CRTConnectionManager.o -MD -MP -MF $(DEPDIR)/CRTConnectionManager.Tpo -c -o CRTConnectionManager.o `test -f '$(top_srcdir)/CRTConnectionManager.cpp' || echo '$(srcdir)/'`$(top_srcdir)/CRTConnectionManager.cpp
