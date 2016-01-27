@@ -145,14 +145,14 @@ MRTTransferSession.o: MRTTransfer/MRTTransferSession.cpp \
  /usr/include/c++/4.8.2/bits/ptr_traits.h \
  /usr/include/c++/4.8.2/bits/hashtable.h \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
- /usr/include/c++/4.8.2/bits/unordered_map.h MRTTransfer/MRTTransfer.h \
+ /usr/include/c++/4.8.2/bits/unordered_map.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h MRTTransfer/MRTTransfer.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
  /usr/include/c++/4.8.2/bits/list.tcc \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h MRTRoomManager.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h \
@@ -198,6 +198,7 @@ MRTTransferSession.o: MRTTransfer/MRTTransferSession.cpp \
  ../MsgServer/MSCommon/MSThirdParty/autoref/constructormagic.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/template_util.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/typedefs.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  MRTHttp/MRTHttpSvrConn.h MRTHttp/MRTHttp.h MRTHttp/MRTConnHttp.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
  /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_map.h \
@@ -598,6 +599,8 @@ MRTTransfer/MRTTransferSession.h:
 
 /usr/include/c++/4.8.2/bits/unordered_map.h:
 
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
+
 MRTTransfer/MRTTransfer.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
@@ -613,8 +616,6 @@ MRTTransfer/MRTTransfer.h:
 /usr/include/c++/4.8.2/bits/list.tcc:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
@@ -731,6 +732,8 @@ MRTMeetingRoom.h:
 ../MsgServer/MSCommon/MSThirdParty/autoref/template_util.h:
 
 ../MsgServer/MSCommon/MSThirdParty/autoref/typedefs.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
 
 MRTHttp/MRTHttpSvrConn.h:
 

@@ -108,24 +108,17 @@ CRTConnHttp.o: CRTConnection/CRTConnHttp.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8.2/bits/ostream.tcc /usr/include/c++/4.8.2/istream \
  /usr/include/c++/4.8.2/bits/istream.tcc \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h \
- /usr/include/sys/errno.h /usr/include/unistd.h \
- /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
- /usr/include/bits/confname.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/getopt.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSThread.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/DateTranslator.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h \
- /usr/include/string.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_excuter.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_generator.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_parser.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/md5digest.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h \
+ /usr/include/string.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/document.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/reader.h \
@@ -440,36 +433,6 @@ CRTConnection/CRTConnHttp.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMsg.h:
 
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h:
-
-/usr/include/sys/errno.h:
-
-/usr/include/unistd.h:
-
-/usr/include/bits/posix_opt.h:
-
-/usr/include/bits/environments.h:
-
-/usr/include/bits/confname.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/getopt.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSThread.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/DateTranslator.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h:
-
-/usr/include/string.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
-
 ../MsgServer/MSCommon/MSThirdParty/libhttp/http_excuter.h:
 
 ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h:
@@ -479,6 +442,18 @@ CRTConnection/CRTConnHttp.h:
 ../MsgServer/MSCommon/MSThirdParty/libhttp/http_parser.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/md5digest.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h:
+
+/usr/include/string.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
 

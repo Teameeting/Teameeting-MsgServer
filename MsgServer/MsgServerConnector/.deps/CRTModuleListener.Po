@@ -147,7 +147,8 @@ CRTModuleListener.o: CRTListener/CRTModuleListener.cpp \
  /usr/include/c++/4.8.2/bits/ptr_traits.h \
  /usr/include/c++/4.8.2/bits/hashtable.h \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
- /usr/include/c++/4.8.2/bits/unordered_map.h CRTTransfer/CRTTransfer.h \
+ /usr/include/c++/4.8.2/bits/unordered_map.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h CRTTransfer/CRTTransfer.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h /usr/include/c++/4.8.2/list \
@@ -557,6 +558,8 @@ CRTTransfer/CRTTransferSession.h:
 /usr/include/c++/4.8.2/bits/hashtable_policy.h:
 
 /usr/include/c++/4.8.2/bits/unordered_map.h:
+
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 CRTTransfer/CRTTransfer.h:
 

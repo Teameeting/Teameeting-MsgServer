@@ -101,7 +101,10 @@ DRTConnectionManager.o: DRTConnectionManager.cpp \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
  /usr/include/c++/4.8.2/bits/unordered_map.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
- /usr/include/c++/4.8.2/bits/list.tcc \
+ /usr/include/c++/4.8.2/bits/list.tcc /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h \
  /usr/include/c++/4.8.2/algorithm /usr/include/c++/4.8.2/bits/stl_algo.h \
  /usr/include/c++/4.8.2/bits/algorithmfwd.h \
@@ -180,7 +183,8 @@ DRTConnectionManager.o: DRTConnectionManager.cpp \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/IdleTask.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
- ../MsgServer/MSCommon/MSBase/RTObserver.h DRTTransfer/DRTTransfer.h \
+ ../MsgServer/MSCommon/MSBase/RTObserver.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h DRTTransfer/DRTTransfer.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h
 
@@ -468,6 +472,14 @@ DRTConnectionManager.h:
 
 /usr/include/c++/4.8.2/bits/list.tcc:
 
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
+
 ../MsgServer/MSCommon/MSProtocol/RTMessage.h:
 
 /usr/include/c++/4.8.2/algorithm:
@@ -673,6 +685,8 @@ DRTTransfer/DRTTransferSession.h:
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserver.h:
+
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 DRTTransfer/DRTTransfer.h:
 

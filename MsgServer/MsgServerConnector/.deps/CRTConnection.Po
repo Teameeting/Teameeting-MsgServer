@@ -166,12 +166,19 @@ CRTConnection.o: CRTConnection/CRTConnection.cpp \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/stringbuffer.h \
  CRTConnectionManager.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
- /usr/include/c++/4.8.2/bits/list.tcc CRTTransfer/CRTTransferSession.h \
+ /usr/include/c++/4.8.2/bits/list.tcc /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h \
+ CRTTransfer/CRTTransferSession.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/SocketUtils.h \
- /usr/include/net/if.h CRTTransfer/CRTTransfer.h \
- ../MsgServer/MSCommon/MSProtocol/RTMessage.h \
+ /usr/include/net/if.h ../MsgServer/MSCommon/MSBase/RTJSBuffer.h \
+ CRTTransfer/CRTTransfer.h ../MsgServer/MSCommon/MSProtocol/RTMessage.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  CRTDispatchConnection.h ../MsgServer/MSCommon/MSCommon/RTType.h \
+ CRTHttp/CORTHttpSvrConn.h CRTHttp/CORTHttp.h CRTHttp/CORTConnHttp.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h
 
 /usr/include/stdc-predef.h:
@@ -622,11 +629,19 @@ CRTConnectionManager.h:
 
 /usr/include/c++/4.8.2/bits/list.tcc:
 
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
+
 CRTTransfer/CRTTransferSession.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/SocketUtils.h:
 
 /usr/include/net/if.h:
+
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 CRTTransfer/CRTTransfer.h:
 
@@ -637,5 +652,17 @@ CRTTransfer/CRTTransfer.h:
 CRTDispatchConnection.h:
 
 ../MsgServer/MSCommon/MSCommon/RTType.h:
+
+CRTHttp/CORTHttpSvrConn.h:
+
+CRTHttp/CORTHttp.h:
+
+CRTHttp/CORTConnHttp.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h:

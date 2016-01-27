@@ -146,14 +146,14 @@ MRTMeeting.o: MRTMeeting.cpp /usr/include/stdc-predef.h MRTMeeting.h \
  /usr/include/c++/4.8.2/bits/ptr_traits.h \
  /usr/include/c++/4.8.2/bits/hashtable.h \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
- /usr/include/c++/4.8.2/bits/unordered_map.h MRTTransfer/MRTTransfer.h \
+ /usr/include/c++/4.8.2/bits/unordered_map.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h MRTTransfer/MRTTransfer.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
  /usr/include/c++/4.8.2/bits/list.tcc \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
  /usr/include/assert.h ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
@@ -172,15 +172,15 @@ MRTMeeting.o: MRTMeeting.cpp /usr/include/stdc-predef.h MRTMeeting.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/prettywriter.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/writer.h \
  ../MsgServer/MSCommon/MSThirdParty/rapidjson/stringbuffer.h \
- MRTConnectionManager.h MRTRoomManager.h \
+ MRTConnectionManager.h /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h MRTRoomManager.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h \
  ../MsgServer/MSCommon/MSProtocol/RTSignalMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h MRTMeetingRoom.h \
- /usr/include/c++/4.8.2/set /usr/include/c++/4.8.2/bits/stl_tree.h \
- /usr/include/c++/4.8.2/bits/stl_set.h \
- /usr/include/c++/4.8.2/bits/stl_multiset.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ptr.h \
  /usr/include/c++/4.8.2/algorithm /usr/include/c++/4.8.2/bits/stl_algo.h \
  /usr/include/c++/4.8.2/bits/algorithmfwd.h \
@@ -214,6 +214,7 @@ MRTMeeting.o: MRTMeeting.cpp /usr/include/stdc-predef.h MRTMeeting.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/constructormagic.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/template_util.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/typedefs.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  MRTHttp/MRTHttpSvrConn.h MRTHttp/MRTHttp.h MRTHttp/MRTConnHttp.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
  /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_map.h \
@@ -619,6 +620,8 @@ MRTTransfer/MRTTransferSession.h:
 
 /usr/include/c++/4.8.2/bits/unordered_map.h:
 
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
+
 MRTTransfer/MRTTransfer.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
@@ -634,8 +637,6 @@ MRTTransfer/MRTTransfer.h:
 /usr/include/c++/4.8.2/bits/list.tcc:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
@@ -681,6 +682,14 @@ MRTTransfer/MRTTransfer.h:
 
 MRTConnectionManager.h:
 
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
+
 MRTRoomManager.h:
 
 ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h:
@@ -694,14 +703,6 @@ MRTRoomManager.h:
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
 
 MRTMeetingRoom.h:
-
-/usr/include/c++/4.8.2/set:
-
-/usr/include/c++/4.8.2/bits/stl_tree.h:
-
-/usr/include/c++/4.8.2/bits/stl_set.h:
-
-/usr/include/c++/4.8.2/bits/stl_multiset.h:
 
 ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ptr.h:
 
@@ -788,6 +789,8 @@ MRTMeetingRoom.h:
 ../MsgServer/MSCommon/MSThirdParty/autoref/template_util.h:
 
 ../MsgServer/MSCommon/MSThirdParty/autoref/typedefs.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
 
 MRTHttp/MRTHttpSvrConn.h:
 

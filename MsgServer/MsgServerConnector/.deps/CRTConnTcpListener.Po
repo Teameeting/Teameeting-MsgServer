@@ -154,7 +154,7 @@ CRTConnTcpListener.o: CRTListener/CRTConnTcpListener.cpp \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTSignalMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h
 
 /usr/include/stdc-predef.h:
@@ -573,6 +573,6 @@ CRTConnection/CRTConnTcp.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
 
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:

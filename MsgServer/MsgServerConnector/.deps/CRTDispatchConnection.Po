@@ -90,29 +90,10 @@ CRTDispatchConnection.o: CRTDispatchConnection.cpp \
  /usr/include/c++/4.8.2/bits/locale_facets.tcc \
  /usr/include/c++/4.8.2/bits/basic_ios.tcc \
  /usr/include/c++/4.8.2/bits/ostream.tcc /usr/include/c++/4.8.2/istream \
- /usr/include/c++/4.8.2/bits/istream.tcc \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h \
- /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/limits.h \
- /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/syslimits.h \
- /usr/include/limits.h /usr/include/bits/posix1_lim.h \
- /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
- /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
- /usr/include/sys/errno.h /usr/include/unistd.h \
- /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
- /usr/include/bits/confname.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/getopt.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSThread.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/DateTranslator.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h \
- /usr/include/string.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
- CRTConnectionManager.h /usr/include/c++/4.8.2/unordered_map \
- /usr/include/c++/4.8.2/utility /usr/include/c++/4.8.2/bits/stl_relops.h \
- /usr/include/c++/4.8.2/tuple /usr/include/c++/4.8.2/array \
- /usr/include/c++/4.8.2/stdexcept \
+ /usr/include/c++/4.8.2/bits/istream.tcc CRTConnectionManager.h \
+ /usr/include/c++/4.8.2/unordered_map /usr/include/c++/4.8.2/utility \
+ /usr/include/c++/4.8.2/bits/stl_relops.h /usr/include/c++/4.8.2/tuple \
+ /usr/include/c++/4.8.2/array /usr/include/c++/4.8.2/stdexcept \
  /usr/include/c++/4.8.2/bits/uses_allocator.h \
  /usr/include/c++/4.8.2/bits/alloc_traits.h \
  /usr/include/c++/4.8.2/bits/ptr_traits.h \
@@ -120,10 +101,32 @@ CRTDispatchConnection.o: CRTDispatchConnection.cpp \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
  /usr/include/c++/4.8.2/bits/unordered_map.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
- /usr/include/c++/4.8.2/bits/list.tcc CRTTransfer/CRTTransferSession.h \
+ /usr/include/c++/4.8.2/bits/list.tcc /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h \
+ CRTTransfer/CRTTransferSession.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/SocketUtils.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/ev.h /usr/include/sys/queue.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/ev.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/limits.h \
+ /usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
+ /usr/include/sys/queue.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h \
+ /usr/include/string.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
+ /usr/include/sys/errno.h /usr/include/unistd.h \
+ /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
+ /usr/include/bits/confname.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/getopt.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSThread.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/DateTranslator.h \
  /usr/include/sys/socket.h /usr/include/sys/uio.h /usr/include/bits/uio.h \
  /usr/include/bits/socket.h /usr/include/bits/socket_type.h \
  /usr/include/bits/sockaddr.h /usr/include/asm/socket.h \
@@ -148,19 +151,24 @@ CRTDispatchConnection.o: CRTDispatchConnection.cpp \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/IdleTask.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
- ../MsgServer/MSCommon/MSBase/RTObserver.h CRTTransfer/CRTTransfer.h \
+ ../MsgServer/MSCommon/MSBase/RTObserver.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h CRTTransfer/CRTTransfer.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  CRTDispatchConnection.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
- ../MsgServer/MSCommon/MSCommon/RTType.h CRTConnection/CRTConnection.h \
- CRTConnection/CRTConnHttp.h \
+ ../MsgServer/MSCommon/MSCommon/RTType.h CRTHttp/CORTHttpSvrConn.h \
+ CRTHttp/CORTHttp.h CRTHttp/CORTConnHttp.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
- /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_tree.h \
- /usr/include/c++/4.8.2/bits/stl_map.h \
+ /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_map.h \
  /usr/include/c++/4.8.2/bits/stl_multimap.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h \
+ CRTConnection/CRTConnection.h CRTConnection/CRTConnHttp.h \
  CRTConnection/CRTConnectionTcp.h CRTConnection/CRTConnTcp.h \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTSignalMsg.h \
@@ -420,52 +428,6 @@ CRTDispatchConnection.h:
 
 /usr/include/c++/4.8.2/bits/istream.tcc:
 
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h:
-
-/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/limits.h:
-
-/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/syslimits.h:
-
-/usr/include/limits.h:
-
-/usr/include/bits/posix1_lim.h:
-
-/usr/include/bits/local_lim.h:
-
-/usr/include/linux/limits.h:
-
-/usr/include/bits/posix2_lim.h:
-
-/usr/include/bits/xopen_lim.h:
-
-/usr/include/sys/errno.h:
-
-/usr/include/unistd.h:
-
-/usr/include/bits/posix_opt.h:
-
-/usr/include/bits/environments.h:
-
-/usr/include/bits/confname.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/getopt.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSThread.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/DateTranslator.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h:
-
-/usr/include/string.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h:
-
-../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
-
 CRTConnectionManager.h:
 
 /usr/include/c++/4.8.2/unordered_map:
@@ -498,15 +460,67 @@ CRTConnectionManager.h:
 
 /usr/include/c++/4.8.2/bits/list.tcc:
 
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
+
 CRTTransfer/CRTTransferSession.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/SocketUtils.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/ev.h:
 
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/limits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/usr/include/bits/xopen_lim.h:
+
 /usr/include/sys/queue.h:
 
+../MsgServer/MSCommon/MSThirdParty/RTComm/MyAssert.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/SafeStdLib.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/StrPtrLen.h:
+
+/usr/include/string.h:
+
 ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
+
+/usr/include/sys/errno.h:
+
+/usr/include/unistd.h:
+
+/usr/include/bits/posix_opt.h:
+
+/usr/include/bits/environments.h:
+
+/usr/include/bits/confname.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/getopt.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSThread.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/DateTranslator.h:
 
 /usr/include/sys/socket.h:
 
@@ -572,6 +586,8 @@ CRTTransfer/CRTTransferSession.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserver.h:
 
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
+
 CRTTransfer/CRTTransfer.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
@@ -582,25 +598,37 @@ CRTTransfer/CRTTransfer.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
 
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
+
 CRTDispatchConnection.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
 ../MsgServer/MSCommon/MSCommon/RTType.h:
 
-CRTConnection/CRTConnection.h:
+CRTHttp/CORTHttpSvrConn.h:
 
-CRTConnection/CRTConnHttp.h:
+CRTHttp/CORTHttp.h:
+
+CRTHttp/CORTConnHttp.h:
 
 ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h:
 
 /usr/include/c++/4.8.2/map:
 
-/usr/include/c++/4.8.2/bits/stl_tree.h:
-
 /usr/include/c++/4.8.2/bits/stl_map.h:
 
 /usr/include/c++/4.8.2/bits/stl_multimap.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h:
+
+CRTConnection/CRTConnection.h:
+
+CRTConnection/CRTConnHttp.h:
 
 CRTConnection/CRTConnectionTcp.h:
 

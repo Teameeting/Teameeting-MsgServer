@@ -101,7 +101,10 @@ MRTConnectionManager.o: MRTConnectionManager.cpp \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
  /usr/include/c++/4.8.2/bits/unordered_map.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
- /usr/include/c++/4.8.2/bits/list.tcc \
+ /usr/include/c++/4.8.2/bits/list.tcc /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h /usr/include/assert.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/md5.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OSHeaders.h \
@@ -158,12 +161,10 @@ MRTConnectionManager.o: MRTConnectionManager.cpp \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/IdleTask.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
- ../MsgServer/MSCommon/MSBase/RTObserver.h MRTTransfer/MRTTransfer.h \
+ ../MsgServer/MSCommon/MSBase/RTObserver.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h MRTTransfer/MRTTransfer.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h MRTMeetingRoom.h \
- /usr/include/c++/4.8.2/set /usr/include/c++/4.8.2/bits/stl_tree.h \
- /usr/include/c++/4.8.2/bits/stl_set.h \
- /usr/include/c++/4.8.2/bits/stl_multiset.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ptr.h \
  /usr/include/c++/4.8.2/algorithm /usr/include/c++/4.8.2/bits/stl_algo.h \
  /usr/include/c++/4.8.2/bits/algorithmfwd.h \
@@ -486,6 +487,14 @@ MRTConnectionManager.h:
 
 /usr/include/c++/4.8.2/bits/list.tcc:
 
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
+
 ../MsgServer/MSCommon/MSProtocol/RTMessage.h:
 
 /usr/include/assert.h:
@@ -630,6 +639,8 @@ MRTTransfer/MRTTransferSession.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserver.h:
 
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
+
 MRTTransfer/MRTTransfer.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
@@ -637,14 +648,6 @@ MRTTransfer/MRTTransfer.h:
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
 MRTMeetingRoom.h:
-
-/usr/include/c++/4.8.2/set:
-
-/usr/include/c++/4.8.2/bits/stl_tree.h:
-
-/usr/include/c++/4.8.2/bits/stl_set.h:
-
-/usr/include/c++/4.8.2/bits/stl_multiset.h:
 
 ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ptr.h:
 

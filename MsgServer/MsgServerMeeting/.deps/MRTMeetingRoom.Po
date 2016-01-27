@@ -209,7 +209,8 @@ MRTMeetingRoom.o: MRTMeetingRoom.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/IdleTask.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/OS.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
- ../MsgServer/MSCommon/MSBase/RTObserver.h MRTTransfer/MRTTransfer.h \
+ ../MsgServer/MSCommon/MSBase/RTObserver.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h MRTTransfer/MRTTransfer.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
  MRTHttp/MRTHttpSvrConn.h MRTHttp/MRTHttp.h MRTHttp/MRTConnHttp.h \
  ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
@@ -772,6 +773,8 @@ MRTTransfer/MRTTransferSession.h:
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserver.h:
+
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 MRTTransfer/MRTTransfer.h:
 

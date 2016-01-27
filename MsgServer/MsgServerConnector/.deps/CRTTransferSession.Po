@@ -145,7 +145,8 @@ CRTTransferSession.o: CRTTransfer/CRTTransferSession.cpp \
  /usr/include/c++/4.8.2/bits/ptr_traits.h \
  /usr/include/c++/4.8.2/bits/hashtable.h \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
- /usr/include/c++/4.8.2/bits/unordered_map.h CRTTransfer/CRTTransfer.h \
+ /usr/include/c++/4.8.2/bits/unordered_map.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h CRTTransfer/CRTTransfer.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h /usr/include/c++/4.8.2/list \
@@ -156,8 +157,18 @@ CRTTransferSession.o: CRTTransfer/CRTTransferSession.cpp \
  CRTDispatchConnection.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h \
- CRTConnectionManager.h CRTTransfer/CRTTransferSession.h \
- ../MsgServer/MSCommon/MSCommon/RTType.h
+ CRTConnectionManager.h /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h \
+ CRTTransfer/CRTTransferSession.h ../MsgServer/MSCommon/MSCommon/RTType.h \
+ CRTHttp/CORTHttpSvrConn.h CRTHttp/CORTHttp.h CRTHttp/CORTConnHttp.h \
+ ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
+ /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_map.h \
+ /usr/include/c++/4.8.2/bits/stl_multimap.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h
 
 /usr/include/stdc-predef.h:
 
@@ -553,6 +564,8 @@ CRTTransfer/CRTTransferSession.h:
 
 /usr/include/c++/4.8.2/bits/unordered_map.h:
 
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
+
 CRTTransfer/CRTTransfer.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
@@ -579,6 +592,34 @@ CRTDispatchConnection.h:
 
 CRTConnectionManager.h:
 
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
+
 CRTTransfer/CRTTransferSession.h:
 
 ../MsgServer/MSCommon/MSCommon/RTType.h:
+
+CRTHttp/CORTHttpSvrConn.h:
+
+CRTHttp/CORTHttp.h:
+
+CRTHttp/CORTConnHttp.h:
+
+../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h:
+
+/usr/include/c++/4.8.2/map:
+
+/usr/include/c++/4.8.2/bits/stl_map.h:
+
+/usr/include/c++/4.8.2/bits/stl_multimap.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h:

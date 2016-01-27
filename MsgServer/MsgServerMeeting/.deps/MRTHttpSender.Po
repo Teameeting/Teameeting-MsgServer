@@ -148,7 +148,6 @@ MRTHttpSender.o: MRTHttp/MRTHttpSender.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8.2/bits/ostream.tcc /usr/include/c++/4.8.2/istream \
  /usr/include/c++/4.8.2/bits/istream.tcc \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  ../MsgServer/MSCommon/MSProtocol/RTMessage.h /usr/include/c++/4.8.2/list \
  /usr/include/c++/4.8.2/bits/stl_list.h \
  /usr/include/c++/4.8.2/bits/list.tcc MRTHttp/MRTHttpCmd.h \
@@ -157,7 +156,8 @@ MRTHttpSender.o: MRTHttp/MRTHttpSender.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h \
  ../MsgServer/MSCommon/MSProtocol/RTSignalMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
- MRTTransfer/MRTTransferSession.h MRTTransfer/MRTTransfer.h \
+ MRTTransfer/MRTTransferSession.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h MRTTransfer/MRTTransfer.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h MRTMeetingRoom.h \
  /usr/include/c++/4.8.2/set /usr/include/c++/4.8.2/bits/stl_set.h \
@@ -196,6 +196,7 @@ MRTHttpSender.o: MRTHttp/MRTHttpSender.cpp /usr/include/stdc-predef.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/constructormagic.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/template_util.h \
  ../MsgServer/MSCommon/MSThirdParty/autoref/typedefs.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  MRTHttp/MRTHttpSvrConn.h MRTHttp/MRTHttp.h MRTHttp/MRTHttpCmd.h
 
 /usr/include/stdc-predef.h:
@@ -608,8 +609,6 @@ MRTHttp/MRTConnHttp.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMsg.h:
 
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
-
 ../MsgServer/MSCommon/MSProtocol/RTMessage.h:
 
 /usr/include/c++/4.8.2/list:
@@ -633,6 +632,8 @@ MRTRoomManager.h:
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
 
 MRTTransfer/MRTTransferSession.h:
+
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 MRTTransfer/MRTTransfer.h:
 
@@ -735,6 +736,8 @@ MRTMeetingRoom.h:
 ../MsgServer/MSCommon/MSThirdParty/autoref/template_util.h:
 
 ../MsgServer/MSCommon/MSThirdParty/autoref/typedefs.h:
+
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
 
 MRTHttp/MRTHttpSvrConn.h:
 

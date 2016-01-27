@@ -118,7 +118,7 @@ RTTcp.o: MSCommon/MSBase/RTTcp.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8.2/bits/ptr_traits.h \
  /usr/include/c++/4.8.2/bits/hashtable.h \
  /usr/include/c++/4.8.2/bits/hashtable_policy.h \
- /usr/include/c++/4.8.2/bits/unordered_map.h \
+ /usr/include/c++/4.8.2/bits/unordered_map.h MSCommon/MSBase/RTJSBuffer.h \
  MSCommon/MSThirdParty/RTComm/atomic.h
 
 /usr/include/stdc-predef.h:
@@ -470,5 +470,7 @@ MSCommon/MSBase/RTObserver.h:
 /usr/include/c++/4.8.2/bits/hashtable_policy.h:
 
 /usr/include/c++/4.8.2/bits/unordered_map.h:
+
+MSCommon/MSBase/RTJSBuffer.h:
 
 MSCommon/MSThirdParty/RTComm/atomic.h:

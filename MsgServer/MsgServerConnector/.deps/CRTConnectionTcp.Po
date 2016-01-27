@@ -152,13 +152,25 @@ CRTConnectionTcp.o: CRTConnection/CRTConnectionTcp.cpp \
  ../MsgServer/MSCommon/MSProtocol/RTMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTSignalMsg.h \
  ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h \
- ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
+ ../MsgServer/MSCommon/MSBase/RTJSBuffer.h \
  ../MsgServer/MSCommon/MSBase/RTObserverConnection.h \
- CRTConnectionManager.h CRTTransfer/CRTTransferSession.h \
+ CRTConnectionManager.h /usr/include/c++/4.8.2/set \
+ /usr/include/c++/4.8.2/bits/stl_tree.h \
+ /usr/include/c++/4.8.2/bits/stl_set.h \
+ /usr/include/c++/4.8.2/bits/stl_multiset.h \
+ CRTTransfer/CRTTransferSession.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/SocketUtils.h \
  /usr/include/net/if.h CRTTransfer/CRTTransfer.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h \
+ ../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h \
  CRTDispatchConnection.h ../MsgServer/MSCommon/MSCommon/RTType.h \
+ CRTHttp/CORTHttpSvrConn.h CRTHttp/CORTHttp.h CRTHttp/CORTConnHttp.h \
+ ../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h \
+ /usr/include/c++/4.8.2/map /usr/include/c++/4.8.2/bits/stl_map.h \
+ /usr/include/c++/4.8.2/bits/stl_multimap.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h \
+ ../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h \
  ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h \
  ../MsgServer/MSCommon/MSCommon/StatusCode.h
 
@@ -572,11 +584,19 @@ CRTConnection/CRTConnTcp.h:
 
 ../MsgServer/MSCommon/MSProtocol/RTMeetMsg.h:
 
-../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
+../MsgServer/MSCommon/MSBase/RTJSBuffer.h:
 
 ../MsgServer/MSCommon/MSBase/RTObserverConnection.h:
 
 CRTConnectionManager.h:
+
+/usr/include/c++/4.8.2/set:
+
+/usr/include/c++/4.8.2/bits/stl_tree.h:
+
+/usr/include/c++/4.8.2/bits/stl_set.h:
+
+/usr/include/c++/4.8.2/bits/stl_multiset.h:
 
 CRTTransfer/CRTTransferSession.h:
 
@@ -588,9 +608,31 @@ CRTTransfer/CRTTransfer.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/rtklog.h:
 
+../MsgServer/MSCommon/MSThirdParty/RTComm/OSMutex.h:
+
 CRTDispatchConnection.h:
 
 ../MsgServer/MSCommon/MSCommon/RTType.h:
+
+CRTHttp/CORTHttpSvrConn.h:
+
+CRTHttp/CORTHttp.h:
+
+CRTHttp/CORTConnHttp.h:
+
+../MsgServer/MSCommon/MSThirdParty/libhttp/http_common.h:
+
+/usr/include/c++/4.8.2/map:
+
+/usr/include/c++/4.8.2/bits/stl_map.h:
+
+/usr/include/c++/4.8.2/bits/stl_multimap.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/refcount.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/atomicops.h:
+
+../MsgServer/MSCommon/MSThirdParty/autoref/scoped_ref_ptr.h:
 
 ../MsgServer/MSCommon/MSThirdParty/RTComm/atomic.h:
 
