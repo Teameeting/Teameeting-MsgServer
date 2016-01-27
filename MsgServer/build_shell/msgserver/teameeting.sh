@@ -68,3 +68,5 @@ function install_teameeting()
      
 }
 
+####find . -name "*.Po" | xargs rm -rf
+####find . -name "*.bz2" | xargs rm -rf
