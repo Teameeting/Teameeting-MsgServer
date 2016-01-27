@@ -110,6 +110,13 @@ SInt64 RTTcp::Run()
 
 				if(readed > 0)
 				{
+                    if(fRequestBuffer[0] != '$')
+                    {
+                        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
+                    } else {
+                        printf("RTcp::Run====fRequestBuffer:%.*s\n", readed-3, fRequestBuffer + 3);
+                    }
+                    
 					OnRecvData(fRequestBuffer, readed);
 				}
 			}

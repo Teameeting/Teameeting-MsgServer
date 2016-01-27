@@ -64,11 +64,9 @@ SInt64 CORTHttp::Run()
         else if(events&Task::kWriteEvent)
         {
             ListElement *elem = NULL;
-            LI("NOTIFICATION OnWriteEvent \n");
             if((elem = m_listSend.first) != NULL)
             {
                 int theLengthSent = 0;
-                LI("NOTIFICATION OnWriteEvent MSG:%s\n", (char*)elem->content);
                 int err = OnWriteEvent((char*)elem->content, elem->size, &theLengthSent);
                 if (!err)
                 {

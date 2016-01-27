@@ -41,7 +41,7 @@ public:
     
 public:
 	//* For RCHttp
-    virtual void OnReadEvent(const char*pData, int nLen);
+    virtual void OnReadEvent(const char*data, int size);
     virtual int  OnWriteEvent(const char*pData, int nLen, int* nOutLen);
 	virtual void OnTickEvent(){}
 

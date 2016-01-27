@@ -20,7 +20,7 @@ public:
     
 public:
 	//* For RCTcp
-	virtual void OnRecvData(const char*pData, int nLen);
+	virtual void OnRecvData(const char*data, int size);
     virtual void OnLcsEvent(){}
     virtual void OnPeerEvent(){}
 	virtual void OnTickEvent(){}

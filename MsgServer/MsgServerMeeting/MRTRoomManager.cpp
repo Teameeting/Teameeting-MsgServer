@@ -254,6 +254,7 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     it->second->AddMemberToRoom(mmsg._from, MRTMeetingRoom::MemberStatus::MS_INMEETING);
     AddUserMeetingRoomId(mmsg._from, mmsg._room);
     int online = it->second->GetRoomMemberOnline();
+    printf("EnterRoom online meeting member:%d\n", online);
     if (online==1) {
         if (m_pHttpSvrConn) {
             m_pHttpSvrConn->HttpInsertSessionMeetingInfo(mmsg._pass.c_str(), mmsg._room.c_str(), it->second->GetSessionId().c_str(), "0", "0", "1");

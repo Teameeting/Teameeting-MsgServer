@@ -264,6 +264,11 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
         memcpy((pptr), msg.c_str(), msg.length());
         
         if (m_pClientImpl) {
+#ifdef WEBRTC_ANDROID
+            LOGI("XMsgClient::SendEncodeMsg m_pClientImpl ptr:%s\n", ptr);
+#else
+            std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl ptr:" << ptr << std::endl;
+#endif
             int n = m_pClientImpl->SendMessageX(ptr, (int)strlen(ptr));
             delete ptr;
             ptr = NULL;
