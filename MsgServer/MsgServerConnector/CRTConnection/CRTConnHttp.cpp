@@ -152,7 +152,7 @@ void CRTConnHttp::OnHttpMessage(http_message* httpMsg)
 		//SendResponse(HPS_NOT_ACCEPTABLE, "");
         return;
     }
-    OSMutexLocker locker(&m_mutexMsg);
+
     MEETMSG m_mmsg;
     std::string str(pContent, nContentLen), err("");
     m_mmsg.GetMsg(str, err);
@@ -163,8 +163,8 @@ void CRTConnHttp::OnHttpMessage(http_message* httpMsg)
     }
 
     if (strcmp(pPath, "/login") == 0) {
-        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0) {
-            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str());
+        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0 && m_mmsg._nname.length()>0) {
+            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str(), m_mmsg._nname.c_str());
         } else {
             LE("login params errors\n");
         }

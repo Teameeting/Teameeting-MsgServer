@@ -20,6 +20,7 @@ WEBRTC_BASE_PATH = webrtc_normal
 
 LOCAL_MODULE    := rtcmsgclient-android
 LOCAL_SRC_FILES := XMsgProcesser.cpp \
+									 XJSBuffer.cpp \
 			XMsgClient.cpp \
 			XTcpClientImpl.cpp \
 			XTcpTick.cpp 

@@ -11,18 +11,20 @@
 
 #include "RTTcp.h"
 #include "CRTConnTcp.h"
+#include "RTJSBuffer.h"
 #include "RTObserverConnection.h"
 
 class CRTConnectionTcp
 : public RTTcp
 , public CRTConnTcp
+, public RTJSBuffer
 , public RTObserverConnection{
 public:
     CRTConnectionTcp();
     virtual ~CRTConnectionTcp();
 public:
     int SendDispatch(const std::string& id, const std::string& msg);
-    void GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, const std::string& status, std::string& resp);
+    void GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, std::string& resp);
 public:
     //* For RCTcp
     virtual void OnRecvData(const char*pData, int nLen);
@@ -32,7 +34,7 @@ public:
     
 public:
     //* For RTConnTcp
-    virtual void OnLogin(const char* pUserid, const char* pPass);
+    virtual void OnLogin(const char* pUserid, const char* pPass, const char* pNname);
     virtual void OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen);
     virtual void OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid);
     virtual void OnLogout(const char* pUserid);
@@ -41,15 +43,18 @@ public:
 public:
     //* For RTObserverConnection
     virtual void ConnectionDisconnected();
+    
+protected:
+    virtual void OnRecvMessage(const char*message, int nLen);
+    
 private:
     int GenericTransSeq();
 private:
-    char			*m_pBuffer;
-    int				m_nBufLen;
-    int				m_nBufOffset;
     std::string     m_connectorId;
     std::string     m_userId;
     std::string     m_token;
+    std::string     m_nname;
+    bool            m_login;
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnectionTcp__) */

@@ -11,7 +11,7 @@
 
 #include <string>
 
-enum MSTcpState{
+enum MSState{
     MSNOT_CONNECTED,
     MSCONNECTTING,
     MSCONNECTED
@@ -26,7 +26,7 @@ public:
     virtual void OnMsgServerConnected() = 0;
     virtual void OnMsgServerDisconnect() = 0;
     virtual void OnMsgServerConnectionFailure() = 0;
-    virtual void OnMsgServerState(MSTcpState state) = 0;
+    virtual void OnMsgServerState(MSState state) = 0;
 protected:
     virtual ~XMsgCallback(){}
 };

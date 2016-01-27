@@ -2,7 +2,6 @@
 #define __MsgServerMeeting_MRT_HTTP_SENDER_H__
 #include "RTTcp.h"
 #include "MRTConnHttp.h"
-#include "OSMutex.h"
 #include "RTMessage.h"
 #include "MRTHttpCmd.h"
 
@@ -34,7 +33,6 @@ private:
 	char			*m_pBuffer;
 	int				m_nBufLen;
 	int				m_nBufOffset;
-    OSMutex         m_mutex;
     http_method     m_method;
     HTTPCMD         m_cmd;
     TRANSMSG        m_transmsg;

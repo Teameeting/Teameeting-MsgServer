@@ -76,7 +76,7 @@ public:
         LOG(INFO) << __FUNCTION__ << " was called";
     }
     
-    virtual void OnMsgServerState(MSTcpState state) {
+    virtual void OnMsgServerState(MSState state) {
         LOG(INFO) << __FUNCTION__ << " was called, state:" << state;
     }
 
@@ -89,7 +89,7 @@ int main(int argc, const char * argv[]) {
     rtc::LogMessage::LogToDebug(rtc::INFO);
     XMsgClient client;
     MsgServerCallback callback;
-    const std::string server("192.168.7.39");
+    const std::string server("192.168.7.27");
     int port = 6630;
     //bool autoConnect = true;
     LOG(INFO) << "begin connect to server...";
@@ -97,24 +97,26 @@ int main(int argc, const char * argv[]) {
     //std::string pass("a405f2ad61030c3e354a144137213f819d32516896d7ed883d1dfb05dcd993bd8578d422bbf1e84f5cce15316374a217");
     std::string userid("8ca64d158a505876");
     std::string pass("7d6a1cafeb40616ddf0c7d490771330f98a8741ae92fc450a28b2a27ebf9156a");
+    std::string nname("nickname");
     std::string roomid("400000000436");
+    std::string rname("roomname");
     std::string msg("hello world, are you ok?");
-    client.Init(callback, userid, pass, server, port);
-    while(client.MSStatus()!=MSTcpState::MSCONNECTED)sleep(1);
+    client.Init(callback, userid, pass, nname, server, port);
+    while(client.MSStatus()!=MSState::MSCONNECTED)sleep(1);
     LOG(INFO) << "connectted to server...";
-    client.OptRoom(MEETCMD::enter, roomid, "");
+    client.OptRoom(MEETCMD::enter, roomid, rname, "");
     while (1) {
         //LOG(INFO) << "pClient->Status:" << client.Status();
-        client.SndMsg(roomid, msg);
-        client.NotifyMsg(roomid, sendtags_subscribe, "tagstagstagstags");
-        client.NotifyMsg(roomid, sendtags_audioset, "on");
-        client.NotifyMsg(roomid, sendtags_videoset, "off");
-        client.NotifyMsg(roomid, sendtags_videoset, "on");
-        client.NotifyMsg(roomid, sendtags_audioset, "off");
+        client.SndMsg(roomid, rname, msg);
+        client.NotifyMsg(roomid, rname, sendtags_subscribe, "tagstagstagstags");
+        client.NotifyMsg(roomid, rname, sendtags_audioset, "on");
+        client.NotifyMsg(roomid, rname, sendtags_videoset, "off");
+        client.NotifyMsg(roomid, rname, sendtags_videoset, "on");
+        client.NotifyMsg(roomid, rname, sendtags_audioset, "off");
         rtc::Thread::SleepMs(3000);
         //break;
     }
-    client.OptRoom(MEETCMD::leave, roomid, "");
+    client.OptRoom(MEETCMD::leave, roomid, rname, "");
     rtc::Thread::SleepMs(3000);
     client.Unin();
     LOG(INFO) << "bye bye client...";

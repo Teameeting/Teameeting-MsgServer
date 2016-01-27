@@ -238,6 +238,7 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgProcesser.o: \
  jni/..///webrtc_normal/webrtc/base/timeutils.h \
  jni/..///webrtc_normal/webrtc/base/physicalsocketserver.h \
  jni/..///webrtc_normal/webrtc/base/asyncfile.h jni/..///XTcpTick.h \
+ jni/..///XJSBuffer.h \
  /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/android/log.h
 
 jni/..///XMsgProcesser.h:
@@ -733,5 +734,7 @@ jni/..///webrtc_normal/webrtc/base/physicalsocketserver.h:
 jni/..///webrtc_normal/webrtc/base/asyncfile.h:
 
 jni/..///XTcpTick.h:
+
+jni/..///XJSBuffer.h:
 
 /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/android/log.h:

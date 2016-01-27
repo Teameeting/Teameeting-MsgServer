@@ -20,8 +20,10 @@ Task* CRTConnTcpListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
     // so that it can direct the "POST" half of the connection to the same machine when tunnelling RTSP thru HTTP
     
     CRTConnectionTcp* theTask = new CRTConnectionTcp();
-    if(NULL == theTask)
+    if(NULL == theTask) {
+        printf("CRTConnTcpListener theTask is NULL so return\n");
         return NULL;
+    }
     theSocket = theTask->GetSocket();  // out socket is not attached to a unix socket yet.
     
     //set options on the socket
@@ -37,11 +39,11 @@ Task* CRTConnTcpListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
     theSocket->RequestEvent(EV_RE);
     theTask->SetTimer(120*1000);
     
-#if 0
+#if 1
     StrPtrLen* remoteStr = theSocket->GetRemoteAddrStr();
     LI("\n*** RTConnTcpListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
 #endif
     this->RunNormal();
-    
+    printf("CRTConnTcpListener return the task last\n");
     return theTask;
 }

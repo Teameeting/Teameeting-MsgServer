@@ -49,10 +49,9 @@ public:
     virtual void OnResponse(const char*pData, int nLen) {}
     virtual void OnSend(const char*pData, int nLen) {}
 private:
-	char			*m_pBuffer;
-	int				m_nBufLen;
-	int				m_nBufOffset;
-    OSMutex         m_mutex;
+	char			 *m_pBuffer;
+	int				 m_nBufLen;
+	int				 m_nBufOffset;
     std::string      m_httpIp;
     unsigned short   m_httpPort;
     std::string      m_httpHost;

@@ -14,10 +14,12 @@
 #include <unordered_map>
 #include <utility>
 #include <list>
+#include <set>
 #include "CRTTransferSession.h"
 #include "RTMessage.h"
 #include "RTTcp.h"
 #include "RTType.h"
+#include "CORTHttpSvrConn.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"
@@ -65,7 +67,7 @@ public:
     typedef struct _TypeModuleSessionInfo{
         TRANSFERMODULE moduleType;
         std::string moduleId;
-        std::list<std::string> sessionIds;
+        std::set<std::string> sessionIds;
         _TypeModuleSessionInfo() {
             moduleType = transfermodule_invalid;
             moduleId = "";
@@ -116,6 +118,9 @@ public:
         static CRTConnectionManager s_manager;
         return &s_manager;
     }
+    static std::string      s_cohttpIp;
+    static unsigned short   s_cohttpPort;
+    static std::string      s_cohttpHost;
 
     void    GenericSessionId(std::string& strId);
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
@@ -140,6 +145,10 @@ public:
 
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
+    
+    bool ConnectHttpSvrConn();
+    void PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification);
+    void PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification);
 
     std::string& ConnectorIp() { return m_connectorIp; }
     std::string& ConnectorPort() { return m_connectorPort; }
@@ -150,12 +159,14 @@ private:
     CRTConnectionManager() : m_connectorIp(""),
                             m_connectorPort(""),
                             m_connectorId(""),
-                            m_lastUpdateTime("CRTConnectionManager") { }
+                            m_lastUpdateTime("CRTConnectionManager"),
+                            m_pcoHttpSvrConn(NULL) { }
     ~CRTConnectionManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
     std::string m_lastUpdateTime;
+    CORTHttpSvrConn     *m_pcoHttpSvrConn;
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnectionManager__) */

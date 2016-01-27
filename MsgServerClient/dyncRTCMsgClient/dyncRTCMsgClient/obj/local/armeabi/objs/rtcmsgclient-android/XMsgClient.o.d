@@ -233,7 +233,8 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgClient.o: \
  jni/..///webrtc_normal/webrtc/base/asyncfile.h jni/..///XTcpTick.h \
  jni/..///XMsgProcesser.h rtcmsgs/RTSignalMsg.h rtcmsgs/RTMeetMsg.h \
  rtcmsgs/RTMsg.h rtcmsgs/RTMeetMsg.h rtcmsgs/RTMessage.h \
- jni/..///XMsgCallback.h jni/..///webrtc_normal/webrtc/base/logging.h \
+ jni/..///XMsgCallback.h jni/..///XJSBuffer.h \
+ jni/..///webrtc_normal/webrtc/base/logging.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_sstream.c \
@@ -723,6 +724,8 @@ rtcmsgs/RTMeetMsg.h:
 rtcmsgs/RTMessage.h:
 
 jni/..///XMsgCallback.h:
+
+jni/..///XJSBuffer.h:
 
 jni/..///webrtc_normal/webrtc/base/logging.h:
 

@@ -82,7 +82,7 @@ void CRTConnection::OnLcsEvent()
 }
 
 //* For RTConnHttp
-void CRTConnection::OnLogin(const char* pUserid, const char* pPass)
+void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* pNname)
 {
     bool ok = false;
     {
@@ -94,9 +94,11 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass)
             LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
             return;
         }
+        
+#endif
         m_userId = pUserid;
         m_token = pPass;
-#endif
+        m_nname = pNname;
     }
     //if (ok) {
     if (false) {
@@ -214,6 +216,7 @@ void CRTConnection::OnLogout(const char* pUserid)
         CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid, token);
         m_userId.assign("");
         m_token.assign("");
+        m_nname.assign("");
     }
     {
         //send response

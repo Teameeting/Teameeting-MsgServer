@@ -40,9 +40,6 @@ private:
     DRTModuleListener                *m_pModuleListener;
     DRTTransferSession               *m_pTransferSession;
 
-	OSMutex							m_MutexRoom;
-	OSMutex							m_MutexSession;
-
 };
 
 #endif	// __MsgServerDispatcher_DRTMEETING_H__

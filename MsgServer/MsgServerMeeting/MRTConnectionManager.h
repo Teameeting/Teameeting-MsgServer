@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <utility>
 #include <list>
+#include <set>
 #include "RTMessage.h"
 
 class MRTTransferSession;
@@ -39,7 +40,7 @@ public:
     typedef struct _TypeModuleSessionInfo{
         TRANSFERMODULE moduleType;
         std::string moduleId;
-        std::list<std::string> sessionIds;
+        std::set<std::string> sessionIds;
         _TypeModuleSessionInfo() {
             moduleType = transfermodule_invalid;
             moduleId = "";

@@ -29,7 +29,6 @@ int CRTTransfer::DoProcessData(const char *pData, int nLen)
     if (nLen==0) {
         return 0;
     }
-    OSMutexLocker locker(&m_mutexMsg);
     TRANSFERMSG m_msg;
 
     std::string str(pData, nLen), err("");
@@ -105,40 +104,4 @@ int CRTTransfer::DoProcessData(const char *pData, int nLen)
         }
     }
     return nLen;
-}
-
-int CRTTransfer::ProcessData(const char* pData, int nLen)
-{
-    int parsed = 0;
-    int ll = 0;
-    std::string strData(pData, nLen);
-
-    while (parsed < nLen)
-    {
-
-        const char* pMsg = pData + parsed;
-        int offset = 0;
-        std::string strMsg(pMsg);
-
-        if (*(pMsg+offset) == '$') {
-            offset += 1;
-            char l[5] = {0};
-            memset(l, 0x00, 5);
-            memcpy(l, pMsg+offset, 4);
-            offset += 4;
-            ll = (int)strtol(l, NULL, 10);
-            if (ll>=0 && ll <= nLen) { // the message length may be 0
-                int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                if (nlen < 0) {
-                    break;
-                } else { // nlen < 0
-                    offset += ll;
-                    parsed += offset;
-                }
-            } else { // ll>0 && ll <= nLen
-                LE("RTTransfer::ProcessData Get Msg Len Error!!!, ll:%d, nLen:%d, parsed:%d\n", ll, nLen, parsed);
-            }
-        }
-    }
-    return parsed;
 }

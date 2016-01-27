@@ -26,7 +26,6 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
     if (nLen==0) {
         return 0;
     }
-    OSMutexLocker locker(&m_mutexMsg);
     SIGNALMSG m_smsg;
     MEETMSG m_mmsg;
     std::string sstr(pData, nLen), err("");
@@ -61,8 +60,8 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
             LE("keepalive params errors\n");
         }
     } else if (m_smsg._stype == SIGNALTYPE::login) {
-        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0) {
-            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str());
+        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0 && m_mmsg._nname.length()>0) {
+            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str(), m_mmsg._nname.c_str());
         } else {
             LE("login params errors\n");
         }
@@ -91,38 +90,6 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
         LE("parse signal msg params error\n");
     }
     return nLen;
-}
-
-int CRTConnTcp::ProcessData(const char* pData, int nLen)
-{
-    int parsed = 0;
-    int ll = 0;
-
-    while (parsed < nLen)
-    {
-        const char* pMsg = pData + parsed;
-        int offset = 0;
-        if (*(pMsg+offset) == '$') {
-            offset += 1;
-            char l[5] = {0};
-            memset(l, 0x00, 5);
-            memcpy(l, pMsg+offset, 4);
-            offset += 4;
-            ll = (int)strtol(l, NULL, 10);
-            if (ll>=0 && ll <= nLen) { // the message length may be 0
-                int nlen = DoProcessData((char *)(pMsg+offset), ll);
-                if (nlen < 0) {
-                    break;
-                } else { // nlen < 0
-                    offset += ll;
-                    parsed += offset;
-                }
-            } else { // ll>0 && ll <= nLen
-                LE("RTConnTcp::ProcessData Get Msg Len Error!!!, ll:%d, nLen:%d, parsed:%d\n", ll, nLen, parsed);
-            }
-        }
-    }
-    return parsed;
 }
 
 

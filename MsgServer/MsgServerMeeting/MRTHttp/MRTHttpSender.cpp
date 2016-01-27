@@ -124,7 +124,6 @@ void MRTHttpSender::OnResponse(const char*pData, int nLen)
 
 void MRTHttpSender::SendRequest(const char* pData, int nLen)
 {
-    OSMutexLocker locker(&m_mutex);
     RTTcp::SendData(pData, nLen);
     if  (GetSocket()) {
         GetSocket()->RequestEvent(EV_RE);

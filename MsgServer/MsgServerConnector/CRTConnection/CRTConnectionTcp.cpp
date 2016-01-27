@@ -14,19 +14,19 @@
 static unsigned int	g_trans_id = 0;
 
 CRTConnectionTcp::CRTConnectionTcp()
-: m_pBuffer(NULL)
-, m_nBufLen(0)
-, m_nBufOffset(0)
+: RTJSBuffer()
+, m_connectorId("")
+, m_userId("")
+, m_token("")
+, m_nname("")
+, m_login(false)
 {
-    m_nBufLen = kRequestBufferSizeInBytes;
-    m_pBuffer = new char[m_nBufLen];
     AddObserver(this);
 }
 
 CRTConnectionTcp::~CRTConnectionTcp()
 {
     DelObserver(this);
-    delete[] m_pBuffer;
 }
 
 int CRTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg)
@@ -35,7 +35,7 @@ int CRTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg
     return 0;
 }
 
-void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, const std::string& status, std::string& resp)
+void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, std::string& resp)
 {
     MEETMSG m_msg;
 
@@ -53,7 +53,8 @@ void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long lon
     m_msg._pass = "";
     m_msg._mseq = mseq;
     m_msg._code = code;
-    m_msg._status = status;
+    m_msg._nname = m_nname;
+    m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = OS::Milliseconds();
 
@@ -66,45 +67,12 @@ void CRTConnectionTcp::OnRecvData(const char*pData, int nLen)
     if (!pData) {
         return;
     }
-    {//
-        while((m_nBufOffset + nLen) > m_nBufLen)
-        {
-            m_nBufLen += kRequestBufferSizeInBytes;
-            char* ptr = (char *)realloc(m_pBuffer, m_nBufLen);
-            if(ptr != NULL)
-            {//
-                m_pBuffer = ptr;
-            }
-            else
-            {//
-                m_nBufLen -= kRequestBufferSizeInBytes;
-                continue;
-            }
-        }
+    RTJSBuffer::RecvData(pData, nLen);
+}
 
-        memcpy(m_pBuffer + m_nBufOffset, pData, nLen);
-        m_nBufOffset += nLen;
-    }
-
-    {//
-        int parsed = 0;
-        parsed = CRTConnTcp::ProcessData(m_pBuffer, m_nBufOffset);
-
-        if(parsed > 0)
-        {
-            m_nBufOffset -= parsed;
-            if(m_nBufOffset == 0)
-            {
-                memset(m_pBuffer, 0, m_nBufLen);
-            }
-            else
-            {
-                memmove(m_pBuffer, m_pBuffer + parsed, m_nBufOffset);
-            }
-        } else {
-            LE("OnRecvDaa parsed <=0 error!!!\n");
-        }
-    }
+void CRTConnectionTcp::OnRecvMessage(const char*message, int nLen)
+{
+    CRTConnTcp::DoProcessData(message, nLen);
 }
 
 void CRTConnectionTcp::OnLcsEvent()
@@ -114,7 +82,7 @@ void CRTConnectionTcp::OnLcsEvent()
 
 
 //* For RTConnTcp
-void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
+void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const char* pNname)
 {
     {
         //check & auth
@@ -132,13 +100,15 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
     }
     m_userId = pUserid;
     m_token = pPass;
+    m_nname = pNname;
+    LI("CRTConnectionTcp::Onlogin pUserid:%s\n", pUserid);
     std::string sid;
     {
         //store userid & pass
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
             CRTConnectionManager::Instance()->GenericSessionId(sid);
-            LI("==============GenericSessioNid sid:%s\n", sid.c_str());
+            LI("=====CRTConnectionTcp::OnLogin=========GenericSessioNid sid:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;
             pci->_connAddr = CRTConnectionManager::Instance()->ConnectorIp();
@@ -153,14 +123,16 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass)
             CRTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
             // send response
             std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, resp);
             SendResponse(0, resp.c_str());
+            m_login = true;
             return;
         } else {
             LE("new ConnectionInfo error!!!\n");
             std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, GetRTCommStatus(RTCommCode::_errconninfo), resp);
+            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, resp);
             SendResponse(0, resp.c_str());
+            m_login = false;
             return;
 
         }
@@ -220,16 +192,20 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
     CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
     m_userId.assign("");
     m_token.assign("");
+    m_nname.assign("");
     std::string resp;
-    GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, GetRTCommStatus(RTCommCode::_ok), resp);
+    GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, resp);
     SendResponse(0, resp.c_str());
+    m_login = false;
     return;
 }
 
 void CRTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
     LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
-    RTTcp::UpdateTimer();
+    if (m_login) {
+        RTTcp::UpdateTimer();
+    }
 }
 
 void CRTConnectionTcp::OnResponse(const char*pData, int nLen)

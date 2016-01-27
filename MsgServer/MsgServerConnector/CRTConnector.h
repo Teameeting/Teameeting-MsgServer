@@ -48,9 +48,6 @@ private:
     CRTModuleListener    *m_pModuleListener;
     CRTConnTcpListener   *m_pConnTcpListener;
 
-	OSMutex				m_MutexRoom;
-	OSMutex				m_MutexSession;
-
 };
 
 #endif	// __MsgServerConnector_CRTCONNECTOR_H__
