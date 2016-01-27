@@ -45,12 +45,13 @@ int RTTcp::SendTransferData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+3];//sprintf will add 1 in the end
+        char* ptr = new char[nLen+4];//sprintf will add 1 in the end
         char* pptr = ptr;
         *pptr = '$';
         (pptr)++;
         RTJSBuffer::writeShort(&pptr, nLen);
         memcpy((pptr), pData, nLen);
+        ptr[nLen+3] = '\0';
         ListAppend(&m_listSend, ptr, nLen+3);
         pptr = NULL;
     }
@@ -114,7 +115,7 @@ SInt64 RTTcp::Run()
                     {
                         printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
                     } else {
-                        printf("RTcp::Run====fRequestBuffer:%.*s\n", readed-3, fRequestBuffer + 3);
+                        printf("RTcp::Run====fRequestBuffer:%d, %s\n", readed, fRequestBuffer);
                     }
                     
 					OnRecvData(fRequestBuffer, readed);
