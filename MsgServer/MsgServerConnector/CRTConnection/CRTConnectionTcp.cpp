@@ -152,6 +152,7 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
     //find an TrasnferSession By mtype
     //transfer msg by TransferSession
 
+    printf("CRTConnectionTcp::OnSndMsg send pData:%s\n", pData);
     TRANSFERMSG t_trmsg;
     TRANSMSG t_msg;
     t_msg._flag = 0;

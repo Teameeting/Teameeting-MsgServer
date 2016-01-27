@@ -25,7 +25,7 @@ public:
     
    	int SendData(const char*pData, int nLen);
     
-    virtual void OnReadEvent(const char*pData, int nLen) = 0;
+    virtual void OnReadEvent(const char*data, int size) = 0;
     virtual int  OnWriteEvent(const char*pData, int nLen, int* outLen) = 0;
     virtual void OnTickEvent() = 0;
     
