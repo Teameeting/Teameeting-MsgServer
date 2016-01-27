@@ -64,6 +64,7 @@ void RTJSBuffer::RecvData(const char*data, int size)
 		int parsed = 0;
 		if (m_pBuffer[0] != '$')
 		{// Hase error!
+            printf("+++++=====-----====>>>RTJSBuffer::RecvData has error, m_pBuffer:%s\n\n", m_pBuffer);
 			parsed = m_nBufOffset;
 		}
 		else
