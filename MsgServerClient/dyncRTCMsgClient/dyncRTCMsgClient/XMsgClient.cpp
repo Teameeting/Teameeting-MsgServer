@@ -255,23 +255,24 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 #endif
         return -1;
     }
-    char* ptr = new char[msg.length()+3];//sprintf will add 1 in the end
+    char* ptr = new char[msg.length()+4];//sprintf will add 1 in the end
     if (ptr) {
         char* pptr = ptr;
         *pptr = '$';
         pptr++;
         writeShort(&pptr, (unsigned short)msg.length());
         memcpy((pptr), msg.c_str(), msg.length());
-        
+        ptr[msg.length()+3] = '\0';
         if (m_pClientImpl) {
 #ifdef WEBRTC_ANDROID
             LOGI("XMsgClient::SendEncodeMsg m_pClientImpl ptr:%s\n", ptr);
 #else
             std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl ptr:" << ptr << std::endl;
 #endif
-            int n = m_pClientImpl->SendMessageX(ptr, (int)strlen(ptr));
+            int n = m_pClientImpl->SendMessageX(ptr, (int)(msg.length()+3));
             delete ptr;
             ptr = NULL;
+            pptr = NULL;
             return n;
         } else {
 #ifdef WEBRTC_ANDROID
@@ -281,6 +282,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 #endif
             delete ptr;
             ptr = NULL;
+            pptr = NULL;
             LOG(LS_ERROR) << "SendEncodeMsg m_pClientImpl is NULL";
             return -1;
         }
