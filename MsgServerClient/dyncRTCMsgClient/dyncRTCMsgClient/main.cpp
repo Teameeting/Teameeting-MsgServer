@@ -76,7 +76,7 @@ public:
         LOG(INFO) << __FUNCTION__ << " was called";
     }
     
-    virtual void OnMsgServerState(MSTcpState state) {
+    virtual void OnMsgServerState(MSState state) {
         LOG(INFO) << __FUNCTION__ << " was called, state:" << state;
     }
 
@@ -89,7 +89,7 @@ int main(int argc, const char * argv[]) {
     rtc::LogMessage::LogToDebug(rtc::INFO);
     XMsgClient client;
     MsgServerCallback callback;
-    const std::string server("192.168.7.39");
+    const std::string server("192.168.7.27");
     int port = 6630;
     //bool autoConnect = true;
     LOG(INFO) << "begin connect to server...";
@@ -102,7 +102,7 @@ int main(int argc, const char * argv[]) {
     std::string rname("roomname");
     std::string msg("hello world, are you ok?");
     client.Init(callback, userid, pass, nname, server, port);
-    while(client.MSStatus()!=MSTcpState::MSCONNECTED)sleep(1);
+    while(client.MSStatus()!=MSState::MSCONNECTED)sleep(1);
     LOG(INFO) << "connectted to server...";
     client.OptRoom(MEETCMD::enter, roomid, rname, "");
     while (1) {

@@ -11,11 +11,13 @@
 
 #include "RTTcp.h"
 #include "CRTConnTcp.h"
+#include "RTJSBuffer.h"
 #include "RTObserverConnection.h"
 
 class CRTConnectionTcp
 : public RTTcp
 , public CRTConnTcp
+, public RTJSBuffer
 , public RTObserverConnection{
 public:
     CRTConnectionTcp();
@@ -41,16 +43,18 @@ public:
 public:
     //* For RTObserverConnection
     virtual void ConnectionDisconnected();
+    
+protected:
+    virtual void OnRecvMessage(const char*message, int nLen);
+    
 private:
     int GenericTransSeq();
 private:
-    char			*m_pBuffer;
-    int				m_nBufLen;
-    int				m_nBufOffset;
     std::string     m_connectorId;
     std::string     m_userId;
     std::string     m_token;
     std::string     m_nname;
+    bool            m_login;
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnectionTcp__) */

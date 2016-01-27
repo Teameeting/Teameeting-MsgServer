@@ -281,6 +281,10 @@
 		E6A8864B1C38E8FC005C619C /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6A8848E1C369063005C619C /* scoped_autorelease_pool.mm */; };
 		E6A886551C38F747005C619C /* maccocoathreadhelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6A8845E1C369063005C619C /* maccocoathreadhelper.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6A886561C38F748005C619C /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6A8848E1C369063005C619C /* scoped_autorelease_pool.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6B08D241C57609400D1BB6D /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D221C57609400D1BB6D /* XJSBuffer.cpp */; };
+		E6B08D251C57631800D1BB6D /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D221C57609400D1BB6D /* XJSBuffer.cpp */; };
+		E6B08D261C57632800D1BB6D /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D221C57609400D1BB6D /* XJSBuffer.cpp */; };
+		E6B08D271C57633600D1BB6D /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D221C57609400D1BB6D /* XJSBuffer.cpp */; };
 		E6B625FC1C2964DC0014BED5 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF41C28F8F600AE4DD2 /* CoreServices.framework */; };
 		E6B625FD1C2964E40014BED5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6390CF21C28F8D900AE4DD2 /* Foundation.framework */; };
 		E6B625FE1C29658A0014BED5 /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; };
@@ -556,6 +560,8 @@
 		E6A884CE1C369063005C619C /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
 		E6A884CF1C369063005C619C /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
 		E6A884D01C369063005C619C /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
+		E6B08D221C57609400D1BB6D /* XJSBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XJSBuffer.cpp; sourceTree = "<group>"; };
+		E6B08D231C57609400D1BB6D /* XJSBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XJSBuffer.h; sourceTree = "<group>"; };
 		E6B625F81C2963A50014BED5 /* librtcmsgclient-mac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-mac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6B6267D1C2982390014BED5 /* librtcmsgclient-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "librtcmsgclient-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E20D751C291FC800B2D81E /* XMsgClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgClient.cpp; sourceTree = "<group>"; };
@@ -632,6 +638,8 @@
 				E6390BE31C28EFE800AE4DD2 /* RTC_Export.h */,
 				E6390BE61C28EFE800AE4DD2 /* rtcmsgs */,
 				E6390CB31C28EFE800AE4DD2 /* XTcpClient.h */,
+				E6B08D221C57609400D1BB6D /* XJSBuffer.cpp */,
+				E6B08D231C57609400D1BB6D /* XJSBuffer.h */,
 				E6390CB41C28EFE800AE4DD2 /* XTcpClientImpl.cpp */,
 				E6390CB51C28EFE800AE4DD2 /* XTcpClientImpl.h */,
 				E6390CB61C28EFE800AE4DD2 /* XTcpTick.cpp */,
@@ -1241,6 +1249,7 @@
 				E6A884F01C369063005C619C /* base64.cc in Sources */,
 				E6390CBA1C28EFE800AE4DD2 /* RTMessage.cpp in Sources */,
 				E6A885041C369063005C619C /* criticalsection.cc in Sources */,
+				E6B08D241C57609400D1BB6D /* XJSBuffer.cpp in Sources */,
 				E6A885B11C369063005C619C /* thread.cc in Sources */,
 				E6A884E11C369063005C619C /* asyncsocket.cc in Sources */,
 				E6A884D91C369063005C619C /* asyncpacketsocket.cc in Sources */,
@@ -1274,6 +1283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B08D271C57633600D1BB6D /* XJSBuffer.cpp in Sources */,
 				E699C0C61C412AF90006DCEE /* messagehandler.cc in Sources */,
 				E699C0C71C412AF90006DCEE /* messagequeue.cc in Sources */,
 				E6A885CE1C369134005C619C /* RTMeetMsg.cpp in Sources */,
@@ -1290,6 +1300,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B08D251C57631800D1BB6D /* XJSBuffer.cpp in Sources */,
 				E6A884F11C369063005C619C /* base64.cc in Sources */,
 				E6A885681C369063005C619C /* platform_thread.cc in Sources */,
 				E6A885921C369063005C619C /* socketaddress.cc in Sources */,
@@ -1331,6 +1342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6B08D261C57632800D1BB6D /* XJSBuffer.cpp in Sources */,
 				E6A886551C38F747005C619C /* maccocoathreadhelper.mm in Sources */,
 				E6A886561C38F748005C619C /* scoped_autorelease_pool.mm in Sources */,
 				E6A884F21C369063005C619C /* base64.cc in Sources */,

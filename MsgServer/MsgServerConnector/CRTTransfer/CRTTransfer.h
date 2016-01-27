@@ -20,8 +20,8 @@ class CRTTransfer{
 public:
     CRTTransfer();
     virtual ~CRTTransfer();
-
-    int ProcessData(const char* pData, int nLen);
+    
+    int DoProcessData(const char* pData, int nLen);
 
 public:
     virtual void OnTransfer(const std::string& str) = 0;
@@ -32,9 +32,7 @@ public:
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str) = 0;
 
 private:
-    int DoProcessData(const char* pData, int nLen);
-private:
-    OSMutex     m_mutexMsg;
+
 };
 
 #endif /* defined(__MsgServerConnector__CRTTransfer__) */

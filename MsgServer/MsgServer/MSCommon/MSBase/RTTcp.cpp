@@ -1,10 +1,11 @@
 #include "RTTcp.h"
+#include "RTJSBuffer.h"
 #include "atomic.h"
 
 unsigned int RTTcp::sSessionIDCounter = kFirstTCPSessionID;
 RTTcp::RTTcp()
 : Task()
-, fTimeoutTask(NULL, 60 * 1000)
+, fTimeoutTask(NULL, 120 * 1000)
 , fSocket(NULL, Socket::kNonBlockingSocketType)
 , fTickTime(0)
 {
@@ -44,9 +45,14 @@ int RTTcp::SendTransferData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+6];//sprintf will add 1 in the end
-        sprintf(ptr, "$%4d%s", nLen, pData);
-        ListAppend(&m_listSend, ptr, nLen+5);
+        char* ptr = new char[nLen+3];//sprintf will add 1 in the end
+        char* pptr = ptr;
+        *pptr = '$';
+        (pptr)++;
+        RTJSBuffer::writeShort(&pptr, nLen);
+        memcpy((pptr), pData, nLen);
+        ListAppend(&m_listSend, ptr, nLen+3);
+        pptr = NULL;
     }
     
     this->Signal(kWriteEvent);
@@ -76,7 +82,7 @@ SInt64 RTTcp::Run()
                 conn->ConnectionDisconnected();
             }
         } else {
-            LE("didNOT FIND TIMEOUT OR KILLED CLIENT return -1\n");
+            LE("did NOT FIND TIMEOUT OR KILLED CLIENT return -1\n");
         }
 		return -1;
 	}
@@ -117,7 +123,6 @@ SInt64 RTTcp::Run()
 			if((elem = m_listSend.first) != NULL) 
 			{ 
 				UInt32 theLengthSent = 0;
-                LI("========Tcp::Run socket.send msg:%s\n", (char*)elem->content);
 				OS_Error err = fSocket.Send((char*)elem->content, elem->size, &theLengthSent);
 				if (err == EAGAIN)
 				{
@@ -167,7 +172,7 @@ SInt64 RTTcp::Run()
             conn->ConnectionDisconnected();
         }
     } else {
-        LE("didNOT FIND session offline CLIENT return -1\n");
+        LE("did NOT FIND session offline CLIENT return -1\n");
     }
     return -1;
 }

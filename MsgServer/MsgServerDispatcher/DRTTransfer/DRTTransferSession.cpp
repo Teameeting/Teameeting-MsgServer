@@ -18,9 +18,7 @@ static unsigned int	g_trans_id = 0;
 static unsigned int	g_msg_id = 0;
 
 DRTTransferSession::DRTTransferSession()
-: m_pBuffer(NULL)
-, m_nBufLen(0)
-, m_nBufOffset(0)
+: RTJSBuffer()
 , m_lastUpdateTime(0)
 , m_moduleId("")
 , m_transferSessId("")
@@ -32,10 +30,6 @@ DRTTransferSession::~DRTTransferSession()
 {
     DelObserver(this);
     Unit();
-    if (m_pBuffer) {
-        free(m_pBuffer);
-        m_pBuffer = NULL;
-    }
 }
 
 void DRTTransferSession::Init()
@@ -152,43 +146,12 @@ void DRTTransferSession::OnRecvData(const char*pData, int nLen)
     if (!pData) {
         return;
     }
-    {
-        while((m_nBufOffset + nLen) > m_nBufLen)
-        {
-            m_nBufLen += kRequestBufferSizeInBytes;
-            char* ptr = (char *)realloc(m_pBuffer, m_nBufLen);
-            if(ptr != NULL)
-            {//
-                m_pBuffer = ptr;
-            }
-            else
-            {//
-                m_nBufLen -= kRequestBufferSizeInBytes;
-                continue;
-            }
-        }
+    RTJSBuffer::RecvData(pData, nLen);
+}
 
-        memcpy(m_pBuffer + m_nBufOffset, pData, nLen);
-        m_nBufOffset += nLen;
-    }
-
-    {
-        int parsed = 0;
-        parsed = DRTTransfer::ProcessData(m_pBuffer, m_nBufOffset);
-
-        if(parsed > 0)
-        {
-            m_nBufOffset -= parsed;
-            if(m_nBufOffset == 0)
-            {
-                memset(m_pBuffer, 0, m_nBufLen);
-            }
-            else
-            {
-                memmove(m_pBuffer, m_pBuffer + parsed, m_nBufOffset);
-            }
-        }
-    }
+void DRTTransferSession::OnRecvMessage(const char*message, int nLen)
+{
+    DRTTransfer::DoProcessData(message, nLen);
 }
 
 void DRTTransferSession::OnLcsEvent()

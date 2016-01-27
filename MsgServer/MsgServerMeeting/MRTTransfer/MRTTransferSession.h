@@ -14,11 +14,13 @@
 #include "SocketUtils.h"
 #include "TCPSocket.h"
 #include "RTTcp.h"
+#include "RTJSBuffer.h"
 #include "MRTTransfer.h"
 #include "RTObserverConnection.h"
 
 class MRTTransferSession
     : public RTTcp
+    , public RTJSBuffer
     , public MRTTransfer
     , public RTObserverConnection{
 public:
@@ -54,7 +56,9 @@ public:
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
-        
+       
+protected:
+    virtual void OnRecvMessage(const char*message, int nLen);
 // from RTObserverConnection
 public:
     virtual void ConnectionDisconnected();
@@ -66,9 +70,6 @@ private:
     void OnEstablishAck();
     
 private:
-    char			*m_pBuffer;
-    int				m_nBufLen;
-    int				m_nBufOffset;
     std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;
     std::string     m_moduleId;

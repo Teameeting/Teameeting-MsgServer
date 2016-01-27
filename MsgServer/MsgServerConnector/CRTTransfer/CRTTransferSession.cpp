@@ -15,9 +15,7 @@ static unsigned int	g_trans_id = 0;
 static unsigned int	g_msg_id = 0;
 
 CRTTransferSession::CRTTransferSession()
-: m_pBuffer(NULL)
-, m_nBufLen(0)
-, m_nBufOffset(0)
+: RTJSBuffer()
 , m_transferSessId("")
 {
     AddObserver(this);
@@ -131,43 +129,12 @@ void CRTTransferSession::OnRecvData(const char*pData, int nLen)
     if (!pData) {
         return;
     }
-    {//
-        while((m_nBufOffset + nLen) > m_nBufLen)
-        {
-            m_nBufLen += kRequestBufferSizeInBytes;
-            char* ptr = (char *)realloc(m_pBuffer, m_nBufLen);
-            if(ptr != NULL)
-            {//
-                m_pBuffer = ptr;
-            }
-            else
-            {//
-                m_nBufLen -= kRequestBufferSizeInBytes;
-                continue;
-            }
-        }
+    RTJSBuffer::RecvData(pData, nLen);
+}
 
-        memcpy(m_pBuffer + m_nBufOffset, pData, nLen);
-        m_nBufOffset += nLen;
-    }
-
-    {//
-        int parsed = 0;
-        parsed = CRTTransfer::ProcessData(m_pBuffer, m_nBufOffset);
-
-        if(parsed > 0)
-        {
-            m_nBufOffset -= parsed;
-            if(m_nBufOffset == 0)
-            {
-                memset(m_pBuffer, 0, m_nBufLen);
-            }
-            else
-            {
-                memmove(m_pBuffer, m_pBuffer + parsed, m_nBufOffset);
-            }
-        }
-    }
+void CRTTransferSession::OnRecvMessage(const char*message, int nLen)
+{
+    CRTTransfer::DoProcessData(message, nLen);
 }
 
 void CRTTransferSession::OnLcsEvent()

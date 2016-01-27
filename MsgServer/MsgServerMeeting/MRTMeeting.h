@@ -37,9 +37,6 @@ public:
 
 private:
 
-	OSMutex							m_MutexRoom;
-	OSMutex							m_MutexSession;
-
 };
 
 #endif	// __MsgServerMeeting_MRT_MEETING_H__

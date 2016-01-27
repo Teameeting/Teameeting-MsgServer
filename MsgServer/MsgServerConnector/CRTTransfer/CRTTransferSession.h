@@ -14,12 +14,14 @@
 #include "SocketUtils.h"
 #include "TCPSocket.h"
 #include "RTTcp.h"
+#include "RTJSBuffer.h"
 #include "CRTTransfer.h"
 #include "CRTDispatchConnection.h"
 #include "RTObserverConnection.h"
 
 class CRTTransferSession
     : public RTTcp
+    , public RTJSBuffer
     , public CRTTransfer
     , public RTObserverConnection{
 public:
@@ -56,7 +58,8 @@ public:
         
 // from RTObserverConnection
     virtual void ConnectionDisconnected();
-        
+protected:
+    virtual void OnRecvMessage(const char*message, int nLen);
 private:
     void GenericMsgId(std::string& strId);
     int GenericTransSeq();
@@ -64,9 +67,6 @@ private:
     void OnEstablishConn();
     void OnEstablishAck();
 private:
-    char			*m_pBuffer;
-    int				m_nBufLen;
-    int				m_nBufOffset;
     std::string     m_transferSessId;
     CRTDispatchConnection  m_dispatchConnection;
     

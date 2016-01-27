@@ -75,8 +75,6 @@ public:
 
 
     void AddMemberToRoom(const std::string& uid, MemberStatus status);
-    void SyncRoomMember(const std::string& uid, MemberStatus status);
-    /*void UpdateMemberStatus(const std::string& uid, MemberStatus status);*/
     bool IsMemberInRoom(const std::string& uid);
     void DelMemberFmRoom(const std::string& uid);
     int  GetRoomMemberNumber() { return (int)m_roomMembers.size(); }
@@ -95,7 +93,7 @@ public:
     int GetAllMeetingMemberJson(std::string& users);
     int GetMeetingMemberJson(const std::string from, std::string& users);
     void ResetSessionId() {
-        OSMutexLocker locker(&m_mutex);
+        OSMutexLocker locker(&m_memberMutex);
         if (m_meetingMembers.empty()) {
             m_sessionId.assign("");
         }
@@ -129,7 +127,7 @@ public:
 private:
     void GenericMeetingSessionId(std::string& strId);
 
-    OSMutex                         m_mutex;
+    OSMutex                         m_memberMutex;
     OSMutex                         m_notifyMutex;
     OSMutex                         m_wmsgMutex;
     const std::string               m_roomId;

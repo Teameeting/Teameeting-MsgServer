@@ -236,7 +236,7 @@ int XMsgProcesser::DecodeGetMsg(MEETMSG& msg)
 
 int XMsgProcesser::DecodeLogout(MEETMSG& msg)
 {
-    
+    m_helper.OnLogout(msg._code, msg._from);
     return 0;
 }
 
@@ -251,7 +251,6 @@ int XMsgProcesser::GetMemberToJson(const std::list<std::string> ulist, std::stri
         return -1;
     }
     TOJSONUSER touser;
-    LOG(INFO) << "to user list size:" << ulist.size();
     std::list<std::string>::const_iterator it = ulist.begin();
     for (; it!=ulist.end(); it++) {
         touser._us.push_front((*it).c_str());
@@ -275,7 +274,7 @@ void XMsgProcesser::ServerConnectionFailure()
     m_callback.OnMsgServerConnectionFailure();
 }
 
-void XMsgProcesser::ServerState(MSTcpState state)
+void XMsgProcesser::ServerState(MSState state)
 {
     m_callback.OnMsgServerState(state);
 }

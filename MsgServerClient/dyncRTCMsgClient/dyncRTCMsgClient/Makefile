@@ -24,6 +24,7 @@ C++FLAGS = $(CCFLAGS)
 CFILES = 
 
 CPPFILES := XMsgProcesser.cpp \
+						XJSBuffer.cpp \
 			XMsgClient.cpp \
 			XTcpClientImpl.cpp \
 			XTcpTick.cpp 

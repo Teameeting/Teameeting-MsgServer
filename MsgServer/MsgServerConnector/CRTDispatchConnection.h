@@ -11,7 +11,6 @@
 
 #include <stdio.h>
 #include <iostream>
-#include "OSMutex.h"
 
 class CRTDispatchConnection{
 public:
@@ -24,7 +23,7 @@ public:
     static std::string     m_connIp;
     static std::string     m_connPort;
 private:
-    OSMutex                m_mutex;
+
 };
 
 #endif /* defined(__MsgServerConnector__CRTDispatchConnection__) */

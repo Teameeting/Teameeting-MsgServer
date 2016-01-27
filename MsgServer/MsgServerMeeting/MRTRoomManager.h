@@ -115,7 +115,6 @@ private:
         //delete map members;
     }
     
-    OSMutex                     m_mutexHttp;
     OSMutex                     m_mutexUser;
     MRTHttpSvrConn              *m_pHttpSvrConn;
     MRTTransferSession          *m_pMsgQueueSession;

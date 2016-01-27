@@ -14,14 +14,13 @@
 #include "RTMsg.h"
 #include "RTMeetMsg.h"
 #include "RTSignalMsg.h"
-#include "OSMutex.h"
 
 class CRTConnTcp {
 public:
     CRTConnTcp();
     virtual ~CRTConnTcp();
 
-    int ProcessData(const char*pData, int nLen);
+    int DoProcessData(const char* pData, int nLen);
 
     char* GenerateResponse(int code, const std::string&query, const char*pData, int nLen, int&outLen);
     void SendResponse(int code, const std::string&query, const char*pData, int nLen);
@@ -34,11 +33,9 @@ public:
     virtual void OnLogout(const char* pUserid) = 0;
     virtual void OnKeepAlive(const char* pUserid) = 0;
     virtual void OnResponse(const char*pData, int nLen)=0;
+    
+private:
 
-private:
-    int DoProcessData(const char* pData, int nLen);
-private:
-    OSMutex         m_mutexMsg;
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnTcp__) */

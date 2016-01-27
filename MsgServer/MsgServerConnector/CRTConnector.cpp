@@ -139,6 +139,13 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
     Assert(pCliConIp != NULL && strlen(pCliConIp)>0);
     Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
 
+    char hh[24] = {0};
+    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
+
+    CRTConnectionManager::s_cohttpHost = hh;
+    CRTConnectionManager::s_cohttpIp = pHttpIp;
+    CRTConnectionManager::s_cohttpPort = usHttpPort;
+    
     std::string ssid;
 	CRTConnection::gStrAddr = pWebConIp;
     CRTConnection::gUsPort = usWebConPort;
@@ -210,6 +217,11 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
     }
     if (usHttpPort > 0) {
         LI("Start Connector Http service:(%d) ok...\n", usHttpPort);
+    }
+    
+    if (!(CRTConnectionManager::Instance()->ConnectHttpSvrConn())) {
+        LE("ConnectHttpSvrConn failed\n");
+        return -1;
     }
 
 	return 0;
