@@ -29,8 +29,8 @@ XMsgClient::XMsgClient()
 , m_uid("")
 , m_token("")
 , m_nname("")
-, m_server("")
-, m_port(0)
+, m_server("180.150.179.128")
+, m_port(6630)
 , m_autoConnect(true)
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
@@ -65,8 +65,12 @@ int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string
     m_uid = uid;
     m_token = token;
     m_nname = nname;
-    m_server = server;
-    m_port = port;
+    if (server.length()>0) {
+        m_server = server;
+    }
+    if (port>2048) {
+        m_port = port;
+    }
     m_autoConnect = bAutoConnect;
     m_pClientImpl->Connect(server, port, bAutoConnect);
     m_msState = MSCONNECTTING;
@@ -92,6 +96,9 @@ int XMsgClient::Unin()
 
 int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg)
 {
+    if (msg.length()>1024 || rname.length()>128) {
+        return -2;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
@@ -142,6 +149,9 @@ int XMsgClient::OptRoom(MEETCMD cmd, const std::string& roomid, const std::strin
 
 int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::list<std::string>& ulist)
 {
+    if (msg.length()>1024 || rname.length()>128) {
+        return -2;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
@@ -160,6 +170,9 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
 
 int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, SENDTAGS tags, const std::string& msg)
 {
+    if (msg.length()>1024 || rname.length()>128) {
+        return -2;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
@@ -264,11 +277,6 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
         memcpy((pptr), msg.c_str(), msg.length());
         ptr[msg.length()+3] = '\0';
         if (m_pClientImpl) {
-#ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::SendEncodeMsg m_pClientImpl ptr:%s\n", ptr);
-#else
-            std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl ptr:" << ptr << std::endl;
-#endif
             int n = m_pClientImpl->SendMessageX(ptr, (int)(msg.length()+3));
             delete ptr;
             ptr = NULL;
@@ -407,11 +415,6 @@ void XMsgClient::OnLogout(int code, const std::string& userid)
 void XMsgClient::OnRecvMessage(const char*message, int nLen)
 {
     if (m_pMsgProcesser) {
-#ifdef WEBRTC_ANDROID
-        LOGI("XMsgClient::OnRecvMessage len:%d, message:%s\n", nLen, message);
-#else
-        std::cout << "XMsgClient::OnRecvMessage len:" << nLen << ", message:" << message << std::endl;
-#endif
         m_pMsgProcesser->DecodeRecvData((char *)message, nLen);
     }
 }

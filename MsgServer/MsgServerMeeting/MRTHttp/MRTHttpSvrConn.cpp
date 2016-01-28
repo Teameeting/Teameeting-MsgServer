@@ -30,8 +30,16 @@ MRTHttpSvrConn::~MRTHttpSvrConn(void)
 
 void MRTHttpSvrConn::HttpInsertMeetingMsg(const char* sign, const char* meetingid, const char* messagetype, const char* sessionid, const char* strMsg, const char* userid)
 {
+    if (!sign || !meetingid || !messagetype || !sessionid || !strMsg || !userid) {
+        LE("HttpInsertMeetingMsg params error\n");
+        return;
+    }
+    if (strlen(strMsg)>1024) {
+        LE("HttpInsertMeetingMsg Msg Len is over Max Len\n");
+        return;
+    }
     int outLen = 0;
-    char data[512] = {0};
+    char data[1216] = {0};//1024+128+64:msg len + other value len + attr name len
     sprintf(data, "sign=%s&meetingid=%s&messagetype=%s&sessionid=%s&strMsg=%s&userid=%s", sign, meetingid, messagetype, sessionid, strMsg, userid);
     const char* msg = GenerateRequest(HTTP_POST, "meeting/insertMeetingMsg", data, outLen);
     if (msg && outLen>0) {
@@ -43,6 +51,10 @@ void MRTHttpSvrConn::HttpInsertMeetingMsg(const char* sign, const char* meetingi
 
 void MRTHttpSvrConn::HttpInsertSessionMeetingInfo(const char* sign, const char* meetingid, const char* sessionid, const char* sessionstatus, const char* sessiontype, const char* sessionnumber)
 {
+    if (!sign || !meetingid || !sessionid || !sessionstatus || !sessiontype || !sessionnumber) {
+        LE("HttpInsertSessionMeetingInfo params error\n");
+        return;
+    }
     int outLen = 0;
     char data[512] = {0};
     sprintf(data, "sign=%s&meetingid=%s&sessionid=%s&sessionstatus=%s&sessiontype=%s&sessionnumber=%s", sign, meetingid, sessionid, sessionstatus, sessiontype, sessionnumber);
@@ -56,6 +68,10 @@ void MRTHttpSvrConn::HttpInsertSessionMeetingInfo(const char* sign, const char* 
 
 void MRTHttpSvrConn::HttpUpdateSessionMeetingEndtime(const char* sign, const char* sessionid)
 {
+    if (!sign || !sessionid) {
+        LE("HttpUpdateSessionMeetingEndtime params error\n");
+        return;
+    }
     int outLen = 0;
     char data[512] = {0};
     sprintf(data, "sign=%s&sessionid=%s", sign, sessionid);
@@ -69,6 +85,10 @@ void MRTHttpSvrConn::HttpUpdateSessionMeetingEndtime(const char* sign, const cha
 
 void MRTHttpSvrConn::HttpUpdateSessionMeetingNumber(const char* sign, const char* sessionid, const char* sessionnumber, const char* meetingid)
 {
+    if (!sign || !sessionid || !meetingid || !sessionnumber) {
+        LE("HttpUpdateSessionMeetingNumber params error\n");
+        return;
+    }
     int outLen = 0;
     char data[512] = {0};
     sprintf(data, "sign=%s&sessionid=%s&sessionnumber=%s&meetingid=%s", sign, sessionid, sessionnumber, meetingid);
@@ -82,6 +102,10 @@ void MRTHttpSvrConn::HttpUpdateSessionMeetingNumber(const char* sign, const char
 
 void MRTHttpSvrConn::HttpUpdateUserMeetingJointime(const char* sign, const char* meetingid)
 {
+    if (!sign || !meetingid) {
+        LE("HttpUpdateUserMeetingJointime params error\n");
+        return;
+    }
     int outLen = 0;
     char data[512] = {0};
     sprintf(data, "sign=%s&meetingid=%s", sign, meetingid);
@@ -95,6 +119,10 @@ void MRTHttpSvrConn::HttpUpdateUserMeetingJointime(const char* sign, const char*
 
 void MRTHttpSvrConn::HttpUpdateSessionMeetingStatus(const char* sign, const char* sessionid, const char* sessionstatus)
 {
+    if (!sign || !sessionid || !sessionstatus) {
+        LE("HttpUpdateSessionMeetingStatus params error\n");
+        return;
+    }
     int outLen = 0;
     char data[512] = {0};
     sprintf(data, "sign=%s&sessionid=%s&sessionstatus=%s", sign, sessionid, sessionstatus);
