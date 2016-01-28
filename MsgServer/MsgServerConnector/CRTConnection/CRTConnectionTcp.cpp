@@ -134,7 +134,6 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
             SendResponse(0, resp.c_str());
             m_login = false;
             return;
-
         }
     }
 
