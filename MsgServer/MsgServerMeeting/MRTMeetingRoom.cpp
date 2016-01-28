@@ -89,6 +89,7 @@ int MRTMeetingRoom::GetRoomMemberJson(const std::string from, std::string& users
     {
         OSMutexLocker locker(&m_memberMutex);
         if (m_roomMembers.empty()) {
+            users = "";
             return -1;
         }
         RoomMembersIt rit = m_roomMembers.begin();
@@ -108,6 +109,7 @@ int MRTMeetingRoom::GetAllRoomMemberJson(std::string& users)
     {
         OSMutexLocker locker(&m_memberMutex);
         if (m_roomMembers.empty()) {
+            users = "";
             return -1;
         }
         RoomMembersIt rit = m_roomMembers.begin();
@@ -126,6 +128,7 @@ int MRTMeetingRoom::GetMeetingMemberJson(const std::string from, std::string& us
         OSMutexLocker locker(&m_memberMutex);
         if (m_meetingMembers.empty()) {
             LE("GetMeetingMemberJson member is 0\n");
+            users = "";
             return -1;
         }
         LI("meeting members:%d\n", m_roomMembers.size());
@@ -146,6 +149,7 @@ int MRTMeetingRoom::GetAllMeetingMemberJson(std::string& users)
         OSMutexLocker locker(&m_memberMutex);
         if (m_meetingMembers.empty()) {
             LE("GetAllMeetingMemberJson member is 0\n");
+            users = "";
             return -1;
         }
         LI("all meeting members:%d\n", m_roomMembers.size());

@@ -32,8 +32,9 @@ int CORTHttp::SendData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen];
+        char* ptr = new char[nLen+1];
         memcpy(ptr, pData, nLen);
+        ptr[nLen] = '\0';
         ListAppend(&m_listSend, ptr, nLen);
     }
     LI("CORTHttp::SendData ok\n");

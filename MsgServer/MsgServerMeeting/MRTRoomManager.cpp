@@ -73,7 +73,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         //
         return;
     }
-    std::string res, users, resp;
+    std::string users(""), resp("");
     mmsg._ntime = OS::Milliseconds();
     MeetingRoomMapIt it = m_meetingRoomMap.find(mmsg._room);
     if (it != m_meetingRoomMap.end()) {
@@ -226,7 +226,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 
 void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    std::string res, users, resp;
+    std::string users(""), resp("");
     mmsg._ntime = OS::Milliseconds();
     //@Eric
     //* 1, Find Room
@@ -290,7 +290,6 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //@Eric
     //* 4, Notify myself publishId
     users.assign("");
-    res.assign("");
     resp.assign("");
     std::string strSelf = mmsg._from;
     MRTMeetingRoom::PublishIdMsgs msgMaps(it->second->GetPublishIdMsgsMap());
@@ -310,6 +309,8 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         }
     }
     
+    users.assign("");
+    resp.assign("");
     MRTMeetingRoom::AudioSetMsgs audioMsgMaps(it->second->GetAudioSetMsgsMap());
     LI("==>EnterRoom AudioSetMsgMaps size:%d\n", (int)audioMsgMaps.size());
     MRTMeetingRoom::AudioSetMsgs::iterator amit = audioMsgMaps.begin();
@@ -327,6 +328,8 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         }
     }
     
+    users.assign("");
+    resp.assign("");
     MRTMeetingRoom::VideoSetMsgs videoMsgMaps(it->second->GetVideoSetMsgsMap());
     LI("==>EnterRoom videoSetMsgMaps size:%d\n", (int)videoMsgMaps.size());
     MRTMeetingRoom::PublishIdMsgs::iterator vmit = videoMsgMaps.begin();
@@ -354,7 +357,7 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 
 void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 {
-    std::string res, users, resp;
+    std::string users(""), resp("");
     mmsg._ntime = OS::Milliseconds();
     //@Eric
     //* 1, Remove myself in Room MemberList;
@@ -375,9 +378,7 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 2, Notify Other members
     //
     int online = it->second->GetRoomMemberOnline();
-    users.assign("");
-    res.assign("");
-    resp.assign("");
+    
     if (!it->second->GetAllRoomMemberJson(users)) {
         if (users.length()>0) {
             LI("==>LeaveRoom notify users :%s i am out room, online mem:%d\n", users.c_str(), online);
@@ -404,12 +405,14 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     }
     LI("==>LeaveRoom %s leave delete notify msg\n", mmsg._from.c_str());
     std::string pubid("");
+    users.assign("");
+    resp.assign("");
     it->second->DelPublishIdMsg(mmsg._from, pubid);
     if (pubid.length()>0) {
         it->second->GetMeetingMemberJson(mmsg._from, users);
         mmsg._tags = SENDTAGS::sendtags_unsubscribe;
         mmsg._cont = pubid;
-        LI("==>LeaveRoom from:%s, pubid:%s\n", mmsg._from.c_str(), pubid.c_str());
+        LI("==>LeaveRoom from:%s, pubid:%s, usrs:%s\n", mmsg._from.c_str(), pubid.c_str(), users.c_str());
         GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, resp);
         SendTransferData(resp, (int)resp.length());
     }
@@ -580,6 +583,7 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
     
     // notify member having room uid leaving
     users.assign("");
+    resp.assign("");
     it->second->GetRoomMemberJson(uid, users);
     cont = uid;
     GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_leave, online, cont, users, resp);
@@ -622,7 +626,7 @@ void MRTRoomManager::SendWaitingMsgs(MeetingRoomMapIt mit)
         return;
     }
     LI("===>>>MRTRoomManager::SendWaitingMsgs size:%d, roomid:%s\n", (int)pWml.size(), mit->second->GetRoomId().c_str());
-    std::string roomUsers, resp;
+    std::string roomUsers(""), resp("");
     mit->second->GetAllRoomMemberJson(roomUsers);
     MRTMeetingRoom::WaitingMsgsList::iterator wit = pWml.begin();
     for (; wit!=pWml.end(); wit++) {
