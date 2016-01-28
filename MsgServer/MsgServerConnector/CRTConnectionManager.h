@@ -159,13 +159,11 @@ private:
     CRTConnectionManager() : m_connectorIp(""),
                             m_connectorPort(""),
                             m_connectorId(""),
-                            m_lastUpdateTime("CRTConnectionManager"),
                             m_pcoHttpSvrConn(NULL) { }
     ~CRTConnectionManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
-    std::string m_lastUpdateTime;
     CORTHttpSvrConn     *m_pcoHttpSvrConn;
 };
 

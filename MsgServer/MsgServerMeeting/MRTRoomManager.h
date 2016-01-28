@@ -111,6 +111,26 @@ private:
             delete m_pMsgQueueSession;
             m_pMsgQueueSession = NULL;
         }
+#if 0
+        {
+            MeetingRoomMapIt mit = m_meetingRoomMap.begin();
+            for (; mit!=m_meetingRoomMap.end(); mit++) {
+                mit->second->Release();
+                delete mit->second;
+                m_meetingRoomMap.erase(mit);
+            }
+            m_meetingRoomMap.clear();
+        }
+        
+        {
+            OSMutexLocker locker(&m_mutexUser);
+            UserMeetingRoomIdMapIt uit = m_userMeetingRoomIdMap.begin();
+            for (;uit!=m_userMeetingRoomIdMap.end();uit++) {
+                m_userMeetingRoomIdMap.erase(uit);
+            }
+            m_userMeetingRoomIdMap.clear();
+        }
+#endif
         //TODO:
         //delete map members;
     }

@@ -20,9 +20,6 @@
 #include "md5digest.h"
 #include "OS.h"
 
-static char          s_curMicroSecStr[32];
-static unsigned char s_digest[16];
-
 MRTMeetingRoom::MRTMeetingRoom(const std::string mid, const std::string ownerid)
 : m_roomId(mid)
 , m_sessionId("")
@@ -364,14 +361,15 @@ void MRTMeetingRoom::GenericMeetingSessionId(std::string& strId)
     char* p = NULL;
     MD5_CTX context;
     StrPtrLen hashStr;
+    char          s_curMicroSecStr[32] = {0};
+    unsigned char s_digest[16] = {0};
     memset(s_curMicroSecStr, 0, 128);
     memset(s_digest, 0, 16);
     
-    curTime = OS::Microseconds();
+    curTime = OS::Milliseconds();
     qtss_sprintf(s_curMicroSecStr, "%lld", curTime);
     MD5_Init(&context);
     MD5_Update(&context, (unsigned char*)s_curMicroSecStr, (unsigned int)strlen((const char*)s_curMicroSecStr));
-    MD5_Update(&context, (unsigned char*)MRTRoomManager::s_msgQueueIp.c_str(), (unsigned int)MRTRoomManager::s_msgQueueIp.length());
     MD5_Final(s_digest, &context);
     HashToString(s_digest, &hashStr);
     p = hashStr.GetAsCString();

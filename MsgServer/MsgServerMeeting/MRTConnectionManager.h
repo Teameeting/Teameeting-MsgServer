@@ -103,11 +103,10 @@ public:
     std::string& MeetingId() { return m_meetingId; }
     std::list<std::string>* GetAddrsList() { return &m_ipList; }
 private:
-    MRTConnectionManager():m_lastUpdateTime("MRTConnectionManager") {}
+    MRTConnectionManager() {}
     ~MRTConnectionManager() {}
     bool DoConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
-    std::string               m_lastUpdateTime;
     std::string               m_meetingId;
 
 };
