@@ -8,7 +8,7 @@ MsgServer是[Teameeting] (https://github.com/Teameeting) 项目的一个消息�
 MsgServer由MsgServer、MsgServerConnector、MsgServerDispatcher和MsgServerMeeting组成<br>
 <br>
 MsgServer<br>
-	MsgServer:提供基于[Darvin Streaming Server](http://dss.macosforge.org/)的CommonUtilitiesLib而构建的基础公用架构<br>
+	MsgServer:提供基于[Darvin Streaming Server](http://dss.macosforge.org/)的CommonUtilitiesLib而构建的基础公用框架<br>
 	MsgServerConnector:用于接入客户端消息与客户端保持通信<br>
 	MsgServerDispatcher:用于转发消息<br>
 	MsgServerMeeting:用于处理Teameeting的消息逻辑<br>
@@ -26,4 +26,4 @@ MsgServerClient是Teameeting客户端消息sdk的基础库，并提供Mac上的D
 ---
 
 ### 开原协议<br>
-Teameeting iOS app is under the Apache license. See the LICENSE file for more details.<br>
+MsgServer is under the GNU GENERAL PUBLIC LICENSE. See the LICENSE file for more details.<br>
