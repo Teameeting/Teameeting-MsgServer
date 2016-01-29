@@ -213,9 +213,9 @@ void CRTConnection::OnLogout(const char* pUserid)
         std::string uid(pUserid);
         std::string token;
         CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid, token);
-        m_userId.assign("");
-        m_token.assign("");
-        m_nname.assign("");
+        m_userId = "";
+        m_token = "";
+        m_nname = "";
     }
     {
         //send response

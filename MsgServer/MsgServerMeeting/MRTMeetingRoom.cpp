@@ -40,7 +40,7 @@ void MRTMeetingRoom::AddMemberToRoom(const std::string& uid, MemberStatus status
 {
     OSMutexLocker locker(&m_memberMutex);
     if (m_meetingMembers.empty()) {
-        m_sessionId.assign("");
+        m_sessionId = "";
         GenericMeetingSessionId(m_sessionId);
     }
     m_roomMembers.insert(uid);

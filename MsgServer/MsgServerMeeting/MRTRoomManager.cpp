@@ -289,8 +289,8 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     }
     //@Eric
     //* 4, Notify myself publishId
-    users.assign("");
-    resp.assign("");
+    users = "";
+    resp = "";
     std::string strSelf = mmsg._from;
     MRTMeetingRoom::PublishIdMsgs msgMaps(it->second->GetPublishIdMsgsMap());
     LI("==>EnterRoom publishIdMsgMaps size:%d\n", (int)msgMaps.size());
@@ -309,8 +309,8 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         }
     }
     
-    users.assign("");
-    resp.assign("");
+    users = "";
+    resp = "";
     MRTMeetingRoom::AudioSetMsgs audioMsgMaps(it->second->GetAudioSetMsgsMap());
     LI("==>EnterRoom AudioSetMsgMaps size:%d\n", (int)audioMsgMaps.size());
     MRTMeetingRoom::AudioSetMsgs::iterator amit = audioMsgMaps.begin();
@@ -328,8 +328,8 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
         }
     }
     
-    users.assign("");
-    resp.assign("");
+    users = "";
+    resp = "";
     MRTMeetingRoom::VideoSetMsgs videoMsgMaps(it->second->GetVideoSetMsgsMap());
     LI("==>EnterRoom videoSetMsgMaps size:%d\n", (int)videoMsgMaps.size());
     MRTMeetingRoom::PublishIdMsgs::iterator vmit = videoMsgMaps.begin();
@@ -405,8 +405,8 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     }
     LI("==>LeaveRoom %s leave delete notify msg\n", mmsg._from.c_str());
     std::string pubid("");
-    users.assign("");
-    resp.assign("");
+    users = "";
+    resp = "";
     it->second->DelPublishIdMsg(mmsg._from, pubid);
     if (pubid.length()>0) {
         it->second->GetMeetingMemberJson(mmsg._from, users);
@@ -582,8 +582,8 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
     it->second->DelVideoSetMsg(uid);
     
     // notify member having room uid leaving
-    users.assign("");
-    resp.assign("");
+    users = "";
+    resp = "";
     it->second->GetRoomMemberJson(uid, users);
     cont = uid;
     GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_leave, online, cont, users, resp);

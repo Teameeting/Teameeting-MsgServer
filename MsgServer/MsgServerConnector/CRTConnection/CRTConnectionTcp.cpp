@@ -190,9 +190,9 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
     }
     std::string token;
     CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
-    m_userId.assign("");
-    m_token.assign("");
-    m_nname.assign("");
+    m_userId = "";
+    m_token = "";
+    m_nname = "";
     std::string resp;
     GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, resp);
     SendResponse(0, resp.c_str());

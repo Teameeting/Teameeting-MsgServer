@@ -92,7 +92,7 @@ bool RTHiredis::CmdGet(const std::string key, std::string& value)
     }
     printf("CmdGet reply:%s\n", m_redisReply->str);
     if (m_redisReply->str) {
-        value.assign(m_redisReply->str);
+        value = m_redisReply->str;
     }
     freeReplyObject((void*)m_redisReply);
     return true;
@@ -152,7 +152,7 @@ bool RTHiredis::CmdHGet(const std::string hid, const std::string key, std::strin
     std::list<std::string> ulist;
     HandleHReply(m_redisReply, &ulist);
     if (ulist.size()>0) {
-        value.assign(ulist.front());
+        value = ulist.front();
     }
     freeReplyObject((void*)m_redisReply);
     return true;
