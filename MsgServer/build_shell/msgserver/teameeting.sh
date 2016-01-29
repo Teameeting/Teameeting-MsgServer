@@ -5,6 +5,7 @@ echo "cur_path:" $CUR_PATH
 MODULE_DIR=""
 MODULE_NAME=""
 CLEAN_FLAG=0
+
 if [ "$1"x = "-u"x ]
 then
     CLEAN_FLAG=1
@@ -15,6 +16,7 @@ fi
 #######################  $2 module name  #########################################
 function install_module()
 {
+    echo "$1 is:" $1
     if [ $# -eq 2 ]
     then
         if [ -d $1 ]
@@ -67,33 +69,55 @@ function uninstall_module()
     fi
 }
 
+#######################  install teameeting  #########################################
 function install_teameeting()
 {
-    MODULE_DIR=$CUR_PATH/connector
+    cd $CUR_PATH
+    MODULE_DIR=connector
     MODULE_NAME="connector"
-    install $MODULE_DIR $MODULE_NAME
-    MODULE_DIR=$CUR_PATH/dispatcher
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=dispatcher
     MODULE_NAME="dispatcher"
-    install $MODULE_DIR $MODULE_NAME
-    MODULE_DIR=$CUR_PATH/meeting
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=meeting
     MODULE_NAME="meeting"
-    install $MODULE_DIR $MODULE_NAME
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
 }
 
 
+#######################  uninstall teameeting  #########################################
 function uninstall_teameeting()
 {
-    MODULE_DIR=$CUR_PATH/connector
+    cd $CUR_PATH
+    MODULE_DIR=connector
     MODULE_NAME="connector"
-    uninstall $MODULE_DIR $MODULE_NAME
-    MODULE_DIR=$CUR_PATH/dispatcher
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=dispatcher
     MODULE_NAME="dispatcher"
-    uninstall $MODULE_DIR $MODULE_NAME
-    MODULE_DIR=$CUR_PATH/meeting
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=meeting
     MODULE_NAME="meeting"
-    uninstall $MODULE_DIR $MODULE_NAME
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
 }
 
+#######################  teameeting usage #########################################
 function usage()
 {
     echo "######### teameeting ########"
@@ -105,15 +129,19 @@ function usage()
     exit
 }
 
-function main()
-{
-    while getopts "i:u:h" arg
-    do
-        case $arg in
-            i)  install_teameeting ;;
-            u)  uninstall_teameeting ;;
-            h)  usage ;;
-            ?)  usage ;;
-        esac
-    done
-}
+if [ $# -eq 0 ]
+then
+    usage
+    exit
+fi
+
+while getopts "iuh" arg
+do
+    case $arg in
+        i)  install_teameeting ;;
+        u)  uninstall_teameeting ;;
+        h)  usage ;;
+        ?)  usage ;;
+    esac
+done
+

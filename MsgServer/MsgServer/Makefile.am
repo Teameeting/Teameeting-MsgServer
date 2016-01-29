@@ -24,6 +24,7 @@ libMSCommon_a_SOURCES=$(top_srcdir)/MSCommon/sigslot.cc \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp \
+				$(top_srcdir)/MSCommon/MSBase/RTUtils.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMeetMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMessage.cpp \

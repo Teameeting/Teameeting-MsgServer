@@ -98,7 +98,6 @@ public:
 
     void TransferSessionLostNotify(const std::string& sid);
 
-    void    GenericSessionId(std::string& strId);
     bool    ConnectConnector();
     std::list<std::string>* GetAddrsList() { return &m_ipList; }
     void    RefreshConnection();

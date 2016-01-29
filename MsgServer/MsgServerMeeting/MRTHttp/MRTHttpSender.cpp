@@ -112,10 +112,12 @@ void MRTHttpSender::OnResponse(const char*pData, int nLen)
         LE("RTHttpSender::OnResponse pData nLen error\n");
         return;
     }
-    LI("OnResponse DataLen:%d, pData:%s\n", nLen, pData);
     if (m_method == HTTP_GET) {
         std::string data(pData, nLen);
         MRTRoomManager::Instance()->HandleOptRoomWithData(m_cmd, m_transmsg, m_meetmsg, data);
+    } else {
+        LI("OnResponse recieved, kill event\n");
+        this->Signal(kKillEvent);
     }
 
 }

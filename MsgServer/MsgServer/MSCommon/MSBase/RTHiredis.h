@@ -29,7 +29,7 @@ public:
             LE("RTHiredis SetHostAddr failed\n");
          return;
         }
-        m_host.assign(host);
+        m_host = host;
         m_port = port;
     }
 

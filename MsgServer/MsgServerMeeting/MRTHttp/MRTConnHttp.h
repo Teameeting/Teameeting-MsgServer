@@ -21,7 +21,7 @@ public:
 public:
 	virtual void OnResponse(const char*pData, int nLen)=0;
 protected:
-    void SetHttpHost(const std::string& host) { m_host.assign(host); }
+    void SetHttpHost(const std::string& host) { m_host = host; }
     static long long m_test_conn;
 private:
 	bool		m_bAuthed;

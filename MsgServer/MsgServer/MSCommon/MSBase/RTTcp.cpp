@@ -84,7 +84,7 @@ SInt64 RTTcp::Run()
                 conn->ConnectionDisconnected();
             }
         } else {
-            LE("did NOT FIND TIMEOUT OR KILLED CLIENT return -1\n");
+            LE("did not find return -1\n");
         }
 		return -1;
 	}
@@ -112,12 +112,13 @@ SInt64 RTTcp::Run()
 
 				if(readed > 0)
 				{
+                    /*
                     if(fRequestBuffer[0] != '$')
                     {
-                        printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
+                        //printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
                     } else {
-                        printf("RTcp::Run====fRequestBuffer:%d, %s\n", readed, fRequestBuffer);
-                    }
+                        //printf("RTcp::Run====fRequestBuffer:%d, %s\n", readed, fRequestBuffer);
+                    }*/
                     
 					OnRecvData(fRequestBuffer, readed);
 				}

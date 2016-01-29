@@ -8,8 +8,6 @@
 
 #include "MRTConnectionManager.h"
 #include <assert.h>
-#include "md5.h"
-#include "md5digest.h"
 #include "OSMutex.h"
 #include "MRTRoomManager.h"
 #include "MRTTransferSession.h"
@@ -22,33 +20,6 @@ static MRTConnectionManager::ModuleInfoMaps                 s_ModuleInfoMap(0);
 static MRTConnectionManager::TypeModuleSessionInfoLists     s_TypeModuleSessionInfoList(0);
 static MRTConnectionManager::UserSessionInfoLists           s_UserSessionInfoList(0);
 static MRTConnectionManager::UserSessionInfoMaps            s_UserSessionInfoMap(0);
-
-
-void MRTConnectionManager::GenericSessionId(std::string& strId)
-{
-    
-    SInt64 curTime = 0;
-    char* p = NULL;
-    MD5_CTX context;
-    StrPtrLen hashStr;
-    char          s_curMicroSecStr[32] = {0};
-    unsigned char s_digest[16] = {0};
-    memset(s_curMicroSecStr, 0, 128);
-    memset(s_digest, 0, 16);
-    {
-        curTime = OS::Milliseconds();
-        qtss_sprintf(s_curMicroSecStr, "%lld", curTime);
-        MD5_Init(&context);
-        MD5_Update(&context, (unsigned char*)s_curMicroSecStr, (unsigned int)strlen((const char*)s_curMicroSecStr));
-        MD5_Final(s_digest, &context);
-        HashToString(s_digest, &hashStr);
-        p = hashStr.GetAsCString();
-        strId = p;
-        delete p;
-        p = NULL;
-        hashStr.Delete();
-    }
-}
 
 
 MRTConnectionManager::ModuleInfo* MRTConnectionManager::findModuleInfo(const std::string& userid, TRANSFERMODULE module)

@@ -96,7 +96,7 @@ char* StrPtrLen::GetAsCString() const
     if ( Ptr && Len > 0 )
         ::memcpy( theString, Ptr, Len );
     
-    theString[Len] = 0;
+    theString[Len] = '\0';
     
     return theString;
 }

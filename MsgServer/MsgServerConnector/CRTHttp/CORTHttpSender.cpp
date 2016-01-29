@@ -111,7 +111,8 @@ void CORTHttpSender::OnResponse(const char*pData, int nLen)
         LE("RTHttpSender::OnResponse pData nLen error\n");
         return;
     }
-    printf("CORTHttpSender::OnResponse:%s\n", pData);
+    LI("OnResponse, then kill event\n");
+    this->Signal(kKillEvent);
 }
 
 

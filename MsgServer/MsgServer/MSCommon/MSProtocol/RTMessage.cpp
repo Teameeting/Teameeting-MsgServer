@@ -47,54 +47,54 @@ std::string TRANSFERMSG::ToJson()
 void TRANSFERMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("action") && jsonReqDoc["action"].IsInt()))
     {
-        err.assign("parse action error");
+        err = "parse action error";
         return;
     }
     _action = (TRANSFERACTION)jsonReqDoc["action"].GetInt();
     if(!(jsonReqDoc.HasMember("fmodule") && jsonReqDoc["fmodule"].IsInt()))
     {
-        err.assign("parse fmodule error");
+        err = "parse fmodule error";
         return;
     }
     _fmodule = (TRANSFERMODULE)jsonReqDoc["fmodule"].GetInt();
     if(!(jsonReqDoc.HasMember("type") && jsonReqDoc["type"].IsInt()))
     {
-        err.assign("parse type error");
+        err = "parse type error";
         return;
     }
     _type = (TRANSFERTYPE)jsonReqDoc["type"].GetInt();
     if(!(jsonReqDoc.HasMember("trans_seq") && jsonReqDoc["trans_seq"].IsUint64()))
     {
-        err.assign("parse trans_seq error");
+        err = "parse trans_seq error";
         return;
     }
     _trans_seq = jsonReqDoc["trans_seq"].GetUint64();
     if(!(jsonReqDoc.HasMember("trans_seq_ack") && jsonReqDoc["trans_seq_ack"].IsUint64()))
     {
-        err.assign("parse trans_seq_ack error");
+        err = "parse trans_seq_ack error";
         return;
     }
     _trans_seq_ack = jsonReqDoc["trans_seq_ack"].GetUint64();
     if(!(jsonReqDoc.HasMember("valid") && jsonReqDoc["valid"].IsInt()))
     {
-        err.assign("parse valid error");
+        err = "parse valid error";
         return;
     }
     _valid = jsonReqDoc["valid"].GetInt();
     if(!(jsonReqDoc.HasMember("content") && jsonReqDoc["content"].IsString()))
     {
-        err.assign("parse content error");
+        err = "parse content error";
         return;
     }
     _content = jsonReqDoc["content"].GetString();
@@ -129,42 +129,42 @@ std::string CONNMSG::ToJson()
 void CONNMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("tag") && jsonReqDoc["tag"].IsInt()))
     {
-        err.assign("parse tag error");
+        err = "parse tag error";
         return;
     }
     _tag = (CONNTAG)jsonReqDoc["tag"].GetInt();
     if(!(jsonReqDoc.HasMember("msg") && jsonReqDoc["msg"].IsString()))
     {
-        err.assign("parse msg error");
+        err = "parse msg error";
         return;
     }
     _msg = jsonReqDoc["msg"].GetString();
     if(!(jsonReqDoc.HasMember("id") && jsonReqDoc["id"].IsString()))
     {
-        err.assign("parse id error");
+        err = "parse id error";
         return;
     }
     _id = jsonReqDoc["id"].GetString();
     if(!(jsonReqDoc.HasMember("msgid") && jsonReqDoc["msgid"].IsString()))
     {
-        err.assign("parse msgid error");
+        err = "parse msgid error";
         return;
     }
     _msgid = jsonReqDoc["msgid"].GetString();
     if(!(jsonReqDoc.HasMember("moduleid") && jsonReqDoc["moduleid"].IsString()))
     {
-        err.assign("parse moduleid error");
+        err = "parse moduleid error";
         return;
     }
     _moduleid = jsonReqDoc["moduleid"].GetString();
@@ -196,36 +196,36 @@ std::string TRANSMSG::ToJson()
 void TRANSMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
     {
-        err.assign("parse flag error");
+        err = "parse flag error";
         return;
     }
     _flag = jsonReqDoc["flag"].GetInt();
     if(!(jsonReqDoc.HasMember("touser") && jsonReqDoc["touser"].IsString()))
     {
-        err.assign("parse touser error");
+        err = "parse touser error";
         return;
     }
     _touser = jsonReqDoc["touser"].GetString();
     if(!(jsonReqDoc.HasMember("connector") && jsonReqDoc["connector"].IsString()))
     {
-        err.assign("parse connector error");
+        err = "parse connector error";
         return;
     }
     _connector = jsonReqDoc["connector"].GetString();
     if(!(jsonReqDoc.HasMember("content") && jsonReqDoc["content"].IsString()))
     {
-        err.assign("parse content error");
+        err = "parse content error";
         return;
     }
     _content = jsonReqDoc["content"].GetString();
@@ -257,36 +257,36 @@ std::string QUEUEMSG::ToJson()
 void QUEUEMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
     {
-        err.assign("parse flag error");
+        err = "parse flag error";
         return;
     }
     _flag = jsonReqDoc["flag"].GetInt();
     if(!(jsonReqDoc.HasMember("touser") && jsonReqDoc["touser"].IsString()))
     {
-        err.assign("parse touser error");
+        err = "parse touser error";
         return;
     }
     _touser = jsonReqDoc["touser"].GetString();
     if(!(jsonReqDoc.HasMember("connector") && jsonReqDoc["connector"].IsString()))
     {
-        err.assign("parse connector error");
+        err = "parse connector error";
         return;
     }
     _connector = jsonReqDoc["connector"].GetString();
     if(!(jsonReqDoc.HasMember("content") && jsonReqDoc["content"].IsString()))
     {
-        err.assign("parse content error");
+        err = "parse content error";
         return;
     }
     _content = jsonReqDoc["content"].GetString();
@@ -318,36 +318,36 @@ std::string DISPATCHMSG::ToJson()
 void DISPATCHMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
     {
-        err.assign("parse flag error");
+        err = "parse flag error";
         return;
     }
     _flag = jsonReqDoc["flag"].GetInt();
     if(!(jsonReqDoc.HasMember("touser") && jsonReqDoc["touser"].IsString()))
     {
-        err.assign("parse touser error");
+        err = "parse touser error";
         return;
     }
     _touser = jsonReqDoc["touser"].GetString();
     if(!(jsonReqDoc.HasMember("connector") && jsonReqDoc["connector"].IsString()))
     {
-        err.assign("parse connector error");
+        err = "parse connector error";
         return;
     }
     _connector = jsonReqDoc["connector"].GetString();
     if(!(jsonReqDoc.HasMember("content") && jsonReqDoc["content"].IsString()))
     {
-        err.assign("parse content error");
+        err = "parse content error";
         return;
     }
     _content = jsonReqDoc["content"].GetString();
@@ -379,36 +379,36 @@ std::string PUSHMSG::ToJson()
 void PUSHMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("flag") && jsonReqDoc["flag"].IsInt()))
     {
-        err.assign("parse flag error");
+        err = "parse flag error";
         return;
     }
     _flag = jsonReqDoc["flag"].GetInt();
     if(!(jsonReqDoc.HasMember("touser") && jsonReqDoc["touser"].IsString()))
     {
-        err.assign("parse touser error");
+        err = "parse touser error";
         return;
     }
     _touser = jsonReqDoc["touser"].GetString();
     if(!(jsonReqDoc.HasMember("connector") && jsonReqDoc["connector"].IsString()))
     {
-        err.assign("parse connector error");
+        err = "parse connector error";
         return;
     }
     _connector = jsonReqDoc["connector"].GetString();
     if(!(jsonReqDoc.HasMember("content") && jsonReqDoc["content"].IsString()))
     {
-        err.assign("parse content error");
+        err = "parse content error";
         return;
     }
     _content = jsonReqDoc["content"].GetString();
@@ -440,18 +440,18 @@ std::string TOJSONUSER::ToJson()
 void TOJSONUSER::GetMsg(const std::string &str, std::string &err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("u") && jsonReqDoc["u"].IsArray()))
     {
-        err.assign("parse u error");
+        err = "parse u error";
         return;
     }
     rapidjson::Value& mems = jsonReqDoc["u"];

@@ -37,24 +37,24 @@ std::string SIGNALMSG::ToJson()
 void SIGNALMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("stype") && jsonReqDoc["stype"].IsInt()))
     {
-        err.assign("parse stype error");
+        err = "parse stype error";
         return;
     }
     _stype = (SIGNALTYPE)jsonReqDoc["stype"].GetInt();
     if(!(jsonReqDoc.HasMember("scont") && jsonReqDoc["scont"].IsString()))
     {
-        err.assign("parse scont error");
+        err = "parse scont error";
         return;
     }
     _scont = jsonReqDoc["scont"].GetString();

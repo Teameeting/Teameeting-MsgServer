@@ -6,11 +6,12 @@
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
+#include <list>
+#include "atomic.h"
 #include "DRTTransferSession.h"
 #include "RTMessage.h"
-#include "atomic.h"
 #include "DRTConnectionManager.h"
-#include <list>
+#include "RTUtils.hpp"
 
 #define TIMEOUT_TS (60*1000)
 
@@ -191,7 +192,7 @@ void DRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         // send the transfersessionid and MsgQueueId to other
         TRANSFERMSG t_msg;
         std::string trid;
-        DRTConnectionManager::Instance()->GenericSessionId(trid);
+        GenericSessionId(trid);
         m_transferSessId = trid;
 
         t_msg._action = TRANSFERACTION::req;
