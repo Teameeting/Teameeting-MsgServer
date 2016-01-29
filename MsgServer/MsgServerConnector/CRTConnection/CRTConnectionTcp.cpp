@@ -141,6 +141,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
 
 void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)
 {
+    if (!m_login) return;
     if (!pData) {
         LE("%s invalid params\n", __FUNCTION__);
         return;
@@ -202,8 +203,8 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
 
 void CRTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
-    LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
     if (m_login) {
+        LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
         RTTcp::UpdateTimer();
     }
 }

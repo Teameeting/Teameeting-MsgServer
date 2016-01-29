@@ -49,12 +49,12 @@ void CRTConnectionManager::GenericSessionId(std::string& strId)
         MD5_Final(s_digest, &context);
         HashToString(s_digest, &hashStr);
         p = hashStr.GetAsCString();
-        strId = p;
+        strId.assign(p);
         delete p;
         p = NULL;
         hashStr.Delete();
     }
-    LI("GenericSessionId:%s\n", strId.c_str());
+    //LI("GenericSessionId:%s\n", strId.c_str());
 }
 
 
@@ -65,7 +65,7 @@ CRTConnectionManager::ModuleInfo* CRTConnectionManager::findModuleInfo(const std
         OSMutexLocker locker(&s_mutexModule);
         if (s_ModuleInfoMap.size()==0) { return NULL; }
         CRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
-        LI("=====findModuleInfo module:%d, maps.size:%d, user:%s\n", (int)module, (int)s_ModuleInfoMap.size(), userid.c_str());
+        //LI("=====findModuleInfo module:%d, maps.size:%d, user:%s\n", (int)module, (int)s_ModuleInfoMap.size(), userid.c_str());
         for (; it!=s_ModuleInfoMap.end(); it++) {
             if (it->second && it->second->othModuleType == module) {
                 pInfo = it->second;
@@ -248,6 +248,7 @@ void CRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
 
 void CRTConnectionManager::ShowConnectionInfo()
 {
+    return;/*
     if (s_ConnectionInfoMap.size()==0) { return; }
     CRTConnectionManager::ConnectionInfo* pInfo = NULL;
     {
@@ -258,7 +259,7 @@ void CRTConnectionManager::ShowConnectionInfo()
             pInfo = it->second;
             LI("userid:%s, uid:%s, token:%s\n", it->first.c_str(), pInfo->_userId.c_str(), pInfo->_token.c_str());
         }
-    }
+    }*/
 }
 
 bool CRTConnectionManager::ConnectHttpSvrConn()
