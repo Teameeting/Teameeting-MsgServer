@@ -10,6 +10,7 @@
 #include "RTMessage.h"
 #include "atomic.h"
 #include "CRTConnectionManager.h"
+#include "RTUtils.hpp"
 
 static unsigned int	g_trans_id = 0;
 static unsigned int	g_msg_id = 0;
@@ -174,7 +175,7 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         // send self ModuleId and TransferSessionId to other
         TRANSFERMSG t_msg;
         std::string trid;
-        CRTConnectionManager::Instance()->GenericSessionId(trid);
+        GenericSessionId(trid);
         LI("======gENERICsESSIONID:%s\n", trid.c_str());
         m_transferSessId = trid;
 

@@ -2,7 +2,10 @@
 CUR_PATH=`pwd`
 echo "cur_path:" $CUR_PATH
 
+MODULE_DIR=""
+MODULE_NAME=""
 CLEAN_FLAG=0
+
 if [ "$1"x = "-u"x ]
 then
     CLEAN_FLAG=1
@@ -10,9 +13,11 @@ fi
 
 #######################  install module  #########################################
 #######################  $1 module dir  #########################################
+#######################  $2 module name  #########################################
 function install_module()
 {
-    if [ $# -eq 1 ]
+    echo "$1 is:" $1
+    if [ $# -eq 2 ]
     then
         if [ -d $1 ]
         then
@@ -20,9 +25,9 @@ function install_module()
             ./install.sh
             if [ $? -eq 0 ]
             then
-                echo "install $1 ok"
+                echo "install $2 ok"
             else
-                echo "install $1 error"
+                echo "install $2 error"
                 exit
             fi
         else
@@ -38,9 +43,10 @@ function install_module()
 
 #######################  uninstall module  #########################################
 #######################  $1 module dir  #########################################
+#######################  $1 module name  #########################################
 function uninstall_module()
 {
-    if [ $# -eq 1 ]
+    if [ $# -eq 2 ]
     then
         if [ -d $1 ]
         then
@@ -48,9 +54,9 @@ function uninstall_module()
             ./install.sh -u
             if [ $? -eq 0 ]
             then
-                echo "uninstall $1 ok"
+                echo "uninstall $2 ok"
             else
-                echo "uninstall $1 error"
+                echo "uninstall $2 error"
                 exit
             fi
         else
@@ -63,10 +69,79 @@ function uninstall_module()
     fi
 }
 
+#######################  install teameeting  #########################################
 function install_teameeting()
 {
-     
+    cd $CUR_PATH
+    MODULE_DIR=connector
+    MODULE_NAME="connector"
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=dispatcher
+    MODULE_NAME="dispatcher"
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=meeting
+    MODULE_NAME="meeting"
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
 }
 
-####find . -name "*.Po" | xargs rm -rf
-####find . -name "*.bz2" | xargs rm -rf
+
+#######################  uninstall teameeting  #########################################
+function uninstall_teameeting()
+{
+    cd $CUR_PATH
+    MODULE_DIR=connector
+    MODULE_NAME="connector"
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=dispatcher
+    MODULE_NAME="dispatcher"
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=meeting
+    MODULE_NAME="meeting"
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+}
+
+#######################  teameeting usage #########################################
+function usage()
+{
+    echo "######### teameeting ########"
+    echo "######### teameeting [-iuh]"
+    echo "######### -i  install"
+    echo "######### -u  uninstall"
+    echo "######### -h  usage: $0 [-iuh]"
+    sleep 2
+    exit
+}
+
+if [ $# -eq 0 ]
+then
+    usage
+    exit
+fi
+
+while getopts "iuh" arg
+do
+    case $arg in
+        i)  install_teameeting ;;
+        u)  uninstall_teameeting ;;
+        h)  usage ;;
+        ?)  usage ;;
+    esac
+done
+

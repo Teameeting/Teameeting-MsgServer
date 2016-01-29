@@ -8,14 +8,10 @@
 
 #include "MRTConnectionManager.h"
 #include <assert.h>
-#include "md5.h"
-#include "md5digest.h"
 #include "OSMutex.h"
 #include "MRTRoomManager.h"
 #include "MRTTransferSession.h"
 
-static char          s_curMicroSecStr[32] = {0};
-static unsigned char s_digest[16] = {0};
 static OSMutex       s_mutex;
 static OSMutex       s_mutexModule;
 static OSMutex       s_mutexTypeModule;
@@ -24,34 +20,6 @@ static MRTConnectionManager::ModuleInfoMaps                 s_ModuleInfoMap(0);
 static MRTConnectionManager::TypeModuleSessionInfoLists     s_TypeModuleSessionInfoList(0);
 static MRTConnectionManager::UserSessionInfoLists           s_UserSessionInfoList(0);
 static MRTConnectionManager::UserSessionInfoMaps            s_UserSessionInfoMap(0);
-
-
-void MRTConnectionManager::GenericSessionId(std::string& strId)
-{
-    
-    SInt64 curTime = 0;
-    char* p = NULL;
-    MD5_CTX context;
-    StrPtrLen hashStr;
-    memset(s_curMicroSecStr, 0, 128);
-    memset(s_digest, 0, 16);
-    {
-        OSMutexLocker locker(&s_mutex);
-        curTime = OS::Microseconds();
-        qtss_sprintf(s_curMicroSecStr, "%lld", curTime);
-        MD5_Init(&context);
-        MD5_Update(&context, (unsigned char*)s_curMicroSecStr, (unsigned int)strlen((const char*)s_curMicroSecStr));
-        MD5_Update(&context, (unsigned char*)m_lastUpdateTime.c_str(), (unsigned int)m_lastUpdateTime.length());
-        MD5_Final(s_digest, &context);
-        HashToString(s_digest, &hashStr);
-        p = hashStr.GetAsCString();
-        strId = p;
-        delete p;
-        p = NULL;
-        hashStr.Delete();
-        m_lastUpdateTime = s_curMicroSecStr;
-    }
-}
 
 
 MRTConnectionManager::ModuleInfo* MRTConnectionManager::findModuleInfo(const std::string& userid, TRANSFERMODULE module)

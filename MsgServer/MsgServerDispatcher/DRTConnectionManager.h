@@ -98,7 +98,6 @@ public:
 
     void TransferSessionLostNotify(const std::string& sid);
 
-    void    GenericSessionId(std::string& strId);
     bool    ConnectConnector();
     std::list<std::string>* GetAddrsList() { return &m_ipList; }
     void    RefreshConnection();
@@ -107,11 +106,10 @@ public:
     std::string& MsgQueueId() { return m_msgQueueId; }
 
 private:
-    DRTConnectionManager():m_lastUpdateTime("DRTConnectionManager") {}
+    DRTConnectionManager() {}
     ~DRTConnectionManager() {}
     bool DoConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
-    std::string               m_lastUpdateTime;
     std::string               m_msgQueueId;
 
 };

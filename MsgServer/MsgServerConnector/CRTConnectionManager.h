@@ -122,7 +122,6 @@ public:
     static unsigned short   s_cohttpPort;
     static std::string      s_cohttpHost;
 
-    void    GenericSessionId(std::string& strId);
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
         m_connectorPort = port;
         m_connectorId = Id;
@@ -159,13 +158,11 @@ private:
     CRTConnectionManager() : m_connectorIp(""),
                             m_connectorPort(""),
                             m_connectorId(""),
-                            m_lastUpdateTime("CRTConnectionManager"),
                             m_pcoHttpSvrConn(NULL) { }
     ~CRTConnectionManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
-    std::string m_lastUpdateTime;
     CORTHttpSvrConn     *m_pcoHttpSvrConn;
 };
 

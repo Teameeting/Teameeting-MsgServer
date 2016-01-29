@@ -71,54 +71,54 @@ std::string MEETMSG::ToJson()
 void MEETMSG::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("mtype") && jsonReqDoc["mtype"].IsInt()))
     {
-        err.assign("parse mtype error");
+        err = "parse mtype error";
         return;
     }
     _mtype = (MSGTYPE)jsonReqDoc["mtype"].GetInt();
     if(!(jsonReqDoc.HasMember("messagetype") && jsonReqDoc["messagetype"].IsInt()))
     {
-        err.assign("parse messagetype error");
+        err = "parse messagetype error";
         return;
     }
     _messagetype = (MESSAGETYPE)jsonReqDoc["messagetype"].GetInt();
     if(!(jsonReqDoc.HasMember("signaltype") && jsonReqDoc["signaltype"].IsInt()))
     {
-        err.assign("parse signaltype error");
+        err = "parse signaltype error";
         return;
     }
     _signaltype = jsonReqDoc["signaltype"].GetInt();
     if(!(jsonReqDoc.HasMember("cmd") && jsonReqDoc["cmd"].IsInt()))
     {
-        err.assign("parse cmd error");
+        err = "parse cmd error";
         return;
     }
     _cmd = jsonReqDoc["cmd"].GetInt();
     if(!(jsonReqDoc.HasMember("action") && jsonReqDoc["action"].IsInt()))
     {
-        err.assign("parse action error");
+        err = "parse action error";
         return;
     }
     _action = jsonReqDoc["action"].GetInt();
     if(!(jsonReqDoc.HasMember("tags") && jsonReqDoc["tags"].IsInt()))
     {
-        err.assign("parse tags error");
+        err = "parse tags error";
         return;
     }
     _tags = jsonReqDoc["tags"].GetInt();
     if(!(jsonReqDoc.HasMember("type") && jsonReqDoc["type"].IsInt()))
     {
-        err.assign("parse type error");
+        err = "parse type error";
         return;
     }
     _type = jsonReqDoc["type"].GetInt();
@@ -126,67 +126,67 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
 
     if(!(jsonReqDoc.HasMember("nmem") && jsonReqDoc["nmem"].IsInt()))
     {
-        err.assign("parse nmem error");
+        err = "parse nmem error";
         return;
     }
     _nmem = jsonReqDoc["nmem"].GetInt();
     if(!(jsonReqDoc.HasMember("ntime") && jsonReqDoc["ntime"].IsInt64()))
     {
-        err.assign("parse ntime error");
+        err = "parse ntime error";
         return;
     }
     _ntime = jsonReqDoc["ntime"].GetInt64();
     if(!(jsonReqDoc.HasMember("mseq") && jsonReqDoc["mseq"].IsUint64()))
     {
-        err.assign("parse mseq error");
+        err = "parse mseq error";
         return;
     }
     _mseq = jsonReqDoc["mseq"].GetUint64();
     if(!(jsonReqDoc.HasMember("from") && jsonReqDoc["from"].IsString()))
     {
-        err.assign("parse from error");
+        err = "parse from error";
         return;
     }
     _from = jsonReqDoc["from"].GetString();
     if(!(jsonReqDoc.HasMember("room") && jsonReqDoc["room"].IsString()))
     {
-        err.assign("parse room error");
+        err = "parse room error";
         return;
     }
     _room = jsonReqDoc["room"].GetString();
     if(!(jsonReqDoc.HasMember("to") && jsonReqDoc["to"].IsString()))
     {
-        err.assign("parse to error");
+        err = "parse to error";
         return;
     }
     _to = jsonReqDoc["to"].GetString();
     if(!(jsonReqDoc.HasMember("cont") && jsonReqDoc["cont"].IsString()))
     {
-        err.assign("parse cont error");
+        err = "parse cont error";
         return;
     }
     _cont = jsonReqDoc["cont"].GetString();
     if(!(jsonReqDoc.HasMember("pass") && jsonReqDoc["pass"].IsString()))
     {
-        err.assign("parse pass error");
+        err = "parse pass error";
         return;
     }
     _pass = jsonReqDoc["pass"].GetString();
     if(!(jsonReqDoc.HasMember("nname") && jsonReqDoc["nname"].IsString()))
     {
-        err.assign("parse nname error");
+        err = "parse nname error";
         return;
     }
     _nname = jsonReqDoc["nname"].GetString();
     if(!(jsonReqDoc.HasMember("rname") && jsonReqDoc["rname"].IsString()))
     {
-        err.assign("parse rname error");
+        err = "parse rname error";
         return;
     }
     _rname = jsonReqDoc["rname"].GetString();
     if(!(jsonReqDoc.HasMember("code") && jsonReqDoc["code"].IsInt()))
     {
-        err.assign("parse code error");
+        err = "parse code error";
         return;
     }
     _code = jsonReqDoc["code"].GetInt();

@@ -3,7 +3,6 @@
 #include <iostream>
 #include "DRTMsgQueue.h"
 #include "atomic.h"
-#include "OS.h"
 #include "OSThread.h"
 #include "IdleTask.h"
 #include "Socket.h"
@@ -13,6 +12,7 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "DRTConnectionManager.h"
+#include "RTUtils.hpp"
 
 
 static bool         g_inited = false;
@@ -128,7 +128,7 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
 	Assert(pDispIp != NULL && strlen(pDispIp)>0);
 
     std::string mid;
-    DRTConnectionManager::Instance()->GenericSessionId(mid);
+    GenericSessionId(mid);
     DRTConnectionManager::Instance()->SetMsgQueueId(mid);
     LI("[][]MsgQueueId:%s\n", mid.c_str());
 

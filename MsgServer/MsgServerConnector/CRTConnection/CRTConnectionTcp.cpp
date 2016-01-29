@@ -10,6 +10,7 @@
 #include "CRTConnectionManager.h"
 #include "atomic.h"
 #include "StatusCode.h"
+#include "RTUtils.hpp"
 
 static unsigned int	g_trans_id = 0;
 
@@ -107,7 +108,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
         //store userid & pass
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
-            CRTConnectionManager::Instance()->GenericSessionId(sid);
+            GenericSessionId(sid);
             LI("=====CRTConnectionTcp::OnLogin=========GenericSessioNid sid:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;
@@ -141,6 +142,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
 
 void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)
 {
+    if (!m_login) return;
     if (!pData) {
         LE("%s invalid params\n", __FUNCTION__);
         return;
@@ -190,9 +192,9 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
     }
     std::string token;
     CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
-    m_userId.assign("");
-    m_token.assign("");
-    m_nname.assign("");
+    m_userId = "";
+    m_token = "";
+    m_nname = "";
     std::string resp;
     GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, resp);
     SendResponse(0, resp.c_str());
@@ -202,8 +204,8 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
 
 void CRTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
-    LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
     if (m_login) {
+        LI("RTConnectionTcp::OnKeepAlive pUserid:%s\n", pUserid);
         RTTcp::UpdateTimer();
     }
 }

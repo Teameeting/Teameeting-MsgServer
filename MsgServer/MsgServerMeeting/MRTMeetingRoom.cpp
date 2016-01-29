@@ -7,21 +7,16 @@
 //
 
 #include <algorithm>
+#include "rtklog.h"
+#include "atomic.h"
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/prettywriter.h"
 #include "MRTMeetingRoom.h"
-#include "rtklog.h"
-#include "atomic.h"
 #include "MRTRoomManager.h"
-#include "md5.h"
-#include "md5digest.h"
-#include "OS.h"
-
-static char          s_curMicroSecStr[32];
-static unsigned char s_digest[16];
+#include "RTUtils.hpp"
 
 MRTMeetingRoom::MRTMeetingRoom(const std::string mid, const std::string ownerid)
 : m_roomId(mid)
@@ -43,8 +38,8 @@ void MRTMeetingRoom::AddMemberToRoom(const std::string& uid, MemberStatus status
 {
     OSMutexLocker locker(&m_memberMutex);
     if (m_meetingMembers.empty()) {
-        m_sessionId.assign("");
-        GenericMeetingSessionId(m_sessionId);
+        m_sessionId = "";
+        GenericSessionId(m_sessionId);
     }
     m_roomMembers.insert(uid);
     if (MS_INMEETING==status) {
@@ -356,27 +351,4 @@ void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEET
     LI("===>>>MRTMeetingRoom::AddWaitingMsgToList size:%d\n", (int)m_waitingMsgsList.size());
     OSMutexLocker locker(&m_wmsgMutex);
     m_waitingMsgsList.push_back(WaitingMsg(type, tag, tmsg, mmsg));
-}
-
-void MRTMeetingRoom::GenericMeetingSessionId(std::string& strId)
-{
-    SInt64 curTime = 0;
-    char* p = NULL;
-    MD5_CTX context;
-    StrPtrLen hashStr;
-    memset(s_curMicroSecStr, 0, 128);
-    memset(s_digest, 0, 16);
-    
-    curTime = OS::Microseconds();
-    qtss_sprintf(s_curMicroSecStr, "%lld", curTime);
-    MD5_Init(&context);
-    MD5_Update(&context, (unsigned char*)s_curMicroSecStr, (unsigned int)strlen((const char*)s_curMicroSecStr));
-    MD5_Update(&context, (unsigned char*)MRTRoomManager::s_msgQueueIp.c_str(), (unsigned int)MRTRoomManager::s_msgQueueIp.length());
-    MD5_Final(s_digest, &context);
-    HashToString(s_digest, &hashStr);
-    p = hashStr.GetAsCString();
-    strId = p;
-    delete p;
-    p = NULL;
-    hashStr.Delete();
 }

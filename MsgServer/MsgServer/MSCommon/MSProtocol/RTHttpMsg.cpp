@@ -51,67 +51,67 @@ std::string MEETINGINFO::ToJson()
 void MEETINGINFO::GetMsg(const std::string& str, std::string& err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
 
     if(!(jsonReqDoc.HasMember("meetingid") && jsonReqDoc["meetingid"].IsString()))
     {
-        err.assign("parse meetingid error");
+        err = "parse meetingid error";
         return;
     }
     meetingid = jsonReqDoc["meetingid"].GetString();
     if(!(jsonReqDoc.HasMember("userid") && jsonReqDoc["userid"].IsString()))
     {
-        err.assign("parse userid error");
+        err = "parse userid error";
         return;
     }
     userid = jsonReqDoc["userid"].GetString();
     if(!(jsonReqDoc.HasMember("meetname") && jsonReqDoc["meetname"].IsString()))
     {
-        err.assign("parse meetname error");
+        err = "parse meetname error";
         return;
     }
     meetname = jsonReqDoc["meetname"].GetString();
     if(!(jsonReqDoc.HasMember("meetdesc") && jsonReqDoc["meetdesc"].IsString()))
     {
-        err.assign("parse meetdesc error");
+        err = "parse meetdesc error";
         return;
     }
     meetdesc = jsonReqDoc["meetdesc"].GetString();
     if(!(jsonReqDoc.HasMember("meetusable") && jsonReqDoc["meetusable"].IsInt()))
     {
-        err.assign("parse meetusable error");
+        err = "parse meetusable error";
         return;
     }
     meetusable = jsonReqDoc["meetusable"].GetInt();
     if(!(jsonReqDoc.HasMember("pushable") && jsonReqDoc["pushable"].IsInt()))
     {
-        err.assign("parse pushable error");
+        err = "parse pushable error";
         return;
     }
     pushable = jsonReqDoc["pushable"].GetInt();
     if(!(jsonReqDoc.HasMember("meettype1") && jsonReqDoc["meettype1"].IsInt()))
     {
-        err.assign("parse meettype1 error");
+        err = "parse meettype1 error";
         return;
     }
     meettype1 = jsonReqDoc["meettype1"].GetInt();
     if(!(jsonReqDoc.HasMember("memnumber") && jsonReqDoc["memnumber"].IsInt()))
     {
-        err.assign("parse memnumber error");
+        err = "parse memnumber error";
         return;
     }
     memnumber = jsonReqDoc["memnumber"].GetInt();
     if(!(jsonReqDoc.HasMember("crttime") && jsonReqDoc["crttime"].IsInt64()))
     {
-        err.assign("parse crttime error");
+        err = "parse crttime error";
         return;
     }
     crttime = jsonReqDoc["crttime"].GetInt64();
@@ -143,18 +143,18 @@ std::string MEETINGMEMBERLIST::ToJson()
 void MEETINGMEMBERLIST::GetMsg(const std::string &str, std::string &err)
 {
     if (str.empty() || str.length() == 0) {
-        err.assign("bad params");
+        err = "bad params";
         return;
     }
     rapidjson::Document		jsonReqDoc;
     if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
     {
-        err.assign(INVALID_JSON_PARAMS);
+        err = INVALID_JSON_PARAMS;
         return;
     }
     if(!(jsonReqDoc.HasMember("meetingMemberList") && jsonReqDoc["meetingMemberList"].IsArray()))
     {
-        err.assign("parse meetingMemberList error");
+        err = "parse meetingMemberList error";
         return;
     }
     rapidjson::Value& mems = jsonReqDoc["meetingMemberList"];

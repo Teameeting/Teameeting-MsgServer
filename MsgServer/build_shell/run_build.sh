@@ -1,5 +1,8 @@
 #!/bin/sh
 
+############find . -name "*.Po" | xargs rm -rf
+############find . -name "*.bz2" | xargs rm -rf
+
 ##############################################################
 #####################    usage    ############################
 ##############################################################
@@ -37,11 +40,11 @@ export PARAM_LOG=""
 export LOG_FILE=""
 PARAM_LOGNAME=$CUR_DATE
 
-while getopts "c:f:l:h" arg
+while getopts "cfl:h" arg
 do
     case $arg in
-        c)  PARAM_CLEAN=$OPTARG;;
-        f)  PARAM_FORCE=$OPTARG;;
+        c)  PARAM_CLEAN="yes";;
+        f)  PARAM_FORCE="yes";;
         l)  PARAM_LOGNAME=$OPTARG
             PARAM_LOG=$OPTARG;;
         h)  shell_usage $0;;

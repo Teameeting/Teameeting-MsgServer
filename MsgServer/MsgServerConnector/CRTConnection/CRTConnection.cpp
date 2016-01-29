@@ -5,6 +5,7 @@
 #include "CRTConnectionManager.h"
 #include "RTMessage.h"
 #include "atomic.h"
+#include "RTUtils.hpp"
 
 static unsigned int	g_trans_id = 0;
 
@@ -105,7 +106,7 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* 
         //store userid & pass
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
-            CRTConnectionManager::Instance()->GenericSessionId(sid);
+            GenericSessionId(sid);
             LI("=================SESSIONID:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;
@@ -213,9 +214,9 @@ void CRTConnection::OnLogout(const char* pUserid)
         std::string uid(pUserid);
         std::string token;
         CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, uid, token);
-        m_userId.assign("");
-        m_token.assign("");
-        m_nname.assign("");
+        m_userId = "";
+        m_token = "";
+        m_nname = "";
     }
     {
         //send response
