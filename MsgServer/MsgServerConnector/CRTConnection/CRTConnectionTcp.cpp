@@ -10,6 +10,7 @@
 #include "CRTConnectionManager.h"
 #include "atomic.h"
 #include "StatusCode.h"
+#include "RTUtils.hpp"
 
 static unsigned int	g_trans_id = 0;
 
@@ -107,7 +108,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
         //store userid & pass
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
-            CRTConnectionManager::Instance()->GenericSessionId(sid);
+            GenericSessionId(sid);
             LI("=====CRTConnectionTcp::OnLogin=========GenericSessioNid sid:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;

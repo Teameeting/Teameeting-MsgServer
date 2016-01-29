@@ -46,7 +46,7 @@ void HashToString(unsigned char aHash[kHashLen], StrPtrLen* hashStr){
     UInt8 hexDigit;
     // Allocating memory
     char* str = NEW char[kHashHexLen+1];
-    str[kHashHexLen] = 0;
+    str[kHashHexLen] = '\0';
         
     for(i = 0; i < kHashLen; i++) {
         hexDigit = (aHash[i] >> 4) & 0xF;

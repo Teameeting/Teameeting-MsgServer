@@ -1,8 +1,8 @@
+#include <iostream>
 #include "MRTMeeting.h"
 #include <stdio.h>
 #include <assert.h>
 #include "atomic.h"
-#include "OS.h"
 #include "OSThread.h"
 #include "IdleTask.h"
 #include "Socket.h"
@@ -13,7 +13,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "MRTConnectionManager.h"
 #include "MRTRoomManager.h"
-#include <iostream>
+#include "RTUtils.hpp"
 
 static bool         g_inited = false;
 static const char*	g_pVersion = "0.01.20150810";
@@ -126,7 +126,7 @@ int	MRTMeeting::Start(const char*pConnIp, unsigned short usConnPort, const char*
     MRTRoomManager::s_httpPort = usHttpPort;
 
     std::string mid;
-    MRTConnectionManager::Instance()->GenericSessionId(mid);
+    GenericSessionId(mid);
     MRTConnectionManager::Instance()->SetMeetingId(mid);
     LI("[][]MeetingId:%s\n", mid.c_str());
 

@@ -122,7 +122,6 @@ public:
     static unsigned short   s_cohttpPort;
     static std::string      s_cohttpHost;
 
-    void    GenericSessionId(std::string& strId);
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
         m_connectorPort = port;
         m_connectorId = Id;

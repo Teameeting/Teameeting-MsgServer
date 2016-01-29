@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E63540311C5B321200FC1EF9 /* RTUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E635402F1C5B321200FC1EF9 /* RTUtils.cpp */; };
+		E63540321C5B321200FC1EF9 /* RTUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E63540301C5B321200FC1EF9 /* RTUtils.hpp */; };
 		E66B59B01C4A506D0053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59AF1C4A506D0053161E /* main.cpp */; };
 		E66B59BB1C4A50C90053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59BA1C4A50C90053161E /* main.cpp */; };
 		E66B59C61C4A50F10053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59C51C4A50F10053161E /* main.cpp */; };
@@ -138,6 +140,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E635402F1C5B321200FC1EF9 /* RTUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTUtils.cpp; sourceTree = "<group>"; };
+		E63540301C5B321200FC1EF9 /* RTUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RTUtils.hpp; sourceTree = "<group>"; };
 		E66B59AD1C4A506D0053161E /* MsgServerConnector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MsgServerConnector; sourceTree = BUILT_PRODUCTS_DIR; };
 		E66B59AF1C4A506D0053161E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E66B59B81C4A50C90053161E /* MsgServerDispatcher */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MsgServerDispatcher; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -413,6 +417,8 @@
 				E66B59DD1C4A55B00053161E /* RTObserverConnection.h */,
 				E66B59DE1C4A55B00053161E /* RTTcp.cpp */,
 				E66B59DF1C4A55B00053161E /* RTTcp.h */,
+				E635402F1C5B321200FC1EF9 /* RTUtils.cpp */,
+				E63540301C5B321200FC1EF9 /* RTUtils.hpp */,
 			);
 			path = MSBase;
 			sourceTree = "<group>";
@@ -592,6 +598,7 @@
 				E66B5B8A1C4A55B10053161E /* RTMsg.h in Headers */,
 				E66B5CA61C4A55B10053161E /* revision.h in Headers */,
 				E66B5B8D1C4A55B10053161E /* RTSignalMsg.h in Headers */,
+				E63540321C5B321200FC1EF9 /* RTUtils.hpp in Headers */,
 				E66B5B851C4A55B10053161E /* StatusCode.h in Headers */,
 				E66B5B891C4A55B10053161E /* RTMessage.h in Headers */,
 				E66B5B871C4A55B10053161E /* RTMeetMsg.h in Headers */,
@@ -832,6 +839,7 @@
 				E66B5DA71C4A80640053161E /* RTHttpMsg.cpp in Sources */,
 				E66B5CB91C4A5B1B0053161E /* RTHiredis.cpp in Sources */,
 				E66B5CBA1C4A5B1B0053161E /* RTTcp.cpp in Sources */,
+				E63540311C5B321200FC1EF9 /* RTUtils.cpp in Sources */,
 				E66B5CBB1C4A5B1B0053161E /* RTMeetMsg.cpp in Sources */,
 				E66B5CBC1C4A5B1B0053161E /* RTMessage.cpp in Sources */,
 				E66B5CBD1C4A5B1B0053161E /* RTSignalMsg.cpp in Sources */,

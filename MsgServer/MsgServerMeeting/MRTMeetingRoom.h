@@ -125,7 +125,6 @@ public:
     void CheckMembers();
 
 private:
-    void GenericMeetingSessionId(std::string& strId);
 
     OSMutex                         m_memberMutex;
     OSMutex                         m_notifyMutex;
