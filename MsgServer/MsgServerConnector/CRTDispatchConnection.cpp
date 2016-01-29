@@ -47,7 +47,7 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::strin
             //PushMsg(uid, msg);
         }
     }
-    
+
 }
 
 
@@ -69,5 +69,5 @@ void CRTDispatchConnection::PushMsg(const std::string& uid, const std::string& m
         //LI("CRTDispatchConnection::PushMsg enter uid:%s, cont:%s\n", uid.c_str(), m_msg._cont.c_str());
         CRTConnectionManager::Instance()->PushMeetingMsg(m_msg._pass, m_msg._room, m_msg._cont, no);
     }
-    
+
 }
