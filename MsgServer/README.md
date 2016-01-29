@@ -1,34 +1,29 @@
-# *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_*
+#编译说明
 
-# *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_*
+###Linux
+本项目提供两种编译方式<br>
+<br>
+1. build_shell中的run_build.sh为编译脚本<br>
+<br>
+cd build_shell<br>
+./run_build.sh 即可编译整个项目<br>
+<br>
+msgserver为编译后文件目录<br>
+在完成编译后，运行untar.sh解压文件msgserver.tar.bz2<br>
+cd msgserver <br>
+sudo ./teameeting.sh -i 即可安装整个项目的可执行文件到/usr/local/dync/teameeting/ <br>
+<br>
+运行./start.sh 即可启动程序<br>
+./start.sh<br>
+<br>
+运行./stop.sh 即可结束程序<br>
+./stop.sh<br>
 
-# *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_*
-# MsgServer
-#
-# This the note of this server
 
-# It is developing now, many functions are not worked well, It's my pleasure if you contact me if you meet problems when using this server
-# Please e-mail me @ zhengxiaokai@dync.cc
+2. 分步编译，参考各个目录README<br>
 
-# This server devide four part now. MsgServer, Connector, Meeting, MsgQueue
-# And the client is int https://github.com/DyncKevin/MsgServerClient.git
-# MsgServer just manage the left four projects, just include them.
-# Connector accept connection from Clinet and WebClient, WebClient do not upload now.
-# Meeting receive msg from Connector and Process the msg
-# MsgQueue receive Processed msg and send back to Connector
-# Connector then dispatch the msg to connected Client and push off-line msg to disconnected Client
+---
 
-# This server can work well on OSX; I have not tried on Linux and Windows, later I will do it.
-
-# On OSX, after you clone MsgServer, there are four Projects now.
-# Before you run this server, you need to install Redis into you system.
-# Open them and run them as Connector--MsgQueue--Meeting--Client.
-# You can see the log in the Console.
-
-# *_* Later I will merge them into One Project 
-
-# *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_*
-
-# *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_*
-
-# *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_* *_*
+###Mac
+如果没有Xcode请到AppStore下载安装Xcode<br>
+确认Mac中有Xcode之后，用Xcode打开工程MsgServer.xcodeproj,即可编译运行<br>
