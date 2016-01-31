@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "01B330EBCEC91A8BF9D57003AFAB7F73BB6723E5",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "01B330EBCEC91A8BF9D57003AFAB7F73BB6723E5" : 0,
+    "5B9CBAE4AF377CAE3B8351F29CE31D6AF0D5DCA1" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C8BD21F4-0FC1-4658-BBCA-01F02C6B7DC2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "01B330EBCEC91A8BF9D57003AFAB7F73BB6723E5" : "Teameeting-MsgServerClientSdk\/",
+    "5B9CBAE4AF377CAE3B8351F29CE31D6AF0D5DCA1" : "Teameeting-MsgServer\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SdkMsgClientIos",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "MsgServerClientSdk\/sdk_ios\/SdkMsgClientIos\/SdkMsgClientIos.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/DyncKevin\/Teameeting-MsgServerClientSdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "01B330EBCEC91A8BF9D57003AFAB7F73BB6723E5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/DyncKevin\/Teameeting-MsgServer.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5B9CBAE4AF377CAE3B8351F29CE31D6AF0D5DCA1"
+    }
+  ]
+}
