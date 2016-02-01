@@ -7,6 +7,7 @@ AM_CPPFLAGS=$(AM_CFLAGS)
 AM_CPPFLAGS+= -I$(top_srcdir)/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/MSCommon/MSCommon/ \
 		   -I$(top_srcdir)/MSCommon/MSProtocol/ \
+		   -I$(top_srcdir)/MSCommon/MSRTHttp/ \
 		   -I$(top_srcdir)/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/MSCommon/MSThirdParty/hiredis/ \
@@ -25,6 +26,10 @@ libMSCommon_a_SOURCES=$(top_srcdir)/MSCommon/sigslot.cc \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTUtils.cpp \
+				$(top_srcdir)/MSCommon/MSRTHttp/RTHttp.cpp \
+				$(top_srcdir)/MSCommon/MSRTHttp/RTConnHttp.cpp \
+				$(top_srcdir)/MSCommon/MSRTHttp/RTHttpSender.cpp \
+				$(top_srcdir)/MSCommon/MSRTHttp/RTHttpSvrConn.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMeetMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMessage.cpp \
