@@ -949,10 +949,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommonLib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -977,10 +974,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommonLib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1004,10 +998,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommonLib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1031,10 +1022,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommonLib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1058,10 +1046,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommonLib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1085,10 +1070,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MsgServer/MSCommonLib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
