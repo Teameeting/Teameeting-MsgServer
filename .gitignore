@@ -5,3 +5,9 @@
 *.bz2
 *.o.d
 *.d
+*.a
+*.bak
+*.log
+*.status
+*.in
+*.cache
