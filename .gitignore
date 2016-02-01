@@ -12,3 +12,11 @@
 *.in
 *.cache
 Makefile
+MsgServerConnector
+MsgServerDispatcher
+MsgServerMeeting
+output.0
+traces.0
+traces.1
+requests
+.run_build.sh
