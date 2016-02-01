@@ -1,13 +1,13 @@
 //
-//  MRTHttp.h
-//  MsgServerMeeting
+//  RTHttp.h
+//  MsgServer
 //
 //  Created by hp on 12/16/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef __MsgServerMeeting__MRTHttp__
-#define __MsgServerMeeting__MRTHttp__
+#ifndef __RT_HTTP_H__
+#define __RT_HTTP_H__
 
 #include <stdio.h>
 #include "Task.h"
@@ -18,10 +18,10 @@ enum
     kFirstHttpSessionID     = 1,    //UInt32
 };
 
-class MRTHttp : public Task{
+class RTHttp : public Task{
 public:
-    MRTHttp();
-    virtual ~MRTHttp();
+    RTHttp();
+    virtual ~RTHttp();
     
    	int SendData(const char*pData, int nLen);
     
@@ -44,4 +44,4 @@ private:
     List				m_listSend;
     static unsigned int	 sHttpSessionIDCounter;
 };
-#endif /* defined(__MsgServerMeeting__MRTHttp__) */
+#endif /* defined(__RT_HTTP_H__) */

@@ -1,16 +1,17 @@
 #ifndef __MsgServerMeeting_MRT_HTTP_SVR_CONN_H__
 #define __MsgServerMeeting_MRT_HTTP_SVR_CONN_H__
-#include "MRTHttp.h"
-#include "MRTConnHttp.h"
 #include "OSMutex.h"
 #include "RTMessage.h"
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
+#include "RTHttpSender.h"
+#include "RTHttpSvrConn.h"
 
-class MRTHttpSvrConn
-	: public MRTHttp
-	, public MRTConnHttp
-    , public rtc::RefCountInterface
+#define M_HTTP_CMD_INVALID              (0)
+#define M_HTTP_CMD_GET_MEETING_INFO     (1)
+#define M_HTTP_CMD_GET_MEMBER_LIST      (2)
+
+class MRTHttpSvrConn : public RTHttpSvrConn
 {
 public:
 	MRTHttpSvrConn(void);
@@ -21,6 +22,7 @@ public:
         m_httpIp = addr;
         m_httpPort = port;
         m_httpHost = host;
+        RTConnHttp::SetHttpHost(host);
     }
     
     //* HTTP_POST
@@ -37,24 +39,23 @@ public:
     void HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg);
     void HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg) const;
     
-    void SendRequest(const char* pData, int nLen);
-    
 public:
-	//* For RCHttp
-    virtual void OnReadEvent(const char*data, int size);
+    //* For RCHttp
     virtual int  OnWriteEvent(const char*pData, int nLen, int* nOutLen);
-	virtual void OnTickEvent(){}
 
 public:
-    virtual void OnResponse(const char*pData, int nLen) {}
-    virtual void OnSend(const char*pData, int nLen) {}
+    class MSender : public RTHttpSender{
+        //* For RTConnHttp
+    public:
+        MSender():RTHttpSender(){}
+        MSender(int cmd, TRANSMSG& tmsg, MEETMSG& msg):RTHttpSender(cmd, tmsg, msg){}
+        virtual void OnResponse(const char*pData, int nLen);
+    };
+    
 private:
-	char			 *m_pBuffer;
-	int				 m_nBufLen;
-	int				 m_nBufOffset;
-    std::string      m_httpIp;
-    unsigned short   m_httpPort;
-    std::string      m_httpHost;
+    std::string           m_httpIp;
+    unsigned short        m_httpPort;
+    std::string           m_httpHost;
 };
 
 #endif	// __MsgServerMeeting_MRT_HTTP_SVR_CONN_H__

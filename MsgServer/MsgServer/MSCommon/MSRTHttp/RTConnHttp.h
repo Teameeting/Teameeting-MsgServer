@@ -1,15 +1,15 @@
-#ifndef __MsgServerMeeting_MRT_CONN_HTTP_H__
-#define __MsgServerMeeting_MRT_CONN_HTTP_H__
+#ifndef __RT_CONN_HTTP_H__
+#define __RT_CONN_HTTP_H__
 #include "http_common.h"
 #include <map>
 #include <string>
 #include "RTMeetMsg.h"
 
-class MRTConnHttp
+class RTConnHttp
 {
 public:
-	MRTConnHttp(void);
-	virtual ~MRTConnHttp(void);
+	RTConnHttp(void);
+	virtual ~RTConnHttp(void);
 
 	int ProcessData(const char*pData, int nLen);
 
@@ -30,4 +30,4 @@ private:
     std::string m_host;
 };
 
-#endif	// __MsgServerMeeting_MRT_CONN_HTTP_H__
+#endif	// __RT_CONN_HTTP_H__

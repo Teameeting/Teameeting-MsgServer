@@ -1,17 +1,17 @@
 //
-//  CORTHttp.cpp
+//  RTHttp.cpp
 //  dyncRTMeeting
 //
 //  Created by hp on 12/16/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#include "CORTHttp.h"
+#include "RTHttp.h"
 #include "atomic.h"
 
-unsigned int CORTHttp::sHttpSessionIDCounter = kFirstHttpSessionID;
+unsigned int RTHttp::sHttpSessionIDCounter = kFirstHttpSessionID;
 
-CORTHttp::CORTHttp()
+RTHttp::RTHttp()
 : Task()
 , fTickTime(0)
 {
@@ -20,12 +20,12 @@ CORTHttp::CORTHttp()
 }
 
 
-CORTHttp::~CORTHttp()
+RTHttp::~RTHttp()
 {
     ListEmpty(&m_listSend);
 }
 
-int CORTHttp::SendData(const char*pData, int nLen)
+int RTHttp::SendData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
         LE("%s invalid params error!\n", __FUNCTION__);
@@ -37,12 +37,12 @@ int CORTHttp::SendData(const char*pData, int nLen)
         ptr[nLen] = '\0';
         ListAppend(&m_listSend, ptr, nLen);
     }
-    LI("CORTHttp::SendData ok\n");
+    
     this->Signal(kWriteEvent);
     return nLen;
 }
 
-SInt64 CORTHttp::Run()
+SInt64 RTHttp::Run()
 {
     EventFlags events = this->GetEvents();
     this->ForceSameThread();
@@ -80,8 +80,6 @@ SInt64 CORTHttp::Run()
                 {
                     LE("send error");
                 }
-            } else {
-                LE("NOTIFICATION OnWriteEvent error\n");
             }
             events -= Task::kWriteEvent;
         }

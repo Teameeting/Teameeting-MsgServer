@@ -1,18 +1,17 @@
-#ifndef __MsgServerMeeting_MRT_HTTP_SENDER_H__
-#define __MsgServerMeeting_MRT_HTTP_SENDER_H__
+#ifndef __RT_HTTP_SENDER_H__
+#define __RT_HTTP_SENDER_H__
 #include "RTTcp.h"
-#include "MRTConnHttp.h"
+#include "RTConnHttp.h"
 #include "RTMessage.h"
-#include "MRTHttpCmd.h"
 
-class MRTHttpSender
+class RTHttpSender
 	: public RTTcp
-	, public MRTConnHttp
+	, public RTConnHttp
 {
 public:
-	MRTHttpSender(void);
-    MRTHttpSender(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& msg);
-	virtual ~MRTHttpSender(void);
+	RTHttpSender(void);
+    RTHttpSender(int cmd, TRANSMSG& tmsg, MEETMSG& msg);
+	virtual ~RTHttpSender(void);
 
 public:
     bool ConnHttpHost(const std::string& addr, const unsigned short port, const std::string& host);
@@ -27,14 +26,14 @@ public:
 
 public:
 	//* For RTConnHttp
-	virtual void OnResponse(const char*pData, int nLen);
+	virtual void OnResponse(const char*pData, int nLen) = 0;
 
 private:
 	char			*m_pBuffer;
 	int				m_nBufLen;
 	int				m_nBufOffset;
     http_method     m_method;
-    HTTPCMD         m_cmd;
+    int             m_cmd;
     TRANSMSG        m_transmsg;
     MEETMSG         m_meetmsg;
 };

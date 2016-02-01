@@ -20,7 +20,6 @@
 #include "MRTTransferSession.h"
 #include "MRTMeetingRoom.h"
 #include "MRTHttpSvrConn.h"
-#include "MRTHttpCmd.h"
 
 class MRTRoomManager{
 public:
@@ -36,7 +35,7 @@ public:
 public:
     
     void HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
-    void HandleOptRoomWithData(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void HandleOptRoomWithData(int cmd, TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     void HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
 
     void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);

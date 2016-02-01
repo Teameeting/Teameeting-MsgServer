@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "MRTConnHttp.h"
+#include "RTConnHttp.h"
 #include "http_excuter.h"
 #include "md5digest.h"
 #include "rtklog.h"
@@ -8,27 +8,27 @@
 #include "rapidjson/stringbuffer.h"
 
 
-void MRTConnHttp::OnParsedHttpMessage(const void*pUserData, http_message* httpMsg)
+void RTConnHttp::OnParsedHttpMessage(const void*pUserData, http_message* httpMsg)
 {
-	MRTConnHttp* pHttp = (MRTConnHttp*)pUserData;
+	RTConnHttp* pHttp = (RTConnHttp*)pUserData;
 	if(pHttp)
 	{
 		pHttp->OnHttpMessage(httpMsg);
 	}
 }
 
-MRTConnHttp::MRTConnHttp(void)
+RTConnHttp::RTConnHttp(void)
 : m_bAuthed(false)
 , m_nTimer(10)
 , m_nHttpMethod(HTTP_POST)
 {
 }
 
-MRTConnHttp::~MRTConnHttp(void)
+RTConnHttp::~RTConnHttp(void)
 {
 }
 
-int MRTConnHttp::ProcessData(const char*pData, int nLen)
+int RTConnHttp::ProcessData(const char*pData, int nLen)
 {
 	int parsed = 0;
 	enum http_errno err;
@@ -36,7 +36,7 @@ int MRTConnHttp::ProcessData(const char*pData, int nLen)
 	{
 		const char* pMsg = pData + parsed;
 		int msgLen = nLen - parsed;
-		int nlen = do_http_parse(HTTP_RESPONSE, (char *)pMsg, msgLen, &err, &MRTConnHttp::OnParsedHttpMessage, this);
+		int nlen = do_http_parse(HTTP_RESPONSE, (char *)pMsg, msgLen, &err, &RTConnHttp::OnParsedHttpMessage, this);
 		parsed += nlen;
 		if (err != HPE_OK)
 		{
@@ -57,14 +57,14 @@ int MRTConnHttp::ProcessData(const char*pData, int nLen)
 	return parsed;
 }
 
-void MRTConnHttp::OnHttpMessage(http_message* httpMsg)
+void RTConnHttp::OnHttpMessage(http_message* httpMsg)
 {
     //if (httpMsg->type == HTTP_RESPONSE) {
         OnResponse(httpMsg->body, httpMsg->body_size);
     //}
 }
 
-const char* MRTConnHttp::GenerateRequest(http_method method, const std::string& path, const std::string& data, int &outLen)
+const char* RTConnHttp::GenerateRequest(http_method method, const std::string& path, const std::string& data, int &outLen)
 {
     if (path.length()==0) {
         LE("params error!!!\n");
@@ -94,7 +94,7 @@ const char* MRTConnHttp::GenerateRequest(http_method method, const std::string& 
     return pMsg;
 }
 
-const char* MRTConnHttp::GenerateRequest(http_method method, const std::string& path, const std::string& data, int &outLen) const
+const char* RTConnHttp::GenerateRequest(http_method method, const std::string& path, const std::string& data, int &outLen) const
 {
     if (path.length()==0) {
         LE("params error!!!\n");

@@ -1,25 +1,21 @@
 #include <stdio.h>
 #include "SocketUtils.h"
 #include "MRTHttpSvrConn.h"
-#include "MRTHttpSender.h"
+#include "RTConnHttp.h"
 
 
 MRTHttpSvrConn::MRTHttpSvrConn(void)
-: m_pBuffer(NULL)
-, m_nBufLen(0)
-, m_nBufOffset(0)
+: RTHttpSvrConn()
 , m_httpHost("")
 , m_httpIp("")
 , m_httpPort(0)
 {
-	m_nBufLen = kRequestBufferSizeInBytes;
-	m_pBuffer = new char[m_nBufLen];
+
 }
 
 MRTHttpSvrConn::~MRTHttpSvrConn(void)
 {
-	delete[] m_pBuffer;
-    m_pBuffer = NULL;
+    
 }
 
 ////////////////////////////////////////////////////
@@ -145,7 +141,7 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg)
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingInfo send msg:%s\n", pmsg);
-        MRTHttpSender *sender = new MRTHttpSender(HTTPCMD::_get_meeting_info, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -162,7 +158,7 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg) const
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingInfo send msg:%s\n", pmsg);
-        MRTHttpSender *sender = new MRTHttpSender(HTTPCMD::_get_meeting_info, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -179,7 +175,7 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg)
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingMemberList send msg:%s\n", pmsg);
-        MRTHttpSender *sender = new MRTHttpSender(HTTPCMD::_get_member_list, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -196,7 +192,7 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg) cons
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
         LI("HttpGetMeetingMemberList send msg:%s\n", pmsg);
-        MRTHttpSender *sender = new MRTHttpSender(HTTPCMD::_get_member_list, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -207,52 +203,17 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg) cons
 
 ////////////////////////////////////////////////////
 
-//* For RCHttp
-void MRTHttpSvrConn::OnReadEvent(const char*data, int size)
-{
-	{//
-        while ((m_nBufOffset + size) > m_nBufLen)
-        {
-            int newLen = m_nBufLen + kRequestBufferSizeInBytes;
-            if (size > newLen)
-                newLen = m_nBufLen + size;
-            char* temp = new char[newLen];
-            if (temp == NULL)
-                continue;
-            memcpy(temp, m_pBuffer, m_nBufLen);
-            delete[] m_pBuffer;
-            m_pBuffer = temp;
-            m_nBufLen = newLen;
-        }
-        
-        memcpy(m_pBuffer + m_nBufOffset, data, size);
-        m_nBufOffset += size;
-	}
-
-	{// 
-		int parsed = 0;
-		parsed = MRTConnHttp::ProcessData(m_pBuffer, m_nBufOffset);
-	
-        if (parsed > 0 && m_pBuffer != NULL)
-        {
-            m_nBufOffset -= parsed;
-            if (m_nBufOffset == 0)
-            {
-                memset(m_pBuffer, 0, m_nBufLen);
-            }
-            else
-            {
-                memmove(m_pBuffer, m_pBuffer + parsed, m_nBufOffset);
-            }
-        }
-	}
-}
 
 int MRTHttpSvrConn::OnWriteEvent(const char*pData, int nLen, int* nOutLen)
 {
-    MRTHttpSender *sender = new MRTHttpSender();
+    MSender *sender = new MSender();
     sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
     sender->SendRequest(pData, nLen);
     return 0;
+}
+
+void MRTHttpSvrConn::MSender::OnResponse(const char* pData, int nLen)
+{
+    LI("MRTHttpSvrConn::MSender::OnResponse nLen:%d, pData:%s\n", nLen, pData);
 }
 

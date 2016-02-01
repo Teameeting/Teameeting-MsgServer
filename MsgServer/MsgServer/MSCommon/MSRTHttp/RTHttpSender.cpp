@@ -1,15 +1,16 @@
 #include <stdio.h>
 #include "SocketUtils.h"
-#include "CORTHttpSender.h"
+#include "RTHttpSender.h"
+
 
 #define HTTP_SENDER_TIMEOUT (60000)
 
-CORTHttpSender::CORTHttpSender(void)
+RTHttpSender::RTHttpSender(void)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
 , m_method(HTTP_POST)
-, m_cmd(_http_cmd_invalid)
+, m_cmd(0)
 , m_transmsg()
 , m_meetmsg()
 {
@@ -18,7 +19,7 @@ CORTHttpSender::CORTHttpSender(void)
 	m_pBuffer = new char[m_nBufLen];
 }
 
-CORTHttpSender::CORTHttpSender(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& msg)
+RTHttpSender::RTHttpSender(int cmd, TRANSMSG& tmsg, MEETMSG& msg)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
@@ -30,13 +31,13 @@ CORTHttpSender::CORTHttpSender(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& msg)
     SetTimer(HTTP_SENDER_TIMEOUT);
 }
 
-CORTHttpSender::~CORTHttpSender(void)
+RTHttpSender::~RTHttpSender(void)
 {
 	delete[] m_pBuffer;
     m_pBuffer = NULL;
 }
 
-bool CORTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short port, const std::string& host)
+bool RTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short port, const std::string& host)
 {
     SetHttpHost(host);
     TCPSocket* socket = this->GetSocket();
@@ -63,7 +64,7 @@ bool CORTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short 
 ////////////////////////////////////////////////////
 
 //* For RCTcp
-void CORTHttpSender::OnRecvData(const char*data, int size)
+void RTHttpSender::OnRecvData(const char*data, int size)
 {
 	{//
         while ((m_nBufOffset + size) > m_nBufLen)
@@ -86,7 +87,7 @@ void CORTHttpSender::OnRecvData(const char*data, int size)
 
 	{//
 		int parsed = 0;
-		parsed = CORTConnHttp::ProcessData(m_pBuffer, m_nBufOffset);
+		parsed = RTConnHttp::ProcessData(m_pBuffer, m_nBufOffset);
 
         if (parsed > 0 && m_pBuffer != NULL)
         {
@@ -103,22 +104,8 @@ void CORTHttpSender::OnRecvData(const char*data, int size)
 	}
 }
 
-//* For RTConnHttp
-
-void CORTHttpSender::OnResponse(const char*pData, int nLen)
+void RTHttpSender::SendRequest(const char* pData, int nLen)
 {
-    if (!pData || nLen<=0) {
-        LE("RTHttpSender::OnResponse pData nLen error\n");
-        return;
-    }
-    LI("OnResponse, then kill event\n");
-    this->Signal(kKillEvent);
-}
-
-
-void CORTHttpSender::SendRequest(const char* pData, int nLen)
-{
-    LI("NOTIFICATION SendRequest pData:%s\n", pData);
     RTTcp::SendData(pData, nLen);
     if  (GetSocket()) {
         GetSocket()->RequestEvent(EV_RE);
