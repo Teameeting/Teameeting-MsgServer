@@ -15,14 +15,14 @@
 #include "TCPSocket.h"
 #include "RTTcp.h"
 #include "RTJSBuffer.h"
-#include "CRTTransfer.h"
+#include "RTTransfer.h"
 #include "CRTDispatchConnection.h"
 #include "RTObserverConnection.h"
 
 class CRTTransferSession
     : public RTTcp
     , public RTJSBuffer
-    , public CRTTransfer
+    , public RTTransfer
     , public RTObserverConnection{
 public:
     CRTTransferSession();
@@ -50,6 +50,7 @@ public:
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
+    virtual void OnMsgAck(TRANSFERMSG& tmsg);
     virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);

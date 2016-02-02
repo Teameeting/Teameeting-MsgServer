@@ -15,13 +15,13 @@
 #include "TCPSocket.h"
 #include "RTTcp.h"
 #include "RTJSBuffer.h"
-#include "DRTTransfer.h"
+#include "RTTransfer.h"
 #include "RTObserverConnection.h"
 
 class DRTTransferSession
     : public RTTcp
     , public RTJSBuffer
-    , public DRTTransfer
+    , public RTTransfer
     , public RTObserverConnection{
 public:
     DRTTransferSession();
@@ -50,6 +50,7 @@ public:
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
+    virtual void OnMsgAck(TRANSFERMSG& tmsg);
     virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
