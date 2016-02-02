@@ -12,7 +12,7 @@ AM_CPPFLAGS+=-I$(top_srcdir)/ \
 AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSRTHttp/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSHttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
@@ -22,7 +22,6 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
 
 MsgServerMeeting_SOURCES=$(top_srcdir)/MRTHttp/MRTHttpSvrConn.cpp \
-						   $(top_srcdir)/MRTTransfer/MRTTransfer.cpp \
 						   $(top_srcdir)/MRTTransfer/MRTTransferSession.cpp \
 						   $(top_srcdir)/MRTConnectionManager.cpp \
 						   $(top_srcdir)/MRTMeeting.cpp \
