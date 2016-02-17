@@ -20,6 +20,7 @@ static unsigned int	g_msg_id = 0;
 
 DRTTransferSession::DRTTransferSession()
 : RTJSBuffer()
+, RTTransfer()
 , m_lastUpdateTime(0)
 , m_moduleId("")
 , m_transferSessId("")
@@ -152,7 +153,7 @@ void DRTTransferSession::OnRecvData(const char*pData, int nLen)
 
 void DRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
-    DRTTransfer::DoProcessData(message, nLen);
+    RTTransfer::DoProcessData(message, nLen);
 }
 
 void DRTTransferSession::OnLcsEvent()
@@ -175,6 +176,24 @@ void DRTTransferSession::OnTickEvent()
 void DRTTransferSession::OnTransfer(const std::string& str)
 {
     RTTcp::SendTransferData(str.c_str(), (int)str.length());
+}
+
+void DRTTransferSession::OnMsgAck(TRANSFERMSG& tmsg)
+{
+    TRANSFERMSG ack_msg;
+    if (tmsg._action == TRANSFERACTION::req) {
+        ack_msg._action = TRANSFERACTION::req_ack;
+    } else {
+        ack_msg._action = TRANSFERACTION::resp_ack;
+    }
+    ack_msg._fmodule = TRANSFERMODULE::mmsgqueue;
+    ack_msg._type   = tmsg._type;
+    ack_msg._trans_seq = tmsg._trans_seq;
+    ack_msg._trans_seq_ack = tmsg._trans_seq + 1;
+    ack_msg._valid = tmsg._valid;
+    ack_msg._content = "";
+    const std::string s = ack_msg.ToJson();
+    OnTransfer(s);
 }
 
 void DRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& str)

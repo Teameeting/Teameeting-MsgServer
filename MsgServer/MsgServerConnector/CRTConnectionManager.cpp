@@ -233,10 +233,10 @@ void CRTConnectionManager::ShowConnectionInfo()
 
 bool CRTConnectionManager::ConnectHttpSvrConn()
 {
-    if (!m_pcoHttpSvrConn) {
+    if (!m_pHttpSvrConn) {
         LI("CRTConnectionManager::ConnectHttpSvrConn ok\n");
-        m_pcoHttpSvrConn = new rtc::RefCountedObject<CORTHttpSvrConn>();
-        m_pcoHttpSvrConn->SetHttpHost(s_cohttpIp, s_cohttpPort, s_cohttpHost);
+        m_pHttpSvrConn = new rtc::RefCountedObject<CRTHttpSvrConn>();
+        m_pHttpSvrConn->SetHttpHost(s_cohttpIp, s_cohttpPort, s_cohttpHost);
     } else {
         LI("CRTConnectionManager::ConnectHttpSvrConn error\n");
         return false;
@@ -247,16 +247,16 @@ bool CRTConnectionManager::ConnectHttpSvrConn()
 
 void CRTConnectionManager::PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification)
 {
-    if (m_pcoHttpSvrConn && sign.length()>0 && meetingid.length()>0 && pushMsg.length()>0 && notification.length()>0) {
-        m_pcoHttpSvrConn->HttpPushMeetingMsg(sign.c_str(), meetingid.c_str(), pushMsg.c_str(), notification.c_str());
+    if (m_pHttpSvrConn && sign.length()>0 && meetingid.length()>0 && pushMsg.length()>0 && notification.length()>0) {
+        m_pHttpSvrConn->HttpPushMeetingMsg(sign.c_str(), meetingid.c_str(), pushMsg.c_str(), notification.c_str());
     } else {
         LE("CRTConnectionManager::PushMeetingMsg error\n");
     }
 }
 void CRTConnectionManager::PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification)
 {
-    if (m_pcoHttpSvrConn && sign.length()>0 && targetid.length()>0 && pushMsg.length()>0 && notification.length()>0) {
-        m_pcoHttpSvrConn->HttpPushCommonMsg(sign.c_str(), targetid.c_str(), pushMsg.c_str(), notification.c_str());
+    if (m_pHttpSvrConn && sign.length()>0 && targetid.length()>0 && pushMsg.length()>0 && notification.length()>0) {
+        m_pHttpSvrConn->HttpPushCommonMsg(sign.c_str(), targetid.c_str(), pushMsg.c_str(), notification.c_str());
     }
 }
 

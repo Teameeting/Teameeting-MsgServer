@@ -19,7 +19,7 @@
 #include "RTMessage.h"
 #include "RTTcp.h"
 #include "RTType.h"
-#include "CORTHttpSvrConn.h"
+#include "CRTHttpSvrConn.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"
@@ -158,12 +158,12 @@ private:
     CRTConnectionManager() : m_connectorIp(""),
                             m_connectorPort(""),
                             m_connectorId(""),
-                            m_pcoHttpSvrConn(NULL) { }
+                            m_pHttpSvrConn(NULL) { }
     ~CRTConnectionManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
-    CORTHttpSvrConn     *m_pcoHttpSvrConn;
+    CRTHttpSvrConn     *m_pHttpSvrConn;
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnectionManager__) */

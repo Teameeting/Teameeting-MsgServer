@@ -4,6 +4,10 @@
 ###################    parameter    ##########################
 ##############################################################
 LIB_CUR_PATH=`pwd`
+if [ ! -d lib_linux_a ]
+then
+    mkdir -p lib_linux_a
+fi
 LIB_LINUX_PATH=$LIB_CUR_PATH/lib_linux_a
 LIB_BASE_PATH=$LIB_CUR_PATH/MSThirdParty
 echo  "lib cur   path:" $LIB_CUR_PATH

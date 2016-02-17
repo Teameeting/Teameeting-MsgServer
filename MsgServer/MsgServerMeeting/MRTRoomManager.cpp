@@ -46,15 +46,15 @@ void MRTRoomManager::HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 }
 
 
-void MRTRoomManager::HandleOptRoomWithData(HTTPCMD cmd, TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
+void MRTRoomManager::HandleOptRoomWithData(int cmd, TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data)
 {
     switch (cmd) {
-        case HTTPCMD::_get_meeting_info:
+        case M_HTTP_CMD_GET_MEETING_INFO:
         {
 
         }
             break;
-        case HTTPCMD::_get_member_list:
+        case M_HTTP_CMD_GET_MEMBER_LIST:
         {
             OnGetMemberList(tmsg, mmsg, data);
         }

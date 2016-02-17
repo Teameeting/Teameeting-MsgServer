@@ -21,7 +21,6 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
 
 MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
-						   $(top_srcdir)/DRTTransfer/DRTTransfer.cpp \
 						   $(top_srcdir)/DRTTransfer/DRTTransferSession.cpp \
 						   $(top_srcdir)/DRTConnectionManager.cpp \
 						   $(top_srcdir)/DRTMsgQueue.cpp \
