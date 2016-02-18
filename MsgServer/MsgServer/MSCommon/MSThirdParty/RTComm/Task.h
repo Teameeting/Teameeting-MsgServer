@@ -76,8 +76,8 @@ class Task
            //update event
             kUpdateEvent =      0x1 << 0x6,
 			//user defined event
-			kLcsEvent =			0x1 << 0x7,
-			kPeerEvent =		0x1 << 0x8
+			kWakeupEvent =			0x1 << 0x7,
+			kPushEvent =		0x1 << 0x8
         };
         
         //CONSTRUCTOR / DESTRUCTOR

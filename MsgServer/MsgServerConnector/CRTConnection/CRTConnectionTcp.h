@@ -28,8 +28,8 @@ public:
 public:
     //* For RCTcp
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnLcsEvent();
-    virtual void OnPeerEvent(){Assert(false);};
+    virtual void OnWakeupEvent();
+    virtual void OnPushEvent();
     virtual void OnTickEvent(){};
     
 public:

@@ -5,8 +5,8 @@
 *.bz2
 *.o.d
 *.d
-*.a
 *.bak
+*.a
 *.log
 *.status
 *.in

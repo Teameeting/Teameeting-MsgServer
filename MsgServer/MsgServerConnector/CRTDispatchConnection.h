@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "CRTMsgPush.hpp"
 
 class CRTDispatchConnection{
 public:
@@ -23,7 +24,7 @@ public:
     static std::string     m_connIp;
     static std::string     m_connPort;
 private:
-
+    CRTMsgPush             m_msgPush;
 };
 
 #endif /* defined(__MsgServerConnector__CRTDispatchConnection__) */

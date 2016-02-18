@@ -51,7 +51,7 @@ SInt64 RTHttp::Run()
     // So return -1.
     if(events&Task::kKillEvent)
     {
-        LE("killEvent\n");
+        LE("RTHttp::Run killEvent\n");
         return -1;
     }
     

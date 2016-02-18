@@ -76,9 +76,14 @@ void CRTConnectionTcp::OnRecvMessage(const char*message, int nLen)
     CRTConnTcp::DoProcessData(message, nLen);
 }
 
-void CRTConnectionTcp::OnLcsEvent()
+void CRTConnectionTcp::OnWakeupEvent()
 {
 
+}
+
+void CRTConnectionTcp::OnPushEvent()
+{
+    printf("CRTConnectionTcp::OnPushEvent was called\n");
 }
 
 
@@ -127,6 +132,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
             GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, resp);
             SendResponse(0, resp.c_str());
             m_login = true;
+            this->Signal(Task::kPushEvent);
             return;
         } else {
             LE("new ConnectionInfo error!!!\n");

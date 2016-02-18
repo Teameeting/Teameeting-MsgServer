@@ -43,8 +43,8 @@ public:
 // from RTTcp
 public:
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnLcsEvent();
-    virtual void OnPeerEvent();
+    virtual void OnWakeupEvent();
+    virtual void OnPushEvent();
     virtual void OnTickEvent();
     
 // from RTTransfer

@@ -71,9 +71,9 @@ SInt64 RTTcp::Run()
 	if(events&Task::kTimeoutEvent || events&Task::kKillEvent)
 	{
         if (events&Task::kTimeoutEvent) {
-            LI("%s timeout \n", __FUNCTION__);
+            LI("file %s %s timeout \n", __FILE__, __FUNCTION__);
         } else {
-            LI("%s kill \n", __FUNCTION__);
+            LI("file: %s, %s kill \n", __FILE__, __FUNCTION__);
         }
         ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
         if (it != m_mapConnectObserver.end()) {
@@ -148,15 +148,15 @@ SInt64 RTTcp::Run()
 			}
 			events -= Task::kWriteEvent; 
 		}
-		else if(events&Task::kLcsEvent)
+		else if(events&Task::kWakeupEvent)
 		{
-			OnLcsEvent();
-			events -= Task::kLcsEvent;
+			OnWakeupEvent();
+			events -= Task::kWakeupEvent;
 		}
-		else if(events&Task::kPeerEvent)
+		else if(events&Task::kPushEvent)
 		{
-			OnPeerEvent();
-			events -= Task::kPeerEvent; 
+			OnPushEvent();
+			events -= Task::kPushEvent;
 		}
 		else if(events&Task::kIdleEvent)
 		{

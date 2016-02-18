@@ -82,5 +82,6 @@ int CRTHttpSvrConn::OnWriteEvent(const char*pData, int nLen, int* nOutLen)
 void CRTHttpSvrConn::CSender::OnResponse(const char* pData, int nLen)
 {
     LI("CRTHttpSvrConn::CSender::OnResponse nLen:%d, pData:%s\n", nLen, pData);
+    this->Signal(kKillEvent);
 }
 

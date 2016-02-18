@@ -34,8 +34,8 @@ public:
 	void UpdateTimer(){fTimeoutTask.RefreshTimeout();};
 
 	virtual void OnRecvData(const char*pData, int nLen) = 0;
-	virtual void OnLcsEvent() = 0;
-	virtual void OnPeerEvent() = 0;
+	virtual void OnWakeupEvent() = 0;
+	virtual void OnPushEvent() = 0;
 	virtual void OnTickEvent() = 0;
 
 protected:

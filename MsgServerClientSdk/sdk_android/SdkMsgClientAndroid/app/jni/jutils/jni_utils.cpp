@@ -8,7 +8,7 @@ int	g_sysVersion = 0;
 
 void jni_set_java_context(void* jvm)
 {
-	CHECK(!g_vm, "Trying to re-register jutils vm");
+	//CHECK(!g_vm, "Trying to re-register jutils vm");
 	g_vm = (JavaVM*)jvm;
 
 	{

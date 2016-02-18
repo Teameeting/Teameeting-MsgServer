@@ -2,7 +2,7 @@
 #include "SocketUtils.h"
 #include "MRTHttpSvrConn.h"
 #include "RTConnHttp.h"
-
+#include "MRTRoomManager.h"
 
 MRTHttpSvrConn::MRTHttpSvrConn(void)
 : RTHttpSvrConn()
@@ -215,5 +215,16 @@ int MRTHttpSvrConn::OnWriteEvent(const char*pData, int nLen, int* nOutLen)
 void MRTHttpSvrConn::MSender::OnResponse(const char* pData, int nLen)
 {
     LI("MRTHttpSvrConn::MSender::OnResponse nLen:%d, pData:%s\n", nLen, pData);
+    if (!pData || nLen<=0) {
+        LE("RTHttpSender::OnResponse pData nLen error\n");
+        return;
+    }
+    if (GetMethod() == HTTP_GET) {
+        std::string data(pData, nLen);
+        MRTRoomManager::Instance()->HandleOptRoomWithData(GetCmd(), GetTransmsg(), GetMeetmsg(), data);
+    } else {
+        LI("OnResponse recieved, kill event\n");
+        this->Signal(kKillEvent);
+    }
 }
 

@@ -76,7 +76,7 @@ void CRTConnection::OnRecvData(const char*data, int size)
 	}
 }
 
-void CRTConnection::OnLcsEvent()
+void CRTConnection::OnWakeupEvent()
 {
 
 }

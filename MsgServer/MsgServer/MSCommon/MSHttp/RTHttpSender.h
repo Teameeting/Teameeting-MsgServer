@@ -16,12 +16,16 @@ public:
 public:
     bool ConnHttpHost(const std::string& addr, const unsigned short port, const std::string& host);
     void SendRequest(const char* pData, int nLen);
+    http_method&  GetMethod() { return m_method; }
+    int           GetCmd() { return m_cmd; }
+    TRANSMSG&     GetTransmsg() { return m_transmsg; }
+    MEETMSG&      GetMeetmsg() { return m_meetmsg; }
     
 public:
 	//* For RCTcp
 	virtual void OnRecvData(const char*data, int size);
-    virtual void OnLcsEvent(){}
-    virtual void OnPeerEvent(){}
+    virtual void OnWakeupEvent(){}
+    virtual void OnPushEvent(){}
 	virtual void OnTickEvent(){}
 
 public:

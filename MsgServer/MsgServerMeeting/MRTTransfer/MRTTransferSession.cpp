@@ -156,12 +156,12 @@ void MRTTransferSession::OnRecvMessage(const char*message, int nLen)
     RTTransfer::DoProcessData(message, nLen);
 }
 
-void MRTTransferSession::OnLcsEvent()
+void MRTTransferSession::OnWakeupEvent()
 {
 
 }
 
-void MRTTransferSession::OnPeerEvent()
+void MRTTransferSession::OnPushEvent()
 {
 
 }

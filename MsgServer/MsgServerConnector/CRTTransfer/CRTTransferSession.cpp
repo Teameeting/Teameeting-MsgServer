@@ -139,12 +139,12 @@ void CRTTransferSession::OnRecvMessage(const char*message, int nLen)
     RTTransfer::DoProcessData(message, nLen);
 }
 
-void CRTTransferSession::OnLcsEvent()
+void CRTTransferSession::OnWakeupEvent()
 {
 
 }
 
-void CRTTransferSession::OnPeerEvent()
+void CRTTransferSession::OnPushEvent()
 {
 
 }

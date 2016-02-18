@@ -10,7 +10,7 @@ APP_CFLAGS       += -O3
 #APP_STL := gnustl_shared
 ###APP_STL := gnustl_static
 APP_STL := stlport_static
-NDK_TOOLCHAIN_VERSION = 4.9
+NDK_TOOLCHAIN_VERSION = 4.8
 
 APP_PLATFORM := android-14
 
