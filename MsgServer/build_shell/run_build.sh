@@ -397,7 +397,10 @@ tar_tar_bz2 meeting
 loginfo "tar all the bin program..."
 sleep 1
 cd $CUR_PATH
-cp *.tar.bz2 msgserver
+mkdir -p msgserver
+mv *.tar.bz2 msgserver
+cp *.sh msgserver
+rm msgserver/run_build.sh
 tar -jcvf msgserver.tar.bz2 msgserver
 loginfo "tar all the bin program ok..."
 sleep 1
