@@ -32,6 +32,7 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/CRTListener/CRTModuleListener.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp \
 			 			   $(top_srcdir)/CRTHttp/CRTHttpSvrConn.cpp \
+			 			   $(top_srcdir)/CRTHttp/CRTMsgPush.cpp \
 						   $(top_srcdir)/CRTConnectionManager.cpp \
 						   $(top_srcdir)/CRTConnector.cpp \
 						   $(top_srcdir)/CRTDispatchConnection.cpp \
