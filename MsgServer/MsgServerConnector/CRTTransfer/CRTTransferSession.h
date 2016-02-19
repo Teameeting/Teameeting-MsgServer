@@ -62,12 +62,6 @@ public:
 protected:
     virtual void OnRecvMessage(const char*message, int nLen);
 private:
-    void GenericMsgId(std::string& strId);
-    int GenericTransSeq();
-    void EstablishAck();
-    void OnEstablishConn();
-    void OnEstablishAck();
-private:
     std::string     m_transferSessId;
     CRTDispatchConnection  m_dispatchConnection;
     

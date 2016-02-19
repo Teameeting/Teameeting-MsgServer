@@ -64,12 +64,6 @@ public:
     virtual void ConnectionDisconnected();
         
 private:
-    void GenericMsgId(std::string& strId);
-    int  GenericTransSeq();
-    void EstablishAck();
-    void OnEstablishConn();
-    void OnEstablishAck();
-private:
     std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;
     std::string     m_moduleId;

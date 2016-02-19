@@ -37,8 +37,6 @@ public:
     //* For RTObserverConnection
     virtual void ConnectionDisconnected();
 private:
-    int GenericTransSeq();
-private:
 	char			*m_pBuffer;
 	int				m_nBufLen;
 	int				m_nBufOffset;

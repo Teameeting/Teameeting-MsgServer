@@ -4,10 +4,8 @@
 #include "rapidjson/stringbuffer.h"
 #include "CRTConnectionManager.h"
 #include "RTMessage.h"
-#include "atomic.h"
 #include "RTUtils.hpp"
 
-static unsigned int	g_trans_id = 0;
 
 std::string		CRTConnection::gStrAddr;
 unsigned short	CRTConnection::gUsPort = 0;
@@ -253,7 +251,3 @@ void CRTConnection::ConnectionDisconnected()
 ///////////////////private//////////////////////
 ////////////////////////////////////////////////
 
-int CRTConnection::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}

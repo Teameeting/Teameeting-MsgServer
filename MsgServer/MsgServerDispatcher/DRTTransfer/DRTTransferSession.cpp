@@ -7,7 +7,6 @@
 //
 
 #include <list>
-#include "atomic.h"
 #include "DRTTransferSession.h"
 #include "RTMessage.h"
 #include "DRTConnectionManager.h"
@@ -15,8 +14,6 @@
 
 #define TIMEOUT_TS (60*1000)
 
-static unsigned int	g_trans_id = 0;
-static unsigned int	g_msg_id = 0;
 
 DRTTransferSession::DRTTransferSession()
 : RTJSBuffer()
@@ -389,30 +386,3 @@ void DRTTransferSession::ConnectionDisconnected()
 ////////////////////private/////////////////////////////
 ////////////////////////////////////////////////////////
 
-void DRTTransferSession::GenericMsgId(std::string& strId)
-{
-    char buf[32] = {0};
-    int id_ = (UInt32)atomic_add(&g_msg_id, 1);
-    sprintf(buf, "msgqueue_%06d", id_);
-    strId = buf;
-}
-
-int DRTTransferSession::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
-
-void DRTTransferSession::EstablishAck()
-{
-
-}
-
-void DRTTransferSession::OnEstablishConn()
-{
-
-}
-
-void DRTTransferSession::OnEstablishAck()
-{
-
-}

@@ -8,11 +8,8 @@
 
 #include "CRTConnectionTcp.h"
 #include "CRTConnectionManager.h"
-#include "atomic.h"
 #include "StatusCode.h"
 #include "RTUtils.hpp"
-
-static unsigned int	g_trans_id = 0;
 
 CRTConnectionTcp::CRTConnectionTcp()
 : RTJSBuffer()
@@ -236,8 +233,3 @@ void CRTConnectionTcp::ConnectionDisconnected()
 
 
 ///////////////private///////////////////
-
-int CRTConnectionTcp::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}

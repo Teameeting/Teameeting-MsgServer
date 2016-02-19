@@ -48,8 +48,6 @@ protected:
     virtual void OnRecvMessage(const char*message, int nLen);
     
 private:
-    int GenericTransSeq();
-private:
     std::string     m_connectorId;
     std::string     m_userId;
     std::string     m_token;

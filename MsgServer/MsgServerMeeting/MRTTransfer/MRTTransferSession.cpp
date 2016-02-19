@@ -8,14 +8,12 @@
 
 #include "MRTTransferSession.h"
 #include "RTMessage.h"
-#include "atomic.h"
 #include "MRTRoomManager.h"
 #include "MRTConnectionManager.h"
 #include "MRTHttpSvrConn.h"
+#include "RTUtils.hpp"
 
 #define TIMEOUT_TS (60*1000)
-static unsigned int	g_trans_id = 0;
-static unsigned int	g_msg_id = 0;
 
 MRTTransferSession::MRTTransferSession()
 : RTJSBuffer()
@@ -336,30 +334,3 @@ void MRTTransferSession::ConnectionDisconnected()
 ////////////////////private/////////////////////////////
 ////////////////////////////////////////////////////////
 
-void MRTTransferSession::GenericMsgId(std::string& strId)
-{
-    char buf[32] = {0};
-    int id_ = (UInt32)atomic_add(&g_msg_id, 1);
-    sprintf(buf, "meet_%06d", id_);
-    strId = buf;
-}
-
-int MRTTransferSession::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
-
-void MRTTransferSession::EstablishAck()
-{
-
-}
-
-void MRTTransferSession::OnEstablishConn()
-{
-
-}
-
-void MRTTransferSession::OnEstablishAck()
-{
-
-}

@@ -63,12 +63,6 @@ protected:
 // from RTObserverConnection
 public:
     virtual void ConnectionDisconnected();
-private:
-    void GenericMsgId(std::string& strId);
-    int GenericTransSeq();
-    void EstablishAck();
-    void OnEstablishConn();
-    void OnEstablishAck();
     
 private:
     std::string     m_transferSessId;

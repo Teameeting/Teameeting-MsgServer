@@ -9,7 +9,6 @@
 #include "MRTRoomManager.h"
 #include <assert.h>
 #include <algorithm>
-#include "atomic.h"
 #include "md5.h"
 #include "md5digest.h"
 #include "OS.h"
@@ -17,8 +16,8 @@
 #include "MRTMeetingRoom.h"
 #include "StatusCode.h"
 #include "RTHttpMsg.h"
+#include "RTUtils.hpp"
 
-static unsigned int	 g_trans_id = 0;
 
 std::string     MRTRoomManager::s_msgQueueIp;
 unsigned short  MRTRoomManager::s_msgQueuePort;
@@ -408,11 +407,13 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     it->second->DelPublishIdMsg(mmsg._from, pubid);
     if (pubid.length()>0) {
         it->second->GetMeetingMemberJson(mmsg._from, users);
-        mmsg._tags = SENDTAGS::sendtags_unsubscribe;
-        mmsg._cont = pubid;
-        //LI("==>LeaveRoom from:%s, pubid:%s, usrs:%s\n", mmsg._from.c_str(), pubid.c_str(), users.c_str());
-        GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, resp);
-        SendTransferData(resp, (int)resp.length());
+        if (users.length()>0) {
+            mmsg._tags = SENDTAGS::sendtags_unsubscribe;
+            mmsg._cont = pubid;
+            //LI("==>LeaveRoom from:%s, pubid:%s, usrs:%s\n", mmsg._from.c_str(), pubid.c_str(), users.c_str());
+            GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, resp);
+            SendTransferData(resp, (int)resp.length());
+        }
     }
     it->second->DelAudioSetMsg(mmsg._from);
     it->second->DelVideoSetMsg(mmsg._from);
@@ -468,11 +469,6 @@ void MRTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string&
 }
 
 /////////////////////////////////////////////////////////////
-
-int MRTRoomManager::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
 
 bool MRTRoomManager::Init()
 {
@@ -572,9 +568,11 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
     it->second->DelPublishIdMsg(uid, pubid);
     if (pubid.length()>0) {
         it->second->GetMeetingMemberJson(uid, users);
-        GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
-        SendTransferData(resp, (int)resp.length());
-        LI("ClearSessionLost clear publishId:%s\n", pubid.c_str());
+        if (users.length()>0) {
+            GenericConnLostResponse(uid, token, roomid, connector, SENDTAGS::sendtags_unsubscribe, online, pubid, users, resp);
+            SendTransferData(resp, (int)resp.length());
+            LI("ClearSessionLost clear publishId:%s\n", pubid.c_str());
+        }
     }
     it->second->DelAudioSetMsg(uid);
     it->second->DelVideoSetMsg(uid);

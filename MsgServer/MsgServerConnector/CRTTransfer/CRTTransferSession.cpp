@@ -8,12 +8,9 @@
 
 #include "CRTTransferSession.h"
 #include "RTMessage.h"
-#include "atomic.h"
 #include "CRTConnectionManager.h"
 #include "RTUtils.hpp"
 
-static unsigned int	g_trans_id = 0;
-static unsigned int	g_msg_id = 0;
 
 CRTTransferSession::CRTTransferSession()
 : RTJSBuffer()
@@ -195,7 +192,7 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         TRANSFERMSG t_msg;
         std::string trid;
         GenericSessionId(trid);
-        LI("======gENERICsESSIONID:%s\n", trid.c_str());
+        LI("CRTTransferSession::OnTypeConn sessionid:%s\n", trid.c_str());
         m_transferSessId = trid;
 
         t_msg._action = TRANSFERACTION::req;
@@ -292,31 +289,3 @@ void CRTTransferSession::ConnectionDisconnected()
 ////////////////////////////////////////////////////////
 ////////////////////private/////////////////////////////
 ////////////////////////////////////////////////////////
-
-void CRTTransferSession::GenericMsgId(std::string& strId)
-{
-    char buf[32] = {0};
-    int id_ = (UInt32)atomic_add(&g_msg_id, 1);
-    sprintf(buf, "msgqueue_%06d", id_);
-    strId = buf;
-}
-
-int CRTTransferSession::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
-
-void CRTTransferSession::EstablishAck()
-{
-
-}
-
-void CRTTransferSession::OnEstablishConn()
-{
-
-}
-
-void CRTTransferSession::OnEstablishAck()
-{
-
-}
