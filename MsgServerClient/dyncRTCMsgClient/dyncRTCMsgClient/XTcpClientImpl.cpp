@@ -131,20 +131,10 @@ void XTcpClientImpl::OnTick()
 	rtc::CritScope l(&m_csBuf);
 	if (m_nBufOffset > 0 && m_nState == CONNECTED)
 	{
-#ifdef WEBRTC_ANDROID
-        LOGI("XTcpClientImpl::OnTick socket send m_pBuffer:%s\n", m_pBuffer);
-#else
-        LOG(WARNING) << "XTcpClientImpl::OnTick socket send m_pBuffer:" << m_pBuffer;
-#endif
 		size_t sent = m_asynSock->Send(m_pBuffer, m_nBufOffset);
 
 		if (sent > 0)
 		{
-#ifdef WEBRTC_ANDROID
-            LOGI("XTcpClientImpl::OnTick socket send okkkkkk send:%d m_pBuffer:%s\n", sent, m_pBuffer);
-#else
-            LOG(WARNING) << "XTcpClientImpl::OnTick socket send:" << sent << ", okkkkk m_pBuffer:" << m_pBuffer;
-#endif
 			m_nBufOffset -= sent;
 			if (m_nBufOffset == 0)
 			{

@@ -19,11 +19,7 @@ public class JMClientType {
     public static final int MCSENDTAGS_TALK=1;
     public static final int MCSENDTAGS_ENTER=2;
     public static final int MCSENDTAGS_LEAVE=3;
-    public static final int MCSENDTAGS_SUBSCRIBE=4;
-    public static final int MCSENDTAGS_UNSUBSCRIBE=5;
-    public static final int MCSENDTAGS_AUDIOSET=6;
-    public static final int MCSENDTAGS_VIDEOSET=7;
-    public static final int MCSENDTAGS_INVALID=8;
+    public static final int MCSENDTAGS_INVALID=4;
 
     //* MsgClient message type
     public static final int MCMESSAGETYPE_REQUEST=1;

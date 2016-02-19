@@ -203,11 +203,6 @@ int XMsgClient::Login()
         return -1;
     }
 
-#ifdef WEBRTC_ANDROID
-    LOGI("XMsgClient::Login call SendEncodeMsg\n");
-#else
-    std::cout << "XMsgClient::Login call SendEncodeMsg" << std::endl;
-#endif
     return SendEncodeMsg(outstr);
 }
 
@@ -383,9 +378,9 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
 void XMsgClient::OnLogin(int code, const std::string& userid)
 {
 #ifdef WEBRTC_ANDROID
-    LOGI("XMsgClient::OnLogin code:%d, userid:%s\n", code, userid.c_str());
+    LOGI("XMsgClient::OnLogin code:%d\n", code);
 #else
-    std::cout << "XMsgClient::OnLogin code:" << code << ", userid:" << userid << std::endl;
+    std::cout << "XMsgClient::OnLogin code:" << code << std::endl;
 #endif
     if (code == 0) {
         m_login = true;
@@ -395,15 +390,14 @@ void XMsgClient::OnLogin(int code, const std::string& userid)
     } else {
         Login();
     }
-    
 }
 
 void XMsgClient::OnLogout(int code, const std::string& userid)
 {
 #ifdef WEBRTC_ANDROID
-    LOGI("XMsgClient::OnLogout code:%d, userid:%s\n", code, userid.c_str());
+    LOGI("XMsgClient::OnLogout code:%d\n", code);
 #else
-    std::cout << "XMsgClient::OnLogout code:" << code << ", userid:" << userid << std::endl;
+    std::cout << "XMsgClient::OnLogout code:" << code << std::endl;
 #endif
     m_login = false;
 }

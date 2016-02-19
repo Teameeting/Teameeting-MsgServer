@@ -26,10 +26,6 @@ typedef NS_ENUM(NSInteger, MCSendTags){
     MCSendTagsTALK=1,
     MCSendTagsENTER,
     MCSendTagsLEAVE,
-    MCSendTagsSUBSCRIBE,
-    MCSendTagsUNSUBSCRIBE,
-    MCSendTagsAUDIOSET,
-    MCSendTagsVIDEOSET,
     MCSendTagsINVALID
 };
 
