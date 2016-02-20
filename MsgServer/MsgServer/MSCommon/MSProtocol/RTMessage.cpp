@@ -414,6 +414,43 @@ void PUSHMSG::GetMsg(const std::string& str, std::string& err)
     _content = jsonReqDoc["content"].GetString();
 }
 
+_topushmsg::_topushmsg()
+: _roomid(""){}
+
+std::string TOPUSHMSG::ToJson()
+{
+    rapidjson::Document jDoc;
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+    
+    jDoc.SetObject();
+    jDoc.AddMember("roomid", TOPUSHMSG::_roomid.c_str(), jDoc.GetAllocator());
+    
+    jDoc.Accept(writer);
+    std::string s = sb.GetString();
+    return s;
+}
+
+void TOPUSHMSG::GetMsg(const std::string& str, std::string& err)
+{
+    if (str.empty() || str.length() == 0) {
+        err = "bad params";
+        return;
+    }
+    rapidjson::Document		jsonReqDoc;
+    if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
+    {
+        err = INVALID_JSON_PARAMS;
+        return;
+    }
+    if(!(jsonReqDoc.HasMember("roomid") && jsonReqDoc["roomid"].IsString()))
+    {
+        err = "parse roomid error";
+        return;
+    }
+    _roomid = jsonReqDoc["roomid"].GetString();
+}
+
 _tojsonuser::_tojsonuser()
     : _us(){}
 
@@ -455,6 +492,51 @@ void TOJSONUSER::GetMsg(const std::string &str, std::string &err)
         return;
     }
     rapidjson::Value& mems = jsonReqDoc["u"];
+    for (int i=0; i<(int)mems.Capacity(); i++) {
+        rapidjson::Value& m = mems[i];
+        printf("get members:%s\n", m.GetString());
+        _us.push_front(m.GetString());
+    }
+}
+
+_topushuser::_topushuser()
+: _us(){}
+
+std::string TOPUSHUSER::ToJson()
+{
+    rapidjson::Document jDoc;
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+    
+    rapidjson::Value mems(rapidjson::kArrayType);
+    std::list<std::string>::iterator it = TOPUSHUSER::_us.begin();
+    for (; it!=TOPUSHUSER::_us.end(); it++) {
+        mems.PushBack((*it).c_str(), jDoc.GetAllocator());
+    }
+    
+    mems.Accept(writer);
+    std::string s = sb.GetString();
+    return s;
+}
+
+void TOPUSHUSER::GetMsg(const std::string &str, std::string &err)
+{
+    if (str.empty() || str.length() == 0) {
+        err = "bad params";
+        return;
+    }
+    rapidjson::Document		jsonReqDoc;
+    if (jsonReqDoc.ParseInsitu<0>((char*)str.c_str()).HasParseError())
+    {
+        err = INVALID_JSON_PARAMS;
+        return;
+    }
+    if(!(jsonReqDoc.IsArray()))
+    {
+        err = "parse ReqDoc error";
+        return;
+    }
+    rapidjson::Value& mems = jsonReqDoc;
     for (int i=0; i<(int)mems.Capacity(); i++) {
         rapidjson::Value& m = mems[i];
         printf("get members:%s\n", m.GetString());

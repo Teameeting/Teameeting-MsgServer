@@ -252,7 +252,7 @@ void MRTRoomManager::EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     LI("==>EnterRoom add %s to Room %s, set status inmeeting\n", mmsg._from.c_str(), mmsg._room.c_str());
     it->second->AddMemberToRoom(mmsg._from, MRTMeetingRoom::MemberStatus::MS_INMEETING);
     AddUserMeetingRoomId(mmsg._from, mmsg._room);
-    int online = it->second->GetRoomMemberOnline();
+    int online = it->second->GetMeetingMemberNumber();
     printf("EnterRoom online meeting member:%d\n", online);
     if (online==1) {
         if (m_pHttpSvrConn) {
@@ -374,7 +374,7 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //@Eric
     //* 2, Notify Other members
     //
-    int online = it->second->GetRoomMemberOnline();
+    int online = it->second->GetMeetingMemberNumber();
     
     if (!it->second->GetAllRoomMemberJson(users)) {
         if (users.length()>0) {
@@ -533,7 +533,7 @@ void MRTRoomManager::CheckMembers()
     }
     MeetingRoomMapIt it = m_meetingRoomMap.begin();
     for (; it!=m_meetingRoomMap.end(); it++) {
-        LI("meetingRoom roomMember:%d, online:%d\n", it->second->GetRoomMemberNumber(), it->second->GetRoomMemberOnline());
+        LI("meetingRoom roomMember:%d, online:%d\n", it->second->GetRoomMemberNumber(), it->second->GetMeetingMemberNumber());
     }
 #endif
 }
@@ -559,7 +559,7 @@ void MRTRoomManager::ClearSessionLost(const std::string& uid, const std::string&
 
     it->second->DelMemberFmMeeting(uid);
     DelUserMeetingRoomId(uid);
-    int online = it->second->GetRoomMemberOnline();
+    int online = it->second->GetMeetingMemberNumber();
     char strOnline[4] = {0};
     std::string pubid(""), users(""), resp(""), cont("");
     sprintf(strOnline, "%d", online);

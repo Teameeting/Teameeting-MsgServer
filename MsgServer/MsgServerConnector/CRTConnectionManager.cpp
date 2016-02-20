@@ -206,6 +206,31 @@ void CRTConnectionManager::ConnectionLostNotify(const std::string& uid, const st
     } else {
         LE("pmi->pModule is NULL\n");
     }
+    pmi = findModuleInfo(uid, TRANSFERMODULE::mmsgqueue);
+    if (pmi && pmi->pModule) {
+        LI("CRTConnectionManager::ConnectionLostNotify uid:%s, token:%s\n", uid.c_str(), token.c_str());
+        pmi->pModule->ConnectionLostNotify(uid, token);
+    } else {
+        LE("pmi->pModule is NULL\n");
+    }
+}
+
+void CRTConnectionManager::ConnectionConnNotify(const std::string& uid, const std::string& token)
+{
+    ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
+    if (pmi && pmi->pModule) {
+        LI("CRTConnectionManager::ConnectionConnNotify uid:%s, token:%s\n", uid.c_str(), token.c_str());
+        pmi->pModule->ConnectionConnNotify(uid, token);
+    } else {
+        LE("pmi->pModule is NULL\n");
+    }
+    pmi = findModuleInfo(uid, TRANSFERMODULE::mmsgqueue);
+    if (pmi && pmi->pModule) {
+        LI("CRTConnectionManager::ConnectionConnNotify uid:%s, token:%s\n", uid.c_str(), token.c_str());
+        pmi->pModule->ConnectionConnNotify(uid, token);
+    } else {
+        LE("pmi->pModule is NULL\n");
+    }
 }
 
 void CRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
@@ -213,6 +238,18 @@ void CRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
     DelModuleInfo(sid);
     DelTypeModuleSession(sid);
     LI("RTConnectionManager::TransferSessionLostNotify sessionid:%s\n", sid.c_str());
+}
+
+void CRTConnectionManager::TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg)
+{
+    ModuleInfo* pmi = findModuleInfo(uid, (TRANSFERMODULE)mType);
+    if (pmi && pmi->pModule) {
+        pmi->pModule->TransferMsg(msg);
+    } else {
+        LE("pmi->pModule is NULL\n");
+        Assert(false);
+        return;
+    }
 }
 
 void CRTConnectionManager::ShowConnectionInfo()
@@ -230,33 +267,3 @@ void CRTConnectionManager::ShowConnectionInfo()
         }
     }*/
 }
-
-bool CRTConnectionManager::ConnectHttpSvrConn()
-{
-    if (!m_pHttpSvrConn) {
-        LI("CRTConnectionManager::ConnectHttpSvrConn ok\n");
-        m_pHttpSvrConn = new rtc::RefCountedObject<CRTHttpSvrConn>();
-        m_pHttpSvrConn->SetHttpHost(s_cohttpIp, s_cohttpPort, s_cohttpHost);
-    } else {
-        LI("CRTConnectionManager::ConnectHttpSvrConn error\n");
-        return false;
-    }
-    
-    return true;
-}
-
-void CRTConnectionManager::PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification)
-{
-    if (m_pHttpSvrConn && sign.length()>0 && meetingid.length()>0 && pushMsg.length()>0 && notification.length()>0) {
-        m_pHttpSvrConn->HttpPushMeetingMsg(sign.c_str(), meetingid.c_str(), pushMsg.c_str(), notification.c_str());
-    } else {
-        LE("CRTConnectionManager::PushMeetingMsg error\n");
-    }
-}
-void CRTConnectionManager::PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification)
-{
-    if (m_pHttpSvrConn && sign.length()>0 && targetid.length()>0 && pushMsg.length()>0 && notification.length()>0) {
-        m_pHttpSvrConn->HttpPushCommonMsg(sign.c_str(), targetid.c_str(), pushMsg.c_str(), notification.c_str());
-    }
-}
-

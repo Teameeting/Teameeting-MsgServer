@@ -153,20 +153,6 @@ void DRTTransferSession::OnRecvMessage(const char*message, int nLen)
     RTTransfer::DoProcessData(message, nLen);
 }
 
-void DRTTransferSession::OnWakeupEvent()
-{
-
-}
-
-void DRTTransferSession::OnPushEvent()
-{
-
-}
-
-void DRTTransferSession::OnTickEvent()
-{
-
-}
 
 // from RTTransfer
 
@@ -307,60 +293,64 @@ void DRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& 
 
 void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str)
 {
-    TOJSONUSER user;
+    TOJSONUSER auser;//all user
     QUEUEMSG qmsg;
-    DISPATCHMSG dmsg;
-    TRANSFERMSG trmsg;
     {
-        //get user
+        //get auser
         std::string err;
         qmsg.GetMsg(str, err);
         if (err.length()>0) {
             LE("%s QUEUEMSG err:%s\n", __FUNCTION__, err.c_str());
             return;
         }
-        user.GetMsg(qmsg._touser, err);
+        auser.GetMsg(qmsg._touser, err);
         if (err.length()>0) {
             LE("%s TOJSONUSER err:%s\n", __FUNCTION__, err.c_str());
             return;
         }
     }
+    bool needDispatch = false;
+    bool needPush = false;
+    TOJSONUSER duser;//dispatcher
+    TOJSONUSER puser;//pusher
     {
         //check user online or offline
-    }
-    {
-        //if offline, push to offline msgqueue
+        std::list<std::string>::iterator it = auser._us.begin();
+        for (; it!=auser._us.end(); it++) {
+            if (DRTConnectionManager::Instance()->IsMemberInOnline((*it))) {
+                duser._us.push_back((*it));
+                needDispatch = true;
+            } else {
+                puser._us.push_back((*it));
+                needPush = true;
+            }
+        }
     }
     {
         //if online, push to online msgqueue
+        if (needDispatch) {
+            DISPATCHMSG dmsg;
+            dmsg._flag = 0;
+            dmsg._touser = duser.ToJson();
+            dmsg._connector = qmsg._connector;//which connector comes from
+            dmsg._content = qmsg._content;
+            std::string sd = dmsg.ToJson();
+            LI("OnTypeQueue dmsg._touser:%s, dmsg._connector.c_str():%s\n", dmsg._touser.c_str(), dmsg._connector.c_str());
+            m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
+        }
     }
-
-    std::list<std::string>::iterator it = user._us.begin();
-    for (; it!=user._us.end(); it++) {
-        dmsg._flag = 0;
-        dmsg._touser = (*it);
-        dmsg._connector = qmsg._connector;//which connector comes frome
-        dmsg._content = qmsg._content;
-
-        trmsg._action = TRANSFERACTION::req;
-        trmsg._fmodule = TRANSFERMODULE::mmsgqueue;
-        trmsg._type = TRANSFERTYPE::dispatch;
-        trmsg._trans_seq = GenericTransSeq();
-        trmsg._trans_seq_ack = 0;
-        trmsg._valid = 1;
-        std::string sd = dmsg.ToJson();
-        trmsg._content = sd;
-
-        LI("OnTypeQueue dmsg._touser:%s, qmsg._connector.c_str():%s\n", dmsg._touser.c_str(), qmsg._connector.c_str());
-        //here we should know this msg send to whom
-        //find connector and dispatch to it
-        std::string st = trmsg.ToJson();
-        //connector moduleId
-        DRTConnectionManager::ModuleInfo* pmi = DRTConnectionManager::Instance()->findConnectorInfoById(dmsg._touser, qmsg._connector);
-        if (pmi && pmi->pModule) {
-            pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
-        } else {
-            LE("mi.pModule is NULL\n");
+    {
+        //if offline, push to offline msgqueue
+        if (needPush) {
+            PUSHMSG pmsg;
+            pmsg._flag = 0;
+            pmsg._touser = puser.ToJson();
+            pmsg._connector = qmsg._connector;//which connector comes from
+            pmsg._content = qmsg._content;
+            
+            std::string sp = pmsg.ToJson();
+            LI("OnTypeQueue pmsg._touser:%s, pmsg._connector.c_str():%s\n", pmsg._touser.c_str(), pmsg._connector.c_str());
+            m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
         }
     }
 }
@@ -374,6 +364,37 @@ void DRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& s
 {
     LI("%s was called\n", __FUNCTION__);
 }
+
+void DRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+{
+    LI("%s was called\n", __FUNCTION__);
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    LI("TLogin user:%s, token:%s, connector:%s\n", t_msg._touser.c_str(), t_msg._content.c_str(), t_msg._connector.c_str());
+    DRTConnectionManager::Instance()->OnTLogin(t_msg._touser, t_msg._content);
+}
+
+void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
+{
+    LI("%s was called\n", __FUNCTION__);
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    LI("TLogout user:%s, token:%s, connector:%s\n", t_msg._touser.c_str(), t_msg._content.c_str(), t_msg._connector.c_str());
+    DRTConnectionManager::Instance()->OnTLogout(t_msg._touser, t_msg._content);
+}
+
 
 void DRTTransferSession::ConnectionDisconnected()
 {

@@ -74,12 +74,12 @@
 		E6B08CED1C5328A600D1BB6D /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59CE1C4A516B0053161E /* libMSCommon.a */; };
 		E6B08CEE1C5328AC00D1BB6D /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59CE1C4A516B0053161E /* libMSCommon.a */; };
 		E6B08CEF1C5328B200D1BB6D /* libMSCommon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E66B59CE1C4A516B0053161E /* libMSCommon.a */; };
-		E6B08D151C56198200D1BB6D /* CRTHttpSvrConn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D101C56198200D1BB6D /* CRTHttpSvrConn.cpp */; };
 		E6B08D201C5755C400D1BB6D /* RTJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D1E1C5755C400D1BB6D /* RTJSBuffer.cpp */; };
 		E6B08D211C57560F00D1BB6D /* RTJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B08D1E1C5755C400D1BB6D /* RTJSBuffer.cpp */; };
-		E6D732481C758B8E0076620E /* RTPush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D732461C758B8E0076620E /* RTPush.cpp */; };
-		E6D7324F1C7594BA0076620E /* CRTMsgPush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D7324D1C7594BA0076620E /* CRTMsgPush.cpp */; };
-		E6D732501C75B5410076620E /* RTPush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D732461C758B8E0076620E /* RTPush.cpp */; };
+		E6D732481C758B8E0076620E /* RTDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D732461C758B8E0076620E /* RTDispatch.cpp */; };
+		E6D732501C75B5410076620E /* RTDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D732461C758B8E0076620E /* RTDispatch.cpp */; };
+		E6D7325F1C784CA80076620E /* DRTHttpSvrConn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D7325B1C784CA80076620E /* DRTHttpSvrConn.cpp */; };
+		E6D732601C784CA80076620E /* DRTMsgDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D7325D1C784CA80076620E /* DRTMsgDispatch.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -236,14 +236,14 @@
 		E6B08CF01C532A0500D1BB6D /* connector.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = connector.conf; path = connector/connector.conf; sourceTree = "<group>"; };
 		E6B08CF11C532A1C00D1BB6D /* dispatcher.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dispatcher.conf; path = dispatcher/dispatcher.conf; sourceTree = "<group>"; };
 		E6B08CF21C532A2E00D1BB6D /* meeting.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = meeting.conf; path = meeting/meeting.conf; sourceTree = "<group>"; };
-		E6B08D101C56198200D1BB6D /* CRTHttpSvrConn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRTHttpSvrConn.cpp; sourceTree = "<group>"; };
-		E6B08D111C56198200D1BB6D /* CRTHttpSvrConn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRTHttpSvrConn.h; sourceTree = "<group>"; };
 		E6B08D1E1C5755C400D1BB6D /* RTJSBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTJSBuffer.cpp; sourceTree = "<group>"; };
 		E6B08D1F1C5755C400D1BB6D /* RTJSBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTJSBuffer.h; sourceTree = "<group>"; };
-		E6D732461C758B8E0076620E /* RTPush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTPush.cpp; sourceTree = "<group>"; };
-		E6D732471C758B8E0076620E /* RTPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTPush.h; sourceTree = "<group>"; };
-		E6D7324D1C7594BA0076620E /* CRTMsgPush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CRTMsgPush.cpp; sourceTree = "<group>"; };
-		E6D7324E1C7594BA0076620E /* CRTMsgPush.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CRTMsgPush.hpp; sourceTree = "<group>"; };
+		E6D732461C758B8E0076620E /* RTDispatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTDispatch.cpp; sourceTree = "<group>"; };
+		E6D732471C758B8E0076620E /* RTDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTDispatch.h; sourceTree = "<group>"; };
+		E6D7325B1C784CA80076620E /* DRTHttpSvrConn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DRTHttpSvrConn.cpp; sourceTree = "<group>"; };
+		E6D7325C1C784CA80076620E /* DRTHttpSvrConn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRTHttpSvrConn.h; sourceTree = "<group>"; };
+		E6D7325D1C784CA80076620E /* DRTMsgDispatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DRTMsgDispatch.cpp; sourceTree = "<group>"; };
+		E6D7325E1C784CA80076620E /* DRTMsgDispatch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DRTMsgDispatch.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,7 +329,6 @@
 		E66B59AE1C4A506D0053161E /* MsgServerConnector */ = {
 			isa = PBXGroup;
 			children = (
-				E6B08D081C56198200D1BB6D /* CRTHttp */,
 				E6B08CF01C532A0500D1BB6D /* connector.conf */,
 				E66B5D541C4A749B0053161E /* CRTConnection */,
 				E66B5D5D1C4A749B0053161E /* CRTListener */,
@@ -348,6 +347,7 @@
 		E66B59B91C4A50C90053161E /* MsgServerDispatcher */ = {
 			isa = PBXGroup;
 			children = (
+				E6D732511C78399F0076620E /* DRTHttp */,
 				E6B08CF11C532A1C00D1BB6D /* dispatcher.conf */,
 				E66B5D721C4A79FF0053161E /* DRTConnectionManager.cpp */,
 				E66B5D731C4A79FF0053161E /* DRTConnectionManager.h */,
@@ -407,8 +407,8 @@
 		E66B59D91C4A55B00053161E /* MSBase */ = {
 			isa = PBXGroup;
 			children = (
-				E6D732461C758B8E0076620E /* RTPush.cpp */,
-				E6D732471C758B8E0076620E /* RTPush.h */,
+				E6D732461C758B8E0076620E /* RTDispatch.cpp */,
+				E6D732471C758B8E0076620E /* RTDispatch.h */,
 				2D4B57451C60A05E006A1BF1 /* RTTransfer.cpp */,
 				2D4B57461C60A05E006A1BF1 /* RTTransfer.h */,
 				E6B08D1E1C5755C400D1BB6D /* RTJSBuffer.cpp */,
@@ -556,15 +556,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E6B08D081C56198200D1BB6D /* CRTHttp */ = {
+		E6D732511C78399F0076620E /* DRTHttp */ = {
 			isa = PBXGroup;
 			children = (
-				E6B08D101C56198200D1BB6D /* CRTHttpSvrConn.cpp */,
-				E6B08D111C56198200D1BB6D /* CRTHttpSvrConn.h */,
-				E6D7324D1C7594BA0076620E /* CRTMsgPush.cpp */,
-				E6D7324E1C7594BA0076620E /* CRTMsgPush.hpp */,
+				E6D7325B1C784CA80076620E /* DRTHttpSvrConn.cpp */,
+				E6D7325C1C784CA80076620E /* DRTHttpSvrConn.h */,
+				E6D7325D1C784CA80076620E /* DRTMsgDispatch.cpp */,
+				E6D7325E1C784CA80076620E /* DRTMsgDispatch.hpp */,
 			);
-			path = CRTHttp;
+			path = DRTHttp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -765,7 +765,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6D732481C758B8E0076620E /* RTPush.cpp in Sources */,
+				E6D732481C758B8E0076620E /* RTDispatch.cpp in Sources */,
 				E66B59B01C4A506D0053161E /* main.cpp in Sources */,
 				E66B5D6F1C4A749B0053161E /* CRTModuleListener.cpp in Sources */,
 				E66B5D6B1C4A749B0053161E /* CRTConnHttp.cpp in Sources */,
@@ -775,8 +775,6 @@
 				E66B5D711C4A749B0053161E /* CRTTransferSession.cpp in Sources */,
 				E66B5D6C1C4A749B0053161E /* CRTConnTcp.cpp in Sources */,
 				E6B08D201C5755C400D1BB6D /* RTJSBuffer.cpp in Sources */,
-				E6B08D151C56198200D1BB6D /* CRTHttpSvrConn.cpp in Sources */,
-				E6D7324F1C7594BA0076620E /* CRTMsgPush.cpp in Sources */,
 				E66B5D6D1C4A749B0053161E /* CRTConnListener.cpp in Sources */,
 				E66B5D6E1C4A749B0053161E /* CRTConnTcpListener.cpp in Sources */,
 				E6B08C741C5320D200D1BB6D /* config_parser.cpp in Sources */,
@@ -794,7 +792,9 @@
 				E66B59BB1C4A50C90053161E /* main.cpp in Sources */,
 				E66B5D821C4A79FF0053161E /* DRTTransferSession.cpp in Sources */,
 				E66B5D801C4A79FF0053161E /* DRTMsgQueue.cpp in Sources */,
+				E6D7325F1C784CA80076620E /* DRTHttpSvrConn.cpp in Sources */,
 				E66B5D7F1C4A79FF0053161E /* DRTModuleListener.cpp in Sources */,
+				E6D732601C784CA80076620E /* DRTMsgDispatch.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,7 +816,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6D732501C75B5410076620E /* RTPush.cpp in Sources */,
+				E6D732501C75B5410076620E /* RTDispatch.cpp in Sources */,
 				2D4B576A1C60AB02006A1BF1 /* RTTransfer.cpp in Sources */,
 				E6B08D211C57560F00D1BB6D /* RTJSBuffer.cpp in Sources */,
 				2D4B57641C60A737006A1BF1 /* RTHttp.cpp in Sources */,

@@ -1,17 +1,17 @@
-#ifndef __RT_PUSH_H__
-#define __RT_PUSH_H__
+#ifndef __RT_DISPATCH_H__
+#define __RT_DISPATCH_H__
 
 #include "LinkedList.h"
 #include "StrPtrLen.h"
 #include "Task.h"
 #include "TimeoutTask.h"
 
-class RTPush
+class RTDispatch
 	: public Task
 {
 public:
-	RTPush(void);
-	virtual ~RTPush(void);
+	RTDispatch(void);
+	virtual ~RTDispatch(void);
 	
 	int SendData(const char*pData, int nLen);
 	int PushData(const char*pData, int nLen);
@@ -20,9 +20,10 @@ public:
 	void UpdateTimer(){fTimeoutTask.RefreshTimeout();};
 
 	virtual void OnRecvData(const char*pData, int nLen) = 0;
-	virtual void OnWakeupEvent() = 0;
+	virtual void OnSendEvent(const char*pData, int nLen) = 0;
+	virtual void OnWakeupEvent(const char*pData, int nLen) = 0;
 	virtual void OnPushEvent(const char*pData, int nLen) = 0;
-	virtual void OnTickEvent() = 0;
+	virtual void OnTickEvent(const char*pData, int nLen) = 0;
 
 protected:
 	//* For Task
@@ -35,4 +36,4 @@ private:
 	List				m_listPush;
 };
 
-#endif	// __RT_PUSH_H__
+#endif	// __RT_DISPATCH_H__

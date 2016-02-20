@@ -220,11 +220,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         LI("Start Connector Http service:(%d) ok...\n", usHttpPort);
     }
     
-    if (!(CRTConnectionManager::Instance()->ConnectHttpSvrConn())) {
-        LE("ConnectHttpSvrConn failed\n");
-        return -1;
-    }
-
 	return 0;
 }
 

@@ -121,12 +121,20 @@ DRTMsgQueue::~DRTMsgQueue(void)
     }
 }
 
-int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort)
+int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort, const char*pHttpIp, unsigned short usHttpPort)
 {
 	Assert(g_inited);
 	Assert(pConnIp != NULL && strlen(pConnIp)>0);
 	Assert(pDispIp != NULL && strlen(pDispIp)>0);
+    Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
 
+    char hh[24] = {0};
+    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
+    
+    DRTConnectionManager::s_cohttpHost = hh;
+    DRTConnectionManager::s_cohttpIp = pHttpIp;
+    DRTConnectionManager::s_cohttpPort = usHttpPort;
+    
     std::string mid;
     GenericSessionId(mid);
     DRTConnectionManager::Instance()->SetMsgQueueId(mid);
@@ -170,6 +178,18 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
         LI("Start MsgQueue service meet:(%d) ok...,socketFD:%d\n", usDispPort, m_pModuleListener->GetSocketFD());
         m_pModuleListener->RequestEvent(EV_RE);
 	}
+    if (usHttpPort == 0) {
+        LE("Dispatcher server meet need ...!!!!");
+        Assert(false);
+    }
+    if (usHttpPort > 0) {
+        LI("Start Dispatcher Http service:(%d) ok...\n", usHttpPort);
+    }
+    
+    if (!(DRTConnectionManager::Instance()->ConnectHttpSvrConn())) {
+        LE("ConnectHttpSvrConn failed\n");
+        return -1;
+    }
 
    return 0;
 }

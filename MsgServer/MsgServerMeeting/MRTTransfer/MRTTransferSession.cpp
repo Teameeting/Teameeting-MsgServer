@@ -154,21 +154,6 @@ void MRTTransferSession::OnRecvMessage(const char*message, int nLen)
     RTTransfer::DoProcessData(message, nLen);
 }
 
-void MRTTransferSession::OnWakeupEvent()
-{
-
-}
-
-void MRTTransferSession::OnPushEvent()
-{
-
-}
-
-void MRTTransferSession::OnTickEvent()
-{
-
-}
-
 // from RTTransfer
 
 void MRTTransferSession::OnTransfer(const std::string& str)
@@ -260,12 +245,7 @@ void MRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& 
         Assert(false);
         return;
     }
-    //the users connection lost
-    if (t_msg._flag == 1) {
-        OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
-        LE("user %s token:%s lost connection\n", t_msg._touser.c_str(), t_msg._content.c_str());
-        return;
-    }
+    
     MEETMSG m_mmmsg;
     err = "";
     m_mmmsg.GetMsg(t_msg._content.c_str(), err);
@@ -310,6 +290,36 @@ void MRTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::strin
 void MRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
+}
+
+void MRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+{
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    LI("%s was called, uid:%s, content:%s\n", __FUNCTION__, t_msg._touser.c_str(), t_msg._content.c_str());
+}
+
+void MRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
+{
+    //the users connection lost
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    LI("%s was called, uid:%s, content:%s\n", __FUNCTION__, t_msg._touser.c_str(), t_msg._content.c_str());
+    OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
+    LE("OnTypeTLogout user %s token:%s lost connection\n", t_msg._touser.c_str(), t_msg._content.c_str());
+    return;
 }
 
 /**

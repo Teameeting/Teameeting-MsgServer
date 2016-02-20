@@ -52,6 +52,7 @@ public:
     void SyncHttpRequest();
     void ClearSessionLost(const std::string& uid, const std::string& token, const std::string& connector);
     void ClearMsgQueueSession(const std::string& sid);
+    
 private:
     void OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
     

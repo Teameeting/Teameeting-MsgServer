@@ -74,11 +74,6 @@ void CRTConnection::OnRecvData(const char*data, int size)
 	}
 }
 
-void CRTConnection::OnWakeupEvent()
-{
-
-}
-
 //* For RTConnHttp
 void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* pNname)
 {

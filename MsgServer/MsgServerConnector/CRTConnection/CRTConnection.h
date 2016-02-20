@@ -20,10 +20,11 @@ public:
     int SendDispatch(const std::string& id, const std::string& msg);
 public:
 	//* For RCTcp
-	virtual void OnRecvData(const char*pData, int nLen);
-	virtual void OnWakeupEvent();
-	virtual void OnPushEvent(){Assert(false);};
-	virtual void OnTickEvent(){};
+    virtual void OnRecvData(const char*pData, int nLen);
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
 
 public:
 	//* For RTConnHttp

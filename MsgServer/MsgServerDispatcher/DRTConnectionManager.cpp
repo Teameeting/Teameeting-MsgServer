@@ -12,6 +12,10 @@
 #include "OSMutex.h"
 #include "DRTTransferSession.h"
 
+std::string     DRTConnectionManager::s_cohttpIp;
+unsigned short  DRTConnectionManager::s_cohttpPort;
+std::string     DRTConnectionManager::s_cohttpHost;
+
 static OSMutex       s_mutex;
 static OSMutex       s_mutexModule;
 static OSMutex       s_mutexTypeModule;
@@ -243,3 +247,89 @@ void DRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
     DelTypeModuleSession(sid);
     LI("RTConnectionManager::TransferSessionLostNotify sessionid:%s\n", sid.c_str());
 }
+
+void DRTConnectionManager::AddMemberToOnline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.insert(uid);
+}
+
+bool DRTConnectionManager::IsMemberInOnline(const std::string& uid)
+{
+    bool found = false;
+    {
+        OSMutexLocker locker(&m_mutexMembers);
+        found = !m_onlineMembers.empty() && m_onlineMembers.count(uid);
+    }
+    return found;
+}
+
+void DRTConnectionManager::DelMemberFmOnline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.erase(uid);
+}
+
+void DRTConnectionManager::AddMemberToOffline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_offlineMembers.insert(uid);
+}
+
+bool DRTConnectionManager::IsMemberInOffline(const std::string& uid)
+{
+    bool found = false;
+    {
+        OSMutexLocker locker(&m_mutexMembers);
+        found = !m_offlineMembers.empty() && m_offlineMembers.count(uid);
+    }
+    return found;
+}
+
+void DRTConnectionManager::DelMemberFmOffline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_offlineMembers.erase(uid);
+}
+
+void DRTConnectionManager::OnTLogin(const std::string& uid, const std::string& token)
+{
+    AddMemberToOnline(uid);
+}
+
+void DRTConnectionManager::OnTLogout(const std::string& uid, const std::string& token)
+{
+    DelMemberFmOnline(uid);
+}
+
+bool DRTConnectionManager::ConnectHttpSvrConn()
+{
+    if (!m_pHttpSvrConn) {
+        LI("DRTConnectionManager::DonnectHttpSvrConn ok\n");
+        m_pHttpSvrConn = new rtc::RefCountedObject<DRTHttpSvrConn>();
+        m_pHttpSvrConn->SetHttpHost(s_cohttpIp, s_cohttpPort, s_cohttpHost);
+    } else {
+        LI("DRTConnectionManager::DonnectHttpSvrConn error\n");
+        return false;
+    }
+    
+    return true;
+}
+
+void DRTConnectionManager::PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification, const std::string& extra)
+{
+    if (m_pHttpSvrConn && sign.length()>0 && meetingid.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
+        m_pHttpSvrConn->HttpPushMeetingMsg(sign.c_str(), meetingid.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
+    } else {
+        LE("DRTConnectionManager::PushMeetingMsg error\n");
+    }
+}
+void DRTConnectionManager::PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification, const std::string& extra)
+{
+    if (m_pHttpSvrConn && sign.length()>0 && targetid.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
+        m_pHttpSvrConn->HttpPushCommonMsg(sign.c_str(), targetid.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
+    } else {
+        LE("DRTConnectionManager::PushCommonMsg error\n");
+    }
+}
+
