@@ -86,6 +86,9 @@ public:
     typedef OnlineMembers::iterator      OnlineMembersIt;
     typedef std::set<std::string>    OfflineMembers;//all the members offline
     typedef OfflineMembers::iterator     OfflineMembersIt;
+    
+    typedef std::unordered_map<std::string, std::string>        UserConnectorMaps;
+    typedef UserConnectorMaps::iterator UserConnectorMapsIt;
 
     static DRTConnectionManager* Instance() {
         static DRTConnectionManager s_manager;
@@ -124,8 +127,10 @@ public:
     void DelMemberFmOffline(const std::string& uid);
     int  GetOfflineNumber() { return (int)m_offlineMembers.size(); }
     
-    void OnTLogin(const std::string& uid, const std::string& token);
-    void OnTLogout(const std::string& uid, const std::string& token);
+    void OnTLogin(const std::string& uid, const std::string& token, const std::string& connector);
+    void OnTLogout(const std::string& uid, const std::string& token, const std::string& connector);
+    
+    void GetUserConnectorId(const std::string& uid, std::string& connector);
     
     bool ConnectHttpSvrConn();
     void PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
@@ -142,6 +147,7 @@ private:
     OfflineMembers            m_offlineMembers;
     OSMutex                   m_mutexMembers;
     DRTHttpSvrConn*           m_pHttpSvrConn;
+    UserConnectorMaps         m_userConnectors;
 
 };
 

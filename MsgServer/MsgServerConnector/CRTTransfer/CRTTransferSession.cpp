@@ -284,18 +284,21 @@ void CRTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::strin
     std::string err;
     dmsg.GetMsg(str, err);
     if (err.length()>0) {
-        LE("%s parse error:%s\n", __FUNCTION__, err.c_str());
+        LE("%s parse DIAPTCHMSG error:%s\n", __FUNCTION__, err.c_str());
         return;
     }
-    {
-        //find connection
-    }
+    
     {
         //send response
-        std::string msg(dmsg._content);
-        std::string id(dmsg._touser);
-        LI("OnTypeDispatch id:%s, msg:%s\n", id.c_str(), msg.c_str());
-        m_dispatchConnection.DispatchMsg(id, msg);
+        TOJSONUSER touser;
+        touser.GetMsg(dmsg._touser, err);
+        if (err.length()>0) {
+            LE("%s parse TOJSONUSER error:%s\n", __FUNCTION__, err.c_str());
+            return;
+        }
+        for (std::list<std::string>::iterator it=touser._us.begin(); it!=touser._us.end(); it++) {
+            m_dispatchConnection.DispatchMsg((*it), dmsg._content);
+        }
     }
 }
 

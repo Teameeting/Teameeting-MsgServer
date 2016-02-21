@@ -292,14 +292,28 @@ void DRTConnectionManager::DelMemberFmOffline(const std::string& uid)
     m_offlineMembers.erase(uid);
 }
 
-void DRTConnectionManager::OnTLogin(const std::string& uid, const std::string& token)
+void DRTConnectionManager::OnTLogin(const std::string& uid, const std::string& token, const std::string& connector)
 {
-    AddMemberToOnline(uid);
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.insert(uid);
+    if (m_userConnectors.find(uid) == m_userConnectors.end()) {
+        m_userConnectors.insert(make_pair(uid, connector));
+    } else {
+        m_userConnectors.erase(uid);
+        m_userConnectors.insert(make_pair(uid, connector));
+    }
 }
 
-void DRTConnectionManager::OnTLogout(const std::string& uid, const std::string& token)
+void DRTConnectionManager::OnTLogout(const std::string& uid, const std::string& token, const std::string& connector)
 {
-    DelMemberFmOnline(uid);
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.erase(uid);
+    m_userConnectors.erase(uid);
+}
+
+void DRTConnectionManager::GetUserConnectorId(const std::string& uid, std::string& connector)
+{
+    connector = m_userConnectors.find(uid)->second;
 }
 
 bool DRTConnectionManager::ConnectHttpSvrConn()

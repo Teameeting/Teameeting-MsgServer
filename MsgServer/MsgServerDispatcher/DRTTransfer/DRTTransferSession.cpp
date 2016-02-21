@@ -311,14 +311,16 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
     }
     bool needDispatch = false;
     bool needPush = false;
-    TOJSONUSER duser;//dispatcher
     TOJSONUSER puser;//pusher
+    DRTConnectionManager::UserConnectorMaps connUserId;
     {
         //check user online or offline
         std::list<std::string>::iterator it = auser._us.begin();
         for (; it!=auser._us.end(); it++) {
             if (DRTConnectionManager::Instance()->IsMemberInOnline((*it))) {
-                duser._us.push_back((*it));
+                std::string cid("");
+                DRTConnectionManager::Instance()->GetUserConnectorId((*it), cid);
+                connUserId.insert(make_pair(cid, (*it)));
                 needDispatch = true;
             } else {
                 puser._us.push_back((*it));
@@ -329,14 +331,28 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
     {
         //if online, push to online msgqueue
         if (needDispatch) {
-            DISPATCHMSG dmsg;
-            dmsg._flag = 0;
-            dmsg._touser = duser.ToJson();
-            dmsg._connector = qmsg._connector;//which connector comes from
-            dmsg._content = qmsg._content;
-            std::string sd = dmsg.ToJson();
-            LI("OnTypeQueue dmsg._touser:%s, dmsg._connector.c_str():%s\n", dmsg._touser.c_str(), dmsg._connector.c_str());
-            m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
+            unsigned i=0, j=(unsigned)connUserId.bucket_count();
+            printf("connUserId bucket_count j:%u\n", j);
+            for (; i<j; ++i) {
+                if (connUserId.begin(i)==connUserId.end(i)) {
+                    printf("connUserId i:%u begin == end\n", i);
+                    continue;
+                }
+                TOJSONUSER duser;//dispatcher
+                for (auto local_it=connUserId.begin(i); local_it!=connUserId.end(i); ++local_it) {
+                    printf("connUserId i:%u local_it->second:%s, first:%s\n", i, local_it->second.c_str(), local_it->first.c_str());
+                    duser._us.push_back(local_it->second);
+                }
+                printf("connector id is:%s\n", connUserId.begin(i)->first.c_str());
+                DISPATCHMSG dmsg;
+                dmsg._flag = 0;
+                dmsg._touser = duser.ToJson();
+                dmsg._connector = connUserId.begin(i)->first;//which connector comes from
+                dmsg._content = qmsg._content;
+                std::string sd = dmsg.ToJson();
+                LI("OnTypeQueue dmsg._touser:%s, dmsg._connector.c_str():%s\n", dmsg._touser.c_str(), dmsg._connector.c_str());
+                m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
+            }
         }
     }
     {
@@ -377,7 +393,7 @@ void DRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string&
         return;
     }
     LI("TLogin user:%s, token:%s, connector:%s\n", t_msg._touser.c_str(), t_msg._content.c_str(), t_msg._connector.c_str());
-    DRTConnectionManager::Instance()->OnTLogin(t_msg._touser, t_msg._content);
+    DRTConnectionManager::Instance()->OnTLogin(t_msg._touser, t_msg._content, t_msg._connector);
 }
 
 void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
@@ -392,7 +408,7 @@ void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string
         return;
     }
     LI("TLogout user:%s, token:%s, connector:%s\n", t_msg._touser.c_str(), t_msg._content.c_str(), t_msg._connector.c_str());
-    DRTConnectionManager::Instance()->OnTLogout(t_msg._touser, t_msg._content);
+    DRTConnectionManager::Instance()->OnTLogout(t_msg._touser, t_msg._content, t_msg._connector);
 }
 
 

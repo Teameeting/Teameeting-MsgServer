@@ -59,7 +59,6 @@ CRTConnectionManager::ConnectionInfo* CRTConnectionManager::findConnectionInfoBy
             LI("findConnection after show NOOOOOOT find uid:%s\n", uid.c_str());
         }
     }
-    ShowConnectionInfo();
     return pInfo;
 }
 
