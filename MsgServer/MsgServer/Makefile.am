@@ -24,7 +24,7 @@ libMSCommon_a_SOURCES=$(top_srcdir)/MSCommon/sigslot.cc \
 					  $(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
-				$(top_srcdir)/MSCommon/MSBase/RTPush.cpp \
+				$(top_srcdir)/MSCommon/MSBase/RTDispatch.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTUtils.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTransfer.cpp \

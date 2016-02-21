@@ -7,11 +7,13 @@ AM_CPPFLAGS=$(AM_CFLAGS)
 
 AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/DRTListener/ \
-			 -I$(top_srcdir)/DRTTransfer/
+			 -I$(top_srcdir)/DRTTransfer/ \
+			 -I$(top_srcdir)/DRTHttp
 
 AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSHttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
@@ -22,6 +24,8 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 
 MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
 						   $(top_srcdir)/DRTTransfer/DRTTransferSession.cpp \
+						   $(top_srcdir)/DRTHttp/DRTHttpSvrConn.cpp \
+						   $(top_srcdir)/DRTHttp/DRTMsgDispatch.cpp \
 						   $(top_srcdir)/DRTConnectionManager.cpp \
 						   $(top_srcdir)/DRTMsgQueue.cpp \
 						   $(top_srcdir)/main.cpp

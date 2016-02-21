@@ -8,13 +8,11 @@ AM_CPPFLAGS=$(AM_CFLAGS)
 AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/CRTConnection/ \
 			 -I$(top_srcdir)/CRTListener/ \
-			 -I$(top_srcdir)/CRTTransfer/ \
-			 -I$(top_srcdir)/CRTHttp/
+			 -I$(top_srcdir)/CRTTransfer/
 
 AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSHttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
@@ -31,8 +29,6 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/CRTListener/CRTConnTcpListener.cpp \
 						   $(top_srcdir)/CRTListener/CRTModuleListener.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp \
-			 			   $(top_srcdir)/CRTHttp/CRTHttpSvrConn.cpp \
-			 			   $(top_srcdir)/CRTHttp/CRTMsgPush.cpp \
 						   $(top_srcdir)/CRTConnectionManager.cpp \
 						   $(top_srcdir)/CRTConnector.cpp \
 						   $(top_srcdir)/CRTDispatchConnection.cpp \
