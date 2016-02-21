@@ -104,14 +104,14 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
 {
     TRANSFERMSG t_trmsg;
     TRANSMSG t_msg;
-    t_msg._flag = 1;
+    t_msg._flag = 0;
     t_msg._touser = uid;
     t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
     t_msg._content = token;
 
     t_trmsg._action = TRANSFERACTION::req;
     t_trmsg._fmodule = TRANSFERMODULE::mconnector;
-    t_trmsg._type = TRANSFERTYPE::trans;
+    t_trmsg._type = TRANSFERTYPE::tlogout;
     t_trmsg._trans_seq = GenericTransSeq();
     t_trmsg._trans_seq_ack = 0;
     t_trmsg._valid = 1;
@@ -120,6 +120,49 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
     const std::string s = t_trmsg.ToJson();
     SendTransferData(s.c_str(), (int)s.length());
     LI("Send user :%s ConnectionLostNotify to meeting module\n", uid.c_str());
+}
+
+void CRTTransferSession::ConnectionConnNotify(const std::string& uid, const std::string& token)
+{
+    TRANSFERMSG t_trmsg;
+    TRANSMSG t_msg;
+    t_msg._flag = 0;
+    t_msg._touser = uid;
+    t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
+    t_msg._content = token;
+
+    t_trmsg._action = TRANSFERACTION::req;
+    t_trmsg._fmodule = TRANSFERMODULE::mconnector;
+    t_trmsg._type = TRANSFERTYPE::tlogin;
+    t_trmsg._trans_seq = GenericTransSeq();
+    t_trmsg._trans_seq_ack = 0;
+    t_trmsg._valid = 1;
+    t_trmsg._content = t_msg.ToJson();
+
+    const std::string s = t_trmsg.ToJson();
+    SendTransferData(s.c_str(), (int)s.length());
+    LI("Send user :%s ConnectionConnNotify to meeting module\n", uid.c_str());
+}
+
+void CRTTransferSession::TransferMsg(const std::string& msg)
+{
+    TRANSFERMSG t_trmsg;
+    TRANSMSG t_msg;
+    t_msg._flag = 0;
+    t_msg._touser = "";
+    t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
+    t_msg._content = msg;
+    
+    t_trmsg._action = TRANSFERACTION::req;
+    t_trmsg._fmodule = TRANSFERMODULE::mconnector;
+    t_trmsg._type = TRANSFERTYPE::trans;
+    t_trmsg._trans_seq = GenericTransSeq();
+    t_trmsg._trans_seq_ack = 0;
+    t_trmsg._valid = 1;
+    t_trmsg._content = t_msg.ToJson();
+    
+    const std::string s = t_trmsg.ToJson();
+    SendTransferData(s.c_str(), (int)s.length());
 }
 
 // from RTTcp
@@ -134,21 +177,6 @@ void CRTTransferSession::OnRecvData(const char*pData, int nLen)
 void CRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
     RTTransfer::DoProcessData(message, nLen);
-}
-
-void CRTTransferSession::OnWakeupEvent()
-{
-
-}
-
-void CRTTransferSession::OnPushEvent()
-{
-
-}
-
-void CRTTransferSession::OnTickEvent()
-{
-
 }
 
 // from RTTransfer
@@ -256,22 +284,35 @@ void CRTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::strin
     std::string err;
     dmsg.GetMsg(str, err);
     if (err.length()>0) {
-        LE("%s parse error:%s\n", __FUNCTION__, err.c_str());
+        LE("%s parse DIAPTCHMSG error:%s\n", __FUNCTION__, err.c_str());
         return;
     }
-    {
-        //find connection
-    }
+    
     {
         //send response
-        std::string msg(dmsg._content);
-        std::string id(dmsg._touser);
-        LI("OnTypeDispatch id:%s, msg:%s\n", id.c_str(), msg.c_str());
-        m_dispatchConnection.DispatchMsg(id, msg);
+        TOJSONUSER touser;
+        touser.GetMsg(dmsg._touser, err);
+        if (err.length()>0) {
+            LE("%s parse TOJSONUSER error:%s\n", __FUNCTION__, err.c_str());
+            return;
+        }
+        for (std::list<std::string>::iterator it=touser._us.begin(); it!=touser._us.end(); it++) {
+            m_dispatchConnection.DispatchMsg((*it), dmsg._content);
+        }
     }
 }
 
 void CRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& str)
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+
+void CRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+
+void CRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }

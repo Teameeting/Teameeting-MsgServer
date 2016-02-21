@@ -48,6 +48,8 @@ int main(int argc, const char * argv[]) {
         getchar();
         exit(0);
     }
+    std::string strHttpIp = conf.GetValue("dispatcher", "http_ip");
+    int nHttpPort = conf.GetIntVal("dispatcher", "listen_http_port", 8055);
 
     int log_level = conf.GetIntVal("log", "level", 5);
     std::string strLogPath = conf.GetValue("log", "path");
@@ -61,7 +63,7 @@ int main(int argc, const char * argv[]) {
     L_Init(0, NULL);
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
-    pMsgQueue->Start(strLocalIp.c_str(), nConnPort, strLocalIp.c_str(), nDispPort);
+    pMsgQueue->Start(strLocalIp.c_str(), nConnPort, strLocalIp.c_str(), nDispPort, strHttpIp.c_str(), nHttpPort);
     while (true) {
         pMsgQueue->DoTick();
         sleep(1);

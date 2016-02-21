@@ -63,6 +63,10 @@ int RTTransfer::DoProcessData(const char *pData, int nLen)
             OnTypeDispatch(m_msg._fmodule, m_msg._content);
         } else if (m_msg._type == TRANSFERTYPE::push) {
             OnTypePush(m_msg._fmodule, m_msg._content);
+        } else if (m_msg._type == TRANSFERTYPE::tlogin) {
+            OnTypeTLogin(m_msg._fmodule, m_msg._content);
+        } else if (m_msg._type == TRANSFERTYPE::tlogout) {
+            OnTypeTLogout(m_msg._fmodule, m_msg._content);
         } else {
             LE("invalid type::%d", m_msg._type);
         }

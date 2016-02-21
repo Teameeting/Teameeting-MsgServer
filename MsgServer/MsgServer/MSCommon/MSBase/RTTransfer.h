@@ -31,6 +31,8 @@ public:
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str) = 0;
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str) = 0;
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str) = 0;
+    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str) = 0;
+    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str) = 0;
 
 private:
 

@@ -16,6 +16,8 @@
 #include <list>
 #include <set>
 #include "RTMessage.h"
+#include "OSMutex.h"
+#include "DRTHttpSvrConn.h"
 
 class DRTTransferSession;
 
@@ -80,11 +82,21 @@ public:
     typedef std::unordered_map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
     typedef UserSessionInfoMaps::iterator UserSessionInfoMapsIt;
 
+    typedef std::set<std::string>    OnlineMembers;//all the members online
+    typedef OnlineMembers::iterator      OnlineMembersIt;
+    typedef std::set<std::string>    OfflineMembers;//all the members offline
+    typedef OfflineMembers::iterator     OfflineMembersIt;
+    
+    typedef std::unordered_map<std::string, std::string>        UserConnectorMaps;
+    typedef UserConnectorMaps::iterator UserConnectorMapsIt;
 
     static DRTConnectionManager* Instance() {
         static DRTConnectionManager s_manager;
         return &s_manager;
     }
+    static std::string      s_cohttpIp;
+    static unsigned short   s_cohttpPort;
+    static std::string      s_cohttpHost;
 
     ModuleInfo*       findConnectorInfo(const std::string& userid);
     ModuleInfo*       findModuleInfo(const std::string& userid, TRANSFERMODULE module);
@@ -105,12 +117,37 @@ public:
     void SetMsgQueueId(const std::string& mid) { m_msgQueueId = mid; }
     std::string& MsgQueueId() { return m_msgQueueId; }
 
+    void AddMemberToOnline(const std::string& uid);
+    bool IsMemberInOnline(const std::string& uid);
+    void DelMemberFmOnline(const std::string& uid);
+    int  GetOnlineNumber() { return (int)m_onlineMembers.size(); }
+    
+    void AddMemberToOffline(const std::string& uid);
+    bool IsMemberInOffline(const std::string& uid);
+    void DelMemberFmOffline(const std::string& uid);
+    int  GetOfflineNumber() { return (int)m_offlineMembers.size(); }
+    
+    void OnTLogin(const std::string& uid, const std::string& token, const std::string& connector);
+    void OnTLogout(const std::string& uid, const std::string& token, const std::string& connector);
+    
+    void GetUserConnectorId(const std::string& uid, std::string& connector);
+    
+    bool ConnectHttpSvrConn();
+    void PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
+    void PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
+    
 private:
-    DRTConnectionManager() {}
+    DRTConnectionManager()
+        : m_pHttpSvrConn(NULL) { }
     ~DRTConnectionManager() {}
     bool DoConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
     std::string               m_msgQueueId;
+    OnlineMembers             m_onlineMembers;
+    OfflineMembers            m_offlineMembers;
+    OSMutex                   m_mutexMembers;
+    DRTHttpSvrConn*           m_pHttpSvrConn;
+    UserConnectorMaps         m_userConnectors;
 
 };
 

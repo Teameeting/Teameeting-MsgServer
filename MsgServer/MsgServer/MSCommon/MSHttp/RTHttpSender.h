@@ -24,9 +24,10 @@ public:
 public:
 	//* For RCTcp
 	virtual void OnRecvData(const char*data, int size);
-    virtual void OnWakeupEvent(){}
-    virtual void OnPushEvent(){}
-	virtual void OnTickEvent(){}
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
 
 public:
 	//* For RTConnHttp

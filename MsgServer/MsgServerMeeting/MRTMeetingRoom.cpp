@@ -72,6 +72,16 @@ void MRTMeetingRoom::AddMemberToMeeting(const std::string& uid)
     m_meetingMembers.insert(uid);
 }
 
+bool MRTMeetingRoom::IsMemberInMeeting(const std::string& uid)
+{
+    bool found = false;
+    {
+        OSMutexLocker locker(&m_memberMutex);
+        found = !m_meetingMembers.empty() && m_meetingMembers.count(uid);
+    }
+    return found;
+}
+
 void MRTMeetingRoom::DelMemberFmMeeting(const std::string& uid)
 {
     OSMutexLocker locker(&m_memberMutex);
@@ -158,21 +168,6 @@ int MRTMeetingRoom::GetAllMeetingMemberJson(std::string& users)
 
 }
 
-int MRTMeetingRoom::GetRoomMemberOnline()
-{
-    OSMutexLocker locker(&m_memberMutex);
-    return (int)m_meetingMembers.size();
-}
-
-bool MRTMeetingRoom::IsMemberInMeeting(const std::string& uid)
-{
-    bool found = false;
-    {
-        OSMutexLocker locker(&m_memberMutex);
-        found = !m_meetingMembers.empty() && m_meetingMembers.count(uid);
-    }
-    return found;
-}
 
 MRTMeetingRoom::MemberStatus MRTMeetingRoom::GetRoomMemberStatus(const std::string& uid)
 {

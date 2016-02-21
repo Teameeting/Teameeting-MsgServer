@@ -146,21 +146,22 @@ SInt64 RTTcp::Run()
 				}
 				
 			}
+            //OnSendEvent("", 0);
 			events -= Task::kWriteEvent; 
 		}
 		else if(events&Task::kWakeupEvent)
 		{
-			OnWakeupEvent();
+			//OnWakeupEvent("", 0);
 			events -= Task::kWakeupEvent;
 		}
 		else if(events&Task::kPushEvent)
 		{
-			OnPushEvent();
+			//OnPushEvent("", 0);
 			events -= Task::kPushEvent;
 		}
 		else if(events&Task::kIdleEvent)
 		{
-			OnTickEvent();
+			//OnTickEvent("", 0);
 			events -= Task::kIdleEvent; 
 		}
 		else

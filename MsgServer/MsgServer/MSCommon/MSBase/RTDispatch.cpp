@@ -1,8 +1,8 @@
-#include "RTPush.h"
+#include "RTDispatch.h"
 #include "RTJSBuffer.h"
 #include "atomic.h"
 
-RTPush::RTPush()
+RTDispatch::RTDispatch()
 : Task()
 , fTimeoutTask(NULL, 120 * 1000)
 , fTickTime(0)
@@ -12,13 +12,13 @@ RTPush::RTPush()
 	fTimeoutTask.SetTask(this);
 }
 
-RTPush::~RTPush(void)
+RTDispatch::~RTDispatch(void)
 {
 	ListEmpty(&m_listPush);
 	ListEmpty(&m_listSend);
 }
 
-int RTPush::SendData(const char*pData, int nLen)
+int RTDispatch::SendData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
         LE("%s invalid params\n", __FUNCTION__);
@@ -35,7 +35,7 @@ int RTPush::SendData(const char*pData, int nLen)
 	return nLen;
 }
 
-int RTPush::PushData(const char*pData, int nLen)
+int RTDispatch::PushData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
         LE("%s invalid params\n", __FUNCTION__);
@@ -52,7 +52,7 @@ int RTPush::PushData(const char*pData, int nLen)
     return nLen;
 }
 
-SInt64 RTPush::Run()
+SInt64 RTDispatch::Run()
 {
 	EventFlags events = this->GetEvents();
 	this->ForceSameThread();
@@ -74,15 +74,24 @@ SInt64 RTPush::Run()
 	{
 		if(events&Task::kReadEvent)
 		{
+            //OnRecvData("", 0);
 			events -= Task::kReadEvent;
 		}
 		else if(events&Task::kWriteEvent)
 		{
+            ListElement *elem = NULL;
+            if((elem = m_listSend.first) != NULL)
+            {
+                OnSendEvent((char*)elem->content, elem->size);
+                ListRemoveHead(&m_listSend);
+                if(NULL != m_listSend.first)
+                    this->Signal(kWriteEvent);
+            }
 			events -= Task::kWriteEvent;
 		}
 		else if(events&Task::kWakeupEvent)
 		{
-			OnWakeupEvent();
+			OnWakeupEvent("", 0);
 			events -= Task::kWakeupEvent;
 		}
 		else if(events&Task::kPushEvent)
@@ -99,7 +108,7 @@ SInt64 RTPush::Run()
 		}
 		else if(events&Task::kIdleEvent)
 		{
-			OnTickEvent();
+			OnTickEvent("", 0);
 			events -= Task::kIdleEvent; 
 		}
 		else

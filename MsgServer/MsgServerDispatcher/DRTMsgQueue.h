@@ -32,7 +32,9 @@ public:
 
 
 public:
-	int		Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort);
+	int		Start(const char*pConnIp, unsigned short usConnPort
+                  , const char*pDispIp, unsigned short usDispPort
+                  , const char*pHttpIp, unsigned short usHttpPort);
 	void	DoTick();
 	void	Stop();
 

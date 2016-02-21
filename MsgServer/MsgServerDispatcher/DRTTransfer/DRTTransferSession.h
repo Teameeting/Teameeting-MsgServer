@@ -17,6 +17,7 @@
 #include "RTJSBuffer.h"
 #include "RTTransfer.h"
 #include "RTObserverConnection.h"
+#include "DRTMsgDispatch.hpp"
 
 class DRTTransferSession
     : public RTTcp
@@ -43,9 +44,10 @@ public:
 // from RTTcp
 public:
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnWakeupEvent();
-    virtual void OnPushEvent();
-    virtual void OnTickEvent();
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
     
 // from RTTransfer
 public:
@@ -56,6 +58,8 @@ public:
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str);
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);
@@ -67,6 +71,7 @@ private:
     std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;
     std::string     m_moduleId;
+    DRTMsgDispatch  m_msgDispatch;
 };
 
 #endif /* defined(__MsgServerDispatcher__DRTTransferSession__) */

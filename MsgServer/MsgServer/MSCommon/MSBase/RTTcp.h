@@ -33,10 +33,11 @@ public:
 	void SetTickTimer(int time){Assert(time > 0);fTickTime = time;};
 	void UpdateTimer(){fTimeoutTask.RefreshTimeout();};
 
-	virtual void OnRecvData(const char*pData, int nLen) = 0;
-	virtual void OnWakeupEvent() = 0;
-	virtual void OnPushEvent() = 0;
-	virtual void OnTickEvent() = 0;
+    virtual void OnRecvData(const char*pData, int nLen) = 0;
+    virtual void OnSendEvent(const char*pData, int nLen) = 0;
+    virtual void OnWakeupEvent(const char*pData, int nLen) = 0;
+    virtual void OnPushEvent(const char*pData, int nLen) = 0;
+    virtual void OnTickEvent(const char*pData, int nLen) = 0;
 
 protected:
 	//* For Task

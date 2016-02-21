@@ -73,17 +73,6 @@ void CRTConnectionTcp::OnRecvMessage(const char*message, int nLen)
     CRTConnTcp::DoProcessData(message, nLen);
 }
 
-void CRTConnectionTcp::OnWakeupEvent()
-{
-
-}
-
-void CRTConnectionTcp::OnPushEvent()
-{
-    printf("CRTConnectionTcp::OnPushEvent was called\n");
-}
-
-
 //* For RTConnTcp
 void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const char* pNname)
 {
@@ -124,12 +113,13 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
             std::string uid(pUserid);
             LI("OnLogin Uid:%s\n", uid.c_str());
             CRTConnectionManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, uid, pci);
+            CRTConnectionManager::Instance()->ConnectionConnNotify(m_userId, m_token);
+            
             // send response
             std::string resp;
             GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, resp);
             SendResponse(0, resp.c_str());
             m_login = true;
-            this->Signal(Task::kPushEvent);
             return;
         } else {
             LE("new ConnectionInfo error!!!\n");
@@ -145,7 +135,10 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
 
 void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)
 {
-    if (!m_login) return;
+    if (!m_login) {
+        LE("m_login is %d\n", m_login);
+        return;
+    }
     if (!pData) {
         LE("%s invalid params\n", __FUNCTION__);
         return;
@@ -157,30 +150,8 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
     //transfer msg by TransferSession
 
     printf("CRTConnectionTcp::OnSndMsg send pData:%s\n", pData);
-    TRANSFERMSG t_trmsg;
-    TRANSMSG t_msg;
-    t_msg._flag = 0;
-    t_msg._touser = "";
-    t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
-    t_msg._content = pData;
-
-    t_trmsg._action = TRANSFERACTION::req;
-    t_trmsg._fmodule = TRANSFERMODULE::mconnector;
-    t_trmsg._type = TRANSFERTYPE::trans;
-    t_trmsg._trans_seq = GenericTransSeq();
-    t_trmsg._trans_seq_ack = 0;
-    t_trmsg._valid = 1;
-    t_trmsg._content = t_msg.ToJson();
-
-    const std::string s = t_trmsg.ToJson();
-    CRTConnectionManager::ModuleInfo* pmi = CRTConnectionManager::Instance()->findModuleInfo(pUserid, (TRANSFERMODULE)mType);
-    if (pmi && pmi->pModule) {
-        pmi->pModule->SendTransferData(s.c_str(), (int)s.length());
-    } else {
-        LE("pmi->pModule is NULL\n");
-        Assert(false);
-        return;
-    }
+    std::string msg(pData, dLen);
+    CRTConnectionManager::Instance()->TransferMsg(mType, mseq, pUserid, msg);
 }
 
 void CRTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
@@ -195,6 +166,8 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
     }
     std::string token;
     CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
+    CRTConnectionManager::Instance()->ConnectionLostNotify(pUserid, m_token);
+   
     m_userId = "";
     m_token = "";
     m_nname = "";
