@@ -65,7 +65,7 @@ bool MRTConnectionManager::DoConnectConnector(const std::string ip, unsigned sho
 
     while(!connectorSession->Connect(ip, port)) {
         LI("connecting to connector server %s:%u, waiting...\n", ip.c_str(), port);
-        sleep(1);
+        usleep(100*1000);
     }
     connectorSession->EstablishConnection();
     return true;

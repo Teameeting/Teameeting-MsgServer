@@ -125,7 +125,7 @@ bool DRTConnectionManager::DoConnectConnector(const std::string ip, unsigned sho
     // conn to connector
     while (!connectorSession->Connect(ip, port)) {
         LI("connecting to connector server %s:%u waiting...\n", ip.c_str(), port);
-        sleep(1);
+        usleep(100*1000);
     }
     LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, connectorSession->GetSocket()->GetSocketFD());
     connectorSession->EstablishConnection();
