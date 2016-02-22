@@ -528,9 +528,6 @@ int MRTRoomManager::ChangeToJson(const std::string from, std::string& users)
 void MRTRoomManager::CheckMembers()
 {
 #if 1
-    if (m_meetingRoomMap.size()==0) {
-        return;
-    }
     MeetingRoomMapIt it = m_meetingRoomMap.begin();
     for (; it!=m_meetingRoomMap.end(); it++) {
         LI("meetingRoom roomMember:%d, online:%d\n", it->second->GetRoomMemberNumber(), it->second->GetMeetingMemberNumber());

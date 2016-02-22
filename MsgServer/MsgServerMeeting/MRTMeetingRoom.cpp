@@ -219,14 +219,6 @@ void MRTMeetingRoom::CheckMembers()
 int MRTMeetingRoom::AddPublishIdMsg(const std::string pubsher, SENDTAGS tags, const std::string content)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    if (m_publishIdMsgs.size()==0) {
-        NotifyMsg* notifyMsg = new NotifyMsg();
-        notifyMsg->tags = tags;
-        notifyMsg->notifyMsg = content;
-        notifyMsg->publisher = pubsher;
-        m_publishIdMsgs.insert(make_pair(pubsher, notifyMsg));
-        return 0;
-    }
     PublishIdMsgs::iterator mit = m_publishIdMsgs.find(pubsher);
     if (mit!=m_publishIdMsgs.end()) {
         LI("%s RTMeetingRoom::AddPublishIdMsg NotifyMsg....", pubsher.c_str());
@@ -238,16 +230,12 @@ int MRTMeetingRoom::AddPublishIdMsg(const std::string pubsher, SENDTAGS tags, co
         notifyMsg->publisher = pubsher;
         m_publishIdMsgs.insert(make_pair(pubsher, notifyMsg));
     }
-
     return 0;
 }
 
 int MRTMeetingRoom::DelPublishIdMsg(const std::string pubsher, std::string& pubid)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    if (m_publishIdMsgs.size()==0) {
-        return 0;
-    }
     PublishIdMsgs::iterator mit = m_publishIdMsgs.find(pubsher);
     if (mit!=m_publishIdMsgs.end()) {
         LI("%s leave RTMeetingRoom::DelPublishIdMsg NotifyMsg....", pubsher.c_str());
@@ -262,14 +250,6 @@ int MRTMeetingRoom::DelPublishIdMsg(const std::string pubsher, std::string& pubi
 int MRTMeetingRoom::AddAudioSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    if (m_audioSetMsgs.size()==0) {
-        NotifyMsg* notifyMsg = new NotifyMsg();
-        notifyMsg->tags = tags;
-        notifyMsg->notifyMsg = content;
-        notifyMsg->publisher = pubsher;
-        m_audioSetMsgs.insert(make_pair(pubsher, notifyMsg));
-        return 0;
-    }
     AudioSetMsgs::iterator mit = m_audioSetMsgs.find(pubsher);
     if (mit!=m_audioSetMsgs.end()) {
         LI("%s RTMeetingRoom::AddAudioSetMsg NotifyMsg....", pubsher.c_str());
@@ -287,9 +267,6 @@ int MRTMeetingRoom::AddAudioSetMsg(const std::string pubsher, SENDTAGS tags, con
 int MRTMeetingRoom::DelAudioSetMsg(const std::string pubsher)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    if (m_audioSetMsgs.size()==0) {
-        return 0;
-    }
     AudioSetMsgs::iterator mit = m_audioSetMsgs.find(pubsher);
     if (mit!=m_audioSetMsgs.end()) {
         LI("%s leave RTMeetingRoom::DelAudioSetMsg NotifyMsg....", pubsher.c_str());
@@ -303,14 +280,6 @@ int MRTMeetingRoom::DelAudioSetMsg(const std::string pubsher)
 int MRTMeetingRoom::AddVideoSetMsg(const std::string pubsher, SENDTAGS tags, const std::string content)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    if (m_videoSetMsgs.size()==0) {
-        NotifyMsg* notifyMsg = new NotifyMsg();
-        notifyMsg->tags = tags;
-        notifyMsg->notifyMsg = content;
-        notifyMsg->publisher = pubsher;
-        m_videoSetMsgs.insert(make_pair(pubsher, notifyMsg));
-        return 0;
-    }
     VideoSetMsgs::iterator mit = m_videoSetMsgs.find(pubsher);
     if (mit!=m_videoSetMsgs.end()) {
         LI("%s RTMeetingRoom::AddVideoSetMsg NotifyMsg....", pubsher.c_str());
@@ -328,9 +297,6 @@ int MRTMeetingRoom::AddVideoSetMsg(const std::string pubsher, SENDTAGS tags, con
 int MRTMeetingRoom::DelVideoSetMsg(const std::string pubsher)
 {
     OSMutexLocker locker(&m_notifyMutex);
-    if (m_videoSetMsgs.size()==0) {
-        return 0;
-    }
     VideoSetMsgs::iterator mit = m_videoSetMsgs.find(pubsher);
     if (mit!=m_videoSetMsgs.end()) {
         LI("%s leave RTMeetingRoom::DelVideoSetMsg NotifyMsg....", pubsher.c_str());

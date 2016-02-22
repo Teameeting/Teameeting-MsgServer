@@ -27,7 +27,6 @@ MRTConnectionManager::ModuleInfo* MRTConnectionManager::findModuleInfo(const std
     MRTConnectionManager::ModuleInfo* pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return NULL; }
         MRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             if ((it->second) && (it->second)->othModuleType == module) {
@@ -77,7 +76,6 @@ void MRTConnectionManager::RefreshConnection()
     ModuleInfo* pmi = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return; }
         ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             pmi = it->second;
@@ -94,10 +92,6 @@ void MRTConnectionManager::RefreshConnection()
 bool MRTConnectionManager::AddModuleInfo(MRTConnectionManager::ModuleInfo* pmi, const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    if (s_ModuleInfoMap.size()==0) {
-        s_ModuleInfoMap.insert(make_pair(sid, pmi));
-        return true;
-    }
     ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnectionManager::ModuleInfo *p = it->second;
@@ -116,7 +110,6 @@ bool MRTConnectionManager::AddModuleInfo(MRTConnectionManager::ModuleInfo* pmi, 
 bool MRTConnectionManager::DelModuleInfo(const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    if (s_ModuleInfoMap.size()==0) { return true; }
     ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnectionManager::ModuleInfo *p = it->second;
@@ -137,15 +130,6 @@ bool MRTConnectionManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std:
     bool found = false;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) {
-            pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
-            pInfo->moduleId = mid;
-            pInfo->sessionIds.insert(sid);
-            s_TypeModuleSessionInfoList.push_front(pInfo);
-            return true;
-        }
-    
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
             if ((*it) && (*it)->moduleId.compare(mid) == 0) {
@@ -172,7 +156,6 @@ bool MRTConnectionManager::DelTypeModuleSession(const std::string& sid)
     TypeModuleSessionInfo* pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) { return false; }
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
             pInfo = *it;

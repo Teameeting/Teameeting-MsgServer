@@ -36,7 +36,6 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfo(const std
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return NULL; }
         DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             if (it->second && it->second->othModuleType == module) {
@@ -54,7 +53,6 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfoBySid(cons
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return NULL; }
         DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
         if (it!=s_ModuleInfoMap.end()) {
             pInfo = it->second;
@@ -79,7 +77,6 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findConnectorInfoById(co
     std::string sessionid;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) { return NULL; }
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         TypeModuleSessionInfo* t_pInfo = NULL;
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
@@ -140,7 +137,6 @@ void DRTConnectionManager::RefreshConnection()
     ModuleInfo* pmi = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return ; }
         ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             pmi = it->second;
@@ -156,10 +152,6 @@ void DRTConnectionManager::RefreshConnection()
 bool DRTConnectionManager::AddModuleInfo(DRTConnectionManager::ModuleInfo* pmi, const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    if (s_ModuleInfoMap.size()==0) {
-        s_ModuleInfoMap.insert(make_pair(sid, pmi));
-        return true;
-    }
     DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         DRTConnectionManager::ModuleInfo *p = it->second;
@@ -174,7 +166,6 @@ bool DRTConnectionManager::AddModuleInfo(DRTConnectionManager::ModuleInfo* pmi, 
 bool DRTConnectionManager::DelModuleInfo(const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    if (s_ModuleInfoMap.size()==0) { return true; }
     DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         DRTConnectionManager::ModuleInfo *p = it->second;
@@ -191,15 +182,6 @@ bool DRTConnectionManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std:
     bool found = false;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) {
-            pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
-            pInfo->moduleId = mid;
-            pInfo->sessionIds.insert(sid);
-            s_TypeModuleSessionInfoList.push_front(pInfo);
-            return true;
-        }
-    
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
             if ((*it) && (*it)->moduleId.compare(mid) == 0) {
@@ -227,7 +209,6 @@ bool DRTConnectionManager::DelTypeModuleSession(const std::string& sid)
     bool found = false;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) { return false; }
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
             pInfo = *it;

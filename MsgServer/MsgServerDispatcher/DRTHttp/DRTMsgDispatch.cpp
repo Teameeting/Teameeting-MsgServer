@@ -70,7 +70,9 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         LI("DRTMsgDispatch::OnPushEvent enter cont:%s\n", mmsg._cont.c_str());
         DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_leave) {
-        
+        std::string no = mmsg._nname + " leave room " + mmsg._rname;
+        LI("DRTMsgDispatch::OnPushEvent leave cont:%s\n", mmsg._cont.c_str());
+        DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     }
 }
 
