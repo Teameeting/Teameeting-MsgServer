@@ -415,7 +415,8 @@ void PUSHMSG::GetMsg(const std::string& str, std::string& err)
 }
 
 _topushmsg::_topushmsg()
-: _roomid(""){}
+: _tags(sendtags_invalid)
+, _roomid(""){}
 
 std::string TOPUSHMSG::ToJson()
 {
@@ -424,6 +425,7 @@ std::string TOPUSHMSG::ToJson()
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
     
     jDoc.SetObject();
+    jDoc.AddMember("tags", TOPUSHMSG::_tags, jDoc.GetAllocator());
     jDoc.AddMember("roomid", TOPUSHMSG::_roomid.c_str(), jDoc.GetAllocator());
     
     jDoc.Accept(writer);
@@ -443,6 +445,12 @@ void TOPUSHMSG::GetMsg(const std::string& str, std::string& err)
         err = INVALID_JSON_PARAMS;
         return;
     }
+    if(!(jsonReqDoc.HasMember("tags") && jsonReqDoc["tags"].IsInt()))
+    {
+        err = "parse tags error";
+        return;
+    }
+    _tags = jsonReqDoc["tags"].GetInt();
     if(!(jsonReqDoc.HasMember("roomid") && jsonReqDoc["roomid"].IsString()))
     {
         err = "parse roomid error";

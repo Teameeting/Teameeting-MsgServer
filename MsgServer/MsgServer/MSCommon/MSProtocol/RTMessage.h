@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include "RTMsg.h"
 
 typedef enum _transferaction{
     req = 1,
@@ -122,6 +123,7 @@ struct _pushmsg{
 
 typedef struct _topushmsg TOPUSHMSG;
 struct _topushmsg{
+    int             _tags;
     std::string     _roomid;
     _topushmsg();
     std::string ToJson();

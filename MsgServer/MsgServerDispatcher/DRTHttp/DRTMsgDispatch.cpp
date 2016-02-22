@@ -44,10 +44,6 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         return;
     }
     
-    TOPUSHMSG pushMsg;
-    pushMsg._roomid = mmsg._room;
-    std::string strPushMsg = pushMsg.ToJson();
-    
     TOPUSHUSER pushUser;
     TOJSONUSER jsonUser;
     jsonUser.GetMsg(pmsg._touser, err);
@@ -59,6 +55,11 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     for (; it!=jsonUser._us.end(); it++) {
         pushUser._us.push_back((*it));
     }
+    
+    TOPUSHMSG pushMsg;
+    pushMsg._tags = mmsg._tags;
+    pushMsg._roomid = mmsg._room;
+    std::string strPushMsg = pushMsg.ToJson();
     
     printf("DRTMsgDispatch::OnPushEvent msg tags:%d\n", mmsg._tags);
     if (mmsg._tags == SENDTAGS::sendtags_talk) {
