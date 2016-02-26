@@ -502,7 +502,6 @@ void TOJSONUSER::GetMsg(const std::string &str, std::string &err)
     rapidjson::Value& mems = jsonReqDoc["u"];
     for (int i=0; i<(int)mems.Capacity(); i++) {
         rapidjson::Value& m = mems[i];
-        printf("get members:%s\n", m.GetString());
         _us.push_front(m.GetString());
     }
 }
@@ -547,7 +546,6 @@ void TOPUSHUSER::GetMsg(const std::string &str, std::string &err)
     rapidjson::Value& mems = jsonReqDoc;
     for (int i=0; i<(int)mems.Capacity(); i++) {
         rapidjson::Value& m = mems[i];
-        printf("get members:%s\n", m.GetString());
         _us.push_front(m.GetString());
     }
 }

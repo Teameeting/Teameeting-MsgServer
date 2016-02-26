@@ -320,6 +320,7 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
             if (DRTConnectionManager::Instance()->IsMemberInOnline((*it))) {
                 std::string cid("");
                 DRTConnectionManager::Instance()->GetUserConnectorId((*it), cid);
+                //printf("dispatch userid:%s, connectorid:%s\n", (*it).c_str(), cid.c_str());
                 connUserId.insert(make_pair(cid, (*it)));
                 needDispatch = true;
             } else {
@@ -332,18 +333,18 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
         //if online, push to online msgqueue
         if (needDispatch) {
             unsigned i=0, j=(unsigned)connUserId.bucket_count();
-            printf("connUserId bucket_count j:%u\n", j);
+            printf("connUserId buckeddt_count j:%u\n", j);
             for (; i<j; ++i) {
                 if (connUserId.begin(i)==connUserId.end(i)) {
-                    printf("connUserId i:%u begin == end\n", i);
                     continue;
                 }
                 TOJSONUSER duser;//dispatcher
-                for (auto local_it=connUserId.begin(i); local_it!=connUserId.end(i); ++local_it) {
-                    printf("connUserId i:%u local_it->second:%s, first:%s\n", i, local_it->second.c_str(), local_it->first.c_str());
-                    duser._us.push_back(local_it->second);
+                std::string sess = connUserId.begin(i)->first;
+                std::cout << "connUserId bucket_size:" << connUserId.bucket_size(i) << ", sess:" << sess << ", sess_size:" << connUserId.bucket(sess) << std::endl;
+                for (auto& x:connUserId) {
+                    printf("connUserId i:%u x.second:%s, first:%s\n", i, x.second.c_str(), x.first.c_str());
+                    duser._us.push_back(x.second);
                 }
-                printf("connector id is:%s\n", connUserId.begin(i)->first.c_str());
                 DISPATCHMSG dmsg;
                 dmsg._flag = 0;
                 dmsg._touser = duser.ToJson();
@@ -357,6 +358,7 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
     }
     {
         //if offline, push to offline msgqueue
+#if 0
         if (needPush) {
             PUSHMSG pmsg;
             pmsg._flag = 0;
@@ -368,6 +370,7 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
             LI("OnTypeQueue pmsg._touser:%s, pmsg._connector.c_str():%s\n", pmsg._touser.c_str(), pmsg._connector.c_str());
             m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
         }
+#endif
     }
 }
 

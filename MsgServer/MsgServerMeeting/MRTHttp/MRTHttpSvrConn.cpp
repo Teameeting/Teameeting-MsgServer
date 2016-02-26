@@ -140,7 +140,6 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg)
     sprintf(data, "meeting/getMeetingInfo/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        LI("HttpGetMeetingInfo send msg:%s\n", pmsg);
         MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
@@ -157,7 +156,6 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg) const
     sprintf(data, "meeting/getMeetingInfo/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        LI("HttpGetMeetingInfo send msg:%s\n", pmsg);
         MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
@@ -174,7 +172,6 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg)
     sprintf(data, "meeting/getMeetingMemberList/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        LI("HttpGetMeetingMemberList send msg:%s\n", pmsg);
         MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
@@ -191,7 +188,6 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg) cons
     sprintf(data, "meeting/getMeetingMemberList/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        LI("HttpGetMeetingMemberList send msg:%s\n", pmsg);
         MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, tmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
@@ -214,16 +210,15 @@ int MRTHttpSvrConn::OnWriteEvent(const char*pData, int nLen, int* nOutLen)
 
 void MRTHttpSvrConn::MSender::OnResponse(const char* pData, int nLen)
 {
-    LI("MRTHttpSvrConn::MSender::OnResponse nLen:%d, pData:%s\n", nLen, pData);
     if (!pData || nLen<=0) {
         LE("RTHttpSender::OnResponse pData nLen error\n");
         return;
     }
+    LI("MRTHttpSvrConn::MSender::OnResponse nLen:%d, pData:%s\n", nLen, pData);
     if (GetMethod() == HTTP_GET) {
         std::string data(pData, nLen);
         MRTRoomManager::Instance()->HandleOptRoomWithData(GetCmd(), GetTransmsg(), GetMeetmsg(), data);
     } else {
-        LI("OnResponse recieved, kill event\n");
         this->Signal(kKillEvent);
     }
 }

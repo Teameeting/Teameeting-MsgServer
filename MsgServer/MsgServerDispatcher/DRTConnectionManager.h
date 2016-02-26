@@ -87,7 +87,7 @@ public:
     typedef std::set<std::string>    OfflineMembers;//all the members offline
     typedef OfflineMembers::iterator     OfflineMembersIt;
     
-    typedef std::unordered_map<std::string, std::string>        UserConnectorMaps;
+    typedef std::unordered_multimap<std::string, std::string>        UserConnectorMaps;
     typedef UserConnectorMaps::iterator UserConnectorMapsIt;
 
     static DRTConnectionManager* Instance() {

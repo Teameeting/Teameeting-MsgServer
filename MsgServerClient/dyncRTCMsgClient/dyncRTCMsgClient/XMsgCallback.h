@@ -27,7 +27,8 @@ public:
     virtual void OnMsgServerDisconnect() = 0;
     virtual void OnMsgServerConnectionFailure() = 0;
     virtual void OnMsgServerState(MSState state) = 0;
-protected:
+public:
+    XMsgCallback(){}
     virtual ~XMsgCallback(){}
 };
 

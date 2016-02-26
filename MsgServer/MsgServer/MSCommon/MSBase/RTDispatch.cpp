@@ -28,7 +28,11 @@ int RTDispatch::SendData(const char*pData, int nLen)
         char* ptr = new char[nLen+1];
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
-        ListAppend(&m_listSend, ptr, nLen);
+        {
+            OSMutexLocker locker(&mMutexSend);
+            ListAppend(&m_listSend, ptr, nLen);
+        }
+
     }
 
 	this->Signal(kWriteEvent);
@@ -45,7 +49,10 @@ int RTDispatch::PushData(const char*pData, int nLen)
         char* ptr = new char[nLen+1];
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
-        ListAppend(&m_listPush, ptr, nLen);
+        {
+            OSMutexLocker locker(&mMutexPush);
+            ListAppend(&m_listPush, ptr, nLen);
+        }
     }
     
     this->Signal(kPushEvent);
@@ -63,9 +70,6 @@ SInt64 RTDispatch::Run()
 	{
         if (events&Task::kTimeoutEvent) {
             UpdateTimer();
-            LI("file:%s %s timeout \n", __FILE__, __FUNCTION__);
-        } else {
-            LI("file:%s %s kill \n", __FILE__, __FUNCTION__);
         }
 		return 0;
 	}
@@ -83,7 +87,10 @@ SInt64 RTDispatch::Run()
             if((elem = m_listSend.first) != NULL)
             {
                 OnSendEvent((char*)elem->content, elem->size);
-                ListRemoveHead(&m_listSend);
+                {
+                    OSMutexLocker locker(&mMutexSend);
+                    ListRemoveHead(&m_listSend);
+                }
                 if(NULL != m_listSend.first)
                     this->Signal(kWriteEvent);
             }
@@ -100,7 +107,10 @@ SInt64 RTDispatch::Run()
             if((elem = m_listPush.first) != NULL)
             {
                 OnPushEvent((char*)elem->content, elem->size);
-                ListRemoveHead(&m_listPush);
+                {
+                    OSMutexLocker locker(&mMutexPush);
+                    ListRemoveHead(&m_listPush);
+                }
                 if(NULL != m_listPush.first)
                     this->Signal(kPushEvent);
             }

@@ -53,11 +53,8 @@ bool RTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short po
     do{
         usleep(50*1000);
         err = socket->Connect(SocketUtils::ConvertStringToAddr(addr.c_str()), port);
-        LI("Connect to http server %s:%u, waiting...\n", addr.c_str(), port);
     }while(!(err==OS_NoErr || err==EISCONN));
-
     //socket->RequestEvent(EV_RE);
-    LI("%s addr:%s, port:%u\n", __FUNCTION__, addr.c_str(), port);
     return true;
 }
 

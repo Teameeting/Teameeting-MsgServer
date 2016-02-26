@@ -1,14 +1,15 @@
 #ifndef __RT_TCP_H__
 #define __RT_TCP_H__
 //INCLUDES
+#include <unordered_map>
+#include <utility>
 #include "LinkedList.h"
 #include "StrPtrLen.h"
 #include "TCPSocket.h"
 #include "Task.h"
 #include "TimeoutTask.h"
 #include "RTObserverConnection.h"
-#include <unordered_map>
-#include <utility>
+#include "OSMutex.h"
 
 enum
 {
@@ -61,6 +62,7 @@ private:
 	UInt32				fTickTime;
 
 	List				m_listSend;
+    OSMutex             mMutexSend;
     
     typedef std::unordered_map<RTTcp*, RTObserverConnection*> ObserverConnectionMap;
     typedef ObserverConnectionMap::iterator ObserverConnectionMapIt;

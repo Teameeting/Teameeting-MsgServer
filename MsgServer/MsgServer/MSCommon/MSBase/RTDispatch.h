@@ -5,6 +5,7 @@
 #include "StrPtrLen.h"
 #include "Task.h"
 #include "TimeoutTask.h"
+#include "OSMutex.h"
 
 class RTDispatch
 	: public Task
@@ -34,6 +35,8 @@ private:
 	UInt32				fTickTime;
 	List				m_listSend;
 	List				m_listPush;
+    OSMutex             mMutexSend;
+    OSMutex             mMutexPush;
 };
 
 #endif	// __RT_DISPATCH_H__

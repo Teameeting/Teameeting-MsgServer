@@ -99,9 +99,9 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, resp);
                                 SendTransferData(resp, (int)resp.length());
 
-                                if (m_pHttpSvrConn) {
-                                    m_pHttpSvrConn->HttpInsertMeetingMsg(mmsg._pass.c_str(), mmsg._room.c_str(), "0", it->second->GetSessionId().c_str(), mmsg._cont.c_str(), mmsg._from.c_str());
-                                }
+                                //if (m_pHttpSvrConn) {
+                                //    m_pHttpSvrConn->HttpInsertMeetingMsg(mmsg._pass.c_str(), mmsg._room.c_str(), "0", it->second->GetSessionId().c_str(), mmsg._cont.c_str(), mmsg._from.c_str());
+                                //}
                                 return;
                             } else {
                                 LE("==>HandleDcommRoom no member in room, users:%s\n", users.c_str());
@@ -449,8 +449,8 @@ void MRTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string&
         if (err.length()==0) {
             it->second->UpdateMemberList(memList._uslist);
         } else {
+            LE("OnGetMemberList error:%s, mmsg._roomid:%s\n", err.c_str(), mmsg._room.c_str());
             assert(false);
-            LE("OnGetMemberList error:%s\n", err.c_str());
         }
     } else {
         // not find room
@@ -482,6 +482,7 @@ bool MRTRoomManager::ConnectMsgQueue()
     // conn to msgqueue
     while(!m_pMsgQueueSession->Connect(s_msgQueueIp, s_msgQueuePort)) {
         LI("connecting to msgqueue server %s:%u waiting...\n", s_msgQueueIp.c_str(), s_msgQueuePort);
+        usleep(100*1000);
     }
     LI("%s port:%u, socketFD:%d\n", __FUNCTION__, s_msgQueuePort,  m_pMsgQueueSession->GetSocket()->GetSocketFD());
     m_pMsgQueueSession->EstablishConnection();
@@ -527,7 +528,7 @@ int MRTRoomManager::ChangeToJson(const std::string from, std::string& users)
 
 void MRTRoomManager::CheckMembers()
 {
-#if 1
+#if 0
     MeetingRoomMapIt it = m_meetingRoomMap.begin();
     for (; it!=m_meetingRoomMap.end(); it++) {
         LI("meetingRoom roomMember:%d, online:%d\n", it->second->GetRoomMemberNumber(), it->second->GetMeetingMemberNumber());

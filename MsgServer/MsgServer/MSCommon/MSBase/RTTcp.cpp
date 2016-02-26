@@ -32,7 +32,10 @@ int RTTcp::SendData(const char*pData, int nLen)
         char* ptr = new char[nLen+1];
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
-        ListAppend(&m_listSend, ptr, nLen);
+        {
+            OSMutexLocker locker(&mMutexSend);
+            ListAppend(&m_listSend, ptr, nLen);
+        }
     }
 
 	this->Signal(kWriteEvent);
@@ -53,7 +56,10 @@ int RTTcp::SendTransferData(const char*pData, int nLen)
         RTJSBuffer::writeShort(&pptr, nLen);
         memcpy((pptr), pData, nLen);
         ptr[nLen+3] = '\0';
-        ListAppend(&m_listSend, ptr, nLen+3);
+        {
+            OSMutexLocker locker(&mMutexSend);
+            ListAppend(&m_listSend, ptr, nLen+3);
+        }
         pptr = NULL;
     }
     
@@ -70,21 +76,20 @@ SInt64 RTTcp::Run()
 	// So return -1.
 	if(events&Task::kTimeoutEvent || events&Task::kKillEvent)
 	{
+#if 0
         if (events&Task::kTimeoutEvent) {
             LI("file %s %s timeout \n", __FILE__, __FUNCTION__);
         } else {
             LI("file: %s, %s kill \n", __FILE__, __FUNCTION__);
         }
+#endif
         ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
         if (it != m_mapConnectObserver.end()) {
-            LI("Tcp::Run find Disconnection\n");
             RTObserverConnection *conn = it->second;
             if (conn) {
                 LI("Tcp::Run notify Disconnection\n");
                 conn->ConnectionDisconnected();
             }
-        } else {
-            LE("did not find return -1\n");
         }
 		return -1;
 	}
@@ -103,23 +108,14 @@ SInt64 RTTcp::Run()
 				OS_Error sockErr = fSocket.Read(fRequestBuffer, kRequestBufferSizeInBytes - 1, &readed);
 				if (sockErr == EAGAIN)
 					break;
-
 				if (sockErr != OS_NoErr)
 				{
 					Assert(!fSocket.IsConnected());
 					break;
 				}
-
 				if(readed > 0)
 				{
-                    /*
-                    if(fRequestBuffer[0] != '$')
-                    {
-                        //printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
-                    } else {
-                        //printf("RTcp::Run====fRequestBuffer:%d, %s\n", readed, fRequestBuffer);
-                    }*/
-                    
+                    //(fRequestBuffer[0] != '$')
 					OnRecvData(fRequestBuffer, readed);
 				}
 			}
@@ -140,11 +136,13 @@ SInt64 RTTcp::Run()
 				}
 				else
 				{
-					ListRemoveHead(&m_listSend); 
+                    {
+                        OSMutexLocker locker(&mMutexSend);
+                        ListRemoveHead(&m_listSend);
+                    }
 					if(NULL != m_listSend.first)
 						this->Signal(kWriteEvent);
 				}
-				
 			}
             //OnSendEvent("", 0);
 			events -= Task::kWriteEvent; 
@@ -176,14 +174,11 @@ SInt64 RTTcp::Run()
     // At this point, however, the session is DEAD.
     ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
     if (it != m_mapConnectObserver.end()) {
-        LI("Tcp::Run SessionOffline find Disconnection\n");
         RTObserverConnection *conn = it->second;
         if (conn) {
             LI("Tcp::Run SessionOffline notify Disconnection\n");
             conn->ConnectionDisconnected();
         }
-    } else {
-        LE("did NOT FIND session offline CLIENT return -1\n");
     }
     return -1;
 }

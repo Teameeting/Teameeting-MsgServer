@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "Task.h"
 #include "LinkedList.h"
+#include "OSMutex.h"
 
 enum
 {
@@ -42,6 +43,7 @@ protected:
 private:
     UInt32				fTickTime;
     List				m_listSend;
+    OSMutex             mMutexSend;
     static unsigned int	 sHttpSessionIDCounter;
 };
 #endif /* defined(__RT_HTTP_H__) */

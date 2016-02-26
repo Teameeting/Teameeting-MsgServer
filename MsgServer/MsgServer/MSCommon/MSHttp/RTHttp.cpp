@@ -35,7 +35,10 @@ int RTHttp::SendData(const char*pData, int nLen)
         char* ptr = new char[nLen+1];
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
-        ListAppend(&m_listSend, ptr, nLen);
+        {
+            OSMutexLocker locker(&mMutexSend);
+            ListAppend(&m_listSend, ptr, nLen);
+        }
     }
     
     this->Signal(kWriteEvent);
@@ -51,7 +54,6 @@ SInt64 RTHttp::Run()
     // So return -1.
     if(events&Task::kKillEvent)
     {
-        LE("RTHttp::Run killEvent\n");
         return -1;
     }
     
@@ -71,14 +73,13 @@ SInt64 RTHttp::Run()
                 int err = OnWriteEvent((char*)elem->content, elem->size, &theLengthSent);
                 if (!err)
                 {
-                    ListRemoveHead(&m_listSend);
+                    {
+                        OSMutexLocker locker(&mMutexSend);
+                        ListRemoveHead(&m_listSend);
+                    }
                     if(NULL != m_listSend.first) {
                         this->Signal(kWriteEvent);
                     }
-                }
-                else
-                {
-                    LE("send error");
                 }
             }
             events -= Task::kWriteEvent;

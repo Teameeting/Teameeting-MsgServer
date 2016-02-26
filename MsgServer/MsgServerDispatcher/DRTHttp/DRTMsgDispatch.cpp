@@ -67,11 +67,11 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         LI("DRTMsgDispatch::OnPushEvent talk cont:%s\n", mmsg._cont.c_str());
         DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_enter) {
-        std::string no = mmsg._nname + " enter room " + mmsg._rname + " and is waiting for you!";
+        std::string no = mmsg._nname + "进入\"" + mmsg._rname + "\"房间正在等你哦~";
         LI("DRTMsgDispatch::OnPushEvent enter cont:%s\n", mmsg._cont.c_str());
         DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_leave) {
-        std::string no = mmsg._nname + " leave room " + mmsg._rname;
+        std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
         LI("DRTMsgDispatch::OnPushEvent leave cont:%s\n", mmsg._cont.c_str());
         DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     }
