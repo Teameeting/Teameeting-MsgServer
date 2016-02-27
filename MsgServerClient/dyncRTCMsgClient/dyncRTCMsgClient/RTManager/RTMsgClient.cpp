@@ -6,6 +6,8 @@
 //  Copyright © 2016 Dync. All rights reserved.
 //
 
+#include <stdio.h>
+#include <unistd.h>
 #include "RTMsgClient.hpp"
 #include "webrtc/base/logging.h"
 
@@ -16,8 +18,8 @@ RTMsgClient::RTMsgClient(const std::string& uid)
 , mAuth("")
 , mUname("")
 , mPushToken("")
+, mMsgServer("127.0.0.1")
 , mCurRoomId("400000000807")
-, mMsgServer("192.168.7.57")
 , mMsgPort(6630)
 , mIsOnline(false)
 , mRecvNum(0)
@@ -74,7 +76,7 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
                 break;
             default:
             {
-                
+
             }
                 break;
         }

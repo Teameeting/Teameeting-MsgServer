@@ -13,7 +13,7 @@
 
 int gTestClientNum = 10;
 int gTestMessageNum = 30;
-int gTestLoginNum = 100;
+int gTestLoginNum = 10;
 
 RTMsgRoom::RTMsgRoom(int num, std::string& id)
 : mRoomNum(num)

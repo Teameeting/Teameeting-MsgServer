@@ -50,7 +50,7 @@ CPPFILES =	atomic.cpp \
 		TCPListenerSocket.cpp \
 		TCPSocket.cpp \
 		TimeoutTask.cpp \
-		ev.cpp \
+		epev.cpp \
 		md5digest.cpp
 
 all: libRtComm.a

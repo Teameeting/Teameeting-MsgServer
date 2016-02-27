@@ -11,6 +11,11 @@
 
 #include <stdio.h>
 #include <string>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/prettywriter.h"
 
 typedef struct _information Information;
 struct _information{
@@ -21,7 +26,7 @@ struct _information{
     int _uregtype;
     int _ulogindev;
     int _uactype;
-    long long _uregtime;
+    int64_t _uregtime;
     _information();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
@@ -29,7 +34,7 @@ struct _information{
 
 typedef struct _httprespuserinit HttpRespUserInit;
 struct _httprespuserinit{
-    long long _requestid;
+    int64_t _requestid;
     int _code;
     std::string _authorization;
     Information _information;
@@ -41,14 +46,14 @@ struct _httprespuserinit{
 
 typedef struct _meetinginfo MeetingInfo;
 struct _meetinginfo{
-    long long _meetingid;
-    long long _anyrtcid;
+    int64_t _meetingid;
+    int64_t _anyrtcid;
     std::string _meetname;
     std::string _meetdesc;
     std::string _meetenable;
     std::string _pushable;
     std::string _meettype;
-    long long   _jointime;
+    int64_t   _jointime;
     _meetinginfo();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
@@ -56,7 +61,7 @@ struct _meetinginfo{
 
 typedef struct _httprespapplyroom HttpRespApplyRoom;
 struct _httprespapplyroom{
-    long long _requestid;
+    int64_t _requestid;
     int _code;
     MeetingInfo _meetingInfo;
     std::string _message;

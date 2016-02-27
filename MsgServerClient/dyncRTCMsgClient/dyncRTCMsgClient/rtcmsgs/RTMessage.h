@@ -11,6 +11,11 @@
 
 #include <iostream>
 #include <list>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/prettywriter.h"
 
 typedef enum _transferaction{
     req = 1,
@@ -50,8 +55,8 @@ typedef struct _transfermsg{
     TRANSFERACTION  _action;
     TRANSFERMODULE  _fmodule;    /*from module*/
     TRANSFERTYPE    _type;
-    long long       _trans_seq;
-    long long       _trans_seq_ack;
+    int64_t         _trans_seq;
+    int64_t         _trans_seq_ack;
     short           _valid;
     std::string     _content;
     std::string ToJson();

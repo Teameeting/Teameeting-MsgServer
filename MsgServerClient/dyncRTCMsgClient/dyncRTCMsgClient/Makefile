@@ -19,50 +19,71 @@ CCFLAGS += -O2
 CCFLAGS += -I.
 CCFLAGS += -I./rtcmsgs -I$(WEBRTC_BASE_PATH)
 
-C++FLAGS = $(CCFLAGS)
+C++FLAGS= $(CCFLAGS)
+C++FLAGS+=-I./RTJson -I./RTHttp -I./RTManager
 
 CFILES = 
 
 CPPFILES := XMsgProcesser.cpp \
-						XJSBuffer.cpp \
-			XMsgClient.cpp \
-			XTcpClientImpl.cpp \
-			XTcpTick.cpp 
+	XJSBuffer.cpp \
+	XMsgClient.cpp \
+	XTcpClientImpl.cpp \
+	XTcpTick.cpp 
 
 CPPFILES += ./rtcmsgs/RTMeetMsg.cpp \
-									 ./rtcmsgs/RTMessage.cpp \
-									 ./rtcmsgs/RTSignalMsg.cpp
-			
+			./rtcmsgs/RTMessage.cpp \
+			./rtcmsgs/RTSignalMsg.cpp
+
 CPPFILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/asyncresolverinterface.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/asyncsocket.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/asynctcpsocket.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/asyncudpsocket.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/base64.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/checks.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/criticalsection.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/event.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/event_tracer.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/ifaddrs-android.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/ipaddress.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/logging.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/messagehandler.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/messagequeue.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/nethelpers.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/physicalsocketserver.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/platform_thread.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/signalthread.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/sigslot.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/socketaddress.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/stringencode.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/thread.cc \
-				$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/asyncpacketsocket.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/asyncresolverinterface.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/asyncsocket.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/asynctcpsocket.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/asyncudpsocket.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/base64.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/checks.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/criticalsection.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/event.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/event_tracer.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/ifaddrs-android.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/ipaddress.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/logging.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/messagehandler.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/messagequeue.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/nethelpers.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/physicalsocketserver.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/platform_thread.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/signalthread.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/sigslot.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/socketaddress.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/stringencode.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/thread.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc \
+
+CLT_CPPFILES=main.cpp \
+			RTJson/RTJson.cpp \
+			RTHttp/RTCurlClient.cpp \
+			RTHttp/RTCURL.cpp \
+			RTManager/RTConnClientManager.cpp \
+			RTManager/RTMsgClient.cpp \
+			RTManager/RTMsgThreadPool.cpp \
+			RTManager/RTHttpClient.cpp \
+			RTManager/RTMsgRoom.cpp
+
+CLT_CPPFLAGS=$(CCFLAGS)
+CLT_CPPFLAGS+=$(C++FLAGS)
+CLT_CPPFLAGS+=-lcurl
+##CLT_CPPFLAGS+=-L./ -lrtcmsgclient-linux
+
 	
-all: librtcmsgclient-linux.a
+all: librtcmsgclient-linux.a msgclient
 
 librtcmsgclient-linux.a: $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 	ar -r librtcmsgclient-linux.a $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
 	ranlib librtcmsgclient-linux.a
+
+msgclient: $(CLT_CPPFILES:.cpp=.o)
+	$(C++) -o msgclient $(CLT_CPPFILES:.CPP=.o) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CLT_CPPFLAGS)
 
 install: 
 	install -m 664 librtcmsgclient-linux.a ./lib_linux_a/

@@ -7,11 +7,6 @@
 //
 
 #include "RTJson.hpp"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/prettywriter.h"
 #include "RTMsgCommon.h"
 
 _information::_information()
@@ -29,7 +24,7 @@ std::string Information::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("userid", Information::_userid.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("uname", Information::_uname.c_str(), jDoc.GetAllocator());
@@ -39,7 +34,7 @@ std::string Information::ToJson()
     jDoc.AddMember("ulogindev", Information::_ulogindev, jDoc.GetAllocator());
     jDoc.AddMember("uactype", Information::_uactype, jDoc.GetAllocator());
     jDoc.AddMember("uregtime", Information::_uregtime, jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -118,7 +113,7 @@ std::string _httprespuserinit::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     rapidjson::Value info(rapidjson::kObjectType);
     info.AddMember("userid", HttpRespUserInit::_information._userid.c_str(), jDoc.GetAllocator());
     info.AddMember("uname", HttpRespUserInit::_information._uname.c_str(), jDoc.GetAllocator());
@@ -128,14 +123,14 @@ std::string _httprespuserinit::ToJson()
     info.AddMember("ulogindev", HttpRespUserInit::_information._ulogindev, jDoc.GetAllocator());
     info.AddMember("uactype", HttpRespUserInit::_information._uactype, jDoc.GetAllocator());
     info.AddMember("uregtime", HttpRespUserInit::_information._uregtime, jDoc.GetAllocator());
-    
+
     jDoc.SetObject();
     jDoc.AddMember("requestid", HttpRespUserInit::_requestid, jDoc.GetAllocator());
     jDoc.AddMember("code", HttpRespUserInit::_code, jDoc.GetAllocator());
     jDoc.AddMember("authorization", HttpRespUserInit::_authorization.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("information", info, jDoc.GetAllocator());
     jDoc.AddMember("message", HttpRespUserInit::_message.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -176,7 +171,7 @@ void _httprespuserinit::GetMsg(const std::string& str, std::string& err)
         err.assign("parse information error");
         return;
     }
-   
+
     rapidjson::Value info(rapidjson::kObjectType);
     info = jsonReqDoc["information"];
     if(!(info.HasMember("userid") && info["userid"].IsString()))
@@ -255,7 +250,7 @@ std::string MeetingInfo::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("meetingid", MeetingInfo::_meetingid, jDoc.GetAllocator());
     jDoc.AddMember("aynrtcid", MeetingInfo::_anyrtcid, jDoc.GetAllocator());
@@ -265,7 +260,7 @@ std::string MeetingInfo::ToJson()
     jDoc.AddMember("pushable", MeetingInfo::_pushable.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("meettype", MeetingInfo::_meettype.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("jointime", MeetingInfo::_jointime, jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -343,7 +338,7 @@ std::string _httprespapplyroom::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     rapidjson::Value info(rapidjson::kObjectType);
     info.AddMember("meetingid", HttpRespApplyRoom::_meetingInfo._meetingid, jDoc.GetAllocator());
     info.AddMember("aynrtcid", HttpRespApplyRoom::_meetingInfo._anyrtcid, jDoc.GetAllocator());
@@ -353,13 +348,13 @@ std::string _httprespapplyroom::ToJson()
     info.AddMember("pushable", HttpRespApplyRoom::_meetingInfo._pushable.c_str(), jDoc.GetAllocator());
     info.AddMember("meettype", HttpRespApplyRoom::_meetingInfo._meettype.c_str(), jDoc.GetAllocator());
     info.AddMember("jointime", HttpRespApplyRoom::_meetingInfo._jointime, jDoc.GetAllocator());
-    
+
     jDoc.SetObject();
     jDoc.AddMember("requestid", HttpRespApplyRoom::_requestid, jDoc.GetAllocator());
     jDoc.AddMember("code", HttpRespApplyRoom::_code, jDoc.GetAllocator());
     jDoc.AddMember("meetingInfo", info, jDoc.GetAllocator());
     jDoc.AddMember("message", HttpRespApplyRoom::_message.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -394,7 +389,7 @@ void _httprespapplyroom::GetMsg(const std::string& str, std::string& err)
         err.assign("parse meetingInfo error");
         return;
     }
-    
+
     rapidjson::Value info(rapidjson::kObjectType);
     info = jsonReqDoc["meetingInfo"];
     if(!(info.HasMember("meetingid") && info["meetingid"].IsInt64()))
