@@ -84,10 +84,9 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* 
         std::string pass;
         RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
         if (pass.compare(pPass)!=0) {
-            LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
+            LE("OnLogin pass not same redis error\n");
             return;
         }
-        
 #endif
         m_userId = pUserid;
         m_token = pPass;
@@ -100,7 +99,6 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* 
         CRTConnectionManager::ConnectionInfo* pci = new CRTConnectionManager::ConnectionInfo();
         if (pci) {
             GenericSessionId(sid);
-            LI("=================SESSIONID:%s\n", sid.c_str());
             m_connectorId = CRTConnectionManager::Instance()->ConnectorId();
             pci->_connId = sid;
             pci->_connAddr = CRTConnectionManager::Instance()->ConnectorIp();
@@ -194,9 +192,7 @@ void CRTConnection::OnGetMsg(const char* pUserid, int mType)
 
         jsonDoc.AddMember("getmsg", "success", jsonDoc.GetAllocator());
         jsonDoc.Accept(jsonWriter);
-
         SendResponse(HPS_OK, jsonStr.GetString());
-
     }
 }
 
@@ -217,10 +213,8 @@ void CRTConnection::OnLogout(const char* pUserid)
         rapidjson::StringBuffer   jsonStr;
         rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStr);
         jsonDoc.SetObject();
-
         jsonDoc.AddMember("logout", "success", jsonDoc.GetAllocator());
         jsonDoc.Accept(jsonWriter);
-
         SendResponse(HPS_OK, jsonStr.GetString());
     }
 }
@@ -233,7 +227,6 @@ void CRTConnection::OnResponse(const char*pData, int nLen)
 void CRTConnection::ConnectionDisconnected()
 {
     if (m_userId.length()) {
-        LI("RTConnection::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
         std::string token;
         CRTConnectionManager::Instance()->DelUser(CONNECTIONTYPE::_chttp, m_userId, token);
         CRTConnectionManager::Instance()->ConnectionLostNotify(m_userId, m_token);

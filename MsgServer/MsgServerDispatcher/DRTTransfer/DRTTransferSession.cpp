@@ -333,16 +333,13 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
         //if online, push to online msgqueue
         if (needDispatch) {
             unsigned i=0, j=(unsigned)connUserId.bucket_count();
-            printf("connUserId buckeddt_count j:%u\n", j);
             for (; i<j; ++i) {
                 if (connUserId.begin(i)==connUserId.end(i)) {
                     continue;
                 }
                 TOJSONUSER duser;//dispatcher
                 std::string sess = connUserId.begin(i)->first;
-                std::cout << "connUserId bucket_size:" << connUserId.bucket_size(i) << ", sess:" << sess << ", sess_size:" << connUserId.bucket(sess) << std::endl;
                 for (auto& x:connUserId) {
-                    printf("connUserId i:%u x.second:%s, first:%s\n", i, x.second.c_str(), x.first.c_str());
                     duser._us.push_back(x.second);
                 }
                 DISPATCHMSG dmsg;
@@ -358,7 +355,6 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
     }
     {
         //if offline, push to offline msgqueue
-#if 0
         if (needPush) {
             PUSHMSG pmsg;
             pmsg._flag = 0;
@@ -370,7 +366,6 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
             LI("OnTypeQueue pmsg._touser:%s, pmsg._connector.c_str():%s\n", pmsg._touser.c_str(), pmsg._connector.c_str());
             m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
         }
-#endif
     }
 }
 
@@ -386,7 +381,6 @@ void DRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& s
 
 void DRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
 {
-    LI("%s was called\n", __FUNCTION__);
     TRANSMSG t_msg;
     std::string err;
     t_msg.GetMsg(str, err);
@@ -395,13 +389,11 @@ void DRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string&
         Assert(false);
         return;
     }
-    LI("TLogin user:%s, token:%s, connector:%s\n", t_msg._touser.c_str(), t_msg._content.c_str(), t_msg._connector.c_str());
     DRTConnectionManager::Instance()->OnTLogin(t_msg._touser, t_msg._content, t_msg._connector);
 }
 
 void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
 {
-    LI("%s was called\n", __FUNCTION__);
     TRANSMSG t_msg;
     std::string err;
     t_msg.GetMsg(str, err);
@@ -410,7 +402,6 @@ void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string
         Assert(false);
         return;
     }
-    LI("TLogout user:%s, token:%s, connector:%s\n", t_msg._touser.c_str(), t_msg._content.c_str(), t_msg._connector.c_str());
     DRTConnectionManager::Instance()->OnTLogout(t_msg._touser, t_msg._content, t_msg._connector);
 }
 

@@ -25,7 +25,7 @@ RTTcp::~RTTcp(void)
 int RTTcp::SendData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params\n", __FUNCTION__);
+        LE("RTTcp::SendData pData is over length\n");
         return -1;
     }
     {
@@ -45,7 +45,7 @@ int RTTcp::SendData(const char*pData, int nLen)
 int RTTcp::SendTransferData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params\n", __FUNCTION__);
+        LE("RTTcp::SendTransferData pData is over length\n");
         return -1;
     }
     {
@@ -76,18 +76,10 @@ SInt64 RTTcp::Run()
 	// So return -1.
 	if(events&Task::kTimeoutEvent || events&Task::kKillEvent)
 	{
-#if 0
-        if (events&Task::kTimeoutEvent) {
-            LI("file %s %s timeout \n", __FILE__, __FUNCTION__);
-        } else {
-            LI("file: %s, %s kill \n", __FILE__, __FUNCTION__);
-        }
-#endif
         ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
         if (it != m_mapConnectObserver.end()) {
             RTObserverConnection *conn = it->second;
             if (conn) {
-                LI("Tcp::Run notify Disconnection\n");
                 conn->ConnectionDisconnected();
             }
         }
@@ -176,7 +168,6 @@ SInt64 RTTcp::Run()
     if (it != m_mapConnectObserver.end()) {
         RTObserverConnection *conn = it->second;
         if (conn) {
-            LI("Tcp::Run SessionOffline notify Disconnection\n");
             conn->ConnectionDisconnected();
         }
     }

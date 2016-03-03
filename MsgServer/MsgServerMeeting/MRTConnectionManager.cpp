@@ -96,7 +96,6 @@ bool MRTConnectionManager::AddModuleInfo(MRTConnectionManager::ModuleInfo* pmi, 
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnectionManager::ModuleInfo *p = it->second;
         if (p && p->othModuleType == TRANSFERMODULE::mmsgqueue) {
-            LE("RTConnectionManager::DelModuleInfo sid:%s\n", sid.c_str());
             MRTRoomManager::Instance()->ClearMsgQueueSession(sid);
         }
         delete p;
@@ -114,7 +113,6 @@ bool MRTConnectionManager::DelModuleInfo(const std::string& sid)
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnectionManager::ModuleInfo *p = it->second;
         if (p && p->othModuleType == TRANSFERMODULE::mmsgqueue) {
-            LE("RTConnectionManager::DelModuleInfo sid:%s\n", sid.c_str());
             MRTRoomManager::Instance()->ClearMsgQueueSession(sid);
         }
         delete p;
@@ -173,5 +171,4 @@ void MRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
 {
     DelModuleInfo(sid);
     DelTypeModuleSession(sid);
-    LI("RTConnectionManager::TransferSessionLostNotify sessionid:%s\n", sid.c_str());
 }

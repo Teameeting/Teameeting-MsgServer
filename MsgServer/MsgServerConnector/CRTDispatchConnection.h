@@ -17,9 +17,7 @@ public:
     CRTDispatchConnection(){}
     virtual ~CRTDispatchConnection(){}
     
-    bool IsUserLive(const std::string& uid);
     void DispatchMsg(const std::string& uid, const std::string& msg);
-    void SendPushMsg(const std::string& uid, const std::string& msg);
     static std::string     m_connIp;
     static std::string     m_connPort;
 private:

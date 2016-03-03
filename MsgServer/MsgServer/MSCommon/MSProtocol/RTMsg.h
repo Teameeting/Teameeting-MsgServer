@@ -41,10 +41,6 @@ typedef enum _sendtags{
     sendtags_talk=1,
     sendtags_enter,
     sendtags_leave,
-    sendtags_subscribe,
-    sendtags_unsubscribe,
-    sendtags_audioset,
-    sendtags_videoset,
     sendtags_invalid
 }SENDTAGS;
 

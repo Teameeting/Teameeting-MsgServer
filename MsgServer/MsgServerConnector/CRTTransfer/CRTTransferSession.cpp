@@ -119,7 +119,6 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
 
     const std::string s = t_trmsg.ToJson();
     SendTransferData(s.c_str(), (int)s.length());
-    LI("Send user :%s ConnectionLostNotify to meeting module\n", uid.c_str());
 }
 
 void CRTTransferSession::ConnectionConnNotify(const std::string& uid, const std::string& token)
@@ -141,7 +140,6 @@ void CRTTransferSession::ConnectionConnNotify(const std::string& uid, const std:
 
     const std::string s = t_trmsg.ToJson();
     SendTransferData(s.c_str(), (int)s.length());
-    LI("Send user :%s ConnectionConnNotify to meeting module\n", uid.c_str());
 }
 
 void CRTTransferSession::TransferMsg(const std::string& msg)
@@ -220,7 +218,6 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         TRANSFERMSG t_msg;
         std::string trid;
         GenericSessionId(trid);
-        LI("CRTTransferSession::OnTypeConn sessionid:%s\n", trid.c_str());
         m_transferSessId = trid;
 
         t_msg._action = TRANSFERACTION::req;
@@ -322,8 +319,6 @@ void CRTTransferSession::ConnectionDisconnected()
     if (m_transferSessId.length()>0) {
         LI("RTTransferSession::ConnectionDisconnected m_transferSessId:%s\n", m_transferSessId.c_str());
         CRTConnectionManager::Instance()->TransferSessionLostNotify(m_transferSessId);
-    } else {
-        LE("RTConnection::ConnectionDisconnected m_transferSessId.length is 0\n");
     }
 }
 

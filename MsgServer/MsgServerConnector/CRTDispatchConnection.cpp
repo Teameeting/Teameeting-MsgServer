@@ -16,18 +16,11 @@
 std::string CRTDispatchConnection::m_connIp;
 std::string CRTDispatchConnection::m_connPort;
 
-bool CRTDispatchConnection::IsUserLive(const std::string& uid)
-{
-    return true;
-}
-
 void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::string& msg)
 {
     //find connector
     CRTConnectionManager::ConnectionInfo* pci = CRTConnectionManager::Instance()->findConnectionInfoById(uid);
     if (!pci) {
-        LI("Dispatch user:%s not login, need push msg\n", uid.c_str());
-        SendPushMsg(uid, msg);
         return;
     } else { //!pci
         if (pci->_pConn && pci->_pConn->IsLiveSession()) {
@@ -42,16 +35,7 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::strin
                     ct->SendDispatch(uid, msg);
                 }
             }
-        } else { //pci->pConn
-            LE("DispatchMsg user:%s session not live, need push msg\n", uid.c_str());
-            SendPushMsg(uid, msg);
         }
     }
 
-}
-
-
-void CRTDispatchConnection::SendPushMsg(const std::string& uid, const std::string& msg)
-{
-    //send push msg to Dispatcher to PushMsg
 }

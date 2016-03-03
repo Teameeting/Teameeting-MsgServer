@@ -156,12 +156,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
     CRTConnectionManager::Instance()->SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
 
-	if(usWebConPort == 0)
-	{
-		LE("Connector server conn need ...!");
-		Assert(false);
-	}
-
 	if(usWebConPort > 0)
 	{
 		m_pConnListener = new CRTConnListener();
@@ -178,11 +172,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
 		m_pConnListener->RequestEvent(EV_RE);
 	}
 
-    if (usModulePort == 0) {
-        LE("Connector server meet need ...!!");
-        Assert(false);
-    }
-
     if (usModulePort > 0) {
         m_pModuleListener = new CRTModuleListener();
         OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
@@ -196,10 +185,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         m_pModuleListener->RequestEvent(EV_RE);
     }
 
-    if (usCliConPort == 0) {
-        LE("Connector server meet need ...!!!!");
-        Assert(false);
-    }
     if (usCliConPort > 0) {
         m_pConnTcpListener = new CRTConnTcpListener();
         OS_Error err = m_pConnTcpListener->Initialize(INADDR_ANY, usCliConPort);
@@ -212,10 +197,7 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
     }
-    if (usHttpPort == 0) {
-        LE("Connector server meet need ...!!!!");
-        Assert(false);
-    }
+    
     if (usHttpPort > 0) {
         LI("Start Connector Http service:(%d) ok...\n", usHttpPort);
     }

@@ -40,7 +40,7 @@ int RTConnHttp::ProcessData(const char*pData, int nLen)
 		parsed += nlen;
 		if (err != HPE_OK)
 		{
-            LE("do_http_parse error!!!!!!\n");
+            LE("do_http_parse error, data:%s\n", pMsg);
 			parsed = nLen;
 			break;
 		}
@@ -59,15 +59,15 @@ int RTConnHttp::ProcessData(const char*pData, int nLen)
 
 void RTConnHttp::OnHttpMessage(http_message* httpMsg)
 {
-    //if (httpMsg->type == HTTP_RESPONSE) {
-        OnResponse(httpMsg->body, httpMsg->body_size);
-    //}
+    if (httpMsg->type == HTTP_RESPONSE) {
+        OnResponse(httpMsg->body, (int)httpMsg->body_size);
+    }
 }
 
 const char* RTConnHttp::GenerateRequest(http_method method, const std::string& path, const std::string& data, int &outLen)
 {
     if (path.length()==0) {
-        LE("params error!!!\n");
+        LE("params error!, path.length is 0\n");
         outLen = 0;
         return "";
     }
@@ -97,7 +97,7 @@ const char* RTConnHttp::GenerateRequest(http_method method, const std::string& p
 const char* RTConnHttp::GenerateRequest(http_method method, const std::string& path, const std::string& data, int &outLen) const
 {
     if (path.length()==0) {
-        LE("params error!!!\n");
+        LE("params error!, path.length is 0\n");
         outLen = 0;
         return "";
     }

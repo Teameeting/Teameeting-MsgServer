@@ -25,7 +25,7 @@ RTHttpSvrConn::~RTHttpSvrConn(void)
 //* For RCHttp
 void RTHttpSvrConn::OnReadEvent(const char*data, int size)
 {
-	{//
+	{
         while ((m_nBufOffset + size) > m_nBufLen)
         {
             int newLen = m_nBufLen + kRequestBufferSizeInBytes;
@@ -44,10 +44,9 @@ void RTHttpSvrConn::OnReadEvent(const char*data, int size)
         m_nBufOffset += size;
 	}
 
-	{// 
+	{
 		int parsed = 0;
 		parsed = RTConnHttp::ProcessData(m_pBuffer, m_nBufOffset);
-	
         if (parsed > 0 && m_pBuffer != NULL)
         {
             m_nBufOffset -= parsed;

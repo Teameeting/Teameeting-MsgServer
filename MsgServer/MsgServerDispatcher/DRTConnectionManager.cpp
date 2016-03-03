@@ -65,12 +65,7 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findConnectorInfoById(co
 {
     
     if (userid.length()==0 || connector.length()==0) {
-        if (userid.length()==0) {
-            LE("findConnectorInfoById userid.length is 0\n");
-        }
-        if (connector.length()==0) {
-            LE("findConnectorInfoById connector.length is 0\n");
-        }
+        LE("findConnectorInfoById userid or connector is 0\n");
         return NULL;
     }
     DRTConnectionManager::ModuleInfo* pInfo = NULL;
@@ -86,7 +81,6 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findConnectorInfoById(co
                     continue;
                 }
                 sessionid = *(t_pInfo->sessionIds.begin());
-                LI("find transfer sessionid:%s", sessionid.c_str());
                 break;
             }
         }
@@ -226,7 +220,6 @@ void DRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
 {
     DelModuleInfo(sid);
     DelTypeModuleSession(sid);
-    LI("RTConnectionManager::TransferSessionLostNotify sessionid:%s\n", sid.c_str());
 }
 
 void DRTConnectionManager::AddMemberToOnline(const std::string& uid)

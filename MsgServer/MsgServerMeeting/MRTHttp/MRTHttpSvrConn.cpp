@@ -26,14 +26,11 @@ MRTHttpSvrConn::~MRTHttpSvrConn(void)
 
 void MRTHttpSvrConn::HttpInsertMeetingMsg(const char* sign, const char* meetingid, const char* messagetype, const char* sessionid, const char* strMsg, const char* userid)
 {
-    if (!sign || !meetingid || !messagetype || !sessionid || !strMsg || !userid) {
+    if (!sign || !meetingid || !messagetype || !sessionid || !strMsg || !userid || strlen(strMsg)>1024) {
         LE("HttpInsertMeetingMsg params error\n");
         return;
     }
-    if (strlen(strMsg)>1024) {
-        LE("HttpInsertMeetingMsg Msg Len is over Max Len\n");
-        return;
-    }
+
     int outLen = 0;
     char data[1216] = {0};//1024+128+64:msg len + other value len + attr name len
     sprintf(data, "sign=%s&meetingid=%s&messagetype=%s&sessionid=%s&strMsg=%s&userid=%s", sign, meetingid, messagetype, sessionid, strMsg, userid);
@@ -214,7 +211,6 @@ void MRTHttpSvrConn::MSender::OnResponse(const char* pData, int nLen)
         LE("RTHttpSender::OnResponse pData nLen error\n");
         return;
     }
-    LI("MRTHttpSvrConn::MSender::OnResponse nLen:%d, pData:%s\n", nLen, pData);
     if (GetMethod() == HTTP_GET) {
         std::string data(pData, nLen);
         MRTRoomManager::Instance()->HandleOptRoomWithData(GetCmd(), GetTransmsg(), GetMeetmsg(), data);

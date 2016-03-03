@@ -21,7 +21,7 @@ RTDispatch::~RTDispatch(void)
 int RTDispatch::SendData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params\n", __FUNCTION__);
+        LE("RTDispatch::SendData pData is over length\n");
         return -1;
     }
     {
@@ -32,7 +32,6 @@ int RTDispatch::SendData(const char*pData, int nLen)
             OSMutexLocker locker(&mMutexSend);
             ListAppend(&m_listSend, ptr, nLen);
         }
-
     }
 
 	this->Signal(kWriteEvent);
@@ -42,7 +41,7 @@ int RTDispatch::SendData(const char*pData, int nLen)
 int RTDispatch::PushData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params\n", __FUNCTION__);
+        LE("RTDispatch::PushData pData is over length\n");
         return -1;
     }
     {

@@ -29,7 +29,6 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         LE("DRTMsgDispatch::OnPushEvent params error\n");
         return;
     }
-    LI("DRTMsgDispatch::OnPushEvent was called...\n");
     PUSHMSG pmsg;
     MEETMSG mmsg;
     std::string err("");
@@ -44,6 +43,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         return;
     }
     
+#if 0
     TOPUSHUSER pushUser;
     TOJSONUSER jsonUser;
     jsonUser.GetMsg(pmsg._touser, err);
@@ -55,25 +55,25 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     for (; it!=jsonUser._us.end(); it++) {
         pushUser._us.push_back((*it));
     }
+#endif
     
     TOPUSHMSG pushMsg;
     pushMsg._tags = mmsg._tags;
     pushMsg._roomid = mmsg._room;
     std::string strPushMsg = pushMsg.ToJson();
     
-    printf("DRTMsgDispatch::OnPushEvent msg tags:%d\n", mmsg._tags);
     if (mmsg._tags == SENDTAGS::sendtags_talk) {
         std::string no = mmsg._rname + " - " + mmsg._nname + ": " + mmsg._cont;
-        LI("DRTMsgDispatch::OnPushEvent talk cont:%s\n", mmsg._cont.c_str());
-        DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_enter) {
         std::string no = mmsg._nname + "进入\"" + mmsg._rname + "\"房间正在等你哦~";
-        LI("DRTMsgDispatch::OnPushEvent enter cont:%s\n", mmsg._cont.c_str());
-        DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_leave) {
-        std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
-        LI("DRTMsgDispatch::OnPushEvent leave cont:%s\n", mmsg._cont.c_str());
-        DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
+        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
     }
 }
 

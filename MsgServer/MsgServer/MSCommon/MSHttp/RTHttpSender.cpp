@@ -42,7 +42,7 @@ bool RTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short po
     SetHttpHost(host);
     TCPSocket* socket = this->GetSocket();
     if (socket->Open() != OS_NoErr) {
-        LE("%s socket->Open failed!!!\n", __FUNCTION__);
+        LE("RTHttpSender::ConnHttpHost socket->Open failed!!!\n");
         return false;
     }
     socket->InitNonBlocking(socket->GetSocketFD());
@@ -63,7 +63,7 @@ bool RTHttpSender::ConnHttpHost(const std::string& addr, const unsigned short po
 //* For RCTcp
 void RTHttpSender::OnRecvData(const char*data, int size)
 {
-	{//
+	{
         while ((m_nBufOffset + size) > m_nBufLen)
         {
             int newLen = m_nBufLen + kRequestBufferSizeInBytes;
@@ -82,10 +82,9 @@ void RTHttpSender::OnRecvData(const char*data, int size)
         m_nBufOffset += size;
 	}
 
-	{//
+	{
 		int parsed = 0;
 		parsed = RTConnHttp::ProcessData(m_pBuffer, m_nBufOffset);
-
         if (parsed > 0 && m_pBuffer != NULL)
         {
             m_nBufOffset -= parsed;

@@ -28,7 +28,7 @@ RTHttp::~RTHttp()
 int RTHttp::SendData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params error!\n", __FUNCTION__);
+        LE("RTHttp::SendData pData is over length\n");
         return -1;
     }
     {

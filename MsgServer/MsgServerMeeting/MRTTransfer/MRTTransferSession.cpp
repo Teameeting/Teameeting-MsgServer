@@ -302,7 +302,6 @@ void MRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string&
         Assert(false);
         return;
     }
-    LI("%s was called, uid:%s, content:%s\n", __FUNCTION__, t_msg._touser.c_str(), t_msg._content.c_str());
 }
 
 void MRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
@@ -316,9 +315,7 @@ void MRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string
         Assert(false);
         return;
     }
-    LI("%s was called, uid:%s, content:%s\n", __FUNCTION__, t_msg._touser.c_str(), t_msg._content.c_str());
     OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
-    LE("OnTypeTLogout user %s token:%s lost connection\n", t_msg._touser.c_str(), t_msg._content.c_str());
     return;
 }
 
