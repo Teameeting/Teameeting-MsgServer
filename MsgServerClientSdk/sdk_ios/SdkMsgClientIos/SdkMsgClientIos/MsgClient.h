@@ -21,7 +21,7 @@ public:
     MsgClient(id<MsgClientProtocol> protocol);
     virtual ~MsgClient();
     
-    int MCInit(XMsgCallback& cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server="", int port=0);
+    int MCInit(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server="", int port=0);
     int MCUnin();
     
     int MCSndMsg(const std::string& roomid, const std::string& rname, const std::string& msg);

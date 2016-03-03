@@ -49,20 +49,6 @@
             }
 
                 break;
-            case MCSendTagsSUBSCRIBE:
-            {
-                NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", cont]];
-                [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
-            }
-                
-                break;
-            case MCSendTagsUNSUBSCRIBE:
-            {
-                NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", cont]];
-                [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
-            }
-                
-                break;
             default:
                 break;
         }

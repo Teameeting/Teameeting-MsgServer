@@ -8,18 +8,13 @@
 
 #include <stdio.h>
 #include "RTMessage.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/prettywriter.h"
 
 std::string TRANSFERMSG::ToJson()
 {
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("action", TRANSFERMSG::_action, jDoc.GetAllocator());
     jDoc.AddMember("fmodule", TRANSFERMSG::_fmodule, jDoc.GetAllocator());
@@ -28,7 +23,7 @@ std::string TRANSFERMSG::ToJson()
     jDoc.AddMember("trans_seq_ack", TRANSFERMSG::_trans_seq_ack, jDoc.GetAllocator());
     jDoc.AddMember("valid", TRANSFERMSG::_valid, jDoc.GetAllocator());
     jDoc.AddMember("content", TRANSFERMSG::_content.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -92,18 +87,18 @@ void TRANSFERMSG::GetMsg(const std::string& str, std::string& err)
 
 std::string CONNMSG::ToJson()
 {
-    
+
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("tag", CONNMSG::_tag, jDoc.GetAllocator());
     jDoc.AddMember("msg", CONNMSG::_msg.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("id", CONNMSG::_id.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("msgid", CONNMSG::_msgid.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("moduleid", CONNMSG::_moduleid.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -158,13 +153,13 @@ std::string TRANSMSG::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("flag", TRANSMSG::_flag, jDoc.GetAllocator());
     jDoc.AddMember("touser", TRANSMSG::_touser.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("connector", TRANSMSG::_connector.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("content", TRANSMSG::_content.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -214,13 +209,13 @@ std::string QUEUEMSG::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("flag", QUEUEMSG::_flag, jDoc.GetAllocator());
     jDoc.AddMember("touser", QUEUEMSG::_touser.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("connector", QUEUEMSG::_connector.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("content", QUEUEMSG::_content.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -269,13 +264,13 @@ std::string DISPATCHMSG::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("flag", DISPATCHMSG::_flag, jDoc.GetAllocator());
     jDoc.AddMember("touser", DISPATCHMSG::_touser.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("connector", DISPATCHMSG::_connector.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("content", DISPATCHMSG::_content.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -324,13 +319,13 @@ std::string PUSHMSG::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("flag", PUSHMSG::_flag, jDoc.GetAllocator());
     jDoc.AddMember("touser", PUSHMSG::_touser.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("connector", PUSHMSG::_connector.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("content", PUSHMSG::_content.c_str(), jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -379,16 +374,16 @@ std::string TOJSONUSER::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     rapidjson::Value mems(rapidjson::kArrayType);
     std::list<std::string>::iterator it = TOJSONUSER::_us.begin();
     for (; it!=TOJSONUSER::_us.end(); it++) {
         mems.PushBack((*it).c_str(), jDoc.GetAllocator());
     }
-    
+
     jDoc.SetObject();
     jDoc.AddMember("u", mems, jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;

@@ -61,7 +61,7 @@ JOWW(int, JMClientApp_Init)(JNIEnv* jni, jobject j_app, jstring strUid, jstring 
 	JavaString jstrNname(strNname);
 	JavaString jstrSvrAddr(strSvrAddr);
 
-	return jApp->Init((*jApp), jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), jstrSvrAddr.ToString8().c_str(), nSvrPort);
+	return jApp->Init((jApp), jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), jstrSvrAddr.ToString8().c_str(), nSvrPort);
 }
 
 JOWW(int, JMClientApp_SndMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jstring strMsg)

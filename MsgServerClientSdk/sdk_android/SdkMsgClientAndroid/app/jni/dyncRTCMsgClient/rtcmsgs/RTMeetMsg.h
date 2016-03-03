@@ -123,6 +123,11 @@
 
 #include <iostream>
 #include "RTMsg.h"
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/prettywriter.h"
 
 typedef enum _meetcmd{
     enter=1,
@@ -182,8 +187,8 @@ typedef struct _meetmsg{
     int         _tags;
     int         _type;
     int         _nmem;
-    long long   _ntime;
-    long long   _mseq;
+    int64_t     _ntime;
+    int64_t     _mseq;
     std::string _from;
     std::string _room;
     std::string _to;

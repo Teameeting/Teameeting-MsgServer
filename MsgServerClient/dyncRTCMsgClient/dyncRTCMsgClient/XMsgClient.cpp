@@ -45,6 +45,9 @@ XMsgClient::~XMsgClient()
 
 int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port, bool bAutoConnect)
 {
+    if (!cb) {
+        return -1;
+    }
     if (!m_pMsgProcesser) {
         m_pMsgProcesser = new XMsgProcesser(*cb, *this);
     }

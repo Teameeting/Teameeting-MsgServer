@@ -8,11 +8,6 @@
 
 #include <stdio.h>
 #include "RTMeetMsg.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/prettywriter.h"
 #include "RTMsgCommon.h"
 
 std::string MEETMSG::ToJson()
@@ -20,7 +15,7 @@ std::string MEETMSG::ToJson()
     rapidjson::Document jDoc;
     rapidjson::StringBuffer sb;
     rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-    
+
     jDoc.SetObject();
     jDoc.AddMember("mtype", MEETMSG::_mtype, jDoc.GetAllocator());
     jDoc.AddMember("messagetype", MEETMSG::_messagetype, jDoc.GetAllocator());
@@ -40,7 +35,7 @@ std::string MEETMSG::ToJson()
     jDoc.AddMember("nname", MEETMSG::_nname.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("rname", MEETMSG::_rname.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("code", MEETMSG::_code, jDoc.GetAllocator());
-    
+
     jDoc.Accept(writer);
     std::string s = sb.GetString();
     return s;
@@ -100,8 +95,8 @@ void MEETMSG::GetMsg(const std::string& str, std::string& err)
         return;
     }
     _type = jsonReqDoc["type"].GetInt();
-    
-    
+
+
     if(!(jsonReqDoc.HasMember("nmem") && jsonReqDoc["nmem"].IsInt()))
     {
         err.assign("parse nmem error");

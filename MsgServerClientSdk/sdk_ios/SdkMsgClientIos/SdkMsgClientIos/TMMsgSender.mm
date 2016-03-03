@@ -41,7 +41,7 @@
     if (!msgClient) {
         return -1;
     }
-    return msgClient->MCInit(*msgClient, [uid UTF8String], [token UTF8String], [nname UTF8String], [server UTF8String], port);
+    return msgClient->MCInit(msgClient, [uid UTF8String], [token UTF8String], [nname UTF8String], [server UTF8String], port);
 }
 
 - (int) tMUint

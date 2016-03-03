@@ -43,10 +43,13 @@ XMsgClient::~XMsgClient()
     
 }
 
-int XMsgClient::Init(XMsgCallback& cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port, bool bAutoConnect)
+int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port, bool bAutoConnect)
 {
+    if (!cb) {
+        return -1;
+    }
     if (!m_pMsgProcesser) {
-        m_pMsgProcesser = new XMsgProcesser(cb, *this);
+        m_pMsgProcesser = new XMsgProcesser(*cb, *this);
     }
     if (!m_pMsgProcesser) {
         return -1;
@@ -378,9 +381,9 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
 void XMsgClient::OnLogin(int code, const std::string& userid)
 {
 #ifdef WEBRTC_ANDROID
-    LOGI("XMsgClient::OnLogin code:%d\n", code);
+    //LOGI("XMsgClient::OnLogin code:%d\n", code);
 #else
-    std::cout << "XMsgClient::OnLogin code:" << code << std::endl;
+    //std::cout << "XMsgClient::OnLogin code:" << code << std::endl;
 #endif
     if (code == 0) {
         m_login = true;
@@ -395,9 +398,9 @@ void XMsgClient::OnLogin(int code, const std::string& userid)
 void XMsgClient::OnLogout(int code, const std::string& userid)
 {
 #ifdef WEBRTC_ANDROID
-    LOGI("XMsgClient::OnLogout code:%d\n", code);
+    //LOGI("XMsgClient::OnLogout code:%d\n", code);
 #else
-    std::cout << "XMsgClient::OnLogout code:" << code << std::endl;
+    //std::cout << "XMsgClient::OnLogout code:" << code << std::endl;
 #endif
     m_login = false;
 }

@@ -121,7 +121,7 @@
 - (IBAction)notifyButton:(id)sender {
     NSString *notify = @"notifyButton was called";
     NSLog(@"%@", notify);
-    [msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:MCSendTagsSUBSCRIBE msg:msg];
+    [msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:MCSendTagsTALK msg:msg];
 }
 
 -(void)updateResult:(NSString*)backInfo
