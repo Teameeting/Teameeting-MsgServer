@@ -8,9 +8,6 @@
 #include <sstream>
 #include "RTTransfer.h"
 #include "http_common.h"
-#include "rapidjson/document.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
 #include "RTMsgCommon.h"
 
 RTTransfer::RTTransfer()

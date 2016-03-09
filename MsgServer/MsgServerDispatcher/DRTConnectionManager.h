@@ -133,7 +133,7 @@ public:
     void GetUserConnectorId(const std::string& uid, std::string& connector);
     
     bool ConnectHttpSvrConn();
-    void PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
+    void PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra);
     void PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
     
 private:

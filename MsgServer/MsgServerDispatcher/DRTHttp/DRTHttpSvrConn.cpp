@@ -24,16 +24,16 @@ DRTHttpSvrConn::~DRTHttpSvrConn(void)
 
 //* HTTP_POST
 
-void DRTHttpSvrConn::HttpPushMeetingMsg(const char* sign, const char* meetingid, const char* pushMsg, const char* notification, const char* extra)
+void DRTHttpSvrConn::HttpPushMeetingMsg(const char* meetingid, const char* msgFromId, const char* meetingOnlineMembers, const char* pushMsg, const char* notification, const char* extra)
 {
-    if (!sign || !meetingid || !pushMsg || !notification || !extra || strlen(pushMsg)>1024) {
+    if (!meetingid || !msgFromId || !meetingOnlineMembers || !pushMsg || !notification || !extra || strlen(pushMsg)>1024) {
         LE("HttpPushMeetingMsg params error\n");
         return;
     }
 
     int outLen = 0;
     char data[1216] = {0};//1024+128+64:msg len + other value len + attr name len
-    sprintf(data, "sign=%s&meetingid=%s&pushMsg=%s&notification=%s&extra=%s", sign, meetingid, pushMsg, notification, extra);
+    sprintf(data, "meetingid=%s&msfFromId=%s&meetingOnlineMembers=%s&pushMsg=%s&notification=%s&extra=%s", meetingid, msgFromId, meetingOnlineMembers, pushMsg, notification, extra);
     const char* msg = GenerateRequest(HTTP_POST, "jpush/pushMeetingMsg", data, outLen);
     if (msg && outLen>0) {
         SendData(msg, outLen);

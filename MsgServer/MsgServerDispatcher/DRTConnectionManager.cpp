@@ -304,10 +304,10 @@ bool DRTConnectionManager::ConnectHttpSvrConn()
     return true;
 }
 
-void DRTConnectionManager::PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification, const std::string& extra)
+void DRTConnectionManager::PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra)
 {
-    if (m_pHttpSvrConn && sign.length()>0 && meetingid.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
-        m_pHttpSvrConn->HttpPushMeetingMsg(sign.c_str(), meetingid.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
+    if (m_pHttpSvrConn && meetingid.length()>0 && msgFromId.length()>0 && meetingOnlineMembers.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
+        m_pHttpSvrConn->HttpPushMeetingMsg(meetingid.c_str(), msgFromId.c_str(), meetingOnlineMembers.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
     } else {
         LE("DRTConnectionManager::PushMeetingMsg error\n");
     }

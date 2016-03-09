@@ -17,6 +17,9 @@
 		2D4B57681C60A737006A1BF1 /* RTHttpSvrConn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D4B57601C60A737006A1BF1 /* RTHttpSvrConn.cpp */; };
 		2D4B57691C60A737006A1BF1 /* RTHttpSvrConn.h in Headers */ = {isa = PBXBuildFile; fileRef = 2D4B57611C60A737006A1BF1 /* RTHttpSvrConn.h */; };
 		2D4B576A1C60AB02006A1BF1 /* RTTransfer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D4B57451C60A05E006A1BF1 /* RTTransfer.cpp */; };
+		E615DAFD1C8AE7D400A837B9 /* RTZKClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DAFB1C8AE7D400A837B9 /* RTZKClient.cpp */; };
+		E615DAFE1C8AE7D400A837B9 /* RTZKClient.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E615DAFC1C8AE7D400A837B9 /* RTZKClient.hpp */; };
+		E615DC641C8C323E00A837B9 /* libzkclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E615DC631C8C323700A837B9 /* libzkclient.a */; };
 		E63540311C5B321200FC1EF9 /* RTUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E635402F1C5B321200FC1EF9 /* RTUtils.cpp */; };
 		E63540321C5B321200FC1EF9 /* RTUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E63540301C5B321200FC1EF9 /* RTUtils.hpp */; };
 		E66B59B01C4A506D0053161E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66B59AF1C4A506D0053161E /* main.cpp */; };
@@ -83,6 +86,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E615DC621C8C323700A837B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E615DC5E1C8C323700A837B9 /* zkclient.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E615DB1A1C8C2D3300A837B9;
+			remoteInfo = zkclient;
+		};
 		E6B08CDC1C53271B00D1BB6D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6B08CCE1C53271A00D1BB6D /* hiredis.xcodeproj */;
@@ -154,6 +164,9 @@
 		2D4B575F1C60A737006A1BF1 /* RTHttpSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTHttpSender.h; sourceTree = "<group>"; };
 		2D4B57601C60A737006A1BF1 /* RTHttpSvrConn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTHttpSvrConn.cpp; sourceTree = "<group>"; };
 		2D4B57611C60A737006A1BF1 /* RTHttpSvrConn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTHttpSvrConn.h; sourceTree = "<group>"; };
+		E615DAFB1C8AE7D400A837B9 /* RTZKClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTZKClient.cpp; sourceTree = "<group>"; };
+		E615DAFC1C8AE7D400A837B9 /* RTZKClient.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RTZKClient.hpp; sourceTree = "<group>"; };
+		E615DC5E1C8C323700A837B9 /* zkclient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zkclient.xcodeproj; path = MsgServer/MSCommon/MSThirdParty/zkclient.xcodeproj; sourceTree = "<group>"; };
 		E635402F1C5B321200FC1EF9 /* RTUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTUtils.cpp; sourceTree = "<group>"; };
 		E63540301C5B321200FC1EF9 /* RTUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RTUtils.hpp; sourceTree = "<group>"; };
 		E66B59AD1C4A506D0053161E /* MsgServerConnector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MsgServerConnector; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -275,6 +288,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E615DC641C8C323E00A837B9 /* libzkclient.a in Frameworks */,
 				E6B08CE71C5327DA00D1BB6D /* libhiredis.a in Frameworks */,
 				E6B08CE81C5327DA00D1BB6D /* libhttp.a in Frameworks */,
 				E6B08CE91C5327DA00D1BB6D /* librtcomm.a in Frameworks */,
@@ -300,9 +314,18 @@
 			path = MSHttp;
 			sourceTree = "<group>";
 		};
+		E615DC5F1C8C323700A837B9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E615DC631C8C323700A837B9 /* libzkclient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E66B59961C4A50360053161E = {
 			isa = PBXGroup;
 			children = (
+				E615DC5E1C8C323700A837B9 /* zkclient.xcodeproj */,
 				E6B08CCE1C53271A00D1BB6D /* hiredis.xcodeproj */,
 				E6B08CD11C53271A00D1BB6D /* http.xcodeproj */,
 				E6B08CD41C53271A00D1BB6D /* rtcomm.xcodeproj */,
@@ -421,6 +444,8 @@
 				E66B59DF1C4A55B00053161E /* RTTcp.h */,
 				E635402F1C5B321200FC1EF9 /* RTUtils.cpp */,
 				E63540301C5B321200FC1EF9 /* RTUtils.hpp */,
+				E615DAFB1C8AE7D400A837B9 /* RTZKClient.cpp */,
+				E615DAFC1C8AE7D400A837B9 /* RTZKClient.hpp */,
 			);
 			path = MSBase;
 			sourceTree = "<group>";
@@ -593,6 +618,7 @@
 				E66B5B831C4A55B10053161E /* RTTcp.h in Headers */,
 				E66B5B7F1C4A55B10053161E /* RTHiredis.h in Headers */,
 				2D4B57671C60A737006A1BF1 /* RTHttpSender.h in Headers */,
+				E615DAFE1C8AE7D400A837B9 /* RTZKClient.hpp in Headers */,
 				E66B5CA51C4A55B10053161E /* PlatformHeader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -718,6 +744,10 @@
 					ProductGroup = E6B08CD91C53271A00D1BB6D /* Products */;
 					ProjectRef = E6B08CD81C53271A00D1BB6D /* rtklog.xcodeproj */;
 				},
+				{
+					ProductGroup = E615DC5F1C8C323700A837B9 /* Products */;
+					ProjectRef = E615DC5E1C8C323700A837B9 /* zkclient.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -730,6 +760,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		E615DC631C8C323700A837B9 /* libzkclient.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libzkclient.a;
+			remoteRef = E615DC621C8C323700A837B9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		E6B08CDD1C53271B00D1BB6D /* libhiredis.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -817,6 +854,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6D732501C75B5410076620E /* RTDispatch.cpp in Sources */,
+				E615DAFD1C8AE7D400A837B9 /* RTZKClient.cpp in Sources */,
 				2D4B576A1C60AB02006A1BF1 /* RTTransfer.cpp in Sources */,
 				E6B08D211C57560F00D1BB6D /* RTJSBuffer.cpp in Sources */,
 				2D4B57641C60A737006A1BF1 /* RTHttp.cpp in Sources */,
@@ -936,6 +974,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -961,6 +1002,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -985,6 +1029,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1009,6 +1056,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1033,6 +1083,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1057,6 +1110,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1066,7 +1122,10 @@
 		E66B59D01C4A516B0053161E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/MsgServer/MSCommon",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSBase",
@@ -1079,6 +1138,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1088,7 +1150,10 @@
 		E66B59D11C4A516B0053161E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_CXX0X_EXTENSIONS = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/MsgServer/MSCommon",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSBase",
@@ -1101,6 +1166,9 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/libhttp",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/RTComm",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
+					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

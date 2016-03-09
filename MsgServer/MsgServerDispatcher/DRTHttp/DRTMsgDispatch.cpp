@@ -43,7 +43,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         return;
     }
     
-#if 0
+#if 1
     TOPUSHUSER pushUser;
     TOJSONUSER jsonUser;
     jsonUser.GetMsg(pmsg._touser, err);
@@ -65,11 +65,11 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     if (mmsg._tags == SENDTAGS::sendtags_talk) {
         std::string no = mmsg._rname + " - " + mmsg._nname + ": " + mmsg._cont;
         //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
+        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_enter) {
         std::string no = mmsg._nname + "进入\"" + mmsg._rname + "\"房间正在等你哦~";
         //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
+        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_leave) {
         //std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
         //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);

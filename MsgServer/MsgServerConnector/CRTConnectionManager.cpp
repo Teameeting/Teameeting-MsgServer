@@ -11,10 +11,6 @@
 #include "OSMutex.h"
 #include <algorithm>
 
-std::string     CRTConnectionManager::s_cohttpIp;
-unsigned short  CRTConnectionManager::s_cohttpPort;
-std::string     CRTConnectionManager::s_cohttpHost;
-
 static OSMutex          s_mutex;
 static OSMutex          s_mutexModule;
 static OSMutex          s_mutexConnection;

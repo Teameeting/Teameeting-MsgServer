@@ -176,6 +176,7 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
 void CRTConnectionTcp::OnKeepAlive(const char *pUserid)
 {
     if (m_login) {
+        printf("Userid:%s OnKeepAlive\n", pUserid);
         RTTcp::UpdateTimer();
     }
 }

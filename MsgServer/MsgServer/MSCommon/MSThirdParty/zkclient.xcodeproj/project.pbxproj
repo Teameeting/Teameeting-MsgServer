@@ -1,0 +1,645 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E615DBD91C8C2EFB00A837B9 /* data_watcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB521C8C2EFB00A837B9 /* data_watcher.cpp */; };
+		E615DBDA1C8C2EFB00A837B9 /* ef_crypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB531C8C2EFB00A837B9 /* ef_crypt.cpp */; };
+		E615DBDB1C8C2EFB00A837B9 /* list_watcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB541C8C2EFB00A837B9 /* list_watcher.cpp */; };
+		E615DBDC1C8C2EFB00A837B9 /* log_init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB551C8C2EFB00A837B9 /* log_init.cpp */; };
+		E615DBE01C8C2EFB00A837B9 /* server_status.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB591C8C2EFB00A837B9 /* server_status.cpp */; };
+		E615DBE31C8C2EFB00A837B9 /* zk_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB5C1C8C2EFB00A837B9 /* zk_client.cpp */; };
+		E615DBE41C8C2EFB00A837B9 /* zk_watcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB5D1C8C2EFB00A837B9 /* zk_watcher.cpp */; };
+		E615DBE51C8C2EFB00A837B9 /* ef_aes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB601C8C2EFB00A837B9 /* ef_aes.cpp */; };
+		E615DBE61C8C2EFB00A837B9 /* ef_aes.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB611C8C2EFB00A837B9 /* ef_aes.h */; };
+		E615DBE71C8C2EFB00A837B9 /* ef_atomic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB621C8C2EFB00A837B9 /* ef_atomic.cpp */; };
+		E615DBE81C8C2EFB00A837B9 /* ef_atomic.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB631C8C2EFB00A837B9 /* ef_atomic.h */; };
+		E615DBE91C8C2EFB00A837B9 /* ef_auto_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB641C8C2EFB00A837B9 /* ef_auto_ptr.h */; };
+		E615DBEA1C8C2EFB00A837B9 /* ef_base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB651C8C2EFB00A837B9 /* ef_base64.cpp */; };
+		E615DBEB1C8C2EFB00A837B9 /* ef_base64.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB661C8C2EFB00A837B9 /* ef_base64.h */; };
+		E615DBEC1C8C2EFB00A837B9 /* ef_btype.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB671C8C2EFB00A837B9 /* ef_btype.h */; };
+		E615DBED1C8C2EFB00A837B9 /* ef_deamonize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB681C8C2EFB00A837B9 /* ef_deamonize.cpp */; };
+		E615DBEE1C8C2EFB00A837B9 /* ef_deamonize.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB691C8C2EFB00A837B9 /* ef_deamonize.h */; };
+		E615DBEF1C8C2EFB00A837B9 /* ef_hex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB6A1C8C2EFB00A837B9 /* ef_hex.cpp */; };
+		E615DBF01C8C2EFB00A837B9 /* ef_hex.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB6B1C8C2EFB00A837B9 /* ef_hex.h */; };
+		E615DBF11C8C2EFB00A837B9 /* ef_loader.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB6C1C8C2EFB00A837B9 /* ef_loader.h */; };
+		E615DBF21C8C2EFB00A837B9 /* ef_log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB6D1C8C2EFB00A837B9 /* ef_log.cpp */; };
+		E615DBF31C8C2EFB00A837B9 /* ef_log.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB6E1C8C2EFB00A837B9 /* ef_log.h */; };
+		E615DBF41C8C2EFB00A837B9 /* ef_loop_buf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB6F1C8C2EFB00A837B9 /* ef_loop_buf.cpp */; };
+		E615DBF51C8C2EFB00A837B9 /* ef_loop_buf.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB701C8C2EFB00A837B9 /* ef_loop_buf.h */; };
+		E615DBF61C8C2EFB00A837B9 /* ef_md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB711C8C2EFB00A837B9 /* ef_md5.cpp */; };
+		E615DBF71C8C2EFB00A837B9 /* ef_md5.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB721C8C2EFB00A837B9 /* ef_md5.h */; };
+		E615DBF81C8C2EFB00A837B9 /* ef_no_copy.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB731C8C2EFB00A837B9 /* ef_no_copy.h */; };
+		E615DBF91C8C2EFB00A837B9 /* ef_singleton.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB741C8C2EFB00A837B9 /* ef_singleton.h */; };
+		E615DBFA1C8C2EFB00A837B9 /* ef_statistic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB751C8C2EFB00A837B9 /* ef_statistic.cpp */; };
+		E615DBFB1C8C2EFB00A837B9 /* ef_statistic.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB761C8C2EFB00A837B9 /* ef_statistic.h */; };
+		E615DBFC1C8C2EFB00A837B9 /* ef_thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB771C8C2EFB00A837B9 /* ef_thread.cpp */; };
+		E615DBFD1C8C2EFB00A837B9 /* ef_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB781C8C2EFB00A837B9 /* ef_thread.h */; };
+		E615DBFE1C8C2EFB00A837B9 /* ef_thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB791C8C2EFB00A837B9 /* ef_thread_pool.cpp */; };
+		E615DBFF1C8C2EFB00A837B9 /* ef_thread_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB7A1C8C2EFB00A837B9 /* ef_thread_pool.h */; };
+		E615DC001C8C2EFB00A837B9 /* ef_tsd_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB7B1C8C2EFB00A837B9 /* ef_tsd_ptr.h */; };
+		E615DC011C8C2EFB00A837B9 /* ef_utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB7C1C8C2EFB00A837B9 /* ef_utility.cpp */; };
+		E615DC021C8C2EFB00A837B9 /* ef_utility.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB7D1C8C2EFB00A837B9 /* ef_utility.h */; };
+		E615DC031C8C2EFB00A837B9 /* rijndael-alg-fst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB7E1C8C2EFB00A837B9 /* rijndael-alg-fst.cpp */; };
+		E615DC041C8C2EFB00A837B9 /* rijndael-alg-fst.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB7F1C8C2EFB00A837B9 /* rijndael-alg-fst.h */; };
+		E615DC051C8C2EFB00A837B9 /* rijndael-api-fst.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB801C8C2EFB00A837B9 /* rijndael-api-fst.cpp */; };
+		E615DC061C8C2EFB00A837B9 /* rijndael-api-fst.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB811C8C2EFB00A837B9 /* rijndael-api-fst.h */; };
+		E615DC091C8C2EFB00A837B9 /* ef_acceptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB8E1C8C2EFB00A837B9 /* ef_acceptor.cpp */; };
+		E615DC0A1C8C2EFB00A837B9 /* ef_acceptor.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB8F1C8C2EFB00A837B9 /* ef_acceptor.h */; };
+		E615DC0B1C8C2EFB00A837B9 /* ef_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB901C8C2EFB00A837B9 /* ef_client.cpp */; };
+		E615DC0C1C8C2EFB00A837B9 /* ef_client.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB911C8C2EFB00A837B9 /* ef_client.h */; };
+		E615DC0D1C8C2EFB00A837B9 /* ef_common.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB921C8C2EFB00A837B9 /* ef_common.h */; };
+		E615DC0E1C8C2EFB00A837B9 /* ef_connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB931C8C2EFB00A837B9 /* ef_connection.cpp */; };
+		E615DC0F1C8C2EFB00A837B9 /* ef_connection.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB941C8C2EFB00A837B9 /* ef_connection.h */; };
+		E615DC101C8C2EFB00A837B9 /* ef_connector.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB951C8C2EFB00A837B9 /* ef_connector.h */; };
+		E615DC111C8C2EFB00A837B9 /* ef_device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB961C8C2EFB00A837B9 /* ef_device.cpp */; };
+		E615DC121C8C2EFB00A837B9 /* ef_device.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB971C8C2EFB00A837B9 /* ef_device.h */; };
+		E615DC131C8C2EFB00A837B9 /* ef_event_loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB981C8C2EFB00A837B9 /* ef_event_loop.cpp */; };
+		E615DC141C8C2EFB00A837B9 /* ef_event_loop.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB991C8C2EFB00A837B9 /* ef_event_loop.h */; };
+		E615DC151C8C2EFB00A837B9 /* ef_net_log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB9A1C8C2EFB00A837B9 /* ef_net_log.cpp */; };
+		E615DC161C8C2EFB00A837B9 /* ef_net_log.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB9B1C8C2EFB00A837B9 /* ef_net_log.h */; };
+		E615DC171C8C2EFB00A837B9 /* ef_net_settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB9C1C8C2EFB00A837B9 /* ef_net_settings.cpp */; };
+		E615DC181C8C2EFB00A837B9 /* ef_net_settings.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB9D1C8C2EFB00A837B9 /* ef_net_settings.h */; };
+		E615DC191C8C2EFB00A837B9 /* ef_operator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DB9E1C8C2EFB00A837B9 /* ef_operator.cpp */; };
+		E615DC1A1C8C2EFB00A837B9 /* ef_operator.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DB9F1C8C2EFB00A837B9 /* ef_operator.h */; };
+		E615DC1B1C8C2EFB00A837B9 /* ef_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DBA01C8C2EFB00A837B9 /* ef_server.cpp */; };
+		E615DC1C1C8C2EFB00A837B9 /* ef_server.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DBA11C8C2EFB00A837B9 /* ef_server.h */; };
+		E615DC1D1C8C2EFB00A837B9 /* ef_sock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DBA21C8C2EFB00A837B9 /* ef_sock.cpp */; };
+		E615DC1E1C8C2EFB00A837B9 /* ef_sock.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DBA31C8C2EFB00A837B9 /* ef_sock.h */; };
+		E615DC1F1C8C2EFB00A837B9 /* ef_timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DBA41C8C2EFB00A837B9 /* ef_timer.cpp */; };
+		E615DC201C8C2EFB00A837B9 /* ef_timer.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DBA51C8C2EFB00A837B9 /* ef_timer.h */; };
+		E615DC351C8C2EFB00A837B9 /* libjsoncpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E615DBC01C8C2EFB00A837B9 /* libjsoncpp.a */; };
+		E615DC381C8C2EFB00A837B9 /* libzookeeper_mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E615DBC31C8C2EFB00A837B9 /* libzookeeper_mt.a */; };
+		E615DC4B1C8C2FDD00A837B9 /* data_watcher.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC3E1C8C2FDD00A837B9 /* data_watcher.h */; };
+		E615DC4C1C8C2FDD00A837B9 /* ef_crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC3F1C8C2FDD00A837B9 /* ef_crypt.h */; };
+		E615DC4D1C8C2FDD00A837B9 /* extract_type.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC401C8C2FDD00A837B9 /* extract_type.h */; };
+		E615DC4E1C8C2FDD00A837B9 /* list_watcher.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC411C8C2FDD00A837B9 /* list_watcher.h */; };
+		E615DC4F1C8C2FDD00A837B9 /* log_init.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC421C8C2FDD00A837B9 /* log_init.h */; };
+		E615DC531C8C2FDD00A837B9 /* server_status.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC461C8C2FDD00A837B9 /* server_status.h */; };
+		E615DC561C8C2FDD00A837B9 /* zk_client.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC491C8C2FDD00A837B9 /* zk_client.h */; };
+		E615DC571C8C2FDD00A837B9 /* zk_watcher.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC4A1C8C2FDD00A837B9 /* zk_watcher.h */; };
+		E6769A0E1C90395100C6C323 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = E6769A0C1C90395100C6C323 /* common.h */; };
+		E6769A0F1C90395100C6C323 /* server_config.h in Headers */ = {isa = PBXBuildFile; fileRef = E6769A0D1C90395100C6C323 /* server_config.h */; };
+		E6769A111C90395700C6C323 /* server_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6769A101C90395700C6C323 /* server_config.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E615DB1A1C8C2D3300A837B9 /* libzkclient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libzkclient.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E615DB521C8C2EFB00A837B9 /* data_watcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = data_watcher.cpp; sourceTree = "<group>"; };
+		E615DB531C8C2EFB00A837B9 /* ef_crypt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_crypt.cpp; sourceTree = "<group>"; };
+		E615DB541C8C2EFB00A837B9 /* list_watcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = list_watcher.cpp; sourceTree = "<group>"; };
+		E615DB551C8C2EFB00A837B9 /* log_init.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = log_init.cpp; sourceTree = "<group>"; };
+		E615DB591C8C2EFB00A837B9 /* server_status.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server_status.cpp; sourceTree = "<group>"; };
+		E615DB5C1C8C2EFB00A837B9 /* zk_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zk_client.cpp; sourceTree = "<group>"; };
+		E615DB5D1C8C2EFB00A837B9 /* zk_watcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zk_watcher.cpp; sourceTree = "<group>"; };
+		E615DB601C8C2EFB00A837B9 /* ef_aes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_aes.cpp; sourceTree = "<group>"; };
+		E615DB611C8C2EFB00A837B9 /* ef_aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_aes.h; sourceTree = "<group>"; };
+		E615DB621C8C2EFB00A837B9 /* ef_atomic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_atomic.cpp; sourceTree = "<group>"; };
+		E615DB631C8C2EFB00A837B9 /* ef_atomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_atomic.h; sourceTree = "<group>"; };
+		E615DB641C8C2EFB00A837B9 /* ef_auto_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_auto_ptr.h; sourceTree = "<group>"; };
+		E615DB651C8C2EFB00A837B9 /* ef_base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_base64.cpp; sourceTree = "<group>"; };
+		E615DB661C8C2EFB00A837B9 /* ef_base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_base64.h; sourceTree = "<group>"; };
+		E615DB671C8C2EFB00A837B9 /* ef_btype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_btype.h; sourceTree = "<group>"; };
+		E615DB681C8C2EFB00A837B9 /* ef_deamonize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_deamonize.cpp; sourceTree = "<group>"; };
+		E615DB691C8C2EFB00A837B9 /* ef_deamonize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_deamonize.h; sourceTree = "<group>"; };
+		E615DB6A1C8C2EFB00A837B9 /* ef_hex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_hex.cpp; sourceTree = "<group>"; };
+		E615DB6B1C8C2EFB00A837B9 /* ef_hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_hex.h; sourceTree = "<group>"; };
+		E615DB6C1C8C2EFB00A837B9 /* ef_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_loader.h; sourceTree = "<group>"; };
+		E615DB6D1C8C2EFB00A837B9 /* ef_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_log.cpp; sourceTree = "<group>"; };
+		E615DB6E1C8C2EFB00A837B9 /* ef_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_log.h; sourceTree = "<group>"; };
+		E615DB6F1C8C2EFB00A837B9 /* ef_loop_buf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_loop_buf.cpp; sourceTree = "<group>"; };
+		E615DB701C8C2EFB00A837B9 /* ef_loop_buf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_loop_buf.h; sourceTree = "<group>"; };
+		E615DB711C8C2EFB00A837B9 /* ef_md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_md5.cpp; sourceTree = "<group>"; };
+		E615DB721C8C2EFB00A837B9 /* ef_md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_md5.h; sourceTree = "<group>"; };
+		E615DB731C8C2EFB00A837B9 /* ef_no_copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_no_copy.h; sourceTree = "<group>"; };
+		E615DB741C8C2EFB00A837B9 /* ef_singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_singleton.h; sourceTree = "<group>"; };
+		E615DB751C8C2EFB00A837B9 /* ef_statistic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_statistic.cpp; sourceTree = "<group>"; };
+		E615DB761C8C2EFB00A837B9 /* ef_statistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_statistic.h; sourceTree = "<group>"; };
+		E615DB771C8C2EFB00A837B9 /* ef_thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_thread.cpp; sourceTree = "<group>"; };
+		E615DB781C8C2EFB00A837B9 /* ef_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_thread.h; sourceTree = "<group>"; };
+		E615DB791C8C2EFB00A837B9 /* ef_thread_pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_thread_pool.cpp; sourceTree = "<group>"; };
+		E615DB7A1C8C2EFB00A837B9 /* ef_thread_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_thread_pool.h; sourceTree = "<group>"; };
+		E615DB7B1C8C2EFB00A837B9 /* ef_tsd_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_tsd_ptr.h; sourceTree = "<group>"; };
+		E615DB7C1C8C2EFB00A837B9 /* ef_utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_utility.cpp; sourceTree = "<group>"; };
+		E615DB7D1C8C2EFB00A837B9 /* ef_utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_utility.h; sourceTree = "<group>"; };
+		E615DB7E1C8C2EFB00A837B9 /* rijndael-alg-fst.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "rijndael-alg-fst.cpp"; sourceTree = "<group>"; };
+		E615DB7F1C8C2EFB00A837B9 /* rijndael-alg-fst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rijndael-alg-fst.h"; sourceTree = "<group>"; };
+		E615DB801C8C2EFB00A837B9 /* rijndael-api-fst.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "rijndael-api-fst.cpp"; sourceTree = "<group>"; };
+		E615DB811C8C2EFB00A837B9 /* rijndael-api-fst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rijndael-api-fst.h"; sourceTree = "<group>"; };
+		E615DB8E1C8C2EFB00A837B9 /* ef_acceptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_acceptor.cpp; sourceTree = "<group>"; };
+		E615DB8F1C8C2EFB00A837B9 /* ef_acceptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_acceptor.h; sourceTree = "<group>"; };
+		E615DB901C8C2EFB00A837B9 /* ef_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_client.cpp; sourceTree = "<group>"; };
+		E615DB911C8C2EFB00A837B9 /* ef_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_client.h; sourceTree = "<group>"; };
+		E615DB921C8C2EFB00A837B9 /* ef_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_common.h; sourceTree = "<group>"; };
+		E615DB931C8C2EFB00A837B9 /* ef_connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_connection.cpp; sourceTree = "<group>"; };
+		E615DB941C8C2EFB00A837B9 /* ef_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_connection.h; sourceTree = "<group>"; };
+		E615DB951C8C2EFB00A837B9 /* ef_connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_connector.h; sourceTree = "<group>"; };
+		E615DB961C8C2EFB00A837B9 /* ef_device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_device.cpp; sourceTree = "<group>"; };
+		E615DB971C8C2EFB00A837B9 /* ef_device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_device.h; sourceTree = "<group>"; };
+		E615DB981C8C2EFB00A837B9 /* ef_event_loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_event_loop.cpp; sourceTree = "<group>"; };
+		E615DB991C8C2EFB00A837B9 /* ef_event_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_event_loop.h; sourceTree = "<group>"; };
+		E615DB9A1C8C2EFB00A837B9 /* ef_net_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_net_log.cpp; sourceTree = "<group>"; };
+		E615DB9B1C8C2EFB00A837B9 /* ef_net_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_net_log.h; sourceTree = "<group>"; };
+		E615DB9C1C8C2EFB00A837B9 /* ef_net_settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_net_settings.cpp; sourceTree = "<group>"; };
+		E615DB9D1C8C2EFB00A837B9 /* ef_net_settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_net_settings.h; sourceTree = "<group>"; };
+		E615DB9E1C8C2EFB00A837B9 /* ef_operator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_operator.cpp; sourceTree = "<group>"; };
+		E615DB9F1C8C2EFB00A837B9 /* ef_operator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_operator.h; sourceTree = "<group>"; };
+		E615DBA01C8C2EFB00A837B9 /* ef_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_server.cpp; sourceTree = "<group>"; };
+		E615DBA11C8C2EFB00A837B9 /* ef_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_server.h; sourceTree = "<group>"; };
+		E615DBA21C8C2EFB00A837B9 /* ef_sock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_sock.cpp; sourceTree = "<group>"; };
+		E615DBA31C8C2EFB00A837B9 /* ef_sock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_sock.h; sourceTree = "<group>"; };
+		E615DBA41C8C2EFB00A837B9 /* ef_timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_timer.cpp; sourceTree = "<group>"; };
+		E615DBA51C8C2EFB00A837B9 /* ef_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_timer.h; sourceTree = "<group>"; };
+		E615DBBE1C8C2EFB00A837B9 /* libjsoncpp.0.10.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjsoncpp.0.10.5.dylib; sourceTree = "<group>"; };
+		E615DBBF1C8C2EFB00A837B9 /* libjsoncpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjsoncpp.0.dylib; sourceTree = "<group>"; };
+		E615DBC01C8C2EFB00A837B9 /* libjsoncpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjsoncpp.a; sourceTree = "<group>"; };
+		E615DBC11C8C2EFB00A837B9 /* libjsoncpp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjsoncpp.dylib; sourceTree = "<group>"; };
+		E615DBC21C8C2EFB00A837B9 /* libzookeeper_mt.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_mt.2.dylib; sourceTree = "<group>"; };
+		E615DBC31C8C2EFB00A837B9 /* libzookeeper_mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzookeeper_mt.a; sourceTree = "<group>"; };
+		E615DBC41C8C2EFB00A837B9 /* libzookeeper_mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_mt.dylib; sourceTree = "<group>"; };
+		E615DBC51C8C2EFB00A837B9 /* libzookeeper_mt.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libzookeeper_mt.la; sourceTree = "<group>"; };
+		E615DBC61C8C2EFB00A837B9 /* libzookeeper_st.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_st.2.dylib; sourceTree = "<group>"; };
+		E615DBC71C8C2EFB00A837B9 /* libzookeeper_st.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzookeeper_st.a; sourceTree = "<group>"; };
+		E615DBC81C8C2EFB00A837B9 /* libzookeeper_st.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_st.dylib; sourceTree = "<group>"; };
+		E615DBC91C8C2EFB00A837B9 /* libzookeeper_st.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libzookeeper_st.la; sourceTree = "<group>"; };
+		E615DC3E1C8C2FDD00A837B9 /* data_watcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data_watcher.h; sourceTree = "<group>"; };
+		E615DC3F1C8C2FDD00A837B9 /* ef_crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_crypt.h; sourceTree = "<group>"; };
+		E615DC401C8C2FDD00A837B9 /* extract_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = extract_type.h; sourceTree = "<group>"; };
+		E615DC411C8C2FDD00A837B9 /* list_watcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list_watcher.h; sourceTree = "<group>"; };
+		E615DC421C8C2FDD00A837B9 /* log_init.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = log_init.h; sourceTree = "<group>"; };
+		E615DC461C8C2FDD00A837B9 /* server_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_status.h; sourceTree = "<group>"; };
+		E615DC491C8C2FDD00A837B9 /* zk_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zk_client.h; sourceTree = "<group>"; };
+		E615DC4A1C8C2FDD00A837B9 /* zk_watcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zk_watcher.h; sourceTree = "<group>"; };
+		E6769A0C1C90395100C6C323 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E6769A0D1C90395100C6C323 /* server_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_config.h; sourceTree = "<group>"; };
+		E6769A101C90395700C6C323 /* server_config.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server_config.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E615DB171C8C2D3300A837B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E615DC381C8C2EFB00A837B9 /* libzookeeper_mt.a in Frameworks */,
+				E615DC351C8C2EFB00A837B9 /* libjsoncpp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E615DB111C8C2D3300A837B9 = {
+			isa = PBXGroup;
+			children = (
+				E615DB3A1C8C2EFB00A837B9 /* zkclient */,
+				E615DB1B1C8C2D3300A837B9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E615DB1B1C8C2D3300A837B9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E615DB1A1C8C2D3300A837B9 /* libzkclient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E615DB3A1C8C2EFB00A837B9 /* zkclient */ = {
+			isa = PBXGroup;
+			children = (
+				E615DB3B1C8C2EFB00A837B9 /* common */,
+				E615DB5E1C8C2EFB00A837B9 /* efnfw */,
+				E615DBBD1C8C2EFB00A837B9 /* lib_mac */,
+			);
+			path = zkclient;
+			sourceTree = "<group>";
+		};
+		E615DB3B1C8C2EFB00A837B9 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				E615DC3D1C8C2FDD00A837B9 /* include */,
+				E615DB511C8C2EFB00A837B9 /* src */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		E615DB511C8C2EFB00A837B9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E6769A101C90395700C6C323 /* server_config.cpp */,
+				E615DB521C8C2EFB00A837B9 /* data_watcher.cpp */,
+				E615DB531C8C2EFB00A837B9 /* ef_crypt.cpp */,
+				E615DB541C8C2EFB00A837B9 /* list_watcher.cpp */,
+				E615DB551C8C2EFB00A837B9 /* log_init.cpp */,
+				E615DB591C8C2EFB00A837B9 /* server_status.cpp */,
+				E615DB5C1C8C2EFB00A837B9 /* zk_client.cpp */,
+				E615DB5D1C8C2EFB00A837B9 /* zk_watcher.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		E615DB5E1C8C2EFB00A837B9 /* efnfw */ = {
+			isa = PBXGroup;
+			children = (
+				E615DB5F1C8C2EFB00A837B9 /* base */,
+				E615DB8D1C8C2EFB00A837B9 /* net */,
+			);
+			path = efnfw;
+			sourceTree = "<group>";
+		};
+		E615DB5F1C8C2EFB00A837B9 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				E615DB601C8C2EFB00A837B9 /* ef_aes.cpp */,
+				E615DB611C8C2EFB00A837B9 /* ef_aes.h */,
+				E615DB621C8C2EFB00A837B9 /* ef_atomic.cpp */,
+				E615DB631C8C2EFB00A837B9 /* ef_atomic.h */,
+				E615DB641C8C2EFB00A837B9 /* ef_auto_ptr.h */,
+				E615DB651C8C2EFB00A837B9 /* ef_base64.cpp */,
+				E615DB661C8C2EFB00A837B9 /* ef_base64.h */,
+				E615DB671C8C2EFB00A837B9 /* ef_btype.h */,
+				E615DB681C8C2EFB00A837B9 /* ef_deamonize.cpp */,
+				E615DB691C8C2EFB00A837B9 /* ef_deamonize.h */,
+				E615DB6A1C8C2EFB00A837B9 /* ef_hex.cpp */,
+				E615DB6B1C8C2EFB00A837B9 /* ef_hex.h */,
+				E615DB6C1C8C2EFB00A837B9 /* ef_loader.h */,
+				E615DB6D1C8C2EFB00A837B9 /* ef_log.cpp */,
+				E615DB6E1C8C2EFB00A837B9 /* ef_log.h */,
+				E615DB6F1C8C2EFB00A837B9 /* ef_loop_buf.cpp */,
+				E615DB701C8C2EFB00A837B9 /* ef_loop_buf.h */,
+				E615DB711C8C2EFB00A837B9 /* ef_md5.cpp */,
+				E615DB721C8C2EFB00A837B9 /* ef_md5.h */,
+				E615DB731C8C2EFB00A837B9 /* ef_no_copy.h */,
+				E615DB741C8C2EFB00A837B9 /* ef_singleton.h */,
+				E615DB751C8C2EFB00A837B9 /* ef_statistic.cpp */,
+				E615DB761C8C2EFB00A837B9 /* ef_statistic.h */,
+				E615DB771C8C2EFB00A837B9 /* ef_thread.cpp */,
+				E615DB781C8C2EFB00A837B9 /* ef_thread.h */,
+				E615DB791C8C2EFB00A837B9 /* ef_thread_pool.cpp */,
+				E615DB7A1C8C2EFB00A837B9 /* ef_thread_pool.h */,
+				E615DB7B1C8C2EFB00A837B9 /* ef_tsd_ptr.h */,
+				E615DB7C1C8C2EFB00A837B9 /* ef_utility.cpp */,
+				E615DB7D1C8C2EFB00A837B9 /* ef_utility.h */,
+				E615DB7E1C8C2EFB00A837B9 /* rijndael-alg-fst.cpp */,
+				E615DB7F1C8C2EFB00A837B9 /* rijndael-alg-fst.h */,
+				E615DB801C8C2EFB00A837B9 /* rijndael-api-fst.cpp */,
+				E615DB811C8C2EFB00A837B9 /* rijndael-api-fst.h */,
+			);
+			path = base;
+			sourceTree = "<group>";
+		};
+		E615DB8D1C8C2EFB00A837B9 /* net */ = {
+			isa = PBXGroup;
+			children = (
+				E615DB8E1C8C2EFB00A837B9 /* ef_acceptor.cpp */,
+				E615DB8F1C8C2EFB00A837B9 /* ef_acceptor.h */,
+				E615DB901C8C2EFB00A837B9 /* ef_client.cpp */,
+				E615DB911C8C2EFB00A837B9 /* ef_client.h */,
+				E615DB921C8C2EFB00A837B9 /* ef_common.h */,
+				E615DB931C8C2EFB00A837B9 /* ef_connection.cpp */,
+				E615DB941C8C2EFB00A837B9 /* ef_connection.h */,
+				E615DB951C8C2EFB00A837B9 /* ef_connector.h */,
+				E615DB961C8C2EFB00A837B9 /* ef_device.cpp */,
+				E615DB971C8C2EFB00A837B9 /* ef_device.h */,
+				E615DB981C8C2EFB00A837B9 /* ef_event_loop.cpp */,
+				E615DB991C8C2EFB00A837B9 /* ef_event_loop.h */,
+				E615DB9A1C8C2EFB00A837B9 /* ef_net_log.cpp */,
+				E615DB9B1C8C2EFB00A837B9 /* ef_net_log.h */,
+				E615DB9C1C8C2EFB00A837B9 /* ef_net_settings.cpp */,
+				E615DB9D1C8C2EFB00A837B9 /* ef_net_settings.h */,
+				E615DB9E1C8C2EFB00A837B9 /* ef_operator.cpp */,
+				E615DB9F1C8C2EFB00A837B9 /* ef_operator.h */,
+				E615DBA01C8C2EFB00A837B9 /* ef_server.cpp */,
+				E615DBA11C8C2EFB00A837B9 /* ef_server.h */,
+				E615DBA21C8C2EFB00A837B9 /* ef_sock.cpp */,
+				E615DBA31C8C2EFB00A837B9 /* ef_sock.h */,
+				E615DBA41C8C2EFB00A837B9 /* ef_timer.cpp */,
+				E615DBA51C8C2EFB00A837B9 /* ef_timer.h */,
+			);
+			path = net;
+			sourceTree = "<group>";
+		};
+		E615DBBD1C8C2EFB00A837B9 /* lib_mac */ = {
+			isa = PBXGroup;
+			children = (
+				E615DBBE1C8C2EFB00A837B9 /* libjsoncpp.0.10.5.dylib */,
+				E615DBBF1C8C2EFB00A837B9 /* libjsoncpp.0.dylib */,
+				E615DBC01C8C2EFB00A837B9 /* libjsoncpp.a */,
+				E615DBC11C8C2EFB00A837B9 /* libjsoncpp.dylib */,
+				E615DBC21C8C2EFB00A837B9 /* libzookeeper_mt.2.dylib */,
+				E615DBC31C8C2EFB00A837B9 /* libzookeeper_mt.a */,
+				E615DBC41C8C2EFB00A837B9 /* libzookeeper_mt.dylib */,
+				E615DBC51C8C2EFB00A837B9 /* libzookeeper_mt.la */,
+				E615DBC61C8C2EFB00A837B9 /* libzookeeper_st.2.dylib */,
+				E615DBC71C8C2EFB00A837B9 /* libzookeeper_st.a */,
+				E615DBC81C8C2EFB00A837B9 /* libzookeeper_st.dylib */,
+				E615DBC91C8C2EFB00A837B9 /* libzookeeper_st.la */,
+			);
+			path = lib_mac;
+			sourceTree = "<group>";
+		};
+		E615DC3D1C8C2FDD00A837B9 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E6769A0C1C90395100C6C323 /* common.h */,
+				E6769A0D1C90395100C6C323 /* server_config.h */,
+				E615DC3E1C8C2FDD00A837B9 /* data_watcher.h */,
+				E615DC3F1C8C2FDD00A837B9 /* ef_crypt.h */,
+				E615DC401C8C2FDD00A837B9 /* extract_type.h */,
+				E615DC411C8C2FDD00A837B9 /* list_watcher.h */,
+				E615DC421C8C2FDD00A837B9 /* log_init.h */,
+				E615DC461C8C2FDD00A837B9 /* server_status.h */,
+				E615DC491C8C2FDD00A837B9 /* zk_client.h */,
+				E615DC4A1C8C2FDD00A837B9 /* zk_watcher.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E615DB181C8C2D3300A837B9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E615DC0D1C8C2EFB00A837B9 /* ef_common.h in Headers */,
+				E615DBF01C8C2EFB00A837B9 /* ef_hex.h in Headers */,
+				E6769A0F1C90395100C6C323 /* server_config.h in Headers */,
+				E615DC531C8C2FDD00A837B9 /* server_status.h in Headers */,
+				E615DC4B1C8C2FDD00A837B9 /* data_watcher.h in Headers */,
+				E615DBEB1C8C2EFB00A837B9 /* ef_base64.h in Headers */,
+				E615DC4F1C8C2FDD00A837B9 /* log_init.h in Headers */,
+				E615DC161C8C2EFB00A837B9 /* ef_net_log.h in Headers */,
+				E615DBF81C8C2EFB00A837B9 /* ef_no_copy.h in Headers */,
+				E615DBF11C8C2EFB00A837B9 /* ef_loader.h in Headers */,
+				E615DC141C8C2EFB00A837B9 /* ef_event_loop.h in Headers */,
+				E615DC0C1C8C2EFB00A837B9 /* ef_client.h in Headers */,
+				E615DBE81C8C2EFB00A837B9 /* ef_atomic.h in Headers */,
+				E615DBFF1C8C2EFB00A837B9 /* ef_thread_pool.h in Headers */,
+				E615DC041C8C2EFB00A837B9 /* rijndael-alg-fst.h in Headers */,
+				E615DBF91C8C2EFB00A837B9 /* ef_singleton.h in Headers */,
+				E615DBF51C8C2EFB00A837B9 /* ef_loop_buf.h in Headers */,
+				E615DC121C8C2EFB00A837B9 /* ef_device.h in Headers */,
+				E615DC571C8C2FDD00A837B9 /* zk_watcher.h in Headers */,
+				E615DC4C1C8C2FDD00A837B9 /* ef_crypt.h in Headers */,
+				E6769A0E1C90395100C6C323 /* common.h in Headers */,
+				E615DC0A1C8C2EFB00A837B9 /* ef_acceptor.h in Headers */,
+				E615DC1E1C8C2EFB00A837B9 /* ef_sock.h in Headers */,
+				E615DC0F1C8C2EFB00A837B9 /* ef_connection.h in Headers */,
+				E615DBFD1C8C2EFB00A837B9 /* ef_thread.h in Headers */,
+				E615DC4D1C8C2FDD00A837B9 /* extract_type.h in Headers */,
+				E615DC1A1C8C2EFB00A837B9 /* ef_operator.h in Headers */,
+				E615DC001C8C2EFB00A837B9 /* ef_tsd_ptr.h in Headers */,
+				E615DC4E1C8C2FDD00A837B9 /* list_watcher.h in Headers */,
+				E615DBF71C8C2EFB00A837B9 /* ef_md5.h in Headers */,
+				E615DC201C8C2EFB00A837B9 /* ef_timer.h in Headers */,
+				E615DC1C1C8C2EFB00A837B9 /* ef_server.h in Headers */,
+				E615DBE91C8C2EFB00A837B9 /* ef_auto_ptr.h in Headers */,
+				E615DC181C8C2EFB00A837B9 /* ef_net_settings.h in Headers */,
+				E615DC101C8C2EFB00A837B9 /* ef_connector.h in Headers */,
+				E615DBEE1C8C2EFB00A837B9 /* ef_deamonize.h in Headers */,
+				E615DC561C8C2FDD00A837B9 /* zk_client.h in Headers */,
+				E615DC021C8C2EFB00A837B9 /* ef_utility.h in Headers */,
+				E615DBFB1C8C2EFB00A837B9 /* ef_statistic.h in Headers */,
+				E615DBE61C8C2EFB00A837B9 /* ef_aes.h in Headers */,
+				E615DBEC1C8C2EFB00A837B9 /* ef_btype.h in Headers */,
+				E615DBF31C8C2EFB00A837B9 /* ef_log.h in Headers */,
+				E615DC061C8C2EFB00A837B9 /* rijndael-api-fst.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E615DB191C8C2D3300A837B9 /* zkclient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E615DB1E1C8C2D3300A837B9 /* Build configuration list for PBXNativeTarget "zkclient" */;
+			buildPhases = (
+				E615DB161C8C2D3300A837B9 /* Sources */,
+				E615DB171C8C2D3300A837B9 /* Frameworks */,
+				E615DB181C8C2D3300A837B9 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = zkclient;
+			productName = libzkclient;
+			productReference = E615DB1A1C8C2D3300A837B9 /* libzkclient.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E615DB121C8C2D3300A837B9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = DYNC;
+				TargetAttributes = {
+					E615DB191C8C2D3300A837B9 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = E615DB151C8C2D3300A837B9 /* Build configuration list for PBXProject "zkclient" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E615DB111C8C2D3300A837B9;
+			productRefGroup = E615DB1B1C8C2D3300A837B9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E615DB191C8C2D3300A837B9 /* zkclient */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E615DB161C8C2D3300A837B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E615DC051C8C2EFB00A837B9 /* rijndael-api-fst.cpp in Sources */,
+				E615DC1B1C8C2EFB00A837B9 /* ef_server.cpp in Sources */,
+				E615DBE71C8C2EFB00A837B9 /* ef_atomic.cpp in Sources */,
+				E615DBED1C8C2EFB00A837B9 /* ef_deamonize.cpp in Sources */,
+				E615DC1D1C8C2EFB00A837B9 /* ef_sock.cpp in Sources */,
+				E615DC131C8C2EFB00A837B9 /* ef_event_loop.cpp in Sources */,
+				E615DC0E1C8C2EFB00A837B9 /* ef_connection.cpp in Sources */,
+				E615DBEF1C8C2EFB00A837B9 /* ef_hex.cpp in Sources */,
+				E615DBDA1C8C2EFB00A837B9 /* ef_crypt.cpp in Sources */,
+				E615DBFC1C8C2EFB00A837B9 /* ef_thread.cpp in Sources */,
+				E615DC031C8C2EFB00A837B9 /* rijndael-alg-fst.cpp in Sources */,
+				E615DBF41C8C2EFB00A837B9 /* ef_loop_buf.cpp in Sources */,
+				E615DC191C8C2EFB00A837B9 /* ef_operator.cpp in Sources */,
+				E615DC011C8C2EFB00A837B9 /* ef_utility.cpp in Sources */,
+				E615DC171C8C2EFB00A837B9 /* ef_net_settings.cpp in Sources */,
+				E615DBFE1C8C2EFB00A837B9 /* ef_thread_pool.cpp in Sources */,
+				E615DBF21C8C2EFB00A837B9 /* ef_log.cpp in Sources */,
+				E615DBD91C8C2EFB00A837B9 /* data_watcher.cpp in Sources */,
+				E615DBDB1C8C2EFB00A837B9 /* list_watcher.cpp in Sources */,
+				E615DBE41C8C2EFB00A837B9 /* zk_watcher.cpp in Sources */,
+				E615DC0B1C8C2EFB00A837B9 /* ef_client.cpp in Sources */,
+				E615DC151C8C2EFB00A837B9 /* ef_net_log.cpp in Sources */,
+				E615DBFA1C8C2EFB00A837B9 /* ef_statistic.cpp in Sources */,
+				E615DC091C8C2EFB00A837B9 /* ef_acceptor.cpp in Sources */,
+				E615DC111C8C2EFB00A837B9 /* ef_device.cpp in Sources */,
+				E615DBE51C8C2EFB00A837B9 /* ef_aes.cpp in Sources */,
+				E615DBE31C8C2EFB00A837B9 /* zk_client.cpp in Sources */,
+				E615DC1F1C8C2EFB00A837B9 /* ef_timer.cpp in Sources */,
+				E615DBEA1C8C2EFB00A837B9 /* ef_base64.cpp in Sources */,
+				E6769A111C90395700C6C323 /* server_config.cpp in Sources */,
+				E615DBDC1C8C2EFB00A837B9 /* log_init.cpp in Sources */,
+				E615DBE01C8C2EFB00A837B9 /* server_status.cpp in Sources */,
+				E615DBF61C8C2EFB00A837B9 /* ef_md5.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E615DB1C1C8C2D3300A837B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		E615DB1D1C8C2D3300A837B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E615DB1F1C8C2D3300A837B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/zkclient/common/include",
+					"$(PROJECT_DIR)/zkclient/efnfw",
+					"$(PROJECT_DIR)/zkclient/include_mac",
+				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/zkclient/lib_mac";
+				PRODUCT_NAME = zkclient;
+			};
+			name = Debug;
+		};
+		E615DB201C8C2D3300A837B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/zkclient/common/include",
+					"$(PROJECT_DIR)/zkclient/efnfw",
+					"$(PROJECT_DIR)/zkclient/include_mac",
+				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/zkclient/lib_mac";
+				PRODUCT_NAME = zkclient;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E615DB151C8C2D3300A837B9 /* Build configuration list for PBXProject "zkclient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E615DB1C1C8C2D3300A837B9 /* Debug */,
+				E615DB1D1C8C2D3300A837B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E615DB1E1C8C2D3300A837B9 /* Build configuration list for PBXNativeTarget "zkclient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E615DB1F1C8C2D3300A837B9 /* Debug */,
+				E615DB201C8C2D3300A837B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E615DB121C8C2D3300A837B9 /* Project object */;
+}

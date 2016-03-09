@@ -18,6 +18,7 @@
 #include "CRTDispatchConnection.h"
 #include "RTUtils.hpp"
 
+
 static bool		g_inited = false;
 static char*	g_pVersion = (char*)"0.01.20150810";
 static CRTConnector*	g_pConnector = NULL;
@@ -131,22 +132,14 @@ CRTConnector::~CRTConnector(void)
 
 int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
                   , const char*pModuleIp, unsigned short usModulePort
-                  , const char*pCliConIp, unsigned short usCliConPort
-                  , const char*pHttpIp, unsigned short usHttpPort)
+                  , const char*pCliConIp, unsigned short usCliConPort)
 {
 	Assert(g_inited);
 	Assert(pWebConIp != NULL && strlen(pWebConIp)>0);
 	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
     Assert(pCliConIp != NULL && strlen(pCliConIp)>0);
-    Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
 
-    char hh[24] = {0};
-    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
-
-    CRTConnectionManager::s_cohttpHost = hh;
-    CRTConnectionManager::s_cohttpIp = pHttpIp;
-    CRTConnectionManager::s_cohttpPort = usHttpPort;
-    
+    std::cout << "usWebConPort:" << usWebConPort << ", usModulePort:" << usModulePort << ", usCliConPort:" << usCliConPort << std::endl;
     std::string ssid;
 	CRTConnection::gStrAddr = pWebConIp;
     CRTConnection::gUsPort = usWebConPort;
@@ -196,10 +189,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         }
         LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
-    }
-    
-    if (usHttpPort > 0) {
-        LI("Start Connector Http service:(%d) ok...\n", usHttpPort);
     }
     
 	return 0;

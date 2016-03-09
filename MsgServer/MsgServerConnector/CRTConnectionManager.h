@@ -117,9 +117,6 @@ public:
         static CRTConnectionManager s_manager;
         return &s_manager;
     }
-    static std::string      s_cohttpIp;
-    static unsigned short   s_cohttpPort;
-    static std::string      s_cohttpHost;
 
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
         m_connectorPort = port;

@@ -22,7 +22,7 @@ public:
         RTConnHttp::SetHttpHost(host);
     }
     //* HTTP_POST
-    void HttpPushMeetingMsg(const char* sign, const char* meetingid, const char* pushMsg, const char* notification, const char* extra);
+    void HttpPushMeetingMsg(const char* meetingid, const char* msgFromId, const char* meetingOnlineMembers, const char* pushMsg, const char* notification, const char* extra);
     void HttpPushCommonMsg(const char* sign, const char* targetid, const char* pushMsg, const char* notification, const char* extra);
     
     
