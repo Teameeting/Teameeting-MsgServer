@@ -958,6 +958,7 @@
 		E66B59B21C4A506D0053161E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/MsgServerConnector",
 					"$(PROJECT_DIR)/MsgServerConnector/CRTConnection",
@@ -976,9 +977,17 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-L/usr/locla/lib",
+					"-ljsoncpp",
+					"-L/usr/local/lib",
+					"-lzookeeper_mt",
+				);
+				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -986,6 +995,7 @@
 		E66B59B31C4A506D0053161E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/MsgServerConnector",
 					"$(PROJECT_DIR)/MsgServerConnector/CRTConnection",
@@ -1004,9 +1014,17 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-L/usr/locla/lib",
+					"-ljsoncpp",
+					"-L/usr/local/lib",
+					"-lzookeeper_mt",
+				);
+				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1031,9 +1049,15 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-L/usr/local/lib",
+					"-ljsoncpp",
+					"-L/usr/local/lib",
+					"-lzookeeper_mt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1058,9 +1082,15 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-L/usr/local/lib",
+					"-ljsoncpp",
+					"-L/usr/local/lib",
+					"-lzookeeper_mt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1085,9 +1115,15 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-L/usr/local/lib",
+					"-ljsoncpp",
+					"-L/usr/local/lib",
+					"-lzookeeper_mt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1112,9 +1148,15 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"-L/usr/local/lib",
+					"-ljsoncpp",
+					"-L/usr/local/lib",
+					"-lzookeeper_mt",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1140,7 +1182,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1168,7 +1210,7 @@
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/rtklog",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/common/include",
 					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/efnfw",
-					"$(PROJECT_DIR)/MsgServer/MSCommon/MSThirdParty/zkclient/include_mac",
+					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

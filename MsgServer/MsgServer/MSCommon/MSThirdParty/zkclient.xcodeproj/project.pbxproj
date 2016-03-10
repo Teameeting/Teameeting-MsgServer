@@ -72,8 +72,6 @@
 		E615DC1E1C8C2EFB00A837B9 /* ef_sock.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DBA31C8C2EFB00A837B9 /* ef_sock.h */; };
 		E615DC1F1C8C2EFB00A837B9 /* ef_timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E615DBA41C8C2EFB00A837B9 /* ef_timer.cpp */; };
 		E615DC201C8C2EFB00A837B9 /* ef_timer.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DBA51C8C2EFB00A837B9 /* ef_timer.h */; };
-		E615DC351C8C2EFB00A837B9 /* libjsoncpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E615DBC01C8C2EFB00A837B9 /* libjsoncpp.a */; };
-		E615DC381C8C2EFB00A837B9 /* libzookeeper_mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E615DBC31C8C2EFB00A837B9 /* libzookeeper_mt.a */; };
 		E615DC4B1C8C2FDD00A837B9 /* data_watcher.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC3E1C8C2FDD00A837B9 /* data_watcher.h */; };
 		E615DC4C1C8C2FDD00A837B9 /* ef_crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC3F1C8C2FDD00A837B9 /* ef_crypt.h */; };
 		E615DC4D1C8C2FDD00A837B9 /* extract_type.h in Headers */ = {isa = PBXBuildFile; fileRef = E615DC401C8C2FDD00A837B9 /* extract_type.h */; };
@@ -154,18 +152,6 @@
 		E615DBA31C8C2EFB00A837B9 /* ef_sock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_sock.h; sourceTree = "<group>"; };
 		E615DBA41C8C2EFB00A837B9 /* ef_timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ef_timer.cpp; sourceTree = "<group>"; };
 		E615DBA51C8C2EFB00A837B9 /* ef_timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_timer.h; sourceTree = "<group>"; };
-		E615DBBE1C8C2EFB00A837B9 /* libjsoncpp.0.10.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjsoncpp.0.10.5.dylib; sourceTree = "<group>"; };
-		E615DBBF1C8C2EFB00A837B9 /* libjsoncpp.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjsoncpp.0.dylib; sourceTree = "<group>"; };
-		E615DBC01C8C2EFB00A837B9 /* libjsoncpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libjsoncpp.a; sourceTree = "<group>"; };
-		E615DBC11C8C2EFB00A837B9 /* libjsoncpp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjsoncpp.dylib; sourceTree = "<group>"; };
-		E615DBC21C8C2EFB00A837B9 /* libzookeeper_mt.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_mt.2.dylib; sourceTree = "<group>"; };
-		E615DBC31C8C2EFB00A837B9 /* libzookeeper_mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzookeeper_mt.a; sourceTree = "<group>"; };
-		E615DBC41C8C2EFB00A837B9 /* libzookeeper_mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_mt.dylib; sourceTree = "<group>"; };
-		E615DBC51C8C2EFB00A837B9 /* libzookeeper_mt.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libzookeeper_mt.la; sourceTree = "<group>"; };
-		E615DBC61C8C2EFB00A837B9 /* libzookeeper_st.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_st.2.dylib; sourceTree = "<group>"; };
-		E615DBC71C8C2EFB00A837B9 /* libzookeeper_st.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzookeeper_st.a; sourceTree = "<group>"; };
-		E615DBC81C8C2EFB00A837B9 /* libzookeeper_st.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzookeeper_st.dylib; sourceTree = "<group>"; };
-		E615DBC91C8C2EFB00A837B9 /* libzookeeper_st.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libzookeeper_st.la; sourceTree = "<group>"; };
 		E615DC3E1C8C2FDD00A837B9 /* data_watcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data_watcher.h; sourceTree = "<group>"; };
 		E615DC3F1C8C2FDD00A837B9 /* ef_crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ef_crypt.h; sourceTree = "<group>"; };
 		E615DC401C8C2FDD00A837B9 /* extract_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = extract_type.h; sourceTree = "<group>"; };
@@ -184,8 +170,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E615DC381C8C2EFB00A837B9 /* libzookeeper_mt.a in Frameworks */,
-				E615DC351C8C2EFB00A837B9 /* libjsoncpp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,7 +197,6 @@
 			children = (
 				E615DB3B1C8C2EFB00A837B9 /* common */,
 				E615DB5E1C8C2EFB00A837B9 /* efnfw */,
-				E615DBBD1C8C2EFB00A837B9 /* lib_mac */,
 			);
 			path = zkclient;
 			sourceTree = "<group>";
@@ -321,25 +304,6 @@
 				E615DBA51C8C2EFB00A837B9 /* ef_timer.h */,
 			);
 			path = net;
-			sourceTree = "<group>";
-		};
-		E615DBBD1C8C2EFB00A837B9 /* lib_mac */ = {
-			isa = PBXGroup;
-			children = (
-				E615DBBE1C8C2EFB00A837B9 /* libjsoncpp.0.10.5.dylib */,
-				E615DBBF1C8C2EFB00A837B9 /* libjsoncpp.0.dylib */,
-				E615DBC01C8C2EFB00A837B9 /* libjsoncpp.a */,
-				E615DBC11C8C2EFB00A837B9 /* libjsoncpp.dylib */,
-				E615DBC21C8C2EFB00A837B9 /* libzookeeper_mt.2.dylib */,
-				E615DBC31C8C2EFB00A837B9 /* libzookeeper_mt.a */,
-				E615DBC41C8C2EFB00A837B9 /* libzookeeper_mt.dylib */,
-				E615DBC51C8C2EFB00A837B9 /* libzookeeper_mt.la */,
-				E615DBC61C8C2EFB00A837B9 /* libzookeeper_st.2.dylib */,
-				E615DBC71C8C2EFB00A837B9 /* libzookeeper_st.a */,
-				E615DBC81C8C2EFB00A837B9 /* libzookeeper_st.dylib */,
-				E615DBC91C8C2EFB00A837B9 /* libzookeeper_st.la */,
-			);
-			path = lib_mac;
 			sourceTree = "<group>";
 		};
 		E615DC3D1C8C2FDD00A837B9 /* include */ = {
@@ -592,12 +556,13 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_PREPROCESSOR_DEFINITIONS = "GPUSH_MAC=1";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/zkclient/common/include",
 					"$(PROJECT_DIR)/zkclient/efnfw",
-					"$(PROJECT_DIR)/zkclient/include_mac",
+					/usr/local/include,
 				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/zkclient/lib_mac";
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = zkclient;
 			};
 			name = Debug;
@@ -608,12 +573,13 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_PREPROCESSOR_DEFINITIONS = "GPUSH_MAC=1";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/zkclient/common/include",
 					"$(PROJECT_DIR)/zkclient/efnfw",
-					"$(PROJECT_DIR)/zkclient/include_mac",
+					/usr/local/include,
 				);
-				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/zkclient/lib_mac";
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = zkclient;
 			};
 			name = Release;
