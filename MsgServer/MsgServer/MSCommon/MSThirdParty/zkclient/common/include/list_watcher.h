@@ -29,12 +29,12 @@ namespace gim
 
 		virtual int onListChange(const ChildrenMap& c){
 			return 0;
-		}	
+		}
 
 		virtual int onPathRemove(const std::string& path) {
 			return 0;
 		}
-		
+
 	private:
 		int getChildrenData(const std::vector<std::string>& v, ChildrenMap& m);
 	private:
@@ -45,8 +45,10 @@ namespace gim
 	class ListWatcher:public ListWatcherBase{
 	public:
         friend T;
+#if defined(GPUSH_MAC)
         friend int T::CB(const ChildrenMap&);
         friend int T::PCB(const std::string&);
+#endif
 		typedef int (T::*CB)(const ChildrenMap&);
 		typedef int (T::*PCB)(const std::string&);
 
@@ -58,7 +60,7 @@ namespace gim
 			if(m_ctx)
 				return (m_ctx->*m_cb)(c);
 
-			return 0;	
+			return 0;
 		}
 
 		virtual int onPathRemove(const std::string& path) {
@@ -69,7 +71,7 @@ namespace gim
 
 	private:
 		T* m_ctx;
-		CB m_cb;		
+		CB m_cb;
 		PCB m_pcb;
 	};
 
@@ -87,7 +89,7 @@ namespace gim
 	};
 
 
-	
+
 	template<class T>
 	class JListWatcher:public JListWatcherBase{
 	public:
@@ -101,12 +103,12 @@ namespace gim
 			if(m_ctx)
 				return (m_ctx->*m_cb)(c);
 
-			return 0;	
+			return 0;
 		}
 
 	private:
 		T* m_ctx;
-		CB m_cb;		
+		CB m_cb;
 	};
 
 	class SvListWatcherBase: public ListWatcherBase{
@@ -135,15 +137,15 @@ namespace gim
 			if(m_ctx)
 				return (m_ctx->*m_cb)(c);
 
-			return 0;	
+			return 0;
 		}
 
 	private:
 		T* m_ctx;
-		CB m_cb;		
+		CB m_cb;
 	};
 
 
 }
 
-#endif //__CHILDREN_WATCHER_H__ 
+#endif //__CHILDREN_WATCHER_H__

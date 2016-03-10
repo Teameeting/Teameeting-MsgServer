@@ -92,6 +92,14 @@ LIB_NAME=librtklog.a
 build_lib $LIB_SRC_PATH $LIB_NAME
 sleep 1
 
+####################    building libzkclient  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/zkclient
+LIB_NAME=libzkclient.a
+cd $(LIB_SRC_PATH)
+sh build.sh
+build_lib $LIB_SRC_PATH $LIB_NAME
+sleep 1
+
 echo "[]generic lib.a ok"
 sleep 1
 echo "[]generic lib.a ok"

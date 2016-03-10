@@ -397,6 +397,8 @@ tar_tar_bz2 meeting
 loginfo "tar all the bin program..."
 sleep 1
 cd $CUR_PATH
+rm msgserver.tar.bz2
+rm -rf msgserver
 mkdir -p msgserver
 mv *.tar.bz2 msgserver
 cp *.sh msgserver

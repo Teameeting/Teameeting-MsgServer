@@ -20,6 +20,8 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/common/include \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/efnfw \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
 
 MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
@@ -30,5 +32,6 @@ MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
 						   $(top_srcdir)/DRTMsgQueue.cpp \
 						   $(top_srcdir)/main.cpp
 
-MsgServerDispatcher_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog
+MsgServerDispatcher_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
+MsgServerDispatcher_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a
 MsgServerDispatcher_LDADD+=-lpthread -lrt -ldl

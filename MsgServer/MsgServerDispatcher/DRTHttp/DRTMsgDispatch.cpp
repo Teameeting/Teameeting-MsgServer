@@ -42,7 +42,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         LE("DRTMsgDispatch::OnPushEvent get MeetMsg err:%s\n", err.c_str());
         return;
     }
-    
+
 #if 1
     TOPUSHUSER pushUser;
     TOJSONUSER jsonUser;
@@ -56,12 +56,13 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         pushUser._us.push_back((*it));
     }
 #endif
-    
+
     TOPUSHMSG pushMsg;
     pushMsg._tags = mmsg._tags;
     pushMsg._roomid = mmsg._room;
     std::string strPushMsg = pushMsg.ToJson();
-    
+    printf("pushUser.ToJson:%s\n", pushUser.ToJson().c_str());
+
     if (mmsg._tags == SENDTAGS::sendtags_talk) {
         std::string no = mmsg._rname + " - " + mmsg._nname + ": " + mmsg._cont;
         //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
@@ -99,7 +100,7 @@ void DRTMsgDispatch::OnSendEvent(const char*pData, int nLen)
     std::string sd = pData;
     trmsg._content = sd;
     std::string st = trmsg.ToJson();
-    
+
     DRTConnectionManager::ModuleInfo* pmi = DRTConnectionManager::Instance()->findConnectorInfoById("notnull", dmsg._connector);
     if (pmi && pmi->pModule) {
         pmi->pModule->SendTransferData(st.c_str(), (int)st.length());

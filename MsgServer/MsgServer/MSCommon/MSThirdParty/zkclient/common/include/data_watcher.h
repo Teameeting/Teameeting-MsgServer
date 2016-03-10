@@ -18,7 +18,7 @@ namespace gim
 		virtual ~DataWatcherBase(){};
 
 		int init(ZKClient* c, const std::string& path);
-		
+
 		virtual int onDataChange(int ver, const std::string& data){
 			m_version = ver;
 			m_data = data;
@@ -31,7 +31,7 @@ namespace gim
 			m_data = "";
 			return ret;
 		}
-		
+
 		const std::string& getData() const{
 			return m_data;
 		}
@@ -39,23 +39,25 @@ namespace gim
 	private:
 		int m_version;
 		std::string m_data;
-				
+
 	};
 
 
 	template<class T>
 	class DataWatcher
-		:public DataWatcherBase 
+		:public DataWatcherBase
 	{
 	public:
 		//friend class ExtractType<T>::type;
         friend T;
+#if defined(GPUSH_MAC)
         friend int T::CB(int, const std::string&);
+#endif
 
 		typedef int (T::*CB)(int, const std::string&);
-        
+
 		DataWatcher(T* t, CB c):
-            DataWatcherBase(), 
+            DataWatcherBase(),
 			m_ctx(t), m_cb(c){
 		}
 
@@ -65,7 +67,7 @@ namespace gim
 		virtual int onDataChange(int ver, const std::string& data){
             int ret = 0;
 			if(getData() != data && m_ctx){
-				ret = (m_ctx->*m_cb)(ver, data);	
+				ret = (m_ctx->*m_cb)(ver, data);
 			}
 			DataWatcherBase::onDataChange(ver, data);
 			return ret;
@@ -107,13 +109,13 @@ namespace gim
 			if(m_ctx)
 				return (m_ctx->*m_cb)(ver, c);
 
-			return 0;	
+			return 0;
 		}
 
 	private:
 		T* m_ctx;
-		CB m_cb;		
-	};	
+		CB m_cb;
+	};
 
 } //end of namespace
 

@@ -49,7 +49,7 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfo(const std
 
 DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfoBySid(const std::string& sid)
 {
-    
+
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
@@ -63,7 +63,7 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfoBySid(cons
 
 DRTConnectionManager::ModuleInfo* DRTConnectionManager::findConnectorInfoById(const std::string& userid, const std::string& connector)
 {
-    
+
     if (userid.length()==0 || connector.length()==0) {
         LE("findConnectorInfoById userid or connector is 0\n");
         return NULL;
@@ -300,7 +300,7 @@ bool DRTConnectionManager::ConnectHttpSvrConn()
         LI("DRTConnectionManager::DonnectHttpSvrConn error\n");
         return false;
     }
-    
+
     return true;
 }
 

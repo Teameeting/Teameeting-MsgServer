@@ -311,7 +311,9 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
     }
     bool needDispatch = false;
     bool needPush = false;
-    TOJSONUSER puser;//pusher
+    TOJSONUSER duser;//dispatcher
+    TOJSONUSER allduser;
+    ////TOJSONUSER puser;//pusher
     DRTConnectionManager::UserConnectorMaps connUserId;
     {
         //check user online or offline
@@ -322,9 +324,10 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
                 DRTConnectionManager::Instance()->GetUserConnectorId((*it), cid);
                 //printf("dispatch userid:%s, connectorid:%s\n", (*it).c_str(), cid.c_str());
                 connUserId.insert(make_pair(cid, (*it)));
+                allduser._us.push_back(*it);
                 needDispatch = true;
             } else {
-                puser._us.push_back((*it));
+                ////puser._us.push_back((*it));
                 needPush = true;
             }
         }
@@ -337,7 +340,6 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
                 if (connUserId.begin(i)==connUserId.end(i)) {
                     continue;
                 }
-                TOJSONUSER duser;//dispatcher
                 std::string sess = connUserId.begin(i)->first;
                 for (auto& x:connUserId) {
                     duser._us.push_back(x.second);
@@ -358,10 +360,11 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
         if (needPush) {
             PUSHMSG pmsg;
             pmsg._flag = 0;
-            pmsg._touser = puser.ToJson();
+            ////pmsg._touser = puser.ToJson();
+            pmsg._touser = allduser.ToJson();
             pmsg._connector = qmsg._connector;//which connector comes from
             pmsg._content = qmsg._content;
-            
+
             std::string sp = pmsg.ToJson();
             LI("OnTypeQueue pmsg._touser:%s, pmsg._connector.c_str():%s\n", pmsg._touser.c_str(), pmsg._connector.c_str());
             m_msgDispatch.PushData(sp.c_str(), (int)sp.length());

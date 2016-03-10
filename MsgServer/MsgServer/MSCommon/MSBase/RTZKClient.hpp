@@ -24,10 +24,10 @@ class RTZKClient{
 public:
     RTZKClient(const std::string& conf);
     ~RTZKClient();
-    
+
     int InitZKClient();
     int InitStatusNode(gim::ServerConfig& conf);
-    
+
     static void RTZKLogCallBack(void* ctx, const std::string& l);
     static int RTZKDataCallback(void* ctx, int version, const std::string& data);
 
@@ -35,20 +35,23 @@ public:
     int RTZKCallback(int ver, const std::string& data);
     int ChildrenMapCallback(const gim::ChildrenMap& cmap);
     int PathRemoveCallback(const std::string& path);
-    
+
     typedef std::unordered_map< std::string, gim::ListWatcher<RTZKClient>* > ChildrenWatcherMap;
     typedef ChildrenWatcherMap::iterator ChildrenWatcherMapIt;
-    
+
+    typedef std::vector< gim::ListWatcher<RTZKClient>* > ListWatcherVec;
+    typedef std::vector< gim::DataWatcher<RTZKClient>* > DataWatcherVec;
+
     const gim::ServerConfig& GetServerConfig() const { return m_conf; }
 private:
-    std::string 		m_conf_path; 
+    std::string 		m_conf_path;
     gim::ServerConfig 	m_conf;
     gim::ServerStatus   m_server_status;
     gim::ServerNode		*m_server_node;
     gim::ZKClient 		*m_client;
-    std::vector< gim::ListWatcher<RTZKClient>* > m_listWs;
-    ChildrenWatcherMap                              m_mapChildWs;
-    std::vector< gim::DataWatcher<RTZKClient>* > m_dataWs;
+    ListWatcherVec          m_listWs;
+    ChildrenWatcherMap      m_mapChildWs;
+    DataWatcherVec          m_dataWs;
 
 };
 
