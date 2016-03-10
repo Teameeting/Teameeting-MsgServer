@@ -7,7 +7,6 @@
 //
 
 #include <list>
-#include "atomic.h"
 #include "DRTTransferSession.h"
 #include "RTMessage.h"
 #include "DRTConnectionManager.h"
@@ -15,11 +14,10 @@
 
 #define TIMEOUT_TS (60*1000)
 
-static unsigned int	g_trans_id = 0;
-static unsigned int	g_msg_id = 0;
 
 DRTTransferSession::DRTTransferSession()
 : RTJSBuffer()
+, RTTransfer()
 , m_lastUpdateTime(0)
 , m_moduleId("")
 , m_transferSessId("")
@@ -152,29 +150,33 @@ void DRTTransferSession::OnRecvData(const char*pData, int nLen)
 
 void DRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
-    DRTTransfer::DoProcessData(message, nLen);
+    RTTransfer::DoProcessData(message, nLen);
 }
 
-void DRTTransferSession::OnLcsEvent()
-{
-
-}
-
-void DRTTransferSession::OnPeerEvent()
-{
-
-}
-
-void DRTTransferSession::OnTickEvent()
-{
-
-}
 
 // from RTTransfer
 
 void DRTTransferSession::OnTransfer(const std::string& str)
 {
     RTTcp::SendTransferData(str.c_str(), (int)str.length());
+}
+
+void DRTTransferSession::OnMsgAck(TRANSFERMSG& tmsg)
+{
+    TRANSFERMSG ack_msg;
+    if (tmsg._action == TRANSFERACTION::req) {
+        ack_msg._action = TRANSFERACTION::req_ack;
+    } else {
+        ack_msg._action = TRANSFERACTION::resp_ack;
+    }
+    ack_msg._fmodule = TRANSFERMODULE::mmsgqueue;
+    ack_msg._type   = tmsg._type;
+    ack_msg._trans_seq = tmsg._trans_seq;
+    ack_msg._trans_seq_ack = tmsg._trans_seq + 1;
+    ack_msg._valid = tmsg._valid;
+    ack_msg._content = "";
+    const std::string s = ack_msg.ToJson();
+    OnTransfer(s);
 }
 
 void DRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& str)
@@ -291,60 +293,81 @@ void DRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& 
 
 void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str)
 {
-    TOJSONUSER user;
+    TOJSONUSER auser;//all user
     QUEUEMSG qmsg;
-    DISPATCHMSG dmsg;
-    TRANSFERMSG trmsg;
     {
-        //get user
+        //get auser
         std::string err;
         qmsg.GetMsg(str, err);
         if (err.length()>0) {
             LE("%s QUEUEMSG err:%s\n", __FUNCTION__, err.c_str());
             return;
         }
-        user.GetMsg(qmsg._touser, err);
+        auser.GetMsg(qmsg._touser, err);
         if (err.length()>0) {
             LE("%s TOJSONUSER err:%s\n", __FUNCTION__, err.c_str());
             return;
         }
     }
+    bool needDispatch = false;
+    bool needPush = false;
+    TOJSONUSER duser;//dispatcher
+    TOJSONUSER allduser;
+    ////TOJSONUSER puser;//pusher
+    DRTConnectionManager::UserConnectorMaps connUserId;
     {
         //check user online or offline
-    }
-    {
-        //if offline, push to offline msgqueue
+        std::list<std::string>::iterator it = auser._us.begin();
+        for (; it!=auser._us.end(); it++) {
+            if (DRTConnectionManager::Instance()->IsMemberInOnline((*it))) {
+                std::string cid("");
+                DRTConnectionManager::Instance()->GetUserConnectorId((*it), cid);
+                //printf("dispatch userid:%s, connectorid:%s\n", (*it).c_str(), cid.c_str());
+                connUserId.insert(make_pair(cid, (*it)));
+                allduser._us.push_back(*it);
+                needDispatch = true;
+            } else {
+                ////puser._us.push_back((*it));
+                needPush = true;
+            }
+        }
     }
     {
         //if online, push to online msgqueue
+        if (needDispatch) {
+            unsigned i=0, j=(unsigned)connUserId.bucket_count();
+            for (; i<j; ++i) {
+                if (connUserId.begin(i)==connUserId.end(i)) {
+                    continue;
+                }
+                std::string sess = connUserId.begin(i)->first;
+                for (auto& x:connUserId) {
+                    duser._us.push_back(x.second);
+                }
+                DISPATCHMSG dmsg;
+                dmsg._flag = 0;
+                dmsg._touser = duser.ToJson();
+                dmsg._connector = connUserId.begin(i)->first;//which connector comes from
+                dmsg._content = qmsg._content;
+                std::string sd = dmsg.ToJson();
+                LI("OnTypeQueue dmsg._touser:%s, dmsg._connector.c_str():%s\n", dmsg._touser.c_str(), dmsg._connector.c_str());
+                m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
+            }
+        }
     }
+    {
+        //if offline, push to offline msgqueue
+        if (needPush) {
+            PUSHMSG pmsg;
+            pmsg._flag = 0;
+            ////pmsg._touser = puser.ToJson();
+            pmsg._touser = allduser.ToJson();
+            pmsg._connector = qmsg._connector;//which connector comes from
+            pmsg._content = qmsg._content;
 
-    std::list<std::string>::iterator it = user._us.begin();
-    for (; it!=user._us.end(); it++) {
-        dmsg._flag = 0;
-        dmsg._touser = (*it);
-        dmsg._connector = qmsg._connector;//which connector comes frome
-        dmsg._content = qmsg._content;
-
-        trmsg._action = TRANSFERACTION::req;
-        trmsg._fmodule = TRANSFERMODULE::mmsgqueue;
-        trmsg._type = TRANSFERTYPE::dispatch;
-        trmsg._trans_seq = GenericTransSeq();
-        trmsg._trans_seq_ack = 0;
-        trmsg._valid = 1;
-        std::string sd = dmsg.ToJson();
-        trmsg._content = sd;
-
-        LI("OnTypeQueue dmsg._touser:%s, qmsg._connector.c_str():%s\n", dmsg._touser.c_str(), qmsg._connector.c_str());
-        //here we should know this msg send to whom
-        //find connector and dispatch to it
-        std::string st = trmsg.ToJson();
-        //connector moduleId
-        DRTConnectionManager::ModuleInfo* pmi = DRTConnectionManager::Instance()->findConnectorInfoById(dmsg._touser, qmsg._connector);
-        if (pmi && pmi->pModule) {
-            pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
-        } else {
-            LE("mi.pModule is NULL\n");
+            std::string sp = pmsg.ToJson();
+            LI("OnTypeQueue pmsg._touser:%s, pmsg._connector.c_str():%s\n", pmsg._touser.c_str(), pmsg._connector.c_str());
+            m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
         }
     }
 }
@@ -359,6 +382,33 @@ void DRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& s
     LI("%s was called\n", __FUNCTION__);
 }
 
+void DRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+{
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    DRTConnectionManager::Instance()->OnTLogin(t_msg._touser, t_msg._content, t_msg._connector);
+}
+
+void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
+{
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    DRTConnectionManager::Instance()->OnTLogout(t_msg._touser, t_msg._content, t_msg._connector);
+}
+
+
 void DRTTransferSession::ConnectionDisconnected()
 {
     if (m_transferSessId.length()>0) {
@@ -370,30 +420,3 @@ void DRTTransferSession::ConnectionDisconnected()
 ////////////////////private/////////////////////////////
 ////////////////////////////////////////////////////////
 
-void DRTTransferSession::GenericMsgId(std::string& strId)
-{
-    char buf[32] = {0};
-    int id_ = (UInt32)atomic_add(&g_msg_id, 1);
-    sprintf(buf, "msgqueue_%06d", id_);
-    strId = buf;
-}
-
-int DRTTransferSession::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
-
-void DRTTransferSession::EstablishAck()
-{
-
-}
-
-void DRTTransferSession::OnEstablishConn()
-{
-
-}
-
-void DRTTransferSession::OnEstablishAck()
-{
-
-}

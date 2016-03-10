@@ -18,6 +18,7 @@
 #include "CRTDispatchConnection.h"
 #include "RTUtils.hpp"
 
+
 static bool		g_inited = false;
 static char*	g_pVersion = (char*)"0.01.20150810";
 static CRTConnector*	g_pConnector = NULL;
@@ -131,22 +132,14 @@ CRTConnector::~CRTConnector(void)
 
 int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
                   , const char*pModuleIp, unsigned short usModulePort
-                  , const char*pCliConIp, unsigned short usCliConPort
-                  , const char*pHttpIp, unsigned short usHttpPort)
+                  , const char*pCliConIp, unsigned short usCliConPort)
 {
 	Assert(g_inited);
 	Assert(pWebConIp != NULL && strlen(pWebConIp)>0);
 	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
     Assert(pCliConIp != NULL && strlen(pCliConIp)>0);
-    Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
 
-    char hh[24] = {0};
-    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
-
-    CRTConnectionManager::s_cohttpHost = hh;
-    CRTConnectionManager::s_cohttpIp = pHttpIp;
-    CRTConnectionManager::s_cohttpPort = usHttpPort;
-    
+    std::cout << "usWebConPort:" << usWebConPort << ", usModulePort:" << usModulePort << ", usCliConPort:" << usCliConPort << std::endl;
     std::string ssid;
 	CRTConnection::gStrAddr = pWebConIp;
     CRTConnection::gUsPort = usWebConPort;
@@ -155,12 +148,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
     GenericSessionId(ssid);
     CRTConnectionManager::Instance()->SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
-
-	if(usWebConPort == 0)
-	{
-		LE("Connector server conn need ...!");
-		Assert(false);
-	}
 
 	if(usWebConPort > 0)
 	{
@@ -178,11 +165,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
 		m_pConnListener->RequestEvent(EV_RE);
 	}
 
-    if (usModulePort == 0) {
-        LE("Connector server meet need ...!!");
-        Assert(false);
-    }
-
     if (usModulePort > 0) {
         m_pModuleListener = new CRTModuleListener();
         OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
@@ -196,10 +178,6 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         m_pModuleListener->RequestEvent(EV_RE);
     }
 
-    if (usCliConPort == 0) {
-        LE("Connector server meet need ...!!!!");
-        Assert(false);
-    }
     if (usCliConPort > 0) {
         m_pConnTcpListener = new CRTConnTcpListener();
         OS_Error err = m_pConnTcpListener->Initialize(INADDR_ANY, usCliConPort);
@@ -212,19 +190,7 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
     }
-    if (usHttpPort == 0) {
-        LE("Connector server meet need ...!!!!");
-        Assert(false);
-    }
-    if (usHttpPort > 0) {
-        LI("Start Connector Http service:(%d) ok...\n", usHttpPort);
-    }
     
-    if (!(CRTConnectionManager::Instance()->ConnectHttpSvrConn())) {
-        LE("ConnectHttpSvrConn failed\n");
-        return -1;
-    }
-
 	return 0;
 }
 

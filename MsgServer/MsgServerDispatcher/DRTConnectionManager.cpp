@@ -12,6 +12,10 @@
 #include "OSMutex.h"
 #include "DRTTransferSession.h"
 
+std::string     DRTConnectionManager::s_cohttpIp;
+unsigned short  DRTConnectionManager::s_cohttpPort;
+std::string     DRTConnectionManager::s_cohttpHost;
+
 static OSMutex       s_mutex;
 static OSMutex       s_mutexModule;
 static OSMutex       s_mutexTypeModule;
@@ -32,7 +36,6 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfo(const std
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return NULL; }
         DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             if (it->second && it->second->othModuleType == module) {
@@ -46,11 +49,10 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfo(const std
 
 DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfoBySid(const std::string& sid)
 {
-    
+
     DRTConnectionManager::ModuleInfo *pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return NULL; }
         DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
         if (it!=s_ModuleInfoMap.end()) {
             pInfo = it->second;
@@ -61,21 +63,15 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findModuleInfoBySid(cons
 
 DRTConnectionManager::ModuleInfo* DRTConnectionManager::findConnectorInfoById(const std::string& userid, const std::string& connector)
 {
-    
+
     if (userid.length()==0 || connector.length()==0) {
-        if (userid.length()==0) {
-            LE("findConnectorInfoById userid.length is 0\n");
-        }
-        if (connector.length()==0) {
-            LE("findConnectorInfoById connector.length is 0\n");
-        }
+        LE("findConnectorInfoById userid or connector is 0\n");
         return NULL;
     }
     DRTConnectionManager::ModuleInfo* pInfo = NULL;
     std::string sessionid;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) { return NULL; }
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         TypeModuleSessionInfo* t_pInfo = NULL;
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
@@ -85,7 +81,6 @@ DRTConnectionManager::ModuleInfo* DRTConnectionManager::findConnectorInfoById(co
                     continue;
                 }
                 sessionid = *(t_pInfo->sessionIds.begin());
-                LI("find transfer sessionid:%s", sessionid.c_str());
                 break;
             }
         }
@@ -124,7 +119,7 @@ bool DRTConnectionManager::DoConnectConnector(const std::string ip, unsigned sho
     // conn to connector
     while (!connectorSession->Connect(ip, port)) {
         LI("connecting to connector server %s:%u waiting...\n", ip.c_str(), port);
-        sleep(1);
+        usleep(100*1000);
     }
     LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, connectorSession->GetSocket()->GetSocketFD());
     connectorSession->EstablishConnection();
@@ -136,7 +131,6 @@ void DRTConnectionManager::RefreshConnection()
     ModuleInfo* pmi = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        if (s_ModuleInfoMap.size()==0) { return ; }
         ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             pmi = it->second;
@@ -152,10 +146,6 @@ void DRTConnectionManager::RefreshConnection()
 bool DRTConnectionManager::AddModuleInfo(DRTConnectionManager::ModuleInfo* pmi, const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    if (s_ModuleInfoMap.size()==0) {
-        s_ModuleInfoMap.insert(make_pair(sid, pmi));
-        return true;
-    }
     DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         DRTConnectionManager::ModuleInfo *p = it->second;
@@ -170,7 +160,6 @@ bool DRTConnectionManager::AddModuleInfo(DRTConnectionManager::ModuleInfo* pmi, 
 bool DRTConnectionManager::DelModuleInfo(const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    if (s_ModuleInfoMap.size()==0) { return true; }
     DRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         DRTConnectionManager::ModuleInfo *p = it->second;
@@ -187,15 +176,6 @@ bool DRTConnectionManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std:
     bool found = false;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) {
-            pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
-            pInfo->moduleId = mid;
-            pInfo->sessionIds.insert(sid);
-            s_TypeModuleSessionInfoList.push_front(pInfo);
-            return true;
-        }
-    
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
             if ((*it) && (*it)->moduleId.compare(mid) == 0) {
@@ -223,7 +203,6 @@ bool DRTConnectionManager::DelTypeModuleSession(const std::string& sid)
     bool found = false;
     {
         OSMutexLocker locker(&s_mutexTypeModule);
-        if (s_TypeModuleSessionInfoList.size()==0) { return false; }
         TypeModuleSessionInfoLists::iterator it = s_TypeModuleSessionInfoList.begin();
         for (; it!=s_TypeModuleSessionInfoList.end(); it++) {
             pInfo = *it;
@@ -241,5 +220,104 @@ void DRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
 {
     DelModuleInfo(sid);
     DelTypeModuleSession(sid);
-    LI("RTConnectionManager::TransferSessionLostNotify sessionid:%s\n", sid.c_str());
 }
+
+void DRTConnectionManager::AddMemberToOnline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.insert(uid);
+}
+
+bool DRTConnectionManager::IsMemberInOnline(const std::string& uid)
+{
+    bool found = false;
+    {
+        OSMutexLocker locker(&m_mutexMembers);
+        found = !m_onlineMembers.empty() && m_onlineMembers.count(uid);
+    }
+    return found;
+}
+
+void DRTConnectionManager::DelMemberFmOnline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.erase(uid);
+}
+
+void DRTConnectionManager::AddMemberToOffline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_offlineMembers.insert(uid);
+}
+
+bool DRTConnectionManager::IsMemberInOffline(const std::string& uid)
+{
+    bool found = false;
+    {
+        OSMutexLocker locker(&m_mutexMembers);
+        found = !m_offlineMembers.empty() && m_offlineMembers.count(uid);
+    }
+    return found;
+}
+
+void DRTConnectionManager::DelMemberFmOffline(const std::string& uid)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_offlineMembers.erase(uid);
+}
+
+void DRTConnectionManager::OnTLogin(const std::string& uid, const std::string& token, const std::string& connector)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.insert(uid);
+    if (m_userConnectors.find(uid) == m_userConnectors.end()) {
+        m_userConnectors.insert(make_pair(uid, connector));
+    } else {
+        m_userConnectors.erase(uid);
+        m_userConnectors.insert(make_pair(uid, connector));
+    }
+}
+
+void DRTConnectionManager::OnTLogout(const std::string& uid, const std::string& token, const std::string& connector)
+{
+    OSMutexLocker locker(&m_mutexMembers);
+    m_onlineMembers.erase(uid);
+    m_userConnectors.erase(uid);
+}
+
+void DRTConnectionManager::GetUserConnectorId(const std::string& uid, std::string& connector)
+{
+    connector = m_userConnectors.find(uid)->second;
+}
+
+bool DRTConnectionManager::ConnectHttpSvrConn()
+{
+    if (!m_pHttpSvrConn) {
+        LI("DRTConnectionManager::DonnectHttpSvrConn ok\n");
+        m_pHttpSvrConn = new rtc::RefCountedObject<DRTHttpSvrConn>();
+        m_pHttpSvrConn->SetHttpHost(s_cohttpIp, s_cohttpPort, s_cohttpHost);
+    } else {
+        LI("DRTConnectionManager::DonnectHttpSvrConn error\n");
+        return false;
+    }
+
+    return true;
+}
+
+void DRTConnectionManager::PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra)
+{
+    if (m_pHttpSvrConn && meetingid.length()>0 && msgFromId.length()>0 && meetingOnlineMembers.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
+        m_pHttpSvrConn->HttpPushMeetingMsg(meetingid.c_str(), msgFromId.c_str(), meetingOnlineMembers.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
+    } else {
+        LE("DRTConnectionManager::PushMeetingMsg error\n");
+    }
+}
+void DRTConnectionManager::PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification, const std::string& extra)
+{
+    if (m_pHttpSvrConn && sign.length()>0 && targetid.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
+        m_pHttpSvrConn->HttpPushCommonMsg(sign.c_str(), targetid.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
+    } else {
+        LE("DRTConnectionManager::PushCommonMsg error\n");
+    }
+}
+

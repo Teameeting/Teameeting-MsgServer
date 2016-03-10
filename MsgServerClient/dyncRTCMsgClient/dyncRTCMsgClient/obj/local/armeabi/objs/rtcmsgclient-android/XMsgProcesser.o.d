@@ -150,7 +150,26 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgProcesser.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_carray.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_relops_cont.h \
  rtcmsgs/RTSignalMsg.h rtcmsgs/RTMeetMsg.h rtcmsgs/RTMsg.h \
- rtcmsgs/RTMeetMsg.h rtcmsgs/RTMessage.h jni/..///XMsgCallback.h \
+ rapidjson/document.h rapidjson/reader.h rapidjson/rapidjson.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdlib \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstring \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/inttypes.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cassert \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h \
+ rapidjson/internal/pow10.h rapidjson/internal/stack.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/csetjmp \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_csetjmp.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/setjmp.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/setjmp.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/machine/setjmp.h \
+ rapidjson/internal/strfunc.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/new \
+ rapidjson/writer.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdio \
+ rapidjson/stringbuffer.h rapidjson/rapidjson.h rapidjson/prettywriter.h \
+ rapidjson/writer.h rtcmsgs/RTMeetMsg.h rtcmsgs/RTMessage.h \
+ jni/..///XMsgCallback.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/string \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_string_hash.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_hash_fun.h \
@@ -219,8 +238,6 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgProcesser.o: \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_deque.c \
  jni/..///webrtc_normal/webrtc/base/messagehandler.h \
  jni/..///webrtc_normal/webrtc/base/scoped_ptr.h \
- /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h \
- /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h \
  jni/..///webrtc_normal/webrtc/base/template_util.h \
  jni/..///webrtc_normal/webrtc/typedefs.h \
  jni/..///webrtc_normal/webrtc/base/scoped_ref_ptr.h \
@@ -547,6 +564,54 @@ rtcmsgs/RTMeetMsg.h:
 
 rtcmsgs/RTMsg.h:
 
+rapidjson/document.h:
+
+rapidjson/reader.h:
+
+rapidjson/rapidjson.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdlib:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstring:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/inttypes.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cassert:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h:
+
+rapidjson/internal/pow10.h:
+
+rapidjson/internal/stack.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/csetjmp:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_csetjmp.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/setjmp.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/setjmp.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/machine/setjmp.h:
+
+rapidjson/internal/strfunc.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/new:
+
+rapidjson/writer.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdio:
+
+rapidjson/stringbuffer.h:
+
+rapidjson/rapidjson.h:
+
+rapidjson/prettywriter.h:
+
+rapidjson/writer.h:
+
 rtcmsgs/RTMeetMsg.h:
 
 rtcmsgs/RTMessage.h:
@@ -694,10 +759,6 @@ jni/..///webrtc_normal/webrtc/base/messagequeue.h:
 jni/..///webrtc_normal/webrtc/base/messagehandler.h:
 
 jni/..///webrtc_normal/webrtc/base/scoped_ptr.h:
-
-/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/assert.h:
-
-/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/assert.h:
 
 jni/..///webrtc_normal/webrtc/base/template_util.h:
 

@@ -28,9 +28,10 @@ public:
 public:
     //* For RCTcp
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnLcsEvent();
-    virtual void OnPeerEvent(){Assert(false);};
-    virtual void OnTickEvent(){};
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
     
 public:
     //* For RTConnTcp
@@ -47,8 +48,6 @@ public:
 protected:
     virtual void OnRecvMessage(const char*message, int nLen);
     
-private:
-    int GenericTransSeq();
 private:
     std::string     m_connectorId;
     std::string     m_userId;

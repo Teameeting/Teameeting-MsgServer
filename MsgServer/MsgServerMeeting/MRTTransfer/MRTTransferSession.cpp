@@ -8,17 +8,16 @@
 
 #include "MRTTransferSession.h"
 #include "RTMessage.h"
-#include "atomic.h"
 #include "MRTRoomManager.h"
 #include "MRTConnectionManager.h"
 #include "MRTHttpSvrConn.h"
+#include "RTUtils.hpp"
 
 #define TIMEOUT_TS (60*1000)
-static unsigned int	g_trans_id = 0;
-static unsigned int	g_msg_id = 0;
 
 MRTTransferSession::MRTTransferSession()
 : RTJSBuffer()
+, RTTransfer()
 , m_lastUpdateTime(0)
 , m_moduleId("")
 , m_transferSessId("")
@@ -152,22 +151,7 @@ void MRTTransferSession::OnRecvData(const char*pData, int nLen)
 
 void MRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
-    MRTTransfer::DoProcessData(message, nLen);
-}
-
-void MRTTransferSession::OnLcsEvent()
-{
-
-}
-
-void MRTTransferSession::OnPeerEvent()
-{
-
-}
-
-void MRTTransferSession::OnTickEvent()
-{
-
+    RTTransfer::DoProcessData(message, nLen);
 }
 
 // from RTTransfer
@@ -175,6 +159,24 @@ void MRTTransferSession::OnTickEvent()
 void MRTTransferSession::OnTransfer(const std::string& str)
 {
     RTTcp::SendTransferData(str.c_str(), (int)str.length());
+}
+
+void MRTTransferSession::OnMsgAck(TRANSFERMSG& tmsg)
+{
+    TRANSFERMSG ack_msg;
+    if (tmsg._action == TRANSFERACTION::req) {
+        ack_msg._action = TRANSFERACTION::req_ack;
+    } else {
+        ack_msg._action = TRANSFERACTION::resp_ack;
+    }
+    ack_msg._fmodule = TRANSFERMODULE::mmeeting;
+    ack_msg._type   = tmsg._type;
+    ack_msg._trans_seq = tmsg._trans_seq;
+    ack_msg._trans_seq_ack = tmsg._trans_seq + 1;
+    ack_msg._valid = tmsg._valid;
+    ack_msg._content = "";
+    const std::string s = ack_msg.ToJson();
+    OnTransfer(s);
 }
 
 void MRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& str)
@@ -243,12 +245,7 @@ void MRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& 
         Assert(false);
         return;
     }
-    //the users connection lost
-    if (t_msg._flag == 1) {
-        OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
-        LE("user %s token:%s lost connection\n", t_msg._touser.c_str(), t_msg._content.c_str());
-        return;
-    }
+    
     MEETMSG m_mmmsg;
     err = "";
     m_mmmsg.GetMsg(t_msg._content.c_str(), err);
@@ -295,6 +292,33 @@ void MRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& s
     LI("%s was called\n", __FUNCTION__);
 }
 
+void MRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+{
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+}
+
+void MRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
+{
+    //the users connection lost
+    TRANSMSG t_msg;
+    std::string err;
+    t_msg.GetMsg(str, err);
+    if (err.length() > 0) {
+        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
+        Assert(false);
+        return;
+    }
+    OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
+    return;
+}
+
 /**
  *  User connection lost, clear user in the meeting
  */
@@ -317,30 +341,3 @@ void MRTTransferSession::ConnectionDisconnected()
 ////////////////////private/////////////////////////////
 ////////////////////////////////////////////////////////
 
-void MRTTransferSession::GenericMsgId(std::string& strId)
-{
-    char buf[32] = {0};
-    int id_ = (UInt32)atomic_add(&g_msg_id, 1);
-    sprintf(buf, "meet_%06d", id_);
-    strId = buf;
-}
-
-int MRTTransferSession::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
-
-void MRTTransferSession::EstablishAck()
-{
-
-}
-
-void MRTTransferSession::OnEstablishConn()
-{
-
-}
-
-void MRTTransferSession::OnEstablishAck()
-{
-
-}

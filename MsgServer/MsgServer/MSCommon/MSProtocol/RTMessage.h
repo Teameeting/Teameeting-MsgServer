@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include "RTMsg.h"
 
 typedef enum _transferaction{
     req = 1,
@@ -36,6 +37,8 @@ typedef enum _transfertype{
     queue,
     dispatch,
     push,
+    tlogin,
+    tlogout,
     transfertype_invalid
 }TRANSFERTYPE;
 
@@ -76,7 +79,6 @@ struct _connmsg{
 
 typedef struct _transmsg TRANSMSG;
 struct _transmsg{
-    // 1-connection lost
     int             _flag;
     std::string     _touser;
     std::string     _connector;
@@ -119,6 +121,15 @@ struct _pushmsg{
     void GetMsg(const std::string& str, std::string& err);
 };
 
+typedef struct _topushmsg TOPUSHMSG;
+struct _topushmsg{
+    int             _tags;
+    std::string     _roomid;
+    _topushmsg();
+    std::string ToJson();
+    void GetMsg(const std::string& str, std::string& err);
+};
+
 typedef struct _tojsonuser TOJSONUSER;
 struct _tojsonuser{
     std::list<std::string> _us;
@@ -126,5 +137,14 @@ struct _tojsonuser{
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
 };
+
+typedef struct _topushuser TOPUSHUSER;
+struct _topushuser{
+    std::list<std::string> _us;
+    _topushuser();
+    std::string ToJson();
+    void GetMsg(const std::string& str, std::string& err);
+};
+
 
 #endif // dyncRTConnector_RTMessage_h

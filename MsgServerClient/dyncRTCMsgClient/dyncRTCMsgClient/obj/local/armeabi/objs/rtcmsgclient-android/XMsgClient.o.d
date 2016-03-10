@@ -232,7 +232,24 @@ obj/local/armeabi/objs/rtcmsgclient-android/XMsgClient.o: \
  jni/..///webrtc_normal/webrtc/base/physicalsocketserver.h \
  jni/..///webrtc_normal/webrtc/base/asyncfile.h jni/..///XTcpTick.h \
  jni/..///XMsgProcesser.h rtcmsgs/RTSignalMsg.h rtcmsgs/RTMeetMsg.h \
- rtcmsgs/RTMsg.h rtcmsgs/RTMeetMsg.h rtcmsgs/RTMessage.h \
+ rtcmsgs/RTMsg.h rapidjson/document.h rapidjson/reader.h \
+ rapidjson/rapidjson.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdlib \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstring \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/inttypes.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cassert \
+ rapidjson/internal/pow10.h rapidjson/internal/stack.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/csetjmp \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_csetjmp.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/setjmp.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/setjmp.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/machine/setjmp.h \
+ rapidjson/internal/strfunc.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/new \
+ rapidjson/writer.h \
+ /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdio \
+ rapidjson/stringbuffer.h rapidjson/rapidjson.h rapidjson/prettywriter.h \
+ rapidjson/writer.h rtcmsgs/RTMeetMsg.h rtcmsgs/RTMessage.h \
  jni/..///XMsgCallback.h jni/..///XJSBuffer.h \
  jni/..///webrtc_normal/webrtc/base/logging.h \
  /Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/sstream \
@@ -718,6 +735,50 @@ rtcmsgs/RTSignalMsg.h:
 rtcmsgs/RTMeetMsg.h:
 
 rtcmsgs/RTMsg.h:
+
+rapidjson/document.h:
+
+rapidjson/reader.h:
+
+rapidjson/rapidjson.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdlib:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstring:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/inttypes.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cassert:
+
+rapidjson/internal/pow10.h:
+
+rapidjson/internal/stack.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/csetjmp:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/stl/_csetjmp.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/setjmp.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/../include/setjmp.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/platforms/android-3/arch-arm/usr/include/machine/setjmp.h:
+
+rapidjson/internal/strfunc.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/new:
+
+rapidjson/writer.h:
+
+/Users/hp/Documents/tools/android-ndk-r10d/sources/cxx-stl/stlport/stlport/cstdio:
+
+rapidjson/stringbuffer.h:
+
+rapidjson/rapidjson.h:
+
+rapidjson/prettywriter.h:
+
+rapidjson/writer.h:
 
 rtcmsgs/RTMeetMsg.h:
 

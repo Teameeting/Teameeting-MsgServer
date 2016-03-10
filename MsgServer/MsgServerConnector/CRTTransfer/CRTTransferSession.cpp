@@ -8,15 +8,13 @@
 
 #include "CRTTransferSession.h"
 #include "RTMessage.h"
-#include "atomic.h"
 #include "CRTConnectionManager.h"
 #include "RTUtils.hpp"
 
-static unsigned int	g_trans_id = 0;
-static unsigned int	g_msg_id = 0;
 
 CRTTransferSession::CRTTransferSession()
 : RTJSBuffer()
+, RTTransfer()
 , m_transferSessId("")
 {
     AddObserver(this);
@@ -106,14 +104,14 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
 {
     TRANSFERMSG t_trmsg;
     TRANSMSG t_msg;
-    t_msg._flag = 1;
+    t_msg._flag = 0;
     t_msg._touser = uid;
     t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
     t_msg._content = token;
 
     t_trmsg._action = TRANSFERACTION::req;
     t_trmsg._fmodule = TRANSFERMODULE::mconnector;
-    t_trmsg._type = TRANSFERTYPE::trans;
+    t_trmsg._type = TRANSFERTYPE::tlogout;
     t_trmsg._trans_seq = GenericTransSeq();
     t_trmsg._trans_seq_ack = 0;
     t_trmsg._valid = 1;
@@ -121,7 +119,48 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
 
     const std::string s = t_trmsg.ToJson();
     SendTransferData(s.c_str(), (int)s.length());
-    LI("Send user :%s ConnectionLostNotify to meeting module\n", uid.c_str());
+}
+
+void CRTTransferSession::ConnectionConnNotify(const std::string& uid, const std::string& token)
+{
+    TRANSFERMSG t_trmsg;
+    TRANSMSG t_msg;
+    t_msg._flag = 0;
+    t_msg._touser = uid;
+    t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
+    t_msg._content = token;
+
+    t_trmsg._action = TRANSFERACTION::req;
+    t_trmsg._fmodule = TRANSFERMODULE::mconnector;
+    t_trmsg._type = TRANSFERTYPE::tlogin;
+    t_trmsg._trans_seq = GenericTransSeq();
+    t_trmsg._trans_seq_ack = 0;
+    t_trmsg._valid = 1;
+    t_trmsg._content = t_msg.ToJson();
+
+    const std::string s = t_trmsg.ToJson();
+    SendTransferData(s.c_str(), (int)s.length());
+}
+
+void CRTTransferSession::TransferMsg(const std::string& msg)
+{
+    TRANSFERMSG t_trmsg;
+    TRANSMSG t_msg;
+    t_msg._flag = 0;
+    t_msg._touser = "";
+    t_msg._connector = CRTConnectionManager::Instance()->ConnectorId();
+    t_msg._content = msg;
+    
+    t_trmsg._action = TRANSFERACTION::req;
+    t_trmsg._fmodule = TRANSFERMODULE::mconnector;
+    t_trmsg._type = TRANSFERTYPE::trans;
+    t_trmsg._trans_seq = GenericTransSeq();
+    t_trmsg._trans_seq_ack = 0;
+    t_trmsg._valid = 1;
+    t_trmsg._content = t_msg.ToJson();
+    
+    const std::string s = t_trmsg.ToJson();
+    SendTransferData(s.c_str(), (int)s.length());
 }
 
 // from RTTcp
@@ -135,22 +174,7 @@ void CRTTransferSession::OnRecvData(const char*pData, int nLen)
 
 void CRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
-    CRTTransfer::DoProcessData(message, nLen);
-}
-
-void CRTTransferSession::OnLcsEvent()
-{
-
-}
-
-void CRTTransferSession::OnPeerEvent()
-{
-
-}
-
-void CRTTransferSession::OnTickEvent()
-{
-
+    RTTransfer::DoProcessData(message, nLen);
 }
 
 // from RTTransfer
@@ -158,6 +182,24 @@ void CRTTransferSession::OnTickEvent()
 void CRTTransferSession::OnTransfer(const std::string& str)
 {
     RTTcp::SendTransferData(str.c_str(), (int)str.length());
+}
+
+void CRTTransferSession::OnMsgAck(TRANSFERMSG& tmsg)
+{
+    TRANSFERMSG ack_msg;
+    if (tmsg._action == TRANSFERACTION::req) {
+        ack_msg._action = TRANSFERACTION::req_ack;
+    } else {
+        ack_msg._action = TRANSFERACTION::resp_ack;
+    }
+    ack_msg._fmodule = TRANSFERMODULE::mconnector;
+    ack_msg._type   = tmsg._type;
+    ack_msg._trans_seq = tmsg._trans_seq;
+    ack_msg._trans_seq_ack = tmsg._trans_seq + 1;
+    ack_msg._valid = tmsg._valid;
+    ack_msg._content = "";
+    const std::string s = ack_msg.ToJson();
+    OnTransfer(s);
 }
 
 void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& str)
@@ -176,7 +218,6 @@ void CRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         TRANSFERMSG t_msg;
         std::string trid;
         GenericSessionId(trid);
-        LI("======gENERICsESSIONID:%s\n", trid.c_str());
         m_transferSessId = trid;
 
         t_msg._action = TRANSFERACTION::req;
@@ -240,22 +281,35 @@ void CRTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::strin
     std::string err;
     dmsg.GetMsg(str, err);
     if (err.length()>0) {
-        LE("%s parse error:%s\n", __FUNCTION__, err.c_str());
+        LE("%s parse DIAPTCHMSG error:%s\n", __FUNCTION__, err.c_str());
         return;
     }
-    {
-        //find connection
-    }
+    
     {
         //send response
-        std::string msg(dmsg._content);
-        std::string id(dmsg._touser);
-        LI("OnTypeDispatch id:%s, msg:%s\n", id.c_str(), msg.c_str());
-        m_dispatchConnection.DispatchMsg(id, msg);
+        TOJSONUSER touser;
+        touser.GetMsg(dmsg._touser, err);
+        if (err.length()>0) {
+            LE("%s parse TOJSONUSER error:%s\n", __FUNCTION__, err.c_str());
+            return;
+        }
+        for (std::list<std::string>::iterator it=touser._us.begin(); it!=touser._us.end(); it++) {
+            m_dispatchConnection.DispatchMsg((*it), dmsg._content);
+        }
     }
 }
 
 void CRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& str)
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+
+void CRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+
+void CRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
@@ -265,39 +319,9 @@ void CRTTransferSession::ConnectionDisconnected()
     if (m_transferSessId.length()>0) {
         LI("RTTransferSession::ConnectionDisconnected m_transferSessId:%s\n", m_transferSessId.c_str());
         CRTConnectionManager::Instance()->TransferSessionLostNotify(m_transferSessId);
-    } else {
-        LE("RTConnection::ConnectionDisconnected m_transferSessId.length is 0\n");
     }
 }
 
 ////////////////////////////////////////////////////////
 ////////////////////private/////////////////////////////
 ////////////////////////////////////////////////////////
-
-void CRTTransferSession::GenericMsgId(std::string& strId)
-{
-    char buf[32] = {0};
-    int id_ = (UInt32)atomic_add(&g_msg_id, 1);
-    sprintf(buf, "msgqueue_%06d", id_);
-    strId = buf;
-}
-
-int CRTTransferSession::GenericTransSeq()
-{
-    return atomic_add(&g_trans_id, 1);
-}
-
-void CRTTransferSession::EstablishAck()
-{
-
-}
-
-void CRTTransferSession::OnEstablishConn()
-{
-
-}
-
-void CRTTransferSession::OnEstablishAck()
-{
-
-}

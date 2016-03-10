@@ -160,7 +160,6 @@ void MEETINGMEMBERLIST::GetMsg(const std::string &str, std::string &err)
     rapidjson::Value& mems = jsonReqDoc["meetingMemberList"];
     for (int i=0; i<mems.Capacity(); i++) {
         rapidjson::Value& m = mems[i]["userid"];
-        printf("get members:%s\n", m.GetString());
         _uslist.push_front(m.GetString());
     }
 }

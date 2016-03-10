@@ -19,7 +19,6 @@
 #include "RTMessage.h"
 #include "RTTcp.h"
 #include "RTType.h"
-#include "CORTHttpSvrConn.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"
@@ -118,9 +117,6 @@ public:
         static CRTConnectionManager s_manager;
         return &s_manager;
     }
-    static std::string      s_cohttpIp;
-    static unsigned short   s_cohttpPort;
-    static std::string      s_cohttpHost;
 
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
         m_connectorPort = port;
@@ -143,27 +139,21 @@ public:
     bool DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token);
 
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
+    void ConnectionConnNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
+    void TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg);
     
-    bool ConnectHttpSvrConn();
-    void PushMeetingMsg(const std::string& sign, const std::string& meetingid, const std::string& pushMsg, const std::string& notification);
-    void PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification);
-
     std::string& ConnectorIp() { return m_connectorIp; }
     std::string& ConnectorPort() { return m_connectorPort; }
     std::string& ConnectorId() { return m_connectorId; }
-public:
-    void ShowConnectionInfo();
 private:
     CRTConnectionManager() : m_connectorIp(""),
                             m_connectorPort(""),
-                            m_connectorId(""),
-                            m_pcoHttpSvrConn(NULL) { }
+                            m_connectorId("") { }
     ~CRTConnectionManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
-    CORTHttpSvrConn     *m_pcoHttpSvrConn;
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnectionManager__) */

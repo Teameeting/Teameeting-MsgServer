@@ -15,14 +15,14 @@
 #include "TCPSocket.h"
 #include "RTTcp.h"
 #include "RTJSBuffer.h"
-#include "CRTTransfer.h"
+#include "RTTransfer.h"
 #include "CRTDispatchConnection.h"
 #include "RTObserverConnection.h"
 
 class CRTTransferSession
     : public RTTcp
     , public RTJSBuffer
-    , public CRTTransfer
+    , public RTTransfer
     , public RTObserverConnection{
 public:
     CRTTransferSession();
@@ -34,6 +34,8 @@ public:
     
     void SendTransferData(const char* pData, int nLen);
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
+    void ConnectionConnNotify(const std::string& uid, const std::string& token);
+    void TransferMsg(const std::string& msg);
     
     void TestConnection();
         
@@ -43,29 +45,27 @@ public:
 // from RTTcp
 public:
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnLcsEvent();
-    virtual void OnPeerEvent();
-    virtual void OnTickEvent();
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
     
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
+    virtual void OnMsgAck(TRANSFERMSG& tmsg);
     virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str);
         
 // from RTObserverConnection
     virtual void ConnectionDisconnected();
 protected:
     virtual void OnRecvMessage(const char*message, int nLen);
-private:
-    void GenericMsgId(std::string& strId);
-    int GenericTransSeq();
-    void EstablishAck();
-    void OnEstablishConn();
-    void OnEstablishAck();
 private:
     std::string     m_transferSessId;
     CRTDispatchConnection  m_dispatchConnection;

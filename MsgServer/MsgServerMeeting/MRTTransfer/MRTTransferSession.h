@@ -15,13 +15,13 @@
 #include "TCPSocket.h"
 #include "RTTcp.h"
 #include "RTJSBuffer.h"
-#include "MRTTransfer.h"
+#include "RTTransfer.h"
 #include "RTObserverConnection.h"
 
 class MRTTransferSession
     : public RTTcp
     , public RTJSBuffer
-    , public MRTTransfer
+    , public RTTransfer
     , public RTObserverConnection{
 public:
     MRTTransferSession();
@@ -44,30 +44,28 @@ public:
 // from RTTcp
 public:
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnLcsEvent();
-    virtual void OnPeerEvent();
-    virtual void OnTickEvent();
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
     
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
+    virtual void OnMsgAck(TRANSFERMSG& tmsg);
     virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str);
        
 protected:
     virtual void OnRecvMessage(const char*message, int nLen);
 // from RTObserverConnection
 public:
     virtual void ConnectionDisconnected();
-private:
-    void GenericMsgId(std::string& strId);
-    int GenericTransSeq();
-    void EstablishAck();
-    void OnEstablishConn();
-    void OnEstablishAck();
     
 private:
     std::string     m_transferSessId;

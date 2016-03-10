@@ -49,13 +49,11 @@ void RTHiredis::CmdPing()
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "PING");
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
         return;
     }
-    printf("CmdPing reply:%s\n", m_redisReply->str);
     freeReplyObject((void*)m_redisReply);
 }
 
@@ -66,13 +64,11 @@ bool RTHiredis::CmdSet(const std::string key, const std::string value)
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "SET %s %s", key.c_str(), value.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
         return false;
     }
-    printf("CmdSet reply:%s\n", m_redisReply->str);
     freeReplyObject((void*)m_redisReply);
     return true;
 }
@@ -84,13 +80,11 @@ bool RTHiredis::CmdGet(const std::string key, std::string& value)
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "GET %s", key.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
         return false;
     }
-    printf("CmdGet reply:%s\n", m_redisReply->str);
     if (m_redisReply->str) {
         value = m_redisReply->str;
     }
@@ -105,13 +99,11 @@ bool RTHiredis::CmdDel(const std::string key)
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "DEL %s", key.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
         return false;
     }
-    printf("CmdDel reply:%s\n", m_redisReply->str);
     freeReplyObject((void*)m_redisReply);
     return true;
 }
@@ -124,7 +116,6 @@ bool RTHiredis::CmdHSet(const std::string hid, const std::string key, const std:
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HSET %s %s %s", hid.c_str(), key.c_str(), value.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -143,7 +134,6 @@ bool RTHiredis::CmdHGet(const std::string hid, const std::string key, std::strin
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HGET %s %s", hid.c_str(), key.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -166,7 +156,6 @@ bool RTHiredis::CmdHDel(const std::string hid, const std::string key, std::strin
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HDEL %s %s", hid.c_str(), key.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -184,7 +173,6 @@ bool RTHiredis::CmdHExists(const std::string hid, const std::string key, std::st
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HEXISTS %s %s", hid.c_str(), key.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -202,7 +190,6 @@ bool RTHiredis::CmdHLen(const std::string hid, int* len)
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HLEN %s", hid.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -223,7 +210,6 @@ bool RTHiredis::CmdHKeys(const std::string hid, std::list<std::string>* ress)
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HKEYS %s", hid.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -241,7 +227,6 @@ bool RTHiredis::CmdHVals(const std::string hid, std::list<std::string>* ress)
     }
     redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "HVALS %s", hid.c_str());
     if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
-        LE("redis run error\n");
         if (m_redisReply) {
             LE("error::%s\n", m_redisReply->str);
         }
@@ -261,13 +246,13 @@ bool RTHiredis::HandleReply(redisReply* reply, std::string* res)
             if (res) {
                 res->assign(reply->str);
             } else {
-                LI("reply str:%s\n", reply->str);
+                //LI("reply str:%s\n", reply->str);
             }
         }
             break;
         case REDIS_REPLY_ARRAY:
         {
-            LE("Is this Possible REPLY_ARRAY?\n");
+            //LE("Is this Possible REPLY_ARRAY?\n");
         }
             break;
         case REDIS_REPLY_INTEGER:
@@ -277,7 +262,7 @@ bool RTHiredis::HandleReply(redisReply* reply, std::string* res)
                 sprintf(c, "%lld", reply->integer);
                 res->assign(c);
             } else {
-                LI("reply int:%lld\n", reply->integer);
+                //LI("reply int:%lld\n", reply->integer);
             }
         }
             break;

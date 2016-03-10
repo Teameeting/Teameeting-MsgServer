@@ -26,6 +26,10 @@ function shell_usage()
 ##############################################################
 CUR_PATH=`pwd`
 BASE_PATH=$CUR_PATH/..
+if [ ! -d $BASE_PATH/MsgServer/MSCommonLib ]
+then
+    mkdir -p $BASE_PATH/MsgServer/MSCommonLib
+fi
 
 CUR_DATE=$(date +%Y-%m-%d-%H-%M-%S)
 
@@ -393,7 +397,12 @@ tar_tar_bz2 meeting
 loginfo "tar all the bin program..."
 sleep 1
 cd $CUR_PATH
-cp *.tar.bz2 msgserver
+rm msgserver.tar.bz2
+rm -rf msgserver
+mkdir -p msgserver
+mv *.tar.bz2 msgserver
+cp *.sh msgserver
+rm msgserver/run_build.sh
 tar -jcvf msgserver.tar.bz2 msgserver
 loginfo "tar all the bin program ok..."
 sleep 1

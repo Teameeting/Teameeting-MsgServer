@@ -35,14 +35,6 @@ ConfigSet::~ConfigSet()
 void ConfigSet::Clear()
 {
 	m_cfg.clear();
-
-	// vector< cfg_sect_t * >::iterator mit;
-	/*
-	   SectItt sit;
-	   for( sit = m_cfg.begin(); sit != m_cfg.end(); ++ sit )
-	   delete *sit, *sit = NULL;
-	   */
-
 	return;
 }
 

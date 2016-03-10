@@ -4,6 +4,10 @@
 ###################    parameter    ##########################
 ##############################################################
 LIB_CUR_PATH=`pwd`
+if [ ! -d lib_linux_a ]
+then
+    mkdir -p lib_linux_a
+fi
 LIB_LINUX_PATH=$LIB_CUR_PATH/lib_linux_a
 LIB_BASE_PATH=$LIB_CUR_PATH/MSThirdParty
 echo  "lib cur   path:" $LIB_CUR_PATH
@@ -85,6 +89,14 @@ sleep 1
 ####################    building librtklog  ##########################
 LIB_SRC_PATH=$LIB_BASE_PATH/rtklog
 LIB_NAME=librtklog.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+sleep 1
+
+####################    building libzkclient  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/zkclient
+LIB_NAME=libzkclient.a
+cd $(LIB_SRC_PATH)
+sh build.sh
 build_lib $LIB_SRC_PATH $LIB_NAME
 sleep 1
 
