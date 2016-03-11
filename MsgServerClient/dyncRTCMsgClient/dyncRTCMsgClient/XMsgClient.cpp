@@ -226,7 +226,7 @@ int XMsgClient::Logout()
 
 bool XMsgClient::RefreshTime()
 {
-    uint32 now = rtc::Time();
+    uint32_t now = rtc::Time();
     if (m_lastUpdateTime <= now) {
         m_lastUpdateTime = now  + TIMEOUT_TS;
         KeepAlive();

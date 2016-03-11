@@ -82,7 +82,7 @@ void XTcpClientImpl::Connect(const std::string& server, int port, bool bAutoConn
 	m_svrSockAddr.SetIP(server);
 	m_svrSockAddr.SetPort(port);
 
-	if (m_svrSockAddr.IsUnresolved()) {
+	if (m_svrSockAddr.IsUnresolvedIP()) {
 		CurThread()->PostDelayed(1, this, 1);
 	}
 	else {

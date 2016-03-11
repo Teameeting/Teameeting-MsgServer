@@ -124,6 +124,15 @@ inline bool IsBlockingError(int e) {
   return (e == EWOULDBLOCK) || (e == EAGAIN) || (e == EINPROGRESS);
 }
 
+struct SentPacket {
+  SentPacket() : packet_id(-1), send_time_ms(-1) {}
+  SentPacket(int packet_id, int64_t send_time_ms)
+      : packet_id(packet_id), send_time_ms(send_time_ms) {}
+
+  int packet_id;
+  int64_t send_time_ms;
+};
+
 // General interface for the socket implementations of various networks.  The
 // methods match those of normal UNIX sockets very closely.
 class Socket {
@@ -158,10 +167,10 @@ class Socket {
   };
   virtual ConnState GetState() const = 0;
 
-  // Fills in the given uint16 with the current estimate of the MTU along the
+  // Fills in the given uint16_t with the current estimate of the MTU along the
   // path to the address to which this socket is connected. NOTE: This method
   // can block for up to 10 seconds on Windows.
-  virtual int EstimateMTU(uint16* mtu) = 0;
+  virtual int EstimateMTU(uint16_t* mtu) = 0;
 
   enum Option {
     OPT_DONTFRAGMENT,

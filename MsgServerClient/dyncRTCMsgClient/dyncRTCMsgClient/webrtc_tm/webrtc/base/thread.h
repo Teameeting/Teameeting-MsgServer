@@ -78,13 +78,6 @@ struct _SendMessage {
   bool *ready;
 };
 
-enum ThreadPriority {
-  PRIORITY_IDLE = -1,
-  PRIORITY_NORMAL = 0,
-  PRIORITY_ABOVE_NORMAL = 1,
-  PRIORITY_HIGH = 2,
-};
-
 class Runnable {
  public:
   virtual ~Runnable() {}
@@ -137,10 +130,6 @@ class Thread : public MessageQueue {
   const std::string& name() const { return name_; }
   bool SetName(const std::string& name, const void* obj);
 
-  // Sets the thread's priority. Must be called before Start().
-  ThreadPriority priority() const { return priority_; }
-  bool SetPriority(ThreadPriority priority);
-
   // Starts the execution of the thread.
   bool Start(Runnable* runnable = NULL);
 
@@ -155,8 +144,9 @@ class Thread : public MessageQueue {
   // ProcessMessages occasionally.
   virtual void Run();
 
-  virtual void Send(MessageHandler *phandler, uint32 id = 0,
-      MessageData *pdata = NULL);
+  virtual void Send(MessageHandler* phandler,
+                    uint32_t id = 0,
+                    MessageData* pdata = NULL);
 
   // Convenience method to invoke a functor on another thread.  Caller must
   // provide the |ReturnT| template argument, which cannot (easily) be deduced.
@@ -176,7 +166,7 @@ class Thread : public MessageQueue {
 
   // From MessageQueue
   void Clear(MessageHandler* phandler,
-             uint32 id = MQID_ANY,
+             uint32_t id = MQID_ANY,
              MessageList* removed = NULL) override;
   void ReceiveSends() override;
 
@@ -270,7 +260,6 @@ class Thread : public MessageQueue {
 
   std::list<_SendMessage> sendlist_;
   std::string name_;
-  ThreadPriority priority_;
   Event running_;  // Signalled means running.
 
 #if defined(WEBRTC_POSIX)

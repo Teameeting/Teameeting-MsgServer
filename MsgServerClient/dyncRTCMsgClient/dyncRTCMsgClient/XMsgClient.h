@@ -74,7 +74,7 @@ private:
 private:
     XTcpClientImpl*          m_pClientImpl;
     XMsgProcesser*           m_pMsgProcesser;
-    uint32                   m_lastUpdateTime;
+    uint32_t                   m_lastUpdateTime;
     std::string              m_uid;
     std::string              m_token;
     std::string              m_nname;

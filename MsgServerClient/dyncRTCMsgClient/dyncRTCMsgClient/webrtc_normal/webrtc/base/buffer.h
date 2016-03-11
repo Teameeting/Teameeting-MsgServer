@@ -15,6 +15,8 @@
 #include <cassert>
 #include <cstring>
 #include <utility>  // std::swap (C++11 and later)
+
+#include "webrtc/base/deprecation.h"
 #include "webrtc/base/scoped_ptr.h"
 
 namespace rtc {
@@ -44,7 +46,7 @@ struct ByteType {
 
 // Basic buffer class, can be grown and shrunk dynamically.
 // Unlike std::string/vector, does not initialize data when expanding capacity.
-class Buffer final {
+class Buffer {
  public:
   Buffer();                   // An empty buffer.
   Buffer(const Buffer& buf);  // Copy size and contents of an existing buffer.
@@ -104,7 +106,7 @@ class Buffer final {
     assert(buf.IsConsistent());
     size_ = buf.size_;
     capacity_ = buf.capacity_;
-    data_ = buf.data_.Pass();
+    data_ = std::move(buf.data_);
     buf.OnMovedFrom();
     return *this;
   }
@@ -164,15 +166,17 @@ class Buffer final {
       return;
     scoped_ptr<uint8_t[]> new_data(new uint8_t[capacity]);
     std::memcpy(new_data.get(), data_.get(), size_);
-    data_ = new_data.Pass();
+    data_ = std::move(new_data);
     capacity_ = capacity;
     assert(IsConsistent());
   }
 
-  // We can't call std::move(b), so call b.Pass() instead to do the same job.
-  Buffer&& Pass() {
+  // b.Pass() does the same thing as std::move(b).
+  // Deprecated; remove in March 2016 (bug 5373).
+  RTC_DEPRECATED Buffer&& Pass() { return DEPRECATED_Pass(); }
+  Buffer&& DEPRECATED_Pass() {
     assert(IsConsistent());
-    return static_cast<Buffer&&>(*this);
+    return std::move(*this);
   }
 
   // Resets the buffer to zero size and capacity. Works even if the buffer has

@@ -24,7 +24,7 @@ namespace rtc {
 
 static const size_t kMaxPacketSize = 64 * 1024;
 
-typedef uint16 PacketLength;
+typedef uint16_t PacketLength;
 static const size_t kPacketLenSize = sizeof(PacketLength);
 
 static const size_t kBufSize = kMaxPacketSize + kPacketLenSize;
@@ -267,6 +267,9 @@ int AsyncTCPSocket::Send(const void *pv, size_t cb,
     ClearOutBuffer();
     return res;
   }
+
+  rtc::SentPacket sent_packet(options.packet_id, rtc::Time());
+  SignalSentPacket(this, sent_packet);
 
   // We claim to have sent the whole thing, even if we only sent partial
   return static_cast<int>(cb);

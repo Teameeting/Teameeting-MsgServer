@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D1434461C92B394005B57A0 /* thread_checker_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2D1434451C92B394005B57A0 /* thread_checker_impl.cc */; };
+		2D1434481C92B482005B57A0 /* common.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2D1434471C92B482005B57A0 /* common.cc */; };
 		E6390BDD1C28E44400AE4DD2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BDC1C28E44400AE4DD2 /* main.cpp */; };
 		E6390CB91C28EFE800AE4DD2 /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE71C28EFE800AE4DD2 /* RTMeetMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6390CBA1C28EFE800AE4DD2 /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6390BE91C28EFE800AE4DD2 /* RTMessage.cpp */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -337,6 +339,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2D1434451C92B394005B57A0 /* thread_checker_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread_checker_impl.cc; sourceTree = "<group>"; };
+		2D1434471C92B482005B57A0 /* common.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = common.cc; sourceTree = "<group>"; };
 		E6390BD91C28E44400AE4DD2 /* dyncRTCMsgClient */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dyncRTCMsgClient; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6390BDC1C28E44400AE4DD2 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E6390BE31C28EFE800AE4DD2 /* RTC_Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTC_Export.h; sourceTree = "<group>"; };
@@ -810,6 +814,8 @@
 		E6A8840C1C369063005C619C /* base */ = {
 			isa = PBXGroup;
 			children = (
+				2D1434471C92B482005B57A0 /* common.cc */,
+				2D1434451C92B394005B57A0 /* thread_checker_impl.cc */,
 				E6A8840D1C369063005C619C /* arraysize.h */,
 				E6A8840E1C369063005C619C /* asyncfile.cc */,
 				E6A8840F1C369063005C619C /* asyncfile.h */,
@@ -1320,6 +1326,7 @@
 				E6A884D91C369063005C619C /* asyncpacketsocket.cc in Sources */,
 				E6A885551C369063005C619C /* nethelpers.cc in Sources */,
 				E6A885A31C369063005C619C /* stringencode.cc in Sources */,
+				2D1434481C92B482005B57A0 /* common.cc in Sources */,
 				E6A604321C7C5AB600C798CD /* RTJson.cpp in Sources */,
 				E6A885B81C369063005C619C /* timeutils.cc in Sources */,
 				E6A604281C7C3FBD00C798CD /* RTHttpClient.cpp in Sources */,
@@ -1330,6 +1337,7 @@
 				E6A8850D1C369063005C619C /* event.cc in Sources */,
 				E6A884D21C369063005C619C /* asyncfile.cc in Sources */,
 				E6A885361C369063005C619C /* logging.cc in Sources */,
+				2D1434461C92B394005B57A0 /* thread_checker_impl.cc in Sources */,
 				E6A885111C369063005C619C /* event_tracer.cc in Sources */,
 				E642450A1C7EE0CB00207BD0 /* RTMsgRoom.cpp in Sources */,
 				E6A885911C369063005C619C /* socketaddress.cc in Sources */,

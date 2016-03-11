@@ -140,7 +140,6 @@ Thread::ScopedDisallowBlockingCalls::~ScopedDisallowBlockingCalls() {
 
 Thread::Thread(SocketServer* ss)
     : MessageQueue(ss),
-      priority_(PRIORITY_NORMAL),
       running_(true, false),
 #if defined(WEBRTC_WIN)
       thread_(NULL),
@@ -188,34 +187,6 @@ bool Thread::SetName(const std::string& name, const void* obj) {
   return true;
 }
 
-bool Thread::SetPriority(ThreadPriority priority) {
-#if defined(WEBRTC_WIN)
-  if (running()) {
-    ASSERT(thread_ != NULL);
-    BOOL ret = FALSE;
-    if (priority == PRIORITY_NORMAL) {
-      ret = ::SetThreadPriority(thread_, THREAD_PRIORITY_NORMAL);
-    } else if (priority == PRIORITY_HIGH) {
-      ret = ::SetThreadPriority(thread_, THREAD_PRIORITY_HIGHEST);
-    } else if (priority == PRIORITY_ABOVE_NORMAL) {
-      ret = ::SetThreadPriority(thread_, THREAD_PRIORITY_ABOVE_NORMAL);
-    } else if (priority == PRIORITY_IDLE) {
-      ret = ::SetThreadPriority(thread_, THREAD_PRIORITY_IDLE);
-    }
-    if (!ret) {
-      return false;
-    }
-  }
-  priority_ = priority;
-  return true;
-#else
-  // TODO: Implement for Linux/Mac if possible.
-  if (running()) return false;
-  priority_ = priority;
-  return true;
-#endif
-}
-
 bool Thread::Start(Runnable* runnable) {
   ASSERT(owned_);
   if (!owned_) return false;
@@ -232,55 +203,16 @@ bool Thread::Start(Runnable* runnable) {
   init->thread = this;
   init->runnable = runnable;
 #if defined(WEBRTC_WIN)
-  DWORD flags = 0;
-  if (priority_ != PRIORITY_NORMAL) {
-    flags = CREATE_SUSPENDED;
-  }
-  thread_ = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)PreRun, init, flags,
+  thread_ = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)PreRun, init, 0,
                          &thread_id_);
   if (thread_) {
     running_.Set();
-    if (priority_ != PRIORITY_NORMAL) {
-      SetPriority(priority_);
-      ::ResumeThread(thread_);
-    }
   } else {
     return false;
   }
 #elif defined(WEBRTC_POSIX)
   pthread_attr_t attr;
   pthread_attr_init(&attr);
-
-  // Thread priorities are not supported in NaCl.
-#if !defined(__native_client__)
-  if (priority_ != PRIORITY_NORMAL) {
-    if (priority_ == PRIORITY_IDLE) {
-      // There is no POSIX-standard way to set a below-normal priority for an
-      // individual thread (only whole process), so let's not support it.
-      LOG(LS_WARNING) << "PRIORITY_IDLE not supported";
-    } else {
-      // Set real-time round-robin policy.
-      if (pthread_attr_setschedpolicy(&attr, SCHED_RR) != 0) {
-        LOG(LS_ERROR) << "pthread_attr_setschedpolicy";
-      }
-      struct sched_param param;
-      if (pthread_attr_getschedparam(&attr, &param) != 0) {
-        LOG(LS_ERROR) << "pthread_attr_getschedparam";
-      } else {
-        // The numbers here are arbitrary.
-        if (priority_ == PRIORITY_HIGH) {
-          param.sched_priority = 6;           // 6 = HIGH
-        } else {
-          ASSERT(priority_ == PRIORITY_ABOVE_NORMAL);
-          param.sched_priority = 4;           // 4 = ABOVE_NORMAL
-        }
-        if (pthread_attr_setschedparam(&attr, &param) != 0) {
-          LOG(LS_ERROR) << "pthread_attr_setschedparam";
-        }
-      }
-    }
-  }
-#endif  // !defined(__native_client__)
 
   int error_code = pthread_create(&thread_, &attr, PreRun, init);
   if (0 != error_code) {
@@ -345,7 +277,7 @@ bool Thread::SetAllowBlockingCalls(bool allow) {
 
 // static
 void Thread::AssertBlockingIsAllowedOnCurrentThread() {
-#ifdef _DEBUG
+#if !defined(NDEBUG)
   Thread* current = Thread::Current();
   ASSERT(!current || current->blocking_calls_allowed_);
 #endif
@@ -385,7 +317,7 @@ void Thread::Stop() {
   Join();
 }
 
-void Thread::Send(MessageHandler *phandler, uint32 id, MessageData *pdata) {
+void Thread::Send(MessageHandler* phandler, uint32_t id, MessageData* pdata) {
   if (fStop_)
     return;
 
@@ -495,7 +427,8 @@ void Thread::InvokeEnd() {
   TRACE_EVENT_END0("webrtc", "Thread::Invoke");
 }
 
-void Thread::Clear(MessageHandler *phandler, uint32 id,
+void Thread::Clear(MessageHandler* phandler,
+                   uint32_t id,
                    MessageList* removed) {
   CritScope cs(&crit_);
 
@@ -524,7 +457,7 @@ void Thread::Clear(MessageHandler *phandler, uint32 id,
 }
 
 bool Thread::ProcessMessages(int cmsLoop) {
-  uint32 msEnd = (kForever == cmsLoop) ? 0 : TimeAfter(cmsLoop);
+  uint32_t msEnd = (kForever == cmsLoop) ? 0 : TimeAfter(cmsLoop);
   int cmsNext = cmsLoop;
 
   while (true) {
