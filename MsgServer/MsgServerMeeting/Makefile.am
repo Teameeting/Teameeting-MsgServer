@@ -1,7 +1,7 @@
 bin_PROGRAMS=MsgServerMeeting
 
 AM_CFLAGS=-g -O0 -std=gnu++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES__
-AM_CFLAGS+=-DAUTO_RECONNECT
+###AM_CFLAGS+=-DAUTO_RECONNECT
 MsgServerMeeting_LDFLAGS=-static-libgcc
 
 AM_CPPFLAGS=$(AM_CFLAGS)
