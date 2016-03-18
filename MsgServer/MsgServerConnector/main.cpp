@@ -18,7 +18,7 @@
 int main(int argc, const char * argv[]) {
     LI("Hello, Connector!!!");
     CRTConnector::PrintVersion();
-    
+
     if (argc <= 1) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
@@ -39,18 +39,23 @@ int main(int argc, const char * argv[]) {
     L_Init(0, NULL);
     CRTConnector::Initialize(1024);
     CRTConnector* pConnector = CRTConnector::Inst();
-    pConnector->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
+    int res = pConnector->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                       RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenWebcon,
                       RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                       RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenModule,
                       RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                       RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenClicon
                       );
+    if (res != 0) {
+        LI("CRTConnector start failed and goto exit, res:%d\n", res);
+        goto EXIT;
+    }
     while (true) {
         pConnector->DoTick();
         sleep(1);
         //break;
     }
+EXIT:
     CRTConnector::DeInitialize();
     L_Deinit();
     return 0;

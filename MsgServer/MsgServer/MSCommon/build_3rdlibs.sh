@@ -95,7 +95,7 @@ sleep 1
 ####################    building libzkclient  ##########################
 LIB_SRC_PATH=$LIB_BASE_PATH/zkclient
 LIB_NAME=libzkclient.a
-cd $(LIB_SRC_PATH)
+cd $LIB_SRC_PATH
 sh build.sh
 build_lib $LIB_SRC_PATH $LIB_NAME
 sleep 1

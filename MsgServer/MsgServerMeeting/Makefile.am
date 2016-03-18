@@ -1,6 +1,7 @@
 bin_PROGRAMS=MsgServerMeeting
 
 AM_CFLAGS=-g -O0 -std=gnu++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES__
+AM_CFLAGS+=-DAUTO_RECONNECT
 MsgServerMeeting_LDFLAGS=-static-libgcc
 
 AM_CPPFLAGS=$(AM_CFLAGS)
@@ -25,7 +26,7 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 
 MsgServerMeeting_SOURCES=$(top_srcdir)/MRTHttp/MRTHttpSvrConn.cpp \
 						   $(top_srcdir)/MRTTransfer/MRTTransferSession.cpp \
-						   $(top_srcdir)/MRTConnectionManager.cpp \
+						   $(top_srcdir)/MRTConnManager.cpp \
 						   $(top_srcdir)/MRTMeeting.cpp \
 						   $(top_srcdir)/MRTMeetingRoom.cpp \
 						   $(top_srcdir)/MRTRoomManager.cpp \

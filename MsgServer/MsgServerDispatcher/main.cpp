@@ -36,23 +36,27 @@ int main(int argc, const char * argv[]) {
         getchar();
         exit(0);
     }
-    
+
     L_Init(0, NULL);
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
-    pMsgQueue->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
+    int res = pMsgQueue->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                      RTZKClient::Instance()->RTZKClient::Instance()->GetServerConfig().portConfig.dispatcher.AcceptConn,
                      RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                      RTZKClient::Instance()->GetServerConfig().portConfig.dispatcher.ListenDisp,
                      RTZKClient::Instance()->GetServerConfig().HttpIp.c_str(),
                      RTZKClient::Instance()->GetServerConfig().portConfig.dispatcher.ListenHttp
                      );
-    
+    if (res != 0) {
+        LI("DRTMsgQueue start failed and goto exit, res:%d\n", res);
+        goto EXIT;
+    }
     while (true) {
         pMsgQueue->DoTick();
         sleep(1);
         //break;
     }
+EXIT:
     DRTMsgQueue::DeInitialize();
     L_Deinit();
     return 0;

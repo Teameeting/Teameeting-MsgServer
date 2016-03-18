@@ -36,23 +36,27 @@ int main(int argc, const char * argv[]) {
         getchar();
         exit(0);
     }
-    
+
     L_Init(5, NULL);
     MRTMeeting::Initialize(1024);
     MRTMeeting* pMeeting = MRTMeeting::Inst();
-    pMeeting->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
+    int res = pMeeting->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                     RTZKClient::Instance()->GetServerConfig().portConfig.meeting.AcceptConn,
                     RTZKClient::Instance()->GetServerConfig().IP.c_str(),
                     RTZKClient::Instance()->GetServerConfig().portConfig.meeting.AcceptDisp,
                     RTZKClient::Instance()->GetServerConfig().HttpIp.c_str(),
                     RTZKClient::Instance()->GetServerConfig().portConfig.meeting.AcceptHttp
                     );
-
+    if (res != 0) {
+        LI("MRTMeeting start failed and goto exit, res:%d\n", res);
+        goto EXIT;
+    }
     while (true) {
         pMeeting->DoTick();
         sleep(1);
         //break;
     }
+EXIT:
     MRTMeeting::DeInitialize();
     L_Deinit();
     return 0;
