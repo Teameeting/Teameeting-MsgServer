@@ -7,7 +7,7 @@
 //
 
 #include "CRTDispatchConnection.h"
-#include "CRTConnectionManager.h"
+#include "CRTConnManager.h"
 #include "CRTConnection.h"
 #include "CRTConnectionTcp.h"
 #include "rtklog.h"
@@ -19,7 +19,7 @@ std::string CRTDispatchConnection::m_connPort;
 void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::string& msg)
 {
     //find connector
-    CRTConnectionManager::ConnectionInfo* pci = CRTConnectionManager::Instance()->findConnectionInfoById(uid);
+    CRTConnManager::ConnectionInfo* pci = CRTConnManager::Instance()->findConnectionInfoById(uid);
     if (!pci) {
         return;
     } else { //!pci

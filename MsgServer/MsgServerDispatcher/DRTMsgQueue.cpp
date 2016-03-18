@@ -11,7 +11,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
-#include "DRTConnectionManager.h"
+#include "DRTConnManager.h"
 #include "RTUtils.hpp"
 
 
@@ -131,22 +131,22 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
     char hh[24] = {0};
     sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
     
-    DRTConnectionManager::s_cohttpHost = hh;
-    DRTConnectionManager::s_cohttpIp = pHttpIp;
-    DRTConnectionManager::s_cohttpPort = usHttpPort;
+    DRTConnManager::s_cohttpHost = hh;
+    DRTConnManager::s_cohttpIp = pHttpIp;
+    DRTConnManager::s_cohttpPort = usHttpPort;
     
     std::string mid;
     GenericSessionId(mid);
-    DRTConnectionManager::Instance()->SetMsgQueueId(mid);
+    DRTConnManager::Instance()->SetMsgQueueId(mid);
     LI("[][]MsgQueueId:%s\n", mid.c_str());
 
 	if(usConnPort > 0)
 	{
         char addr[24] = {0};
         sprintf(addr, "%s %u", pConnIp, usConnPort);
-        DRTConnectionManager::Instance()->GetAddrsList()->push_front(addr);
+        DRTConnManager::Instance()->GetAddrsList()->push_front(addr);
 
-        if (!(DRTConnectionManager::Instance()->ConnectConnector())) {
+        if (!(DRTConnManager::Instance()->ConnectConnector())) {
             LE("Start to ConnectConnector failed\n");
             return -1;
         }
@@ -171,7 +171,7 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
         LI("Start Dispatcher Http service:(%d) ok...\n", usHttpPort);
     }
     
-    if (!(DRTConnectionManager::Instance()->ConnectHttpSvrConn())) {
+    if (!(DRTConnManager::Instance()->ConnectHttpSvrConn())) {
         LE("ConnectHttpSvrConn failed\n");
         return -1;
     }
@@ -182,7 +182,7 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
 void DRTMsgQueue::DoTick()
 {
 #if 1
-    DRTConnectionManager::Instance()->RefreshConnection();
+    DRTConnManager::Instance()->RefreshConnection();
 #endif
 }
 

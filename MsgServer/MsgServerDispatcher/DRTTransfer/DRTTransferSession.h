@@ -30,6 +30,7 @@ public:
     void Init();
     void Unit();
     bool Connect(const std::string addr, int port);
+    bool Connect();
     void Disconn();
     bool RefreshTime();
     void KeepAlive();
@@ -37,7 +38,10 @@ public:
     void SendTransferData(const char* pData, int nLen);
     void SetModuleId(std::string& moduleId) { m_moduleId = moduleId; }
     void TestConnection();
-        
+
+    std::string& GetTransferAddr() { return m_addr; }
+    int GetTransferPort() { return m_port; }
+    int GetConnectingStatus() { return m_connectingStatus; };
 public:
     void EstablishConnection();
 
@@ -72,6 +76,9 @@ private:
     UInt64          m_lastUpdateTime;
     std::string     m_moduleId;
     DRTMsgDispatch  m_msgDispatch;
+    std::string     m_addr;
+    int             m_port;
+    int             m_connectingStatus;
 };
 
 #endif /* defined(__MsgServerDispatcher__DRTTransferSession__) */

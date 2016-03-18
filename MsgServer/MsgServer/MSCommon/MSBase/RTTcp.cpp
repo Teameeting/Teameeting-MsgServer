@@ -86,7 +86,6 @@ SInt64 RTTcp::Run()
 		return -1;
 	}
 
-
 	while(this->IsLiveSession())
 	{
 		if(events&Task::kReadEvent)

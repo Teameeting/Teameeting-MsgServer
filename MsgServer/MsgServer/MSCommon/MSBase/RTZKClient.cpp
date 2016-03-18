@@ -11,8 +11,8 @@
 #include "rtklog.h"
 
 
-RTZKClient::RTZKClient(const std::string& conf)
-: m_conf_path(conf)
+RTZKClient::RTZKClient()
+: m_conf_path("")
 , m_client(NULL)
 {
     m_listWs.clear();
@@ -54,6 +54,7 @@ int RTZKClient::ChildrenMapCallback(const gim::ChildrenMap& cmap)
         if (m_mapChildWs.find(ss.NodePath)==m_mapChildWs.end()) {
             w = new gim::ListWatcher< RTZKClient >(this, &RTZKClient::ChildrenMapCallback, &RTZKClient::PathRemoveCallback);
             w->init(m_client, ss.NodePath);
+            LI("RTZKClient::ChildredMapCallback node %s was added\n", ss.NodePath.c_str());
             m_mapChildWs.insert(make_pair(ss.NodePath, w));
         }
     }
@@ -63,8 +64,10 @@ int RTZKClient::ChildrenMapCallback(const gim::ChildrenMap& cmap)
 int RTZKClient::PathRemoveCallback(const std::string& path)
 {
     ChildrenWatcherMapIt it = m_mapChildWs.find(path);
-    if (it!=m_mapChildWs.end())
+    if (it!=m_mapChildWs.end()) {
+        LE("RTZKClient::PathRemoveCallback node %s was removed\n", path.c_str());
         m_mapChildWs.erase(it);
+    }
     return 0;
 }
 
@@ -90,8 +93,14 @@ int RTZKClient::InitStatusNode(gim::ServerConfig& conf){
     return 0;
 }
 
-int RTZKClient::InitZKClient()
+bool RTZKClient::CheckNodeExists(const std::string& nodePath)
 {
+    return ((m_mapChildWs.find(nodePath)==m_mapChildWs.end())?false:true);
+}
+
+int RTZKClient::InitZKClient(const std::string& conf)
+{
+    m_conf_path = conf;
     int res = m_conf.init(m_conf_path);
     if (res!=0) {
         LE("m_conf.init failed\n");
@@ -141,4 +150,10 @@ int RTZKClient::InitZKClient()
     
     return 0;
 
+}
+
+int RTZKClient::InitOnly(const std::string& conf)
+{
+    m_conf_path = conf;
+    return m_conf.init(m_conf_path);
 }

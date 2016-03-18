@@ -22,11 +22,19 @@
 
 class RTZKClient{
 public:
-    RTZKClient(const std::string& conf);
+    RTZKClient();
     ~RTZKClient();
 
-    int InitZKClient();
+    static RTZKClient* Instance() {
+        static RTZKClient sInstance;
+        return &sInstance;
+    }
+    
+    int InitOnly(const std::string& conf);
+    int InitZKClient(const std::string& conf);
     int InitStatusNode(gim::ServerConfig& conf);
+    
+    bool CheckNodeExists(const std::string& nodePath);
 
     static void RTZKLogCallBack(void* ctx, const std::string& l);
     static int RTZKDataCallback(void* ctx, int version, const std::string& data);
@@ -36,6 +44,7 @@ public:
     int ChildrenMapCallback(const gim::ChildrenMap& cmap);
     int PathRemoveCallback(const std::string& path);
 
+    // <nodePath, node>
     typedef std::unordered_map< std::string, gim::ListWatcher<RTZKClient>* > ChildrenWatcherMap;
     typedef ChildrenWatcherMap::iterator ChildrenWatcherMapIt;
 

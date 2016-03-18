@@ -2,12 +2,15 @@
 #include "RTJSBuffer.h"
 #include "atomic.h"
 
+
 RTDispatch::RTDispatch()
 : Task()
 , fTimeoutTask(NULL, 120 * 1000)
 , fTickTime(0)
 {
+	ListZero(&m_listRecv);
 	ListZero(&m_listSend);
+	ListZero(&m_listWakeup);
 	ListZero(&m_listPush);
 	fTimeoutTask.SetTask(this);
 }
@@ -15,13 +18,33 @@ RTDispatch::RTDispatch()
 RTDispatch::~RTDispatch(void)
 {
 	ListEmpty(&m_listPush);
+	ListEmpty(&m_listWakeup);
 	ListEmpty(&m_listSend);
+	ListEmpty(&m_listRecv);
+}
+
+int RTDispatch::PostData(const char*pData, int nLen)
+{
+    if (nLen > DATA_MAX_LENGTH) {
+        return -1;
+    }
+    {
+        char* ptr = new char[nLen+1];
+        memcpy(ptr, pData, nLen);
+        ptr[nLen] = '\0';
+        {
+            OSMutexLocker locker(&mMutexRecv);
+            ListAppend(&m_listRecv, ptr, nLen);
+        }
+    }
+
+	this->Signal(kReadEvent);
+	return nLen;
 }
 
 int RTDispatch::SendData(const char*pData, int nLen)
 {
-    if (nLen > 9999) {
-        LE("RTDispatch::SendData pData is over length\n");
+    if (nLen > DATA_MAX_LENGTH) {
         return -1;
     }
     {
@@ -38,10 +61,28 @@ int RTDispatch::SendData(const char*pData, int nLen)
 	return nLen;
 }
 
+int RTDispatch::WakeupData(const char*pData, int nLen)
+{
+    if (nLen > DATA_MAX_LENGTH) {
+        return -1;
+    }
+    {
+        char* ptr = new char[nLen+1];
+        memcpy(ptr, pData, nLen);
+        ptr[nLen] = '\0';
+        {
+            OSMutexLocker locker(&mMutexWakeup);
+            ListAppend(&m_listWakeup, ptr, nLen);
+        }
+    }
+    
+    this->Signal(kWakeupEvent);
+    return nLen;
+}
+
 int RTDispatch::PushData(const char*pData, int nLen)
 {
-    if (nLen > 9999) {
-        LE("RTDispatch::PushData pData is over length\n");
+    if (nLen > DATA_MAX_LENGTH) {
         return -1;
     }
     {
@@ -77,7 +118,17 @@ SInt64 RTDispatch::Run()
 	{
 		if(events&Task::kReadEvent)
 		{
-            //OnRecvData("", 0);
+            ListElement *elem = NULL;
+            if((elem = m_listRecv.first) != NULL)
+            {
+                OnRecvEvent((char*)elem->content, elem->size);
+                {
+                    OSMutexLocker locker(&mMutexRecv);
+                    ListRemoveHead(&m_listRecv);
+                }
+                if(NULL != m_listRecv.first)
+                    this->Signal(kReadEvent);
+            }
 			events -= Task::kReadEvent;
 		}
 		else if(events&Task::kWriteEvent)
@@ -97,7 +148,17 @@ SInt64 RTDispatch::Run()
 		}
 		else if(events&Task::kWakeupEvent)
 		{
-			OnWakeupEvent("", 0);
+            ListElement *elem = NULL;
+            if((elem = m_listWakeup.first) != NULL)
+            {
+                OnWakeupEvent((char*)elem->content, elem->size);
+                {
+                    OSMutexLocker locker(&mMutexWakeup);
+                    ListRemoveHead(&m_listWakeup);
+                }
+                if(NULL != m_listWakeup.first)
+                    this->Signal(kWakeupEvent);
+            }
 			events -= Task::kWakeupEvent;
 		}
 		else if(events&Task::kPushEvent)
@@ -118,7 +179,7 @@ SInt64 RTDispatch::Run()
 		else if(events&Task::kIdleEvent)
 		{
 			OnTickEvent("", 0);
-			events -= Task::kIdleEvent; 
+			events -= Task::kIdleEvent;
 		}
 		else
 		{

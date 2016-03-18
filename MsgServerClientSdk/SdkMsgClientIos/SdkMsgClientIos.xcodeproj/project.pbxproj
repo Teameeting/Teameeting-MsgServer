@@ -88,21 +88,16 @@
 		E65B52BD1C300A0400A5DE53 /* TMMsgSender.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TMMsgSender.mm; sourceTree = "<group>"; };
 		E6C057971C96ECE900C66EC3 /* XJSBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XJSBuffer.cpp; sourceTree = "<group>"; };
 		E6C057981C96ECE900C66EC3 /* XJSBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XJSBuffer.h; sourceTree = "<group>"; };
-		E6C057991C96ECE900C66EC3 /* XJSBuffer.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = XJSBuffer.o; sourceTree = "<group>"; };
 		E6C0579A1C96ECE900C66EC3 /* XMsgCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgCallback.h; sourceTree = "<group>"; };
 		E6C0579B1C96ECE900C66EC3 /* XMsgClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgClient.cpp; sourceTree = "<group>"; };
 		E6C0579C1C96ECE900C66EC3 /* XMsgClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgClient.h; sourceTree = "<group>"; };
-		E6C0579D1C96ECE900C66EC3 /* XMsgClient.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = XMsgClient.o; sourceTree = "<group>"; };
 		E6C0579E1C96ECE900C66EC3 /* XMsgProcesser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgProcesser.cpp; sourceTree = "<group>"; };
 		E6C0579F1C96ECE900C66EC3 /* XMsgProcesser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgProcesser.h; sourceTree = "<group>"; };
-		E6C057A01C96ECE900C66EC3 /* XMsgProcesser.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = XMsgProcesser.o; sourceTree = "<group>"; };
 		E6C057A11C96ECE900C66EC3 /* XTcpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTcpClient.h; sourceTree = "<group>"; };
 		E6C057A21C96ECE900C66EC3 /* XTcpClientImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XTcpClientImpl.cpp; sourceTree = "<group>"; };
 		E6C057A31C96ECE900C66EC3 /* XTcpClientImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTcpClientImpl.h; sourceTree = "<group>"; };
-		E6C057A41C96ECE900C66EC3 /* XTcpClientImpl.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = XTcpClientImpl.o; sourceTree = "<group>"; };
 		E6C057A51C96ECE900C66EC3 /* XTcpTick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XTcpTick.cpp; sourceTree = "<group>"; };
 		E6C057A61C96ECE900C66EC3 /* XTcpTick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTcpTick.h; sourceTree = "<group>"; };
-		E6C057A71C96ECE900C66EC3 /* XTcpTick.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = XTcpTick.o; sourceTree = "<group>"; };
 		E6C057A91C96ECE900C66EC3 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
 		E6C057AA1C96ECE900C66EC3 /* filestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filestream.h; sourceTree = "<group>"; };
 		E6C057AC1C96ECE900C66EC3 /* pow10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pow10.h; sourceTree = "<group>"; };
@@ -116,14 +111,11 @@
 		E6C057B41C96ECE900C66EC3 /* RTC_Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTC_Export.h; sourceTree = "<group>"; };
 		E6C057B61C96ECE900C66EC3 /* RTMeetMsg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTMeetMsg.cpp; sourceTree = "<group>"; };
 		E6C057B71C96ECE900C66EC3 /* RTMeetMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMeetMsg.h; sourceTree = "<group>"; };
-		E6C057B81C96ECE900C66EC3 /* RTMeetMsg.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RTMeetMsg.o; sourceTree = "<group>"; };
 		E6C057B91C96ECE900C66EC3 /* RTMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTMessage.cpp; sourceTree = "<group>"; };
 		E6C057BA1C96ECE900C66EC3 /* RTMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMessage.h; sourceTree = "<group>"; };
-		E6C057BB1C96ECE900C66EC3 /* RTMessage.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RTMessage.o; sourceTree = "<group>"; };
 		E6C057BC1C96ECE900C66EC3 /* RTMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsg.h; sourceTree = "<group>"; };
 		E6C057BD1C96ECE900C66EC3 /* RTSignalMsg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTSignalMsg.cpp; sourceTree = "<group>"; };
 		E6C057BE1C96ECE900C66EC3 /* RTSignalMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSignalMsg.h; sourceTree = "<group>"; };
-		E6C057BF1C96ECE900C66EC3 /* RTSignalMsg.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = RTSignalMsg.o; sourceTree = "<group>"; };
 		E6C057C01C96ECE900C66EC3 /* RTType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTType.h; sourceTree = "<group>"; };
 		E6C057C11C96ECE900C66EC3 /* StatusCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCode.h; sourceTree = "<group>"; };
 		E6C057C21C96ECE900C66EC3 /* RTMsgCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
@@ -665,21 +657,16 @@
 			children = (
 				E6C057971C96ECE900C66EC3 /* XJSBuffer.cpp */,
 				E6C057981C96ECE900C66EC3 /* XJSBuffer.h */,
-				E6C057991C96ECE900C66EC3 /* XJSBuffer.o */,
 				E6C0579A1C96ECE900C66EC3 /* XMsgCallback.h */,
 				E6C0579B1C96ECE900C66EC3 /* XMsgClient.cpp */,
 				E6C0579C1C96ECE900C66EC3 /* XMsgClient.h */,
-				E6C0579D1C96ECE900C66EC3 /* XMsgClient.o */,
 				E6C0579E1C96ECE900C66EC3 /* XMsgProcesser.cpp */,
 				E6C0579F1C96ECE900C66EC3 /* XMsgProcesser.h */,
-				E6C057A01C96ECE900C66EC3 /* XMsgProcesser.o */,
 				E6C057A11C96ECE900C66EC3 /* XTcpClient.h */,
 				E6C057A21C96ECE900C66EC3 /* XTcpClientImpl.cpp */,
 				E6C057A31C96ECE900C66EC3 /* XTcpClientImpl.h */,
-				E6C057A41C96ECE900C66EC3 /* XTcpClientImpl.o */,
 				E6C057A51C96ECE900C66EC3 /* XTcpTick.cpp */,
 				E6C057A61C96ECE900C66EC3 /* XTcpTick.h */,
-				E6C057A71C96ECE900C66EC3 /* XTcpTick.o */,
 			);
 			path = client;
 			sourceTree = "<group>";
@@ -714,14 +701,11 @@
 			children = (
 				E6C057B61C96ECE900C66EC3 /* RTMeetMsg.cpp */,
 				E6C057B71C96ECE900C66EC3 /* RTMeetMsg.h */,
-				E6C057B81C96ECE900C66EC3 /* RTMeetMsg.o */,
 				E6C057B91C96ECE900C66EC3 /* RTMessage.cpp */,
 				E6C057BA1C96ECE900C66EC3 /* RTMessage.h */,
-				E6C057BB1C96ECE900C66EC3 /* RTMessage.o */,
 				E6C057BC1C96ECE900C66EC3 /* RTMsg.h */,
 				E6C057BD1C96ECE900C66EC3 /* RTSignalMsg.cpp */,
 				E6C057BE1C96ECE900C66EC3 /* RTSignalMsg.h */,
-				E6C057BF1C96ECE900C66EC3 /* RTSignalMsg.o */,
 				E6C057C01C96ECE900C66EC3 /* RTType.h */,
 				E6C057C11C96ECE900C66EC3 /* StatusCode.h */,
 			);

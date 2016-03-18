@@ -1,13 +1,13 @@
 //
-//  CRTConnectionManager.h
+//  CRTConnManager.h
 //  MsgServerConnector
 //
 //  Created by hp on 12/3/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef __MsgServerConnector__CRTConnectionManager__
-#define __MsgServerConnector__CRTConnectionManager__
+#ifndef __MsgServerConnector__CRTConnManager__
+#define __MsgServerConnector__CRTConnManager__
 
 #include <stdio.h>
 #include <iostream>
@@ -23,7 +23,7 @@
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"
 
-class CRTConnectionManager {
+class CRTConnManager {
 public:
     //store the session's module type and transfer_session_id and transfer_session
     typedef struct _ModuleInfo{
@@ -113,8 +113,8 @@ public:
     /**
      *
      */
-    static CRTConnectionManager* Instance() {
-        static CRTConnectionManager s_manager;
+    static CRTConnManager* Instance() {
+        static CRTConnManager s_manager;
         return &s_manager;
     }
 
@@ -147,13 +147,13 @@ public:
     std::string& ConnectorPort() { return m_connectorPort; }
     std::string& ConnectorId() { return m_connectorId; }
 private:
-    CRTConnectionManager() : m_connectorIp(""),
+    CRTConnManager() : m_connectorIp(""),
                             m_connectorPort(""),
                             m_connectorId("") { }
-    ~CRTConnectionManager() { }
+    ~CRTConnManager() { }
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
 };
 
-#endif /* defined(__MsgServerConnector__CRTConnectionManager__) */
+#endif /* defined(__MsgServerConnector__CRTConnManager__) */

@@ -14,7 +14,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
-#include "CRTConnectionManager.h"
+#include "CRTConnManager.h"
 #include "CRTDispatchConnection.h"
 #include "RTUtils.hpp"
 
@@ -146,7 +146,7 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
     CRTDispatchConnection::m_connIp = pWebConIp;
     CRTDispatchConnection::m_connPort = usWebConPort;
     GenericSessionId(ssid);
-    CRTConnectionManager::Instance()->SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
+    CRTConnManager::Instance()->SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
 
 	if(usWebConPort > 0)

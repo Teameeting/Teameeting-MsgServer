@@ -20,18 +20,15 @@
 #include "MRTTransferSession.h"
 #include "MRTMeetingRoom.h"
 #include "MRTHttpSvrConn.h"
+#include "RTDispatch.h"
+#include "RTEventTimer.h"
 
-class MRTRoomManager{
+class MRTRoomManager : public RTDispatch{
 public:
     static MRTRoomManager* Instance() {
         static MRTRoomManager s_manager;
         return &s_manager;
     }
-    static std::string      s_msgQueueIp;
-    static unsigned short   s_msgQueuePort;
-    static std::string      s_httpIp;
-    static unsigned short   s_httpPort;
-    static std::string      s_httpHost;
 public:
     
     void HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
@@ -41,35 +38,40 @@ public:
     void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
     void LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
     
-    bool Init();
-    bool ConnectMsgQueue();
-    bool ConnectHttpSvrConn();
+    bool Init(const std::string& msgQueueIp, unsigned short msgQueuePort, const std::string& httpIp, unsigned short httpPort, const std::string& httpHost);
+    bool ConnectMsgQueue(const std::string& msgQueueIp, unsigned short msgQueuePort);
+    bool TryConnectMsgQueue(const std::string& msgQueueIp, unsigned short msgQueuePort);
+    bool ConnectHttpSvrConn(const std::string& httpIp, unsigned short httpPort, const std::string& httpHost);
     void SendTransferData(const std::string strData, int nLen);
-    void RefreshConnection();
-    const MRTHttpSvrConn* GetHttpSvrConn() { return m_pHttpSvrConn; }
     
     void CheckMembers();
     void SyncHttpRequest();
     void ClearSessionLost(const std::string& uid, const std::string& token, const std::string& connector);
     void ClearMsgQueueSession(const std::string& sid);
     
+    // for RTDispatch
+    virtual void OnRecvEvent(const char*pData, int nLen) {}
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen);
+    
 private:
-    void OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    
-    void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response);
-    void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, SENDTAGS tags, int nmem, const std::string& cont, const std::string& tos, std::string& response);
-    void ResponseSndMsg(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response);
-    
-    
     // <roomid, MeetingRoom> all the rooms map
     typedef std::unordered_map<std::string, rtc::scoped_refptr<MRTMeetingRoom> > MeetingRoomMap;
     typedef MeetingRoomMap::iterator MeetingRoomMapIt;
-
+    
     // <userid, MeetingRoomId> in meeting user-roomid map
     typedef std::unordered_map<std::string, const std::string> UserMeetingRoomIdMap;
     typedef UserMeetingRoomIdMap::iterator UserMeetingRoomIdMapIt;
     
+    int ChangeToJson(const std::string from, std::string& users);
     void SendWaitingMsgs(MeetingRoomMapIt mit);
+    void OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
+    void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response);
+    void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, SENDTAGS tags, int nmem, const std::string& cont, const std::string& tos, std::string& response);
+    void ResponseSndMsg(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response);
+    
     
     void AddUserMeetingRoomId(const std::string& uid, const std::string& roomid) {
         OSMutexLocker locker(&m_mutexUser);
@@ -95,12 +97,9 @@ private:
         return "";
     }
     
-    int ChangeToJson(const std::string from, std::string& users);
-    
-    MRTRoomManager():m_pMsgQueueSession(NULL)
-                , m_pHttpSvrConn(NULL){
-        
-    }
+    MRTRoomManager(): RTDispatch()
+                , m_pMsgQueueSession(NULL)
+                , m_pHttpSvrConn(NULL){}
     ~MRTRoomManager(){
         if (m_pHttpSvrConn) {
             delete m_pHttpSvrConn;
@@ -135,8 +134,8 @@ private:
     }
     
     OSMutex                     m_mutexUser;
-    MRTHttpSvrConn              *m_pHttpSvrConn;
-    MRTTransferSession          *m_pMsgQueueSession;
+    MRTHttpSvrConn*             m_pHttpSvrConn;
+    MRTTransferSession*         m_pMsgQueueSession;
     MeetingRoomMap              m_meetingRoomMap;
     UserMeetingRoomIdMap        m_userMeetingRoomIdMap;
     

@@ -9,18 +9,23 @@
 #include "MRTTransferSession.h"
 #include "RTMessage.h"
 #include "MRTRoomManager.h"
-#include "MRTConnectionManager.h"
+#include "MRTConnManager.h"
 #include "MRTHttpSvrConn.h"
 #include "RTUtils.hpp"
 
 #define TIMEOUT_TS (60*1000)
 
-MRTTransferSession::MRTTransferSession()
-: RTJSBuffer()
+MRTTransferSession::MRTTransferSession(TRANSFERMODULE module)
+: RTTcp()
+, RTJSBuffer()
 , RTTransfer()
 , m_lastUpdateTime(0)
 , m_moduleId("")
 , m_transferSessId("")
+, m_module(module)
+, m_addr("")
+, m_port(0)
+, m_connectingStatus(0)
 {
     AddObserver(this);
 }
@@ -42,23 +47,40 @@ void MRTTransferSession::Init()
     socket->KeepAlive();
     socket->SetSocketBufSize(96L * 1024L);
     
-    socket->SetTask(this);
     this->SetTimer(120*1000);
 }
 
 void MRTTransferSession::Unit()
 {
     Disconn();
+    m_connectingStatus = 0;
 }
 
 bool MRTTransferSession::Connect(const std::string addr, int port)
 {
-    if (addr.empty() || port < 2048) {
-        LE("%s invalid params addr:%s, port:%d\n", __FUNCTION__, addr.c_str(), port);
+    m_addr = addr;
+    m_port = port;
+    LI("MRTTransferSession::Connect(params) m_addr:%s, m_port:%d\n", m_addr.c_str(), m_port);
+    OS_Error err = GetSocket()->Connect(SocketUtils::ConvertStringToAddr(m_addr.c_str()), m_port);
+    if (err == OS_NoErr || err == EISCONN) {
+        m_connectingStatus = 1;
+        return true;
+    } else {
+        LE("%s ERR:%d\n", __FUNCTION__, err);
         return false;
     }
-    OS_Error err = GetSocket()->Connect(SocketUtils::ConvertStringToAddr(addr.c_str()), port);
+}
+
+bool MRTTransferSession::Connect()
+{
+    if (m_addr.empty() || m_port < 2048) {
+        LE("%s invalid params addr:%s, port:%d\n", __FUNCTION__, m_addr.c_str(), m_port);
+        return false;
+    }
+    printf("MRTTransferSession::Connect() m_addr:%s, m_port:%d, socket.isbound:%d, isconnect:%d\n\n", m_addr.c_str(), m_port, this->GetSocket()->IsBound(), this->GetSocket()->IsConnected());
+    OS_Error err = GetSocket()->Connect(SocketUtils::ConvertStringToAddr(m_addr.c_str()), m_port);
     if (err == OS_NoErr || err == EISCONN) {
+        m_connectingStatus = 1;
         return true;
     } else {
         LE("%s ERR:%d\n", __FUNCTION__, err);
@@ -194,16 +216,16 @@ void MRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
         if (c_msg._id.length()>0) {
             m_transferSessId = c_msg._id;
             {
-                MRTConnectionManager::ModuleInfo* pmi = new MRTConnectionManager::ModuleInfo();
+                MRTConnManager::ModuleInfo* pmi = new MRTConnManager::ModuleInfo();
                 if (pmi) {
                 pmi->flag = 1;
                 pmi->othModuleType = fmodule;
                 pmi->othModuleId = m_transferSessId;
                 pmi->pModule = this;
                 //bind session and transfer id
-                MRTConnectionManager::Instance()->AddModuleInfo(pmi, m_transferSessId);
+                MRTConnManager::Instance()->AddModuleInfo(pmi, m_transferSessId);
                 //store which moudle connect to this connector
-                MRTConnectionManager::Instance()->AddTypeModuleSession(fmodule, c_msg._moduleid, m_transferSessId);
+                MRTConnManager::Instance()->AddTypeModuleSession(fmodule, c_msg._moduleid, m_transferSessId);
                 LI("store other moduleid:%s, transfersessionid:%s\n", c_msg._moduleid.c_str(), m_transferSessId.c_str());
                 } else {
                     LE("new ModuleInfo error\n");
@@ -222,7 +244,7 @@ void MRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& s
             c_msg._id = m_transferSessId;
             c_msg._msgid = "ok";
             //send self module id to other
-            c_msg._moduleid = MRTConnectionManager::Instance()->MeetingId();
+            c_msg._moduleid = MRTConnManager::Instance()->MeetingId();
             
             t_msg._content = c_msg.ToJson();
             
@@ -333,7 +355,8 @@ void MRTTransferSession::OnConnectionLostNotify(const std::string& uid, const st
 void MRTTransferSession::ConnectionDisconnected()
 {
     if (m_transferSessId.length()>0) {
-        MRTConnectionManager::Instance()->TransferSessionLostNotify(m_transferSessId);
+        m_connectingStatus = 0;
+        MRTConnManager::Instance()->TransferSessionLostNotify(m_transferSessId);
     }
 }
 

@@ -11,8 +11,8 @@
 #include "CRTConnector.h"
 #include "RTZKClient.hpp"
 
-#ifndef _DEBUG
-#define _DEBUG 0
+#ifndef _TEST_
+#define _TEST_ 0
 #endif
 
 int main(int argc, const char * argv[]) {
@@ -25,8 +25,11 @@ int main(int argc, const char * argv[]) {
         getchar();
         exit(0);
     }
-    RTZKClient c(argv[1]);
-    if (c.InitZKClient()!=0) {
+#if _TEST_
+    if (RTZKClient::Instance()->InitOnly(argv[1])!=0) {
+#else
+    if (RTZKClient::Instance()->InitZKClient(argv[1])!=0) {
+#endif
         std::cout << "Please check the config file ..." << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -36,12 +39,12 @@ int main(int argc, const char * argv[]) {
     L_Init(0, NULL);
     CRTConnector::Initialize(1024);
     CRTConnector* pConnector = CRTConnector::Inst();
-    pConnector->Start(c.GetServerConfig().IP.c_str(),
-                      c.GetServerConfig().portConfig.connector.ListenWebcon,
-                      c.GetServerConfig().IP.c_str(),
-                      c.GetServerConfig().portConfig.connector.ListenModule,
-                      c.GetServerConfig().IP.c_str(),
-                      c.GetServerConfig().portConfig.connector.ListenClicon
+    pConnector->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
+                      RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenWebcon,
+                      RTZKClient::Instance()->GetServerConfig().IP.c_str(),
+                      RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenModule,
+                      RTZKClient::Instance()->GetServerConfig().IP.c_str(),
+                      RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenClicon
                       );
     while (true) {
         pConnector->DoTick();

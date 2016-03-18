@@ -8,7 +8,7 @@
 
 #include "DRTMsgDispatch.hpp"
 #include "RTMeetMsg.h"
-#include "DRTConnectionManager.h"
+#include "DRTConnManager.h"
 #include "RTUtils.hpp"
 #include "DRTTransferSession.h"
 
@@ -65,16 +65,16 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
 
     if (mmsg._tags == SENDTAGS::sendtags_talk) {
         std::string no = mmsg._rname + " - " + mmsg._nname + ": " + mmsg._cont;
-        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //DRTConnManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        DRTConnManager::Instance()->PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_enter) {
         std::string no = mmsg._nname + "进入\"" + mmsg._rname + "\"房间正在等你哦~";
-        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnectionManager::Instance()->PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //DRTConnManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        DRTConnManager::Instance()->PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     } else if (mmsg._tags == SENDTAGS::sendtags_leave) {
         //std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
-        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        //DRTConnectionManager::Instance()->PushCommonMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
+        //DRTConnManager::Instance()->PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        //DRTConnManager::Instance()->PushCommonMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
     }
 }
 
@@ -101,7 +101,7 @@ void DRTMsgDispatch::OnSendEvent(const char*pData, int nLen)
     trmsg._content = sd;
     std::string st = trmsg.ToJson();
 
-    DRTConnectionManager::ModuleInfo* pmi = DRTConnectionManager::Instance()->findConnectorInfoById("notnull", dmsg._connector);
+    DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance()->findConnectorInfoById("notnull", dmsg._connector);
     if (pmi && pmi->pModule) {
         pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
     } else {

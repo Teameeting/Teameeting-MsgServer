@@ -1,12 +1,12 @@
 //
-//  CRTConnectionManager.cpp
+//  CRTConnManager.cpp
 //  dyncRTConnector
 //
 //  Created by hp on 12/3/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#include "CRTConnectionManager.h"
+#include "CRTConnManager.h"
 #include <assert.h>
 #include "OSMutex.h"
 #include <algorithm>
@@ -16,19 +16,19 @@ static OSMutex          s_mutexModule;
 static OSMutex          s_mutexConnection;
 static OSMutex          s_mutexTypeModule;
 
-static CRTConnectionManager::ModuleInfoMaps               s_ModuleInfoMap(0);
-static CRTConnectionManager::ConnectionInfoMaps           s_ConnectionInfoMap(0);
-static CRTConnectionManager::TypeModuleSessionInfoLists   s_TypeModuleSessionInfoList(0);
-static CRTConnectionManager::UserSessionInfoLists         s_UserSessionInfoList(0);
-static CRTConnectionManager::UserSessionInfoMaps          s_UserSessionInfoMap(0);
+static CRTConnManager::ModuleInfoMaps               s_ModuleInfoMap(0);
+static CRTConnManager::ConnectionInfoMaps           s_ConnectionInfoMap(0);
+static CRTConnManager::TypeModuleSessionInfoLists   s_TypeModuleSessionInfoList(0);
+static CRTConnManager::UserSessionInfoLists         s_UserSessionInfoList(0);
+static CRTConnManager::UserSessionInfoMaps          s_UserSessionInfoMap(0);
 
 
-CRTConnectionManager::ModuleInfo* CRTConnectionManager::findModuleInfo(const std::string& userid, TRANSFERMODULE module)
+CRTConnManager::ModuleInfo* CRTConnManager::findModuleInfo(const std::string& userid, TRANSFERMODULE module)
 {
-    CRTConnectionManager::ModuleInfo *pInfo = NULL;
+    CRTConnManager::ModuleInfo *pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexModule);
-        CRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
+        CRTConnManager::ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             if (it->second && it->second->othModuleType == module) {
                 pInfo = it->second;
@@ -39,12 +39,12 @@ CRTConnectionManager::ModuleInfo* CRTConnectionManager::findModuleInfo(const std
     return pInfo;
 }
 
-CRTConnectionManager::ConnectionInfo* CRTConnectionManager::findConnectionInfoById(const std::string& uid)
+CRTConnManager::ConnectionInfo* CRTConnManager::findConnectionInfoById(const std::string& uid)
 {
-    CRTConnectionManager::ConnectionInfo* pInfo = NULL;
+    CRTConnManager::ConnectionInfo* pInfo = NULL;
     {
         OSMutexLocker locker(&s_mutexConnection);
-        CRTConnectionManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
+        CRTConnManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
         if (it!=s_ConnectionInfoMap.end()) {
             pInfo = it->second;
         }
@@ -52,12 +52,12 @@ CRTConnectionManager::ConnectionInfo* CRTConnectionManager::findConnectionInfoBy
     return pInfo;
 }
 
-bool CRTConnectionManager::AddModuleInfo(CRTConnectionManager::ModuleInfo* pmi, const std::string& sid)
+bool CRTConnManager::AddModuleInfo(CRTConnManager::ModuleInfo* pmi, const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    CRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
+    CRTConnManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
-        CRTConnectionManager::ModuleInfo *p = it->second;
+        CRTConnManager::ModuleInfo *p = it->second;
         delete p;
         p = NULL;
         s_ModuleInfoMap.erase(sid);
@@ -66,12 +66,12 @@ bool CRTConnectionManager::AddModuleInfo(CRTConnectionManager::ModuleInfo* pmi, 
     return true;
 }
 
-bool CRTConnectionManager::DelModuleInfo(const std::string& sid)
+bool CRTConnManager::DelModuleInfo(const std::string& sid)
 {
     OSMutexLocker locker(&s_mutexModule);
-    CRTConnectionManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
+    CRTConnManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
-        CRTConnectionManager::ModuleInfo *p = it->second;
+        CRTConnManager::ModuleInfo *p = it->second;
         delete p;
         p = NULL;
         s_ModuleInfoMap.erase(sid);
@@ -79,7 +79,7 @@ bool CRTConnectionManager::DelModuleInfo(const std::string& sid)
     return true;
 }
 
-bool CRTConnectionManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid)
+bool CRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid)
 {
     TypeModuleSessionInfo* pInfo = NULL;
     bool found = false;
@@ -106,7 +106,7 @@ bool CRTConnectionManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std:
     return true;
 }
 
-bool CRTConnectionManager::DelTypeModuleSession(const std::string& sid)
+bool CRTConnManager::DelTypeModuleSession(const std::string& sid)
 {
     bool found = false;
     TypeModuleSessionInfo* pInfo = NULL;
@@ -126,12 +126,12 @@ bool CRTConnectionManager::DelTypeModuleSession(const std::string& sid)
     return found;
 }
 
-bool CRTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, CRTConnectionManager::ConnectionInfo* pInfo)
+bool CRTConnManager::AddUser(CONNECTIONTYPE type, const std::string& uid, CRTConnManager::ConnectionInfo* pInfo)
 {
     if (uid.length()==0 || !pInfo) return false;
     {
         OSMutexLocker locker(&s_mutexConnection);
-        CRTConnectionManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
+        CRTConnManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
         if (it!=s_ConnectionInfoMap.end()) {
             ConnectionLostNotify(uid, it->second->_token);
             delete it->second;
@@ -143,12 +143,12 @@ bool CRTConnectionManager::AddUser(CONNECTIONTYPE type, const std::string& uid, 
     return true;
 }
 
-bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token)
+bool CRTConnManager::DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token)
 {
     if (uid.length()==0) return false;
     {
         OSMutexLocker locker(&s_mutexConnection);
-        CRTConnectionManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
+        CRTConnManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
         if (it!=s_ConnectionInfoMap.end()) {
             token = it->second->_token;
             delete it->second;
@@ -161,49 +161,49 @@ bool CRTConnectionManager::DelUser(CONNECTIONTYPE type, const std::string& uid, 
     }
 }
 
-void CRTConnectionManager::ConnectionLostNotify(const std::string& uid, const std::string& token)
+void CRTConnManager::ConnectionLostNotify(const std::string& uid, const std::string& token)
 {
     ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
     if (pmi && pmi->pModule) {
-        LI("CRTConnectionManager::ConnectionLostNotify uid:%s\n", uid.c_str());
+        LI("CRTConnManager::ConnectionLostNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
-        LE("CRTConnectionManager::ConnectionLostNotify meeting pmi->pModule is NULL\n");
+        LE("CRTConnManager::ConnectionLostNotify meeting pmi->pModule is NULL\n");
     }
     pmi = findModuleInfo(uid, TRANSFERMODULE::mmsgqueue);
     if (pmi && pmi->pModule) {
-        LI("CRTConnectionManager::ConnectionLostNotify uid:%s\n", uid.c_str());
+        LI("CRTConnManager::ConnectionLostNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
-        LE("CRTConnectionManager::ConnectionLostNotify msgqueue pmi->pModule is NULL\n");
+        LE("CRTConnManager::ConnectionLostNotify msgqueue pmi->pModule is NULL\n");
     }
 }
 
-void CRTConnectionManager::ConnectionConnNotify(const std::string& uid, const std::string& token)
+void CRTConnManager::ConnectionConnNotify(const std::string& uid, const std::string& token)
 {
     ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
     if (pmi && pmi->pModule) {
-        LI("CRTConnectionManager::ConnectionConnNotify uid:%s\n", uid.c_str());
+        LI("CRTConnManager::ConnectionConnNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionConnNotify(uid, token);
     } else {
-        LE("CRTConnectionManager::ConnectionConnNotify meeting pmi->pModule is NULL\n");
+        LE("CRTConnManager::ConnectionConnNotify meeting pmi->pModule is NULL\n");
     }
     pmi = findModuleInfo(uid, TRANSFERMODULE::mmsgqueue);
     if (pmi && pmi->pModule) {
-        LI("CRTConnectionManager::ConnectionConnNotify uid:%s\n", uid.c_str());
+        LI("CRTConnManager::ConnectionConnNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionConnNotify(uid, token);
     } else {
-        LE("CRTConnectionManager::ConnectionConnNotify msgqueue pmi->pModule is NULL\n");
+        LE("CRTConnManager::ConnectionConnNotify msgqueue pmi->pModule is NULL\n");
     }
 }
 
-void CRTConnectionManager::TransferSessionLostNotify(const std::string& sid)
+void CRTConnManager::TransferSessionLostNotify(const std::string& sid)
 {
     DelModuleInfo(sid);
     DelTypeModuleSession(sid);
 }
 
-void CRTConnectionManager::TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg)
+void CRTConnManager::TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg)
 {
     ModuleInfo* pmi = findModuleInfo(uid, (TRANSFERMODULE)mType);
     if (pmi && pmi->pModule) {

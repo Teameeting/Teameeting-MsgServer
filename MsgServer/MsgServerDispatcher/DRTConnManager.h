@@ -1,13 +1,13 @@
 //
-//  DRTConnectionManager.h
+//  DRTConnManager.h
 //  MsgServerDispatcher
 //
 //  Created by hp on 12/3/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef __MsgServerDispatcher__DRTConnectionManager__
-#define __MsgServerDispatcher__DRTConnectionManager__
+#ifndef __MsgServerDispatcher__DRTConnManager__
+#define __MsgServerDispatcher__DRTConnManager__
 
 #include <stdio.h>
 #include <iostream>
@@ -18,10 +18,12 @@
 #include "RTMessage.h"
 #include "OSMutex.h"
 #include "DRTHttpSvrConn.h"
+#include "RTDispatch.h"
+#include "RTEventTimer.h"
 
 class DRTTransferSession;
 
-class DRTConnectionManager {
+class DRTConnManager : public RTDispatch{
 public:
     typedef struct _ModuleInfo{
         int             flag;
@@ -90,8 +92,10 @@ public:
     typedef std::unordered_multimap<std::string, std::string>        UserConnectorMaps;
     typedef UserConnectorMaps::iterator UserConnectorMapsIt;
 
-    static DRTConnectionManager* Instance() {
-        static DRTConnectionManager s_manager;
+    typedef std::list< DRTTransferSession* > ConnectingSessList;
+    
+    static DRTConnManager* Instance() {
+        static DRTConnManager s_manager;
         return &s_manager;
     }
     static std::string      s_cohttpIp;
@@ -104,13 +108,14 @@ public:
     ModuleInfo*       findConnectorInfoById(const std::string& userid, const std::string& connector);
 
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
-    bool DelModuleInfo(const std::string& sid);
+    bool DelModuleInfo(const std::string& sid, EventData& data);
     bool AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid);
     bool DelTypeModuleSession(const std::string& sid);
 
     void TransferSessionLostNotify(const std::string& sid);
 
     bool    ConnectConnector();
+    bool TryConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>* GetAddrsList() { return &m_ipList; }
     void    RefreshConnection();
     void    SendTransferData(const std::string mid, const std::string uid, const std::string msg);
@@ -136,10 +141,19 @@ public:
     void PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra);
     void PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
     
+    // for RTDispatch
+    virtual void OnRecvEvent(const char*pData, int nLen);
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen);
+    
+    // for RTEventTimer
+    static int DispTimerCallback(const char*pData, int nLen);
 private:
-    DRTConnectionManager()
-        : m_pHttpSvrConn(NULL) { }
-    ~DRTConnectionManager() {}
+    DRTConnManager()
+        : RTDispatch(), m_pHttpSvrConn(NULL) { }
+    ~DRTConnManager() {}
     bool DoConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
     std::string               m_msgQueueId;
@@ -148,7 +162,7 @@ private:
     OSMutex                   m_mutexMembers;
     DRTHttpSvrConn*           m_pHttpSvrConn;
     UserConnectorMaps         m_userConnectors;
-
+    ConnectingSessList        m_connectingSessList;
 };
 
-#endif /* defined(__MsgServerDispatcher__DRTConnectionManager__) */
+#endif /* defined(__MsgServerDispatcher__DRTConnManager__) */

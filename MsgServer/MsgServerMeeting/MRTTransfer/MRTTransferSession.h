@@ -24,11 +24,12 @@ class MRTTransferSession
     , public RTTransfer
     , public RTObserverConnection{
 public:
-    MRTTransferSession();
+    MRTTransferSession(TRANSFERMODULE module);
     virtual ~MRTTransferSession();
     void Init();
     void Unit();
     bool Connect(const std::string addr, int port);
+    bool Connect();
     void Disconn();
     bool RefreshTime();
     void KeepAlive();
@@ -37,9 +38,13 @@ public:
     void SetModuleId(std::string& moduleId) { m_moduleId = moduleId; }
     void TestConnection();
         
+    std::string& GetTransferAddr() { return m_addr; }
+    int GetTransferPort() { return m_port; }
+    int GetConnectingStatus() { return m_connectingStatus; };
+        
 public:
     void EstablishConnection();
-        void OnConnectionLostNotify(const std::string& uid, const std::string& token, const std::string& connector);
+    void OnConnectionLostNotify(const std::string& uid, const std::string& token, const std::string& connector);
 
 // from RTTcp
 public:
@@ -71,6 +76,10 @@ private:
     std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;
     std::string     m_moduleId;
+    TRANSFERMODULE  m_module;
+    std::string     m_addr;
+    int             m_port;
+    int             m_connectingStatus;
 };
 
 #endif /* defined(__MsgServerMeeting__MRTTransferSession__) */

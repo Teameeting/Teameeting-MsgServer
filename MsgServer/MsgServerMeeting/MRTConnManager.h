@@ -1,13 +1,13 @@
 //
-//  MRTConnectionManager.h
+//  MRTConnManager.h
 //  MsgServerMeeting
 //
 //  Created by hp on 12/3/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef __MsgServerMeeting__MRTConnectionManager__
-#define __MsgServerMeeting__MRTConnectionManager__
+#ifndef __MsgServerMeeting__MRTConnManager__
+#define __MsgServerMeeting__MRTConnManager__
 
 #include <stdio.h>
 #include <iostream>
@@ -16,10 +16,12 @@
 #include <list>
 #include <set>
 #include "RTMessage.h"
+#include "RTDispatch.h"
+#include "RTEventTimer.h"
 
 class MRTTransferSession;
 
-class MRTConnectionManager {
+class MRTConnManager : public RTDispatch{
 public:
     typedef struct _ModuleInfo{
         int             flag;
@@ -67,7 +69,7 @@ public:
             typeSessionInfo.clear();
         }
     }UserSessionInfo;
-
+    
     typedef std::unordered_map< std::string, ModuleInfo* >     ModuleInfoMaps;
     typedef ModuleInfoMaps::iterator ModuleInfoMapsIt;
 
@@ -80,16 +82,17 @@ public:
     typedef std::unordered_map<std::string, std::list<TypeSessionInfo*> > UserSessionInfoMaps;
     typedef UserSessionInfoMaps::iterator UserSessionInfoMapsIt;
 
+    typedef std::list< MRTTransferSession* > ConnectingSessList;
 
-    static MRTConnectionManager* Instance() {
-        static MRTConnectionManager s_manager;
+    static MRTConnManager* Instance() {
+        static MRTConnManager s_manager;
         return &s_manager;
     }
 
     ModuleInfo*  findModuleInfo(const std::string& userid, TRANSFERMODULE module);
 
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
-    bool DelModuleInfo(const std::string& sid);
+    bool DelModuleInfo(const std::string& sid, EventData& data);
     bool AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid);
     bool DelTypeModuleSession(const std::string& sid);
 
@@ -101,13 +104,25 @@ public:
     void SetMeetingId(const std::string& mid) { m_meetingId = mid; }
     std::string& MeetingId() { return m_meetingId; }
     std::list<std::string>* GetAddrsList() { return &m_ipList; }
+    
+    // for RTDispatch
+    virtual void OnRecvEvent(const char*pData, int nLen);
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen);
+    
+    // for RTEventTimer
+    static int ConnTimerCallback(const char*pData, int nLen);
 private:
-    MRTConnectionManager() {}
-    ~MRTConnectionManager() {}
+    MRTConnManager():RTDispatch() {}
+    ~MRTConnManager() {}
     bool DoConnectConnector(const std::string ip, unsigned short port);
+    bool TryConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
     std::string               m_meetingId;
+    ConnectingSessList        m_connectingSessList;
 
 };
 
-#endif /* defined(__MsgServerMeeting__MRTConnectionManager__) */
+#endif /* defined(__MsgServerMeeting__MRTConnManager__) */
