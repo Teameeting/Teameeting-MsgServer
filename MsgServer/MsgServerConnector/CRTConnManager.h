@@ -19,11 +19,13 @@
 #include "RTMessage.h"
 #include "RTTcp.h"
 #include "RTType.h"
+#include "RTSingleton.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"
 
-class CRTConnManager {
+class CRTConnManager : public RTSingleton< CRTConnManager >{
+    friend class RTSingleton< CRTConnManager >;
 public:
     //store the session's module type and transfer_session_id and transfer_session
     typedef struct _ModuleInfo{
@@ -110,14 +112,6 @@ public:
     typedef UserSessionInfoMaps::iterator                                   UserSessionInfoMapsIt;
 
 
-    /**
-     *
-     */
-    static CRTConnManager* Instance() {
-        static CRTConnManager s_manager;
-        return &s_manager;
-    }
-
     void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
         m_connectorPort = port;
         m_connectorId = Id;
@@ -142,15 +136,19 @@ public:
     void ConnectionConnNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
     void TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg);
-    
+    bool    SignalKill();
+    bool    ClearAll();
+
     std::string& ConnectorIp() { return m_connectorIp; }
     std::string& ConnectorPort() { return m_connectorPort; }
     std::string& ConnectorId() { return m_connectorId; }
-private:
+
+protected:
     CRTConnManager() : m_connectorIp(""),
                             m_connectorPort(""),
                             m_connectorId("") { }
     ~CRTConnManager() { }
+private:
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;

@@ -18,12 +18,14 @@
 #include "RTMessage.h"
 #include "OSMutex.h"
 #include "DRTHttpSvrConn.h"
-#include "RTDispatch.h"
+#include "DRTConnDispatcher.h"
 #include "RTEventTimer.h"
+#include "RTSingleton.h"
 
 class DRTTransferSession;
 
-class DRTConnManager : public RTDispatch{
+class DRTConnManager : public RTSingleton< DRTConnManager >{
+    friend class RTSingleton< DRTConnManager >;
 public:
     typedef struct _ModuleInfo{
         int             flag;
@@ -88,16 +90,12 @@ public:
     typedef OnlineMembers::iterator      OnlineMembersIt;
     typedef std::set<std::string>    OfflineMembers;//all the members offline
     typedef OfflineMembers::iterator     OfflineMembersIt;
-    
+
     typedef std::unordered_multimap<std::string, std::string>        UserConnectorMaps;
     typedef UserConnectorMaps::iterator UserConnectorMapsIt;
 
     typedef std::list< DRTTransferSession* > ConnectingSessList;
-    
-    static DRTConnManager* Instance() {
-        static DRTConnManager s_manager;
-        return &s_manager;
-    }
+
     static std::string      s_cohttpIp;
     static unsigned short   s_cohttpPort;
     static std::string      s_cohttpHost;
@@ -121,39 +119,44 @@ public:
     void    SendTransferData(const std::string mid, const std::string uid, const std::string msg);
     void SetMsgQueueId(const std::string& mid) { m_msgQueueId = mid; }
     std::string& MsgQueueId() { return m_msgQueueId; }
+    bool    SignalKill();
+    bool    ClearAll();
 
     void AddMemberToOnline(const std::string& uid);
     bool IsMemberInOnline(const std::string& uid);
     void DelMemberFmOnline(const std::string& uid);
     int  GetOnlineNumber() { return (int)m_onlineMembers.size(); }
-    
+
     void AddMemberToOffline(const std::string& uid);
     bool IsMemberInOffline(const std::string& uid);
     void DelMemberFmOffline(const std::string& uid);
     int  GetOfflineNumber() { return (int)m_offlineMembers.size(); }
-    
+
     void OnTLogin(const std::string& uid, const std::string& token, const std::string& connector);
     void OnTLogout(const std::string& uid, const std::string& token, const std::string& connector);
-    
+
     void GetUserConnectorId(const std::string& uid, std::string& connector);
-    
+
     bool ConnectHttpSvrConn();
     void PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra);
     void PushCommonMsg(const std::string& sign, const std::string& targetid, const std::string& pushMsg, const std::string& notification, const std::string& extra);
-    
-    // for RTDispatch
-    virtual void OnRecvEvent(const char*pData, int nLen);
-    virtual void OnSendEvent(const char*pData, int nLen) {}
-    virtual void OnWakeupEvent(const char*pData, int nLen) {}
-    virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen);
-    
+
+    void ProcessRecvEvent(const char*pData, int nLen);
+    void ProcessTickEvent(const char*pData, int nLen);
+    void PostDataStatic(const char* pData, int nLen);
+
     // for RTEventTimer
     static int DispTimerCallback(const char*pData, int nLen);
-private:
+protected:
     DRTConnManager()
-        : RTDispatch(), m_pHttpSvrConn(NULL) { }
-    ~DRTConnManager() {}
+        : m_pHttpSvrConn(NULL), m_pConnDispatcher(NULL) { }
+    ~DRTConnManager() {
+        if(m_pHttpSvrConn) {
+            delete m_pHttpSvrConn;
+            m_pHttpSvrConn = NULL;
+        }
+    }
+private:
     bool DoConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
     std::string               m_msgQueueId;
@@ -161,6 +164,7 @@ private:
     OfflineMembers            m_offlineMembers;
     OSMutex                   m_mutexMembers;
     DRTHttpSvrConn*           m_pHttpSvrConn;
+    DRTConnDispatcher*        m_pConnDispatcher;
     UserConnectorMaps         m_userConnectors;
     ConnectingSessList        m_connectingSessList;
 };

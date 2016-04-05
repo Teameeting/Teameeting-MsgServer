@@ -14,9 +14,9 @@
 #include "MRTTransferSession.h"
 #include "RTZKClient.hpp"
 
-static OSMutex       s_mutex;
-static OSMutex       s_mutexModule;
-static OSMutex       s_mutexTypeModule;
+OSMutex       s_mutex;
+OSMutex       s_mutexModule;
+OSMutex       s_mutexTypeModule;
 
 static MRTConnManager::ModuleInfoMaps                 s_ModuleInfoMap(0);
 static MRTConnManager::TypeModuleSessionInfoLists     s_TypeModuleSessionInfoList(0);
@@ -45,6 +45,8 @@ bool MRTConnManager::ConnectConnector()
     if (m_ipList.size() == 0) {
         return false;
     }
+    if (m_pConnDispatcher==NULL)
+        m_pConnDispatcher = new MRTConnDispatcher();
     std::list<std::string>::iterator it;
     for (it=m_ipList.begin(); it!=m_ipList.end(); it++) {
         std::string s = *it;
@@ -65,9 +67,11 @@ bool MRTConnManager::DoConnectConnector(const std::string ip, unsigned short por
     connectorSession->Init();
     // conn to connector
 
+    int test = 0;
     while(!connectorSession->Connect(ip, port)) {
         LI("connecting to connector server %s:%u, waiting...\n", ip.c_str(), port);
         usleep(100*1000);
+        if (test++ > 30) return false;
     }
     connectorSession->EstablishConnection();
     return true;
@@ -79,7 +83,7 @@ bool MRTConnManager::TryConnectConnector(const std::string ip, unsigned short po
     MRTTransferSession* connectorSession = new MRTTransferSession(TRANSFERMODULE::mconnector);
     connectorSession->Init();
     // conn to connector
-    
+
     bool ok = false;
     int times = 0;
     do{
@@ -87,13 +91,14 @@ bool MRTConnManager::TryConnectConnector(const std::string ip, unsigned short po
         LI("try %d times to connect connector server %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
-    
+
     if (ok) {
         connectorSession->EstablishConnection();
         return true;
     } else {
         m_connectingSessList.push_back(connectorSession);
-        this->Signal(Task::kIdleEvent);
+        if (m_pConnDispatcher)
+            m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
     }
 }
@@ -110,6 +115,44 @@ void MRTConnManager::RefreshConnection()
     }
 }
 
+bool MRTConnManager::SignalKill()
+{
+    {
+        OSMutexLocker mlocker(&s_mutexModule);
+        for (auto & x : s_ModuleInfoMap) {
+            x.second->pModule->Signal(Task::kKillEvent);
+            usleep(100*1000);
+        }
+    }
+
+    return true;
+}
+
+bool MRTConnManager::ClearAll()
+{
+    if (m_pConnDispatcher)
+        m_pConnDispatcher->Signal(Task::kKillEvent);
+    {
+        OSMutexLocker mlocker(&s_mutexModule);
+        for (auto & x : s_ModuleInfoMap) {
+            delete x.second;
+            x.second = NULL;
+            usleep(100*1000);
+        }
+        s_ModuleInfoMap.clear();
+    }
+
+    {
+        OSMutexLocker tlocker(&s_mutexTypeModule);
+        for (auto & x : s_TypeModuleSessionInfoList) {
+            delete x;
+            x = NULL;
+        }
+        s_TypeModuleSessionInfoList.clear();
+    }
+    m_ipList.clear();
+     return true;
+}
 
 bool MRTConnManager::AddModuleInfo(MRTConnManager::ModuleInfo* pmi, const std::string& sid)
 {
@@ -118,7 +161,7 @@ bool MRTConnManager::AddModuleInfo(MRTConnManager::ModuleInfo* pmi, const std::s
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnManager::ModuleInfo *p = it->second;
         if (p && p->othModuleType == TRANSFERMODULE::mmsgqueue) {
-            MRTRoomManager::Instance()->ClearMsgQueueSession(sid);
+            MRTRoomManager::Instance().ClearMsgQueueSession(sid);
         }
         delete p;
         p = NULL;
@@ -135,7 +178,7 @@ bool MRTConnManager::DelModuleInfo(const std::string& sid, EventData& data)
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnManager::ModuleInfo *p = it->second;
         if (p && p->othModuleType == TRANSFERMODULE::mmsgqueue) {
-            MRTRoomManager::Instance()->ClearMsgQueueSession(sid);
+            MRTRoomManager::Instance().ClearMsgQueueSession(sid);
         }
         data.connect.module = (int)p->othModuleType;
         memset(data.connect.ip, 0x00, 17);
@@ -199,7 +242,7 @@ void MRTConnManager::TransferSessionLostNotify(const std::string& sid)
     data.mtype = SESSEVENT::_sess_lost;
     DelModuleInfo(sid, data);
     DelTypeModuleSession(sid);
-    
+
 #ifdef AUTO_RECONNECT
     //fire an event to restart
     {
@@ -218,12 +261,12 @@ void MRTConnManager::TransferSessionLostNotify(const std::string& sid)
 #endif
 }
 
-void MRTConnManager::OnRecvEvent(const char*pData, int nLen)
+void MRTConnManager::ProcessRecvEvent(const char*pData, int nLen)
 {
     if (!pData || nLen<=0) {
         return;
     }
-    
+
     Json::Reader reader;
     Json::Value root;
     if (!reader.parse(pData, root, false)) {
@@ -247,12 +290,12 @@ void MRTConnManager::OnRecvEvent(const char*pData, int nLen)
         if (data.connect.module == TRANSFERMODULE::mconnector) {// connect to connector
             TryConnectConnector(data.connect.ip, data.connect.port);
         }else if (data.connect.module == TRANSFERMODULE::mmsgqueue) {// connect to msgqueue
-            MRTRoomManager::Instance()->TryConnectMsgQueue(data.connect.ip, data.connect.port);
+            MRTRoomManager::Instance().TryConnectMsgQueue(data.connect.ip, data.connect.port);
         }
     }
 }
 
-void MRTConnManager::OnTickEvent(const char*pData, int nLen)
+void MRTConnManager::ProcessTickEvent(const char*pData, int nLen)
 {
     for(auto & x : m_connectingSessList) {
         if (x->GetConnectingStatus()==0) {
@@ -262,7 +305,8 @@ void MRTConnManager::OnTickEvent(const char*pData, int nLen)
                 ok = x->Connect();
                 usleep(2000*1000);
             }while(!ok && ++times < 5);
-            this->Signal(Task::kIdleEvent);
+            if (m_pConnDispatcher)
+                m_pConnDispatcher->Signal(Task::kIdleEvent);
         } else if (x->GetConnectingStatus() == 1) {
             x->EstablishConnection();
             m_connectingSessList.remove(x);
@@ -270,10 +314,16 @@ void MRTConnManager::OnTickEvent(const char*pData, int nLen)
     }
 }
 
+void MRTConnManager::PostDataStatic(const char* pData, int nLen)
+{
+    if (m_pConnDispatcher)
+        m_pConnDispatcher->PostData(pData, nLen);
+}
+
 int MRTConnManager::ConnTimerCallback(const char*pData, int nLen)
 {
     if (pData && nLen>0) {
-        
+
         Json::Reader reader;
         Json::Value root;
         if (!reader.parse(pData, root, false)) {
@@ -293,8 +343,8 @@ int MRTConnManager::ConnTimerCallback(const char*pData, int nLen)
                 return 0;
             }
             if (s.length()>0) {
-                if (RTZKClient::Instance()->CheckNodeExists(s)) {
-                    MRTConnManager::Instance()->PostData(pData, nLen);
+                if (RTZKClient::Instance().CheckNodeExists(s)) {
+                    MRTConnManager::Instance().PostDataStatic(pData, nLen);
                 } else {
                     RTEventTimer* timer = new RTEventTimer(RETRY_MAX_TIME, &MRTConnManager::ConnTimerCallback);
                     timer->DataDelay(pData, nLen);

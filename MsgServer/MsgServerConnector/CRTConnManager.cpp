@@ -214,3 +214,42 @@ void CRTConnManager::TransferMsg(MSGTYPE mType, long long mseq, const std::strin
         return;
     }
 }
+
+
+bool CRTConnManager::SignalKill()
+{
+    {
+        OSMutexLocker mlocker(&s_mutexModule);
+        for (auto & x : s_ModuleInfoMap) {
+            x.second->pModule->Signal(Task::kKillEvent);
+            usleep(100*1000);
+        }
+    }
+
+    return true;
+}
+
+bool CRTConnManager::ClearAll()
+{
+    {
+        OSMutexLocker mlocker(&s_mutexModule);
+        for (auto & x : s_ModuleInfoMap) {
+            delete x.second;
+            x.second = NULL;
+            usleep(100*1000);
+        }
+        s_ModuleInfoMap.clear();
+    }
+
+    {
+        OSMutexLocker tlocker(&s_mutexTypeModule);
+        for (auto & x : s_TypeModuleSessionInfoList) {
+            delete x;
+            x = NULL;
+        }
+        s_TypeModuleSessionInfoList.clear();
+    }
+     return true;
+}
+
+

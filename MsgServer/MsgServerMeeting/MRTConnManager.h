@@ -16,12 +16,14 @@
 #include <list>
 #include <set>
 #include "RTMessage.h"
-#include "RTDispatch.h"
+#include "MRTConnDispatcher.h"
 #include "RTEventTimer.h"
+#include "RTSingleton.h"
 
 class MRTTransferSession;
 
-class MRTConnManager : public RTDispatch{
+class MRTConnManager : public RTSingleton< MRTConnManager >{
+    friend class RTSingleton< MRTConnManager >;
 public:
     typedef struct _ModuleInfo{
         int             flag;
@@ -69,7 +71,7 @@ public:
             typeSessionInfo.clear();
         }
     }UserSessionInfo;
-    
+
     typedef std::unordered_map< std::string, ModuleInfo* >     ModuleInfoMaps;
     typedef ModuleInfoMaps::iterator ModuleInfoMapsIt;
 
@@ -84,10 +86,6 @@ public:
 
     typedef std::list< MRTTransferSession* > ConnectingSessList;
 
-    static MRTConnManager* Instance() {
-        static MRTConnManager s_manager;
-        return &s_manager;
-    }
 
     ModuleInfo*  findModuleInfo(const std::string& userid, TRANSFERMODULE module);
 
@@ -100,28 +98,30 @@ public:
 
     bool    ConnectConnector();
     void    RefreshConnection();
+    bool    SignalKill();
+    bool    ClearAll();
 
     void SetMeetingId(const std::string& mid) { m_meetingId = mid; }
     std::string& MeetingId() { return m_meetingId; }
     std::list<std::string>* GetAddrsList() { return &m_ipList; }
-    
-    // for RTDispatch
-    virtual void OnRecvEvent(const char*pData, int nLen);
-    virtual void OnSendEvent(const char*pData, int nLen) {}
-    virtual void OnWakeupEvent(const char*pData, int nLen) {}
-    virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen);
-    
+
+    void ProcessRecvEvent(const char*pData, int nLen);
+    void ProcessTickEvent(const char*pData, int nLen);
+    void PostDataStatic(const char* pData, int nLen);
+
     // for RTEventTimer
     static int ConnTimerCallback(const char*pData, int nLen);
+protected:
+    MRTConnManager():m_pConnDispatcher(NULL){}
+    ~MRTConnManager(){}
+
 private:
-    MRTConnManager():RTDispatch() {}
-    ~MRTConnManager() {}
     bool DoConnectConnector(const std::string ip, unsigned short port);
     bool TryConnectConnector(const std::string ip, unsigned short port);
     std::list<std::string>    m_ipList;
     std::string               m_meetingId;
     ConnectingSessList        m_connectingSessList;
+    MRTConnDispatcher*        m_pConnDispatcher;
 
 };
 

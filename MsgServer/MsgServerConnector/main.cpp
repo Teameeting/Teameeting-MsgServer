@@ -26,9 +26,9 @@ int main(int argc, const char * argv[]) {
         exit(0);
     }
 #if _TEST_
-    if (RTZKClient::Instance()->InitOnly(argv[1])!=0) {
+    if (RTZKClient::Instance().InitOnly(argv[1])!=0) {
 #else
-    if (RTZKClient::Instance()->InitZKClient(argv[1])!=0) {
+    if (RTZKClient::Instance().InitZKClient(argv[1])!=0) {
 #endif
         std::cout << "Please check the config file ..." << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
@@ -39,24 +39,29 @@ int main(int argc, const char * argv[]) {
     L_Init(0, NULL);
     CRTConnector::Initialize(1024);
     CRTConnector* pConnector = CRTConnector::Inst();
-    int res = pConnector->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
-                      RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenWebcon,
-                      RTZKClient::Instance()->GetServerConfig().IP.c_str(),
-                      RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenModule,
-                      RTZKClient::Instance()->GetServerConfig().IP.c_str(),
-                      RTZKClient::Instance()->GetServerConfig().portConfig.connector.ListenClicon
+    int res = pConnector->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                      RTZKClient::Instance().GetServerConfig().portConfig.connector.ListenWebcon,
+                      RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                      RTZKClient::Instance().GetServerConfig().portConfig.connector.ListenModule,
+                      RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                      RTZKClient::Instance().GetServerConfig().portConfig.connector.ListenClicon
                       );
+    int test = 0;
     if (res != 0) {
         LI("CRTConnector start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    while (true) {
+    //while (test++ < 30) {
+    while (1) {
         pConnector->DoTick();
         sleep(1);
         //break;
     }
+        sleep(1);
 EXIT:
+    pConnector->Stop();
     CRTConnector::DeInitialize();
     L_Deinit();
+    RTZKClient::Instance().Unin();
     return 0;
 }

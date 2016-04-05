@@ -100,6 +100,8 @@ bool DRTConnManager::ConnectConnector()
     if (m_ipList.size() == 0) {
         return false;
     }
+    if (m_pConnDispatcher==NULL)
+        m_pConnDispatcher = new DRTConnDispatcher();
     std::list<std::string>::iterator it;
     for (it=m_ipList.begin(); it!=m_ipList.end(); it++) {
         std::string s = *it;
@@ -134,7 +136,7 @@ bool DRTConnManager::TryConnectConnector(const std::string ip, unsigned short po
     DRTTransferSession* connectorSession = new DRTTransferSession();
     connectorSession->Init();
     // conn to connector
-    
+
     bool ok = false;
     int times = 0;
     do{
@@ -142,13 +144,14 @@ bool DRTConnManager::TryConnectConnector(const std::string ip, unsigned short po
         LI("try %d times to connect connector server %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
-    
+
     if (ok) {
         connectorSession->EstablishConnection();
         return true;
     } else {
         m_connectingSessList.push_back(connectorSession);
-        this->Signal(Task::kIdleEvent);
+        if (m_pConnDispatcher)
+            m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
     }
 }
@@ -168,6 +171,45 @@ void DRTConnManager::RefreshConnection()
             }
         }
     }
+}
+
+bool DRTConnManager::SignalKill()
+{
+    {
+        OSMutexLocker mlocker(&s_mutexModule);
+        for (auto & x : s_ModuleInfoMap) {
+            x.second->pModule->Signal(Task::kKillEvent);
+            usleep(100*1000);
+        }
+    }
+
+    return true;
+}
+
+bool DRTConnManager::ClearAll()
+{
+    if (m_pConnDispatcher)
+        m_pConnDispatcher->Signal(Task::kKillEvent);
+    {
+        OSMutexLocker mlocker(&s_mutexModule);
+        for (auto & x : s_ModuleInfoMap) {
+            delete x.second;
+            x.second = NULL;
+            usleep(100*1000);
+        }
+        s_ModuleInfoMap.clear();
+    }
+
+    {
+        OSMutexLocker tlocker(&s_mutexTypeModule);
+        for (auto & x : s_TypeModuleSessionInfoList) {
+            delete x;
+            x = NULL;
+        }
+        s_TypeModuleSessionInfoList.clear();
+    }
+    m_ipList.clear();
+     return true;
 }
 
 bool DRTConnManager::AddModuleInfo(DRTConnManager::ModuleInfo* pmi, const std::string& sid)
@@ -194,7 +236,7 @@ bool DRTConnManager::DelModuleInfo(const std::string& sid, EventData& data)
         memset(data.connect.ip, 0x00, 17);
         memcpy(data.connect.ip, p->pModule->GetTransferAddr().c_str(), p->pModule->GetTransferAddr().length());
         data.connect.port = p->pModule->GetTransferPort();
-        
+
         delete p;
         p = NULL;
         s_ModuleInfoMap.erase(sid);
@@ -254,7 +296,7 @@ void DRTConnManager::TransferSessionLostNotify(const std::string& sid)
     data.mtype = SESSEVENT::_sess_lost;
     DelModuleInfo(sid, data);
     DelTypeModuleSession(sid);
-    
+
 #ifdef AUTO_RECONNECT
     //fire an event to restart
     {
@@ -373,12 +415,12 @@ void DRTConnManager::PushCommonMsg(const std::string& sign, const std::string& t
 }
 
 
-void DRTConnManager::OnRecvEvent(const char*pData, int nLen)
+void DRTConnManager::ProcessRecvEvent(const char*pData, int nLen)
 {
     if (!pData || nLen<=0) {
         return;
     }
-    
+
     Json::Reader reader;
     Json::Value root;
     if (!reader.parse(pData, root, false)) {
@@ -405,7 +447,7 @@ void DRTConnManager::OnRecvEvent(const char*pData, int nLen)
     }
 }
 
-void DRTConnManager::OnTickEvent(const char*pData, int nLen)
+void DRTConnManager::ProcessTickEvent(const char*pData, int nLen)
 {
     for(auto & x : m_connectingSessList) {
         if (x->GetConnectingStatus()==0) {
@@ -415,7 +457,8 @@ void DRTConnManager::OnTickEvent(const char*pData, int nLen)
                 ok = x->Connect();
                 usleep(2000*1000);
             }while(!ok && ++times < 5);
-            this->Signal(Task::kIdleEvent);
+            if (m_pConnDispatcher)
+                m_pConnDispatcher->Signal(Task::kIdleEvent);
         } else if (x->GetConnectingStatus() == 1) {
             x->EstablishConnection();
             m_connectingSessList.remove(x);
@@ -423,10 +466,16 @@ void DRTConnManager::OnTickEvent(const char*pData, int nLen)
     }
 }
 
+void DRTConnManager::PostDataStatic(const char* pData, int nLen)
+{
+    if (m_pConnDispatcher)
+        m_pConnDispatcher->PostData(pData, nLen);
+}
+
 int DRTConnManager::DispTimerCallback(const char*pData, int nLen)
 {
     if (pData && nLen>0) {
-        
+
         Json::Reader reader;
         Json::Value root;
         if (!reader.parse(pData, root, false)) {
@@ -444,8 +493,8 @@ int DRTConnManager::DispTimerCallback(const char*pData, int nLen)
                 return 0;
             }
             if (s.length()>0) {
-                if (RTZKClient::Instance()->CheckNodeExists(s)) {
-                    DRTConnManager::Instance()->PostData(pData, nLen);
+                if (RTZKClient::Instance().CheckNodeExists(s)) {
+                    DRTConnManager::Instance().PostDataStatic(pData, nLen);
                 } else {
                     RTEventTimer* timer = new RTEventTimer(RETRY_MAX_TIME, &DRTConnManager::DispTimerCallback);
                     timer->DataDelay(pData, nLen);

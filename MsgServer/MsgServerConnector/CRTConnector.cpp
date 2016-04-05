@@ -90,11 +90,14 @@ void CRTConnector::DeInitialize()
 	TimeoutTask::UnInitialize();
 
 	SocketUtils::UnInitialize();
+    sleep(1);
+    IdleTask::UnInitialize();
 
 #if !MACOSXEVENTQUEUE
 	::select_stopevents();
 #endif
 
+	Socket::Uninitialize();// uninitialize EventThread
 	OS::UnInitialize();
     LI("ByeBye server...");
 }
@@ -139,14 +142,13 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
 	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
     Assert(pCliConIp != NULL && strlen(pCliConIp)>0);
 
-    std::cout << "usWebConPort:" << usWebConPort << ", usModulePort:" << usModulePort << ", usCliConPort:" << usCliConPort << std::endl;
     std::string ssid;
 	CRTConnection::gStrAddr = pWebConIp;
     CRTConnection::gUsPort = usWebConPort;
     CRTDispatchConnection::m_connIp = pWebConIp;
     CRTDispatchConnection::m_connPort = usWebConPort;
     GenericSessionId(ssid);
-    CRTConnManager::Instance()->SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
+    CRTConnManager::Instance().SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
 
 	if(usWebConPort > 0)
@@ -190,7 +192,7 @@ int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
         LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
     }
-    
+
 	return 0;
 }
 
@@ -203,5 +205,6 @@ void CRTConnector::DoTick()
 
 void CRTConnector::Stop()
 {
-
+    CRTConnManager::Instance().SignalKill();
+    CRTConnManager::Instance().ClearAll();
 }

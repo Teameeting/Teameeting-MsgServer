@@ -17,10 +17,10 @@ public:
 	virtual ~RTHttpSvrConn(void);
 
 public:
-    
-    
+
+
     void SendRequest(const char* pData, int nLen);
-    
+
 public:
 	//* For RCHttp
     virtual void OnReadEvent(const char*data, int size);
@@ -34,7 +34,7 @@ private:
 	char			 *m_pBuffer;
 	int				 m_nBufLen;
 	int				 m_nBufOffset;
-    
+
 };
 
 #endif	// __RT_HTTP_SVR_CONN_H__

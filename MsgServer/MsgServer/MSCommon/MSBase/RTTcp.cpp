@@ -20,6 +20,7 @@ RTTcp::RTTcp()
 RTTcp::~RTTcp(void)
 {
 	ListEmpty(&m_listSend);
+    GetSocket()->Cleanup();
 }
 
 int RTTcp::SendData(const char*pData, int nLen)
@@ -29,7 +30,7 @@ int RTTcp::SendData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -49,7 +50,7 @@ int RTTcp::SendTransferData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+4];//sprintf will add 1 in the end
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+4));
         char* pptr = ptr;
         *pptr = '$';
         (pptr)++;
@@ -62,7 +63,7 @@ int RTTcp::SendTransferData(const char*pData, int nLen)
         }
         pptr = NULL;
     }
-    
+
     this->Signal(kWriteEvent);
     return nLen;
 }
@@ -112,13 +113,13 @@ SInt64 RTTcp::Run()
 			}
 
 			fSocket.RequestEvent(EV_RE);
-			events -= Task::kReadEvent; 
+			events -= Task::kReadEvent;
 		}
 		else if(events&Task::kWriteEvent)
 		{
-			ListElement *elem = NULL; 
-			if((elem = m_listSend.first) != NULL) 
-			{ 
+			ListElement *elem = NULL;
+			if((elem = m_listSend.first) != NULL)
+			{
 				UInt32 theLengthSent = 0;
 				OS_Error err = fSocket.Send((char*)elem->content, elem->size, &theLengthSent);
 				if (err == EAGAIN)
@@ -136,7 +137,7 @@ SInt64 RTTcp::Run()
 				}
 			}
             //OnSendEvent("", 0);
-			events -= Task::kWriteEvent; 
+			events -= Task::kWriteEvent;
 		}
 		else if(events&Task::kWakeupEvent)
 		{
@@ -151,7 +152,7 @@ SInt64 RTTcp::Run()
 		else if(events&Task::kIdleEvent)
 		{
 			//OnTickEvent("", 0);
-			events -= Task::kIdleEvent; 
+			events -= Task::kIdleEvent;
 		}
 		else
 		{

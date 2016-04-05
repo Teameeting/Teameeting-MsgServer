@@ -27,9 +27,9 @@ int main(int argc, const char * argv[]) {
         exit(0);
     }
 #if _TEST_
-    if (RTZKClient::Instance()->InitOnly(argv[1])!=0) {
+    if (RTZKClient::Instance().InitOnly(argv[1])!=0) {
 #else
-    if (RTZKClient::Instance()->InitZKClient(argv[1])!=0) {
+    if (RTZKClient::Instance().InitZKClient(argv[1])!=0) {
 #endif
         std::cout << "Please check the config file ..." << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
@@ -40,24 +40,29 @@ int main(int argc, const char * argv[]) {
     L_Init(0, NULL);
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
-    int res = pMsgQueue->Start(RTZKClient::Instance()->GetServerConfig().IP.c_str(),
-                     RTZKClient::Instance()->RTZKClient::Instance()->GetServerConfig().portConfig.dispatcher.AcceptConn,
-                     RTZKClient::Instance()->GetServerConfig().IP.c_str(),
-                     RTZKClient::Instance()->GetServerConfig().portConfig.dispatcher.ListenDisp,
-                     RTZKClient::Instance()->GetServerConfig().HttpIp.c_str(),
-                     RTZKClient::Instance()->GetServerConfig().portConfig.dispatcher.ListenHttp
+    int res = pMsgQueue->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                     RTZKClient::Instance().RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.AcceptConn,
+                     RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                     RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.ListenDisp,
+                     RTZKClient::Instance().GetServerConfig().HttpIp.c_str(),
+                     RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.ListenHttp
                      );
+    int test = 0;
     if (res != 0) {
         LI("DRTMsgQueue start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    while (true) {
+    //while (test++ < 20) {
+    while (1) {
         pMsgQueue->DoTick();
         sleep(1);
         //break;
     }
+        sleep(1);
 EXIT:
+    pMsgQueue->Stop();
     DRTMsgQueue::DeInitialize();
     L_Deinit();
+    RTZKClient::Instance().Unin();
     return 0;
 }

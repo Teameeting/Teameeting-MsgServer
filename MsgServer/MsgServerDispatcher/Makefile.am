@@ -30,6 +30,7 @@ MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
 						   $(top_srcdir)/DRTHttp/DRTHttpSvrConn.cpp \
 						   $(top_srcdir)/DRTHttp/DRTMsgDispatch.cpp \
 						   $(top_srcdir)/DRTConnManager.cpp \
+						   $(top_srcdir)/DRTConnDispatcher.cpp \
 						   $(top_srcdir)/DRTMsgQueue.cpp \
 						   $(top_srcdir)/main.cpp
 

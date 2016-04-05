@@ -27,9 +27,11 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
 MsgServerMeeting_SOURCES=$(top_srcdir)/MRTHttp/MRTHttpSvrConn.cpp \
 						   $(top_srcdir)/MRTTransfer/MRTTransferSession.cpp \
 						   $(top_srcdir)/MRTConnManager.cpp \
+						   $(top_srcdir)/MRTConnDispatcher.cpp \
 						   $(top_srcdir)/MRTMeeting.cpp \
 						   $(top_srcdir)/MRTMeetingRoom.cpp \
 						   $(top_srcdir)/MRTRoomManager.cpp \
+						   $(top_srcdir)/MRTRoomDispatcher.cpp \
 						   $(top_srcdir)/main.cpp
 
 MsgServerMeeting_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient

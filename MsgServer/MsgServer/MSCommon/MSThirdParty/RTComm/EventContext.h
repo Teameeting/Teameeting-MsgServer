@@ -10,7 +10,7 @@
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -18,7 +18,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  *
  */
@@ -27,11 +27,11 @@
 
     Contains:   An event context provides the intelligence to take an event
                 generated from a UNIX file descriptor (usually EV_RE or EV_WR)
-                and signal a Task. 
-                    
+                and signal a Task.
 
-    
-    
+
+
+
 */
 
 #ifndef __EVENT_CONTEXT_H__
@@ -60,13 +60,13 @@ class EventThread;
 class EventContext
 {
     public:
-    
+
         //
         // Constructor. Pass in the EventThread you would like to receive
         // events for this context, and the fd that this context applies to
         EventContext(int inFileDesc, EventThread* inThread);
         virtual ~EventContext() { if (fAutoCleanup) this->Cleanup(); }
-        
+
         //
         // InitNonBlocking
         //
@@ -84,31 +84,31 @@ class EventContext
         // Arms this EventContext. Pass in the events you would like to receive
         void            RequestEvent(int theMask = EV_RE);
 
-        
+
         //
         // Provide the task you would like to be notified
         void            SetTask(Task* inTask)
-        {  
-            fTask = inTask; 
+        {
+            fTask = inTask;
             if (EVENTCONTEXT_DEBUG)
             {
-                if (fTask== NULL)  
-                    qtss_printf("EventContext::SetTask context=%p task= NULL\n", (void *) this); 
-                else 
-                    qtss_printf("EventContext::SetTask context=%p task= %p name=%s\n",(void *) this,(void *) fTask, fTask->fTaskName); 
+                if (fTask== NULL)
+                    qtss_printf("EventContext::SetTask context=%p task= NULL\n", (void *) this);
+                else
+                    qtss_printf("EventContext::SetTask context=%p task= %p name=%s\n",(void *) this,(void *) fTask, fTask->fTaskName);
             }
         }
-        
+
         // when the HTTP Proxy tunnels takes over a TCPSocket, we need to maintain this context too
         void            SnarfEventContext( EventContext &fromContext );
-        
+
         // Don't cleanup this socket automatically
         void            DontAutoCleanup() { fAutoCleanup = false; }
-        
+
         // Direct access to the FD is not recommended, but is needed for modules
         // that want to use the Socket classes and need to request events on the fd.
         int             GetSocketFD()       { return fFileDesc; }
-        
+
         enum
         {
             kInvalidFileDesc = -1   //int
@@ -124,14 +124,14 @@ class EventContext
         // task, but that behavior may be altered / overridden.
         //
         // Currently, we always generate a Task::kReadEvent
-		virtual void ProcessEvent(int events/*eventBits*/) 
-        {   
+		virtual void ProcessEvent(int events/*eventBits*/)
+        {
             if (EVENTCONTEXT_DEBUG)
             {
-                if (fTask== NULL)  
-                    qtss_printf("EventContext::ProcessEvent context=%p task=NULL\n",(void *) this); 
-                else 
-                    qtss_printf("EventContext::ProcessEvent context=%p task=%p TaskName=%s\n",(void *)this,(void *) fTask, fTask->fTaskName); 
+                if (fTask== NULL)
+                    qtss_printf("EventContext::ProcessEvent context=%p task=NULL\n",(void *) this);
+                else
+                    qtss_printf("EventContext::ProcessEvent context=%p task=%p TaskName=%s\n",(void *)this,(void *) fTask, fTask->fTaskName);
             }
 
             if (fTask != NULL)
@@ -145,7 +145,7 @@ class EventContext
     private:
 
         struct eventreq fEventReq;
-        
+
         OSRef           fRef;
         PointerSizedInt fUniqueID;
         StrPtrLen       fUniqueIDStr;
@@ -158,24 +158,24 @@ class EventContext
 #if DEBUG
         Bool16          fModwatched;
 #endif
-        
+
         static unsigned int sUniqueID;
-        
+
         friend class EventThread;
 };
 
 class EventThread : public OSThread
 {
     public:
-    
+
         EventThread(int evTbSize) : OSThread(), fRefTable(evTbSize) {}
-        virtual ~EventThread() {}
-    
+        virtual ~EventThread() { }
+
     private:
-    
+
         virtual void Entry();
         OSRefTable      fRefTable;
-        
+
         friend class EventContext;
 };
 

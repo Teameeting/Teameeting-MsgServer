@@ -14,6 +14,7 @@
 RTZKClient::RTZKClient()
 : m_conf_path("")
 , m_client(NULL)
+, m_server_node(NULL)
 {
     m_listWs.clear();
     m_dataWs.clear();
@@ -21,16 +22,7 @@ RTZKClient::RTZKClient()
 
 RTZKClient::~RTZKClient()
 {
-    for(auto& x : m_listWs){
-        delete x;
-        x = NULL;
-    }
-    m_listWs.clear();
-    for(auto& x : m_dataWs){
-        delete x;
-        x = NULL;
-    }
-    m_dataWs.clear();
+    Unin();
 }
 
 void RTZKClient::RTZKLogCallBack(void* ctx, const std::string& l)
@@ -65,7 +57,9 @@ int RTZKClient::PathRemoveCallback(const std::string& path)
 {
     ChildrenWatcherMapIt it = m_mapChildWs.find(path);
     if (it!=m_mapChildWs.end()) {
-        LE("RTZKClient::PathRemoveCallback node %s was removed\n", path.c_str());
+        LI("RTZKClient::PathRemoveCallback node %s was removed\n", path.c_str());
+        delete it->second;
+        it->second = NULL;
         m_mapChildWs.erase(it);
     }
     return 0;
@@ -106,10 +100,10 @@ int RTZKClient::InitZKClient(const std::string& conf)
         LE("m_conf.init failed\n");
         return res;
     }
-    
+
     m_client =  new gim::ZKClient();
     res = m_client->init(m_conf.ZkUrl);
-    
+
     res = InitStatusNode(m_conf);
     if (res == ZOK) {
         LI("InitStatusNode path:%s ip:%s ok!\n", m_conf.ModulePath.c_str(), m_conf.IP.c_str());
@@ -121,7 +115,7 @@ int RTZKClient::InitZKClient(const std::string& conf)
         return res;
     }
     m_client->setLogFn(this, &RTZKClient::RTZKLogCallBack);
-    
+
     gim::ListWatcher< RTZKClient>* lw = NULL;
     gim::DataWatcher< RTZKClient>* dw = NULL;
     gim::s_vector c_v;
@@ -147,7 +141,7 @@ int RTZKClient::InitZKClient(const std::string& conf)
     dw->init(m_client, m_conf.ModulePath);
     dw->addWatch(gim::ZKWatcher::CHANGE_EVENT);
     m_dataWs.push_back(dw);
-    
+
     return 0;
 
 }
@@ -156,4 +150,32 @@ int RTZKClient::InitOnly(const std::string& conf)
 {
     m_conf_path = conf;
     return m_conf.init(m_conf_path);
+}
+
+int RTZKClient::Unin()
+{
+    for(auto& x : m_listWs){
+        delete x;
+        x = NULL;
+    }
+    m_listWs.clear();
+    for(auto& x : m_dataWs){
+        delete x;
+        x = NULL;
+    }
+    m_dataWs.clear();
+    for(auto x : m_mapChildWs){
+        delete x.second;
+        x.second = NULL;
+    }
+    m_mapChildWs.clear();
+    if (m_server_node) {
+         delete m_server_node;
+         m_server_node = NULL;
+    }
+    if (m_client) {
+        delete m_client;
+        m_client = NULL;
+    }
+     return 0;
 }

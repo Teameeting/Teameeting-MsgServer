@@ -143,7 +143,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                 break;
         }
     } else {
-        
+
     }
 }
 
@@ -238,7 +238,7 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
     //* 2, Notify Other members
     //
     int online = it->second->GetMeetingMemberNumber();
-    
+
     if (!it->second->GetAllRoomMemberJson(users)) {
         if (users.length()>0) {
             LI("==>LeaveRoom notify users :%s i am out room, online mem:%d\n", users.c_str(), online);
@@ -288,6 +288,8 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 
 bool MRTRoomManager::Init(const std::string& msgQueueIp, unsigned short msgQueuePort, const std::string& httpIp, unsigned short httpPort, const std::string& httpHost)
 {
+    if (m_pRoomDispatcher==NULL)
+        m_pRoomDispatcher = new MRTRoomDispatcher();
     return ConnectMsgQueue(msgQueueIp, msgQueuePort) && ConnectHttpSvrConn(httpIp, httpPort, httpHost);
 }
 
@@ -308,10 +310,10 @@ bool MRTRoomManager::ConnectMsgQueue(const std::string& msgQueueIp, unsigned sho
 bool MRTRoomManager::TryConnectMsgQueue(const std::string& msgQueueIp, unsigned short msgQueuePort)
 {
     Assert(m_pMsgQueueSession==nullptr);
-    
+
     m_pMsgQueueSession = new MRTTransferSession(TRANSFERMODULE::mmsgqueue);
     m_pMsgQueueSession->Init();
-    
+
     bool ok = false;
     int times;
     // conn to msgqueue
@@ -320,13 +322,14 @@ bool MRTRoomManager::TryConnectMsgQueue(const std::string& msgQueueIp, unsigned 
         usleep(1000*1000);
         LI("try %d times to connect to msgqueue server %s:%u waiting...\n", times, msgQueueIp.c_str(), msgQueuePort);
     }while(!ok && times++ < 5);
-    
+
     if (ok) {
         LI("%s port:%u, socketFD:%d\n", __FUNCTION__, msgQueuePort,  m_pMsgQueueSession->GetSocket()->GetSocketFD());
         m_pMsgQueueSession->EstablishConnection();
         return true;
     } else {
-        this->Signal(Task::kIdleEvent);
+        if (m_pRoomDispatcher)
+            m_pRoomDispatcher->Signal(Task::kIdleEvent);
         return false;
     }
 }
@@ -422,7 +425,15 @@ void MRTRoomManager::ClearMsgQueueSession(const std::string& sid)
     LI("RTRoomManager::ClearMsgQueueSession m_pMsgQueueSession=NULL sid:%s\n", sid.c_str());
 }
 
-void MRTRoomManager::OnTickEvent(const char*pData, int nLen)
+
+bool MRTRoomManager::ClearAll()
+{
+    if (m_pRoomDispatcher)
+        m_pRoomDispatcher->Signal(Task::kKillEvent);
+    return true;
+}
+
+void MRTRoomManager::ProcessTickEvent(const char*pData, int nLen)
 {
     Assert(m_pMsgQueueSession);
     if (m_pMsgQueueSession->GetConnectingStatus()==0) {
@@ -432,7 +443,8 @@ void MRTRoomManager::OnTickEvent(const char*pData, int nLen)
             ok = m_pMsgQueueSession->Connect();
             usleep(2000*1000);
         }while(!ok && ++times < 5);
-        this->Signal(Task::kIdleEvent);
+        if (m_pRoomDispatcher)
+            m_pRoomDispatcher->Signal(Task::kIdleEvent);
     } else if (m_pMsgQueueSession->GetConnectingStatus() == 1) {
         m_pMsgQueueSession->EstablishConnection();
     }
@@ -490,16 +502,16 @@ void MRTRoomManager::OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string&
         // not find room
         return;
     }
-    
+
     //@Eric
     //* 2, Set GetMembersStatus to Done, and notify other members(not in room) meeting is opened.
     it->second->SetGetMembersStatus(MRTMeetingRoom::GetMembersStatus::GMS_DONE);
     //LI("====>>>>OnGetMemberList SendWaitingMsgs\n");
     SendWaitingMsgs(it);
-    
+
     //@Eric
     //* 3, Check msgs list, and send to notify other members(not in room)
-    
+
 }
 
 void MRTRoomManager::GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response)

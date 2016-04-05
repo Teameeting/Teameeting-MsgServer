@@ -19,7 +19,7 @@ std::string CRTDispatchConnection::m_connPort;
 void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::string& msg)
 {
     //find connector
-    CRTConnManager::ConnectionInfo* pci = CRTConnManager::Instance()->findConnectionInfoById(uid);
+    CRTConnManager::ConnectionInfo* pci = CRTConnManager::Instance().findConnectionInfoById(uid);
     if (!pci) {
         return;
     } else { //!pci

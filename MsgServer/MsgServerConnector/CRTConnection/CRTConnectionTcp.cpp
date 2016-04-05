@@ -80,7 +80,7 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
         //check & auth
         /*
         std::string pass;
-        RTHiredisRemote::Instance()->CmdGet(pUserid, pass);
+        RTHiredisRemote::Instance().CmdGet(pUserid, pass);
         if (pass.compare(pPass)!=0) {
             LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
             // send response
@@ -100,18 +100,18 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
         CRTConnManager::ConnectionInfo* pci = new CRTConnManager::ConnectionInfo();
         if (pci) {
             GenericSessionId(sid);
-            m_connectorId = CRTConnManager::Instance()->ConnectorId();
+            m_connectorId = CRTConnManager::Instance().ConnectorId();
             pci->_connId = sid;
-            pci->_connAddr = CRTConnManager::Instance()->ConnectorIp();
-            pci->_connPort = CRTConnManager::Instance()->ConnectorPort();
+            pci->_connAddr = CRTConnManager::Instance().ConnectorIp();
+            pci->_connPort = CRTConnManager::Instance().ConnectorPort();
             pci->_userId = pUserid;
             pci->_token = pPass;
             pci->_pConn = this;
             pci->_connType = CONNECTIONTYPE::_ctcp;
             pci->_flag = 1;
-            CRTConnManager::Instance()->AddUser(CONNECTIONTYPE::_ctcp, m_userId, pci);
-            CRTConnManager::Instance()->ConnectionConnNotify(m_userId, m_token);
-            
+            CRTConnManager::Instance().AddUser(CONNECTIONTYPE::_ctcp, m_userId, pci);
+            CRTConnManager::Instance().ConnectionConnNotify(m_userId, m_token);
+
             // send response
             std::string resp;
             GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, resp);
@@ -146,7 +146,7 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
     //transfer msg by TransferSession
 
     std::string msg(pData, dLen);
-    CRTConnManager::Instance()->TransferMsg(mType, mseq, pUserid, msg);
+    CRTConnManager::Instance().TransferMsg(mType, mseq, pUserid, msg);
 }
 
 void CRTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
@@ -160,9 +160,9 @@ void CRTConnectionTcp::OnLogout(const char* pUserid)
         return;
     }
     std::string token;
-    CRTConnManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
-    CRTConnManager::Instance()->ConnectionLostNotify(pUserid, m_token);
-   
+    CRTConnManager::Instance().DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
+    CRTConnManager::Instance().ConnectionLostNotify(pUserid, m_token);
+
     m_userId = "";
     m_token = "";
     m_nname = "";
@@ -191,8 +191,8 @@ void CRTConnectionTcp::ConnectionDisconnected()
     if (m_userId.length()>0) {
         LI("RTConnectionTcp::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
         std::string token;
-        CRTConnManager::Instance()->DelUser(CONNECTIONTYPE::_ctcp, m_userId, token);
-        CRTConnManager::Instance()->ConnectionLostNotify(m_userId, m_token);
+        CRTConnManager::Instance().DelUser(CONNECTIONTYPE::_ctcp, m_userId, token);
+        CRTConnManager::Instance().ConnectionLostNotify(m_userId, m_token);
     }
 }
 

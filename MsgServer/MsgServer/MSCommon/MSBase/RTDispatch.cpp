@@ -29,7 +29,7 @@ int RTDispatch::PostData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -48,7 +48,7 @@ int RTDispatch::SendData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -67,7 +67,7 @@ int RTDispatch::WakeupData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -75,7 +75,7 @@ int RTDispatch::WakeupData(const char*pData, int nLen)
             ListAppend(&m_listWakeup, ptr, nLen);
         }
     }
-    
+
     this->Signal(kWakeupEvent);
     return nLen;
 }
@@ -86,7 +86,7 @@ int RTDispatch::PushData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -94,7 +94,7 @@ int RTDispatch::PushData(const char*pData, int nLen)
             ListAppend(&m_listPush, ptr, nLen);
         }
     }
-    
+
     this->Signal(kPushEvent);
     return nLen;
 }
@@ -106,12 +106,13 @@ SInt64 RTDispatch::Run()
 
 	// Http session is short connection, need to kill session when occur TimeoutEvent.
 	// So return -1.
-	if(events&Task::kTimeoutEvent || events&Task::kKillEvent)
-	{
-        if (events&Task::kTimeoutEvent) {
-            UpdateTimer();
-        }
+    if (events&Task::kTimeoutEvent) {
+        UpdateTimer();
 		return 0;
+    }
+	if(events&Task::kKillEvent)
+	{
+        return -1;
 	}
 
 	while(1)
