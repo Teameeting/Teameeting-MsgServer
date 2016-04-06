@@ -36,6 +36,7 @@ LOCAL_SRC_FILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/asyncudpsocket.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/base64.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/checks.cc \
+		$(WEBRTC_BASE_PATH)/webrtc/base/common.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/criticalsection.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/event.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/event_tracer.cc \
@@ -52,6 +53,7 @@ LOCAL_SRC_FILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/socketaddress.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/stringencode.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/thread.cc \
+		$(WEBRTC_BASE_PATH)/webrtc/base/thread_checker_impl.cc \
 		$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc
 	
 ## 

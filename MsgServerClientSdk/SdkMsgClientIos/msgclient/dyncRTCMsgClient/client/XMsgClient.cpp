@@ -56,7 +56,7 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
     }
     
     if (!m_pClientImpl) {
-        m_pClientImpl = new XTcpClientImpl(*this);
+        m_pClientImpl = dynamic_cast<XTcpClientImpl*>(XTcpClient::Create(*this));// new XTcpClientImpl(*this);
     }
     if (!m_pClientImpl) {
         if (m_pMsgProcesser) {
@@ -276,7 +276,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
         ptr[msg.length()+3] = '\0';
         if (m_pClientImpl) {
             int n = m_pClientImpl->SendMessageX(ptr, (int)(msg.length()+3));
-            delete ptr;
+            delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             return n;
@@ -286,7 +286,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 #else
             std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl is NULL" << std::endl;
 #endif
-            delete ptr;
+            delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             LOG(LS_ERROR) << "SendEncodeMsg m_pClientImpl is NULL";
