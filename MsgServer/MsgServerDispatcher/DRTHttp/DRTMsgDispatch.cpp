@@ -75,6 +75,10 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         //std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
         //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
         //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
+    } else if (mmsg._tags == SENDTAGS::sendtags_call) {
+        std::string no = mmsg._nname + "喊你进房间\"" + mmsg._rname + "\"啦~";
+        //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+        DRTConnManager::Instance().PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
     }
 }
 

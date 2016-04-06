@@ -18,6 +18,8 @@ traces.0
 traces.1
 requests
 .run_build.sh
+tags
+*.conf
 MsgServer/MsgServerConnector/MsgServerConnector
 MsgServer/MsgServerConnector/connector/bin
 MsgServer/MsgServerDispatcher/MsgServerDispatcher

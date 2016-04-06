@@ -105,7 +105,7 @@ int XTcpClientImpl::SendMessageX(const char*pMsg, int nLen)
 {
 	if (pMsg == NULL || nLen == 0)
 		return -1;
-	
+
 	rtc::CritScope l(&m_csBuf);
 	while ((m_nBufOffset + nLen) > m_nBufLen)
 	{
@@ -267,7 +267,7 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 	if (err != ECONNREFUSED) {
 #endif
 	}
-	
+
 	if (socket == m_asynSock.get()) {
 		{
 			rtc::CritScope l(&m_csBuf);
@@ -278,7 +278,7 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 				m_rCallback.OnMessageSent(-1);
 			}
 		}
-		
+
 		if (m_nState == CONNECTED)
 			m_rCallback.OnServerDisconnect();
 		else
@@ -288,7 +288,7 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 		{// Auto Connect...
 			LOG(WARNING) << "Connection refused; retrying in 2 seconds";
 			rtc::Thread::Current()->PostDelayed(kReconnectDelay, this, 0);
-		} 
+		}
 		else
 		{
 			Close();

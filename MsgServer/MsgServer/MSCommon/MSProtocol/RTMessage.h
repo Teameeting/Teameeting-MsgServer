@@ -14,42 +14,6 @@
 #include <list>
 #include "RTMsg.h"
 
-typedef enum _transferaction{
-    req = 1,
-    req_ack,
-    resp,
-    resp_ack,
-    transferaction_invalid
-}TRANSFERACTION;
-
-typedef enum _transfermodule{
-    mconnector = 1,
-    mmsgqueue,
-    mmeeting,
-    mcallcenter,
-    mp2p,
-    transfermodule_invalid
-}TRANSFERMODULE;
-
-typedef enum _transfertype{
-    conn = 1,
-    trans,
-    queue,
-    dispatch,
-    push,
-    tlogin,
-    tlogout,
-    transfertype_invalid
-}TRANSFERTYPE;
-
-typedef enum _conntag{
-    co_msg = 1,
-    co_id,
-    co_msgid,
-    co_keepalive,
-    conntag_invalid
-}CONNTAG;
-
 typedef struct _transfermsg TRANSFERMSG;
 struct _transfermsg{
     TRANSFERACTION  _action;

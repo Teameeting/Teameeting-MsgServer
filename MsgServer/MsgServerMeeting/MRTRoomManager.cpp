@@ -77,6 +77,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             {
                 switch (mmsg._tags) {
                     case SENDTAGS::sendtags_talk:
+                    case SENDTAGS::sendtags_call:
                     {
                         if (mmsg._to.at(0)=='a') {
                             //to all

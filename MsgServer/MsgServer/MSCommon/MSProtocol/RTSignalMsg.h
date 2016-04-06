@@ -12,15 +12,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "RTMeetMsg.h"
-
-typedef enum _signaltype{
-    login = 1,
-    sndmsg,
-    getmsg,
-    logout,
-    keepalive,
-    signaltype_invalid
-}SIGNALTYPE;
+#include "RTMsg.h"
 
 typedef struct _signalmsg SIGNALMSG;
 struct _signalmsg{
