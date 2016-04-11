@@ -26,7 +26,7 @@ int RTEventTimer::DataDelay(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -48,7 +48,7 @@ SInt64 RTEventTimer::Run()
     {
         return -1;
     }
-    
+
 	while(1)
 	{
 		if(events&Task::kTimeoutEvent)

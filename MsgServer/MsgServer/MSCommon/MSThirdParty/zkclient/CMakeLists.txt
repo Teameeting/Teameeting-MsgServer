@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(zkclient)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-add_definitions("-Wall -g -fPIC -DGPUSH_LINUX=1")
+add_definitions("-Wall -g -fPIC -std=c++11 -DGPUSH_LINUX=1")
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/)
 include_directories(${PROJECT_SOURCE_DIR}/efnfw ${PROJECT_SOURCE_DIR}/common/include ${PROJECT_SOURCE_DIR}/../ /usr/local/Cellar/jsoncpp/0.10.5/include /usr/local/include)
 file(GLOB_RECURSE ZK_LIST common/src/*.cpp efnfw/base/*.cpp efnfw/net/*.cpp)

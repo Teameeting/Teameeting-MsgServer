@@ -52,7 +52,7 @@ int main(int argc, const char * argv[]) {
         LI("DRTMsgQueue start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 20) {
+    //while (test++ < 110) {
     while (1) {
         pMsgQueue->DoTick();
         sleep(1);

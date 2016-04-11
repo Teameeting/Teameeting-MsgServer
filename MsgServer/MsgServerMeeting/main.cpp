@@ -20,7 +20,6 @@ int main(int argc, const char * argv[]) {
     printf("Hello, Meeting!!!");
     MRTMeeting::PrintVersion();
 
-#if 1
     if (argc <= 1) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
@@ -37,7 +36,6 @@ int main(int argc, const char * argv[]) {
         getchar();
         exit(0);
     }
-#endif
 
     L_Init(5, NULL);
     MRTMeeting::Initialize(1024);
@@ -55,7 +53,7 @@ int main(int argc, const char * argv[]) {
         LI("MRTMeeting start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 10) {
+    //while (test++ < 100) {
     while (1) {
         pMeeting->DoTick();
         sleep(1);

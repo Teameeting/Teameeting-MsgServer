@@ -226,6 +226,14 @@ bool CRTConnManager::SignalKill()
         }
     }
 
+    {
+        OSMutexLocker clocker(&s_mutexConnection);
+        for (auto & x : s_ConnectionInfoMap) {
+            x.second->_pConn->Signal(Task::kKillEvent);
+            usleep(100*1000);
+        }
+    }
+
     return true;
 }
 
@@ -248,6 +256,16 @@ bool CRTConnManager::ClearAll()
             x = NULL;
         }
         s_TypeModuleSessionInfoList.clear();
+    }
+
+    {
+        OSMutexLocker clocker(&s_mutexConnection);
+        for (auto & x : s_ConnectionInfoMap) {
+            delete x.second;
+            x.second = NULL;
+            usleep(100*1000);
+        }
+        s_ConnectionInfoMap.clear();
     }
      return true;
 }

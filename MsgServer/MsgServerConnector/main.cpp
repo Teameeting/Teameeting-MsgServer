@@ -51,7 +51,7 @@ int main(int argc, const char * argv[]) {
         LI("CRTConnector start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 30) {
+    //while (test++ < 120) {
     while (1) {
         pConnector->DoTick();
         sleep(1);

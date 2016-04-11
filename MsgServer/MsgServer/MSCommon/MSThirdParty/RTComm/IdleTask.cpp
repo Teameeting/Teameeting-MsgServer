@@ -80,7 +80,7 @@ IdleTaskThread::Entry()
         if (fIdleHeap.CurrentHeapSize() == 0)
             fHeapCond.Wait(&fHeapMutex);
         if (this->IsStopRequested()) {
-            return;
+            break;
         }
         SInt64 msec = OS::Milliseconds();
 
@@ -104,7 +104,7 @@ IdleTaskThread::Entry()
             fHeapCond.Wait(&fHeapMutex, smallTime);
         }
         if (this->IsStopRequested()) {
-            return;
+            break;
         }
     }
 }

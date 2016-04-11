@@ -6,6 +6,9 @@
 #include "zk_watcher.h"
 #include "server_status.h"
 
+typedef std::unordered_set< gim::ZKClient::WatchCtx* > watchCtxSet;
+static watchCtxSet gs_watchCtxSet;
+
 namespace gim{
 
 	using namespace std;
@@ -102,6 +105,7 @@ namespace gim{
         }
 
 		WatchCtx* ctx = (WatchCtx*)watcherCtx;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* c = (ZKClient*)ctx->cli;
 		ZKWatcher* w = (ZKWatcher*)c->getWatcher(ctx->watcher_id);
@@ -132,6 +136,7 @@ namespace gim{
 	void ZKClient::getChildrenComplete(int rc, const String_vector* s_v, const void* data){
 
 		WatchCtx* ctx = (WatchCtx*)data;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* p = (ZKClient*)ctx->cli;
 
@@ -175,6 +180,7 @@ namespace gim{
 		const struct Stat *stat, const void *data){
 
 		WatchCtx* ctx = (WatchCtx*)data;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* p = (ZKClient*)ctx->cli;
 
@@ -214,6 +220,7 @@ namespace gim{
 		}
 
 		WatchCtx* ctx = (WatchCtx*)data;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* p = (ZKClient*)ctx->cli;
 
@@ -248,6 +255,7 @@ namespace gim{
 		m_zkhandle(NULL), m_waiting(false), m_logfn(NULL){
 			pthread_mutex_init(&m_cs, NULL);
 			pthread_cond_init(&m_cond, NULL);
+            gs_watchCtxSet.clear();
 	}
 
 	ZKClient::~ZKClient(){
@@ -372,6 +380,8 @@ namespace gim{
 	int ZKClient::watchData(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
 		int ret = zoo_awget(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx, getDataComplete, ctx1);
 
@@ -388,6 +398,8 @@ namespace gim{
 	int ZKClient::watchChildren(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
 		int ret = zoo_awget_children(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx, getChildrenComplete, ctx1);
 
@@ -403,6 +415,8 @@ namespace gim{
 	int ZKClient::watchExists(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
 		int ret = zoo_awexists(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx,  getExistsComplete, ctx1);
 		if (ret && m_logfn){
@@ -417,6 +431,8 @@ namespace gim{
 	int ZKClient::watchCreate(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
 		int ret = zoo_awexists(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx, getExistsComplete, ctx1);
 
@@ -456,6 +472,10 @@ namespace gim{
 	int ZKClient::clear(){
 		//clear watcher is job of who create it
 		//clearPathWatchers();
+        for (auto & x : gs_watchCtxSet) {
+            delete x;
+        }
+        gs_watchCtxSet.clear();
 		if(m_zkhandle){
 			zookeeper_close(m_zkhandle);
 			m_zkhandle = NULL;

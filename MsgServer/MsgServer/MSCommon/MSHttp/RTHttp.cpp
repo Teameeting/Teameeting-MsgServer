@@ -32,7 +32,7 @@ int RTHttp::SendData(const char*pData, int nLen)
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
         {
@@ -40,7 +40,7 @@ int RTHttp::SendData(const char*pData, int nLen)
             ListAppend(&m_listSend, ptr, nLen);
         }
     }
-    
+
     this->Signal(kWriteEvent);
     return nLen;
 }
@@ -49,14 +49,14 @@ SInt64 RTHttp::Run()
 {
     EventFlags events = this->GetEvents();
     this->ForceSameThread();
-    
+
     // Http session is short connection, need to kill session when occur TimeoutEvent.
     // So return -1.
     if(events&Task::kKillEvent)
     {
         return -1;
     }
-    
+
     while(true)
     {
         if(events&Task::kReadEvent)
@@ -87,14 +87,14 @@ SInt64 RTHttp::Run()
         else if(events&Task::kIdleEvent)
         {
             OnTickEvent();
-            events -= Task::kIdleEvent; 
+            events -= Task::kIdleEvent;
         }
         else
         {
             return fTickTime;
         }
     }
-    
+
     // If we are here because of a timeout, but we can't delete because someone
     // is holding onto a reference to this session, just reschedule the timeout.
     //
