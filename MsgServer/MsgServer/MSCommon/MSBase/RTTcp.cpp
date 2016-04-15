@@ -20,19 +20,23 @@ RTTcp::RTTcp()
 RTTcp::~RTTcp(void)
 {
 	ListEmpty(&m_listSend);
+    GetSocket()->Cleanup();
 }
 
 int RTTcp::SendData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params\n", __FUNCTION__);
+        LE("RTTcp::SendData pData is over length\n");
         return -1;
     }
     {
-        char* ptr = new char[nLen+1];
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+1));
         memcpy(ptr, pData, nLen);
         ptr[nLen] = '\0';
-        ListAppend(&m_listSend, ptr, nLen);
+        {
+            OSMutexLocker locker(&mMutexSend);
+            ListAppend(&m_listSend, ptr, nLen);
+        }
     }
 
 	this->Signal(kWriteEvent);
@@ -42,21 +46,24 @@ int RTTcp::SendData(const char*pData, int nLen)
 int RTTcp::SendTransferData(const char*pData, int nLen)
 {
     if (nLen > 9999) {
-        LE("%s invalid params\n", __FUNCTION__);
+        LE("RTTcp::SendTransferData pData is over length\n");
         return -1;
     }
     {
-        char* ptr = new char[nLen+4];//sprintf will add 1 in the end
+        char* ptr = (char*)malloc(sizeof(char)*(nLen+4));
         char* pptr = ptr;
         *pptr = '$';
         (pptr)++;
         RTJSBuffer::writeShort(&pptr, nLen);
         memcpy((pptr), pData, nLen);
         ptr[nLen+3] = '\0';
-        ListAppend(&m_listSend, ptr, nLen+3);
+        {
+            OSMutexLocker locker(&mMutexSend);
+            ListAppend(&m_listSend, ptr, nLen+3);
+        }
         pptr = NULL;
     }
-    
+
     this->Signal(kWriteEvent);
     return nLen;
 }
@@ -70,25 +77,15 @@ SInt64 RTTcp::Run()
 	// So return -1.
 	if(events&Task::kTimeoutEvent || events&Task::kKillEvent)
 	{
-        if (events&Task::kTimeoutEvent) {
-            LI("%s timeout \n", __FUNCTION__);
-        } else {
-            LI("%s kill \n", __FUNCTION__);
-        }
         ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
         if (it != m_mapConnectObserver.end()) {
-            LI("Tcp::Run find Disconnection\n");
             RTObserverConnection *conn = it->second;
             if (conn) {
-                LI("Tcp::Run notify Disconnection\n");
                 conn->ConnectionDisconnected();
             }
-        } else {
-            LE("did not find return -1\n");
         }
 		return -1;
 	}
-
 
 	while(this->IsLiveSession())
 	{
@@ -103,35 +100,26 @@ SInt64 RTTcp::Run()
 				OS_Error sockErr = fSocket.Read(fRequestBuffer, kRequestBufferSizeInBytes - 1, &readed);
 				if (sockErr == EAGAIN)
 					break;
-
 				if (sockErr != OS_NoErr)
 				{
 					Assert(!fSocket.IsConnected());
 					break;
 				}
-
 				if(readed > 0)
 				{
-                    /*
-                    if(fRequestBuffer[0] != '$')
-                    {
-                        //printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\r\n");
-                    } else {
-                        //printf("RTcp::Run====fRequestBuffer:%d, %s\n", readed, fRequestBuffer);
-                    }*/
-                    
+                    //(fRequestBuffer[0] != '$')
 					OnRecvData(fRequestBuffer, readed);
 				}
 			}
 
 			fSocket.RequestEvent(EV_RE);
-			events -= Task::kReadEvent; 
+			events -= Task::kReadEvent;
 		}
 		else if(events&Task::kWriteEvent)
 		{
-			ListElement *elem = NULL; 
-			if((elem = m_listSend.first) != NULL) 
-			{ 
+			ListElement *elem = NULL;
+			if((elem = m_listSend.first) != NULL)
+			{
 				UInt32 theLengthSent = 0;
 				OS_Error err = fSocket.Send((char*)elem->content, elem->size, &theLengthSent);
 				if (err == EAGAIN)
@@ -140,28 +128,31 @@ SInt64 RTTcp::Run()
 				}
 				else
 				{
-					ListRemoveHead(&m_listSend); 
+                    {
+                        OSMutexLocker locker(&mMutexSend);
+                        ListRemoveHead(&m_listSend);
+                    }
 					if(NULL != m_listSend.first)
 						this->Signal(kWriteEvent);
 				}
-				
 			}
-			events -= Task::kWriteEvent; 
+            //OnSendEvent("", 0);
+			events -= Task::kWriteEvent;
 		}
-		else if(events&Task::kLcsEvent)
+		else if(events&Task::kWakeupEvent)
 		{
-			OnLcsEvent();
-			events -= Task::kLcsEvent;
+			//OnWakeupEvent("", 0);
+			events -= Task::kWakeupEvent;
 		}
-		else if(events&Task::kPeerEvent)
+		else if(events&Task::kPushEvent)
 		{
-			OnPeerEvent();
-			events -= Task::kPeerEvent; 
+			//OnPushEvent("", 0);
+			events -= Task::kPushEvent;
 		}
 		else if(events&Task::kIdleEvent)
 		{
-			OnTickEvent();
-			events -= Task::kIdleEvent; 
+			//OnTickEvent("", 0);
+			events -= Task::kIdleEvent;
 		}
 		else
 		{
@@ -175,14 +166,10 @@ SInt64 RTTcp::Run()
     // At this point, however, the session is DEAD.
     ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
     if (it != m_mapConnectObserver.end()) {
-        LI("Tcp::Run SessionOffline find Disconnection\n");
         RTObserverConnection *conn = it->second;
         if (conn) {
-            LI("Tcp::Run SessionOffline notify Disconnection\n");
             conn->ConnectionDisconnected();
         }
-    } else {
-        LE("did NOT FIND session offline CLIENT return -1\n");
     }
     return -1;
 }

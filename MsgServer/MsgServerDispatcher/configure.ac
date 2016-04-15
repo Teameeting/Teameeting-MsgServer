@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT(MsgServerDispatcher, 1.0.1)
-AC_CONFIG_SRCDIR([DRTConnectionManager.cpp])
+AC_CONFIG_SRCDIR([DRTConnManager.cpp])
 AM_INIT_AUTOMAKE()
 AC_CONFIG_HEADERS([config.h])
 

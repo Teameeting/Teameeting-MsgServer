@@ -11,6 +11,9 @@
 #include "md5.h"
 #include "md5digest.h"
 #include "OS.h"
+#include "atomic.h"
+
+static unsigned int g_trans_id = 0;
 
 void GenericSessionId(std::string& strId)
 {
@@ -30,4 +33,9 @@ void GenericSessionId(std::string& strId)
         strId = hashStr.Ptr;
         hashStr.Delete();
     }
+}
+
+unsigned int GenericTransSeq()
+{
+    return atomic_add(&g_trans_id, 1);
 }

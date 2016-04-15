@@ -4,6 +4,10 @@
 ###################    parameter    ##########################
 ##############################################################
 LIB_CUR_PATH=`pwd`
+if [ ! -d lib_linux_a ]
+then
+    mkdir -p lib_linux_a
+fi
 LIB_LINUX_PATH=$LIB_CUR_PATH/lib_linux_a
 LIB_BASE_PATH=$LIB_CUR_PATH/MSThirdParty
 echo  "lib cur   path:" $LIB_CUR_PATH
@@ -29,6 +33,7 @@ function cleanup()
             rm $LIB_LINUX_PATH/*
         else
             loginfo "dir $LIB_LINUX_PATH not exist..."
+            return 1
         fi
     fi
 }
@@ -48,11 +53,12 @@ function build_lib()
     if [ $? -eq 0 ]
     then
         cp $1/$2 $LIB_LINUX_PATH/
-        loginfo "build $2 ok: " $?
+        loginfo "build $2 ok"
+        sleep 1
         cd $LIB_BASE_PATH
     else
         loginfo "build $2 err: " $?
-        exit
+        return 1
     fi
 }
 
@@ -68,24 +74,57 @@ cleanup
 LIB_SRC_PATH=$LIB_BASE_PATH/hiredis
 LIB_NAME=libhiredis.a
 build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
 sleep 1
 
 ####################    building libhttp  ##########################
 LIB_SRC_PATH=$LIB_BASE_PATH/libhttp
 LIB_NAME=libhttp.a
 build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
 sleep 1
 
 ####################    building libRtComm  ##########################
 LIB_SRC_PATH=$LIB_BASE_PATH/RTComm
 LIB_NAME=libRtComm.a
 build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
 sleep 1
 
 ####################    building librtklog  ##########################
 LIB_SRC_PATH=$LIB_BASE_PATH/rtklog
 LIB_NAME=librtklog.a
 build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
+sleep 1
+
+####################    building libzkclient  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/zkclient
+LIB_NAME=libzkclient.a
+cd $LIB_SRC_PATH
+sh build.sh
+build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
 sleep 1
 
 echo "[]generic lib.a ok"

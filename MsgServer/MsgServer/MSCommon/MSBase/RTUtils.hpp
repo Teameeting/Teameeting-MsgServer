@@ -14,4 +14,6 @@
 
 void GenericSessionId(std::string& strId);
 
+unsigned int GenericTransSeq();
+
 #endif /* RTUtils_hpp */

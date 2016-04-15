@@ -582,7 +582,7 @@ PACKAGE_STRING='MsgServerMeeting 1.0.1'
 PACKAGE_BUGREPORT=''
 PACKAGE_URL=''
 
-ac_unique_file="MRTConnectionManager.cpp"
+ac_unique_file="MRTConnManager.cpp"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>

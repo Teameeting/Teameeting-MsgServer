@@ -15,13 +15,14 @@
 #include "TCPSocket.h"
 #include "RTTcp.h"
 #include "RTJSBuffer.h"
-#include "DRTTransfer.h"
+#include "RTTransfer.h"
 #include "RTObserverConnection.h"
+#include "DRTMsgDispatch.hpp"
 
 class DRTTransferSession
     : public RTTcp
     , public RTJSBuffer
-    , public DRTTransfer
+    , public RTTransfer
     , public RTObserverConnection{
 public:
     DRTTransferSession();
@@ -29,6 +30,7 @@ public:
     void Init();
     void Unit();
     bool Connect(const std::string addr, int port);
+    bool Connect();
     void Disconn();
     bool RefreshTime();
     void KeepAlive();
@@ -36,25 +38,32 @@ public:
     void SendTransferData(const char* pData, int nLen);
     void SetModuleId(std::string& moduleId) { m_moduleId = moduleId; }
     void TestConnection();
-        
+
+    std::string& GetTransferAddr() { return m_addr; }
+    int GetTransferPort() { return m_port; }
+    int GetConnectingStatus() { return m_connectingStatus; };
 public:
     void EstablishConnection();
 
 // from RTTcp
 public:
     virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnLcsEvent();
-    virtual void OnPeerEvent();
-    virtual void OnTickEvent();
+    virtual void OnSendEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
     
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
+    virtual void OnMsgAck(TRANSFERMSG& tmsg);
     virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
     virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str);
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);
@@ -63,15 +72,13 @@ public:
     virtual void ConnectionDisconnected();
         
 private:
-    void GenericMsgId(std::string& strId);
-    int  GenericTransSeq();
-    void EstablishAck();
-    void OnEstablishConn();
-    void OnEstablishAck();
-private:
     std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;
     std::string     m_moduleId;
+    DRTMsgDispatch  m_msgDispatch;
+    std::string     m_addr;
+    int             m_port;
+    int             m_connectingStatus;
 };
 
 #endif /* defined(__MsgServerDispatcher__DRTTransferSession__) */

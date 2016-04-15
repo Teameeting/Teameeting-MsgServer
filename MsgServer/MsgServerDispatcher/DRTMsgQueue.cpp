@@ -11,7 +11,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
-#include "DRTConnectionManager.h"
+#include "DRTConnManager.h"
 #include "RTUtils.hpp"
 
 
@@ -86,11 +86,14 @@ void DRTMsgQueue::DeInitialize()
 	TimeoutTask::UnInitialize();
 
 	SocketUtils::UnInitialize();
+    sleep(1);
+    IdleTask::UnInitialize();
 
 #if !MACOSXEVENTQUEUE
 	::select_stopevents();
 #endif
 
+	Socket::Uninitialize();// uninitialize EventThread
 	OS::UnInitialize();
     LI("ByeBye server...");
 }
@@ -121,39 +124,35 @@ DRTMsgQueue::~DRTMsgQueue(void)
     }
 }
 
-int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort)
+int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort, const char*pHttpIp, unsigned short usHttpPort)
 {
 	Assert(g_inited);
 	Assert(pConnIp != NULL && strlen(pConnIp)>0);
 	Assert(pDispIp != NULL && strlen(pDispIp)>0);
+    Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
+
+    char hh[24] = {0};
+    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
+
+    DRTConnManager::s_cohttpHost = hh;
+    DRTConnManager::s_cohttpIp = pHttpIp;
+    DRTConnManager::s_cohttpPort = usHttpPort;
 
     std::string mid;
     GenericSessionId(mid);
-    DRTConnectionManager::Instance()->SetMsgQueueId(mid);
+    DRTConnManager::Instance().SetMsgQueueId(mid);
     LI("[][]MsgQueueId:%s\n", mid.c_str());
-
-	if(usConnPort == 0)
-	{
-		LE("MsgQueue server need usConnPort...!");
-		Assert(false);
-	}
 
 	if(usConnPort > 0)
 	{
         char addr[24] = {0};
         sprintf(addr, "%s %u", pConnIp, usConnPort);
-        DRTConnectionManager::Instance()->GetAddrsList()->push_front(addr);
+        DRTConnManager::Instance().GetAddrsList()->push_front(addr);
 
-        if (!(DRTConnectionManager::Instance()->ConnectConnector())) {
+        if (!(DRTConnManager::Instance().ConnectConnector())) {
             LE("Start to ConnectConnector failed\n");
             return -1;
         }
-	}
-
-    if(usDispPort == 0)
-	{
-		LE("MsgQueue server need usDispPort...!!");
-		Assert(false);
 	}
 
 	if(usDispPort > 0)
@@ -171,18 +170,28 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
         m_pModuleListener->RequestEvent(EV_RE);
 	}
 
+    if (usHttpPort > 0) {
+        LI("Start Dispatcher Http service:(%d) ok...\n", usHttpPort);
+    }
+
+    if (!(DRTConnManager::Instance().ConnectHttpSvrConn())) {
+        LE("ConnectHttpSvrConn failed\n");
+        return -1;
+    }
+
    return 0;
 }
 
 void DRTMsgQueue::DoTick()
 {
 #if 1
-    DRTConnectionManager::Instance()->RefreshConnection();
+    DRTConnManager::Instance().RefreshConnection();
 #endif
 }
 
 void DRTMsgQueue::Stop()
 {
-
+    DRTConnManager::Instance().SignalKill();
+    DRTConnManager::Instance().ClearAll();
 }
 

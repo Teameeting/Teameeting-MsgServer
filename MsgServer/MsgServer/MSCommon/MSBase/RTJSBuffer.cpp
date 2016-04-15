@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "rtklog.h"
 
 const int	kRequestBufferSizeInBytes = 2048;
 void RTJSBuffer::writeShort(char** pptr, unsigned short anInt)
@@ -40,7 +41,7 @@ RTJSBuffer::~RTJSBuffer()
 
 void RTJSBuffer::RecvData(const char*data, int size)
 {
-	{//* 1,将接收到的数据放入缓存中
+	{
 		while ((m_nBufOffset + size) > m_nBufLen)
 		{
 			int newLen = m_nBufLen + kRequestBufferSizeInBytes;
@@ -60,11 +61,11 @@ void RTJSBuffer::RecvData(const char*data, int size)
 	}
 
 	while (m_nBufOffset > 3)
-	{//* 2,解压包
+	{
 		int parsed = 0;
 		if (m_pBuffer[0] != '$')
-		{// Hase error!
-            printf("+++++=====-----====>>>RTJSBuffer::RecvData has error, m_pBuffer:%s\n\n", m_pBuffer);
+		{// Has error!
+            LE("RTJSBuffer::RecvData m_pBuffer[0] is not $, %c, %d\n", m_pBuffer[0], m_pBuffer[0]);
 			parsed = m_nBufOffset;
 		}
 		else

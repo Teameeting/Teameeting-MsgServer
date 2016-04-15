@@ -25,7 +25,7 @@ static int sEpfd = -1;
 static int sNumFDsBackFromEpoll = 0;
 static UInt32 sNumFDsProcessed = 0;
 //* For bug: 客户端连接时发送消息，服务器不处理
-static OSMutex sMaxFDPosMutex;
+//static OSMutex sMaxFDPosMutex;
 
 void select_startevents()
 {
@@ -51,7 +51,7 @@ int select_removeevent(int fd)
 	epEv.data.ptr = NULL;
 
 	{
-		OSMutexLocker locker(&sMaxFDPosMutex);
+		//OSMutexLocker locker(&sMaxFDPosMutex);
 		epoll_ctl(sEpfd,EPOLL_CTL_DEL,fd,&epEv);
 	}
 	::close(fd);
@@ -76,7 +76,7 @@ int select_watchevent(struct eventreq *req, int which)
 	epEv.data.fd = req->er_handle;
 	epEv.data.ptr = req;
 
-	OSMutexLocker locker(&sMaxFDPosMutex);
+	//OSMutexLocker locker(&sMaxFDPosMutex);
 	if (epoll_ctl(sEpfd, EPOLL_CTL_ADD, req->er_handle, &epEv) == -1) {
 		return -1;
 	}
@@ -100,11 +100,11 @@ int select_modwatch(struct eventreq *req, int which)
 	epEv.data.fd = req->er_handle;
 	epEv.data.ptr = req;
 
-	OSMutexLocker locker(&sMaxFDPosMutex);
+	//OSMutexLocker locker(&sMaxFDPosMutex);
 	if (epoll_ctl(sEpfd, EPOLL_CTL_MOD, req->er_handle, &epEv) == -1) {
 		return -1;
 	}
-	
+
 	return 0;
 }
 
@@ -112,14 +112,14 @@ int select_waitevent(struct eventreq *req, void* onlyForMOSX)
 {
 	//Check to see if we still have some select descriptors to process
     int theFDsProcessed = (int)sNumFDsProcessed;
-    
+
     if (theFDsProcessed < sNumFDsBackFromEpoll)
 	{
 		struct eventreq* evReq = (struct eventreq*)sEvents[theFDsProcessed].data.ptr;
 		req->er_handle = evReq->er_handle;
 		req->er_data = evReq->er_data;
 		req->er_eventbits = 0;
-		if (sEvents[theFDsProcessed].events & EPOLLIN) 
+		if (sEvents[theFDsProcessed].events & EPOLLIN)
 		{
 			req->er_eventbits |= EV_RE;
 		}
@@ -139,7 +139,7 @@ int select_waitevent(struct eventreq *req, void* onlyForMOSX)
 
 	{
 		// Listen the sokcets.
-		OSMutexLocker locker(&sMaxFDPosMutex);
+		//OSMutexLocker locker(&sMaxFDPosMutex);
 		sNumFDsBackFromEpoll = epoll_wait(sEpfd, sEvents, MAX_EVENTS, 1);
 	}
 

@@ -37,8 +37,7 @@ public:
 public:
 	int		Start(const char*pWebConIp, unsigned short usWebConPort
                   , const char*pModuleIp, unsigned short usModulePort
-                  , const char*pCliConIp, unsigned short usCliConPort
-                  , const char*pHttpIp, unsigned short usHttpPort);
+                  , const char*pCliConIp, unsigned short usCliConPort);
 	void	DoTick();
 	void	Stop();
 

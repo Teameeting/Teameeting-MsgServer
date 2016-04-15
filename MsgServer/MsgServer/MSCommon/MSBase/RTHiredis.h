@@ -15,6 +15,7 @@
 #include <string>
 #include "hiredis.h"
 #include "rtklog.h"
+#include "RTSingleton.h"
 
 #define HI_USER_CONNECTOR_ID "hi_user_connector_id"
 
@@ -64,26 +65,20 @@ private:
     int m_msTimeout;
 };
 
-class RTHiredisRemote : public RTHiredis{
+class RTHiredisRemote : public RTHiredis, public RTSingleton< RTHiredisRemote >{
+    friend class RTSingleton< RTHiredisRemote >;
 public:
-    static RTHiredisRemote* Instance() {
-        static RTHiredisRemote s_remoteHiredis;
-        return &s_remoteHiredis;
-    }
     virtual void MakeAbstract() {}
-private:
+protected:
     RTHiredisRemote(){}
     virtual ~RTHiredisRemote(){}
 };
 
-class RTHiredisLocal : public RTHiredis {
+class RTHiredisLocal : public RTHiredis, public RTSingleton< RTHiredisLocal > {
+    friend class RTSingleton< RTHiredisLocal >;
 public:
-    static RTHiredisLocal* Instance() {
-        static RTHiredisLocal s_localHiredis;
-        return &s_localHiredis;
-    }
     virtual void MakeAbstract() {}
-private:
+protected:
     RTHiredisLocal(){}
     virtual ~RTHiredisLocal(){}
 };

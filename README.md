@@ -15,6 +15,8 @@ MsgServer<br>
 
 MsgServerClient是Teameeting客户端消息sdk的基础库，并提供Mac上的Demo程序<br>
 
+MsgServerClientSdk提供MsgServerClient的sdk，目前提供ios和android
+
 目前支持Mac和Linux两个系统<br>
 
 ---

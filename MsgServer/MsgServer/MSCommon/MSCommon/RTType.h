@@ -15,4 +15,19 @@ typedef enum _connectiontype{
     connectiontype_invalid
 }CONNECTIONTYPE;
 
+typedef struct _EventData{
+    int mtype;
+    union {
+        struct {
+            int         module;
+            char        ip[16];
+            int         port;
+        }connect;
+    };
+}EventData;
+
+typedef enum _sessevent{
+    _sess_lost = 1
+}SESSEVENT;
+
 #endif

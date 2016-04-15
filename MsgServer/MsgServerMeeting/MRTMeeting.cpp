@@ -11,7 +11,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
-#include "MRTConnectionManager.h"
+#include "MRTConnManager.h"
 #include "MRTRoomManager.h"
 #include "RTUtils.hpp"
 
@@ -86,11 +86,14 @@ void MRTMeeting::DeInitialize()
 	TimeoutTask::UnInitialize();
 
 	SocketUtils::UnInitialize();
+    sleep(1);
+    IdleTask::UnInitialize();
 
 #if !MACOSXEVENTQUEUE
 	::select_stopevents();
 #endif
 
+	Socket::Uninitialize();// uninitialize EventThread
 	OS::UnInitialize();
     LI("ByeBye server...");
 }
@@ -119,27 +122,22 @@ int	MRTMeeting::Start(const char*pConnIp, unsigned short usConnPort, const char*
 	Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
     char hh[24] = {0};
     sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
-    MRTRoomManager::s_msgQueueIp = pDispIp;
-    MRTRoomManager::s_msgQueuePort = usDispPort;
-    MRTRoomManager::s_httpHost = hh;
-    MRTRoomManager::s_httpIp = pHttpIp;
-    MRTRoomManager::s_httpPort = usHttpPort;
 
     std::string mid;
     GenericSessionId(mid);
-    MRTConnectionManager::Instance()->SetMeetingId(mid);
+    MRTConnManager::Instance().SetMeetingId(mid);
     LI("[][]MeetingId:%s\n", mid.c_str());
 
     char addr[24] = {0};
     sprintf(addr, "%s %u", pConnIp, usConnPort);
-    MRTConnectionManager::Instance()->GetAddrsList()->push_front(addr);
+    MRTConnManager::Instance().GetAddrsList()->push_front(addr);
 
-    if (!(MRTConnectionManager::Instance()->ConnectConnector())) {
+    if (!(MRTConnManager::Instance().ConnectConnector())) {
         LE("Start to ConnectConnector failed\n");
         return -1;
     }
 
-    if (!(MRTRoomManager::Instance()->Init())) {
+    if (!(MRTRoomManager::Instance().Init(pDispIp, usDispPort, pHttpIp, usHttpPort, hh))) {
         LE("Start to RoomManager Init failed\n");
         return -1;
     }
@@ -149,14 +147,15 @@ int	MRTMeeting::Start(const char*pConnIp, unsigned short usConnPort, const char*
 
 void MRTMeeting::DoTick()
 {
-    MRTConnectionManager::Instance()->RefreshConnection();
-    MRTRoomManager::Instance()->RefreshConnection();
-    MRTRoomManager::Instance()->CheckMembers();
-    MRTRoomManager::Instance()->SyncHttpRequest();
+    MRTConnManager::Instance().RefreshConnection();
+    MRTRoomManager::Instance().CheckMembers();
+    MRTRoomManager::Instance().SyncHttpRequest();
 }
 
 void MRTMeeting::Stop()
 {
-
+    MRTConnManager::Instance().SignalKill();
+    MRTConnManager::Instance().ClearAll();
+    MRTRoomManager::Instance().ClearAll();
 }
 

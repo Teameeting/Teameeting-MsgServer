@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.6)
+project(efnfw)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+add_definitions("-Wall -g -fPIC -DGPUSH_LINUX=1")
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+include_directories(${PROJECT_SOURCE_DIR})
+file(GLOB_RECURSE EF_LIST base/*.cpp net/*.cpp)
+add_library(efnfw STATIC ${EF_LIST})

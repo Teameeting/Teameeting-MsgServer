@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT(MsgServerConnector, 1.0.1)
-AC_CONFIG_SRCDIR([CRTConnectionManager.cpp])
+AC_CONFIG_SRCDIR([CRTConnManager.cpp])
 AM_INIT_AUTOMAKE()
 AC_CONFIG_HEADERS([config.h])
 

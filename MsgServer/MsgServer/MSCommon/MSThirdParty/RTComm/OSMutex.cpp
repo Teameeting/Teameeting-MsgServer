@@ -10,7 +10,7 @@
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -18,7 +18,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  *
  */
@@ -28,10 +28,10 @@
     Contains:   Platform - independent mutex header. The implementation of this object
                 is platform - specific. Each platform must define an independent
                 QTSSMutex.h & QTSSMutex.cpp file.
-                
+
                 This file is for Mac OS X Server only
 
-    
+
 
 */
 
@@ -44,13 +44,13 @@
 #if __PTHREADS_MUTEXES__
     static pthread_mutexattr_t  *sMutexAttr=NULL;
     static void MutexAttrInit();
-    
+
     #if __solaris__
             static pthread_once_t sMutexAttrInit = {PTHREAD_ONCE_INIT};
     #else
             static pthread_once_t sMutexAttrInit = PTHREAD_ONCE_INIT;
     #endif
-    
+
 #endif
 
 OSMutex::OSMutex()
@@ -62,7 +62,7 @@ OSMutex::OSMutex()
 #elif __PTHREADS_MUTEXES__
     (void)pthread_once(&sMutexAttrInit, MutexAttrInit);
     (void)pthread_mutex_init(&fMutex, sMutexAttr);
-    
+
     fHolder = 0;
     fHolderCount = 0;
 #else
@@ -85,6 +85,10 @@ OSMutex::~OSMutex()
     ::DeleteCriticalSection(&fMutex);
 #elif __PTHREADS_MUTEXES__
     pthread_mutex_destroy(&fMutex);
+    if (sMutexAttr) {
+         free(sMutexAttr);
+         sMutexAttr = NULL;
+    }
 #else
     mymutex_free(fMutex);
 #endif
@@ -114,7 +118,7 @@ void        OSMutex::RecursiveUnlock()
 {
     if (OSThread::GetCurrentThreadID() != fHolder)
         return;
-        
+
     Assert(fHolderCount > 0);
     fHolderCount--;
     if (fHolderCount == 0)
