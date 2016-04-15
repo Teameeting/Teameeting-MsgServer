@@ -77,6 +77,37 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             {
                 switch (mmsg._tags) {
                     case SENDTAGS::sendtags_talk:
+                    {
+                        if (mmsg._to.at(0)=='a') {
+                            //to all
+                            //@Eric
+                            //* 1, Check GetMembersStatus is Waitting
+                            // Need to save msg to msgList for other member(not in room) when Got members form http.
+                            rtc::scoped_refptr<MRTMeetingRoom> meetingRoom = it->second;
+                            if (meetingRoom->GetGetMembersStatus()!=MRTMeetingRoom::GetMembersStatus::GMS_DONE) {
+                                //store message
+                                meetingRoom->AddWaitingMsgToList(1, 1, tmsg, mmsg);
+                                return;
+                            }
+                            if (!meetingRoom->GetRoomMemberJson(mmsg._from, users)) {
+                                //LI("==>HandleDcommRoom from:%s, to users:%s\n", mmsg._from.c_str(), users.c_str());
+                                GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, resp);
+                                SendTransferData(resp, (int)resp.length());
+                                LI("#user:%s, #msg:%s\n", mmsg._from.c_str(), resp.c_str());
+
+                                if (m_pHttpSvrConn) {
+                                    m_pHttpSvrConn->HttpInsertMeetingMsg(mmsg._pass.c_str(), mmsg._room.c_str(), "0", it->second->GetSessionId().c_str(), mmsg._cont.c_str(), mmsg._from.c_str());
+                                }
+                                return;
+                            } else {
+                                LE("==>HandleDcommRoom no member in room, users:%s\n", users.c_str());
+                                // no member in room
+                            }
+                        } else if (mmsg._to.at(0)=='u') {
+                            //to userlist
+                        }
+                    }
+                        break;
                     case SENDTAGS::sendtags_call:
                     {
                         if (mmsg._to.at(0)=='a') {
@@ -94,10 +125,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                                 //LI("==>HandleDcommRoom from:%s, to users:%s\n", mmsg._from.c_str(), users.c_str());
                                 GenericResponse(tmsg, mmsg, MESSAGETYPE::request, SIGNALTYPE::sndmsg, RTCommCode::_ok, users, resp);
                                 SendTransferData(resp, (int)resp.length());
-
-                                if (m_pHttpSvrConn) {
-                                    m_pHttpSvrConn->HttpInsertMeetingMsg(mmsg._pass.c_str(), mmsg._room.c_str(), "0", it->second->GetSessionId().c_str(), mmsg._cont.c_str(), mmsg._from.c_str());
-                                }
+                                LI("#user:%s, #msg:%s\n", mmsg._from.c_str(), resp.c_str());
                                 return;
                             } else {
                                 LE("==>HandleDcommRoom no member in room, users:%s\n", users.c_str());
@@ -108,6 +136,7 @@ void MRTRoomManager::HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
                         }
                     }
                         break;
+
                     case SENDTAGS::sendtags_enter:
                     {
 
@@ -242,7 +271,6 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
 
     if (!it->second->GetAllRoomMemberJson(users)) {
         if (users.length()>0) {
-            LI("==>LeaveRoom notify users :%s i am out room, online mem:%d\n", users.c_str(), online);
             //if (it->second->GetGetMembersStatus()!=MRTMeetingRoom::GetMembersStatus::GMS_DONE) {
                 //store message
             //    LI("==>HandleDcommRoom GetGetMembersStatus WAITING...\n");
@@ -256,6 +284,7 @@ void MRTRoomManager::LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg)
             //}
         }
     }
+    LI("==>LeaveRoom notify users :%s i am out room, online mem:%d\n", users.c_str(), online);
 
     //@Eric
     //* 3, Check size of Room MemberList offline is 0?

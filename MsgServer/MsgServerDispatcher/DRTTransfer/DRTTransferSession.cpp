@@ -328,6 +328,7 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
             return;
         }
     }
+    LI("Queue msg:%s\n", str.c_str());
     bool needDispatch = false;
     bool needPush = false;
     TOJSONUSER duser;//dispatcher

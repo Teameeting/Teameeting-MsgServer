@@ -23,6 +23,7 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::strin
     if (!pci) {
         return;
     } else { //!pci
+        LI("Dispatch msg:%s\n", msg.c_str());
         if (pci->_pConn && pci->_pConn->IsLiveSession()) {
             if (pci->_connType == CONNECTIONTYPE::_chttp) {
                 CRTConnection *c = dynamic_cast<CRTConnection*>(pci->_pConn);
