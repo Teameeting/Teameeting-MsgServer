@@ -64,16 +64,6 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
                 //LOG(INFO) << "sendtags_leave " << mmsg._cont;
             }
                 break;
-            case SENDTAGS::sendtags_subscribe:
-            {
-                //LOG(INFO) << "sendtags_subscribe " << mmsg._cont;
-            }
-                break;
-            case SENDTAGS::sendtags_unsubscribe:
-            {
-                //LOG(INFO) << "sendtags_unsubscribe " << mmsg._cont;
-            }
-                break;
             default:
             {
 

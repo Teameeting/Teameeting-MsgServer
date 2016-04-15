@@ -1,118 +1,114 @@
 //
 //  RTMessage.h
-//  dyncRTMsgClient
+//  dyncRTConnector
 //
 //  Created by hp on 12/2/15.
 //  Copyright (c) 2015 hp. All rights reserved.
 //
 
-#ifndef dyncRTMsgClient_RTMessage_h
-#define dyncRTMsgClient_RTMessage_h
+#ifndef dyncRTConnector_RTMessage_h
+#define dyncRTConnector_RTMessage_h
 
 #include <iostream>
+#include <string>
 #include <list>
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/prettywriter.h"
+#include "RTMsg.h"
 
-typedef enum _transferaction{
-    req = 1,
-    req_ack,
-    resp,
-    resp_ack,
-    transferaction_invalid
-}TRANSFERACTION;
-
-typedef enum _transfermodule{
-    mconnector = 1,
-    mmsgqueue,
-    mmeeting,
-    mcallcenter,
-    mp2p,
-    transfermodule_invalid
-}TRANSFERMODULE;
-
-typedef enum _transfertype{
-    conn = 1,
-    trans,
-    queue,
-    dispatch,
-    push,
-    transfertype_invalid
-}TRANSFERTYPE;
-
-typedef enum _conntag{
-    co_msg = 1,
-    co_id,
-    co_msgid,
-    co_keepalive,
-    conntype_invalid
-}CONNTAG;
-
-typedef struct _transfermsg{
+typedef struct _transfermsg TRANSFERMSG;
+struct _transfermsg{
     TRANSFERACTION  _action;
-    TRANSFERMODULE  _fmodule;    /*from module*/
+    /*from module, this is for transfer to idenfy where come from*/
+    TRANSFERMODULE  _fmodule;
     TRANSFERTYPE    _type;
-    int64_t         _trans_seq;
-    int64_t         _trans_seq_ack;
-    short           _valid;
+    uint64_t        _trans_seq;
+    uint64_t        _trans_seq_ack;
+    int             _valid;
     std::string     _content;
+    _transfermsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}TRANSFERMSG;
+};
 
-typedef struct _connmsg{
+typedef struct _connmsg CONNMSG;
+struct _connmsg{
     CONNTAG         _tag;
     std::string     _msg;
     std::string     _id;
     std::string     _msgid;
     std::string     _moduleid;
+    _connmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}CONNMSG;
+};
 
-typedef struct _transmsg{
+typedef struct _transmsg TRANSMSG;
+struct _transmsg{
     int             _flag;
     std::string     _touser;
     std::string     _connector;
     std::string     _content;
+    _transmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}TRANSMSG;
+};
 
-typedef struct _queuemsg{
+typedef struct _queuemsg QUEUEMSG;
+struct _queuemsg{
     int             _flag;
     std::string     _touser;
     std::string     _connector;
     std::string     _content;
+    _queuemsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}QUEUEMSG;
+};
 
-typedef struct _dispatchmsg{
+typedef struct _dispatchmsg DISPATCHMSG;
+struct _dispatchmsg{
     int             _flag;
     std::string     _touser;
     std::string     _connector;
     std::string     _content;
+    _dispatchmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}DISPATCHMSG;
+};
 
-typedef struct _pushmsg{
+typedef struct _pushmsg PUSHMSG;
+struct _pushmsg{
     int             _flag;
     std::string     _touser;
     std::string     _connector;
     std::string     _content;
+    _pushmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}PUSHMSG;
+};
 
-typedef struct _tojsonuser{
+typedef struct _topushmsg TOPUSHMSG;
+struct _topushmsg{
+    int             _tags;
+    std::string     _roomid;
+    _topushmsg();
+    std::string ToJson();
+    void GetMsg(const std::string& str, std::string& err);
+};
+
+typedef struct _tojsonuser TOJSONUSER;
+struct _tojsonuser{
     std::list<std::string> _us;
+    _tojsonuser();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}TOJSONUSER;
+};
+
+typedef struct _topushuser TOPUSHUSER;
+struct _topushuser{
+    std::list<std::string> _us;
+    _topushuser();
+    std::string ToJson();
+    void GetMsg(const std::string& str, std::string& err);
+};
+
 
 #endif // dyncRTConnector_RTMessage_h

@@ -9,56 +9,7 @@
 
 namespace gim{
 
-using namespace std;
 using namespace ef;
-
-int ServerStatus::parseFromJson(const  Json::Value & v){
-
-	if (v["IP"].isString()) {
-		IP = v["IP"].asString();
-	}
-
-	if (v["Type"].isString()) {
-		Type = v["Type"].asString();
-	}
-
-	if (v["NodePath"].isString()) {
-		NodePath = v["NodePath"].asString();
-	}
-
-	if (v["ModulePath"].isString()) {
-		ModulePath = v["ModulePath"].asString();
-	}
-
-	if (v["ProjectPath"].isString()) {
-		ProjectPath = v["ProjectPath"].asString();
-	}
- 
-	if (v["IPs"].isArray()) {
-		const Json::Value &jv = v["IPs"];
-		for (int i = 0; i < (int)jv.size(); i++) {
-			IPs.push_back(jv[i].asString());
-		}
-	}
-
-	return 0;
-}
-
-int ServerStatus::serializeToJson(Json::Value& v) const
-{
-	v["IP"] = IP;
-	v["Type"] = Type;
-	v["NodePath"] = NodePath;
-	v["ModulePath"] = ModulePath;
-	v["ProjectPath"] = ProjectPath;
-
-	for (int i = 0; i < (int)IPs.size(); i++) {
-		v["IPs"][i] = IPs[i];
-	}
-
-	return 0;
-}
-
 
 static int getPublicIPFromShell(std::string& ip){
 	FILE* f = NULL;
@@ -73,30 +24,34 @@ static int getPublicIPFromShell(std::string& ip){
 	fread(buf, sizeof(buf), 1, f);
 	pclose(f);
 
-	Json::Reader reader;
-	Json::Value root;
-	if(reader.parse(buf, root)){
-		ip = root["ip"].asString();
-	}else{
-		return -2;
-	}
+    rapidjson::Document		jsonReqDoc;
+    if (jsonReqDoc.ParseInsitu<0>((char*)buf).HasParseError())
+    {
+        fprintf(stderr, "getPublicIPFromShell parse ip error");
+        return -1;
+    }
+    if(!(jsonReqDoc.HasMember("ip") && jsonReqDoc["ip"].IsString()))
+    {
+        return -1;
+    }
+    ip = jsonReqDoc["ip"].GetString();
 
-	return 0;
+    return 0;
 }
 
 int ServerStatus::autoSetIPs(bool need_public_ip){
 
 	int ret = 0;
 
-	string pubip;
+    std::string pubip;
 	ret = getPublicIPFromShell(pubip);
 
 	if(ret < 0){
 		return ret;
 	}
-	
-	vector<string> ips;
-	getIPs(ips);	
+
+    std::vector<std::string> ips;
+	getIPs(ips);
 
 	for(size_t i = 0; i < ips.size(); ++i){
 		if(ips[i] == pubip){
@@ -114,23 +69,81 @@ int ServerStatus::autoSetIPs(bool need_public_ip){
 
 
 int ServerStatus::parseFromString(const std::string& s){
-	Json::Value v;
-	Json::Reader r;
-	
-	if(r.parse(s, v)){
-		return parseFromJson(v);
-	}
 
+    rapidjson::Document		root;
+    if (root.ParseInsitu<0>((char*)s.c_str()).HasParseError())
+    {
+        fprintf(stderr, "parseFromString error");
+        return -1;
+    }
+    if(!(root.HasMember("IP") && root["IP"].IsString()))
+    {
+        return -1;
+    }
+    IP = root["IP"].GetString();
+
+    if(!(root.HasMember("Type") && root["Type"].IsString()))
+    {
+        return -1;
+    }
+    Type = root["Type"].GetString();
+
+    if(!(root.HasMember("NodePath") && root["NodePath"].IsString()))
+    {
+        return -1;
+    }
+    NodePath = root["NodePath"].GetString();
+
+    if(!(root.HasMember("ModulePath") && root["ModulePath"].IsString()))
+    {
+        return -1;
+    }
+    ModulePath = root["ModulePath"].GetString();
+
+    if(!(root.HasMember("ProjectPath") && root["ProjectPath"].IsString()))
+    {
+        return -1;
+    }
+    ProjectPath = root["ProjectPath"].GetString();
+
+
+    if(!(root.HasMember("IPs") && root["IPs"].IsArray()))
+    {
+        return -1;
+    }
+    rapidjson::Value& mems = root["IPs"];
+    for (int i=0; i<(int)mems.Capacity(); i++) {
+        rapidjson::Value& m = mems[i];
+        IPs.push_back(m.GetString());
+    }
 
 	return -1;
 }
 
-int ServerStatus::serializeToString(std::string& s) const{
-	Json::Value v;
-	serializeToJson(v);
-	s = Json::FastWriter().write(v);
+int ServerStatus::serializeToString(std::string& s) const {
+    rapidjson::Document jDoc;
+    rapidjson::StringBuffer sb;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+
+    jDoc.SetObject();
+    jDoc.AddMember("IP", IP.c_str(), jDoc.GetAllocator());
+    jDoc.AddMember("Type", Type.c_str(), jDoc.GetAllocator());
+    jDoc.AddMember("NodePath", NodePath.c_str(), jDoc.GetAllocator());
+    jDoc.AddMember("ModulePath", ModulePath.c_str(), jDoc.GetAllocator());
+    jDoc.AddMember("ProjectPath", ProjectPath.c_str(), jDoc.GetAllocator());
+
+    rapidjson::Value mems(rapidjson::kArrayType);
+    std::vector<std::string>::const_iterator it = IPs.begin();
+    for (; it!=IPs.end(); it++) {
+        mems.PushBack((*it).c_str(), jDoc.GetAllocator());
+    }
+    jDoc.AddMember("IPs", mems, jDoc.GetAllocator());
+
+    jDoc.Accept(writer);
+    s = sb.GetString();
 	return 0;
 }
+
 ServerNode::ServerNode(ZKClient* c, const std::string& typepath, const std::string& id)
 :m_cli(c)
 {
@@ -149,9 +162,7 @@ ServerNode::~ServerNode()
 int ServerNode::init(const ServerStatus& s)
 {
 	if (m_cli){
-		Json::Value v;
-		if (s.serializeToJson(v) >= 0){
-			m_data = Json::FastWriter().write(v);
+		if (s.serializeToString(m_data) == 0){
 			return m_cli->createEphemeralNode(m_path, m_data);
 		}
 	}
@@ -160,9 +171,8 @@ int ServerNode::init(const ServerStatus& s)
 }
 
 int ServerNode::setStatus(const ServerStatus& s){
-	Json::Value v;
-	s.serializeToJson(v);
-	std::string data = Json::FastWriter().write(v);
+    std::string data;
+    s.serializeToString(data);
 
 	if (m_data != data){
 		m_data = data;

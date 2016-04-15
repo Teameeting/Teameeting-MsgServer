@@ -4,7 +4,13 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <json/json.h>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/filestream.h"
+#include "rapidjson/reader.h"
 
 namespace gim{
 
@@ -17,11 +23,9 @@ struct ServerStatus{
 	std::string ProjectPath;
 	std::vector<std::string> IPs;
 
-	int autoSetIPs(bool need_public_ip = true);  
-	int parseFromJson(const Json::Value& v);
-	int serializeToJson(Json::Value& v) const ;
+	int autoSetIPs(bool need_public_ip = true);
 	int parseFromString(const std::string& v);
-	int serializeToString(std::string& v) const ;	
+	int serializeToString(std::string& v) const;
 };
 
 typedef std::map<std::string/*id*/, ServerStatus>  SvStatusMap;

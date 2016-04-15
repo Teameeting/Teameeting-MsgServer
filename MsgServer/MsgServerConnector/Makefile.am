@@ -1,6 +1,7 @@
 bin_PROGRAMS=MsgServerConnector
 
 AM_CFLAGS=-g -O0 -std=c++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES__
+###AM_CFLAGS+=-DAUTO_RECONNECT
 MsgServerConnector_LDFLAGS=-static-libgcc
 
 AM_CPPFLAGS=$(AM_CFLAGS)
@@ -31,7 +32,7 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/CRTListener/CRTConnTcpListener.cpp \
 						   $(top_srcdir)/CRTListener/CRTModuleListener.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp \
-						   $(top_srcdir)/CRTConnectionManager.cpp \
+						   $(top_srcdir)/CRTConnManager.cpp \
 						   $(top_srcdir)/CRTConnector.cpp \
 						   $(top_srcdir)/CRTDispatchConnection.cpp \
 						   $(top_srcdir)/main.cpp

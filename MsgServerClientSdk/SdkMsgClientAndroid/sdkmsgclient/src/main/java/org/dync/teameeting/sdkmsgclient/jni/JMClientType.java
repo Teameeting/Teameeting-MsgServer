@@ -19,7 +19,8 @@ public class JMClientType {
     public static final int MCSENDTAGS_TALK=1;
     public static final int MCSENDTAGS_ENTER=2;
     public static final int MCSENDTAGS_LEAVE=3;
-    public static final int MCSENDTAGS_INVALID=4;
+    public static final int MCSENDTAGS_CALL=4;
+    public static final int MCSENDTAGS_INVALID=5;
 
     //* MsgClient message type
     public static final int MCMESSAGETYPE_REQUEST=1;

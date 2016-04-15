@@ -23,7 +23,7 @@
  *          from: userid
  *      sndmsg: MSG
  *          MSG:
- *              mseq:room+num
+ *              mseq:num
  *              code:result code
  *              status:result
  *              mtype: meet, callcenter, p2p
@@ -123,62 +123,9 @@
 
 #include <iostream>
 #include "RTMsg.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/prettywriter.h"
 
-typedef enum _meetcmd{
-    enter=1,
-    leave,
-    dcomm,
-    meetcmd_invalid
-}MEETCMD;
-
-typedef enum _dcommaction{
-    msend=1,
-    dsett,
-    share,
-    dcommaction_invalid
-}DCOMMACTION;
-
-typedef enum _sendtags{
-    sendtags_talk=1,
-    sendtags_enter,
-    sendtags_leave,
-    sendtags_subscribe,
-    sendtags_unsubscribe,
-    sendtags_audioset,
-    sendtags_videoset,
-    sendtags_invalid
-}SENDTAGS;
-
-typedef enum _sendtype{
-    msg=1,
-    file,
-    pic,
-    emoj,
-    aud,
-    vid,
-    sendtype_invalid
-}SENDTYPE;
-
-typedef enum _dsetttype{
-    gname=1,
-    dsetttype_invalid
-}DSETTTYPE;
-
-typedef enum _sharetype{
-    scrn=1,
-    sharetype_invalid
-}SHARETYPE;
-
-typedef enum _getcmd{
-    getcmd_invalid=1
-}GETCMD;
-
-typedef struct _meetmsg{
+typedef struct _meetmsg MEETMSG;
+struct _meetmsg{
     MSGTYPE     _mtype;
     MESSAGETYPE _messagetype;
     int         _signaltype;
@@ -188,17 +135,18 @@ typedef struct _meetmsg{
     int         _type;
     int         _nmem;
     int64_t     _ntime;
-    int64_t     _mseq;
+    uint64_t    _mseq;
     std::string _from;
     std::string _room;
     std::string _to;
     std::string _cont;
     std::string _pass;
-    std::string _nname;
-    std::string _rname;
+    std::string _nname;/*nickname*/
+    std::string _rname;/*roomname*/
     int         _code;
+    _meetmsg();
     std::string ToJson();
     void GetMsg(const std::string& str, std::string& err);
-}MEETMSG;
+};
 
 #endif  // dyncRTCMsgClient_RTMeetMsg_h

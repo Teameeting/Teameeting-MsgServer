@@ -4,6 +4,7 @@
 
 #include <map>
 #include <set>
+#include <unordered_set>
 #include <string>
 #include <vector>
 #include <pthread.h>
@@ -36,17 +37,17 @@ public:
 	ZKClient();
 	~ZKClient();
 
-	int init(const std::string& zkurl, 
+	int init(const std::string& zkurl,
 		int timout_ms = DEFAULT_TIMEOUT);
 
 	int clear();
 
-	int createEphemeralNode(const std::string& path, 
+	int createEphemeralNode(const std::string& path,
 		const std::string& data);
-	int createPersistentNode(const std::string& path, 
+	int createPersistentNode(const std::string& path,
 		const std::string& data);
 	int deleteNode(const std::string& path);
-	int setNodeData(const std::string& path, 
+	int setNodeData(const std::string& path,
 		const std::string& data);
 	//no watch
 	int getNodeData(const std::string& path, std::string& data);
@@ -67,14 +68,16 @@ public:
 		m_srvnodes.erase(node);
 	}
 	void srvNodeRebuild();
-private:
 
+public:
 	struct WatchCtx{
 		WatchCtx(ZKClient* c, int i)
 			:cli(c), watcher_id(i){}
 		ZKClient* cli;
 		int watcher_id;
 	};
+
+private:
 
 	class CtxAutoDeletor{
 	public:
@@ -85,7 +88,7 @@ private:
 			if(m_ctx)
 				delete m_ctx;
 		}
-		
+
 	private:
 		WatchCtx* m_ctx;
 	};
@@ -102,11 +105,11 @@ private:
 	static void watcherFn(zhandle_t * zh, int type, int state,
 		const char *path, void *watcherCtx);
 
-	static void getChildrenComplete(int rc, const String_vector* s_v, 
+	static void getChildrenComplete(int rc, const String_vector* s_v,
 		const void* data);
-	static void getDataComplete(int rc, const char *value, int value_len, 
+	static void getDataComplete(int rc, const char *value, int value_len,
 		const struct Stat *stat, const void *data);
-	static void getExistsComplete(int rc, const struct Stat *stat, 
+	static void getExistsComplete(int rc, const struct Stat *stat,
 		const void *data);
 
 	int addWatcher(ZKWatcher* w);
@@ -117,16 +120,7 @@ private:
 	int watchChildren(ZKWatcher* w);
 	int watchExists(ZKWatcher* w);
 	int watchCreate(ZKWatcher* w);
-#if 0
-	int clearPathWatchers();
-	int addChildrenWatcher(const std::string& path);
-	int getChildren(const std::string& path, urls& us);
-	bool getChildrenFromCache(const std::string& path, urls& us);
-	bool addChildrenCacheIfNoExist(const std::string& path, 
-		const urls&us, urls& oldus);
-	int broadcastChildrenChange(const std::string& path, const urls& us); 
 
-#endif	
 
 	friend class ZKWatcher;
 

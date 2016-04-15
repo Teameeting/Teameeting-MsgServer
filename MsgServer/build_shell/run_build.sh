@@ -165,9 +165,11 @@ function tar_tar()
              loginfo "tar $1 ok...:" $?
          else
              logerr "tar $1 err...:" $?
+             exit 1
          fi
      else
          logerr "params error or $1 not exist..."
+         exit 1
      fi
 }
 export -f tar_tar
@@ -189,9 +191,11 @@ function tar_tar_gz()
              loginfo "tar $1 ok...:" $?
          else
              logerr "tar $1 err...:" $?
+             exit 1
          fi
      else
          logerr "params error or $1 not exist..."
+         exit 1
      fi
 }
 export -f tar_tar_gz
@@ -213,9 +217,11 @@ function tar_tar_bz2()
              loginfo "tar $1 ok...:" $?
          else
              logerr "tar $1 err...:" $?
+             exit 1
          fi
      else
          logerr "params error or $1 not exist..."
+         exit 1
      fi
 }
 export -f tar_tar_bz2
@@ -241,6 +247,15 @@ function end_log()
     loginfo
 }
 
+###################clean all libs ###############################
+function clean_libs()
+{
+    if [ "$PARAM_CLEAN"x = "yes"x ]
+    then
+        rm $1/*
+        rm $2/*
+    fi
+}
 
 ###################build third party libs ###############################
 ###################SRC_PATH ###############################
@@ -256,16 +271,19 @@ function build_3rdpartylibs()
             if [ $? -eq 0 ]
             then
                 loginfo "build $2 ok: " $?
+                sleep 1
                 cd $BASE_PATH
             else
                 logerr "build $2 err: " $?
-                exit
+                exit 1
             fi
         else
             logerr "dir $1 not exist..."
+            exit 1
         fi
     else
         logerr "params error..."
+        exit 1
     fi
 }
 
@@ -301,13 +319,15 @@ function build_mscommonlib()
                 cd $BASE_PATH
             else
                 logerr "build $4 err: " $?
-                exit
+                exit 1
             fi
         else
             logerr "dir $1 not exist..."
+            exit 1
         fi
     else
         logerr "params error..."
+        exit 1
     fi
 }
 
@@ -340,13 +360,15 @@ function build_bin()
                 cd $BASE_PATH
             else
                 logerr "build $3 err: " $?
-                exit
+                exit 1
             fi
         else
             logerr "dir $1 not exist..."
+            exit 1
         fi
     else
         logerr "params error..."
+        exit 1
     fi
 }
 
@@ -358,9 +380,19 @@ start_log
 sleep 2
 
 ####################    building 3rdpartylibs    ###########################
+COMMON_LIB_PATH=$BASE_PATH/MsgServer/MSCommonLib
+THIRDPARTY_LIB_PATH=$BASE_PATH/MsgServer/MSCommon/lib_linux_a
+clean_libs $COMMON_LIB_PATH $THIRDPARTY_LIB_PATH
+
+####################    building 3rdpartylibs    ###########################
 SRC_PATH=$BASE_PATH/MsgServer/MSCommon
 BUILD_NAME=ThirdParybLibs
 build_3rdpartylibs $SRC_PATH $BUILD_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_3rdpartylibs error..."
+    exit 1
+fi
 
 ####################    building mscommonlib    ###########################
 SRC_PATH=$BASE_PATH/MsgServer
@@ -368,12 +400,22 @@ BUILD_NAME=MsgCommonLib
 PREFIX_PATH=$BASE_PATH/MsgServer/MSCommonLib
 THIRDPARTY_LIB_PATH=$BASE_PATH/MsgServer/MSCommon/lib_linux_a
 build_mscommonlib $SRC_PATH $PREFIX_PATH $THIRDPARTY_LIB_PATH $BUILD_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_mscommonlib error..."
+    exit 1
+fi
 
 ####################    building msgserverconnector    ###########################
 SRC_PATH=$BASE_PATH/MsgServerConnector
 BUILD_NAME=MsgServerConnector
 PREFIX_PATH=$SRC_PATH/connector
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_bin $BUILD_NAME error..."
+    exit 1
+fi
 cd $SRC_PATH
 tar_tar_bz2 connector
 
@@ -382,6 +424,11 @@ SRC_PATH=$BASE_PATH/MsgServerDispatcher
 BUILD_NAME=MsgServerDispatcher
 PREFIX_PATH=$SRC_PATH/dispatcher
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_bin $BUILD_NAME error..."
+    exit 1
+fi
 cd $SRC_PATH
 tar_tar_bz2 dispatcher
 
@@ -390,6 +437,11 @@ SRC_PATH=$BASE_PATH/MsgServerMeeting
 BUILD_NAME=MsgServerMeeting
 PREFIX_PATH=$SRC_PATH/meeting
 build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_bin $BUILD_NAME error..."
+    exit 1
+fi
 cd $SRC_PATH
 tar_tar_bz2 meeting
 
@@ -406,6 +458,9 @@ rm msgserver/run_build.sh
 tar -jcvf msgserver.tar.bz2 msgserver
 loginfo "tar all the bin program ok..."
 sleep 1
+
+find $BASE_PATH -iname *.o | xargs rm
+loginfo "remove all the *.o ..."
 
 end_log
 loginfo "build all bin successfully..."

@@ -12,12 +12,12 @@
 
 #include "RTZKClient.hpp"
 
-#ifndef _DEBUG
-#define _DEBUG 0
+#ifndef _TEST_
+#define _TEST_ 0
 #endif
 
 int main(int argc, const char * argv[]) {
-    LI("Hello, Meeting!!!");
+    printf("Hello, Meeting!!!");
     MRTMeeting::PrintVersion();
 
     if (argc <= 1) {
@@ -26,31 +26,45 @@ int main(int argc, const char * argv[]) {
         getchar();
         exit(0);
     }
-    RTZKClient c(argv[1]);
-    if (c.InitZKClient()!=0) {
+#if _TEST_
+    if (RTZKClient::Instance().InitOnly(argv[1])!=0) {
+#else
+    if (RTZKClient::Instance().InitZKClient(argv[1])!=0) {
+#endif
         std::cout << "Please check the config file ..." << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
         exit(0);
     }
-    
+
     L_Init(5, NULL);
     MRTMeeting::Initialize(1024);
     MRTMeeting* pMeeting = MRTMeeting::Inst();
-    pMeeting->Start(c.GetServerConfig().IP.c_str(),
-                      c.GetServerConfig().portConfig.meeting.AcceptConn,
-                      c.GetServerConfig().IP.c_str(),
-                      c.GetServerConfig().portConfig.meeting.AcceptDisp,
-                      c.GetServerConfig().HttpIp.c_str(),
-                      c.GetServerConfig().portConfig.meeting.AcceptHttp
-                      );
-
-    while (true) {
+#if 1
+    int res = pMeeting->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                    RTZKClient::Instance().GetServerConfig().portConfig.meeting.AcceptConn,
+                    RTZKClient::Instance().GetServerConfig().IP.c_str(),
+                    RTZKClient::Instance().GetServerConfig().portConfig.meeting.AcceptDisp,
+                    RTZKClient::Instance().GetServerConfig().HttpIp.c_str(),
+                    RTZKClient::Instance().GetServerConfig().portConfig.meeting.AcceptHttp
+                    );
+    int test = 0;
+    if (res != 0) {
+        LI("MRTMeeting start failed and goto exit, res:%d\n", res);
+        goto EXIT;
+    }
+    //while (test++ < 100) {
+    while (1) {
         pMeeting->DoTick();
         sleep(1);
         //break;
     }
+#endif
+        sleep(1);
+EXIT:
+    pMeeting->Stop();
     MRTMeeting::DeInitialize();
     L_Deinit();
+    RTZKClient::Instance().Unin();
     return 0;
 }

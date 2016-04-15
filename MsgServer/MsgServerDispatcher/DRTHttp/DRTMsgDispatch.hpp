@@ -20,7 +20,7 @@ public:
 
 public:
     //for RTDispatch
-    virtual void OnRecvData(const char*pData, int nLen) {}
+    virtual void OnRecvEvent(const char*pData, int nLen) {}
     virtual void OnSendEvent(const char*pData, int nLen);
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen);

@@ -10,7 +10,7 @@
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -18,7 +18,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  *
  */
@@ -28,18 +28,18 @@
     Contains:   Tasks are objects that can be scheduled. To schedule a task, you call its
                 signal method, and pass in an event (events are bits and all events are defined
                 below).
-                
+
                 Once Signal() is called, the task object will be scheduled. When it runs, its
                 Run() function will get called. In order to clear the event, the derived task
                 object must call GetEvents() (which returns the events that were sent).
-                
+
                 Calling GetEvents() implicitly "clears" the events returned. All events must
                 be cleared before the Run() function returns, or Run() will be invoked again
                 immediately.
-                    
-    
-    
-    
+
+
+
+
 */
 
 #ifndef __TASK_H__
@@ -57,7 +57,7 @@ class  TaskThread;
 class Task
 {
     public:
-        
+
         typedef unsigned int EventFlags;
 
         //EVENTS
@@ -68,18 +68,18 @@ class Task
             kIdleEvent =    0x1 << 0x1,
             kStartEvent =   0x1 << 0x2,
             kTimeoutEvent = 0x1 << 0x3,
-       
+
           //socket events
             kReadEvent =        0x1 << 0x4, //All of type "EventFlags"
             kWriteEvent =       0x1 << 0x5,
-           
+
            //update event
             kUpdateEvent =      0x1 << 0x6,
 			//user defined event
 			kWakeupEvent =			0x1 << 0x7,
 			kPushEvent =		0x1 << 0x8
         };
-        
+
         //CONSTRUCTOR / DESTRUCTOR
         //You must assign priority at create time.
                                 Task();
@@ -95,23 +95,23 @@ class Task
         //at the same time the object is being deleted (because it can't really), so watch
         //those dangling references!
         virtual SInt64          Run() = 0;
-        
+
         //Send an event to this task.
         void                    Signal(EventFlags eventFlags);
-        void                    GlobalUnlock();     
+        void                    GlobalUnlock();
         Bool16                  Valid(); // for debugging
 		char            fTaskName[48];
 		void            SetTaskName(char* name);
-		
+
         void            SetDefaultThread(TaskThread* defaultThread) { fDefaultThread = defaultThread; }
         void            SetThreadPicker(unsigned int* picker);
         static unsigned int* GetBlockingTaskThreadPicker() {return &sBlockingTaskThreadPicker; }
-        
+
     protected:
-    
+
         //Only the tasks themselves may find out what events they have received
         EventFlags              GetEvents();
-        
+
         // ForceSameThread
         //
         // A task, inside its run function, may want to ensure that the same task thread
@@ -139,7 +139,7 @@ class Task
         };
 
         void            SetTaskThread(TaskThread *thread);
-        
+
         EventFlags      fEvents;
         TaskThread*     fUseThisThread;
         TaskThread*     fDefaultThread;
@@ -155,30 +155,30 @@ class Task
         //and that way we wouldn't need both a heap elem and a queue elem here (just queue elem)
         OSHeapElem      fTimerHeapElem;
         OSQueueElem     fTaskQueueElem;
-        
+
         unsigned int *pickerToUse;
         //Variable used for assigning tasks to threads in a round-robin fashion
         static unsigned int sShortTaskThreadPicker; //default picker
         static unsigned int sBlockingTaskThreadPicker;
-        
-        friend class    TaskThread; 
+
+        friend class    TaskThread;
 };
 
 class TaskThread : public OSThread
 {
     public:
-    
+
         //Implementation detail: all tasks get run on TaskThreads.
-        
+
                         TaskThread() :  OSThread(), fTaskThreadPoolElem(), fDbRef(NULL)
                                         {fTaskThreadPoolElem.SetEnclosingObject(this);}
 						virtual         ~TaskThread() { this->StopAndWaitForThread(); }
 
 						void	SetDbRef(void* db){fDbRef = db;};
 						void*	GetDbRef(){return fDbRef;};
-           
+
     private:
-    
+
         enum
         {
             kMinWaitTimeInMilSecs = 10  //UInt32
@@ -188,13 +188,13 @@ class TaskThread : public OSThread
         Task*           WaitForTask();
 
 		void*			fDbRef;
-        
+
         OSQueueElem     fTaskThreadPoolElem;
-        
+
         OSHeap              fHeap;
         OSQueue_Blocking    fTaskQueue;
-        
-        
+
+
         friend class Task;
         friend class TaskThreadPool;
 };
@@ -213,16 +213,16 @@ public:
     static UInt32  GetNumThreads() { return sNumTaskThreads; }
     static void SetNumShortTaskThreads(UInt32 numToAdd) { sNumShortTaskThreads = numToAdd; }
     static void SetNumBlockingTaskThreads(UInt32 numToAdd) { sNumBlockingTaskThreads = numToAdd; }
-    
+
 private:
 
     static TaskThread**     sTaskThreadArray;
     static UInt32           sNumTaskThreads;
     static UInt32           sNumShortTaskThreads;
     static UInt32           sNumBlockingTaskThreads;
-    
+
     static OSMutexRW        sMutexRW;
-    
+
     friend class Task;
     friend class TaskThread;
 };

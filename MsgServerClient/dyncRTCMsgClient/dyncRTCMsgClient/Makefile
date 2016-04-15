@@ -6,10 +6,10 @@ NAME = rtcmsgclient-linux
 C++ = g++
 CC = gcc
 ###INCLUDE_FLAG = -include
-WEBRTC_BASE_PATH = ./webrtc_normal
+WEBRTC_BASE_PATH = .
 INCLUDE_FLAG = 
 LINK = $(LINKER)
-CCFLAGS += $(COMPILER_FLAGS) $(INCLUDE_FLAG) -g -Wall -std=c++0x -DPOSIX -DWEBRTC_LINUX -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS
+CCFLAGS += $(COMPILER_FLAGS) $(INCLUDE_FLAG) -g -Wall -std=c++11 -DPOSIX -DENABLE_DEBUG=1 -DWEBRTC_LINUX -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS
 
 # OPTIMIZATION
 CCFLAGS += -O2
@@ -17,24 +17,34 @@ CCFLAGS += -O2
 # EACH DIRECTORY WITH HEADERS MUST BE APPENDED IN THIS MANNER TO THE CCFLAGS
 
 CCFLAGS += -I.
-CCFLAGS += -I./rtcmsgs -I$(WEBRTC_BASE_PATH)
+CCFLAGS += -I./rtcmsgs -I./client -I$(WEBRTC_BASE_PATH)
 
 C++FLAGS= $(CCFLAGS)
 C++FLAGS+=-I./RTJson -I./RTHttp -I./RTManager
 
 CFILES = 
 
-CPPFILES := XMsgProcesser.cpp \
-	XJSBuffer.cpp \
-	XMsgClient.cpp \
-	XTcpClientImpl.cpp \
-	XTcpTick.cpp 
+CPPFILES := main.cpp \
+			RTJson/RTJson.cpp \
+			RTHttp/RTCurlClient.cpp \
+			RTHttp/RTCURL.cpp \
+			RTManager/RTConnClientManager.cpp \
+			RTManager/RTMsgClient.cpp \
+			RTManager/RTMsgThreadPool.cpp \
+			RTManager/RTHttpClient.cpp \
+			RTManager/RTMsgRoom.cpp
+
+CPPFILES += client/XMsgProcesser.cpp \
+			client/XJSBuffer.cpp \
+			client/XMsgClient.cpp \
+			client/XTcpClientImpl.cpp \
+			client/XTcpTick.cpp 
 
 CPPFILES += ./rtcmsgs/RTMeetMsg.cpp \
 			./rtcmsgs/RTMessage.cpp \
 			./rtcmsgs/RTSignalMsg.cpp
 
-CPPFILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
+CCFILES := $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/asyncpacketsocket.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/asyncresolverinterface.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/asyncsocket.cc \
@@ -42,6 +52,7 @@ CPPFILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/asyncudpsocket.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/base64.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/checks.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/common.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/criticalsection.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/event.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/event_tracer.cc \
@@ -58,38 +69,27 @@ CPPFILES += $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/socketaddress.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/stringencode.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/thread.cc \
-			$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/thread_checker_impl.cc \
+			$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc
 
-CLT_CPPFILES=main.cpp \
-			RTJson/RTJson.cpp \
-			RTHttp/RTCurlClient.cpp \
-			RTHttp/RTCURL.cpp \
-			RTManager/RTConnClientManager.cpp \
-			RTManager/RTMsgClient.cpp \
-			RTManager/RTMsgThreadPool.cpp \
-			RTManager/RTHttpClient.cpp \
-			RTManager/RTMsgRoom.cpp
 
-CLT_CPPFLAGS=$(CCFLAGS)
-CLT_CPPFLAGS+=$(C++FLAGS)
-CLT_CPPFLAGS+=-lcurl
-##CLT_CPPFLAGS+=-L./ -lrtcmsgclient-linux
+CPPFLAGS+=-lcurl
 
 	
-all: librtcmsgclient-linux.a msgclient
+all: msgclient
 
-librtcmsgclient-linux.a: $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
-	ar -r librtcmsgclient-linux.a $(CFILES:.c=.o) $(CPPFILES:.cpp=.o)
+librtcmsgclient-linux.a: $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
+	ar -r librtcmsgclient-linux.a $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
 	ranlib librtcmsgclient-linux.a
 
-msgclient: $(CLT_CPPFILES:.cpp=.o)
-	$(C++) -o msgclient $(CLT_CPPFILES:.CPP=.o) $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CLT_CPPFLAGS)
+msgclient: $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
+	$(C++) -o msgclient $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o) $(CPPFLAGS)
 
 install: 
 	install -m 664 librtcmsgclient-linux.a ./lib_linux_a/
 
 clean:
-	rm -f librtcmsgclient-linux.a *.o
+	rm -rf librtcmsgclient-linux.a msgclient $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
 
 .SUFFIXES: .cpp .cc .c .o
 

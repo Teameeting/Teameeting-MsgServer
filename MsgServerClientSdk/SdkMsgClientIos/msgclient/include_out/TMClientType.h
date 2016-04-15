@@ -26,6 +26,7 @@ typedef NS_ENUM(NSInteger, MCSendTags){
     MCSendTagsTALK=1,
     MCSendTagsENTER,
     MCSendTagsLEAVE,
+    MCSendTagsCALL,
     MCSendTagsINVALID
 };
 

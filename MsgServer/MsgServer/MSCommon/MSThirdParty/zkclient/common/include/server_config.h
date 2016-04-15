@@ -2,13 +2,22 @@
 #define __SERVER_CONFIG_H__
 
 #include <vector>
-#include <json/json.h> 
+//#include <json/json.h>
 #include "common.h"
+
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/filestream.h"
+#include "rapidjson/reader.h"
+
 namespace gim{
 
 class ServerConfig{
 public:
-	std::string IP; 
+	std::string IP;
 	std::string Type;
 	std::string ZkUrl;
 	std::string NodePath;
@@ -22,28 +31,18 @@ public:
 
 	PortConfig portConfig;
 
-	ServerConfig():IP("")
-		,Type("")
-		,ZkUrl("")
-		,NodePath("")
-		,ModulePath("")
-		,ProjectPath("")
-		,HttpIp("")
-		,LogPath("")
-		,Debug(0)
-		,Level(0){
-	}
+	ServerConfig();
+    ~ServerConfig();
 
 	int init(const std::string& f);
 
-	int serializeToJson(Json::Value& v) const;
-	int parseFromJson(const Json::Value& v);
+	int parseFromJson(const rapidjson::Document& d);
 
 	std::string toStyledString() const;
 
 private:
-	int loadPortsConfigs(const Json::Value& v);
-	
+	int loadPortsConfigs(const rapidjson::Value& v);
+
 };
 
 }

@@ -10,7 +10,7 @@
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -18,7 +18,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  *
  */
@@ -26,9 +26,9 @@
     File:       EventContext.cpp
 
     Contains:   Impelments object in .h file
-                    
-    
-    
+
+
+
 */
 
 #include "EventContext.h"
@@ -70,7 +70,7 @@ EventContext::EventContext(int inFileDesc, EventThread* inThread)
 void EventContext::InitNonBlocking(int inFileDesc)
 {
     fFileDesc = inFileDesc;
-    
+
 #ifdef __Win32__
     u_long one = 1;
     int err = ::ioctlsocket(fFileDesc, FIONBIO, &one);
@@ -106,7 +106,7 @@ void EventContext::Cleanup()
             //So, what we do is have the select thread itself call close. This is triggered
             //by calling removeevent.
             err = ::close(fFileDesc);
-#endif      
+#endif
         }
         else
 #ifdef __Win32__
@@ -119,13 +119,13 @@ void EventContext::Cleanup()
     fFileDesc = kInvalidFileDesc;
     fUniqueID = 0;
 	fWatchEventCalled = false;
-    
+
     AssertV(err == 0, OSThread::GetErrno());//we don't really care if there was an error, but it's nice to know
 }
 
 
 void EventContext::SnarfEventContext( EventContext &fromContext )
-{  
+{
     //+ show that we called watchevent
     // copy the unique id
     // set our fUniqueIDStr to the unique id
@@ -137,13 +137,13 @@ void EventContext::SnarfEventContext( EventContext &fromContext )
     //TODO - this whole operation causes a race condition for Event posting
     //  way up the chain we need to disable event posting
     // or copy the posted events afer this op completes
-    
+
     fromContext.fFileDesc = kInvalidFileDesc;
-    
-    fWatchEventCalled = fromContext.fWatchEventCalled; 
+
+    fWatchEventCalled = fromContext.fWatchEventCalled;
     fUniqueID = fromContext.fUniqueID;
     fUniqueIDStr.Set((char*)&fUniqueID, sizeof(fUniqueID)),
-    
+
     ::memcpy( &fEventReq, &fromContext.fEventReq, sizeof( struct eventreq  ) );
 
     fRef.Set( fUniqueIDStr, this );
@@ -161,7 +161,7 @@ void EventContext::RequestEvent(int theMask)
     // The first time this function gets called, we're supposed to
     // call watchevent. Each subsequent time, call modwatch. That's
     // the way the MacOS X event queue works.
-    
+
     if (fWatchEventCalled)
     {
         fEventReq.er_eventbits = theMask;
@@ -169,19 +169,19 @@ void EventContext::RequestEvent(int theMask)
         if (modwatch(&fEventReq, theMask) != 0)
 #else
         if (select_modwatch(&fEventReq, theMask) != 0)
-#endif  
+#endif
             AssertV(false, OSThread::GetErrno());
     }
     else
     {
         //allocate a Unique ID for this socket, and add it to the ref table
-        
+
 #ifdef __Win32__
         //
         // Kind of a hack. On Win32, the way that we pass around the unique ID is
         // by making it the message ID of our Win32 message (see win32ev.cpp).
         // Messages must be >= WM_USER. Hence this code to restrict the numberspace
-        // of our UniqueIDs. 
+        // of our UniqueIDs.
         if (!compare_and_store(8192, WM_USER, &sUniqueID))  // Fix 2466667: message IDs above a
             fUniqueID = (PointerSizedInt)atomic_add(&sUniqueID, 1);         // level are ignored, so wrap at 8192
         else
@@ -195,7 +195,7 @@ void EventContext::RequestEvent(int theMask)
 
         fRef.Set(fUniqueIDStr, this);
         Assert(fEventThread->fRefTable.Register(&fRef) == OS_NoErr);
-            
+
         //fill out the eventreq data structure
         ::memset( &fEventReq, '\0', sizeof(fEventReq));
         fEventReq.er_type = EV_FD;
@@ -208,10 +208,10 @@ void EventContext::RequestEvent(int theMask)
         if (watchevent(&fEventReq, theMask) != 0)
 #else
         if (select_watchevent(&fEventReq, theMask) != 0)
-#endif  
+#endif
             //this should never fail, but if it does, cleanup.
             AssertV(false, OSThread::GetErrno());
-            
+
     }
 }
 
@@ -219,8 +219,8 @@ void EventThread::Entry()
 {
     struct eventreq theCurrentEvent;
     ::memset( &theCurrentEvent, '\0', sizeof(theCurrentEvent) );
-    
-    while (true)
+
+    while (!IsStopRequested())
     {
         int theErrno = EINTR;
         while (theErrno == EINTR)
@@ -229,17 +229,19 @@ void EventThread::Entry()
             int theReturnValue = waitevent(&theCurrentEvent, NULL);
 #else
             int theReturnValue = select_waitevent(&theCurrentEvent, NULL);
-#endif  
+#endif
             //Sort of a hack. In the POSIX version of the server, waitevent can return
             //an actual POSIX errorcode.
             if (theReturnValue >= 0)
                 theErrno = theReturnValue;
             else
                 theErrno = OSThread::GetErrno();
+            if(IsStopRequested()) break;
         }
-        
+        if (IsStopRequested()) break;
+
         AssertV(theErrno == 0, theErrno);
-        
+
         //ok, there's data waiting on this socket. Send a wakeup.
         if (theCurrentEvent.er_data != NULL)
         {
@@ -255,8 +257,8 @@ void EventThread::Entry()
 #endif
                 theContext->ProcessEvent(theCurrentEvent.er_eventbits);
                 fRefTable.Release(ref);
-                
-                
+
+
             }
         }
 
@@ -269,7 +271,7 @@ void EventThread::Entry()
 #if EVENT_CONTEXT_DEBUG
         SInt64  yieldDur = OS::Milliseconds() - yieldStart;
         static SInt64   numZeroYields;
-        
+
         if ( yieldDur > 1 )
         {
             qtss_printf( "EventThread time in OSTHread::Yield %i, numZeroYields %i\n", (SInt32)yieldDur, (SInt32)numZeroYields );

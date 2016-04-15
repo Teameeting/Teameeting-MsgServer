@@ -6,6 +6,9 @@
 #include "zk_watcher.h"
 #include "server_status.h"
 
+typedef std::unordered_set< gim::ZKClient::WatchCtx* > watchCtxSet;
+static watchCtxSet gs_watchCtxSet;
+
 namespace gim{
 
 	using namespace std;
@@ -60,22 +63,22 @@ namespace gim{
 	std::string zkPath(const std::string& parent, const std::string& child){
 		std::string path = parent + "/" + child;
 		std::string old = "//";
-		while(1){   
+		while(1){
 			string::size_type   pos(0);
 			if((pos=path.find(old)) != std::string::npos)
 				path.replace(pos,old.size(),"/");
 			else
-				break;   
+				break;
 		}
 		return path;
 	}
-	void ZKClient::watcherFnG(zhandle_t * zh, int type, int state, 
+	void ZKClient::watcherFnG(zhandle_t * zh, int type, int state,
 		const char *path, void *watcherCtx){
 		ZKClient* c = (ZKClient*)watcherCtx;
 
 		if (c->m_logfn){
 			stringstream ss;
-			ss << "ZKClient::watcherFnG(), path:" << path << ", type:" << toZkEventType(type) 
+			ss << "ZKClient::watcherFnG(), path:" << path << ", type:" << toZkEventType(type)
 				<< ", state:" << toZkState(state) << ",zkclient=" << c;
 			c->writeLog(ss.str());
 		}
@@ -94,20 +97,22 @@ namespace gim{
 			return;
 		}
 	}
-	void ZKClient::watcherFn(zhandle_t * zh, int type, int state, 
+	void ZKClient::watcherFn(zhandle_t * zh, int type, int state,
 		const char *path, void *watcherCtx){
 
-		if(type == ZOO_SESSION_EVENT)
+        if(type == ZOO_SESSION_EVENT) {
 			return;
+        }
 
 		WatchCtx* ctx = (WatchCtx*)watcherCtx;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* c = (ZKClient*)ctx->cli;
 		ZKWatcher* w = (ZKWatcher*)c->getWatcher(ctx->watcher_id);
 
 		if (c->m_logfn){
 			stringstream ss;
-			ss << "ZKClient::watcherFn(), path:" << path << ", type:" << toZkEventType(type) 
+			ss << "ZKClient::watcherFn(), path:" << path << ", type:" << toZkEventType(type)
 				<< ", state:" << toZkState(state) << ",zkclient=" << c;
 			c->writeLog(ss.str());
 		}
@@ -131,10 +136,11 @@ namespace gim{
 	void ZKClient::getChildrenComplete(int rc, const String_vector* s_v, const void* data){
 
 		WatchCtx* ctx = (WatchCtx*)data;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* p = (ZKClient*)ctx->cli;
 
-		ZKWatcher* w = (ZKWatcher*)p->getWatcher(ctx->watcher_id);	
+		ZKWatcher* w = (ZKWatcher*)p->getWatcher(ctx->watcher_id);
 		if (p->m_logfn){
 			stringstream ss;
 			if (w){
@@ -159,25 +165,26 @@ namespace gim{
 
 		if(ZOK != rc){
 			return;
-		}		
+		}
 
 		urls us;
 		for(int i = 0; i < s_v->count; ++i){
 			us.push_back(s_v->data[i]);
-		}		
+		}
 
 		w->onChildrenChange(us);
 	}
 
 
-	void ZKClient::getDataComplete(int rc, const char *value, int value_len, 
+	void ZKClient::getDataComplete(int rc, const char *value, int value_len,
 		const struct Stat *stat, const void *data){
 
 		WatchCtx* ctx = (WatchCtx*)data;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* p = (ZKClient*)ctx->cli;
 
-		ZKWatcher* w = (ZKWatcher*)p->getWatcher(ctx->watcher_id);	
+		ZKWatcher* w = (ZKWatcher*)p->getWatcher(ctx->watcher_id);
 		if (p->m_logfn){
 			stringstream ss;
 			if (w){
@@ -200,7 +207,7 @@ namespace gim{
 
 		if(ZOK != rc){
 			return;
-		}	
+		}
 
 		w->onDataChange(stat->version, string(value, value_len));
 	}
@@ -213,10 +220,11 @@ namespace gim{
 		}
 
 		WatchCtx* ctx = (WatchCtx*)data;
+        gs_watchCtxSet.erase(ctx);
 		CtxAutoDeletor d(ctx);
 		ZKClient* p = (ZKClient*)ctx->cli;
 
-		ZKWatcher* w = (ZKWatcher*)p->getWatcher(ctx->watcher_id);	
+		ZKWatcher* w = (ZKWatcher*)p->getWatcher(ctx->watcher_id);
 		if (p->m_logfn){
 			stringstream ss;
 			ss << "ZKClient::getChildrenComplete() rc:" << rc << ", id:" << ctx->watcher_id;
@@ -246,7 +254,8 @@ namespace gim{
 		:m_timeout_ms(DEFAULT_TIMEOUT),
 		m_zkhandle(NULL), m_waiting(false), m_logfn(NULL){
 			pthread_mutex_init(&m_cs, NULL);
-			pthread_cond_init(&m_cond, NULL);	
+			pthread_cond_init(&m_cond, NULL);
+            gs_watchCtxSet.clear();
 	}
 
 	ZKClient::~ZKClient(){
@@ -254,7 +263,7 @@ namespace gim{
 	}
 
 
-	int ZKClient::createEphemeralNode(const string& path, 
+	int ZKClient::createEphemeralNode(const string& path,
 		const string& data){
 		int ret = 0;
 		ret = zoo_create(m_zkhandle, path.data(), data.data(),
@@ -270,7 +279,7 @@ namespace gim{
 		return ret;
 	}
 
-	int ZKClient::createPersistentNode(const string& path, 
+	int ZKClient::createPersistentNode(const string& path,
 		const string& data){
 		int ret = 0;
 		ret = zoo_create(m_zkhandle, path.data(), data.data(),
@@ -325,7 +334,7 @@ namespace gim{
 			data.resize(buflen);
 			return 0;
 		}
-	
+
 		if (ret && m_logfn){
 			stringstream ss;
 			ss << "ZKClient::getNodeData() path:" << path << " fail, error:" << zerror(ret);
@@ -358,7 +367,7 @@ namespace gim{
 		}
 		return doInit();
 	}
-	
+
 	void ZKClient::watchAll(){
 		pthread_mutex_lock(&m_cs);
 		watcherset::iterator it = m_watchers.begin();
@@ -366,12 +375,14 @@ namespace gim{
 			ZKWatcher* w = it->second;
 			w->nodeExists();
 		}
-		pthread_mutex_unlock(&m_cs);	
+		pthread_mutex_unlock(&m_cs);
 	}
 	int ZKClient::watchData(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
-		int ret = zoo_awget(m_zkhandle, w->getPath().data(), 
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
+		int ret = zoo_awget(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx, getDataComplete, ctx1);
 
 		if (ret && m_logfn){
@@ -387,7 +398,9 @@ namespace gim{
 	int ZKClient::watchChildren(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
-		int ret = zoo_awget_children(m_zkhandle, w->getPath().data(), 
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
+		int ret = zoo_awget_children(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx, getChildrenComplete, ctx1);
 
 		if (ret && m_logfn){
@@ -402,13 +415,15 @@ namespace gim{
 	int ZKClient::watchExists(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
-		int ret = zoo_awexists(m_zkhandle, w->getPath().data(), 
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
+		int ret = zoo_awexists(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx,  getExistsComplete, ctx1);
 		if (ret && m_logfn){
 			stringstream ss;
 			ss << "ZKClient::watchExists(): path:" << w->getPath() << " id:" << w->getID() << ", ret:" << ret;
 			writeLog(ss.str());
-		}	
+		}
 		return ret;
 
 	}
@@ -416,7 +431,9 @@ namespace gim{
 	int ZKClient::watchCreate(ZKWatcher* w){
 		WatchCtx* ctx = new WatchCtx(this, w->getID());
 		WatchCtx* ctx1 = new WatchCtx(this, w->getID());
-		int ret = zoo_awexists(m_zkhandle, w->getPath().data(), 
+        gs_watchCtxSet.insert(ctx);
+        gs_watchCtxSet.insert(ctx1);
+		int ret = zoo_awexists(m_zkhandle, w->getPath().data(),
 			ZKClient::watcherFn, ctx, getExistsComplete, ctx1);
 
 		if (ret && m_logfn){
@@ -424,7 +441,7 @@ namespace gim{
 			ss  << "ZKClient::watchCreate: path:" << w->getPath() << " id:" << w->getID() << ", ret:" << ret;
 			writeLog(ss.str());
 		}
-	
+
 		return ret;
 	}
 
@@ -455,6 +472,10 @@ namespace gim{
 	int ZKClient::clear(){
 		//clear watcher is job of who create it
 		//clearPathWatchers();
+        for (auto & x : gs_watchCtxSet) {
+            delete x;
+        }
+        gs_watchCtxSet.clear();
 		if(m_zkhandle){
 			zookeeper_close(m_zkhandle);
 			m_zkhandle = NULL;
@@ -494,7 +515,7 @@ namespace gim{
 	int ZKClient::getChildren(const string& path, s_vector& us){
 		int ret = 0;
 		struct String_vector s_v;
-		ret = zoo_get_children(m_zkhandle, path.data(), 
+		ret = zoo_get_children(m_zkhandle, path.data(),
 			0, &s_v);
 
 		if (ret){
@@ -508,9 +529,9 @@ namespace gim{
 
 		for(int i = 0; i < s_v.count; ++i){
 			us.push_back(s_v.data[i]);
-		}	
-		deallocate_String_vector(&s_v);	
-		return 0;		
+		}
+		deallocate_String_vector(&s_v);
+		return 0;
 	}
 	void ZKClient::srvNodeRebuild(){
 		for (std::set<ServerNode*>::iterator it = m_srvnodes.begin(); it != m_srvnodes.end(); ++it){

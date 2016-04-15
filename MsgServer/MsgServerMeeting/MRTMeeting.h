@@ -11,23 +11,13 @@ protected:
 	MRTMeeting(void);
 public:
 	virtual ~MRTMeeting(void);
-
-	/* 打印服务版本号
-	 * 参数:	无
-	 */
+	
 	static void PrintVersion();
-	/* 系统初始化
-	 * 参数:	evTbSize - 系统的Hash表大小，根据系统的设计容量而变化
-	 */
+	
 	static void Initialize(int evTbSize);
-	/* 系统注销
-	 * 参数:	无
-	 */
+	
 	static void DeInitialize();
 
-	/*
-	 *
-	 */
 	static MRTMeeting* Inst();
 
 public:

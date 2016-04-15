@@ -15,7 +15,7 @@ MRTHttpSvrConn::MRTHttpSvrConn(void)
 
 MRTHttpSvrConn::~MRTHttpSvrConn(void)
 {
-    
+
 }
 
 ////////////////////////////////////////////////////
@@ -213,7 +213,7 @@ void MRTHttpSvrConn::MSender::OnResponse(const char* pData, int nLen)
     }
     if (GetMethod() == HTTP_GET) {
         std::string data(pData, nLen);
-        MRTRoomManager::Instance()->HandleOptRoomWithData(GetCmd(), GetTransmsg(), GetMeetmsg(), data);
+        MRTRoomManager::Instance().HandleOptRoomWithData(GetCmd(), GetTransmsg(), GetMeetmsg(), data);
     } else {
         this->Signal(kKillEvent);
     }

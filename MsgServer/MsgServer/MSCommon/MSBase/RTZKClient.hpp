@@ -19,14 +19,18 @@
 #include "data_watcher.h"
 #include "server_config.h"
 #include "server_status.h"
+#include "RTSingleton.h"
 
-class RTZKClient{
+class RTZKClient : public RTSingleton< RTZKClient > {
+    friend class RTSingleton< RTZKClient >;
 public:
-    RTZKClient(const std::string& conf);
-    ~RTZKClient();
 
-    int InitZKClient();
+    int InitOnly(const std::string& conf);
+    int InitZKClient(const std::string& conf);
     int InitStatusNode(gim::ServerConfig& conf);
+    int Unin();
+
+    bool CheckNodeExists(const std::string& nodePath);
 
     static void RTZKLogCallBack(void* ctx, const std::string& l);
     static int RTZKDataCallback(void* ctx, int version, const std::string& data);
@@ -36,6 +40,7 @@ public:
     int ChildrenMapCallback(const gim::ChildrenMap& cmap);
     int PathRemoveCallback(const std::string& path);
 
+    // <nodePath, node>
     typedef std::unordered_map< std::string, gim::ListWatcher<RTZKClient>* > ChildrenWatcherMap;
     typedef ChildrenWatcherMap::iterator ChildrenWatcherMapIt;
 
@@ -43,6 +48,9 @@ public:
     typedef std::vector< gim::DataWatcher<RTZKClient>* > DataWatcherVec;
 
     const gim::ServerConfig& GetServerConfig() const { return m_conf; }
+protected:
+    RTZKClient();
+    ~RTZKClient();
 private:
     std::string 		m_conf_path;
     gim::ServerConfig 	m_conf;
