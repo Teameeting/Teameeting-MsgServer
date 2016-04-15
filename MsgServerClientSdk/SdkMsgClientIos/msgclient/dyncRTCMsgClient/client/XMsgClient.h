@@ -72,9 +72,9 @@ private:
     unsigned short readShort(char** pptr);
     void writeShort(char** pptr, unsigned short anInt);
 private:
-    XTcpClientImpl*          m_pClientImpl;
+    XTcpClient*              m_pClient;
     XMsgProcesser*           m_pMsgProcesser;
-    uint32_t                   m_lastUpdateTime;
+    uint32_t                 m_lastUpdateTime;
     std::string              m_uid;
     std::string              m_token;
     std::string              m_nname;

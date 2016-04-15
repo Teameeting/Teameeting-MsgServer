@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		2D3801581C5DA1BA00138CF0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3801571C5DA1BA00138CF0 /* Foundation.framework */; };
 		2D38015A1C5DA1C400138CF0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3801591C5DA1C400138CF0 /* UIKit.framework */; };
-		E66856141CB4AA4C0091D7A1 /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6C058211C96ECE900C66EC3 /* messagehandler.cc */; };
-		E66856151CB4AA4C0091D7A1 /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6C058231C96ECE900C66EC3 /* messagequeue.cc */; };
 		E67FC4141CB4DEBE00525861 /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E67FC3251CB4DEBD00525861 /* XJSBuffer.cpp */; };
 		E67FC4151CB4DEBE00525861 /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E67FC3281CB4DEBD00525861 /* XMsgClient.cpp */; };
 		E67FC4161CB4DEBE00525861 /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E67FC32A1CB4DEBD00525861 /* XMsgProcesser.cpp */; };
@@ -49,16 +47,18 @@
 		E67FC4371CB4DEBE00525861 /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E67FC3FD1CB4DEBE00525861 /* thread.cc */; };
 		E67FC4381CB4DEBE00525861 /* thread_checker_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E67FC4011CB4DEBE00525861 /* thread_checker_impl.cc */; };
 		E67FC4391CB4DEBE00525861 /* timeutils.cc in Sources */ = {isa = PBXBuildFile; fileRef = E67FC4031CB4DEBE00525861 /* timeutils.cc */; };
-		E6C0AECA1C96ED0900C66EC3 /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057971C96ECE900C66EC3 /* XJSBuffer.cpp */; };
-		E6C0AECC1C96ED0900C66EC3 /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C0579B1C96ECE900C66EC3 /* XMsgClient.cpp */; };
-		E6C0AECE1C96ED0900C66EC3 /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C0579E1C96ECE900C66EC3 /* XMsgProcesser.cpp */; };
-		E6C0AED01C96ED0900C66EC3 /* XTcpClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057A21C96ECE900C66EC3 /* XTcpClientImpl.cpp */; };
-		E6C0AED21C96ED0900C66EC3 /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057A51C96ECE900C66EC3 /* XTcpTick.cpp */; };
-		E6C0AED41C96ED0900C66EC3 /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057B61C96ECE900C66EC3 /* RTMeetMsg.cpp */; };
-		E6C0AED61C96ED0900C66EC3 /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057B91C96ECE900C66EC3 /* RTMessage.cpp */; };
-		E6C0AED81C96ED0900C66EC3 /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057BD1C96ECE900C66EC3 /* RTSignalMsg.cpp */; };
-		E6C0BE531C96ED1C00C66EC3 /* MsgClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0AEC51C96ED0800C66EC3 /* MsgClient.mm */; };
-		E6C0BE541C96ED1C00C66EC3 /* TMMsgSender.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0AEC91C96ED0900C66EC3 /* TMMsgSender.mm */; };
+		E6B0B8551CBFCED00002335C /* XTcpClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057A21C96ECE900C66EC3 /* XTcpClientImpl.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6B0B8601CC0817D0002335C /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6B0B85E1CC0817D0002335C /* messagehandler.cc */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6B0B8611CC0817D0002335C /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6B0B85F1CC0817D0002335C /* messagequeue.cc */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6B0B8621CC0828E0002335C /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057971C96ECE900C66EC3 /* XJSBuffer.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0AECC1C96ED0900C66EC3 /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C0579B1C96ECE900C66EC3 /* XMsgClient.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0AECE1C96ED0900C66EC3 /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C0579E1C96ECE900C66EC3 /* XMsgProcesser.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0AED21C96ED0900C66EC3 /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057A51C96ECE900C66EC3 /* XTcpTick.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0AED41C96ED0900C66EC3 /* RTMeetMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057B61C96ECE900C66EC3 /* RTMeetMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0AED61C96ED0900C66EC3 /* RTMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057B91C96ECE900C66EC3 /* RTMessage.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0AED81C96ED0900C66EC3 /* RTSignalMsg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C057BD1C96ECE900C66EC3 /* RTSignalMsg.cpp */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0BE531C96ED1C00C66EC3 /* MsgClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0AEC51C96ED0800C66EC3 /* MsgClient.mm */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
+		E6C0BE541C96ED1C00C66EC3 /* TMMsgSender.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0AEC91C96ED0900C66EC3 /* TMMsgSender.mm */; settings = {COMPILER_FLAGS = "-fno-rtti -fvisibility=hidden"; }; };
 		E6C0C0B81C97A76C00C66EC3 /* MsgClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = E65B52B81C300A0400A5DE53 /* MsgClient.mm */; };
 		E6C0C0B91C97A76C00C66EC3 /* TMMsgSender.mm in Sources */ = {isa = PBXBuildFile; fileRef = E65B52BD1C300A0400A5DE53 /* TMMsgSender.mm */; };
 		E6C0C0BA1C97A76C00C66EC3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0BE561C97A4E300C66EC3 /* AppDelegate.mm */; };
@@ -323,6 +323,8 @@
 		E67FC4111CB4DEBE00525861 /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
 		E67FC4121CB4DEBE00525861 /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
 		E67FC4131CB4DEBE00525861 /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
+		E6B0B85E1CC0817D0002335C /* messagehandler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagehandler.cc; sourceTree = "<group>"; };
+		E6B0B85F1CC0817D0002335C /* messagequeue.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagequeue.cc; sourceTree = "<group>"; };
 		E6C057971C96ECE900C66EC3 /* XJSBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XJSBuffer.cpp; sourceTree = "<group>"; };
 		E6C057981C96ECE900C66EC3 /* XJSBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XJSBuffer.h; sourceTree = "<group>"; };
 		E6C0579A1C96ECE900C66EC3 /* XMsgCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgCallback.h; sourceTree = "<group>"; };
@@ -354,9 +356,7 @@
 		E6C057BD1C96ECE900C66EC3 /* RTSignalMsg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTSignalMsg.cpp; sourceTree = "<group>"; };
 		E6C057BE1C96ECE900C66EC3 /* RTSignalMsg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSignalMsg.h; sourceTree = "<group>"; };
 		E6C057C21C96ECE900C66EC3 /* RTMsgCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
-		E6C058211C96ECE900C66EC3 /* messagehandler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagehandler.cc; sourceTree = "<group>"; };
 		E6C058221C96ECE900C66EC3 /* messagehandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagehandler.h; sourceTree = "<group>"; };
-		E6C058231C96ECE900C66EC3 /* messagequeue.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagequeue.cc; sourceTree = "<group>"; };
 		E6C058241C96ECE900C66EC3 /* messagequeue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagequeue.h; sourceTree = "<group>"; };
 		E6C058891C96ECE900C66EC3 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		E6C0588A1C96ECE900C66EC3 /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
@@ -824,9 +824,9 @@
 		E6C057C41C96ECE900C66EC3 /* base */ = {
 			isa = PBXGroup;
 			children = (
-				E6C058211C96ECE900C66EC3 /* messagehandler.cc */,
+				E6B0B85E1CC0817D0002335C /* messagehandler.cc */,
+				E6B0B85F1CC0817D0002335C /* messagequeue.cc */,
 				E6C058221C96ECE900C66EC3 /* messagehandler.h */,
-				E6C058231C96ECE900C66EC3 /* messagequeue.cc */,
 				E6C058241C96ECE900C66EC3 /* messagequeue.h */,
 			);
 			path = base;
@@ -1006,18 +1006,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E66856141CB4AA4C0091D7A1 /* messagehandler.cc in Sources */,
-				E66856151CB4AA4C0091D7A1 /* messagequeue.cc in Sources */,
+				E6B0B8621CC0828E0002335C /* XJSBuffer.cpp in Sources */,
+				E6B0B8551CBFCED00002335C /* XTcpClientImpl.cpp in Sources */,
 				E6C0BE531C96ED1C00C66EC3 /* MsgClient.mm in Sources */,
+				E6B0B8601CC0817D0002335C /* messagehandler.cc in Sources */,
 				E6C0BE541C96ED1C00C66EC3 /* TMMsgSender.mm in Sources */,
 				E6C0AECE1C96ED0900C66EC3 /* XMsgProcesser.cpp in Sources */,
-				E6C0AECA1C96ED0900C66EC3 /* XJSBuffer.cpp in Sources */,
+				E6B0B8611CC0817D0002335C /* messagequeue.cc in Sources */,
 				E6C0AECC1C96ED0900C66EC3 /* XMsgClient.cpp in Sources */,
 				E6C0AED81C96ED0900C66EC3 /* RTSignalMsg.cpp in Sources */,
 				E6C0AED21C96ED0900C66EC3 /* XTcpTick.cpp in Sources */,
 				E6C0AED41C96ED0900C66EC3 /* RTMeetMsg.cpp in Sources */,
 				E6C0AED61C96ED0900C66EC3 /* RTMessage.cpp in Sources */,
-				E6C0AED01C96ED0900C66EC3 /* XTcpClientImpl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1226,7 +1226,7 @@
 					"$(PROJECT_DIR)/msgclient/dyncRTCMsgClient/client",
 					"$(PROJECT_DIR)/msgclient/dyncRTCMsgClient",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1246,7 +1246,7 @@
 					"$(PROJECT_DIR)/msgclient/dyncRTCMsgClient/client",
 					"$(PROJECT_DIR)/msgclient/dyncRTCMsgClient",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

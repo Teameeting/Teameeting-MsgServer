@@ -23,7 +23,7 @@
 
 XMsgClient::XMsgClient()
 : XJSBuffer()
-, m_pClientImpl(NULL)
+, m_pClient(NULL)
 , m_pMsgProcesser(NULL)
 , m_lastUpdateTime(0)
 , m_uid("")
@@ -55,10 +55,11 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
         return -1;
     }
     
-    if (!m_pClientImpl) {
-        m_pClientImpl = dynamic_cast<XTcpClientImpl*>(XTcpClient::Create(*this));// new XTcpClientImpl(*this);
+    if (!m_pClient) {
+        //m_pClientImpl = dynamic_cast<XTcpClientImpl*>(XTcpClient::Create(*this));// new XTcpClientImpl(*this);
+        m_pClient = XTcpClient::Create(*this);
     }
-    if (!m_pClientImpl) {
+    if (!m_pClient) {
         if (m_pMsgProcesser) {
             delete m_pMsgProcesser;
             m_pMsgProcesser = NULL;
@@ -75,7 +76,7 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
         m_port = port;
     }
     m_autoConnect = bAutoConnect;
-    m_pClientImpl->Connect(server, port, bAutoConnect);
+    m_pClient->Connect(server, port, bAutoConnect);
     m_msState = MSCONNECTTING;
     m_pMsgProcesser->ServerState(MSCONNECTTING);
     
@@ -84,14 +85,14 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
 
 int XMsgClient::Unin()
 {
-    if (m_pClientImpl) {
-        m_pClientImpl->Disconnect();
+    if (m_pClient) {
+        m_pClient->Disconnect();
         if (m_pMsgProcesser) {
             delete m_pMsgProcesser;
             m_pMsgProcesser = NULL;
         }
-        delete m_pClientImpl;
-        m_pClientImpl = NULL;
+        delete m_pClient;
+        m_pClient = NULL;
     }
     
     return 0;
@@ -258,7 +259,7 @@ int XMsgClient::KeepAlive()
 
 int XMsgClient::SendEncodeMsg(std::string& msg)
 {
-    if (TcpState::CONNECTED!=m_pClientImpl->Status()) {
+    if (TcpState::CONNECTED!=m_pClient->Status()) {
 #ifdef WEBRTC_ANDROID
         LOGI("XMsgClient::SendEncodeMsg NOT_CONNECTED\n");
 #else
@@ -274,22 +275,22 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
         writeShort(&pptr, (unsigned short)msg.length());
         memcpy((pptr), msg.c_str(), msg.length());
         ptr[msg.length()+3] = '\0';
-        if (m_pClientImpl) {
-            int n = m_pClientImpl->SendMessageX(ptr, (int)(msg.length()+3));
+        if (m_pClient) {
+            int n = m_pClient->SendMessageX(ptr, (int)(msg.length()+3));
             delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             return n;
         } else {
 #ifdef WEBRTC_ANDROID
-            LOGI("XMsgClient::SendEncodeMsg m_pClientImpl is NULL\n");
+            LOGI("XMsgClient::SendEncodeMsg m_pClient is NULL\n");
 #else
-            std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl is NULL" << std::endl;
+            std::cout << "XMsgClient::SendEncodeMsg m_pClient is NULL" << std::endl;
 #endif
             delete [] ptr;
             ptr = NULL;
             pptr = NULL;
-            LOG(LS_ERROR) << "SendEncodeMsg m_pClientImpl is NULL";
+            LOG(LS_ERROR) << "SendEncodeMsg m_pClient is NULL";
             return -1;
         }
     } else {
