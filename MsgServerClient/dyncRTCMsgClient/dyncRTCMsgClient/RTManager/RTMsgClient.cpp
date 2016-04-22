@@ -10,6 +10,11 @@
 #include <unistd.h>
 #include "RTMsgClient.hpp"
 #include "webrtc/base/logging.h"
+#include "rtcmsgs/proto/msg_type.pb.h"
+#include "rtcmsgs/proto/meet_msg.pb.h"
+#include "rtcmsgs/proto/sys_msg.pb.h"
+
+#define DEF_PROTO 1
 
 RTMsgClient::RTMsgClient(const std::string& uid)
 : mMsgClient()
@@ -19,7 +24,7 @@ RTMsgClient::RTMsgClient(const std::string& uid)
 , mUname("")
 , mPushToken("")
 , mMsgServer("127.0.0.1")
-, mCurRoomId("400000000807")
+, mCurRoomId("4008696859")
 , mMsgPort(6630)
 , mIsOnline(false)
 , mRecvNum(0)
@@ -38,6 +43,40 @@ RTMsgClient::~RTMsgClient()
 
 void RTMsgClient::OnSndMsg(const std::string& msg)
 {
+#if DEF_PROTO
+    pms::MeetMsg meet;
+    meet.ParseFromString(msg);
+    LOG(INFO) << "RTMsgClient::OnSndMsg--->" << std::endl;
+    meet.PrintDebugString();
+    switch(meet.msg_tag()) {
+        case pms::EMsgTag::TCHAT:
+            {
+                LOG(INFO) << mUserid + " recv EMsgTag::TCHAT: " << meet.msg_cont();
+                mRecvNum++;
+                mMsgList.push_back(meet.msg_cont());
+            }
+            break;
+        case pms::EMsgTag::TENTER:
+            {
+                LOG(INFO) << "EMsgTag::TENTER " << meet.msg_cont();
+            }
+            break;
+        case pms::EMsgTag::TLEAVE:
+            {
+                LOG(INFO) << "EMsgTag::TLEAVE " << meet.msg_cont();
+            }
+            break;
+        case pms::EMsgTag::TNOTIFY:
+            {
+                LOG(INFO) << "EMsgTag::TNOTIFY " << meet.msg_cont();
+            }
+        default:
+            {
+
+            }
+            break;
+    }
+#else
     MEETMSG mmsg;
     std::string err;
     mmsg.GetMsg(msg, err);
@@ -71,6 +110,7 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
                 break;
         }
     }
+#endif
 }
 
 void RTMsgClient::OnGetMsg(const std::string& msg)
@@ -80,21 +120,21 @@ void RTMsgClient::OnGetMsg(const std::string& msg)
 
 void RTMsgClient::OnMsgServerConnected()
 {
-    //LOG(INFO) << __FUNCTION__ << " was called";
+    LOG(INFO) << __FUNCTION__ << " was called";
     mConnNum++;
     mIsOnline = true;
 }
 
 void RTMsgClient::OnMsgServerDisconnect()
 {
-    //LOG(INFO) << __FUNCTION__ << " was called";
+    LOG(INFO) << __FUNCTION__ << " was called";
     mDisconnNum++;
     mIsOnline = false;
 }
 
 void RTMsgClient::OnMsgServerConnectionFailure()
 {
-    //LOG(INFO) << __FUNCTION__ << " was called";
+    LOG(INFO) << __FUNCTION__ << " was called";
     mConnFailNum++;
     mIsOnline = false;
 }
@@ -113,6 +153,7 @@ int RTMsgClient::Register()
         mPushToken = mHttpClient.GetPushToken();
         return 0;
     } else {
+        LOG(INFO) << __FUNCTION__ << " error";
         return -1;
     }
 }
@@ -129,6 +170,7 @@ int RTMsgClient::ApplyRoom()
         }
         return 0;
     } else {
+        LOG(INFO) << __FUNCTION__ << " error";
         return -1;
     }
 #endif
@@ -153,14 +195,14 @@ bool RTMsgClient::Connecting()
 void RTMsgClient::EnterRoom()
 {
     if (mIsOnline) {
-        mMsgClient.OptRoom(MEETCMD::enter, mCurRoomId, "RoomName", "");
+        mMsgClient.OptRoom(pms::EMsgTag::TENTER, mCurRoomId, "RoomName", "");
     }
 }
 
 void RTMsgClient::LeaveRoom()
 {
     if (mIsOnline) {
-        mMsgClient.OptRoom(MEETCMD::leave, mCurRoomId, "RoomName", "");
+        mMsgClient.OptRoom(pms::EMsgTag::TLEAVE, mCurRoomId, "RoomName", "");
     }
 }
 

@@ -15,6 +15,11 @@
 #include "RTMeetMsg.h"
 #include "RTSignalMsg.h"
 
+#define DEF_PROTO 1
+#include "MsgServer/MSCommon/MSProtocol/proto/msg_type.pb.h"
+#include "MsgServer/MSCommon/MSProtocol/proto/meet_msg.pb.h"
+#include "MsgServer/MSCommon/MSProtocol/proto/sys_msg.pb.h"
+
 class CRTConnTcp {
 public:
     CRTConnTcp();
@@ -27,13 +32,13 @@ public:
     void SendResponse(int code, const std::string&strContent);
 
 public:
-    virtual void OnLogin(const char* pUserid, const char* pPass, const char* pNname) = 0;
-    virtual void OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen) = 0;
-    virtual void OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid) = 0;
-    virtual void OnLogout(const char* pUserid) = 0;
-    virtual void OnKeepAlive(const char* pUserid) = 0;
+    virtual void OnLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnGetMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnLogout(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnResponse(const char*pData, int nLen)=0;
-    
+
 private:
 
 };

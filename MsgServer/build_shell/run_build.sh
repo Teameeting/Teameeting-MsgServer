@@ -82,147 +82,147 @@ function log2f()
         echo -e "IF YOU INVOKE function log2f"
         shell_usage
     fi
-	if [ $# -eq 0 ]; then
+    if [ $# -eq 0 ]; then
         echo -e "[LOG]Date: $CUR_DATE" >> $LOG_FILE
-	elif [ $# -eq 1 ]; then
+    elif [ $# -eq 1 ]; then
         echo -e "[LOG]$CURTIME: $1" >> $LOG_FILE
-	elif [ $# -eq 2 ]; then
+    elif [ $# -eq 2 ]; then
         echo -e "[LOG]$CURTIME: $1 $2" >> $LOG_FILE
-	else
+    else
         echo -e "just support two params hahaha~~~"
-	fi
+    fi
 }
 export -f log2f
 
 ###################log info ###############################
 function loginfo()
 {
-	if [ $# -eq 0 ]; then
+    if [ $# -eq 0 ]; then
         echo -e "\033[1;34m [INFO]Date: $CUR_DATE \033[0m"
         if [ "$PARAM_LOG"x != ""x ]
         then
             echo -e "[LOG]Date: $CUR_DATE" >> $LOG_FILE
         fi
-	elif [ $# -eq 1 ]; then
+    elif [ $# -eq 1 ]; then
         echo -e "\033[1;34m [INFO]$CUR_DATE: $1 \033[0m"
         if [ "$PARAM_LOG"x != ""x ]
         then
             echo -e "[LOG]$CURTIME: $1" >> $LOG_FILE
         fi
-	elif [ $# -eq 2 ]; then
+    elif [ $# -eq 2 ]; then
         echo -e "\033[1;34m [INFO]$CUR_DATE: $1 $2 \033[0m"
         if [ "$PARAM_LOG"x != ""x ]
         then
             echo -e "[LOG]$CURTIME: $1 $2" >> $LOG_FILE
         fi
-	else
+    else
         echo -e "\033[1;34m just support two params hahaha~~~ \033[0m"
-	fi
+    fi
 }
 export -f loginfo
 
 ###################log error ###############################
 function logerr()
 {
-	if [ $# -eq 0 ]; then
+    if [ $# -eq 0 ]; then
         echo -e "\033[0;31m [ERR]Date: $CUR_DATE \033[0m"
         if [ "$PARAM_LOG"x != ""x ]
         then
             echo -e "[LOG]Date: $CUR_DATE" >> $LOG_FILE
         fi
-	elif [ $# -eq 1 ]; then
+    elif [ $# -eq 1 ]; then
         echo -e "\033[0;31m [ERR]$CUR_DATE: $1 \033[0m"
         if [ "$PARAM_LOG"x != ""x ]
         then
             echo -e "[LOG]$CURTIME: $1" >> $LOG_FILE
         fi
-	elif [ $# -eq 2 ]; then
+    elif [ $# -eq 2 ]; then
         echo -e "\033[0;31m [ERR]$CUR_DATE: $1 $2 \033[0m"
         if [ "$PARAM_LOG"x != ""x ]
         then
             echo -e "[LOG]$CURTIME: $1 $2" >> $LOG_FILE
         fi
-	else
+    else
         echo -e "\033[1;34m just support two params hahaha~~~ \033[0m"
-	fi
+    fi
 }
 export -f logerr
 
 ###################tar src.tar src###############################
 function tar_tar()
 {
-     if [ $# -eq 1 ] && [ -d $1 ]
-     then
-         if [ -f $1.tar ]
-         then
-             loginfo "$1.tar exist, mv $1.tar $1.tar.bak..."
-             mv $1.tar $1.tar.bak
-         fi
-         tar -cvf $1.tar $1
-         if [ $? -eq 0 ]
-         then
-             cp $1.tar $CUR_PATH
-             loginfo "tar $1 ok...:" $?
-         else
-             logerr "tar $1 err...:" $?
-             exit 1
-         fi
-     else
-         logerr "params error or $1 not exist..."
-         exit 1
-     fi
+    if [ $# -eq 1 ] && [ -d $1 ]
+    then
+        if [ -f $1.tar ]
+        then
+            loginfo "$1.tar exist, mv $1.tar $1.tar.bak..."
+            mv $1.tar $1.tar.bak
+        fi
+        tar -cvf $1.tar $1
+        if [ $? -eq 0 ]
+        then
+            cp $1.tar $CUR_PATH
+            loginfo "tar $1 ok...:" $?
+        else
+            logerr "tar $1 err...:" $?
+            exit 1
+        fi
+    else
+        logerr "params error or $1 not exist..."
+        exit 1
+    fi
 }
 export -f tar_tar
 
 ###################tar src.tar.gz src###############################
 function tar_tar_gz()
 {
-     if [ $# -eq 1 ] && [ -d $1 ]
-     then
-         if [ -f $1.tar.gz ]
-         then
-             loginfo "$1.tar.gz exist, mv $1.tar.gz $1.tar.gz.bak..."
-             mv $1.tar.gz $1.tar.gz.bak
-         fi
-         tar -zcvf $1.tar.gz $1
-         if [ $? -eq 0 ]
-         then
-             cp $1.tar.gz $CUR_PATH
-             loginfo "tar $1 ok...:" $?
-         else
-             logerr "tar $1 err...:" $?
-             exit 1
-         fi
-     else
-         logerr "params error or $1 not exist..."
-         exit 1
-     fi
+    if [ $# -eq 1 ] && [ -d $1 ]
+    then
+        if [ -f $1.tar.gz ]
+        then
+            loginfo "$1.tar.gz exist, mv $1.tar.gz $1.tar.gz.bak..."
+            mv $1.tar.gz $1.tar.gz.bak
+        fi
+        tar -zcvf $1.tar.gz $1
+        if [ $? -eq 0 ]
+        then
+            cp $1.tar.gz $CUR_PATH
+            loginfo "tar $1 ok...:" $?
+        else
+            logerr "tar $1 err...:" $?
+            exit 1
+        fi
+    else
+        logerr "params error or $1 not exist..."
+        exit 1
+    fi
 }
 export -f tar_tar_gz
 
 ###################tar src.tar.bz2 src###############################
 function tar_tar_bz2()
 {
-     if [ $# -eq 1 ] && [ -d $1 ]
-     then
-         if [ -f $1.tar.bz2 ]
-         then
-             loginfo "$1.tar.bz2 exist, mv $1.tar.bz2 $1.tar.bz2.bak..."
-             mv $1.tar.bz2 $1.tar.bz2.bak
-         fi
-         tar -jcvf $1.tar.bz2 $1
-         if [ $? -eq 0 ]
-         then
-             cp $1.tar.bz2 $CUR_PATH
-             loginfo "tar $1 ok...:" $?
-         else
-             logerr "tar $1 err...:" $?
-             exit 1
-         fi
-     else
-         logerr "params error or $1 not exist..."
-         exit 1
-     fi
+    if [ $# -eq 1 ] && [ -d $1 ]
+    then
+        if [ -f $1.tar.bz2 ]
+        then
+            loginfo "$1.tar.bz2 exist, mv $1.tar.bz2 $1.tar.bz2.bak..."
+            mv $1.tar.bz2 $1.tar.bz2.bak
+        fi
+        tar -jcvf $1.tar.bz2 $1
+        if [ $? -eq 0 ]
+        then
+            cp $1.tar.bz2 $CUR_PATH
+            loginfo "tar $1 ok...:" $?
+        else
+            logerr "tar $1 err...:" $?
+            exit 1
+        fi
+    else
+        logerr "params error or $1 not exist..."
+        exit 1
+    fi
 }
 export -f tar_tar_bz2
 
@@ -230,20 +230,20 @@ export -f tar_tar_bz2
 ###################shell_backup ###############################
 function shell_backup()
 {
-  cp $CUR_PATH/run_build.sh $CUR_PATH/.run_build.sh
+    cp $CUR_PATH/run_build.sh $CUR_PATH/.run_build.sh
 }
 
 ###################start log ###############################
 function start_log()
 {
     loginfo
-	loginfo "##########################  LOG START BUILDING ################################"
+    loginfo "##########################  LOG START BUILDING ################################"
 }
 
 ###################end log ###############################
 function end_log()
 {
-	loginfo "##########################  LOG END BUILDING ################################"
+    loginfo "##########################  LOG END BUILDING ################################"
     loginfo
 }
 
@@ -380,87 +380,123 @@ start_log
 sleep 2
 
 ####################    building 3rdpartylibs    ###########################
-COMMON_LIB_PATH=$BASE_PATH/MsgServer/MSCommonLib
-THIRDPARTY_LIB_PATH=$BASE_PATH/MsgServer/MSCommon/lib_linux_a
-clean_libs $COMMON_LIB_PATH $THIRDPARTY_LIB_PATH
+if [ "no"x = "yes"x ]
+then
+    COMMON_LIB_PATH=$BASE_PATH/MsgServer/MSCommonLib
+    THIRDPARTY_LIB_PATH=$BASE_PATH/MsgServer/MSCommon/lib_linux_a
+    clean_libs $COMMON_LIB_PATH $THIRDPARTY_LIB_PATH
+else
+    logerr "building 3rdpartylibs not running..."
+fi
 
 ####################    building 3rdpartylibs    ###########################
-SRC_PATH=$BASE_PATH/MsgServer/MSCommon
-BUILD_NAME=ThirdParybLibs
-build_3rdpartylibs $SRC_PATH $BUILD_NAME
-if [ $? -ne 0 ]
+if [ "no"x = "yes"x ]
 then
-    logerr "build_3rdpartylibs error..."
-    exit 1
+    SRC_PATH=$BASE_PATH/MsgServer/MSCommon
+    BUILD_NAME=ThirdParybLibs
+    build_3rdpartylibs $SRC_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_3rdpartylibs error..."
+        exit 1
+    fi
+else
+    logerr "building 3rdpartylibs not running..."
 fi
 
 ####################    building mscommonlib    ###########################
-SRC_PATH=$BASE_PATH/MsgServer
-BUILD_NAME=MsgCommonLib
-PREFIX_PATH=$BASE_PATH/MsgServer/MSCommonLib
-THIRDPARTY_LIB_PATH=$BASE_PATH/MsgServer/MSCommon/lib_linux_a
-build_mscommonlib $SRC_PATH $PREFIX_PATH $THIRDPARTY_LIB_PATH $BUILD_NAME
-if [ $? -ne 0 ]
+if [ "yes"x = "yes"x ]
 then
-    logerr "build_mscommonlib error..."
-    exit 1
+    SRC_PATH=$BASE_PATH/MsgServer
+    BUILD_NAME=MsgCommonLib
+    PREFIX_PATH=$BASE_PATH/MsgServer/MSCommonLib
+    THIRDPARTY_LIB_PATH=$BASE_PATH/MsgServer/MSCommon/lib_linux_a
+    build_mscommonlib $SRC_PATH $PREFIX_PATH $THIRDPARTY_LIB_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_mscommonlib error..."
+        exit 1
+    fi
+else
+    logerr "building mscommonlib not running..."
 fi
+
 
 ####################    building msgserverconnector    ###########################
-SRC_PATH=$BASE_PATH/MsgServerConnector
-BUILD_NAME=MsgServerConnector
-PREFIX_PATH=$SRC_PATH/connector
-build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
-if [ $? -ne 0 ]
+if [ "yes"x = "yes"x ]
 then
-    logerr "build_bin $BUILD_NAME error..."
-    exit 1
+    SRC_PATH=$BASE_PATH/MsgServerConnector
+    BUILD_NAME=MsgServerConnector
+    PREFIX_PATH=$SRC_PATH/connector
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_bz2 connector
+else
+    logerr "building msgserverconnector not running..."
 fi
-cd $SRC_PATH
-tar_tar_bz2 connector
 
 ####################    building msgserverdispatcher    ###########################
-SRC_PATH=$BASE_PATH/MsgServerDispatcher
-BUILD_NAME=MsgServerDispatcher
-PREFIX_PATH=$SRC_PATH/dispatcher
-build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
-if [ $? -ne 0 ]
+if [ "yes"x = "yes"x ]
 then
-    logerr "build_bin $BUILD_NAME error..."
-    exit 1
+    SRC_PATH=$BASE_PATH/MsgServerDispatcher
+    BUILD_NAME=MsgServerDispatcher
+    PREFIX_PATH=$SRC_PATH/dispatcher
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_bz2 dispatcher
+else
+    logerr "building msgserverdispatcher not running..."
 fi
-cd $SRC_PATH
-tar_tar_bz2 dispatcher
 
 ####################    building msgservermeeting    ###########################
-SRC_PATH=$BASE_PATH/MsgServerMeeting
-BUILD_NAME=MsgServerMeeting
-PREFIX_PATH=$SRC_PATH/meeting
-build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
-if [ $? -ne 0 ]
+if [ "yes"x = "yes"x ]
 then
-    logerr "build_bin $BUILD_NAME error..."
-    exit 1
+    SRC_PATH=$BASE_PATH/MsgServerMeeting
+    BUILD_NAME=MsgServerMeeting
+    PREFIX_PATH=$SRC_PATH/meeting
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_bz2 meeting
+else
+    logerr "building msgservermeeting not running..."
 fi
-cd $SRC_PATH
-tar_tar_bz2 meeting
 
 ####################    taring all.tar.bz2 to msgserver    ###########################
-loginfo "tar all the bin program..."
-sleep 1
-cd $CUR_PATH
-rm msgserver.tar.bz2
-rm -rf msgserver
-mkdir -p msgserver
-mv *.tar.bz2 msgserver
-cp *.sh msgserver
-rm msgserver/run_build.sh
-tar -jcvf msgserver.tar.bz2 msgserver
-loginfo "tar all the bin program ok..."
-sleep 1
+if [ "yes"x = "yes"x ]
+then
+    loginfo "tar all the bin program..."
+    sleep 1
+    cd $CUR_PATH
+    rm msgserver.tar.bz2
+    rm -rf msgserver
+    mkdir -p msgserver
+    mv *.tar.bz2 msgserver
+    cp *.sh msgserver
+    rm msgserver/run_build.sh
+    tar -jcvf msgserver.tar.bz2 msgserver
+    loginfo "tar all the bin program ok..."
+    sleep 1
 
-find $BASE_PATH -iname *.o | xargs rm
-loginfo "remove all the *.o ..."
+    find $BASE_PATH -iname *.o | xargs rm
+    loginfo "remove all the *.o ..."
+else
+    logerr "taring all.tar.bz2 not running..."
+fi
 
 end_log
 loginfo "build all bin successfully..."

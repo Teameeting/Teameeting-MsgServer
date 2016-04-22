@@ -11,7 +11,8 @@ AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/CRTListener/ \
 			 -I$(top_srcdir)/CRTTransfer/
 
-AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
+AM_CPPFLAGS+= -I$(top_srcdir)/../ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
@@ -38,6 +39,6 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/main.cpp
 
 MsgServerConnector_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-MsgServerConnector_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a
+MsgServerConnector_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf.a
 MsgServerConnector_LDADD+=-lpthread -lrt -ldl
 

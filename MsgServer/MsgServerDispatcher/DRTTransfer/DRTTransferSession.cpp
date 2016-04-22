@@ -104,24 +104,23 @@ bool DRTTransferSession::RefreshTime()
 
 void DRTTransferSession::KeepAlive()
 {
-    TRANSFERMSG t_msg;
-    CONNMSG c_msg;
-    t_msg._action = TRANSFERACTION::req;
-    t_msg._fmodule = TRANSFERMODULE::mmsgqueue;
-    t_msg._type = TRANSFERTYPE::conn;
-    t_msg._trans_seq = GenericTransSeq();
-    t_msg._trans_seq_ack = 0;
-    t_msg._valid = 1;
+#if DEF_PROTO
+    pms::TransferMsg t_msg;
+    pms::ConnMsg c_msg;
 
-    c_msg._tag = CONNTAG::co_keepalive;
-    c_msg._msg = "1";
-    c_msg._id = "";
-    c_msg._msgid = "";
-    c_msg._moduleid = "";
-    t_msg._content = c_msg.ToJson();
+    c_msg.set_tr_module(pms::ETransferModule::MMSGQUEUE);
+    c_msg.set_conn_tag(pms::EConnTag::TKEEPALIVE);
 
-    std::string s = t_msg.ToJson();
+    t_msg.set_type(pms::ETransferType::TCONN);
+    t_msg.set_flag(pms::ETransferFlag::FNOACK);
+    t_msg.set_priority(pms::ETransferPriority::PNORMAL);
+    t_msg.set_content(c_msg.SerializeAsString());
+
+    std::string s = t_msg.SerializeAsString();
     SendTransferData(s.c_str(), (int)s.length());
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
 void DRTTransferSession::TestConnection()
@@ -131,25 +130,23 @@ void DRTTransferSession::TestConnection()
 
 void DRTTransferSession::EstablishConnection()
 {
-    TRANSFERMSG t_msg;
-    CONNMSG c_msg;
-    t_msg._action = TRANSFERACTION::req;
-    t_msg._fmodule = TRANSFERMODULE::mmsgqueue;
-    t_msg._type = TRANSFERTYPE::conn;
-    t_msg._trans_seq = GenericTransSeq();
-    t_msg._trans_seq_ack = 0;
-    t_msg._valid = 1;
+#if DEF_PROTO
+    pms::TransferMsg t_msg;
+    pms::ConnMsg c_msg;
 
-    c_msg._tag = CONNTAG::co_msg;
-    c_msg._msg = "hello";
-    c_msg._id = "";
-    c_msg._msgid = "";
-    c_msg._moduleid = "";
+    c_msg.set_tr_module(pms::ETransferModule::MMSGQUEUE);
+    c_msg.set_conn_tag(pms::EConnTag::THI);
 
-    t_msg._content = c_msg.ToJson();
+    t_msg.set_type(pms::ETransferType::TCONN);
+    t_msg.set_flag(pms::ETransferFlag::FNEEDACK);
+    t_msg.set_priority(pms::ETransferPriority::PHIGH);
+    t_msg.set_content(c_msg.SerializeAsString());
 
-    std::string s = t_msg.ToJson();
+    std::string s = t_msg.SerializeAsString();
     SendTransferData(s.c_str(), (int)s.length());
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
 void DRTTransferSession::SendTransferData(const char* pData, int nLen)
@@ -180,174 +177,165 @@ void DRTTransferSession::OnTransfer(const std::string& str)
     RTTcp::SendTransferData(str.c_str(), (int)str.length());
 }
 
-void DRTTransferSession::OnMsgAck(TRANSFERMSG& tmsg)
+void DRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
 {
-    TRANSFERMSG ack_msg;
-    if (tmsg._action == TRANSFERACTION::req) {
-        ack_msg._action = TRANSFERACTION::req_ack;
-    } else {
-        ack_msg._action = TRANSFERACTION::resp_ack;
-    }
-    ack_msg._fmodule = TRANSFERMODULE::mmsgqueue;
-    ack_msg._type   = tmsg._type;
-    ack_msg._trans_seq = tmsg._trans_seq;
-    ack_msg._trans_seq_ack = tmsg._trans_seq + 1;
-    ack_msg._valid = tmsg._valid;
-    ack_msg._content = "";
-    const std::string s = ack_msg.ToJson();
+#if DEF_PROTO
+    LI("DRTTransferSession::OnMsgAck...\n");
+    pms::TransferMsg ack_msg;
+    ack_msg.set_type(tmsg.type());
+    ack_msg.set_flag(pms::ETransferFlag::FACK);
+    ack_msg.set_priority(tmsg.priority());
+
+    const std::string s = ack_msg.SerializeAsString();
     OnTransfer(s);
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
-void DRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypeConn(const std::string& str)
 {
-    CONNMSG c_msg;
-    std::string err;
-    c_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        //connid error
-        LE("%s parsed err:%s\n", __FUNCTION__, err.c_str());
-        return;
+#if DEF_PROTO
+    pms::ConnMsg c_msg;
+    if (!c_msg.ParseFromString(str)) {
+        LE("OnTypeConn c_msg ParseFromString error\n");
     }
-    if ((c_msg._tag == CONNTAG::co_msg) && c_msg._msg.compare("hello") == 0) {
+    // if ok
+    if ((c_msg.conn_tag() == pms::EConnTag::THI)) {
         // when other connect to ME:
         // send the transfersessionid and MsgQueueId to other
-        TRANSFERMSG t_msg;
+        pms::TransferMsg t_msg;
         std::string trid;
         GenericSessionId(trid);
         m_transferSessId = trid;
 
-        t_msg._action = TRANSFERACTION::req;
-        //this is for transfer
-        t_msg._fmodule = TRANSFERMODULE::mmsgqueue;
-        t_msg._type = TRANSFERTYPE::conn;
-        t_msg._trans_seq = GenericTransSeq();
-        t_msg._trans_seq_ack = 0;
-        t_msg._valid = 1;
-
-        c_msg._tag = CONNTAG::co_id;
-        c_msg._id = m_transferSessId;
+        c_msg.set_tr_module(pms::ETransferModule::MMSGQUEUE);
+        c_msg.set_conn_tag(pms::EConnTag::THELLO);
+        c_msg.set_transferid(m_transferSessId);
         //send self MsgQueue id to other
-        c_msg._moduleid = DRTConnManager::Instance().MsgQueueId();
+        c_msg.set_moduleid(DRTConnManager::Instance().MsgQueueId());
 
-        t_msg._content = c_msg.ToJson();
+        t_msg.set_type(pms::ETransferType::TCONN);
+        //this is for transfer
+        t_msg.set_flag(pms::ETransferFlag::FNEEDACK);
+        t_msg.set_priority(pms::ETransferPriority::PHIGH);
+        t_msg.set_content(c_msg.SerializeAsString());
 
-        std::string s = t_msg.ToJson();
+        std::string s = t_msg.SerializeAsString();
         SendTransferData(s.c_str(), (int)s.length());
-    } else if ((c_msg._tag == CONNTAG::co_id) && c_msg._msg.compare("hello") == 0) {
+    } else if ((c_msg.conn_tag() == pms::EConnTag::THELLO)) {
         // when ME connector to other:
         // store other's transfersessionid and other's moduleId
-        if (c_msg._id.length()>0) {
-            m_transferSessId = c_msg._id;
+        if (c_msg.transferid().length()>0) {
+            m_transferSessId = c_msg.transferid();
             {
                 DRTConnManager::ModuleInfo* pmi = new DRTConnManager::ModuleInfo();
                 if (pmi) {
                     pmi->flag = 1;
-                    pmi->othModuleType = fmodule;
+                    pmi->othModuleType = c_msg.tr_module();
                     pmi->othModuleId = m_transferSessId;
                     pmi->pModule = this;
                     //bind session and transfer id
                     DRTConnManager::Instance().AddModuleInfo(pmi, m_transferSessId);
                     //store which moudle connect to this connector
                     //c_msg._moduleid:store other's module id
-                    LI("store other connector moduleid:%s, transfersessionid:%s\n", c_msg._moduleid.c_str(), m_transferSessId.c_str());
-                    DRTConnManager::Instance().AddTypeModuleSession(fmodule, c_msg._moduleid, m_transferSessId);
+                    LI("store other connector moduleid:%s, transfersessionid:%s\n", c_msg.moduleid().c_str(), m_transferSessId.c_str());
+                    DRTConnManager::Instance().AddTypeModuleSession(c_msg.tr_module(), c_msg.moduleid(), m_transferSessId);
                 } else {
                     LE("new ModuleInfo error!!!\n");
                 }
             }
 
-            TRANSFERMSG t_msg;
+            pms::TransferMsg t_msg;
 
-            t_msg._action = TRANSFERACTION::req;
-            t_msg._fmodule = TRANSFERMODULE::mmsgqueue;
-            t_msg._type = TRANSFERTYPE::conn;
-            t_msg._trans_seq = GenericTransSeq();
-            t_msg._trans_seq_ack = 0;
-            t_msg._valid = 1;
-
-            c_msg._tag = CONNTAG::co_msgid;
-            c_msg._id = m_transferSessId;
-            c_msg._msgid = "ok";
+            c_msg.set_tr_module(pms::ETransferModule::MMSGQUEUE);
+            c_msg.set_conn_tag(pms::EConnTag::THELLOHI);
+            c_msg.set_transferid(m_transferSessId);
             //send self MsgQueue id to other
-            c_msg._moduleid = DRTConnManager::Instance().MsgQueueId();
+            c_msg.set_moduleid(DRTConnManager::Instance().MsgQueueId());
 
-            t_msg._content = c_msg.ToJson();
+            t_msg.set_type(pms::ETransferType::TCONN);
+            //this is for transfer
+            t_msg.set_flag(pms::ETransferFlag::FNEEDACK);
+            t_msg.set_priority(pms::ETransferPriority::PHIGH);
+            t_msg.set_content(c_msg.SerializeAsString());
 
-            std::string s = t_msg.ToJson();
+            std::string s = t_msg.SerializeAsString();
             SendTransferData(s.c_str(), (int)s.length());
         } else {
-            LE("Connection id:%s error!!!\n", c_msg._id.c_str());
+            LE("Connection id:%s error!!!\n", c_msg.transferid().c_str());
         }
-    } else if ((c_msg._tag == CONNTAG::co_msgid) && c_msg._msgid.compare("ok") == 0) {
+    } else if ((c_msg.conn_tag() == pms::EConnTag::THELLOHI)) {
         // when other connect to ME:
-        if (m_transferSessId.compare(c_msg._id) == 0) {
+        if (m_transferSessId.compare(c_msg.transferid()) == 0) {
             DRTConnManager::ModuleInfo* pmi = new DRTConnManager::ModuleInfo();
             if (pmi) {
                 pmi->flag = 1;
-                pmi->othModuleType = fmodule;
+                pmi->othModuleType = c_msg.tr_module();
                 pmi->othModuleId = m_transferSessId;
                 pmi->pModule = this;
                 //bind session and transfer id
                 DRTConnManager::Instance().AddModuleInfo(pmi, m_transferSessId);
                 //store which moudle connect to this connector
                 //store other module id
-                LI("store moduleid:%s, transfersessid:%s\n", c_msg._moduleid.c_str(), m_transferSessId.c_str());
-                DRTConnManager::Instance().AddTypeModuleSession(fmodule, c_msg._moduleid, m_transferSessId);
+                LI("store moduleid:%s, transfersessid:%s\n", c_msg.moduleid().c_str(), m_transferSessId.c_str());
+                DRTConnManager::Instance().AddTypeModuleSession(c_msg.tr_module(), c_msg.moduleid(), m_transferSessId);
             } else {
                 LE("new ModuleInfo error!!!!\n");
             }
         }
 
-    }  else if (c_msg._tag == CONNTAG::co_keepalive) {
+    }  else if (c_msg.conn_tag() == pms::EConnTag::TKEEPALIVE) {
         RTTcp::UpdateTimer();
     } else {
         LE("%s invalid msg tag\n", __FUNCTION__);
     }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
-void DRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypeTrans(const std::string& str)
 {
     LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
 }
 
-void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypeQueue(const std::string& str)
 {
-    TOJSONUSER auser;//all user
-    QUEUEMSG qmsg;
+#if DEF_PROTO
+    pms::ToUser auser;//all user
+    pms::RelayMsg rmsg;
+    if (!rmsg.ParseFromString(str)) {
+        LE("r_msg.ParseFromString error\n");
+        return;
+    }
     {
         //get auser
-        std::string err;
-        qmsg.GetMsg(str, err);
-        if (err.length()>0) {
-            LE("%s QUEUEMSG err:%s\n", __FUNCTION__, err.c_str());
-            return;
-        }
-        auser.GetMsg(qmsg._touser, err);
-        if (err.length()>0) {
-            LE("%s TOJSONUSER err:%s\n", __FUNCTION__, err.c_str());
-            return;
-        }
+        //if (!auser.ParseFromString(rmsg.touser())) {
+        //    LE("auser.ParseFromString error\n");
+        //    return;
+        //}
+        auser = rmsg.touser();
     }
     LI("Queue msg:%s\n", str.c_str());
     bool needDispatch = false;
     bool needPush = false;
-    TOJSONUSER duser;//dispatcher
-    TOJSONUSER allduser;
-    ////TOJSONUSER puser;//pusher
+    pms::ToUser *pduser = new pms::ToUser;//dispatcher
+    pms::ToUser *pallduser = new pms::ToUser;
+    pms::ToUser puser;//pusher
     DRTConnManager::UserConnectorMaps connUserId;
     {
         //check user online or offline
-        std::list<std::string>::iterator it = auser._us.begin();
-        for (; it!=auser._us.end(); it++) {
-            if (DRTConnManager::Instance().IsMemberInOnline((*it))) {
+        for (int i=0; i<auser.users_size(); ++i) {
+            if (DRTConnManager::Instance().IsMemberInOnline((auser.users(i)))) {
                 std::string cid("");
-                DRTConnManager::Instance().GetUserConnectorId((*it), cid);
-                //printf("dispatch userid:%s, connectorid:%s\n", (*it).c_str(), cid.c_str());
-                connUserId.insert(make_pair(cid, (*it)));
-                allduser._us.push_back(*it);
+                DRTConnManager::Instance().GetUserConnectorId((auser.users(i)), cid);
+                printf("dispatch userid:%s, connectorid:%s\n", (auser.users(i)).c_str(), cid.c_str());
+                connUserId.insert(make_pair(cid, (auser.users(i))));
+                pallduser->add_users(auser.users(i));
                 needDispatch = true;
             } else {
-                ////puser._us.push_back((*it));
+                ////puser.add_users(auser.users(i));
                 needPush = true;
             }
         }
@@ -362,15 +350,17 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
                 }
                 std::string sess = connUserId.begin(i)->first;
                 for (auto& x:connUserId) {
-                    duser._us.push_back(x.second);
+                    pduser->add_users(x.second);
                 }
-                DISPATCHMSG dmsg;
-                dmsg._flag = 0;
-                dmsg._touser = duser.ToJson();
-                dmsg._connector = connUserId.begin(i)->first;//which connector comes from
-                dmsg._content = qmsg._content;
-                std::string sd = dmsg.ToJson();
-                LI("OnTypeQueue dmsg._touser:%s, dmsg._connector.c_str():%s\n", dmsg._touser.c_str(), dmsg._connector.c_str());
+                pms::RelayMsg dmsg;
+                dmsg.set_svr_cmds(rmsg.svr_cmds());
+                dmsg.set_tr_module(rmsg.tr_module());
+                dmsg.set_allocated_touser(pduser);
+                dmsg.set_content(rmsg.content());
+                dmsg.set_connector(connUserId.begin(i)->first);//which connector comes from
+
+                std::string sd = dmsg.SerializeAsString();
+                LI("OnTypeQueue dmsg._dmsg._connector.c_str():%s\n", dmsg.connector().c_str());
                 m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
             }
         }
@@ -378,54 +368,62 @@ void DRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& 
     {
         //if offline, push to offline msgqueue
         if (needPush) {
-            PUSHMSG pmsg;
-            pmsg._flag = 0;
-            ////pmsg._touser = puser.ToJson();
-            pmsg._touser = allduser.ToJson();
-            pmsg._connector = qmsg._connector;//which connector comes from
-            pmsg._content = qmsg._content;
+            pms::RelayMsg pmsg;
+            pmsg.set_svr_cmds(rmsg.svr_cmds());
+            pmsg.set_tr_module(rmsg.tr_module());
+            pmsg.set_content(rmsg.content());
+            pmsg.set_connector(rmsg.connector());//which connector comes from
+            pmsg.set_allocated_touser(pallduser);
 
-            std::string sp = pmsg.ToJson();
-            LI("OnTypeQueue pmsg._touser:%s, pmsg._connector.c_str():%s\n", pmsg._touser.c_str(), pmsg._connector.c_str());
+            std::string sp = pmsg.SerializeAsString();
+            LI("OnTypeQueue pmsg._pmsg._connector.c_str():%s\n", pmsg.connector().c_str());
             m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
         }
     }
+#else
+    LI("not define DEF_PROTO\n");
+#endif
 }
 
-void DRTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypeDispatch(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
 
-void DRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypePush(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
 
-void DRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypeTLogin(const std::string& str)
 {
-    TRANSMSG t_msg;
-    std::string err;
-    t_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
-        Assert(false);
-        return;
+#if DEF_PROTO
+    pms::RelayMsg rmsg;
+    if (!rmsg.ParseFromString(str)) {
+        LE("OnTypeLogin rmsg.ParseFromString error\n");
     }
-    DRTConnManager::Instance().OnTLogin(t_msg._touser, t_msg._content, t_msg._connector);
+    pms::ToUser to = rmsg.touser();
+    //if (!to.ParseFromString(rmsg.touser())) {
+    //    LE("OnTypeLogin to.ParseFromString error\n");
+    //}
+    DRTConnManager::Instance().OnTLogin(to.users(0), rmsg.content(), rmsg.connector());
+#else
+    LI("not define DEF_PROTO\n");
+#endif
 }
 
-void DRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
+void DRTTransferSession::OnTypeTLogout(const std::string& str)
 {
-    TRANSMSG t_msg;
-    std::string err;
-    t_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
-        Assert(false);
-        return;
+#if DEF_PROTO
+    pms::RelayMsg rmsg;
+    if (!rmsg.ParseFromString(str)) {
+        LE("OnTypeLogout rmsg.ParseFromString error\n");
     }
-    DRTConnManager::Instance().OnTLogout(t_msg._touser, t_msg._content, t_msg._connector);
+    pms::ToUser to = rmsg.touser();
+    DRTConnManager::Instance().OnTLogout(to.users(0), rmsg.content(), rmsg.connector());
+#else
+    LI("not define DEF_PROTO\n");
+#endif
 }
 
 

@@ -10,7 +10,7 @@
 #include "RTJson.hpp"
 
 RTHttpClient::RTHttpClient()
-: mCurlClient("http://192.168.7.49:8055")
+: mCurlClient("http://192.168.7.218:8055")
 , mUserid("")
 , mAuth("")
 , mUname("")
@@ -34,11 +34,11 @@ int RTHttpClient::UserInit(const std::string& uid)
         printf("get response body userinit error:%s\n", err.c_str());
         return -1;
     }
-    //printf("bodyInfo userinit userid:%s, auth:%s, uname:%s\n"
-    //       , respUserInit._information._userid.c_str()
-    //       , respUserInit._authorization.c_str()
-    //       , respUserInit._information._uname.c_str());
-    
+    printf("bodyInfo userinit userid:%s, auth:%s, uname:%s\n"
+           , respUserInit._information._userid.c_str()
+           , respUserInit._authorization.c_str()
+           , respUserInit._information._uname.c_str());
+
     mUserid = respUserInit._information._userid;
     mAuth = respUserInit._authorization;
     mUname = respUserInit._information._uname;
@@ -50,7 +50,7 @@ int RTHttpClient::ApplyRoom()
 {
     std::string resp;
     mCurlClient.RTApplyRoom(mAuth, "msgtest", "0", "0", "1", "test msg", resp);
-    //printf("RTHttpClient::ApplyRoom auth:%s, resp:%s\n", mAuth.c_str(), resp.c_str());
+    printf("RTHttpClient::ApplyRoom auth:%s, resp:%s\n", mAuth.c_str(), resp.c_str());
     HttpRespApplyRoom respApplyRoom;
     std::string err("");
     respApplyRoom.GetMsg(resp, err);
@@ -58,14 +58,14 @@ int RTHttpClient::ApplyRoom()
         printf("get response body applyroom err:%s\n", err.c_str());
         return -1;
     }
-    //printf("respbody applyroom meetingid:%lld, aynrtcid:%lld, meetname:%s\n"
-    //       , respApplyRoom._meetingInfo._meetingid
-    //       , respApplyRoom._meetingInfo._anyrtcid
-    //       , respApplyRoom._meetingInfo._meetname.c_str());
+    printf("respbody applyroom meetingid:%ld, aynrtcid:%ld, meetname:%s\n"
+           , respApplyRoom._meetingInfo._meetingid
+           , respApplyRoom._meetingInfo._anyrtcid
+           , respApplyRoom._meetingInfo._meetname.c_str());
     char mid[16] = {0};
-    sprintf(mid, "%lld", respApplyRoom._meetingInfo._meetingid);
+    sprintf(mid, "%ld", respApplyRoom._meetingInfo._meetingid);
     mRoomSet.insert(mid);
-    //printf("RTHttpClient::RoomSet mid:%s\n", (*(mRoomSet.begin())).c_str());
+    printf("RTHttpClient::RoomSet mid:%s\n", (*(mRoomSet.begin())).c_str());
     FILE* fRoomIds = fopen("test_roomids", "a+");
     if (fRoomIds==NULL) {
         return -1;

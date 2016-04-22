@@ -15,7 +15,7 @@
 
 #define TIMEOUT_TS (60*1000)
 
-MRTTransferSession::MRTTransferSession(TRANSFERMODULE module)
+MRTTransferSession::MRTTransferSession(pms::ETransferModule module)
 : RTTcp()
 , RTJSBuffer()
 , RTTransfer()
@@ -106,24 +106,23 @@ bool MRTTransferSession::RefreshTime()
 
 void MRTTransferSession::KeepAlive()
 {
-    TRANSFERMSG t_msg;
-    CONNMSG c_msg;
-    t_msg._action = TRANSFERACTION::req;
-    t_msg._fmodule = TRANSFERMODULE::mmeeting;
-    t_msg._type = TRANSFERTYPE::conn;
-    t_msg._trans_seq = GenericTransSeq();
-    t_msg._trans_seq_ack = 0;
-    t_msg._valid = 1;
+#if DEF_PROTO
+    pms::TransferMsg t_msg;
+    pms::ConnMsg c_msg;
 
-    c_msg._tag = CONNTAG::co_keepalive;
-    c_msg._msg = "1";
-    c_msg._id = "";
-    c_msg._msgid = "";
-    c_msg._moduleid = "";
-    t_msg._content = c_msg.ToJson();
+    c_msg.set_tr_module(pms::ETransferModule::MMEETING);
+    c_msg.set_conn_tag(pms::EConnTag::TKEEPALIVE);
 
-    std::string s = t_msg.ToJson();
+    t_msg.set_type(pms::ETransferType::TCONN);
+    t_msg.set_flag(pms::ETransferFlag::FNOACK);
+    t_msg.set_priority(pms::ETransferPriority::PNORMAL);
+    t_msg.set_content(c_msg.SerializeAsString());
+
+    std::string s = t_msg.SerializeAsString();
     SendTransferData(s.c_str(), (int)s.length());
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
 
@@ -134,25 +133,23 @@ void MRTTransferSession::TestConnection()
 
 void MRTTransferSession::EstablishConnection()
 {
-    TRANSFERMSG t_msg;
-    CONNMSG c_msg;
-    t_msg._action = TRANSFERACTION::req;
-    t_msg._fmodule = TRANSFERMODULE::mmeeting;
-    t_msg._type = TRANSFERTYPE::conn;
-    t_msg._trans_seq = GenericTransSeq();
-    t_msg._trans_seq_ack = 0;
-    t_msg._valid = 1;
+#if DEF_PROTO
+    pms::TransferMsg t_msg;
+    pms::ConnMsg c_msg;
 
-    c_msg._tag = CONNTAG::co_msg;
-    c_msg._msg = "hello";
-    c_msg._id = "";
-    c_msg._msgid = "";
-    c_msg._moduleid = "";
+    c_msg.set_tr_module(pms::ETransferModule::MMEETING);
+    c_msg.set_conn_tag(pms::EConnTag::THI);
 
-    t_msg._content = c_msg.ToJson();
+    t_msg.set_type(pms::ETransferType::TCONN);
+    t_msg.set_flag(pms::ETransferFlag::FNEEDACK);
+    t_msg.set_priority(pms::ETransferPriority::PHIGH);
+    t_msg.set_content(c_msg.SerializeAsString());
 
-    std::string s = t_msg.ToJson();
+    std::string s = t_msg.SerializeAsString();
     SendTransferData(s.c_str(), (int)s.length());
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
 void MRTTransferSession::SendTransferData(const char* pData, int nLen)
@@ -182,111 +179,100 @@ void MRTTransferSession::OnTransfer(const std::string& str)
     RTTcp::SendTransferData(str.c_str(), (int)str.length());
 }
 
-void MRTTransferSession::OnMsgAck(TRANSFERMSG& tmsg)
+void MRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
 {
-    TRANSFERMSG ack_msg;
-    if (tmsg._action == TRANSFERACTION::req) {
-        ack_msg._action = TRANSFERACTION::req_ack;
-    } else {
-        ack_msg._action = TRANSFERACTION::resp_ack;
-    }
-    ack_msg._fmodule = TRANSFERMODULE::mmeeting;
-    ack_msg._type   = tmsg._type;
-    ack_msg._trans_seq = tmsg._trans_seq;
-    ack_msg._trans_seq_ack = tmsg._trans_seq + 1;
-    ack_msg._valid = tmsg._valid;
-    ack_msg._content = "";
-    const std::string s = ack_msg.ToJson();
+#if DEF_PROTO
+    LI("MRTTransferSession::OnMsgAck...\n");
+    pms::TransferMsg ack_msg;
+    ack_msg.set_type(tmsg.type());
+    ack_msg.set_flag(pms::ETransferFlag::FACK);
+    ack_msg.set_priority(tmsg.priority());
+
+    const std::string s = ack_msg.SerializeAsString();
     OnTransfer(s);
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
-void MRTTransferSession::OnTypeConn(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypeConn(const std::string& str)
 {
-    CONNMSG c_msg;
-    std::string err;
-    c_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        //connid error
-        LE("%s invalid params error\n");
-        return;
+#if DEF_PROTO
+    pms::ConnMsg c_msg;
+    if (!c_msg.ParseFromString(str)) {
+        LE("OnTypeConn c_msg.ParseFromString error\n");
     }
-    if ((c_msg._tag == CONNTAG::co_id) && c_msg._msg.compare("hello") == 0) {
+    // if ok
+    if ((c_msg.conn_tag() == pms::EConnTag::THELLO)) {
         // when ME connector to other:
-        if (c_msg._id.length()>0) {
-            m_transferSessId = c_msg._id;
+        if (c_msg.transferid().length()>0) {
+            m_transferSessId = c_msg.transferid();
             {
                 MRTConnManager::ModuleInfo* pmi = new MRTConnManager::ModuleInfo();
                 if (pmi) {
                 pmi->flag = 1;
-                pmi->othModuleType = fmodule;
+                pmi->othModuleType = c_msg.tr_module();
                 pmi->othModuleId = m_transferSessId;
                 pmi->pModule = this;
                 //bind session and transfer id
                 MRTConnManager::Instance().AddModuleInfo(pmi, m_transferSessId);
                 //store which moudle connect to this connector
-                MRTConnManager::Instance().AddTypeModuleSession(fmodule, c_msg._moduleid, m_transferSessId);
-                LI("store other moduleid:%s, transfersessionid:%s\n", c_msg._moduleid.c_str(), m_transferSessId.c_str());
+                MRTConnManager::Instance().AddTypeModuleSession(c_msg.tr_module(), c_msg.moduleid(), m_transferSessId);
+                LI("store other moduleid:%s, transfersessionid:%s\n", c_msg.moduleid().c_str(), m_transferSessId.c_str());
                 } else {
                     LE("new ModuleInfo error\n");
                 }
             }
-            TRANSFERMSG t_msg;
+            pms::TransferMsg t_msg;
 
-            t_msg._action = TRANSFERACTION::req;
-            t_msg._fmodule = TRANSFERMODULE::mmeeting;
-            t_msg._type = TRANSFERTYPE::conn;
-            t_msg._trans_seq = GenericTransSeq();
-            t_msg._trans_seq_ack = 0;
-            t_msg._valid = 1;
-
-            c_msg._tag = CONNTAG::co_msgid;
-            c_msg._id = m_transferSessId;
-            c_msg._msgid = "ok";
+            c_msg.set_tr_module(pms::ETransferModule::MMEETING);
+            c_msg.set_conn_tag(pms::EConnTag::THELLOHI);
+            c_msg.set_transferid(m_transferSessId);
             //send self module id to other
-            c_msg._moduleid = MRTConnManager::Instance().MeetingId();
+            c_msg.set_moduleid(MRTConnManager::Instance().MeetingId());
 
-            t_msg._content = c_msg.ToJson();
+            t_msg.set_type(pms::ETransferType::TCONN);
+            t_msg.set_flag(pms::ETransferFlag::FNEEDACK);
+            t_msg.set_priority(pms::ETransferPriority::PHIGH);
+            t_msg.set_content(c_msg.SerializeAsString());
 
-            std::string s = t_msg.ToJson();
+            std::string s = t_msg.SerializeAsString();
             SendTransferData(s.c_str(), (int)s.length());
 
         } else {
-            LE("Connection id:%s error!!!\n", c_msg._id.c_str());
+            LE("Connection id:%s error!!!\n", c_msg.transferid().c_str());
         }
     }
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
-void MRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypeTrans(const std::string& str)
 {
-    TRANSMSG t_msg;
-    std::string err;
-    t_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
-        Assert(false);
-        return;
+#if DEF_PROTO
+    pms::RelayMsg r_msg;
+    if (!r_msg.ParseFromString(str)) {
+        LE("OnTypeTrans r_msg.ParseFromString error\n");
     }
 
-    MEETMSG m_mmmsg;
-    err = "";
-    m_mmmsg.GetMsg(t_msg._content.c_str(), err);
-    if (err.length() > 0) {
-        LE("%s MEETMSG error:%s\n", __FUNCTION__, err.c_str());
-        Assert(false);
-        return;
+    pms::MeetMsg m_msg;
+    if (!m_msg.ParseFromString(r_msg.content())) {
+        LE("OnTypeTrans m_msg.ParseFromString error\n");
     }
-    switch (m_mmmsg._cmd) {
-        case MEETCMD::enter:
-        case MEETCMD::leave:
+    switch (m_msg.msg_tag()) {
+        case pms::EMsgTag::TENTER:
+        case pms::EMsgTag::TLEAVE:
         {
-            MRTRoomManager::Instance().HandleOptRoom(t_msg, m_mmmsg);
+            MRTRoomManager::Instance().HandleOptRoom(r_msg, m_msg);
         }
             break;
-        case MEETCMD::dcomm:
+        case pms::EMsgTag::TCHAT:
+        case pms::EMsgTag::TNOTIFY:
         {
             //handle msgs
             std::string tos, res;
-            MRTRoomManager::Instance().HandleDcommRoom(t_msg, m_mmmsg);
+            MRTRoomManager::Instance().HandleDcommRoom(r_msg, m_msg);
         }
             break;
         default:
@@ -296,48 +282,51 @@ void MRTTransferSession::OnTypeTrans(TRANSFERMODULE fmodule, const std::string& 
         }
             break;
     }
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
-void MRTTransferSession::OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypeQueue(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
 
-void MRTTransferSession::OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypeDispatch(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
 
-void MRTTransferSession::OnTypePush(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypePush(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
 
-void MRTTransferSession::OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypeTLogin(const std::string& str)
 {
-    TRANSMSG t_msg;
-    std::string err;
-    t_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
-        Assert(false);
-        return;
+#if DEF_PROTO
+    pms::RelayMsg r_msg;
+    if (!r_msg.ParseFromString(str)) {
+        LE("OnTypeTLogin r_msg.ParseFromString error\n");
     }
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
-void MRTTransferSession::OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str)
+void MRTTransferSession::OnTypeTLogout(const std::string& str)
 {
-    //the users connection lost
-    TRANSMSG t_msg;
-    std::string err;
-    t_msg.GetMsg(str, err);
-    if (err.length() > 0) {
-        LE("%s TRANSMSG error:%s\n", __FUNCTION__, err.c_str());
-        Assert(false);
-        return;
+#if DEF_PROTO
+    pms::RelayMsg r_msg;
+    if (!r_msg.ParseFromString(str)) {
+        LE("OnTypeTLogout r_msg.ParseFromString error\n");
     }
-    OnConnectionLostNotify(t_msg._touser, t_msg._content, t_msg._connector);
+    pms::ToUser to = r_msg.touser();
+    OnConnectionLostNotify(to.users(0), r_msg.content(), r_msg.connector());
     return;
+#else
+    LE("not define DEF_PROTO\n")
+#endif
 }
 
 /**

@@ -16,12 +16,13 @@
 #define KRUNTHREAD 3
 #define KRUNAPPLYROOM 4
 #define KRUNLOGINOUT 5
+#define KRUNSENDMSG 6
 
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
     rtc::LogMessage::LogToDebug(rtc::INFO);
     RTConnClientManager manager;
-    manager.RunTest(KRUNLOGINOUT);
+    manager.RunTest(KRUN);
     LOG(INFO) << "bye bye client...";
     return 0;
 }

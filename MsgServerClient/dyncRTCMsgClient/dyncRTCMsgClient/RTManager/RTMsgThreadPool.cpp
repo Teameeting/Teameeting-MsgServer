@@ -17,6 +17,7 @@ const int kMessageIdOnce = 2;
 const int kMessageIdThread = 3;
 const int kMessageIdApplyRoom = 4;
 const int kMessageIdLoginout = 5;
+const int kMessageIdSendMsg = 6;
 
 const int kDelayTime = 1000;
 
@@ -32,6 +33,7 @@ RTMsgThread::~RTMsgThread()
 
 }
 
+// this OnMessage belong to RTMsgThread
 void RTMsgThread::OnMessage(rtc::Message* msg)
 {
     printf("RTMsgThread::OnMessage message_id:%u, thread name:%s\n", msg->message_id, this->name().c_str());
@@ -46,12 +48,14 @@ void RTMsgThread::OnMessage(rtc::Message* msg)
         MessageApplyRoom(md->data());
     } else if (msg->message_id == kMessageIdLoginout) {
         MessageLoginout(md->data());
+    } else if (msg->message_id == kMessageIdSendMsg) {
+        MessageSendMsg(md->data());
     }
 }
 
 void RTMsgThread::MessageRun(RoomInfo& info)
 {
-    std::string rid = "400000000807";
+    std::string rid = "4008696859";
     RTMsgRoom room(1, rid);
     room.RunRun();
     RTMsgThreadManager::Instance()->NotifyStopThread();
@@ -87,39 +91,21 @@ void RTMsgThread::MessageLoginout(RoomInfo& info)
     RTMsgThreadManager::Instance()->NotifyStopThread();
 }
 
+void RTMsgThread::MessageSendMsg(RoomInfo& info)
+{
+    RTMsgRoom room(info._roomNum, info._roomId);
+    room.RunSendMsg();
+    RTMsgThreadManager::Instance()->NotifyStopThread();
+}
+
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////
 
+// this OnMessage belong to RTMsgThreadManager
 void RTMsgThreadManager::OnMessage(rtc::Message *msg)
 {
-    if (msg->message_id == kMessageIdStop) {
-        this->Stop();
-        mIsRun = false;
-    }
-#if 0
-    if (msg->message_id == kMessageIdRun) {
-        AddThread(1);
-        RunThread(kMessageIdRun);
-        PostDelayed(kDelayTime, this, kMessageIdStop);
-    } else if (msg->message_id == kMessageIdOnce) {
-        AddThread(1);
-        RunThread(kMessageIdOnce);
-        PostDelayed(kDelayTime, this, kMessageIdStop);
-    } else if (msg->message_id == kMessageIdThread) {
-        AddThread(kTestNumber);
-        RunThread(kMessageIdThread);
-        PostDelayed(kDelayTime, this, kMessageIdStop);
-    } else if (msg->message_id == kMessageIdApplyRoom) {
-        AddThread(1);
-        RunThread(kMessageIdApplyRoom);
-        PostDelayed(kDelayTime, this, kMessageIdStop);
-    } else if (msg->message_id == kMessageIdLoginout) {
-        AddThread(kTestNumber);
-        RunThread(kMessageIdLoginout);
-        PostDelayed(kDelayTime, this, kMessageIdStop);
-    }
-#endif
+    printf("RTMsgThreadManager::OnMessage not implement...\n");
 }
 
 void RTMsgThreadManager::AddThread(int num)
@@ -150,16 +136,17 @@ void RTMsgThreadManager::DelThread()
 
 void RTMsgThreadManager::RunThread(int flag)
 {
+
     int i=0;
     GetRoomIds();
     if (mRoomIds.size()==0) {
-        printf("RunThread mRoomIds.size is 0, so return\n");
-        return;
+        std::string rid = "400000000807";
+        RTMsgRoom room(1, rid);
+        room.RunOnce();
+        GetRoomIds();
     }
     //mRoomIds.push_back("400000000802");
     for (auto& x : mThreadPoolSet) {
-        //x->PostDelayed(kDelay, x);
-        //x->PostDelayed(kDelay, x, 100);
         std::ostringstream oss("");
         oss << i;
         RoomInfo info;
@@ -167,6 +154,7 @@ void RTMsgThreadManager::RunThread(int flag)
         info._roomNum = i;
         ++i;
         MsgData md(info);
+        // these Post to Thread OnMessage, not ThreadManager OnMessage
         if (flag==kMessageIdRun) {
             x->Post(x, kMessageIdRun, &md);
         } else if (flag==kMessageIdOnce) {
@@ -177,22 +165,19 @@ void RTMsgThreadManager::RunThread(int flag)
             x->Post(x, kMessageIdApplyRoom, &md);
         } else if (flag==kMessageIdLoginout) {
             x->Post(x, kMessageIdLoginout, &md);
+        } else if (flag==kMessageIdSendMsg) {
+             x->Post(x, kMessageIdSendMsg, &md);
         }
         rtc::Thread::SleepMs(100);
     }
     rtc::Thread::SleepMs(1000);
 }
 
-void RTMsgThreadManager::RunThread(int flag, RoomInfo &info)
-{
-    
-}
-
-void RTMsgThreadManager::RunTest(int flag)
+void RTMsgThreadManager::RunForTest(int flag)
 {
     mIsRun = true;
     this->SetName("Thread--", this);
-    this->Start();
+    this->Start(); // Start here
     if (flag == kMessageIdRun) {
         AddThread(1);
         RunThread(kMessageIdRun);
@@ -209,11 +194,16 @@ void RTMsgThreadManager::RunTest(int flag)
     } else if (flag == kMessageIdLoginout) {
         AddThread(kTestNumber);
         RunThread(kMessageIdLoginout);
+    } else if (flag == kMessageIdSendMsg) {
+        AddThread(1);
+        RunThread(kMessageIdSendMsg);
     }
     while (mIsRun) {
         rtc::Thread::SleepMs(1000);
     }
     DelThread();
+    printf("RTMsgThreadManager::RunForTest thread stop...\n");
+    this->Stop(); // Stop here
 }
 
 void RTMsgThreadManager::GetRoomIds()
@@ -243,5 +233,4 @@ void RTMsgThreadManager::ShowRoomIds()
 void RTMsgThreadManager::NotifyStopThread()
 {
     mIsRun = false;
-    this->Stop();
 }

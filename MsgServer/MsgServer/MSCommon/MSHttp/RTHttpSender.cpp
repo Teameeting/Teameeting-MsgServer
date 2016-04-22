@@ -19,13 +19,13 @@ RTHttpSender::RTHttpSender(void)
 	m_pBuffer = new char[m_nBufLen];
 }
 
-RTHttpSender::RTHttpSender(int cmd, TRANSMSG& tmsg, MEETMSG& msg)
+RTHttpSender::RTHttpSender(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& msg)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)
 , m_method(HTTP_GET)
 , m_cmd(cmd)
-, m_transmsg(tmsg)
+, m_transmsg(rmsg)
 , m_meetmsg(msg)
 {
     SetTimer(HTTP_SENDER_TIMEOUT);
@@ -77,7 +77,7 @@ void RTHttpSender::OnRecvData(const char*data, int size)
             m_pBuffer = temp;
             m_nBufLen = newLen;
         }
-        
+
         memcpy(m_pBuffer + m_nBufOffset, data, size);
         m_nBufOffset += size;
 	}

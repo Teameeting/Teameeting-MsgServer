@@ -4,13 +4,18 @@
 #include "RTConnHttp.h"
 #include "RTMessage.h"
 
+#define DEF_PROTO 1
+#include "MsgServer/MSCommon/MSProtocol/proto/msg_type.pb.h"
+#include "MsgServer/MSCommon/MSProtocol/proto/meet_msg.pb.h"
+#include "MsgServer/MSCommon/MSProtocol/proto/sys_msg.pb.h"
+
 class RTHttpSender
 	: public RTTcp
 	, public RTConnHttp
 {
 public:
 	RTHttpSender(void);
-    RTHttpSender(int cmd, TRANSMSG& tmsg, MEETMSG& msg);
+    RTHttpSender(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& msg);
 	virtual ~RTHttpSender(void);
 
 public:
@@ -18,9 +23,9 @@ public:
     void SendRequest(const char* pData, int nLen);
     http_method&  GetMethod() { return m_method; }
     int           GetCmd() { return m_cmd; }
-    TRANSMSG&     GetTransmsg() { return m_transmsg; }
-    MEETMSG&      GetMeetmsg() { return m_meetmsg; }
-    
+    pms::RelayMsg&     GetTransmsg() { return m_transmsg; }
+    pms::MeetMsg&      GetMeetmsg() { return m_meetmsg; }
+
 public:
 	//* For RCTcp
 	virtual void OnRecvData(const char*data, int size);
@@ -39,8 +44,8 @@ private:
 	int				m_nBufOffset;
     http_method     m_method;
     int             m_cmd;
-    TRANSMSG        m_transmsg;
-    MEETMSG         m_meetmsg;
+    pms::RelayMsg        m_transmsg;
+    pms::MeetMsg         m_meetmsg;
 };
 
 #endif	// __MsgServerMeeting_MRT_HTTP_SENDER_H__

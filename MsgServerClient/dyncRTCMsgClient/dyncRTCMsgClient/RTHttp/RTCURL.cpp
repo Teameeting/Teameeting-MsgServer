@@ -7,6 +7,7 @@
 //
 
 #include "RTCURL.hpp"
+#include "rtcmsgs/proto/meet_msg.pb.h"
 
 RTCURL::RTCURL()
 {
@@ -50,7 +51,7 @@ void RTCURL::RTCurlPostUserInit(const std::string& strPath, const std::string& s
     } else {
         strResp = "";
     }
-}               
+}
 
 size_t RTCURL::UserInitCallback(void* data, size_t size, size_t nmemb, void* content)
 {

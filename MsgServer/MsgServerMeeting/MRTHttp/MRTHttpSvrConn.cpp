@@ -129,15 +129,15 @@ void MRTHttpSvrConn::HttpUpdateSessionMeetingStatus(const char* sign, const char
 
 
 //* HTTP_GET
-void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg)
+void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg)
 {
     int outLen = 0;
     char data[512] = {0};
-    const char* meetingid = msg._room.c_str();
+    const char* meetingid = msg.rom_id().c_str();
     sprintf(data, "meeting/getMeetingInfo/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, rmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -145,15 +145,15 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg)
     }
 }
 
-void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg) const
+void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg) const
 {
     int outLen = 0;
     char data[512] = {0};
-    const char* meetingid = msg._room.c_str();
+    const char* meetingid = msg.rom_id().c_str();
     sprintf(data, "meeting/getMeetingInfo/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEETING_INFO, rmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -161,15 +161,15 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(TRANSMSG& tmsg, MEETMSG& msg) const
     }
 }
 
-void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg)
+void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& msg)
 {
     int outLen = 0;
     char data[512] = {0};
-    const char* meetingid = msg._room.c_str();
+    const char* meetingid = msg.rom_id().c_str();
     sprintf(data, "meeting/getMeetingMemberList/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, rmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);
@@ -177,15 +177,15 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg)
     }
 }
 
-void MRTHttpSvrConn::HttpGetMeetingMemberList(TRANSMSG& tmsg, MEETMSG& msg) const
+void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& msg) const
 {
     int outLen = 0;
     char data[512] = {0};
-    const char* meetingid = msg._room.c_str();
+    const char* meetingid = msg.rom_id().c_str();
     sprintf(data, "meeting/getMeetingMemberList/%s", meetingid);
     const char* pmsg = GenerateRequest(HTTP_GET, data, "", outLen);
     if (pmsg && outLen>0) {
-        MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, tmsg, msg);
+        MSender *sender = new MSender(M_HTTP_CMD_GET_MEMBER_LIST, rmsg, msg);
         sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
         sender->SendRequest(pmsg, outLen);
         free((void*)pmsg);

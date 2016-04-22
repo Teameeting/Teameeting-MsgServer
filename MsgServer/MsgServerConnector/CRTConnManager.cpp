@@ -23,7 +23,7 @@ static CRTConnManager::UserSessionInfoLists         s_UserSessionInfoList(0);
 static CRTConnManager::UserSessionInfoMaps          s_UserSessionInfoMap(0);
 
 
-CRTConnManager::ModuleInfo* CRTConnManager::findModuleInfo(const std::string& userid, TRANSFERMODULE module)
+CRTConnManager::ModuleInfo* CRTConnManager::findModuleInfo(const std::string& userid, pms::ETransferModule module)
 {
     CRTConnManager::ModuleInfo *pInfo = NULL;
     {
@@ -54,6 +54,7 @@ CRTConnManager::ConnectionInfo* CRTConnManager::findConnectionInfoById(const std
 
 bool CRTConnManager::AddModuleInfo(CRTConnManager::ModuleInfo* pmi, const std::string& sid)
 {
+    LI("CRTConnManager::AddModuleInfo module:%d\n", pmi->othModuleType);
     OSMutexLocker locker(&s_mutexModule);
     CRTConnManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
@@ -79,7 +80,7 @@ bool CRTConnManager::DelModuleInfo(const std::string& sid)
     return true;
 }
 
-bool CRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid)
+bool CRTConnManager::AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid)
 {
     TypeModuleSessionInfo* pInfo = NULL;
     bool found = false;
@@ -97,7 +98,7 @@ bool CRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::strin
             pInfo->sessionIds.insert(sid);
         } else {
             pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
+            pInfo->moduleType = module;
             pInfo->moduleId = mid;
             pInfo->sessionIds.insert(sid);
             s_TypeModuleSessionInfoList.push_front(pInfo);
@@ -126,7 +127,7 @@ bool CRTConnManager::DelTypeModuleSession(const std::string& sid)
     return found;
 }
 
-bool CRTConnManager::AddUser(CONNECTIONTYPE type, const std::string& uid, CRTConnManager::ConnectionInfo* pInfo)
+bool CRTConnManager::AddUser(pms::EConnType type, const std::string& uid, CRTConnManager::ConnectionInfo* pInfo)
 {
     if (uid.length()==0 || !pInfo) return false;
     {
@@ -143,7 +144,7 @@ bool CRTConnManager::AddUser(CONNECTIONTYPE type, const std::string& uid, CRTCon
     return true;
 }
 
-bool CRTConnManager::DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token)
+bool CRTConnManager::DelUser(pms::EConnType type, const std::string& uid, std::string& token)
 {
     if (uid.length()==0) return false;
     {
@@ -163,14 +164,14 @@ bool CRTConnManager::DelUser(CONNECTIONTYPE type, const std::string& uid, std::s
 
 void CRTConnManager::ConnectionLostNotify(const std::string& uid, const std::string& token)
 {
-    ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
+    ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MMEETING);
     if (pmi && pmi->pModule) {
         LI("CRTConnManager::ConnectionLostNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
         LE("CRTConnManager::ConnectionLostNotify meeting pmi->pModule is NULL\n");
     }
-    pmi = findModuleInfo(uid, TRANSFERMODULE::mmsgqueue);
+    pmi = findModuleInfo(uid, pms::ETransferModule::MMSGQUEUE);
     if (pmi && pmi->pModule) {
         LI("CRTConnManager::ConnectionLostNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
@@ -181,14 +182,14 @@ void CRTConnManager::ConnectionLostNotify(const std::string& uid, const std::str
 
 void CRTConnManager::ConnectionConnNotify(const std::string& uid, const std::string& token)
 {
-    ModuleInfo* pmi = findModuleInfo(uid, TRANSFERMODULE::mmeeting);
+    ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MMEETING);
     if (pmi && pmi->pModule) {
         LI("CRTConnManager::ConnectionConnNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionConnNotify(uid, token);
     } else {
         LE("CRTConnManager::ConnectionConnNotify meeting pmi->pModule is NULL\n");
     }
-    pmi = findModuleInfo(uid, TRANSFERMODULE::mmsgqueue);
+    pmi = findModuleInfo(uid, pms::ETransferModule::MMSGQUEUE);
     if (pmi && pmi->pModule) {
         LI("CRTConnManager::ConnectionConnNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionConnNotify(uid, token);
@@ -203,9 +204,9 @@ void CRTConnManager::TransferSessionLostNotify(const std::string& sid)
     DelTypeModuleSession(sid);
 }
 
-void CRTConnManager::TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg)
+void CRTConnManager::TransferMsg(pms::EModuleType module, const std::string& uid, const std::string& msg)
 {
-    ModuleInfo* pmi = findModuleInfo(uid, (TRANSFERMODULE)mType);
+    ModuleInfo* pmi = findModuleInfo(uid, (pms::ETransferModule)module);
     if (pmi && pmi->pModule) {
         pmi->pModule->TransferMsg(msg);
     } else {

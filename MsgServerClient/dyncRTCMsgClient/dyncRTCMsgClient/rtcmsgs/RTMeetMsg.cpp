@@ -61,7 +61,7 @@ std::string MEETMSG::ToJson()
     jDoc.AddMember("nname", MEETMSG::_nname.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("rname", MEETMSG::_rname.c_str(), jDoc.GetAllocator());
     jDoc.AddMember("code", MEETMSG::_code, jDoc.GetAllocator());
-    
+
 
     jDoc.Accept(writer);
     std::string s = sb.GetString();

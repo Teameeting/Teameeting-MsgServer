@@ -20,7 +20,7 @@ class XMsgClientHelper {
 public:
     XMsgClientHelper() {}
     ~XMsgClientHelper() {}
-    
+
     virtual void OnLogin(int code, const std::string& userid) = 0;
     virtual void OnLogout(int code, const std::string& userid) = 0;
 };
@@ -32,35 +32,35 @@ class XMsgClient
 public:
     XMsgClient();
     ~XMsgClient();
-    
+
     int Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server="", int port=0, bool bAutoConnect=true);
     int Unin();
-    
-    int SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg);
-    int GetMsg(GETCMD cmd);
 
-    int OptRoom(MEETCMD cmd, const std::string& roomid, const std::string& rname, const std::string& remain);
+    int SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg);
+    int GetMsg(pms::EMsgTag tag);
+
+    int OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::string& rname, const std::string& remain);
     int SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::list<std::string>& ulist);
-    
-    int NotifyMsg(const std::string& roomid, const std::string& rname, SENDTAGS tags, const std::string& msg);
-    
+
+    int NotifyMsg(const std::string& roomid, const std::string& rname, pms::EMsgTag tag, const std::string& msg);
+
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
-    
+
 public:
     // For XTcpClientCallback
     virtual void OnServerConnected();
     virtual void OnServerDisconnect();
     virtual void OnServerConnectionFailure();
-    
+
     virtual void OnTick();
     virtual void OnMessageSent(int err);
     virtual void OnMessageRecv(const char*pData, int nLen);
-    
+
     // For XMsgClientHelper
     virtual void OnLogin(int code, const std::string& userid);
     virtual void OnLogout(int code, const std::string& userid);
-    
+
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);
 private:

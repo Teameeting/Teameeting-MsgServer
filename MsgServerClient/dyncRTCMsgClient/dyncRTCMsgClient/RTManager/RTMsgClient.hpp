@@ -27,12 +27,12 @@ public:
     virtual void OnMsgServerDisconnect();
     virtual void OnMsgServerConnectionFailure();
     virtual void OnMsgServerState(MSState state);
-    
+
 public:
     void SetRoomId(const std::string& roomid) { mCurRoomId = roomid; }
     int Register();
     int ApplyRoom();
-    
+
     void Init();
     void Unin();
     bool Connecting();
@@ -54,11 +54,11 @@ private:
     std::string     mUname;
     std::string     mPushToken;
     std::string     mMsgServer;
-    int             mMsgPort;
     std::string     mCurRoomId;
+    int             mMsgPort;
     std::unordered_set<std::string>     mRoomSet;
     std::list<std::string>              mMsgList;
-    
+
     bool            mIsOnline;
     int             mRecvNum;
     int             mConnNum;

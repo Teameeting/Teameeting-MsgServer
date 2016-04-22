@@ -12,6 +12,11 @@
 #include <stdio.h>
 #include "RTDispatch.h"
 
+#define DEF_PROTO 1
+#include "MsgServer/MSCommon/MSProtocol/proto/msg_type.pb.h"
+#include "MsgServer/MSCommon/MSProtocol/proto/meet_msg.pb.h"
+#include "MsgServer/MSCommon/MSProtocol/proto/sys_msg.pb.h"
+
 class DRTMsgDispatch
     :public RTDispatch{
 public:

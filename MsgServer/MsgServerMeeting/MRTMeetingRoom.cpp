@@ -88,82 +88,90 @@ void MRTMeetingRoom::DelMemberFmMeeting(const std::string& uid)
     m_meetingMembers.erase(uid);
 }
 
-int MRTMeetingRoom::GetRoomMemberJson(const std::string from, std::string& users)
+int MRTMeetingRoom::GetRoomMemberJson(const std::string from, pms::ToUser* users)
 {
-    TOJSONUSER touser;
+#if DEF_PROTO
+    if (!users) return -1;
     {
         OSMutexLocker locker(&m_memberMutex);
         if (m_roomMembers.empty()) {
-            users = "";
             return -1;
         }
         RoomMembersIt rit = m_roomMembers.begin();
-        for (; rit!=m_roomMembers.end(); rit++) {
+        for (int i=0; rit!=m_roomMembers.end();i++, rit++) {
             if ((*rit).compare(from)!=0) {
-                touser._us.push_front(*rit);
+                users->add_users(*rit);
             }
         }
     }
-    users = touser.ToJson();
+#else
+    LI("not define DEF_PROTO\n");
+#endif
     return 0;
 }
 
-int MRTMeetingRoom::GetAllRoomMemberJson(std::string& users)
+int MRTMeetingRoom::GetAllRoomMemberJson(pms::ToUser* users)
 {
-    TOJSONUSER touser;
+#if DEF_PROTO
+    if (!users) return -1;
     {
         OSMutexLocker locker(&m_memberMutex);
         if (m_roomMembers.empty()) {
-            users = "";
             return -1;
         }
         RoomMembersIt rit = m_roomMembers.begin();
-        for (; rit!=m_roomMembers.end(); rit++) {
-            touser._us.push_front(*rit);
+        for (int i=0; rit!=m_roomMembers.end(); i++, rit++) {
+            users->add_users(*rit);
         }
     }
-    users = touser.ToJson();
+#else
+    LI("not define DEF_PROTO\n");
+#endif
     return 0;
 }
 
-int MRTMeetingRoom::GetMeetingMemberJson(const std::string from, std::string& users)
+int MRTMeetingRoom::GetMeetingMemberJson(const std::string from, pms::ToUser* users)
 {
-    TOJSONUSER touser;
+#if DEF_PROTO
+    if (!users) return -1;
     {
         OSMutexLocker locker(&m_memberMutex);
         if (m_meetingMembers.empty()) {
             LE("GetMeetingMemberJson member is 0\n");
-            users = "";
             return -1;
         }
         LI("meeting members:%d\n", m_roomMembers.size());
         MeetingMembersIt mit = m_meetingMembers.begin();
-        for (; mit!=m_meetingMembers.end(); mit++) {
+        for (int i=0; mit!=m_meetingMembers.end(); i++, mit++) {
             if ((*mit).compare(from)!=0) {
-                touser._us.push_front(*mit);
+                users->add_users(*mit);
             }
         }
     }
-    users = touser.ToJson();
+#else
+    LI("not define DEF_PROTO\n");
+#endif
     return 0;
 }
-int MRTMeetingRoom::GetAllMeetingMemberJson(std::string& users)
+int MRTMeetingRoom::GetAllMeetingMemberJson(pms::ToUser* users)
 {
-    TOJSONUSER touser;
+#if DEF_PROTO
+    if (!users) return -1;
     {
         OSMutexLocker locker(&m_memberMutex);
         if (m_meetingMembers.empty()) {
             LE("GetAllMeetingMemberJson member is 0\n");
-            users = "";
             return -1;
         }
         LI("all meeting members:%d\n", m_roomMembers.size());
         MeetingMembersIt mit = m_meetingMembers.begin();
-        for (; mit!=m_meetingMembers.end(); mit++) {
-            touser._us.push_front(*mit);
+        for (int i=0; mit!=m_meetingMembers.end(); i++, mit++) {
+            users->add_users(*mit);
         }
     }
-    users = touser.ToJson();
+#else
+    LI("not define DEF_PROTO\n");
+#endif
     return 0;
 
 }
@@ -216,9 +224,9 @@ void MRTMeetingRoom::CheckMembers()
 
 }
 
-void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, TRANSMSG& tmsg, MEETMSG& mmsg)
+void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
 {
     LI("===>>>MRTMeetingRoom::AddWaitingMsgToList size:%d\n", (int)m_waitingMsgsList.size());
     OSMutexLocker locker(&m_wmsgMutex);
-    m_waitingMsgsList.push_back(WaitingMsg(type, tag, tmsg, mmsg));
+    m_waitingMsgsList.push_back(WaitingMsg(type, tag, rmsg, mmsg));
 }

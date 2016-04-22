@@ -22,6 +22,7 @@ CCFLAGS += -I./rtcmsgs -I./client -I$(WEBRTC_BASE_PATH)
 C++FLAGS= $(CCFLAGS)
 C++FLAGS+=-I./RTJson -I./RTHttp -I./RTManager
 
+
 CFILES = 
 
 CPPFILES := main.cpp \
@@ -72,9 +73,12 @@ CCFILES := $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/thread_checker_impl.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc
 
+CCFILES += \
+			./rtcmsgs/proto/msg_type.pb.cc \
+			./rtcmsgs/proto/meet_msg.pb.cc \
+			./rtcmsgs/proto/sys_msg.pb.cc
 
 CPPFLAGS+=-lcurl
-
 	
 all: msgclient
 
@@ -83,7 +87,7 @@ librtcmsgclient-linux.a: $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
 	ranlib librtcmsgclient-linux.a
 
 msgclient: $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
-	$(C++) -o msgclient $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o) $(CPPFLAGS)
+	$(C++) -o msgclient $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o) $(CPPFLAGS) -L/usr/local/lib -lprotobuf
 
 install: 
 	install -m 664 librtcmsgclient-linux.a ./lib_linux_a/

@@ -19,7 +19,7 @@ class RTConnClientManager
 public:
     RTConnClientManager();
     ~RTConnClientManager();
-    
+
     void RunTest(int flag);
     virtual void OnMessage(rtc::Message* msg);
 public:
@@ -28,8 +28,10 @@ public:
     void RunThread();
     void RunApplyRoom();
     void RunLoginout();
+    void RunSendMsg();
 private:
     bool    mIsRun;
+    bool    mThreadRun;
     int     mTimes;
 };
 

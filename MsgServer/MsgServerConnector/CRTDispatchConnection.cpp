@@ -21,16 +21,17 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::strin
     //find connector
     CRTConnManager::ConnectionInfo* pci = CRTConnManager::Instance().findConnectionInfoById(uid);
     if (!pci) {
+        LE("CRTDispatchConnection::DispatchMsg not find user:%s connection\n", uid.c_str());
         return;
     } else { //!pci
-        LI("Dispatch msg:%s\n", msg.c_str());
+        //LI("Dispatch msg:::%s\n", msg.c_str());
         if (pci->_pConn && pci->_pConn->IsLiveSession()) {
-            if (pci->_connType == CONNECTIONTYPE::_chttp) {
+            if (pci->_connType == pms::EConnType::THTTP) {
                 CRTConnection *c = dynamic_cast<CRTConnection*>(pci->_pConn);
                 if (c) {
                     c->SendDispatch(uid, msg);
                 }
-            } else if (pci->_connType == CONNECTIONTYPE::_ctcp) {
+            } else if (pci->_connType == pms::EConnType::TTCP) {
                 CRTConnectionTcp *ct = dynamic_cast<CRTConnectionTcp*>(pci->_pConn);
                 if (ct) {
                     ct->SendDispatch(uid, msg);

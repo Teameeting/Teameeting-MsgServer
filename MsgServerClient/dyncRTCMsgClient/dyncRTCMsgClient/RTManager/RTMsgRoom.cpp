@@ -11,7 +11,7 @@
 #include <sstream>
 #include <string>
 
-int gTestClientNum = 10;
+int gTestClientNum = 6;
 int gTestMessageNum = 30;
 int gTestLoginNum = 10;
 
@@ -71,6 +71,7 @@ void RTMsgRoom::RunRun()
     long long num = 0;
     mIsRun = true;
     while (mIsRun) {
+        ++num;
         TestMsg(++num);
         if (num==gTestMessageNum) {
             mIsRun = false;
@@ -144,6 +145,11 @@ void RTMsgRoom::RunLoginout()
     TestUnin();
 }
 
+void RTMsgRoom::RunSendMsg()
+{
+
+}
+
 void RTMsgRoom::TestMsg(long long flag)
 {
     std::ostringstream oss("");
@@ -154,12 +160,12 @@ void RTMsgRoom::TestMsg(long long flag)
         if (i==0 && m==j) {// flag is jishu
             //if (j==2 || j==4 || j==6) {
             if (j==2 || j==6) {
-                TempLeaveRoom(lit);
+                //TempLeaveRoom(lit);
             }
         } else if (i==1 && m==j) {// flag is oushu
             //if (j==2 || j==4 || j==6) {
             if (j==2 || j==6) {
-                TempEnterRoom(lit);
+                //TempEnterRoom(lit);
             }
         }
         oss.str("");

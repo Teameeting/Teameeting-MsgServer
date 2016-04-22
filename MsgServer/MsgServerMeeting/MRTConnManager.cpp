@@ -24,7 +24,7 @@ static MRTConnManager::UserSessionInfoLists           s_UserSessionInfoList(0);
 static MRTConnManager::UserSessionInfoMaps            s_UserSessionInfoMap(0);
 
 
-MRTConnManager::ModuleInfo* MRTConnManager::findModuleInfo(const std::string& userid, TRANSFERMODULE module)
+MRTConnManager::ModuleInfo* MRTConnManager::findModuleInfo(const std::string& userid, pms::ETransferModule module)
 {
     MRTConnManager::ModuleInfo* pInfo = NULL;
     {
@@ -63,7 +63,7 @@ bool MRTConnManager::ConnectConnector()
 
 bool MRTConnManager::DoConnectConnector(const std::string ip, unsigned short port)
 {
-    MRTTransferSession* connectorSession = new MRTTransferSession(TRANSFERMODULE::mconnector);
+    MRTTransferSession* connectorSession = new MRTTransferSession(pms::ETransferModule::MCONNECTOR);
     connectorSession->Init();
     // conn to connector
 
@@ -80,7 +80,7 @@ bool MRTConnManager::DoConnectConnector(const std::string ip, unsigned short por
 bool MRTConnManager::TryConnectConnector(const std::string ip, unsigned short port)
 {
     LI("MRTConnManager::TryConneectConnector ip:%s, port:%u\n", ip.c_str(), port);
-    MRTTransferSession* connectorSession = new MRTTransferSession(TRANSFERMODULE::mconnector);
+    MRTTransferSession* connectorSession = new MRTTransferSession(pms::ETransferModule::MCONNECTOR);
     connectorSession->Init();
     // conn to connector
 
@@ -160,7 +160,7 @@ bool MRTConnManager::AddModuleInfo(MRTConnManager::ModuleInfo* pmi, const std::s
     ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnManager::ModuleInfo *p = it->second;
-        if (p && p->othModuleType == TRANSFERMODULE::mmsgqueue) {
+        if (p && p->othModuleType == pms::ETransferModule::MMSGQUEUE) {
             MRTRoomManager::Instance().ClearMsgQueueSession(sid);
         }
         delete p;
@@ -177,7 +177,7 @@ bool MRTConnManager::DelModuleInfo(const std::string& sid, EventData& data)
     ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
         MRTConnManager::ModuleInfo *p = it->second;
-        if (p && p->othModuleType == TRANSFERMODULE::mmsgqueue) {
+        if (p && p->othModuleType == pms::ETransferModule::MMSGQUEUE) {
             MRTRoomManager::Instance().ClearMsgQueueSession(sid);
         }
         data.connect.module = (int)p->othModuleType;
@@ -191,7 +191,7 @@ bool MRTConnManager::DelModuleInfo(const std::string& sid, EventData& data)
     return true;
 }
 
-bool MRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid)
+bool MRTConnManager::AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid)
 {
     TypeModuleSessionInfo* pInfo = NULL;
     bool found = false;
@@ -209,7 +209,7 @@ bool MRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::strin
             pInfo->sessionIds.insert(sid);
         } else {
             pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
+            pInfo->moduleType = module;
             pInfo->moduleId = mid;
             pInfo->sessionIds.insert(sid);
             s_TypeModuleSessionInfoList.push_front(pInfo);
@@ -287,9 +287,9 @@ void MRTConnManager::ProcessRecvEvent(const char*pData, int nLen)
         memcpy(data.connect.ip, root["ip"].asString().c_str(), (int)root["ip"].asString().length());
         data.connect.port = root["port"].asInt();
         LI("OnReadEvent EventData mtype:%d, module:%d, ip:%s, port:%d\n", data.mtype, data.connect.module, data.connect.ip, data.connect.port);
-        if (data.connect.module == TRANSFERMODULE::mconnector) {// connect to connector
+        if (data.connect.module == pms::ETransferModule::MCONNECTOR) {// connect to connector
             TryConnectConnector(data.connect.ip, data.connect.port);
-        }else if (data.connect.module == TRANSFERMODULE::mmsgqueue) {// connect to msgqueue
+        }else if (data.connect.module == pms::ETransferModule::MMSGQUEUE) {// connect to msgqueue
             MRTRoomManager::Instance().TryConnectMsgQueue(data.connect.ip, data.connect.port);
         }
     }
@@ -335,9 +335,9 @@ int MRTConnManager::ConnTimerCallback(const char*pData, int nLen)
         }
         if (root["type"].asInt() == SESSEVENT::_sess_lost) {//offline and reconnect
             std::string s("");
-            if (root["module"].asInt()==TRANSFERMODULE::mconnector) {// connect to connector
+            if (root["module"].asInt()== pms::ETransferModule::MCONNECTOR) {// connect to connector
                 s = "/dync/teameeting/connector/" + root["ip"].asString();
-            } else if (root["module"].asInt()==TRANSFERMODULE::mmsgqueue) {// connect to msgqueue
+            } else if (root["module"].asInt()== pms::ETransferModule::MMSGQUEUE) {// connect to msgqueue
                 s = "/dync/teameeting/dispatcher/" + root["ip"].asString();
             } else {
                 return 0;

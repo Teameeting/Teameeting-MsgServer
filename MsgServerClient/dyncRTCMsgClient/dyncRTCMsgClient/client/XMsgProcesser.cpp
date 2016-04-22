@@ -20,10 +20,20 @@
 #include <string>
 #endif
 
-static long long  g_msgs_id = 3;
-
-int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& nname)
+int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname)
 {
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::Login login;
+    login.set_usr_from(userid);
+    login.set_usr_token(token);
+    login.set_usr_nname(nname);
+
+    req.set_svr_cmds(pms::EServerCmd::CLOGIN);
+    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_content(login.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
     SIGNALMSG s_msg;
     MEETMSG m_msg;
     m_msg._mtype = MSGTYPE::meeting;
@@ -44,16 +54,36 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
-    
+
     s_msg._stype = SIGNALTYPE::login;
     s_msg._scont = m_msg.ToJson();
-    
+
     outstr = s_msg.ToJson();
+#endif
     return 0;
 }
 
-int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& nname, const std::string& roomid, const std::string& rname, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type)
+int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::string& to, const std::string& msg, int tag, int type)
 {
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::MeetMsg meet;
+    meet.set_msg_head(pms::EMsgHead::HSND);
+    meet.set_msg_tag((pms::EMsgTag)tag);
+    meet.set_msg_type((pms::EMsgType)type);
+    meet.set_usr_from(userid);
+    meet.set_msg_cont(msg);
+    meet.set_rom_id(roomid);
+    meet.set_rom_name(rname);
+    meet.set_nck_name(nname);
+    meet.set_usr_token(token);
+    meet.set_usr_toto(to);
+
+    req.set_svr_cmds(pms::EServerCmd::CSNDMSG);
+    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_content(meet.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
     SIGNALMSG s_msg;
     MEETMSG m_msg;
     m_msg._mtype = MSGTYPE::meeting;
@@ -74,16 +104,29 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     m_msg._rname = rname;
     m_msg._nmem = 0;
     m_msg._ntime = 0;
-    
+
     s_msg._stype = SIGNALTYPE::sndmsg;
     s_msg._scont = m_msg.ToJson();
-    
+
     outstr = s_msg.ToJson();
+#endif
     return 0;
 }
 
-int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& pass, int cmd)
+int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag)
 {
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::MeetMsg meet;
+    meet.set_msg_tag((pms::EMsgTag)tag);
+    meet.set_usr_from(userid);
+    meet.set_usr_token(token);
+
+    req.set_svr_cmds(pms::EServerCmd::CGETMSG);
+    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_content(meet.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
     SIGNALMSG s_msg;
     MEETMSG m_msg;
     m_msg._mtype = MSGTYPE::meeting;
@@ -104,16 +147,28 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
     m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
-    
+
     s_msg._stype = SIGNALTYPE::getmsg;
     s_msg._scont = m_msg.ToJson();
-    
+
     outstr = s_msg.ToJson();
+#endif
     return 0;
 }
 
-int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, const std::string& pass)
+int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token)
 {
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::Logout logout;
+    logout.set_usr_from(userid);
+    logout.set_usr_token(token);
+
+    req.set_svr_cmds(pms::EServerCmd::CLOGOUT);
+    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_content(logout.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
     SIGNALMSG s_msg;
     MEETMSG m_msg;
     m_msg._mtype = MSGTYPE::meeting;
@@ -134,16 +189,27 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
-    
+
     s_msg._stype = SIGNALTYPE::logout;
     s_msg._scont = m_msg.ToJson();
-    
+
     outstr = s_msg.ToJson();
+#endif
     return 0;
 }
 
 int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& userid)
 {
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::Keep keep;
+    keep.set_usr_from(userid);
+
+    req.set_svr_cmds(pms::EServerCmd::CKEEPALIVE);
+    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_content(keep.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
     SIGNALMSG s_msg;
     MEETMSG m_msg;
     m_msg._mtype = MSGTYPE::meeting;
@@ -164,11 +230,12 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     m_msg._rname = "";
     m_msg._nmem = 0;
     m_msg._ntime = 0;
-    
+
     s_msg._stype = SIGNALTYPE::keepalive;
     s_msg._scont = m_msg.ToJson();
-    
+
     outstr = s_msg.ToJson();
+#endif
     return 0;
 }
 
@@ -178,6 +245,38 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
 
 int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 {
+#if DEF_PROTO
+    const std::string strmsg(pData, nLen);
+    pms::MsgRep resp;
+    resp.ParseFromString(strmsg);
+    std::cout << "XMsgProcess::DecodeRecvData--->" << std::endl;
+    resp.PrintDebugString();
+    switch (resp.svr_cmds()) {
+        case pms::EServerCmd::CLOGIN:
+            DecodeLogin(resp.rsp_code(), resp.rsp_cont());
+            break;
+
+        case pms::EServerCmd::CSNDMSG:
+            DecodeSndMsg(resp.rsp_code(), resp.rsp_cont());
+            break;
+
+        case pms::EServerCmd::CGETMSG:
+            DecodeGetMsg(resp.rsp_code(), resp.rsp_cont());
+            break;
+
+        case pms::EServerCmd::CLOGOUT:
+            DecodeLogout(resp.rsp_code(), resp.rsp_cont());
+            break;
+
+        case pms::EServerCmd::CKEEPALIVE:
+            DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
+            break;
+
+        default:
+        LOG(LS_ERROR) << "invalid svr_cmds type:" << resp.svr_cmds();
+            break;
+    }
+#else
     MEETMSG mmsg;
     std::string err;
     std::string strmsg(pData, nLen);
@@ -190,72 +289,71 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         case SIGNALTYPE::login:
             DecodeLogin(mmsg);
             break;
-            
+
         case SIGNALTYPE::sndmsg:
             DecodeSndMsg(mmsg);
             break;
-            
+
         case SIGNALTYPE::getmsg:
             DecodeGetMsg(mmsg);
             break;
-            
+
         case SIGNALTYPE::logout:
             DecodeLogout(mmsg);
             break;
-            
+
         case SIGNALTYPE::keepalive:
             DecodeKeepAlive(mmsg);
             break;
-            
+
         default:
         LOG(LS_ERROR) << "invalid signaltype type:" << mmsg._signaltype;
             break;
     }
+#endif
     return nLen;
 }
 
-int XMsgProcesser::DecodeLogin(MEETMSG& msg)
+int XMsgProcesser::DecodeLogin(int code, const std::string& cont)
 {
-    m_helper.OnLogin(msg._code, msg._from);
+    m_helper.OnLogin(code, cont);
     return 0;
 }
 
-int XMsgProcesser::DecodeSndMsg(MEETMSG& msg)
+int XMsgProcesser::DecodeSndMsg(int code, const std::string& cont)
 {
-    const std::string tmsg(msg.ToJson());
-    m_callback.OnSndMsg(tmsg);
+    m_callback.OnSndMsg(cont);
     return 0;
 }
 
-int XMsgProcesser::DecodeGetMsg(MEETMSG& msg)
+int XMsgProcesser::DecodeGetMsg(int code, const std::string& cont)
 {
-    const std::string tmsg(msg.ToJson());
-    m_callback.OnGetMsg(tmsg);
+    m_callback.OnGetMsg(cont);
     return 0;
 }
 
-int XMsgProcesser::DecodeLogout(MEETMSG& msg)
+int XMsgProcesser::DecodeLogout(int code, const std::string& cont)
 {
-    m_helper.OnLogout(msg._code, msg._from);
+    m_helper.OnLogout(code, cont);
     return 0;
 }
 
-int XMsgProcesser::DecodeKeepAlive(MEETMSG& msg)
+int XMsgProcesser::DecodeKeepAlive(int code, const std::string& cont)
 {
     return 0;
 }
 
-int XMsgProcesser::GetMemberToJson(const std::list<std::string> ulist, std::string& tousers)
+int XMsgProcesser::GetMemberToJson(const std::list<std::string>& ulist, std::string& tousers)
 {
     if (ulist.size()==0) {
         return -1;
     }
-    TOJSONUSER touser;
+    pms::ToUser users;
     std::list<std::string>::const_iterator it = ulist.begin();
-    for (; it!=ulist.end(); it++) {
-        touser._us.push_front((*it).c_str());
+    for (int i = 0; it!=ulist.end(); i++,it++) {
+        users.set_users(i, (*it));
     }
-    tousers = touser.ToJson();
+    tousers = users.SerializeAsString();
     return 0;
 }
 
@@ -277,10 +375,5 @@ void XMsgProcesser::ServerConnectionFailure()
 void XMsgProcesser::ServerState(MSState state)
 {
     m_callback.OnMsgServerState(state);
-}
-
-long long XMsgProcesser::GenericTransSeq()
-{
-    return ++g_msgs_id;
 }
 

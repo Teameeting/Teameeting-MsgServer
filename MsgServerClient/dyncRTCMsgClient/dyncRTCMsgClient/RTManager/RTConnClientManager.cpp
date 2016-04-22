@@ -16,6 +16,7 @@ const int kRunOnce = 2;
 const int kRunThread = 3;
 const int kRunApplyRoom = 4;
 const int kRunLoginout = 5;
+const int kRunSendMsg = 6;
 
 const int kPostDelay = 3000;
 
@@ -24,19 +25,22 @@ const int kTimes = 3;
 RTConnClientManager::RTConnClientManager()
 : rtc::Thread(NULL)
 , mIsRun(false)
+, mThreadRun(false)
 , mTimes(0){
 
 }
 
 RTConnClientManager::~RTConnClientManager()
 {
-
+    if (mThreadRun)
+        this->Stop();
 }
 
 void RTConnClientManager::RunTest(int flag)
 {
     mIsRun = true;
     this->Start();
+    mThreadRun = true;
     if (flag == kRunRun) {
         PostDelayed(kPostDelay, this, kRunRun);
     } else if (flag == kRunOnce) {
@@ -47,17 +51,19 @@ void RTConnClientManager::RunTest(int flag)
         PostDelayed(kPostDelay, this, kRunApplyRoom);
     } else if (flag == kRunLoginout) {
         PostDelayed(kPostDelay, this, kRunLoginout);
+    } else if (flag == kRunSendMsg) {
+         PostDelayed(kPostDelay, this, kRunSendMsg);
     }
     while (mIsRun) {
         rtc::Thread::SleepMs(1000);
     }
+    printf("RTConnClientManager::RunTest finished...\n");
 }
 
 void RTConnClientManager::OnMessage(rtc::Message* msg)
 {
     printf("RTConnClientManager::OnMessage msg_id:%u\n", msg->message_id);
     if (msg->message_id == kStop) {
-        this->Stop();
         mIsRun = false;
     } else if (msg->message_id == kRunRun) {
         RunRun();
@@ -82,6 +88,9 @@ void RTConnClientManager::OnMessage(rtc::Message* msg)
     } else if (msg->message_id == kRunLoginout) {
         RunLoginout();
         PostDelayed(kPostDelay, this, kStop);
+    } else if (msg->message_id == kRunSendMsg) {
+         RunSendMsg();
+         PostDelayed(kPostDelay, this, kStop);
     }
 }
 
@@ -91,25 +100,30 @@ void RTConnClientManager::OnMessage(rtc::Message* msg)
 
 void RTConnClientManager::RunRun()
 {
-    RTMsgThreadManager::Instance()->RunTest(kRunRun);
+    RTMsgThreadManager::Instance()->RunForTest(kRunRun);
 }
 
 void RTConnClientManager::RunOnce()
 {
-    RTMsgThreadManager::Instance()->RunTest(kRunOnce);
+    RTMsgThreadManager::Instance()->RunForTest(kRunOnce);
 }
 
 void RTConnClientManager::RunThread()
 {
-    RTMsgThreadManager::Instance()->RunTest(kRunThread);
+    RTMsgThreadManager::Instance()->RunForTest(kRunThread);
 }
 
 void RTConnClientManager::RunApplyRoom()
 {
-    RTMsgThreadManager::Instance()->RunTest(kRunApplyRoom);
+    RTMsgThreadManager::Instance()->RunForTest(kRunApplyRoom);
 }
 
 void RTConnClientManager::RunLoginout()
 {
-    RTMsgThreadManager::Instance()->RunTest(kRunLoginout);
+    RTMsgThreadManager::Instance()->RunForTest(kRunLoginout);
+}
+
+void RTConnClientManager::RunSendMsg()
+{
+    RTMsgThreadManager::Instance()->RunForTest(kRunSendMsg);
 }

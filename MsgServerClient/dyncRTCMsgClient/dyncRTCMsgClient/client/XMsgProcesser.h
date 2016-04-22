@@ -12,9 +12,16 @@
 #include <stdio.h>
 #include <iostream>
 #include <list>
+#define DEF_PROTO 1
+#if DEF_PROTO
+#include "rtcmsgs/proto/msg_type.pb.h"
+#include "rtcmsgs/proto/meet_msg.pb.h"
+#include "rtcmsgs/proto/sys_msg.pb.h"
+#else
 #include "RTSignalMsg.h"
 #include "RTMeetMsg.h"
 #include "RTMessage.h"
+#endif
 #include "XMsgCallback.h"
 
 class XMsgClientHelper;
@@ -24,15 +31,15 @@ public:
     XMsgProcesser(XMsgCallback& cb, XMsgClientHelper& helper):m_callback(cb), m_helper(helper){}
     ~XMsgProcesser(){}
 public:
-    
-    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& nname);
-    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& pass, const std::string& nname, const std::string& roomid, const std::string& rname, const std::string& to, const std::string& msg, int cmd, int action, int tags, int type);
-    int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& pass, int cmd);
-    int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& pass);
+
+    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname);
+    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::string& to, const std::string& msg, int tag, int type);
+    int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag);
+    int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid);
-    
+
     int DecodeRecvData(const char* pData, int nLen);
-    int GetMemberToJson(const std::list<std::string> ulist, std::string& tousers);
+    int GetMemberToJson(const std::list<std::string>& ulist, std::string& tousers);
 
 public:
     //handle XTcpClient callback
@@ -40,14 +47,13 @@ public:
     void ServerDisconnect();
     void ServerConnectionFailure();
     void ServerState(MSState state);
-    
+
 protected:
-    int DecodeLogin(MEETMSG& msg);
-    int DecodeSndMsg(MEETMSG& msg);
-    int DecodeGetMsg(MEETMSG& msg);
-    int DecodeLogout(MEETMSG& msg);
-    int DecodeKeepAlive(MEETMSG& msg);
-    long long GenericTransSeq();
+    int DecodeLogin(int code, const std::string& cont);
+    int DecodeSndMsg(int code, const std::string& cont);
+    int DecodeGetMsg(int code, const std::string& cont);
+    int DecodeLogout(int code, const std::string& cont);
+    int DecodeKeepAlive(int code, const std::string& cont);
 private:
     XMsgCallback        &m_callback;
     XMsgClientHelper    &m_helper;

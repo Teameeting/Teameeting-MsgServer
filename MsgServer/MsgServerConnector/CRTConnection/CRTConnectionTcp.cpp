@@ -11,6 +11,7 @@
 #include "StatusCode.h"
 #include "RTUtils.hpp"
 
+
 CRTConnectionTcp::CRTConnectionTcp()
 : RTJSBuffer()
 , m_connectorId("")
@@ -33,30 +34,19 @@ int CRTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg
     return 0;
 }
 
-void CRTConnectionTcp::GenericResponse(SIGNALTYPE stype, MSGTYPE mtype, long long mseq, int code, std::string& resp)
+void CRTConnectionTcp::GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& resp)
 {
-    MEETMSG m_msg;
+#if DEF_PROTO
+    pms::MsgRep response;
 
-    m_msg._mtype = mtype;
-    m_msg._messagetype = MESSAGETYPE::response;
-    m_msg._signaltype = stype;
-    m_msg._cmd = MEETCMD::meetcmd_invalid;
-    m_msg._from = "";
-    m_msg._room = "";
-    m_msg._to = "";
-    m_msg._action = DCOMMACTION::dcommaction_invalid;
-    m_msg._tags = SENDTAGS::sendtags_invalid;
-    m_msg._type = SENDTYPE::sendtype_invalid;
-    m_msg._cont = "";
-    m_msg._pass = "";
-    m_msg._mseq = mseq;
-    m_msg._code = code;
-    m_msg._nname = m_nname;
-    m_msg._rname = "";
-    m_msg._nmem = 0;
-    m_msg._ntime = OS::Milliseconds();
+    response.set_svr_cmds(cmd);
+    response.set_mod_type(module);
+    response.set_rsp_code(code);
+    resp = response.SerializeAsString();
 
-    resp = m_msg.ToJson();
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
 //* For RCTcp
@@ -74,26 +64,18 @@ void CRTConnectionTcp::OnRecvMessage(const char*message, int nLen)
 }
 
 //* For RTConnTcp
-void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const char* pNname)
+void CRTConnectionTcp::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-    {
-        //check & auth
-        /*
-        std::string pass;
-        RTHiredisRemote::Instance().CmdGet(pUserid, pass);
-        if (pass.compare(pPass)!=0) {
-            LE("OnLogin user pass has error, pUserid:%s, pPass:%s, pass:%s\n", pUserid, pPass, pass.c_str());
-            // send response
-            std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_invparams, GetRTCommStatus(RTCommCode::_invparams), resp);
-            SendResponse(0, resp.c_str());
-            return;
-        }*/
+#if DEF_PROTO
+    pms::Login login;
+    if (!login.ParseFromString(msg)) {
+        LE("login.ParseFromString error\n");
     }
-    m_userId = pUserid;
-    m_token = pPass;
-    m_nname = pNname;
-    LI("CRTConnectionTcp::Onlogin pUserid:%s\n", pUserid);
+
+    m_userId = login.usr_from();
+    m_token = login.usr_token();
+    m_nname = login.usr_nname();
+    LI("CRTConnectionTcp::Onlogin m_userId:%s\n", m_userId.c_str());
     std::string sid;
     {
         //store userid & pass
@@ -104,39 +86,40 @@ void CRTConnectionTcp::OnLogin(const char* pUserid, const char* pPass, const cha
             pci->_connId = sid;
             pci->_connAddr = CRTConnManager::Instance().ConnectorIp();
             pci->_connPort = CRTConnManager::Instance().ConnectorPort();
-            pci->_userId = pUserid;
-            pci->_token = pPass;
+            pci->_userId = m_userId;
+            pci->_token = m_token;
             pci->_pConn = this;
-            pci->_connType = CONNECTIONTYPE::_ctcp;
+            pci->_connType = pms::EConnType::TTCP;
             pci->_flag = 1;
-            CRTConnManager::Instance().AddUser(CONNECTIONTYPE::_ctcp, m_userId, pci);
+            CRTConnManager::Instance().AddUser(pms::EConnType::TTCP, m_userId, pci);
             CRTConnManager::Instance().ConnectionConnNotify(m_userId, m_token);
 
             // send response
             std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_ok, resp);
+            GenericResponse(pms::EServerCmd::CLOGIN, pms::EModuleType::TMEETING, 0, resp);
             SendResponse(0, resp.c_str());
             m_login = true;
             return;
         } else {
             LE("new ConnectionInfo error userid:%s\n", m_userId.c_str());
             std::string resp;
-            GenericResponse(SIGNALTYPE::login, MSGTYPE::meeting, 0, RTCommCode::_errconninfo, resp);
+            GenericResponse(pms::EServerCmd::CLOGIN, pms::EModuleType::TMEETING, 101, resp);
             SendResponse(0, resp.c_str());
             m_login = false;
             return;
         }
     }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 
 }
 
-void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUserid, const char* pData, int dLen)
+void CRTConnectionTcp::OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
+#if DEF_PROTO
     if (!m_login) {
         LE("m_login false, can not transfer msg\n");
-        return;
-    }
-    if (!pData) {
         return;
     }
 
@@ -145,40 +128,59 @@ void CRTConnectionTcp::OnSndMsg(MSGTYPE mType, long long mseq, const char* pUser
     //find an TrasnferSession By mtype
     //transfer msg by TransferSession
 
-    std::string msg(pData, dLen);
-    CRTConnManager::Instance().TransferMsg(mType, mseq, pUserid, msg);
+
+    // enclosing msg in CRTTransferSession::TransferMsg
+    CRTConnManager::Instance().TransferMsg(module, m_userId, msg);
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
-void CRTConnectionTcp::OnGetMsg(MSGTYPE mType, long long mseq, const char* pUserid)
+void CRTConnectionTcp::OnGetMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
 
 }
 
-void CRTConnectionTcp::OnLogout(const char* pUserid)
+void CRTConnectionTcp::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-    if (!pUserid) {
-        return;
+#if DEF_PROTO
+    pms::Logout logout;
+    if (!logout.ParseFromString(msg)) {
+        LE("login.ParseFromString error\n");
     }
+    LI("OnLogout user:%s logout\n", logout.usr_from().c_str());
+    assert(logout.usr_from().compare(m_userId)==0);
     std::string token;
-    CRTConnManager::Instance().DelUser(CONNECTIONTYPE::_ctcp, pUserid, token);
-    CRTConnManager::Instance().ConnectionLostNotify(pUserid, m_token);
+    CRTConnManager::Instance().DelUser(pms::EConnType::TTCP, m_userId, token);
+    CRTConnManager::Instance().ConnectionLostNotify(m_userId, m_token);
 
     m_userId = "";
     m_token = "";
     m_nname = "";
     std::string resp;
-    GenericResponse(SIGNALTYPE::logout, MSGTYPE::meeting, 1, RTCommCode::_ok, resp);
+    GenericResponse(pms::EServerCmd::CLOGOUT, pms::EModuleType::TMEETING, 0, resp);
     SendResponse(0, resp.c_str());
     m_login = false;
     return;
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
-void CRTConnectionTcp::OnKeepAlive(const char *pUserid)
+void CRTConnectionTcp::OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
+#if DEF_PROTO
+    pms::Keep keep;
+    if (!keep.ParseFromString(msg)) {
+        LE("login.ParseFromString error\n");
+    }
     if (m_login) {
-        printf("Userid:%s OnKeepAlive\n", pUserid);
+        LI("Userid:%s OnKeepAlive\n", keep.usr_from().c_str());
         RTTcp::UpdateTimer();
     }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
 void CRTConnectionTcp::OnResponse(const char*pData, int nLen)
@@ -191,7 +193,7 @@ void CRTConnectionTcp::ConnectionDisconnected()
     if (m_userId.length()>0) {
         LI("RTConnectionTcp::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
         std::string token;
-        CRTConnManager::Instance().DelUser(CONNECTIONTYPE::_ctcp, m_userId, token);
+        CRTConnManager::Instance().DelUser(pms::EConnType::THTTP, m_userId, token);
         CRTConnManager::Instance().ConnectionLostNotify(m_userId, m_token);
     }
 }

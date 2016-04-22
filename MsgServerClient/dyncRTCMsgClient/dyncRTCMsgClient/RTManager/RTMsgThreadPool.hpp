@@ -29,18 +29,19 @@ class RTMsgThread
 public:
     RTMsgThread();
     ~RTMsgThread();
-    
+
     // from rtc::MessageHandler
     virtual void OnMessage(rtc::Message* msg);
-      
+
     void MessageRun(RoomInfo& info);
     void MessageOnce(RoomInfo& info);
     void MessageThread(RoomInfo& info);
     void MessageApplyRoom(RoomInfo& info);
     void MessageLoginout(RoomInfo& info);
-    
+    void MessageSendMsg(RoomInfo& info);
+
 private:
-                      
+
 };
 
 class RTMsgThreadManager
@@ -51,36 +52,35 @@ public:
         static RTMsgThreadManager sInstance;
         return &sInstance;
     }
-    
+
     virtual void OnMessage(rtc::Message* msg);
-    
+
     void AddThread(int num);
     void DelThread();
     void RunThread(int flag);
-    void RunThread(int flag, RoomInfo& info);
-    
-    void RunTest(int flag);
-    
+
+    void RunForTest(int flag);
+
     void GetRoomIds();
     void ShowRoomIds();
-    
+
     void NotifyStopThread();
 private:
     RTMsgThreadManager()
     : mIsRun(false)
     , mTestThreadNum(0){
-        
+
     }
-    
+
     ~RTMsgThreadManager() {
-        
+
     }
-    
+
     typedef std::unordered_set<RTMsgThread*> ThreadPoolSet;
     typedef ThreadPoolSet::iterator ThreadPoolSetIt;
     typedef std::vector<std::string> RoomIdSet;
     typedef RoomIdSet::iterator RoomIdSetIt;
-    
+
     rtc::ThreadManager  mThreadManager;
     ThreadPoolSet       mThreadPoolSet;
     RoomIdSet           mRoomIds;

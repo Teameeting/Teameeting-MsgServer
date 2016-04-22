@@ -17,7 +17,7 @@ class RTMsgRoom{
 public:
     RTMsgRoom(int num, std::string& id);
     ~RTMsgRoom();
-    
+
     void Before();
     void After();
     void RunRun();
@@ -25,25 +25,25 @@ public:
     void RunThread();
     void RunApplyRoom();
     void RunLoginout();
-    
-    
-    
+    void RunSendMsg();
+
+
     void TestMsg(long long flag);
     void TestLogin();
     void TestLogout();
     void TestInit();
     void TestUnin();
-    
+
 private:
     typedef std::list<RTMsgClient*> MsgClientList;
     typedef MsgClientList::iterator MsgClientListIt;
     void TempEnterRoom(MsgClientListIt it);
     void TempLeaveRoom(MsgClientListIt it);
-    
-    bool                mIsRun;
+
     MsgClientList       mClientList;
     int                 mRoomNum;
     std::string         mRoomId;
+    bool                mIsRun;
 };
 
 #endif /* RTMsgRoom_hpp */

@@ -171,7 +171,7 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
 	}
 
     if (usHttpPort > 0) {
-        LI("Start Dispatcher Http service:(%d) ok...\n", usHttpPort);
+        LI("Starting Dispatcher Http service:(%d) ok...\n", usHttpPort);
     }
 
     if (!(DRTConnManager::Instance().ConnectHttpSvrConn())) {

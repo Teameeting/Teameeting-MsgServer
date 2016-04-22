@@ -30,10 +30,10 @@ static DRTConnManager::UserSessionInfoMaps            s_UserSessionInfoMap(0);
 
 DRTConnManager::ModuleInfo* DRTConnManager::findConnectorInfo(const std::string& userid)
 {
-    return findModuleInfo(userid, TRANSFERMODULE::mconnector);
+    return findModuleInfo(userid, pms::ETransferModule::MCONNECTOR);
 }
 
-DRTConnManager::ModuleInfo* DRTConnManager::findModuleInfo(const std::string& uid, TRANSFERMODULE module)
+DRTConnManager::ModuleInfo* DRTConnManager::findModuleInfo(const std::string& uid, pms::ETransferModule module)
 {
     DRTConnManager::ModuleInfo *pInfo = NULL;
     {
@@ -164,7 +164,7 @@ void DRTConnManager::RefreshConnection()
         ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             pmi = it->second;
-            if (pmi && pmi->othModuleType == TRANSFERMODULE::mconnector) {
+            if (pmi && pmi->othModuleType == pms::ETransferModule::MCONNECTOR) {
                 if (pmi->pModule && pmi->pModule->RefreshTime()) {
                     pmi->pModule->KeepAlive();
                 }
@@ -244,7 +244,7 @@ bool DRTConnManager::DelModuleInfo(const std::string& sid, EventData& data)
     return true;
 }
 
-bool DRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid)
+bool DRTConnManager::AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid)
 {
     TypeModuleSessionInfo* pInfo = NULL;
     bool found = false;
@@ -262,7 +262,7 @@ bool DRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::strin
             pInfo->sessionIds.insert(sid);
         } else {
             pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
+            pInfo->moduleType = module;
             pInfo->moduleId = mid;
             pInfo->sessionIds.insert(sid);
             s_TypeModuleSessionInfoList.push_front(pInfo);
@@ -399,6 +399,27 @@ bool DRTConnManager::ConnectHttpSvrConn()
 
 void DRTConnManager::PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra)
 {
+    if (m_pHttpSvrConn ) {
+        LI("1 ok\n");
+    }
+    if (meetingid.length()>0) {
+        LI("2 ok\n");
+    }
+    if (msgFromId.length()>0) {
+        LI("3 ok\n");
+    }
+    if (meetingOnlineMembers.length()>0) {
+        LI("4 ok\n");
+    }
+    if (pushMsg.length()>0) {
+        LI("5 ok\n");
+    }
+    if (notification.length()>0) {
+        LI("6 ok\n");
+    }
+    if (extra.length()>0) {
+        LI("7 ok\n");
+    }
     if (m_pHttpSvrConn && meetingid.length()>0 && msgFromId.length()>0 && meetingOnlineMembers.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
         m_pHttpSvrConn->HttpPushMeetingMsg(meetingid.c_str(), msgFromId.c_str(), meetingOnlineMembers.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
     } else {
@@ -487,7 +508,7 @@ int DRTConnManager::DispTimerCallback(const char*pData, int nLen)
         }
         if (root["type"].asInt() == SESSEVENT::_sess_lost) {//offline and reconnect
             std::string s("");
-            if (root["module"].asInt()==TRANSFERMODULE::mconnector) {// connect to connector
+            if (root["module"].asInt()== pms::ETransferModule::MCONNECTOR) {// connect to connector
                 s = "/dync/teameeting/connector/" + root["ip"].asString();
             } else {
                 return 0;
