@@ -182,14 +182,12 @@ void MRTTransferSession::OnTransfer(const std::string& str)
 void MRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
 {
 #if DEF_PROTO
-    LI("MRTTransferSession::OnMsgAck...\n");
     pms::TransferMsg ack_msg;
     ack_msg.set_type(tmsg.type());
     ack_msg.set_flag(pms::ETransferFlag::FACK);
     ack_msg.set_priority(tmsg.priority());
 
-    const std::string s = ack_msg.SerializeAsString();
-    OnTransfer(s);
+    OnTransfer(ack_msg.SerializeAsString());
 #else
     LE("not define DEF_PROTO\n")
 #endif
@@ -202,7 +200,9 @@ void MRTTransferSession::OnTypeConn(const std::string& str)
     if (!c_msg.ParseFromString(str)) {
         LE("OnTypeConn c_msg.ParseFromString error\n");
     }
-    // if ok
+    LI("OnTypeConn connmsg--->:\n");
+    c_msg.PrintDebugString();
+
     if ((c_msg.conn_tag() == pms::EConnTag::THELLO)) {
         // when ME connector to other:
         if (c_msg.transferid().length()>0) {
@@ -271,7 +271,6 @@ void MRTTransferSession::OnTypeTrans(const std::string& str)
         case pms::EMsgTag::TNOTIFY:
         {
             //handle msgs
-            std::string tos, res;
             MRTRoomManager::Instance().HandleDcommRoom(r_msg, m_msg);
         }
             break;
@@ -321,8 +320,8 @@ void MRTTransferSession::OnTypeTLogout(const std::string& str)
     if (!r_msg.ParseFromString(str)) {
         LE("OnTypeTLogout r_msg.ParseFromString error\n");
     }
-    pms::ToUser to = r_msg.touser();
-    OnConnectionLostNotify(to.users(0), r_msg.content(), r_msg.connector());
+    Assert(r_msg.touser().users_size == 1);
+    OnConnectionLostNotify(r_msg.touser().users(0), r_msg.content(), r_msg.connector());
     return;
 #else
     LE("not define DEF_PROTO\n")

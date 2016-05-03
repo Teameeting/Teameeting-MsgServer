@@ -1,21 +1,7 @@
 package pms;
 
-import "msg_type.proto";
-
-// this is for client sending
-message MsgReq{
-    optional EServerCmd     svr_cmds = 1;
-    optional EModuleType    mod_type = 2;
-    optional bytes          content  = 3;
-}
-
-// this is for client recving
-message MsgRep{
-    optional EServerCmd     svr_cmds = 1;
-    optional EModuleType    mod_type = 2;
-    optional bytes          rsp_cont = 3;
-    optional sint32         rsp_code = 4;
-}
+import "common_msg.proto";
+import "sys_msg_type.proto";
 
 // this is for server module connecting connection
 message ConnMsg{
@@ -41,5 +27,3 @@ message TransferMsg{
     optional ETransferPriority priority = 3 [default = PNORMAL];
     optional bytes   content            = 4; // the message to transfer
 }
-
-

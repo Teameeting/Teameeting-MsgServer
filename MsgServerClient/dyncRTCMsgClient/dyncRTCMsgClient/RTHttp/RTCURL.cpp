@@ -7,18 +7,18 @@
 //
 
 #include "RTCURL.hpp"
-#include "rtcmsgs/proto/meet_msg.pb.h"
 
 RTCURL::RTCURL()
 {
-    pCurl = curl_easy_init();
+    //pCurl = curl_easy_init();
 }
 
 RTCURL::~RTCURL()
 {
-    if (pCurl) {
-        curl_easy_cleanup(pCurl);
-    }
+    //if (pCurl) {
+    //    curl_easy_cleanup(pCurl);
+    //    pCurl = NULL;
+    //}
 }
 
 void RTCURL::RTCurlPostUserInit(const std::string& strPath, const std::string& strData, std::string& strResp)
@@ -27,6 +27,7 @@ void RTCURL::RTCurlPostUserInit(const std::string& strPath, const std::string& s
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
+    CURL *pCurl = curl_easy_init();
     curl_easy_setopt(pCurl, CURLOPT_HEADER, headers);   // 指定headers
     curl_easy_setopt(pCurl, CURLOPT_URL, strPath.c_str());   // 指定url
     curl_easy_setopt(pCurl, CURLOPT_POST, 1);
@@ -35,6 +36,7 @@ void RTCURL::RTCurlPostUserInit(const std::string& strPath, const std::string& s
     curl_easy_setopt(pCurl, CURLOPT_WRITEFUNCTION, &RTCURL::UserInitCallback);
     curl_easy_setopt(pCurl, CURLOPT_WRITEDATA, (void*)&strCont);
     curlCode = curl_easy_perform(pCurl);
+    curl_slist_free_all(headers);
     if(curlCode == CURLcode::CURLE_OK)
     {
         long responseCode = 0;
@@ -51,6 +53,8 @@ void RTCURL::RTCurlPostUserInit(const std::string& strPath, const std::string& s
     } else {
         strResp = "";
     }
+    curl_easy_cleanup(pCurl);
+    pCurl = NULL;
 }
 
 size_t RTCURL::UserInitCallback(void* data, size_t size, size_t nmemb, void* content)
@@ -70,6 +74,7 @@ void RTCURL::RTCurlPostApplyRoom(const std::string& strPath, const std::string& 
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Accept: application/json");
     headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
+    CURL *pCurl = curl_easy_init();
     curl_easy_setopt(pCurl, CURLOPT_HEADER, headers);   // 指定headers
     curl_easy_setopt(pCurl, CURLOPT_URL, strPath.c_str());   // 指定url
     curl_easy_setopt(pCurl, CURLOPT_POST, 1);
@@ -78,6 +83,7 @@ void RTCURL::RTCurlPostApplyRoom(const std::string& strPath, const std::string& 
     curl_easy_setopt(pCurl, CURLOPT_WRITEFUNCTION, &RTCURL::ApplyRoomCallback);
     curl_easy_setopt(pCurl, CURLOPT_WRITEDATA, (void*)&strCont);
     curlCode = curl_easy_perform(pCurl);
+    curl_slist_free_all(headers);
     //printf("curl_easy_perform curlCode:%d\n", curlCode);
     if(curlCode == CURLcode::CURLE_OK)
     {
@@ -95,6 +101,8 @@ void RTCURL::RTCurlPostApplyRoom(const std::string& strPath, const std::string& 
     } else {
         strResp = "";
     }
+    curl_easy_cleanup(pCurl);
+    pCurl = NULL;
 }
 
 size_t RTCURL::ApplyRoomCallback(void* data, size_t size, size_t nmemb, void* content)

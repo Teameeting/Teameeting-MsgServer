@@ -23,7 +23,8 @@ const int kPostDelay = 3000;
 const int kTimes = 3;
 
 RTConnClientManager::RTConnClientManager()
-: rtc::Thread(NULL)
+: rtc::MessageHandler()
+, rtc::Thread(NULL)
 , mIsRun(false)
 , mThreadRun(false)
 , mTimes(0){

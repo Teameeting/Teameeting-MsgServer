@@ -1,6 +1,7 @@
 package pms;
 
-import "msg_type.proto";
+import "common_msg.proto";
+import "meet_msg_type.proto";
 
 message Login{
     optional string         usr_from  = 1; // user id sending from
@@ -29,5 +30,5 @@ message MeetMsg{
     optional string         usr_token = 9; // user token
     optional sint64         msg_seqs  = 10; // msg sequence number
     optional sint32         mem_num   = 11; // room member number
-    optional string         usr_toto  = 12; // user ids sending to, the string from pms::ToUser
+    optional ToUser         usr_toto  = 12; // user ids sending to, the string from pms::ToUser
 }

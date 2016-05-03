@@ -10,9 +10,10 @@
 #include "rtklog.h"
 #include "CRTConnector.h"
 #include "RTZKClient.hpp"
+#include <google/protobuf/message.h>
 
 #ifndef _TEST_
-#define _TEST_ 1
+#define _TEST_ 0
 #endif
 
 int main(int argc, const char * argv[]) {
@@ -36,7 +37,13 @@ int main(int argc, const char * argv[]) {
         exit(0);
     }
 
-    L_Init(0, NULL);
+    int level = RTZKClient::Instance().GetServerConfig().Level;
+    std::string logpath = RTZKClient::Instance().GetServerConfig().LogPath;
+    if (logpath.empty())
+        L_Init(level, NULL);
+    else
+        L_Init(level, logpath.c_str());
+
     CRTConnector::Initialize(1024);
     CRTConnector* pConnector = CRTConnector::Inst();
     int res = pConnector->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
@@ -63,5 +70,6 @@ EXIT:
     CRTConnector::DeInitialize();
     L_Deinit();
     RTZKClient::Instance().Unin();
+    google::protobuf::ShutdownProtobufLibrary();
     return 0;
 }

@@ -7,9 +7,11 @@
 #include "RTUtils.hpp"
 
 #define DEF_PTORO 1
-#include "MsgServer/MSCommon/MSProtocol/proto/msg_type.pb.h"
-#include "MsgServer/MSCommon/MSProtocol/proto/meet_msg.pb.h"
-#include "MsgServer/MSCommon/MSProtocol/proto/sys_msg.pb.h"
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/meet_msg.pb.h"
+#include "MsgServer/proto/meet_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
 
 std::string		CRTConnection::gStrAddr;
 unsigned short	CRTConnection::gUsPort = 0;

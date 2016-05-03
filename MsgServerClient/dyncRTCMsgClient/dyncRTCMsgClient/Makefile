@@ -2,14 +2,14 @@ C++ = $(CPLUS)
 # Copyright (c) 1999 Apple Computer, Inc.  All rights reserved.
 #  
 
-NAME = rtcmsgclient-linux
+NAME = msgclient
 C++ = g++
 CC = gcc
 ###INCLUDE_FLAG = -include
 WEBRTC_BASE_PATH = .
 INCLUDE_FLAG = 
 LINK = $(LINKER)
-CCFLAGS += $(COMPILER_FLAGS) $(INCLUDE_FLAG) -g -Wall -std=c++11 -DPOSIX -DENABLE_DEBUG=1 -DWEBRTC_LINUX -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS
+CCFLAGS += $(COMPILER_FLAGS) $(INCLUDE_FLAG) -g -Wall -std=c++11 -DPOSIX -DENABLE_DEBUG=1 -DWEBRTC_LINUX -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DNO_MAIN_THREAD_WRAPPING
 
 # OPTIMIZATION
 CCFLAGS += -O2
@@ -74,9 +74,11 @@ CCFILES := $(WEBRTC_BASE_PATH)/webrtc/base/asyncfile.cc \
 			$(WEBRTC_BASE_PATH)/webrtc/base/timeutils.cc
 
 CCFILES += \
-			./rtcmsgs/proto/msg_type.pb.cc \
-			./rtcmsgs/proto/meet_msg.pb.cc \
-			./rtcmsgs/proto/sys_msg.pb.cc
+			./proto/common_msg.pb.cc \
+			./proto/meet_msg.pb.cc \
+			./proto/meet_msg_type.pb.cc \
+			./proto/sys_msg.pb.cc \
+			./proto/sys_msg_type.pb.cc
 
 CPPFLAGS+=-lcurl
 	

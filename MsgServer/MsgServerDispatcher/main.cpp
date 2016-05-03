@@ -10,9 +10,10 @@
 #include "rtklog.h"
 #include "DRTMsgQueue.h"
 #include "RTZKClient.hpp"
+#include <google/protobuf/message.h>
 
 #ifndef _TEST_
-#define _TEST_ 1
+#define _TEST_ 0
 #endif
 
 int main(int argc, const char * argv[]) {
@@ -37,7 +38,13 @@ int main(int argc, const char * argv[]) {
         exit(0);
     }
 
-    L_Init(0, NULL);
+    int level = RTZKClient::Instance().GetServerConfig().Level;
+    std::string logpath = RTZKClient::Instance().GetServerConfig().LogPath;
+    if (logpath.empty())
+        L_Init(level, NULL);
+    else
+        L_Init(level, logpath.c_str());
+
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
     int res = pMsgQueue->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
@@ -52,7 +59,7 @@ int main(int argc, const char * argv[]) {
         LI("DRTMsgQueue start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 110) {
+    //while (test++ < 100) {
     while (1) {
         pMsgQueue->DoTick();
         sleep(1);
@@ -64,5 +71,6 @@ EXIT:
     DRTMsgQueue::DeInitialize();
     L_Deinit();
     RTZKClient::Instance().Unin();
+    google::protobuf::ShutdownProtobufLibrary();
     return 0;
 }

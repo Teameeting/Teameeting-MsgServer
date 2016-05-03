@@ -105,10 +105,8 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, cons
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        std::string tousers;
-        std::list<std::string> ulist;
-        m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, tousers, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
+        std::vector<std::string> uvec;
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
@@ -142,10 +140,8 @@ int XMsgClient::OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        std::string tousers;
-        std::list<std::string> ulist;
-        m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, tousers, "", tag, pms::EMsgType::TMSG);
+        std::vector<std::string> uvec;
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, "", tag, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
@@ -156,7 +152,7 @@ int XMsgClient::OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::list<std::string>& ulist)
+int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::vector<std::string>& uvec)
 {
     if (msg.length()>1024 || rname.length()>128) {
         return -2;
@@ -164,9 +160,7 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        std::string tousers;
-        m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, tousers, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
@@ -185,10 +179,8 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, p
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        std::string tousers;
-        std::list<std::string> ulist;
-        m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, tousers, msg, tag, pms::EMsgType::TMSG);
+        std::vector<std::string> uvec;
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, tag, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
@@ -285,7 +277,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
         ptr[msg.length()+3] = '\0';
         if (m_pClientImpl) {
             int n = m_pClientImpl->SendMessageX(ptr, (int)(msg.length()+3));
-            delete ptr;
+            delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             return n;

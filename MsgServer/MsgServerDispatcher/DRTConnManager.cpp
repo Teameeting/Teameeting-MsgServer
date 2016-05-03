@@ -190,6 +190,7 @@ bool DRTConnManager::ClearAll()
 {
     if (m_pConnDispatcher)
         m_pConnDispatcher->Signal(Task::kKillEvent);
+    m_pConnDispatcher = nullptr;
     {
         OSMutexLocker mlocker(&s_mutexModule);
         for (auto & x : s_ModuleInfoMap) {
@@ -399,27 +400,6 @@ bool DRTConnManager::ConnectHttpSvrConn()
 
 void DRTConnManager::PushMeetingMsg(const std::string& meetingid, const std::string& msgFromId, const std::string& meetingOnlineMembers, const std::string& pushMsg, const std::string& notification, const std::string& extra)
 {
-    if (m_pHttpSvrConn ) {
-        LI("1 ok\n");
-    }
-    if (meetingid.length()>0) {
-        LI("2 ok\n");
-    }
-    if (msgFromId.length()>0) {
-        LI("3 ok\n");
-    }
-    if (meetingOnlineMembers.length()>0) {
-        LI("4 ok\n");
-    }
-    if (pushMsg.length()>0) {
-        LI("5 ok\n");
-    }
-    if (notification.length()>0) {
-        LI("6 ok\n");
-    }
-    if (extra.length()>0) {
-        LI("7 ok\n");
-    }
     if (m_pHttpSvrConn && meetingid.length()>0 && msgFromId.length()>0 && meetingOnlineMembers.length()>0 && pushMsg.length()>0 && notification.length()>0 && extra.length()>0) {
         m_pHttpSvrConn->HttpPushMeetingMsg(meetingid.c_str(), msgFromId.c_str(), meetingOnlineMembers.c_str(), pushMsg.c_str(), notification.c_str(), extra.c_str());
     } else {

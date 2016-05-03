@@ -221,6 +221,10 @@ void RTMsgThreadManager::GetRoomIds()
         memset(ids, 0, 16);
     }
     printf("RTMsgThreadManager::GetRoomIds mRoomId.size:%ld\n", mRoomIds.size());
+    if (fRoomIds) {
+         fclose(fRoomIds);
+         fRoomIds = NULL;
+    }
 }
 
 void RTMsgThreadManager::ShowRoomIds()

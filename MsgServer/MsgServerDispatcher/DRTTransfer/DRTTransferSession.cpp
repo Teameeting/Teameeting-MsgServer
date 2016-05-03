@@ -180,14 +180,12 @@ void DRTTransferSession::OnTransfer(const std::string& str)
 void DRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
 {
 #if DEF_PROTO
-    LI("DRTTransferSession::OnMsgAck...\n");
     pms::TransferMsg ack_msg;
     ack_msg.set_type(tmsg.type());
     ack_msg.set_flag(pms::ETransferFlag::FACK);
     ack_msg.set_priority(tmsg.priority());
 
-    const std::string s = ack_msg.SerializeAsString();
-    OnTransfer(s);
+    OnTransfer(ack_msg.SerializeAsString());
 #else
     LE("not define DEF_PROTO\n");
 #endif
@@ -199,8 +197,11 @@ void DRTTransferSession::OnTypeConn(const std::string& str)
     pms::ConnMsg c_msg;
     if (!c_msg.ParseFromString(str)) {
         LE("OnTypeConn c_msg ParseFromString error\n");
+        return;
     }
-    // if ok
+    LI("OnTypeConn connmsg--->:\n");
+    c_msg.PrintDebugString();
+
     if ((c_msg.conn_tag() == pms::EConnTag::THI)) {
         // when other connect to ME:
         // send the transfersessionid and MsgQueueId to other
@@ -278,13 +279,12 @@ void DRTTransferSession::OnTypeConn(const std::string& str)
                 DRTConnManager::Instance().AddModuleInfo(pmi, m_transferSessId);
                 //store which moudle connect to this connector
                 //store other module id
-                LI("store moduleid:%s, transfersessid:%s\n", c_msg.moduleid().c_str(), m_transferSessId.c_str());
+                LI("store module type:%d, moduleid:%s, transfersessid:%s\n", (int)c_msg.tr_module(), c_msg.moduleid().c_str(), m_transferSessId.c_str());
                 DRTConnManager::Instance().AddTypeModuleSession(c_msg.tr_module(), c_msg.moduleid(), m_transferSessId);
             } else {
                 LE("new ModuleInfo error!!!!\n");
             }
         }
-
     }  else if (c_msg.conn_tag() == pms::EConnTag::TKEEPALIVE) {
         RTTcp::UpdateTimer();
     } else {
@@ -303,26 +303,17 @@ void DRTTransferSession::OnTypeTrans(const std::string& str)
 void DRTTransferSession::OnTypeQueue(const std::string& str)
 {
 #if DEF_PROTO
-    pms::ToUser auser;//all user
     pms::RelayMsg rmsg;
     if (!rmsg.ParseFromString(str)) {
         LE("r_msg.ParseFromString error\n");
         return;
     }
-    {
-        //get auser
-        //if (!auser.ParseFromString(rmsg.touser())) {
-        //    LE("auser.ParseFromString error\n");
-        //    return;
-        //}
-        auser = rmsg.touser();
-    }
-    LI("Queue msg:%s\n", str.c_str());
+    //get all user
+    pms::ToUser auser = rmsg.touser();
     bool needDispatch = false;
     bool needPush = false;
-    pms::ToUser *pduser = new pms::ToUser;//dispatcher
-    pms::ToUser *pallduser = new pms::ToUser;
-    pms::ToUser puser;//pusher
+    pms::RelayMsg pmsg;
+    pms::ToUser *pallduser = pmsg.mutable_touser();
     DRTConnManager::UserConnectorMaps connUserId;
     {
         //check user online or offline
@@ -330,12 +321,11 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
             if (DRTConnManager::Instance().IsMemberInOnline((auser.users(i)))) {
                 std::string cid("");
                 DRTConnManager::Instance().GetUserConnectorId((auser.users(i)), cid);
-                printf("dispatch userid:%s, connectorid:%s\n", (auser.users(i)).c_str(), cid.c_str());
                 connUserId.insert(make_pair(cid, (auser.users(i))));
                 pallduser->add_users(auser.users(i));
                 needDispatch = true;
             } else {
-                ////puser.add_users(auser.users(i));
+                ////add all the needed push user;
                 needPush = true;
             }
         }
@@ -349,35 +339,37 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
                     continue;
                 }
                 std::string sess = connUserId.begin(i)->first;
+                pms::RelayMsg dmsg;
+                pms::ToUser *pduser = dmsg.mutable_touser();
                 for (auto& x:connUserId) {
                     pduser->add_users(x.second);
                 }
-                pms::RelayMsg dmsg;
                 dmsg.set_svr_cmds(rmsg.svr_cmds());
                 dmsg.set_tr_module(rmsg.tr_module());
-                dmsg.set_allocated_touser(pduser);
                 dmsg.set_content(rmsg.content());
                 dmsg.set_connector(connUserId.begin(i)->first);//which connector comes from
 
                 std::string sd = dmsg.SerializeAsString();
-                LI("OnTypeQueue dmsg._dmsg._connector.c_str():%s\n", dmsg.connector().c_str());
                 m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
+
+                LI("OnTypeQueue dispatch msg--->:\n");
+                dmsg.PrintDebugString();
             }
         }
     }
     {
         //if offline, push to offline msgqueue
         if (needPush) {
-            pms::RelayMsg pmsg;
             pmsg.set_svr_cmds(rmsg.svr_cmds());
             pmsg.set_tr_module(rmsg.tr_module());
             pmsg.set_content(rmsg.content());
             pmsg.set_connector(rmsg.connector());//which connector comes from
-            pmsg.set_allocated_touser(pallduser);
 
             std::string sp = pmsg.SerializeAsString();
-            LI("OnTypeQueue pmsg._pmsg._connector.c_str():%s\n", pmsg.connector().c_str());
             m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
+
+            LI("OnTypeQueue push msg--->:\n");
+            pmsg.PrintDebugString();
         }
     }
 #else
@@ -402,11 +394,8 @@ void DRTTransferSession::OnTypeTLogin(const std::string& str)
     if (!rmsg.ParseFromString(str)) {
         LE("OnTypeLogin rmsg.ParseFromString error\n");
     }
-    pms::ToUser to = rmsg.touser();
-    //if (!to.ParseFromString(rmsg.touser())) {
-    //    LE("OnTypeLogin to.ParseFromString error\n");
-    //}
-    DRTConnManager::Instance().OnTLogin(to.users(0), rmsg.content(), rmsg.connector());
+    Assert(rmsg.touser.users_size()==1);
+    DRTConnManager::Instance().OnTLogin(rmsg.touser().users(0), rmsg.content(), rmsg.connector());
 #else
     LI("not define DEF_PROTO\n");
 #endif
@@ -419,8 +408,8 @@ void DRTTransferSession::OnTypeTLogout(const std::string& str)
     if (!rmsg.ParseFromString(str)) {
         LE("OnTypeLogout rmsg.ParseFromString error\n");
     }
-    pms::ToUser to = rmsg.touser();
-    DRTConnManager::Instance().OnTLogout(to.users(0), rmsg.content(), rmsg.connector());
+    Assert(rmsg.touser.users_size()==1);
+    DRTConnManager::Instance().OnTLogout(rmsg.touser().users(0), rmsg.content(), rmsg.connector());
 #else
     LI("not define DEF_PROTO\n");
 #endif

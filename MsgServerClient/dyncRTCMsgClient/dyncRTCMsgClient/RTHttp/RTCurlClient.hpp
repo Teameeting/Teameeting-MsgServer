@@ -16,13 +16,12 @@ class RTCurlClient{
 public:
     RTCurlClient(const std::string& httpHost);
     ~RTCurlClient();
-    
+
 public:
     void RTUserInit(const std::string& userid, const std::string& uactype, const std::string& uregtype, const std::string& ulogindev, const std::string& upushtoken, std::string& resp);
     void RTApplyRoom(const std::string& sign, const std::string& meetingname, const std::string& meetingtype, const std::string& pushable, const std::string& meetenable, const std::string& meetdesc, std::string& resp);
-    
+
 private:
-    RTCURL       mCurl;
     std::string  mHttpHost;
 };
 

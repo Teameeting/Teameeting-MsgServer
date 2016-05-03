@@ -421,7 +421,6 @@ else
     logerr "building mscommonlib not running..."
 fi
 
-
 ####################    building msgserverconnector    ###########################
 if [ "yes"x = "yes"x ]
 then

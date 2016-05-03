@@ -140,7 +140,6 @@ int MRTMeetingRoom::GetMeetingMemberJson(const std::string from, pms::ToUser* us
             LE("GetMeetingMemberJson member is 0\n");
             return -1;
         }
-        LI("meeting members:%d\n", m_roomMembers.size());
         MeetingMembersIt mit = m_meetingMembers.begin();
         for (int i=0; mit!=m_meetingMembers.end(); i++, mit++) {
             if ((*mit).compare(from)!=0) {
@@ -153,6 +152,7 @@ int MRTMeetingRoom::GetMeetingMemberJson(const std::string from, pms::ToUser* us
 #endif
     return 0;
 }
+
 int MRTMeetingRoom::GetAllMeetingMemberJson(pms::ToUser* users)
 {
 #if DEF_PROTO
@@ -163,7 +163,6 @@ int MRTMeetingRoom::GetAllMeetingMemberJson(pms::ToUser* users)
             LE("GetAllMeetingMemberJson member is 0\n");
             return -1;
         }
-        LI("all meeting members:%d\n", m_roomMembers.size());
         MeetingMembersIt mit = m_meetingMembers.begin();
         for (int i=0; mit!=m_meetingMembers.end(); i++, mit++) {
             users->add_users(*mit);
@@ -193,7 +192,6 @@ MRTMeetingRoom::MemberStatus MRTMeetingRoom::GetRoomMemberStatus(const std::stri
 void MRTMeetingRoom::UpdateMemberList(std::list<std::string>& ulist)
 {
     OSMutexLocker locker(&m_memberMutex);
-    LI("before UpdateMemberList size:%d\n", m_roomMembers.size());
     if (ulist.size()>=m_roomMembers.size()) {
         std::list<std::string>::iterator ait = ulist.begin();
         for (; ait!=ulist.end(); ait++) {
@@ -214,7 +212,6 @@ void MRTMeetingRoom::UpdateMemberList(std::list<std::string>& ulist)
             m_meetingMembers.erase((*dit));
             m_roomMembers.erase((*dit));
         }
-        LI("UpdateMemberList del member count:%d\n", m_roomMembers.size());
     }
 }
 
@@ -226,7 +223,6 @@ void MRTMeetingRoom::CheckMembers()
 
 void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
 {
-    LI("===>>>MRTMeetingRoom::AddWaitingMsgToList size:%d\n", (int)m_waitingMsgsList.size());
     OSMutexLocker locker(&m_wmsgMutex);
     m_waitingMsgsList.push_back(WaitingMsg(type, tag, rmsg, mmsg));
 }

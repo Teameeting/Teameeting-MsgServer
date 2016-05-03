@@ -11,8 +11,8 @@
 #include <sstream>
 #include <string>
 
-int gTestClientNum = 6;
-int gTestMessageNum = 30;
+int gTestClientNum = 2;
+int gTestMessageNum = 5;
 int gTestLoginNum = 10;
 
 RTMsgRoom::RTMsgRoom(int num, std::string& id)
@@ -60,6 +60,7 @@ void RTMsgRoom::After()
     }
     for (auto& x : mClientList) {
         delete x;
+        x = NULL;
         printf("After delete client\n");
     }
     mClientList.clear();
@@ -71,14 +72,14 @@ void RTMsgRoom::RunRun()
     long long num = 0;
     mIsRun = true;
     while (mIsRun) {
-        ++num;
+        //++num;
         TestMsg(++num);
         if (num==gTestMessageNum) {
             mIsRun = false;
         }
-        rtc::Thread::SleepMs(500);
+        rtc::Thread::SleepMs(100);
     }
-    rtc::Thread::SleepMs(3000);
+    rtc::Thread::SleepMs(1000);
     After();
 }
 

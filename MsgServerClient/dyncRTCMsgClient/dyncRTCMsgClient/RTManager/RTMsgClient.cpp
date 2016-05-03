@@ -10,9 +10,9 @@
 #include <unistd.h>
 #include "RTMsgClient.hpp"
 #include "webrtc/base/logging.h"
-#include "rtcmsgs/proto/msg_type.pb.h"
-#include "rtcmsgs/proto/meet_msg.pb.h"
-#include "rtcmsgs/proto/sys_msg.pb.h"
+#include "proto/common_msg.pb.h"
+#include "proto/meet_msg.pb.h"
+#include "proto/meet_msg_type.pb.h"
 
 #define DEF_PROTO 1
 
@@ -51,9 +51,9 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
     switch(meet.msg_tag()) {
         case pms::EMsgTag::TCHAT:
             {
-                LOG(INFO) << mUserid + " recv EMsgTag::TCHAT: " << meet.msg_cont();
+                LOG(INFO) <<  mUserid + " recv num:" << mRecvNum << " EMsgTag::TCHAT: " << meet.msg_cont();
                 mRecvNum++;
-                mMsgList.push_back(meet.msg_cont());
+                //mMsgList.push_back(meet.msg_cont());
             }
             break;
         case pms::EMsgTag::TENTER:
@@ -77,39 +77,7 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
             break;
     }
 #else
-    MEETMSG mmsg;
-    std::string err;
-    mmsg.GetMsg(msg, err);
-    if (err.length()>0) {
-        LOG(INFO) << "OnSndMsg err:" << err;
-        return;
-    }
-    if (mmsg._messagetype==MESSAGETYPE::request) {
-        switch(mmsg._tags) {
-            case SENDTAGS::sendtags_talk:
-            {
-                //LOG(INFO) << mUserid + " recv sendtags_talk: " << mmsg._cont;
-                mRecvNum++;
-                mMsgList.push_back(mmsg._cont);
-            }
-                break;
-            case SENDTAGS::sendtags_enter:
-            {
-                //LOG(INFO) << "sendtags_enter " << mmsg._cont;
-            }
-                break;
-            case SENDTAGS::sendtags_leave:
-            {
-                //LOG(INFO) << "sendtags_leave " << mmsg._cont;
-            }
-                break;
-            default:
-            {
-
-            }
-                break;
-        }
-    }
+    LOG(INFO) << "not define DEF_PROTO";
 #endif
 }
 
@@ -216,7 +184,7 @@ void RTMsgClient::SendMsg(const std::string& msg)
 
 void RTMsgClient::ShowRecvMsg()
 {
-    printf("User: %s ShowRecvMsg num:%d\n", mUserid.c_str(), (int)mMsgList.size());
+    printf("User: %s ShowRecvMsg num:%d\n", mUserid.c_str(), mRecvNum);
     //for (auto& x : mMsgList) {
     //    printf("SHowRecvMsg :%s\n", x.c_str());
     //}

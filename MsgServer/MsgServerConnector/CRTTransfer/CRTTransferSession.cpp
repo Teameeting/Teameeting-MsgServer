@@ -48,21 +48,21 @@ void CRTTransferSession::Unit()
 bool CRTTransferSession::Connect(const std::string addr, int port)
 {
     if (addr.empty() || port < 2048) {
-        LE("%s invalid params addr:%s, port:%d\n", __FUNCTION__, addr.c_str(), port);
+        LE("invalid params addr:%s, port:%d\n", addr.c_str(), port);
         return false;
     }
     OS_Error err = GetSocket()->Connect(SocketUtils::ConvertStringToAddr(addr.c_str()), port);
     if (err == OS_NoErr || err == EISCONN) {
         return true;
     } else {
-        LE("%s ERR:%d\n", __FUNCTION__, err);
+        LE("Socket Connect  ERR:%d\n", err);
         return false;
     }
 }
 
 void CRTTransferSession::Disconn()
 {
-    //GetSocket()->Cleanup();
+
 }
 
 void CRTTransferSession::TestConnection()
@@ -102,13 +102,12 @@ void CRTTransferSession::ConnectionLostNotify(const std::string& uid, const std:
 #if DEF_PROTO
     pms::TransferMsg t_msg;
     pms::RelayMsg r_msg;
-    pms::ToUser *pto = new pms::ToUser;
+    pms::ToUser *pto = r_msg.mutable_touser();
     pto->add_users(uid);
 
     r_msg.set_tr_module(pms::ETransferModule::MCONNECTOR);
     r_msg.set_connector(CRTConnManager::Instance().ConnectorId());
     r_msg.set_content(token);
-    r_msg.set_allocated_touser(pto);
 
     t_msg.set_type(pms::ETransferType::TLOGOUT);
     t_msg.set_content(r_msg.SerializeAsString());
@@ -125,13 +124,12 @@ void CRTTransferSession::ConnectionConnNotify(const std::string& uid, const std:
 #if DEF_PROTO
     pms::TransferMsg t_msg;
     pms::RelayMsg r_msg;
-    pms::ToUser *pto = new pms::ToUser;
+    pms::ToUser *pto = r_msg.mutable_touser();
     pto->add_users(uid);
 
     r_msg.set_tr_module(pms::ETransferModule::MCONNECTOR);
     r_msg.set_connector(CRTConnManager::Instance().ConnectorId());
     r_msg.set_content(token);
-    r_msg.set_allocated_touser(pto);
 
 
     t_msg.set_type(pms::ETransferType::TLOGIN);
@@ -188,7 +186,6 @@ void CRTTransferSession::OnTransfer(const std::string& str)
 void CRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
 {
 #if DEF_PROTO
-    LI("CRTTransferSession::OnMsgAck...\n");
     pms::TransferMsg ack_msg;
     ack_msg.set_type(tmsg.type());
     ack_msg.set_flag(pms::ETransferFlag::FACK);
@@ -204,12 +201,11 @@ void CRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
 void CRTTransferSession::OnTypeConn(const std::string& str)
 {
 #if DEF_PROTO
-    LI("CRTTransferSession::OnTypeConn was enter\n");
     pms::ConnMsg c_msg;
     if (!c_msg.ParseFromString(str)) {
         LE("OnTypeConn c_msg.ParseFromString error\n");
     }
-    LI("CRTTransferSession::OnTypeConn--->\n");
+    LI("OnTypeConn connmsg--->:\n");
     c_msg.PrintDebugString();
 
     if ((c_msg.conn_tag() == pms::EConnTag::THI)) {
@@ -234,7 +230,6 @@ void CRTTransferSession::OnTypeConn(const std::string& str)
 
         t_msg.set_content(c_msg.SerializeAsString());
         std::string s = t_msg.SerializeAsString();
-        LI("CRTTransferSession::OnTypeConn SendTransferData...\n");
         SendTransferData(s.c_str(), (int)s.length());
     } else if ((c_msg.conn_tag() == pms::EConnTag::THELLOHI)) {
         // when other connect to ME:
@@ -252,7 +247,8 @@ void CRTTransferSession::OnTypeConn(const std::string& str)
                 //store which moudle connect to this connector
                 //c_msg._moduleid: store other's module id
                 CRTConnManager::Instance().AddTypeModuleSession(c_msg.tr_module(), c_msg.moduleid(), m_transferSessId);
-                LI("store the other's module :%d, id:%s, transfersessid:%s\n", (int)c_msg.tr_module(),  c_msg.moduleid().c_str(), c_msg.transferid().c_str());
+
+                LI("store the module :%d, id:%s, transfersessid:%s\n", (int)c_msg.tr_module(), c_msg.moduleid().c_str(), c_msg.transferid().c_str());
             } else {
                 LE("new ModuleInfo error!!!\n");
             }
@@ -285,18 +281,8 @@ void CRTTransferSession::OnTypeDispatch(const std::string& str)
         LE("OnTypeDispatch dmsg.ParseFromString error\n");
     }
     pms::ToUser to = dmsg.touser();
-    LI("CRTTransferSession::OnTypeDispatch--->touser:\n");
-    to.PrintDebugString();
-#if 0
-    pms::MsgRep resp;
-    resp.ParseFromString(dmsg.content());
-    LI("CRTTransferSession::OnTypeDispatch--->resp:\n");
-    resp.PrintDebugString();
-    pms::MeetMsg meet;
-    meet.ParseFromString(resp.rsp_cont());
-    LI("CRTTransferSession::OnTypeDispatch--->meet:\n");
-    meet.PrintDebugString();
-#endif
+    LI("OnTypeDispatch dmsg--->:\n");
+    dmsg.PrintDebugString();
 
     {
         for(int i = 0;i < to.users_size(); ++i) {
@@ -326,7 +312,7 @@ void CRTTransferSession::OnTypeTLogout(const std::string& str)
 void CRTTransferSession::ConnectionDisconnected()
 {
     if (m_transferSessId.length()>0) {
-        LI("CRTTransferSession::ConnectionDisconnected m_transferSessId:%s\n", m_transferSessId.c_str());
+        LI("ConnectionDisconnected m_transferSessId:%s\n", m_transferSessId.c_str());
         CRTConnManager::Instance().TransferSessionLostNotify(m_transferSessId);
     }
 }

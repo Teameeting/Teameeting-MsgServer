@@ -27,8 +27,7 @@ RTZKClient::~RTZKClient()
 
 void RTZKClient::RTZKLogCallBack(void* ctx, const std::string& l)
 {
-    //std::cout << "Log:" << l << std::endl;
-    //printf("Log:%s\n", l.c_str());
+    //LI("Log:%s\n", l.c_str());
 }
 
 int RTZKClient::RTZKDataCallback(void* ctx, int version, const std::string& data)

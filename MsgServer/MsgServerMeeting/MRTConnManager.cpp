@@ -253,7 +253,6 @@ void MRTConnManager::TransferSessionLostNotify(const std::string& sid)
         request["port"] = data.connect.port;
         std::string s = request.toStyledString();
         LI("TransferSessionLostNotify EventData mtype:%d, module:%d, ip:%s, port:%d\n", data.mtype, data.connect.module, data.connect.ip, data.connect.port);
-        LI("TransferSessionLostNotify s:%s\n", s.c_str());
         RTEventTimer* timer = new RTEventTimer(RETRY_MAX_TIME, &MRTConnManager::ConnTimerCallback);
         timer->DataDelay(s.c_str(), (int)s.length());
         LI("Waiting for Session Reconnecting...");

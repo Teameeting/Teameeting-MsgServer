@@ -23,8 +23,14 @@ noinst_HEADERS=$(top_srcdir)/MSCommon/PlatformHeader.h \
 			   $(top_srcdir)/MSCommon/sigslot.h \
 			   $(top_srcdir)/MSCommon/config_parser.h
 
-libMSCommon_a_SOURCES=$(top_srcdir)/MSCommon/sigslot.cc \
-					  $(top_srcdir)/MSCommon/config_parser.cpp \
+libMSCommon_a_SOURCES= \
+				$(top_srcdir)/proto/common_msg.pb.cc \
+				$(top_srcdir)/proto/meet_msg.pb.cc \
+				$(top_srcdir)/proto/meet_msg_type.pb.cc \
+				$(top_srcdir)/proto/sys_msg.pb.cc \
+				$(top_srcdir)/proto/sys_msg_type.pb.cc \
+				$(top_srcdir)/MSCommon/sigslot.cc \
+				$(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTDispatch.cpp \
@@ -40,8 +46,5 @@ libMSCommon_a_SOURCES=$(top_srcdir)/MSCommon/sigslot.cc \
 				$(top_srcdir)/MSCommon/MSProtocol/RTHttpMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMeetMsg.cpp \
 				$(top_srcdir)/MSCommon/MSProtocol/RTMessage.cpp \
-				$(top_srcdir)/MSCommon/MSProtocol/RTSignalMsg.cpp \
-				$(top_srcdir)/MSCommon/MSProtocol/proto/msg_type.pb.cc \
-				$(top_srcdir)/MSCommon/MSProtocol/proto/meet_msg.pb.cc \
-				$(top_srcdir)/MSCommon/MSProtocol/proto/sys_msg.pb.cc
+				$(top_srcdir)/MSCommon/MSProtocol/RTSignalMsg.cpp
 

@@ -18,9 +18,11 @@
 
 #define DEF_PROTO 1
 #if DEF_PROTO
-#include "MsgServer/MSCommon/MSProtocol/proto/msg_type.pb.h"
-#include "MsgServer/MSCommon/MSProtocol/proto/meet_msg.pb.h"
-#include "MsgServer/MSCommon/MSProtocol/proto/sys_msg.pb.h"
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/meet_msg.pb.h"
+#include "MsgServer/proto/meet_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
 #endif
 
 class RTTransfer{

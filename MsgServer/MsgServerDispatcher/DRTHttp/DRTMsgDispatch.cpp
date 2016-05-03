@@ -46,25 +46,19 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         LE("mmsg.ParseFromString error\n");
         return;
     }
+
+    LI("DRTMsgDispatch::OnPushEvent RelayMsg--->:\n");
     pmsg.PrintDebugString();
-    respmsg.PrintDebugString();
-    mmsg.PrintDebugString();
 
     TOPUSHUSER pushUser;
-    pms::ToUser toUser = pmsg.touser();
-    for(int i=0;i<toUser.users_size();++i) {
-        pushUser._us.push_back((toUser.users(i)));
+    for(int i=0;i<pmsg.touser().users_size();++i) {
+        pushUser._us.push_back((pmsg.touser().users(i)));
     }
 
     TOPUSHMSG pushMsg;
     pushMsg._tags = mmsg.msg_tag();
     pushMsg._roomid = mmsg.rom_id();
     std::string strPushMsg = pushMsg.ToJson();
-    printf("mmsg.romd_id:%s\n", mmsg.rom_id().c_str());
-    printf("mmsg.usr_from:%s\n", mmsg.usr_from().c_str());
-    printf("pushUser.ToJson:%s\n", pushUser.ToJson().c_str());
-    printf("mmsg.msg_cont:%s\n", mmsg.msg_cont().c_str());
-    printf("strPushMsg:%s\n", strPushMsg.c_str());
 
     if (mmsg.msg_tag() == pms::EMsgTag::TCHAT) {
         std::string no = mmsg.rom_name() + " - " + mmsg.nck_name() + ": " + mmsg.msg_cont();
@@ -106,7 +100,7 @@ void DRTMsgDispatch::OnSendEvent(const char*pData, int nLen)
     if (pmi && pmi->pModule) {
         pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
     } else {
-        LE("mi.pModule is NULL\n");
+        LE("DRTMsgDispatch::OnSendEvent connector module %s is NULL\n", dmsg.connector().c_str());
     }
 #else
     LE("not define DEF_PROTO\n");

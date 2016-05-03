@@ -25,10 +25,10 @@ void RTHiredis::Connect(int timeout)
     m_redisContext = redisConnectWithTimeout(m_host.c_str(), m_port, st_timeout);
     if (m_redisContext == NULL || m_redisContext->err) {
         if (m_redisContext) {
-            printf("Connection error: %s\n", m_redisContext->errstr);
+            LE("Connection error: %s\n", m_redisContext->errstr);
             redisFree(m_redisContext);
         } else {
-            printf("Connection error: can't allocate redis context\n");
+            LE("Connection error: can't allocate redis context\n");
         }
         exit(1);
     }

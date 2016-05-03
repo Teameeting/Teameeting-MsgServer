@@ -54,7 +54,6 @@ CRTConnManager::ConnectionInfo* CRTConnManager::findConnectionInfoById(const std
 
 bool CRTConnManager::AddModuleInfo(CRTConnManager::ModuleInfo* pmi, const std::string& sid)
 {
-    LI("CRTConnManager::AddModuleInfo module:%d\n", pmi->othModuleType);
     OSMutexLocker locker(&s_mutexModule);
     CRTConnManager::ModuleInfoMapsIt it = s_ModuleInfoMap.find(sid);
     if (it!=s_ModuleInfoMap.end()) {
@@ -166,17 +165,18 @@ void CRTConnManager::ConnectionLostNotify(const std::string& uid, const std::str
 {
     ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MMEETING);
     if (pmi && pmi->pModule) {
-        LI("CRTConnManager::ConnectionLostNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
-        LE("CRTConnManager::ConnectionLostNotify meeting pmi->pModule is NULL\n");
+        LE("ConnectionLostNotify not find meeting module!!!\n");
+        Assert(false);
     }
     pmi = findModuleInfo(uid, pms::ETransferModule::MMSGQUEUE);
     if (pmi && pmi->pModule) {
-        LI("CRTConnManager::ConnectionLostNotify uid:%s\n", uid.c_str());
+        LI("ConnectionLostNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
-        LE("CRTConnManager::ConnectionLostNotify msgqueue pmi->pModule is NULL\n");
+        LE("ConnectionLostNotify not find msgqueue module!!!\n");
+        Assert(false);
     }
 }
 
@@ -184,17 +184,18 @@ void CRTConnManager::ConnectionConnNotify(const std::string& uid, const std::str
 {
     ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MMEETING);
     if (pmi && pmi->pModule) {
-        LI("CRTConnManager::ConnectionConnNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionConnNotify(uid, token);
     } else {
-        LE("CRTConnManager::ConnectionConnNotify meeting pmi->pModule is NULL\n");
+        LE("ConnectionConnNotify not find meeting module!!!\n");
+        Assert(false);
     }
     pmi = findModuleInfo(uid, pms::ETransferModule::MMSGQUEUE);
     if (pmi && pmi->pModule) {
-        LI("CRTConnManager::ConnectionConnNotify uid:%s\n", uid.c_str());
+        LI("ConnectionConnNotify uid:%s\n", uid.c_str());
         pmi->pModule->ConnectionConnNotify(uid, token);
     } else {
-        LE("CRTConnManager::ConnectionConnNotify msgqueue pmi->pModule is NULL\n");
+        LE("ConnectionConnNotify not find  msgqueue module!!!\n");
+        Assert(false);
     }
 }
 
@@ -210,7 +211,7 @@ void CRTConnManager::TransferMsg(pms::EModuleType module, const std::string& uid
     if (pmi && pmi->pModule) {
         pmi->pModule->TransferMsg(msg);
     } else {
-        LE("pmi->pModule is NULL\n");
+        LE("TransferMsg module type:%d is NULL\n", (int)module);
         Assert(false);
         return;
     }

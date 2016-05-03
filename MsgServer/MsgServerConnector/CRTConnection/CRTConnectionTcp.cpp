@@ -75,7 +75,7 @@ void CRTConnectionTcp::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, con
     m_userId = login.usr_from();
     m_token = login.usr_token();
     m_nname = login.usr_nname();
-    LI("CRTConnectionTcp::Onlogin m_userId:%s\n", m_userId.c_str());
+    LI("Onlogin user:%s login\n", m_userId.c_str());
     std::string sid;
     {
         //store userid & pass
@@ -125,9 +125,8 @@ void CRTConnectionTcp::OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, co
 
     //no matter mType is meet or callcenter or p2p or others
     //the following code should be same
-    //find an TrasnferSession By mtype
+    //find an TrasnferSession By module
     //transfer msg by TransferSession
-
 
     // enclosing msg in CRTTransferSession::TransferMsg
     CRTConnManager::Instance().TransferMsg(module, m_userId, msg);
@@ -148,7 +147,8 @@ void CRTConnectionTcp::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, co
     if (!logout.ParseFromString(msg)) {
         LE("login.ParseFromString error\n");
     }
-    LI("OnLogout user:%s logout\n", logout.usr_from().c_str());
+    assert(logout.usr_from().compare(m_userId)==0);
+    LI("OnLogout user:%s logout\n", m_userId.c_str());
     assert(logout.usr_from().compare(m_userId)==0);
     std::string token;
     CRTConnManager::Instance().DelUser(pms::EConnType::TTCP, m_userId, token);
@@ -170,11 +170,11 @@ void CRTConnectionTcp::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, co
 void CRTConnectionTcp::OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
 #if DEF_PROTO
-    pms::Keep keep;
-    if (!keep.ParseFromString(msg)) {
-        LE("login.ParseFromString error\n");
-    }
     if (m_login) {
+        pms::Keep keep;
+        if (!keep.ParseFromString(msg)) {
+            LE("login.ParseFromString error\n");
+        }
         LI("Userid:%s OnKeepAlive\n", keep.usr_from().c_str());
         RTTcp::UpdateTimer();
     }
@@ -191,7 +191,7 @@ void CRTConnectionTcp::OnResponse(const char*pData, int nLen)
 void CRTConnectionTcp::ConnectionDisconnected()
 {
     if (m_userId.length()>0) {
-        LI("RTConnectionTcp::ConnectionDisconnected DelUser m_userId:%s, m_token:%s\n", m_userId.c_str(), m_token.c_str());
+        LI("ConnectionDisconnected user m_userId:%s, m_token:%s disconnected!\n", m_userId.c_str(), m_token.c_str());
         std::string token;
         CRTConnManager::Instance().DelUser(pms::EConnType::THTTP, m_userId, token);
         CRTConnManager::Instance().ConnectionLostNotify(m_userId, m_token);

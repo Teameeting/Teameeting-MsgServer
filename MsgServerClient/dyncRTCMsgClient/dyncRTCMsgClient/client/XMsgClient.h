@@ -40,7 +40,7 @@ public:
     int GetMsg(pms::EMsgTag tag);
 
     int OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::string& rname, const std::string& remain);
-    int SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::list<std::string>& ulist);
+    int SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::vector<std::string>& uvec);
 
     int NotifyMsg(const std::string& roomid, const std::string& rname, pms::EMsgTag tag, const std::string& msg);
 

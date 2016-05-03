@@ -11,12 +11,12 @@
 
 #include <stdio.h>
 #include <iostream>
-#include <list>
+#include <vector>
 #define DEF_PROTO 1
 #if DEF_PROTO
-#include "rtcmsgs/proto/msg_type.pb.h"
-#include "rtcmsgs/proto/meet_msg.pb.h"
-#include "rtcmsgs/proto/sys_msg.pb.h"
+#include "proto/common_msg.pb.h"
+#include "proto/meet_msg.pb.h"
+#include "proto/meet_msg_type.pb.h"
 #else
 #include "RTSignalMsg.h"
 #include "RTMeetMsg.h"
@@ -33,13 +33,12 @@ public:
 public:
 
     int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname);
-    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::string& to, const std::string& msg, int tag, int type);
+    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid);
 
     int DecodeRecvData(const char* pData, int nLen);
-    int GetMemberToJson(const std::list<std::string>& ulist, std::string& tousers);
 
 public:
     //handle XTcpClient callback

@@ -9,11 +9,11 @@
 #include <iostream>
 #include "rtklog.h"
 #include "MRTMeeting.h"
-
 #include "RTZKClient.hpp"
+#include <google/protobuf/message.h>
 
 #ifndef _TEST_
-#define _TEST_ 1
+#define _TEST_ 0
 #endif
 
 int main(int argc, const char * argv[]) {
@@ -37,7 +37,13 @@ int main(int argc, const char * argv[]) {
         exit(0);
     }
 
-    L_Init(5, NULL);
+    int level = RTZKClient::Instance().GetServerConfig().Level;
+    std::string logpath = RTZKClient::Instance().GetServerConfig().LogPath;
+    if (logpath.empty())
+        L_Init(level, NULL);
+    else
+        L_Init(level, logpath.c_str());
+
     MRTMeeting::Initialize(1024);
     MRTMeeting* pMeeting = MRTMeeting::Inst();
 #if 1
@@ -53,7 +59,7 @@ int main(int argc, const char * argv[]) {
         LI("MRTMeeting start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 100) {
+    //while (test++ < 80) {
     while (1) {
         pMeeting->DoTick();
         sleep(1);
@@ -66,5 +72,6 @@ EXIT:
     MRTMeeting::DeInitialize();
     L_Deinit();
     RTZKClient::Instance().Unin();
+    google::protobuf::ShutdownProtobufLibrary();
     return 0;
 }

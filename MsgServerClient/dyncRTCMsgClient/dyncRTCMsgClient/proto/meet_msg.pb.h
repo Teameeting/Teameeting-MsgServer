@@ -24,7 +24,8 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/unknown_field_set.h>
-#include "msg_type.pb.h"
+#include "common_msg.pb.h"
+#include "meet_msg_type.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace pms {
@@ -498,17 +499,14 @@ class MeetMsg : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 mem_num() const;
   inline void set_mem_num(::google::protobuf::int32 value);
 
-  // optional string usr_toto = 12;
+  // optional .pms.ToUser usr_toto = 12;
   inline bool has_usr_toto() const;
   inline void clear_usr_toto();
   static const int kUsrTotoFieldNumber = 12;
-  inline const ::std::string& usr_toto() const;
-  inline void set_usr_toto(const ::std::string& value);
-  inline void set_usr_toto(const char* value);
-  inline void set_usr_toto(const char* value, size_t size);
-  inline ::std::string* mutable_usr_toto();
-  inline ::std::string* release_usr_toto();
-  inline void set_allocated_usr_toto(::std::string* usr_toto);
+  inline const ::pms::ToUser& usr_toto() const;
+  inline ::pms::ToUser* mutable_usr_toto();
+  inline ::pms::ToUser* release_usr_toto();
+  inline void set_allocated_usr_toto(::pms::ToUser* usr_toto);
 
   // @@protoc_insertion_point(class_scope:pms.MeetMsg)
  private:
@@ -552,7 +550,7 @@ class MeetMsg : public ::google::protobuf::Message {
   ::std::string* nck_name_;
   ::std::string* usr_token_;
   ::google::protobuf::int64 msg_seqs_;
-  ::std::string* usr_toto_;
+  ::pms::ToUser* usr_toto_;
   friend void  protobuf_AddDesc_meet_5fmsg_2eproto();
   friend void protobuf_AssignDesc_meet_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_meet_5fmsg_2eproto();
@@ -1614,7 +1612,7 @@ inline void MeetMsg::set_mem_num(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:pms.MeetMsg.mem_num)
 }
 
-// optional string usr_toto = 12;
+// optional .pms.ToUser usr_toto = 12;
 inline bool MeetMsg::has_usr_toto() const {
   return (_has_bits_[0] & 0x00000800u) != 0;
 }
@@ -1625,67 +1623,32 @@ inline void MeetMsg::clear_has_usr_toto() {
   _has_bits_[0] &= ~0x00000800u;
 }
 inline void MeetMsg::clear_usr_toto() {
-  if (usr_toto_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    usr_toto_->clear();
-  }
+  if (usr_toto_ != NULL) usr_toto_->::pms::ToUser::Clear();
   clear_has_usr_toto();
 }
-inline const ::std::string& MeetMsg::usr_toto() const {
+inline const ::pms::ToUser& MeetMsg::usr_toto() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.usr_toto)
-  return *usr_toto_;
+  return usr_toto_ != NULL ? *usr_toto_ : *default_instance_->usr_toto_;
 }
-inline void MeetMsg::set_usr_toto(const ::std::string& value) {
+inline ::pms::ToUser* MeetMsg::mutable_usr_toto() {
   set_has_usr_toto();
-  if (usr_toto_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    usr_toto_ = new ::std::string;
-  }
-  usr_toto_->assign(value);
-  // @@protoc_insertion_point(field_set:pms.MeetMsg.usr_toto)
-}
-inline void MeetMsg::set_usr_toto(const char* value) {
-  set_has_usr_toto();
-  if (usr_toto_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    usr_toto_ = new ::std::string;
-  }
-  usr_toto_->assign(value);
-  // @@protoc_insertion_point(field_set_char:pms.MeetMsg.usr_toto)
-}
-inline void MeetMsg::set_usr_toto(const char* value, size_t size) {
-  set_has_usr_toto();
-  if (usr_toto_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    usr_toto_ = new ::std::string;
-  }
-  usr_toto_->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.usr_toto)
-}
-inline ::std::string* MeetMsg::mutable_usr_toto() {
-  set_has_usr_toto();
-  if (usr_toto_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    usr_toto_ = new ::std::string;
-  }
+  if (usr_toto_ == NULL) usr_toto_ = new ::pms::ToUser;
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.usr_toto)
   return usr_toto_;
 }
-inline ::std::string* MeetMsg::release_usr_toto() {
+inline ::pms::ToUser* MeetMsg::release_usr_toto() {
   clear_has_usr_toto();
-  if (usr_toto_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    return NULL;
-  } else {
-    ::std::string* temp = usr_toto_;
-    usr_toto_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-    return temp;
-  }
+  ::pms::ToUser* temp = usr_toto_;
+  usr_toto_ = NULL;
+  return temp;
 }
-inline void MeetMsg::set_allocated_usr_toto(::std::string* usr_toto) {
-  if (usr_toto_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete usr_toto_;
-  }
+inline void MeetMsg::set_allocated_usr_toto(::pms::ToUser* usr_toto) {
+  delete usr_toto_;
+  usr_toto_ = usr_toto;
   if (usr_toto) {
     set_has_usr_toto();
-    usr_toto_ = usr_toto;
   } else {
     clear_has_usr_toto();
-    usr_toto_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   }
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.usr_toto)
 }

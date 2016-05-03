@@ -157,20 +157,22 @@ void protobuf_AddDesc_meet_5fmsg_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  ::pms::protobuf_AddDesc_msg_5ftype_2eproto();
+  ::pms::protobuf_AddDesc_common_5fmsg_2eproto();
+  ::pms::protobuf_AddDesc_meet_5fmsg_5ftype_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016meet_msg.proto\022\003pms\032\016msg_type.proto\"\?\n"
-    "\005Login\022\020\n\010usr_from\030\001 \001(\t\022\021\n\tusr_token\030\002 "
-    "\001(\t\022\021\n\tusr_nname\030\003 \001(\t\"-\n\006Logout\022\020\n\010usr_"
-    "from\030\001 \001(\t\022\021\n\tusr_token\030\002 \001(\t\"\030\n\004Keep\022\020\n"
-    "\010usr_from\030\001 \001(\t\"\235\002\n\007MeetMsg\022%\n\010msg_head\030"
-    "\001 \001(\0162\r.pms.EMsgHead:\004HSND\022$\n\007msg_tag\030\002 "
-    "\001(\0162\014.pms.EMsgTag:\005TCHAT\022%\n\010msg_type\030\003 \001"
-    "(\0162\r.pms.EMsgType:\004TMSG\022\020\n\010usr_from\030\004 \001("
-    "\t\022\020\n\010msg_cont\030\005 \001(\t\022\016\n\006rom_id\030\006 \001(\t\022\020\n\010r"
-    "om_name\030\007 \001(\t\022\020\n\010nck_name\030\010 \001(\t\022\021\n\tusr_t"
-    "oken\030\t \001(\t\022\020\n\010msg_seqs\030\n \001(\022\022\017\n\007mem_num\030"
-    "\013 \001(\021\022\020\n\010usr_toto\030\014 \001(\t", 463);
+    "\n\016meet_msg.proto\022\003pms\032\020common_msg.proto\032"
+    "\023meet_msg_type.proto\"\?\n\005Login\022\020\n\010usr_fro"
+    "m\030\001 \001(\t\022\021\n\tusr_token\030\002 \001(\t\022\021\n\tusr_nname\030"
+    "\003 \001(\t\"-\n\006Logout\022\020\n\010usr_from\030\001 \001(\t\022\021\n\tusr"
+    "_token\030\002 \001(\t\"\030\n\004Keep\022\020\n\010usr_from\030\001 \001(\t\"\252"
+    "\002\n\007MeetMsg\022%\n\010msg_head\030\001 \001(\0162\r.pms.EMsgH"
+    "ead:\004HSND\022$\n\007msg_tag\030\002 \001(\0162\014.pms.EMsgTag"
+    ":\005TCHAT\022%\n\010msg_type\030\003 \001(\0162\r.pms.EMsgType"
+    ":\004TMSG\022\020\n\010usr_from\030\004 \001(\t\022\020\n\010msg_cont\030\005 \001"
+    "(\t\022\016\n\006rom_id\030\006 \001(\t\022\020\n\010rom_name\030\007 \001(\t\022\020\n\010"
+    "nck_name\030\010 \001(\t\022\021\n\tusr_token\030\t \001(\t\022\020\n\010msg"
+    "_seqs\030\n \001(\022\022\017\n\007mem_num\030\013 \001(\021\022\035\n\010usr_toto"
+    "\030\014 \001(\0132\013.pms.ToUser", 499);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "meet_msg.proto", &protobuf_RegisterTypes);
   Login::default_instance_ = new Login();
@@ -1125,6 +1127,7 @@ MeetMsg::MeetMsg()
 }
 
 void MeetMsg::InitAsDefaultInstance() {
+  usr_toto_ = const_cast< ::pms::ToUser*>(&::pms::ToUser::default_instance());
 }
 
 MeetMsg::MeetMsg(const MeetMsg& from)
@@ -1148,7 +1151,7 @@ void MeetMsg::SharedCtor() {
   usr_token_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   msg_seqs_ = GOOGLE_LONGLONG(0);
   mem_num_ = 0;
-  usr_toto_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  usr_toto_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1176,10 +1179,8 @@ void MeetMsg::SharedDtor() {
   if (usr_token_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete usr_token_;
   }
-  if (usr_toto_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-    delete usr_toto_;
-  }
   if (this != default_instance_) {
+    delete usr_toto_;
   }
 }
 
@@ -1244,9 +1245,7 @@ void MeetMsg::Clear() {
     msg_seqs_ = GOOGLE_LONGLONG(0);
     mem_num_ = 0;
     if (has_usr_toto()) {
-      if (usr_toto_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
-        usr_toto_->clear();
-      }
+      if (usr_toto_ != NULL) usr_toto_->::pms::ToUser::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1454,16 +1453,12 @@ bool MeetMsg::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string usr_toto = 12;
+      // optional .pms.ToUser usr_toto = 12;
       case 12: {
         if (tag == 98) {
          parse_usr_toto:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_usr_toto()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-            this->usr_toto().data(), this->usr_toto().length(),
-            ::google::protobuf::internal::WireFormat::PARSE,
-            "usr_toto");
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_usr_toto()));
         } else {
           goto handle_unusual;
         }
@@ -1584,13 +1579,9 @@ void MeetMsg::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteSInt32(11, this->mem_num(), output);
   }
 
-  // optional string usr_toto = 12;
+  // optional .pms.ToUser usr_toto = 12;
   if (has_usr_toto()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->usr_toto().data(), this->usr_toto().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "usr_toto");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       12, this->usr_toto(), output);
   }
 
@@ -1698,14 +1689,10 @@ void MeetMsg::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteSInt32ToArray(11, this->mem_num(), target);
   }
 
-  // optional string usr_toto = 12;
+  // optional .pms.ToUser usr_toto = 12;
   if (has_usr_toto()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
-      this->usr_toto().data(), this->usr_toto().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE,
-      "usr_toto");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
         12, this->usr_toto(), target);
   }
 
@@ -1797,10 +1784,10 @@ int MeetMsg::ByteSize() const {
           this->mem_num());
     }
 
-    // optional string usr_toto = 12;
+    // optional .pms.ToUser usr_toto = 12;
     if (has_usr_toto()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->usr_toto());
     }
 
@@ -1867,7 +1854,7 @@ void MeetMsg::MergeFrom(const MeetMsg& from) {
       set_mem_num(from.mem_num());
     }
     if (from.has_usr_toto()) {
-      set_usr_toto(from.usr_toto());
+      mutable_usr_toto()->::pms::ToUser::MergeFrom(from.usr_toto());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());

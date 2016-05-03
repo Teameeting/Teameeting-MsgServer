@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include "webrtc/base/logging.h"
 #include "RTConnClientManager.hpp"
+#include <google/protobuf/message.h>
 
 #define KRUN 1
 #define KRUNONCE 2
@@ -23,6 +24,7 @@ int main(int argc, const char * argv[]) {
     rtc::LogMessage::LogToDebug(rtc::INFO);
     RTConnClientManager manager;
     manager.RunTest(KRUN);
+    google::protobuf::ShutdownProtobufLibrary();
     LOG(INFO) << "bye bye client...";
     return 0;
 }

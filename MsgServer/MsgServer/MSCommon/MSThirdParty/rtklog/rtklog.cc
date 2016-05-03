@@ -9,7 +9,7 @@ class RtkLog
 public:
 	static RtkLog* Instance()
 	{
-		static RtkLog instance;   
+		static RtkLog instance;
         return &instance;
 	};
 	void OpenStream(const char* pathName, int level)
@@ -53,8 +53,7 @@ public:
 protected:
 	RtkLog(void):pStream(NULL)
 	{
-		talk_base::LogMessage::LogToDebug(talk_base::LS_VERBOSE);
-		OpenStream(NULL, L_NORMAL);
+
 	};
 	~RtkLog(void)
 	{
@@ -68,6 +67,7 @@ private:
 //
 void L_Init(int logLevel, const char* pathName)
 {
+	talk_base::LogMessage::LogToDebug(logLevel);
 	RtkLog::Instance()->OpenStream(pathName, logLevel);
 }
 

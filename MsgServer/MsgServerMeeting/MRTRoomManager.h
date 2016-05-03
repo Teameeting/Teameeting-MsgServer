@@ -25,9 +25,11 @@
 #include "RTSingleton.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/MSCommon/MSProtocol/proto/msg_type.pb.h"
-#include "MsgServer/MSCommon/MSProtocol/proto/meet_msg.pb.h"
-#include "MsgServer/MSCommon/MSProtocol/proto/sys_msg.pb.h"
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/meet_msg.pb.h"
+#include "MsgServer/proto/meet_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
 
 class MRTRoomManager : public RTSingleton< MRTRoomManager >{
     friend class RTSingleton< MRTRoomManager >;
@@ -79,7 +81,7 @@ private:
     void SendWaitingMsgs(MeetingRoomMapIt mit);
     void OnGetMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg, std::string& data);
     void GenericResponse(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::MeetMsg& mmsg, const pms::ToUser* tos, std::string& response);
-    void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, pms::EMsgTag tag, int nmem, const std::string& cont, const pms::ToUser* tos, std::string& response);
+    void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, int nmem, const std::string& cont, const pms::ToUser* tos, std::string& response);
     void ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::MeetMsg& mmsg, const pms::ToUser* tos, std::string& response);
 
 

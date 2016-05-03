@@ -104,7 +104,7 @@ class XTcpMgr
 	};
 };
 
-static rtc::XTcpMgr g_XTcpMgr;
+rtc::XTcpMgr g_XTcpMgr;
 
 XTcpTick::XTcpTick(void)
 {
