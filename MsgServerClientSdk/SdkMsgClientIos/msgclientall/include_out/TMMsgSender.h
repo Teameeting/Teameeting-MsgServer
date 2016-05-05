@@ -10,6 +10,7 @@
 #define MsgClientIos_TMMsgSender_h
 #import "MsgClientProtocol.h"
 #import "TMClientType.h"
+#import "MeetMsgType.pbobjc.h"
 
 /**
  * TMMsgSender is used to send msg to other
@@ -58,7 +59,7 @@
  * params:
         cmd:
  **/
-- (int) tMGetMsgCmd:(MCGetCmd) cmd;
+- (int) tMGetMsgCmd:(EMsgTag) tag;
 
 /**
  * operation for room
@@ -67,7 +68,7 @@
  *      roomid:the room id
  *      remain:remain
  **/
-- (int) tMOptRoomCmd:(MCMeetCmd) cmd
+- (int) tMOptRoomCmd:(EMsgTag) tag
               roomid:(NSString*) roomid
                rname:(NSString*) rname
               remain:(NSString*) remain;
@@ -92,7 +93,7 @@
  **/
 - (int) tMNotifyMsgRoomid:(NSString*) roomid
                     rname:(NSString*) rname
-                     tags:(MCSendTags) tags
+                     tags:(EMsgTag) tag
                       msg:(NSString*) msg;
 
 /**

@@ -46,17 +46,11 @@ typedef GPB_ENUM(Login_FieldNumber) {
 
 /// user id sending from
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
-/// Test to see if @c usrFrom has been set.
-@property(nonatomic, readwrite) BOOL hasUsrFrom;
 
 /// user token
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrToken;
-/// Test to see if @c usrToken has been set.
-@property(nonatomic, readwrite) BOOL hasUsrToken;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrNname;
-/// Test to see if @c usrNname has been set.
-@property(nonatomic, readwrite) BOOL hasUsrNname;
 
 @end
 
@@ -71,13 +65,9 @@ typedef GPB_ENUM(Logout_FieldNumber) {
 
 /// user id sending from
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
-/// Test to see if @c usrFrom has been set.
-@property(nonatomic, readwrite) BOOL hasUsrFrom;
 
 /// user token
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrToken;
-/// Test to see if @c usrToken has been set.
-@property(nonatomic, readwrite) BOOL hasUsrToken;
 
 @end
 
@@ -91,8 +81,6 @@ typedef GPB_ENUM(Keep_FieldNumber) {
 
 /// user id sending from
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
-/// Test to see if @c usrFrom has been set.
-@property(nonatomic, readwrite) BOOL hasUsrFrom;
 
 @end
 
@@ -118,59 +106,66 @@ typedef GPB_ENUM(MeetMsg_FieldNumber) {
 /// msg type
 @property(nonatomic, readwrite) enum EMsgHead msgHead;
 
-@property(nonatomic, readwrite) BOOL hasMsgHead;
 /// msg tag
 @property(nonatomic, readwrite) enum EMsgTag msgTag;
 
-@property(nonatomic, readwrite) BOOL hasMsgTag;
 /// msg type
 @property(nonatomic, readwrite) enum EMsgType msgType;
 
-@property(nonatomic, readwrite) BOOL hasMsgType;
 /// user id sending from
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
-/// Test to see if @c usrFrom has been set.
-@property(nonatomic, readwrite) BOOL hasUsrFrom;
 
 /// msg content
 @property(nonatomic, readwrite, copy, null_resettable) NSString *msgCont;
-/// Test to see if @c msgCont has been set.
-@property(nonatomic, readwrite) BOOL hasMsgCont;
 
 /// user room id
 @property(nonatomic, readwrite, copy, null_resettable) NSString *romId;
-/// Test to see if @c romId has been set.
-@property(nonatomic, readwrite) BOOL hasRomId;
 
 /// user room name
 @property(nonatomic, readwrite, copy, null_resettable) NSString *romName;
-/// Test to see if @c romName has been set.
-@property(nonatomic, readwrite) BOOL hasRomName;
 
 /// user nick name
 @property(nonatomic, readwrite, copy, null_resettable) NSString *nckName;
-/// Test to see if @c nckName has been set.
-@property(nonatomic, readwrite) BOOL hasNckName;
 
 /// user token
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrToken;
-/// Test to see if @c usrToken has been set.
-@property(nonatomic, readwrite) BOOL hasUsrToken;
 
 /// msg sequence number
 @property(nonatomic, readwrite) int64_t msgSeqs;
 
-@property(nonatomic, readwrite) BOOL hasMsgSeqs;
 /// room member number
 @property(nonatomic, readwrite) int32_t memNum;
 
-@property(nonatomic, readwrite) BOOL hasMemNum;
 /// user ids sending to, the string from pms::ToUser
 @property(nonatomic, readwrite, strong, null_resettable) ToUser *usrToto;
 /// Test to see if @c usrToto has been set.
 @property(nonatomic, readwrite) BOOL hasUsrToto;
 
 @end
+
+/// Fetches the raw value of a @c MeetMsg's @c msgHead property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MeetMsg_MsgHead_RawValue(MeetMsg *message);
+/// Sets the raw value of an @c MeetMsg's @c msgHead property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMeetMsg_MsgHead_RawValue(MeetMsg *message, int32_t value);
+
+/// Fetches the raw value of a @c MeetMsg's @c msgTag property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MeetMsg_MsgTag_RawValue(MeetMsg *message);
+/// Sets the raw value of an @c MeetMsg's @c msgTag property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMeetMsg_MsgTag_RawValue(MeetMsg *message, int32_t value);
+
+/// Fetches the raw value of a @c MeetMsg's @c msgType property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MeetMsg_MsgType_RawValue(MeetMsg *message);
+/// Sets the raw value of an @c MeetMsg's @c msgType property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMeetMsg_MsgType_RawValue(MeetMsg *message, int32_t value);
 
 NS_ASSUME_NONNULL_END
 

@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "TMMsgSender.h"
+#import "MeetMsgType.pbobjc.h"
 
 @interface ViewController () {
     UIButton *mEnterButton;
@@ -103,6 +104,7 @@
 - (IBAction)enterButton:(id)sender {
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
+
     [msgsender tMOptRoomCmd:EMsgTag_Tenter roomid:roomid rname:@"roomname" remain:@""];
 }
 

@@ -22,12 +22,10 @@
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/metadata.h>
-#include <google/protobuf/message.h>
+#include <google/protobuf/message_lite.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/generated_enum_reflection.h>
-#include <google/protobuf/unknown_field_set.h>
+#include <google/protobuf/generated_enum_util.h>
 // @@protoc_insertion_point(includes)
 
 namespace pms {
@@ -42,51 +40,37 @@ class MsgReq;
 class ToUser;
 
 enum EServerCmd {
-  CLOGIN = 1,
-  CSNDMSG = 2,
-  CGETMSG = 3,
-  CLOGOUT = 4,
-  CKEEPALIVE = 5
+  CLOGIN = 0,
+  CSNDMSG = 1,
+  CGETMSG = 2,
+  CLOGOUT = 3,
+  CKEEPALIVE = 4,
+  EServerCmd_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  EServerCmd_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EServerCmd_IsValid(int value);
 const EServerCmd EServerCmd_MIN = CLOGIN;
 const EServerCmd EServerCmd_MAX = CKEEPALIVE;
 const int EServerCmd_ARRAYSIZE = EServerCmd_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* EServerCmd_descriptor();
-inline const ::std::string& EServerCmd_Name(EServerCmd value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    EServerCmd_descriptor(), value);
-}
-inline bool EServerCmd_Parse(
-    const ::std::string& name, EServerCmd* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EServerCmd>(
-    EServerCmd_descriptor(), name, value);
-}
 enum EModuleType {
-  TMEETING = 3,
-  TP2P = 4,
-  TLIVE = 5,
-  TCALLCENTER = 6
+  TINVALID0 = 0,
+  TINVALID1 = 1,
+  TMEETING = 2,
+  TP2P = 3,
+  TLIVE = 4,
+  TCALLCENTER = 5,
+  EModuleType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  EModuleType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EModuleType_IsValid(int value);
-const EModuleType EModuleType_MIN = TMEETING;
+const EModuleType EModuleType_MIN = TINVALID0;
 const EModuleType EModuleType_MAX = TCALLCENTER;
 const int EModuleType_ARRAYSIZE = EModuleType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* EModuleType_descriptor();
-inline const ::std::string& EModuleType_Name(EModuleType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    EModuleType_descriptor(), value);
-}
-inline bool EModuleType_Parse(
-    const ::std::string& name, EModuleType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EModuleType>(
-    EModuleType_descriptor(), name, value);
-}
 // ===================================================================
 
-class MsgReq : public ::google::protobuf::Message {
+class MsgReq : public ::google::protobuf::MessageLite {
  public:
   MsgReq();
   virtual ~MsgReq();
@@ -98,16 +82,17 @@ class MsgReq : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const MsgReq& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const MsgReq* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(MsgReq* other);
 
@@ -116,8 +101,7 @@ class MsgReq : public ::google::protobuf::Message {
   inline MsgReq* New() const { return New(NULL); }
 
   MsgReq* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const MsgReq& from);
   void MergeFrom(const MsgReq& from);
   void Clear();
@@ -128,7 +112,7 @@ class MsgReq : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -137,35 +121,32 @@ class MsgReq : public ::google::protobuf::Message {
   void InternalSwap(MsgReq* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
   // optional .pms.EServerCmd svr_cmds = 1;
-  bool has_svr_cmds() const;
   void clear_svr_cmds();
   static const int kSvrCmdsFieldNumber = 1;
   ::pms::EServerCmd svr_cmds() const;
   void set_svr_cmds(::pms::EServerCmd value);
 
   // optional .pms.EModuleType mod_type = 2;
-  bool has_mod_type() const;
   void clear_mod_type();
   static const int kModTypeFieldNumber = 2;
   ::pms::EModuleType mod_type() const;
   void set_mod_type(::pms::EModuleType value);
 
   // optional bytes content = 3;
-  bool has_content() const;
   void clear_content();
   static const int kContentFieldNumber = 3;
   const ::std::string& content() const;
@@ -178,20 +159,20 @@ class MsgReq : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pms.MsgReq)
  private:
-  inline void set_has_svr_cmds();
-  inline void clear_has_svr_cmds();
-  inline void set_has_mod_type();
-  inline void clear_has_mod_type();
-  inline void set_has_content();
-  inline void clear_has_content();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   int svr_cmds_;
   int mod_type_;
   ::google::protobuf::internal::ArenaStringPtr content_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_common_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_common_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_common_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_common_5fmsg_2eproto();
 
@@ -200,7 +181,7 @@ class MsgReq : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class MsgRep : public ::google::protobuf::Message {
+class MsgRep : public ::google::protobuf::MessageLite {
  public:
   MsgRep();
   virtual ~MsgRep();
@@ -212,16 +193,17 @@ class MsgRep : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const MsgRep& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const MsgRep* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(MsgRep* other);
 
@@ -230,8 +212,7 @@ class MsgRep : public ::google::protobuf::Message {
   inline MsgRep* New() const { return New(NULL); }
 
   MsgRep* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const MsgRep& from);
   void MergeFrom(const MsgRep& from);
   void Clear();
@@ -242,7 +223,7 @@ class MsgRep : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -251,35 +232,32 @@ class MsgRep : public ::google::protobuf::Message {
   void InternalSwap(MsgRep* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
   // optional .pms.EServerCmd svr_cmds = 1;
-  bool has_svr_cmds() const;
   void clear_svr_cmds();
   static const int kSvrCmdsFieldNumber = 1;
   ::pms::EServerCmd svr_cmds() const;
   void set_svr_cmds(::pms::EServerCmd value);
 
   // optional .pms.EModuleType mod_type = 2;
-  bool has_mod_type() const;
   void clear_mod_type();
   static const int kModTypeFieldNumber = 2;
   ::pms::EModuleType mod_type() const;
   void set_mod_type(::pms::EModuleType value);
 
   // optional bytes rsp_cont = 3;
-  bool has_rsp_cont() const;
   void clear_rsp_cont();
   static const int kRspContFieldNumber = 3;
   const ::std::string& rsp_cont() const;
@@ -291,7 +269,6 @@ class MsgRep : public ::google::protobuf::Message {
   void set_allocated_rsp_cont(::std::string* rsp_cont);
 
   // optional sint32 rsp_code = 4;
-  bool has_rsp_code() const;
   void clear_rsp_code();
   static const int kRspCodeFieldNumber = 4;
   ::google::protobuf::int32 rsp_code() const;
@@ -299,23 +276,21 @@ class MsgRep : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pms.MsgRep)
  private:
-  inline void set_has_svr_cmds();
-  inline void clear_has_svr_cmds();
-  inline void set_has_mod_type();
-  inline void clear_has_mod_type();
-  inline void set_has_rsp_cont();
-  inline void clear_has_rsp_cont();
-  inline void set_has_rsp_code();
-  inline void clear_has_rsp_code();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   int svr_cmds_;
   int mod_type_;
   ::google::protobuf::internal::ArenaStringPtr rsp_cont_;
   ::google::protobuf::int32 rsp_code_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_common_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_common_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_common_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_common_5fmsg_2eproto();
 
@@ -324,7 +299,7 @@ class MsgRep : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class ToUser : public ::google::protobuf::Message {
+class ToUser : public ::google::protobuf::MessageLite {
  public:
   ToUser();
   virtual ~ToUser();
@@ -336,16 +311,17 @@ class ToUser : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const ToUser& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const ToUser* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(ToUser* other);
 
@@ -354,8 +330,7 @@ class ToUser : public ::google::protobuf::Message {
   inline ToUser* New() const { return New(NULL); }
 
   ToUser* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const ToUser& from);
   void MergeFrom(const ToUser& from);
   void Clear();
@@ -366,7 +341,7 @@ class ToUser : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -375,14 +350,14 @@ class ToUser : public ::google::protobuf::Message {
   void InternalSwap(ToUser* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
@@ -407,11 +382,17 @@ class ToUser : public ::google::protobuf::Message {
   // @@protoc_insertion_point(class_scope:pms.ToUser)
  private:
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   ::google::protobuf::RepeatedPtrField< ::std::string> users_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_common_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_common_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_common_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_common_5fmsg_2eproto();
 
@@ -427,104 +408,72 @@ class ToUser : public ::google::protobuf::Message {
 // MsgReq
 
 // optional .pms.EServerCmd svr_cmds = 1;
-inline bool MsgReq::has_svr_cmds() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void MsgReq::set_has_svr_cmds() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void MsgReq::clear_has_svr_cmds() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void MsgReq::clear_svr_cmds() {
-  svr_cmds_ = 1;
-  clear_has_svr_cmds();
+  svr_cmds_ = 0;
 }
 inline ::pms::EServerCmd MsgReq::svr_cmds() const {
   // @@protoc_insertion_point(field_get:pms.MsgReq.svr_cmds)
   return static_cast< ::pms::EServerCmd >(svr_cmds_);
 }
 inline void MsgReq::set_svr_cmds(::pms::EServerCmd value) {
-  assert(::pms::EServerCmd_IsValid(value));
-  set_has_svr_cmds();
+  
   svr_cmds_ = value;
   // @@protoc_insertion_point(field_set:pms.MsgReq.svr_cmds)
 }
 
 // optional .pms.EModuleType mod_type = 2;
-inline bool MsgReq::has_mod_type() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void MsgReq::set_has_mod_type() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void MsgReq::clear_has_mod_type() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void MsgReq::clear_mod_type() {
-  mod_type_ = 3;
-  clear_has_mod_type();
+  mod_type_ = 0;
 }
 inline ::pms::EModuleType MsgReq::mod_type() const {
   // @@protoc_insertion_point(field_get:pms.MsgReq.mod_type)
   return static_cast< ::pms::EModuleType >(mod_type_);
 }
 inline void MsgReq::set_mod_type(::pms::EModuleType value) {
-  assert(::pms::EModuleType_IsValid(value));
-  set_has_mod_type();
+  
   mod_type_ = value;
   // @@protoc_insertion_point(field_set:pms.MsgReq.mod_type)
 }
 
 // optional bytes content = 3;
-inline bool MsgReq::has_content() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void MsgReq::set_has_content() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void MsgReq::clear_has_content() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void MsgReq::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_content();
 }
 inline const ::std::string& MsgReq::content() const {
   // @@protoc_insertion_point(field_get:pms.MsgReq.content)
   return content_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MsgReq::set_content(const ::std::string& value) {
-  set_has_content();
+  
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MsgReq.content)
 }
 inline void MsgReq::set_content(const char* value) {
-  set_has_content();
+  
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MsgReq.content)
 }
 inline void MsgReq::set_content(const void* value, size_t size) {
-  set_has_content();
+  
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MsgReq.content)
 }
 inline ::std::string* MsgReq::mutable_content() {
-  set_has_content();
+  
   // @@protoc_insertion_point(field_mutable:pms.MsgReq.content)
   return content_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MsgReq::release_content() {
   // @@protoc_insertion_point(field_release:pms.MsgReq.content)
-  clear_has_content();
+  
   return content_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MsgReq::set_allocated_content(::std::string* content) {
   if (content != NULL) {
-    set_has_content();
+    
   } else {
-    clear_has_content();
+    
   }
   content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
   // @@protoc_insertion_point(field_set_allocated:pms.MsgReq.content)
@@ -535,129 +484,87 @@ inline void MsgReq::set_allocated_content(::std::string* content) {
 // MsgRep
 
 // optional .pms.EServerCmd svr_cmds = 1;
-inline bool MsgRep::has_svr_cmds() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void MsgRep::set_has_svr_cmds() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void MsgRep::clear_has_svr_cmds() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void MsgRep::clear_svr_cmds() {
-  svr_cmds_ = 1;
-  clear_has_svr_cmds();
+  svr_cmds_ = 0;
 }
 inline ::pms::EServerCmd MsgRep::svr_cmds() const {
   // @@protoc_insertion_point(field_get:pms.MsgRep.svr_cmds)
   return static_cast< ::pms::EServerCmd >(svr_cmds_);
 }
 inline void MsgRep::set_svr_cmds(::pms::EServerCmd value) {
-  assert(::pms::EServerCmd_IsValid(value));
-  set_has_svr_cmds();
+  
   svr_cmds_ = value;
   // @@protoc_insertion_point(field_set:pms.MsgRep.svr_cmds)
 }
 
 // optional .pms.EModuleType mod_type = 2;
-inline bool MsgRep::has_mod_type() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void MsgRep::set_has_mod_type() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void MsgRep::clear_has_mod_type() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void MsgRep::clear_mod_type() {
-  mod_type_ = 3;
-  clear_has_mod_type();
+  mod_type_ = 0;
 }
 inline ::pms::EModuleType MsgRep::mod_type() const {
   // @@protoc_insertion_point(field_get:pms.MsgRep.mod_type)
   return static_cast< ::pms::EModuleType >(mod_type_);
 }
 inline void MsgRep::set_mod_type(::pms::EModuleType value) {
-  assert(::pms::EModuleType_IsValid(value));
-  set_has_mod_type();
+  
   mod_type_ = value;
   // @@protoc_insertion_point(field_set:pms.MsgRep.mod_type)
 }
 
 // optional bytes rsp_cont = 3;
-inline bool MsgRep::has_rsp_cont() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void MsgRep::set_has_rsp_cont() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void MsgRep::clear_has_rsp_cont() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void MsgRep::clear_rsp_cont() {
   rsp_cont_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_rsp_cont();
 }
 inline const ::std::string& MsgRep::rsp_cont() const {
   // @@protoc_insertion_point(field_get:pms.MsgRep.rsp_cont)
   return rsp_cont_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MsgRep::set_rsp_cont(const ::std::string& value) {
-  set_has_rsp_cont();
+  
   rsp_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MsgRep.rsp_cont)
 }
 inline void MsgRep::set_rsp_cont(const char* value) {
-  set_has_rsp_cont();
+  
   rsp_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MsgRep.rsp_cont)
 }
 inline void MsgRep::set_rsp_cont(const void* value, size_t size) {
-  set_has_rsp_cont();
+  
   rsp_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MsgRep.rsp_cont)
 }
 inline ::std::string* MsgRep::mutable_rsp_cont() {
-  set_has_rsp_cont();
+  
   // @@protoc_insertion_point(field_mutable:pms.MsgRep.rsp_cont)
   return rsp_cont_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MsgRep::release_rsp_cont() {
   // @@protoc_insertion_point(field_release:pms.MsgRep.rsp_cont)
-  clear_has_rsp_cont();
+  
   return rsp_cont_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MsgRep::set_allocated_rsp_cont(::std::string* rsp_cont) {
   if (rsp_cont != NULL) {
-    set_has_rsp_cont();
+    
   } else {
-    clear_has_rsp_cont();
+    
   }
   rsp_cont_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), rsp_cont);
   // @@protoc_insertion_point(field_set_allocated:pms.MsgRep.rsp_cont)
 }
 
 // optional sint32 rsp_code = 4;
-inline bool MsgRep::has_rsp_code() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void MsgRep::set_has_rsp_code() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void MsgRep::clear_has_rsp_code() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void MsgRep::clear_rsp_code() {
   rsp_code_ = 0;
-  clear_has_rsp_code();
 }
 inline ::google::protobuf::int32 MsgRep::rsp_code() const {
   // @@protoc_insertion_point(field_get:pms.MsgRep.rsp_code)
   return rsp_code_;
 }
 inline void MsgRep::set_rsp_code(::google::protobuf::int32 value) {
-  set_has_rsp_code();
+  
   rsp_code_ = value;
   // @@protoc_insertion_point(field_set:pms.MsgRep.rsp_code)
 }
@@ -736,15 +643,7 @@ namespace google {
 namespace protobuf {
 
 template <> struct is_proto_enum< ::pms::EServerCmd> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pms::EServerCmd>() {
-  return ::pms::EServerCmd_descriptor();
-}
 template <> struct is_proto_enum< ::pms::EModuleType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pms::EModuleType>() {
-  return ::pms::EModuleType_descriptor();
-}
 
 }  // namespace protobuf
 }  // namespace google

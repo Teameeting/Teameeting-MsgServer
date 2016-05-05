@@ -130,7 +130,7 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         LOG(LS_ERROR) << "RecvData resp.ParseFromString error!";
     }
     std::cout << "XMsgProcess::DecodeRecvData--->" << std::endl;
-    resp.PrintDebugString();
+    //resp.PrintDebugString();
     switch (resp.svr_cmds()) {
         case pms::EServerCmd::CLOGIN:
             DecodeLogin(resp.rsp_code(), resp.rsp_cont());

@@ -6,59 +6,60 @@ package org.dync.teameeting.sdkmsgclient;
 public final class MeetMsgType {
   private MeetMsgType() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+      com.google.protobuf.ExtensionRegistryLite registry) {
   }
   /**
    * <pre>
    * the msg content type
    * </pre>
    *
-   * Protobuf enum {@code pms.EMsgType}
+   * Protobuf enum {@code EMsgType}
    */
   public enum EMsgType
-      implements com.google.protobuf.ProtocolMessageEnum {
+      implements com.google.protobuf.Internal.EnumLite {
     /**
-     * <code>TMSG = 1;</code>
+     * <code>TMSG = 0;</code>
      */
-    TMSG(1),
+    TMSG(0),
     /**
-     * <code>TFILE = 2;</code>
+     * <code>TFILE = 1;</code>
      */
-    TFILE(2),
+    TFILE(1),
     /**
-     * <code>TPIC = 3;</code>
+     * <code>TPIC = 2;</code>
      */
-    TPIC(3),
+    TPIC(2),
     /**
-     * <code>TAUD = 4;</code>
+     * <code>TAUD = 3;</code>
      */
-    TAUD(4),
+    TAUD(3),
     /**
-     * <code>TVID = 5;</code>
+     * <code>TVID = 4;</code>
      */
-    TVID(5),
+    TVID(4),
+    UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>TMSG = 1;</code>
+     * <code>TMSG = 0;</code>
      */
-    public static final int TMSG_VALUE = 1;
+    public static final int TMSG_VALUE = 0;
     /**
-     * <code>TFILE = 2;</code>
+     * <code>TFILE = 1;</code>
      */
-    public static final int TFILE_VALUE = 2;
+    public static final int TFILE_VALUE = 1;
     /**
-     * <code>TPIC = 3;</code>
+     * <code>TPIC = 2;</code>
      */
-    public static final int TPIC_VALUE = 3;
+    public static final int TPIC_VALUE = 2;
     /**
-     * <code>TAUD = 4;</code>
+     * <code>TAUD = 3;</code>
      */
-    public static final int TAUD_VALUE = 4;
+    public static final int TAUD_VALUE = 3;
     /**
-     * <code>TVID = 5;</code>
+     * <code>TVID = 4;</code>
      */
-    public static final int TVID_VALUE = 5;
+    public static final int TVID_VALUE = 4;
 
 
     public final int getNumber() {
@@ -75,11 +76,11 @@ public final class MeetMsgType {
 
     public static EMsgType forNumber(int value) {
       switch (value) {
-        case 1: return TMSG;
-        case 2: return TFILE;
-        case 3: return TPIC;
-        case 4: return TAUD;
-        case 5: return TVID;
+        case 0: return TMSG;
+        case 1: return TFILE;
+        case 2: return TPIC;
+        case 3: return TAUD;
+        case 4: return TVID;
         default: return null;
       }
     }
@@ -96,37 +97,13 @@ public final class MeetMsgType {
             }
           };
 
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetMsgType.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final EMsgType[] VALUES = values();
-
-    public static EMsgType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
     private final int value;
 
     private EMsgType(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:pms.EMsgType)
+    // @@protoc_insertion_point(enum_scope:EMsgType)
   }
 
   /**
@@ -134,44 +111,45 @@ public final class MeetMsgType {
    * the msg tag
    * </pre>
    *
-   * Protobuf enum {@code pms.EMsgTag}
+   * Protobuf enum {@code EMsgTag}
    */
   public enum EMsgTag
-      implements com.google.protobuf.ProtocolMessageEnum {
+      implements com.google.protobuf.Internal.EnumLite {
     /**
-     * <code>TENTER = 1;</code>
+     * <code>TENTER = 0;</code>
      */
-    TENTER(1),
+    TENTER(0),
     /**
-     * <code>TLEAVE = 2;</code>
+     * <code>TLEAVE = 1;</code>
      */
-    TLEAVE(2),
+    TLEAVE(1),
     /**
-     * <code>TCHAT = 3;</code>
+     * <code>TCHAT = 2;</code>
      */
-    TCHAT(3),
+    TCHAT(2),
     /**
-     * <code>TNOTIFY = 4;</code>
+     * <code>TNOTIFY = 3;</code>
      */
-    TNOTIFY(4),
+    TNOTIFY(3),
+    UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>TENTER = 1;</code>
+     * <code>TENTER = 0;</code>
      */
-    public static final int TENTER_VALUE = 1;
+    public static final int TENTER_VALUE = 0;
     /**
-     * <code>TLEAVE = 2;</code>
+     * <code>TLEAVE = 1;</code>
      */
-    public static final int TLEAVE_VALUE = 2;
+    public static final int TLEAVE_VALUE = 1;
     /**
-     * <code>TCHAT = 3;</code>
+     * <code>TCHAT = 2;</code>
      */
-    public static final int TCHAT_VALUE = 3;
+    public static final int TCHAT_VALUE = 2;
     /**
-     * <code>TNOTIFY = 4;</code>
+     * <code>TNOTIFY = 3;</code>
      */
-    public static final int TNOTIFY_VALUE = 4;
+    public static final int TNOTIFY_VALUE = 3;
 
 
     public final int getNumber() {
@@ -188,10 +166,10 @@ public final class MeetMsgType {
 
     public static EMsgTag forNumber(int value) {
       switch (value) {
-        case 1: return TENTER;
-        case 2: return TLEAVE;
-        case 3: return TCHAT;
-        case 4: return TNOTIFY;
+        case 0: return TENTER;
+        case 1: return TLEAVE;
+        case 2: return TCHAT;
+        case 3: return TNOTIFY;
         default: return null;
       }
     }
@@ -208,37 +186,13 @@ public final class MeetMsgType {
             }
           };
 
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetMsgType.getDescriptor().getEnumTypes().get(1);
-    }
-
-    private static final EMsgTag[] VALUES = values();
-
-    public static EMsgTag valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
     private final int value;
 
     private EMsgTag(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:pms.EMsgTag)
+    // @@protoc_insertion_point(enum_scope:EMsgTag)
   }
 
   /**
@@ -246,28 +200,29 @@ public final class MeetMsgType {
    * the msg get tag
    * </pre>
    *
-   * Protobuf enum {@code pms.EMsgHead}
+   * Protobuf enum {@code EMsgHead}
    */
   public enum EMsgHead
-      implements com.google.protobuf.ProtocolMessageEnum {
+      implements com.google.protobuf.Internal.EnumLite {
     /**
-     * <code>HSND = 1;</code>
+     * <code>HSND = 0;</code>
      */
-    HSND(1),
+    HSND(0),
     /**
-     * <code>HGET = 2;</code>
+     * <code>HGET = 1;</code>
      */
-    HGET(2),
+    HGET(1),
+    UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>HSND = 1;</code>
+     * <code>HSND = 0;</code>
      */
-    public static final int HSND_VALUE = 1;
+    public static final int HSND_VALUE = 0;
     /**
-     * <code>HGET = 2;</code>
+     * <code>HGET = 1;</code>
      */
-    public static final int HGET_VALUE = 2;
+    public static final int HGET_VALUE = 1;
 
 
     public final int getNumber() {
@@ -284,8 +239,8 @@ public final class MeetMsgType {
 
     public static EMsgHead forNumber(int value) {
       switch (value) {
-        case 1: return HSND;
-        case 2: return HGET;
+        case 0: return HSND;
+        case 1: return HGET;
         default: return null;
       }
     }
@@ -302,67 +257,17 @@ public final class MeetMsgType {
             }
           };
 
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetMsgType.getDescriptor().getEnumTypes().get(2);
-    }
-
-    private static final EMsgHead[] VALUES = values();
-
-    public static EMsgHead valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
     private final int value;
 
     private EMsgHead(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:pms.EMsgHead)
+    // @@protoc_insertion_point(enum_scope:EMsgHead)
   }
 
 
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
   static {
-    java.lang.String[] descriptorData = {
-      "\n\023meet_msg_type.proto\022\003pms*=\n\010EMsgType\022\010" +
-      "\n\004TMSG\020\001\022\t\n\005TFILE\020\002\022\010\n\004TPIC\020\003\022\010\n\004TAUD\020\004\022" +
-      "\010\n\004TVID\020\005*9\n\007EMsgTag\022\n\n\006TENTER\020\001\022\n\n\006TLEA" +
-      "VE\020\002\022\t\n\005TCHAT\020\003\022\013\n\007TNOTIFY\020\004*\036\n\010EMsgHead" +
-      "\022\010\n\004HSND\020\001\022\010\n\004HGET\020\002B1\n org.dync.teameet" +
-      "ing.sdkmsgclientB\013MeetMsgTypeH\002"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
   }
 
   // @@protoc_insertion_point(outer_class_scope)

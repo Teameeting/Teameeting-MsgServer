@@ -38,7 +38,7 @@ static GPBFileDescriptor *MeetMsgRoot_FileDescriptor(void) {
   if (!descriptor) {
     GPBDebugCheckRuntimeVersion();
     descriptor = [[GPBFileDescriptor alloc] initWithPackage:@"pms"
-                                                     syntax:GPBFileSyntaxProto2];
+                                                     syntax:GPBFileSyntaxProto3];
   }
   return descriptor;
 }
@@ -47,9 +47,9 @@ static GPBFileDescriptor *MeetMsgRoot_FileDescriptor(void) {
 
 @implementation Login
 
-@dynamic hasUsrFrom, usrFrom;
-@dynamic hasUsrToken, usrToken;
-@dynamic hasUsrNname, usrNname;
+@dynamic usrFrom;
+@dynamic usrToken;
+@dynamic usrNname;
 
 typedef struct Login__storage_ {
   uint32_t _has_storage_[1];
@@ -112,8 +112,8 @@ typedef struct Login__storage_ {
 
 @implementation Logout
 
-@dynamic hasUsrFrom, usrFrom;
-@dynamic hasUsrToken, usrToken;
+@dynamic usrFrom;
+@dynamic usrToken;
 
 typedef struct Logout__storage_ {
   uint32_t _has_storage_[1];
@@ -166,7 +166,7 @@ typedef struct Logout__storage_ {
 
 @implementation Keep
 
-@dynamic hasUsrFrom, usrFrom;
+@dynamic usrFrom;
 
 typedef struct Keep__storage_ {
   uint32_t _has_storage_[1];
@@ -209,17 +209,17 @@ typedef struct Keep__storage_ {
 
 @implementation MeetMsg
 
-@dynamic hasMsgHead, msgHead;
-@dynamic hasMsgTag, msgTag;
-@dynamic hasMsgType, msgType;
-@dynamic hasUsrFrom, usrFrom;
-@dynamic hasMsgCont, msgCont;
-@dynamic hasRomId, romId;
-@dynamic hasRomName, romName;
-@dynamic hasNckName, nckName;
-@dynamic hasUsrToken, usrToken;
-@dynamic hasMsgSeqs, msgSeqs;
-@dynamic hasMemNum, memNum;
+@dynamic msgHead;
+@dynamic msgTag;
+@dynamic msgType;
+@dynamic usrFrom;
+@dynamic msgCont;
+@dynamic romId;
+@dynamic romName;
+@dynamic nckName;
+@dynamic usrToken;
+@dynamic msgSeqs;
+@dynamic memNum;
 @dynamic hasUsrToto, usrToto;
 
 typedef struct MeetMsg__storage_ {
@@ -243,126 +243,114 @@ typedef struct MeetMsg__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueEnum = EMsgHead_Hsnd,
-        .core.name = "msgHead",
-        .core.dataTypeSpecific.enumDescFunc = EMsgHead_EnumDescriptor,
-        .core.number = MeetMsg_FieldNumber_MsgHead,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, msgHead),
-        .core.flags = GPBFieldOptional | GPBFieldHasDefaultValue | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "msgHead",
+        .dataTypeSpecific.enumDescFunc = EMsgHead_EnumDescriptor,
+        .number = MeetMsg_FieldNumber_MsgHead,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, msgHead),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueEnum = EMsgTag_Tchat,
-        .core.name = "msgTag",
-        .core.dataTypeSpecific.enumDescFunc = EMsgTag_EnumDescriptor,
-        .core.number = MeetMsg_FieldNumber_MsgTag,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, msgTag),
-        .core.flags = GPBFieldOptional | GPBFieldHasDefaultValue | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "msgTag",
+        .dataTypeSpecific.enumDescFunc = EMsgTag_EnumDescriptor,
+        .number = MeetMsg_FieldNumber_MsgTag,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, msgTag),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueEnum = EMsgType_Tmsg,
-        .core.name = "msgType",
-        .core.dataTypeSpecific.enumDescFunc = EMsgType_EnumDescriptor,
-        .core.number = MeetMsg_FieldNumber_MsgType,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, msgType),
-        .core.flags = GPBFieldOptional | GPBFieldHasDefaultValue | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "msgType",
+        .dataTypeSpecific.enumDescFunc = EMsgType_EnumDescriptor,
+        .number = MeetMsg_FieldNumber_MsgType,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, msgType),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "usrFrom",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_UsrFrom,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, usrFrom),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "usrFrom",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_UsrFrom,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, usrFrom),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "msgCont",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_MsgCont,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, msgCont),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "msgCont",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_MsgCont,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, msgCont),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "romId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_RomId,
-        .core.hasIndex = 5,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, romId),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "romId",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_RomId,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, romId),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "romName",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_RomName,
-        .core.hasIndex = 6,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, romName),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "romName",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_RomName,
+        .hasIndex = 6,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, romName),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "nckName",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_NckName,
-        .core.hasIndex = 7,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, nckName),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "nckName",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_NckName,
+        .hasIndex = 7,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, nckName),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "usrToken",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_UsrToken,
-        .core.hasIndex = 8,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, usrToken),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "usrToken",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_UsrToken,
+        .hasIndex = 8,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, usrToken),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueInt64 = 0LL,
-        .core.name = "msgSeqs",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_MsgSeqs,
-        .core.hasIndex = 9,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, msgSeqs),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeSInt64,
+        .name = "msgSeqs",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_MsgSeqs,
+        .hasIndex = 9,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, msgSeqs),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt64,
       },
       {
-        .defaultValue.valueInt32 = 0,
-        .core.name = "memNum",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MeetMsg_FieldNumber_MemNum,
-        .core.hasIndex = 10,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, memNum),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeSInt32,
+        .name = "memNum",
+        .dataTypeSpecific.className = NULL,
+        .number = MeetMsg_FieldNumber_MemNum,
+        .hasIndex = 10,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, memNum),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt32,
       },
       {
-        .defaultValue.valueMessage = nil,
-        .core.name = "usrToto",
-        .core.dataTypeSpecific.className = GPBStringifySymbol(ToUser),
-        .core.number = MeetMsg_FieldNumber_UsrToto,
-        .core.hasIndex = 11,
-        .core.offset = (uint32_t)offsetof(MeetMsg__storage_, usrToto),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeMessage,
+        .name = "usrToto",
+        .dataTypeSpecific.className = GPBStringifySymbol(ToUser),
+        .number = MeetMsg_FieldNumber_UsrToto,
+        .hasIndex = 11,
+        .offset = (uint32_t)offsetof(MeetMsg__storage_, usrToto),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeMessage,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -370,9 +358,9 @@ typedef struct MeetMsg__storage_ {
                                      rootClass:[MeetMsgRoot class]
                                           file:MeetMsgRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(MeetMsg__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
+                                         flags:0];
     NSAssert(descriptor == nil, @"Startup recursed!");
     descriptor = localDescriptor;
   }
@@ -380,6 +368,42 @@ typedef struct MeetMsg__storage_ {
 }
 
 @end
+
+int32_t MeetMsg_MsgHead_RawValue(MeetMsg *message) {
+  GPBDescriptor *descriptor = [MeetMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MeetMsg_FieldNumber_MsgHead];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMeetMsg_MsgHead_RawValue(MeetMsg *message, int32_t value) {
+  GPBDescriptor *descriptor = [MeetMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MeetMsg_FieldNumber_MsgHead];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+int32_t MeetMsg_MsgTag_RawValue(MeetMsg *message) {
+  GPBDescriptor *descriptor = [MeetMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MeetMsg_FieldNumber_MsgTag];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMeetMsg_MsgTag_RawValue(MeetMsg *message, int32_t value) {
+  GPBDescriptor *descriptor = [MeetMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MeetMsg_FieldNumber_MsgTag];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+int32_t MeetMsg_MsgType_RawValue(MeetMsg *message) {
+  GPBDescriptor *descriptor = [MeetMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MeetMsg_FieldNumber_MsgType];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMeetMsg_MsgType_RawValue(MeetMsg *message, int32_t value) {
+  GPBDescriptor *descriptor = [MeetMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MeetMsg_FieldNumber_MsgType];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
 
 
 #pragma clang diagnostic pop

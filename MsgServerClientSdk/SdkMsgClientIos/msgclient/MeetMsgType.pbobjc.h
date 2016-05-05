@@ -20,11 +20,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// the msg content type
 typedef GPB_ENUM(EMsgType) {
-  EMsgType_Tmsg = 1,
-  EMsgType_Tfile = 2,
-  EMsgType_Tpic = 3,
-  EMsgType_Taud = 4,
-  EMsgType_Tvid = 5,
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgType_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EMsgType_Tmsg = 0,
+  EMsgType_Tfile = 1,
+  EMsgType_Tpic = 2,
+  EMsgType_Taud = 3,
+  EMsgType_Tvid = 4,
 };
 
 GPBEnumDescriptor *EMsgType_EnumDescriptor(void);
@@ -37,10 +41,14 @@ BOOL EMsgType_IsValidValue(int32_t value);
 
 /// the msg tag
 typedef GPB_ENUM(EMsgTag) {
-  EMsgTag_Tenter = 1,
-  EMsgTag_Tleave = 2,
-  EMsgTag_Tchat = 3,
-  EMsgTag_Tnotify = 4,
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgTag_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EMsgTag_Tenter = 0,
+  EMsgTag_Tleave = 1,
+  EMsgTag_Tchat = 2,
+  EMsgTag_Tnotify = 3,
 };
 
 GPBEnumDescriptor *EMsgTag_EnumDescriptor(void);
@@ -53,8 +61,12 @@ BOOL EMsgTag_IsValidValue(int32_t value);
 
 /// the msg get tag
 typedef GPB_ENUM(EMsgHead) {
-  EMsgHead_Hsnd = 1,
-  EMsgHead_Hget = 2,
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgHead_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EMsgHead_Hsnd = 0,
+  EMsgHead_Hget = 1,
 };
 
 GPBEnumDescriptor *EMsgHead_EnumDescriptor(void);

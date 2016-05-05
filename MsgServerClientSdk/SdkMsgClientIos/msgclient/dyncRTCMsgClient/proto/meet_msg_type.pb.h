@@ -22,10 +22,9 @@
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/metadata.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/generated_enum_reflection.h>
+#include <google/protobuf/generated_enum_util.h>
 // @@protoc_insertion_point(includes)
 
 namespace pms {
@@ -37,67 +36,43 @@ void protobuf_ShutdownFile_meet_5fmsg_5ftype_2eproto();
 
 
 enum EMsgType {
-  TMSG = 1,
-  TFILE = 2,
-  TPIC = 3,
-  TAUD = 4,
-  TVID = 5
+  TMSG = 0,
+  TFILE = 1,
+  TPIC = 2,
+  TAUD = 3,
+  TVID = 4,
+  EMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  EMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EMsgType_IsValid(int value);
 const EMsgType EMsgType_MIN = TMSG;
 const EMsgType EMsgType_MAX = TVID;
 const int EMsgType_ARRAYSIZE = EMsgType_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* EMsgType_descriptor();
-inline const ::std::string& EMsgType_Name(EMsgType value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    EMsgType_descriptor(), value);
-}
-inline bool EMsgType_Parse(
-    const ::std::string& name, EMsgType* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EMsgType>(
-    EMsgType_descriptor(), name, value);
-}
 enum EMsgTag {
-  TENTER = 1,
-  TLEAVE = 2,
-  TCHAT = 3,
-  TNOTIFY = 4
+  TENTER = 0,
+  TLEAVE = 1,
+  TCHAT = 2,
+  TNOTIFY = 3,
+  EMsgTag_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  EMsgTag_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EMsgTag_IsValid(int value);
 const EMsgTag EMsgTag_MIN = TENTER;
 const EMsgTag EMsgTag_MAX = TNOTIFY;
 const int EMsgTag_ARRAYSIZE = EMsgTag_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* EMsgTag_descriptor();
-inline const ::std::string& EMsgTag_Name(EMsgTag value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    EMsgTag_descriptor(), value);
-}
-inline bool EMsgTag_Parse(
-    const ::std::string& name, EMsgTag* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EMsgTag>(
-    EMsgTag_descriptor(), name, value);
-}
 enum EMsgHead {
-  HSND = 1,
-  HGET = 2
+  HSND = 0,
+  HGET = 1,
+  EMsgHead_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  EMsgHead_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EMsgHead_IsValid(int value);
 const EMsgHead EMsgHead_MIN = HSND;
 const EMsgHead EMsgHead_MAX = HGET;
 const int EMsgHead_ARRAYSIZE = EMsgHead_MAX + 1;
 
-const ::google::protobuf::EnumDescriptor* EMsgHead_descriptor();
-inline const ::std::string& EMsgHead_Name(EMsgHead value) {
-  return ::google::protobuf::internal::NameOfEnum(
-    EMsgHead_descriptor(), value);
-}
-inline bool EMsgHead_Parse(
-    const ::std::string& name, EMsgHead* value) {
-  return ::google::protobuf::internal::ParseNamedEnum<EMsgHead>(
-    EMsgHead_descriptor(), name, value);
-}
 // ===================================================================
 
 
@@ -118,20 +93,8 @@ namespace google {
 namespace protobuf {
 
 template <> struct is_proto_enum< ::pms::EMsgType> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pms::EMsgType>() {
-  return ::pms::EMsgType_descriptor();
-}
 template <> struct is_proto_enum< ::pms::EMsgTag> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pms::EMsgTag>() {
-  return ::pms::EMsgTag_descriptor();
-}
 template <> struct is_proto_enum< ::pms::EMsgHead> : ::google::protobuf::internal::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::pms::EMsgHead>() {
-  return ::pms::EMsgHead_descriptor();
-}
 
 }  // namespace protobuf
 }  // namespace google

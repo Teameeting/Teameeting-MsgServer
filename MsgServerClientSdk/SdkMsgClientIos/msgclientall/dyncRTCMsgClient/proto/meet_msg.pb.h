@@ -22,11 +22,9 @@
 #include <google/protobuf/arena.h>
 #include <google/protobuf/arenastring.h>
 #include <google/protobuf/generated_message_util.h>
-#include <google/protobuf/metadata.h>
-#include <google/protobuf/message.h>
+#include <google/protobuf/message_lite.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
-#include <google/protobuf/unknown_field_set.h>
 #include "common_msg.pb.h"
 #include "meet_msg_type.pb.h"
 // @@protoc_insertion_point(includes)
@@ -45,7 +43,7 @@ class MeetMsg;
 
 // ===================================================================
 
-class Login : public ::google::protobuf::Message {
+class Login : public ::google::protobuf::MessageLite {
  public:
   Login();
   virtual ~Login();
@@ -57,16 +55,17 @@ class Login : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Login& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Login* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Login* other);
 
@@ -75,8 +74,7 @@ class Login : public ::google::protobuf::Message {
   inline Login* New() const { return New(NULL); }
 
   Login* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Login& from);
   void MergeFrom(const Login& from);
   void Clear();
@@ -87,7 +85,7 @@ class Login : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -96,21 +94,20 @@ class Login : public ::google::protobuf::Message {
   void InternalSwap(Login* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
   // optional string usr_from = 1;
-  bool has_usr_from() const;
   void clear_usr_from();
   static const int kUsrFromFieldNumber = 1;
   const ::std::string& usr_from() const;
@@ -122,7 +119,6 @@ class Login : public ::google::protobuf::Message {
   void set_allocated_usr_from(::std::string* usr_from);
 
   // optional string usr_token = 2;
-  bool has_usr_token() const;
   void clear_usr_token();
   static const int kUsrTokenFieldNumber = 2;
   const ::std::string& usr_token() const;
@@ -134,7 +130,6 @@ class Login : public ::google::protobuf::Message {
   void set_allocated_usr_token(::std::string* usr_token);
 
   // optional string usr_nname = 3;
-  bool has_usr_nname() const;
   void clear_usr_nname();
   static const int kUsrNnameFieldNumber = 3;
   const ::std::string& usr_nname() const;
@@ -147,20 +142,20 @@ class Login : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pms.Login)
  private:
-  inline void set_has_usr_from();
-  inline void clear_has_usr_from();
-  inline void set_has_usr_token();
-  inline void clear_has_usr_token();
-  inline void set_has_usr_nname();
-  inline void clear_has_usr_nname();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
   ::google::protobuf::internal::ArenaStringPtr usr_nname_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_meet_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_meet_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_meet_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_meet_5fmsg_2eproto();
 
@@ -169,7 +164,7 @@ class Login : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Logout : public ::google::protobuf::Message {
+class Logout : public ::google::protobuf::MessageLite {
  public:
   Logout();
   virtual ~Logout();
@@ -181,16 +176,17 @@ class Logout : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Logout& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Logout* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Logout* other);
 
@@ -199,8 +195,7 @@ class Logout : public ::google::protobuf::Message {
   inline Logout* New() const { return New(NULL); }
 
   Logout* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Logout& from);
   void MergeFrom(const Logout& from);
   void Clear();
@@ -211,7 +206,7 @@ class Logout : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -220,21 +215,20 @@ class Logout : public ::google::protobuf::Message {
   void InternalSwap(Logout* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
   // optional string usr_from = 1;
-  bool has_usr_from() const;
   void clear_usr_from();
   static const int kUsrFromFieldNumber = 1;
   const ::std::string& usr_from() const;
@@ -246,7 +240,6 @@ class Logout : public ::google::protobuf::Message {
   void set_allocated_usr_from(::std::string* usr_from);
 
   // optional string usr_token = 2;
-  bool has_usr_token() const;
   void clear_usr_token();
   static const int kUsrTokenFieldNumber = 2;
   const ::std::string& usr_token() const;
@@ -259,17 +252,19 @@ class Logout : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pms.Logout)
  private:
-  inline void set_has_usr_from();
-  inline void clear_has_usr_from();
-  inline void set_has_usr_token();
-  inline void clear_has_usr_token();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_meet_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_meet_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_meet_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_meet_5fmsg_2eproto();
 
@@ -278,7 +273,7 @@ class Logout : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Keep : public ::google::protobuf::Message {
+class Keep : public ::google::protobuf::MessageLite {
  public:
   Keep();
   virtual ~Keep();
@@ -290,16 +285,17 @@ class Keep : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const Keep& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Keep* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(Keep* other);
 
@@ -308,8 +304,7 @@ class Keep : public ::google::protobuf::Message {
   inline Keep* New() const { return New(NULL); }
 
   Keep* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const Keep& from);
   void MergeFrom(const Keep& from);
   void Clear();
@@ -320,7 +315,7 @@ class Keep : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -329,21 +324,20 @@ class Keep : public ::google::protobuf::Message {
   void InternalSwap(Keep* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
   // optional string usr_from = 1;
-  bool has_usr_from() const;
   void clear_usr_from();
   static const int kUsrFromFieldNumber = 1;
   const ::std::string& usr_from() const;
@@ -356,14 +350,18 @@ class Keep : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pms.Keep)
  private:
-  inline void set_has_usr_from();
-  inline void clear_has_usr_from();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_meet_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_meet_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_meet_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_meet_5fmsg_2eproto();
 
@@ -372,7 +370,7 @@ class Keep : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class MeetMsg : public ::google::protobuf::Message {
+class MeetMsg : public ::google::protobuf::MessageLite {
  public:
   MeetMsg();
   virtual ~MeetMsg();
@@ -384,16 +382,17 @@ class MeetMsg : public ::google::protobuf::Message {
     return *this;
   }
 
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _internal_metadata_.unknown_fields();
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return _internal_metadata_.mutable_unknown_fields();
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
   static const MeetMsg& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const MeetMsg* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
 
   void Swap(MeetMsg* other);
 
@@ -402,8 +401,7 @@ class MeetMsg : public ::google::protobuf::Message {
   inline MeetMsg* New() const { return New(NULL); }
 
   MeetMsg* New(::google::protobuf::Arena* arena) const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
   void CopyFrom(const MeetMsg& from);
   void MergeFrom(const MeetMsg& from);
   void Clear();
@@ -414,7 +412,7 @@ class MeetMsg : public ::google::protobuf::Message {
       ::google::protobuf::io::CodedInputStream* input);
   void SerializeWithCachedSizes(
       ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  void DiscardUnknownFields();
   int GetCachedSize() const { return _cached_size_; }
   private:
   void SharedCtor();
@@ -423,42 +421,38 @@ class MeetMsg : public ::google::protobuf::Message {
   void InternalSwap(MeetMsg* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return _internal_metadata_.arena();
+    return _arena_ptr_;
   }
-  inline void* MaybeArenaPtr() const {
-    return _internal_metadata_.raw_arena_ptr();
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
   }
   public:
 
-  ::google::protobuf::Metadata GetMetadata() const;
+  ::std::string GetTypeName() const;
 
   // nested types ----------------------------------------------------
 
   // accessors -------------------------------------------------------
 
-  // optional .pms.EMsgHead msg_head = 1 [default = HSND];
-  bool has_msg_head() const;
+  // optional .pms.EMsgHead msg_head = 1;
   void clear_msg_head();
   static const int kMsgHeadFieldNumber = 1;
   ::pms::EMsgHead msg_head() const;
   void set_msg_head(::pms::EMsgHead value);
 
-  // optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];
-  bool has_msg_tag() const;
+  // optional .pms.EMsgTag msg_tag = 2;
   void clear_msg_tag();
   static const int kMsgTagFieldNumber = 2;
   ::pms::EMsgTag msg_tag() const;
   void set_msg_tag(::pms::EMsgTag value);
 
-  // optional .pms.EMsgType msg_type = 3 [default = TMSG];
-  bool has_msg_type() const;
+  // optional .pms.EMsgType msg_type = 3;
   void clear_msg_type();
   static const int kMsgTypeFieldNumber = 3;
   ::pms::EMsgType msg_type() const;
   void set_msg_type(::pms::EMsgType value);
 
   // optional string usr_from = 4;
-  bool has_usr_from() const;
   void clear_usr_from();
   static const int kUsrFromFieldNumber = 4;
   const ::std::string& usr_from() const;
@@ -470,7 +464,6 @@ class MeetMsg : public ::google::protobuf::Message {
   void set_allocated_usr_from(::std::string* usr_from);
 
   // optional string msg_cont = 5;
-  bool has_msg_cont() const;
   void clear_msg_cont();
   static const int kMsgContFieldNumber = 5;
   const ::std::string& msg_cont() const;
@@ -482,7 +475,6 @@ class MeetMsg : public ::google::protobuf::Message {
   void set_allocated_msg_cont(::std::string* msg_cont);
 
   // optional string rom_id = 6;
-  bool has_rom_id() const;
   void clear_rom_id();
   static const int kRomIdFieldNumber = 6;
   const ::std::string& rom_id() const;
@@ -494,7 +486,6 @@ class MeetMsg : public ::google::protobuf::Message {
   void set_allocated_rom_id(::std::string* rom_id);
 
   // optional string rom_name = 7;
-  bool has_rom_name() const;
   void clear_rom_name();
   static const int kRomNameFieldNumber = 7;
   const ::std::string& rom_name() const;
@@ -506,7 +497,6 @@ class MeetMsg : public ::google::protobuf::Message {
   void set_allocated_rom_name(::std::string* rom_name);
 
   // optional string nck_name = 8;
-  bool has_nck_name() const;
   void clear_nck_name();
   static const int kNckNameFieldNumber = 8;
   const ::std::string& nck_name() const;
@@ -518,7 +508,6 @@ class MeetMsg : public ::google::protobuf::Message {
   void set_allocated_nck_name(::std::string* nck_name);
 
   // optional string usr_token = 9;
-  bool has_usr_token() const;
   void clear_usr_token();
   static const int kUsrTokenFieldNumber = 9;
   const ::std::string& usr_token() const;
@@ -530,14 +519,12 @@ class MeetMsg : public ::google::protobuf::Message {
   void set_allocated_usr_token(::std::string* usr_token);
 
   // optional sint64 msg_seqs = 10;
-  bool has_msg_seqs() const;
   void clear_msg_seqs();
   static const int kMsgSeqsFieldNumber = 10;
   ::google::protobuf::int64 msg_seqs() const;
   void set_msg_seqs(::google::protobuf::int64 value);
 
   // optional sint32 mem_num = 11;
-  bool has_mem_num() const;
   void clear_mem_num();
   static const int kMemNumFieldNumber = 11;
   ::google::protobuf::int32 mem_num() const;
@@ -554,34 +541,11 @@ class MeetMsg : public ::google::protobuf::Message {
 
   // @@protoc_insertion_point(class_scope:pms.MeetMsg)
  private:
-  inline void set_has_msg_head();
-  inline void clear_has_msg_head();
-  inline void set_has_msg_tag();
-  inline void clear_has_msg_tag();
-  inline void set_has_msg_type();
-  inline void clear_has_msg_type();
-  inline void set_has_usr_from();
-  inline void clear_has_usr_from();
-  inline void set_has_msg_cont();
-  inline void clear_has_msg_cont();
-  inline void set_has_rom_id();
-  inline void clear_has_rom_id();
-  inline void set_has_rom_name();
-  inline void clear_has_rom_name();
-  inline void set_has_nck_name();
-  inline void clear_has_nck_name();
-  inline void set_has_usr_token();
-  inline void clear_has_usr_token();
-  inline void set_has_msg_seqs();
-  inline void clear_has_msg_seqs();
-  inline void set_has_mem_num();
-  inline void clear_has_mem_num();
-  inline void set_has_usr_toto();
-  inline void clear_has_usr_toto();
 
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::uint32 _has_bits_[1];
-  mutable int _cached_size_;
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
   int msg_head_;
   int msg_tag_;
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
@@ -594,7 +558,12 @@ class MeetMsg : public ::google::protobuf::Message {
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
   ::google::protobuf::int64 msg_seqs_;
   ::pms::ToUser* usr_toto_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_meet_5fmsg_2eproto_impl();
+  #else
   friend void  protobuf_AddDesc_meet_5fmsg_2eproto();
+  #endif
   friend void protobuf_AssignDesc_meet_5fmsg_2eproto();
   friend void protobuf_ShutdownFile_meet_5fmsg_2eproto();
 
@@ -610,162 +579,132 @@ class MeetMsg : public ::google::protobuf::Message {
 // Login
 
 // optional string usr_from = 1;
-inline bool Login::has_usr_from() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void Login::set_has_usr_from() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void Login::clear_has_usr_from() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void Login::clear_usr_from() {
   usr_from_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_from();
 }
 inline const ::std::string& Login::usr_from() const {
   // @@protoc_insertion_point(field_get:pms.Login.usr_from)
   return usr_from_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Login::set_usr_from(const ::std::string& value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.Login.usr_from)
 }
 inline void Login::set_usr_from(const char* value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.Login.usr_from)
 }
 inline void Login::set_usr_from(const char* value, size_t size) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.Login.usr_from)
 }
 inline ::std::string* Login::mutable_usr_from() {
-  set_has_usr_from();
+  
   // @@protoc_insertion_point(field_mutable:pms.Login.usr_from)
   return usr_from_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Login::release_usr_from() {
   // @@protoc_insertion_point(field_release:pms.Login.usr_from)
-  clear_has_usr_from();
+  
   return usr_from_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Login::set_allocated_usr_from(::std::string* usr_from) {
   if (usr_from != NULL) {
-    set_has_usr_from();
+    
   } else {
-    clear_has_usr_from();
+    
   }
   usr_from_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_from);
   // @@protoc_insertion_point(field_set_allocated:pms.Login.usr_from)
 }
 
 // optional string usr_token = 2;
-inline bool Login::has_usr_token() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void Login::set_has_usr_token() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void Login::clear_has_usr_token() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void Login::clear_usr_token() {
   usr_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_token();
 }
 inline const ::std::string& Login::usr_token() const {
   // @@protoc_insertion_point(field_get:pms.Login.usr_token)
   return usr_token_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Login::set_usr_token(const ::std::string& value) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.Login.usr_token)
 }
 inline void Login::set_usr_token(const char* value) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.Login.usr_token)
 }
 inline void Login::set_usr_token(const char* value, size_t size) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.Login.usr_token)
 }
 inline ::std::string* Login::mutable_usr_token() {
-  set_has_usr_token();
+  
   // @@protoc_insertion_point(field_mutable:pms.Login.usr_token)
   return usr_token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Login::release_usr_token() {
   // @@protoc_insertion_point(field_release:pms.Login.usr_token)
-  clear_has_usr_token();
+  
   return usr_token_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Login::set_allocated_usr_token(::std::string* usr_token) {
   if (usr_token != NULL) {
-    set_has_usr_token();
+    
   } else {
-    clear_has_usr_token();
+    
   }
   usr_token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_token);
   // @@protoc_insertion_point(field_set_allocated:pms.Login.usr_token)
 }
 
 // optional string usr_nname = 3;
-inline bool Login::has_usr_nname() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void Login::set_has_usr_nname() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void Login::clear_has_usr_nname() {
-  _has_bits_[0] &= ~0x00000004u;
-}
 inline void Login::clear_usr_nname() {
   usr_nname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_nname();
 }
 inline const ::std::string& Login::usr_nname() const {
   // @@protoc_insertion_point(field_get:pms.Login.usr_nname)
   return usr_nname_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Login::set_usr_nname(const ::std::string& value) {
-  set_has_usr_nname();
+  
   usr_nname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.Login.usr_nname)
 }
 inline void Login::set_usr_nname(const char* value) {
-  set_has_usr_nname();
+  
   usr_nname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.Login.usr_nname)
 }
 inline void Login::set_usr_nname(const char* value, size_t size) {
-  set_has_usr_nname();
+  
   usr_nname_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.Login.usr_nname)
 }
 inline ::std::string* Login::mutable_usr_nname() {
-  set_has_usr_nname();
+  
   // @@protoc_insertion_point(field_mutable:pms.Login.usr_nname)
   return usr_nname_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Login::release_usr_nname() {
   // @@protoc_insertion_point(field_release:pms.Login.usr_nname)
-  clear_has_usr_nname();
+  
   return usr_nname_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Login::set_allocated_usr_nname(::std::string* usr_nname) {
   if (usr_nname != NULL) {
-    set_has_usr_nname();
+    
   } else {
-    clear_has_usr_nname();
+    
   }
   usr_nname_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_nname);
   // @@protoc_insertion_point(field_set_allocated:pms.Login.usr_nname)
@@ -776,108 +715,88 @@ inline void Login::set_allocated_usr_nname(::std::string* usr_nname) {
 // Logout
 
 // optional string usr_from = 1;
-inline bool Logout::has_usr_from() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void Logout::set_has_usr_from() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void Logout::clear_has_usr_from() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void Logout::clear_usr_from() {
   usr_from_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_from();
 }
 inline const ::std::string& Logout::usr_from() const {
   // @@protoc_insertion_point(field_get:pms.Logout.usr_from)
   return usr_from_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Logout::set_usr_from(const ::std::string& value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.Logout.usr_from)
 }
 inline void Logout::set_usr_from(const char* value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.Logout.usr_from)
 }
 inline void Logout::set_usr_from(const char* value, size_t size) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.Logout.usr_from)
 }
 inline ::std::string* Logout::mutable_usr_from() {
-  set_has_usr_from();
+  
   // @@protoc_insertion_point(field_mutable:pms.Logout.usr_from)
   return usr_from_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Logout::release_usr_from() {
   // @@protoc_insertion_point(field_release:pms.Logout.usr_from)
-  clear_has_usr_from();
+  
   return usr_from_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Logout::set_allocated_usr_from(::std::string* usr_from) {
   if (usr_from != NULL) {
-    set_has_usr_from();
+    
   } else {
-    clear_has_usr_from();
+    
   }
   usr_from_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_from);
   // @@protoc_insertion_point(field_set_allocated:pms.Logout.usr_from)
 }
 
 // optional string usr_token = 2;
-inline bool Logout::has_usr_token() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void Logout::set_has_usr_token() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void Logout::clear_has_usr_token() {
-  _has_bits_[0] &= ~0x00000002u;
-}
 inline void Logout::clear_usr_token() {
   usr_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_token();
 }
 inline const ::std::string& Logout::usr_token() const {
   // @@protoc_insertion_point(field_get:pms.Logout.usr_token)
   return usr_token_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Logout::set_usr_token(const ::std::string& value) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.Logout.usr_token)
 }
 inline void Logout::set_usr_token(const char* value) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.Logout.usr_token)
 }
 inline void Logout::set_usr_token(const char* value, size_t size) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.Logout.usr_token)
 }
 inline ::std::string* Logout::mutable_usr_token() {
-  set_has_usr_token();
+  
   // @@protoc_insertion_point(field_mutable:pms.Logout.usr_token)
   return usr_token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Logout::release_usr_token() {
   // @@protoc_insertion_point(field_release:pms.Logout.usr_token)
-  clear_has_usr_token();
+  
   return usr_token_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Logout::set_allocated_usr_token(::std::string* usr_token) {
   if (usr_token != NULL) {
-    set_has_usr_token();
+    
   } else {
-    clear_has_usr_token();
+    
   }
   usr_token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_token);
   // @@protoc_insertion_point(field_set_allocated:pms.Logout.usr_token)
@@ -888,54 +807,44 @@ inline void Logout::set_allocated_usr_token(::std::string* usr_token) {
 // Keep
 
 // optional string usr_from = 1;
-inline bool Keep::has_usr_from() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void Keep::set_has_usr_from() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void Keep::clear_has_usr_from() {
-  _has_bits_[0] &= ~0x00000001u;
-}
 inline void Keep::clear_usr_from() {
   usr_from_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_from();
 }
 inline const ::std::string& Keep::usr_from() const {
   // @@protoc_insertion_point(field_get:pms.Keep.usr_from)
   return usr_from_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Keep::set_usr_from(const ::std::string& value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.Keep.usr_from)
 }
 inline void Keep::set_usr_from(const char* value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.Keep.usr_from)
 }
 inline void Keep::set_usr_from(const char* value, size_t size) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.Keep.usr_from)
 }
 inline ::std::string* Keep::mutable_usr_from() {
-  set_has_usr_from();
+  
   // @@protoc_insertion_point(field_mutable:pms.Keep.usr_from)
   return usr_from_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* Keep::release_usr_from() {
   // @@protoc_insertion_point(field_release:pms.Keep.usr_from)
-  clear_has_usr_from();
+  
   return usr_from_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void Keep::set_allocated_usr_from(::std::string* usr_from) {
   if (usr_from != NULL) {
-    set_has_usr_from();
+    
   } else {
-    clear_has_usr_from();
+    
   }
   usr_from_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_from);
   // @@protoc_insertion_point(field_set_allocated:pms.Keep.usr_from)
@@ -945,473 +854,358 @@ inline void Keep::set_allocated_usr_from(::std::string* usr_from) {
 
 // MeetMsg
 
-// optional .pms.EMsgHead msg_head = 1 [default = HSND];
-inline bool MeetMsg::has_msg_head() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void MeetMsg::set_has_msg_head() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void MeetMsg::clear_has_msg_head() {
-  _has_bits_[0] &= ~0x00000001u;
-}
+// optional .pms.EMsgHead msg_head = 1;
 inline void MeetMsg::clear_msg_head() {
-  msg_head_ = 1;
-  clear_has_msg_head();
+  msg_head_ = 0;
 }
 inline ::pms::EMsgHead MeetMsg::msg_head() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.msg_head)
   return static_cast< ::pms::EMsgHead >(msg_head_);
 }
 inline void MeetMsg::set_msg_head(::pms::EMsgHead value) {
-  assert(::pms::EMsgHead_IsValid(value));
-  set_has_msg_head();
+  
   msg_head_ = value;
   // @@protoc_insertion_point(field_set:pms.MeetMsg.msg_head)
 }
 
-// optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];
-inline bool MeetMsg::has_msg_tag() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void MeetMsg::set_has_msg_tag() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void MeetMsg::clear_has_msg_tag() {
-  _has_bits_[0] &= ~0x00000002u;
-}
+// optional .pms.EMsgTag msg_tag = 2;
 inline void MeetMsg::clear_msg_tag() {
-  msg_tag_ = 3;
-  clear_has_msg_tag();
+  msg_tag_ = 0;
 }
 inline ::pms::EMsgTag MeetMsg::msg_tag() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.msg_tag)
   return static_cast< ::pms::EMsgTag >(msg_tag_);
 }
 inline void MeetMsg::set_msg_tag(::pms::EMsgTag value) {
-  assert(::pms::EMsgTag_IsValid(value));
-  set_has_msg_tag();
+  
   msg_tag_ = value;
   // @@protoc_insertion_point(field_set:pms.MeetMsg.msg_tag)
 }
 
-// optional .pms.EMsgType msg_type = 3 [default = TMSG];
-inline bool MeetMsg::has_msg_type() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void MeetMsg::set_has_msg_type() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void MeetMsg::clear_has_msg_type() {
-  _has_bits_[0] &= ~0x00000004u;
-}
+// optional .pms.EMsgType msg_type = 3;
 inline void MeetMsg::clear_msg_type() {
-  msg_type_ = 1;
-  clear_has_msg_type();
+  msg_type_ = 0;
 }
 inline ::pms::EMsgType MeetMsg::msg_type() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.msg_type)
   return static_cast< ::pms::EMsgType >(msg_type_);
 }
 inline void MeetMsg::set_msg_type(::pms::EMsgType value) {
-  assert(::pms::EMsgType_IsValid(value));
-  set_has_msg_type();
+  
   msg_type_ = value;
   // @@protoc_insertion_point(field_set:pms.MeetMsg.msg_type)
 }
 
 // optional string usr_from = 4;
-inline bool MeetMsg::has_usr_from() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void MeetMsg::set_has_usr_from() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void MeetMsg::clear_has_usr_from() {
-  _has_bits_[0] &= ~0x00000008u;
-}
 inline void MeetMsg::clear_usr_from() {
   usr_from_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_from();
 }
 inline const ::std::string& MeetMsg::usr_from() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.usr_from)
   return usr_from_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_usr_from(const ::std::string& value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MeetMsg.usr_from)
 }
 inline void MeetMsg::set_usr_from(const char* value) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MeetMsg.usr_from)
 }
 inline void MeetMsg::set_usr_from(const char* value, size_t size) {
-  set_has_usr_from();
+  
   usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.usr_from)
 }
 inline ::std::string* MeetMsg::mutable_usr_from() {
-  set_has_usr_from();
+  
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.usr_from)
   return usr_from_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MeetMsg::release_usr_from() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.usr_from)
-  clear_has_usr_from();
+  
   return usr_from_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_allocated_usr_from(::std::string* usr_from) {
   if (usr_from != NULL) {
-    set_has_usr_from();
+    
   } else {
-    clear_has_usr_from();
+    
   }
   usr_from_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_from);
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.usr_from)
 }
 
 // optional string msg_cont = 5;
-inline bool MeetMsg::has_msg_cont() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void MeetMsg::set_has_msg_cont() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void MeetMsg::clear_has_msg_cont() {
-  _has_bits_[0] &= ~0x00000010u;
-}
 inline void MeetMsg::clear_msg_cont() {
   msg_cont_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_msg_cont();
 }
 inline const ::std::string& MeetMsg::msg_cont() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.msg_cont)
   return msg_cont_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_msg_cont(const ::std::string& value) {
-  set_has_msg_cont();
+  
   msg_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MeetMsg.msg_cont)
 }
 inline void MeetMsg::set_msg_cont(const char* value) {
-  set_has_msg_cont();
+  
   msg_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MeetMsg.msg_cont)
 }
 inline void MeetMsg::set_msg_cont(const char* value, size_t size) {
-  set_has_msg_cont();
+  
   msg_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.msg_cont)
 }
 inline ::std::string* MeetMsg::mutable_msg_cont() {
-  set_has_msg_cont();
+  
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.msg_cont)
   return msg_cont_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MeetMsg::release_msg_cont() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.msg_cont)
-  clear_has_msg_cont();
+  
   return msg_cont_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_allocated_msg_cont(::std::string* msg_cont) {
   if (msg_cont != NULL) {
-    set_has_msg_cont();
+    
   } else {
-    clear_has_msg_cont();
+    
   }
   msg_cont_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), msg_cont);
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.msg_cont)
 }
 
 // optional string rom_id = 6;
-inline bool MeetMsg::has_rom_id() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void MeetMsg::set_has_rom_id() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void MeetMsg::clear_has_rom_id() {
-  _has_bits_[0] &= ~0x00000020u;
-}
 inline void MeetMsg::clear_rom_id() {
   rom_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_rom_id();
 }
 inline const ::std::string& MeetMsg::rom_id() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.rom_id)
   return rom_id_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_rom_id(const ::std::string& value) {
-  set_has_rom_id();
+  
   rom_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MeetMsg.rom_id)
 }
 inline void MeetMsg::set_rom_id(const char* value) {
-  set_has_rom_id();
+  
   rom_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MeetMsg.rom_id)
 }
 inline void MeetMsg::set_rom_id(const char* value, size_t size) {
-  set_has_rom_id();
+  
   rom_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.rom_id)
 }
 inline ::std::string* MeetMsg::mutable_rom_id() {
-  set_has_rom_id();
+  
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.rom_id)
   return rom_id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MeetMsg::release_rom_id() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.rom_id)
-  clear_has_rom_id();
+  
   return rom_id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_allocated_rom_id(::std::string* rom_id) {
   if (rom_id != NULL) {
-    set_has_rom_id();
+    
   } else {
-    clear_has_rom_id();
+    
   }
   rom_id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), rom_id);
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.rom_id)
 }
 
 // optional string rom_name = 7;
-inline bool MeetMsg::has_rom_name() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void MeetMsg::set_has_rom_name() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void MeetMsg::clear_has_rom_name() {
-  _has_bits_[0] &= ~0x00000040u;
-}
 inline void MeetMsg::clear_rom_name() {
   rom_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_rom_name();
 }
 inline const ::std::string& MeetMsg::rom_name() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.rom_name)
   return rom_name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_rom_name(const ::std::string& value) {
-  set_has_rom_name();
+  
   rom_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MeetMsg.rom_name)
 }
 inline void MeetMsg::set_rom_name(const char* value) {
-  set_has_rom_name();
+  
   rom_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MeetMsg.rom_name)
 }
 inline void MeetMsg::set_rom_name(const char* value, size_t size) {
-  set_has_rom_name();
+  
   rom_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.rom_name)
 }
 inline ::std::string* MeetMsg::mutable_rom_name() {
-  set_has_rom_name();
+  
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.rom_name)
   return rom_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MeetMsg::release_rom_name() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.rom_name)
-  clear_has_rom_name();
+  
   return rom_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_allocated_rom_name(::std::string* rom_name) {
   if (rom_name != NULL) {
-    set_has_rom_name();
+    
   } else {
-    clear_has_rom_name();
+    
   }
   rom_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), rom_name);
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.rom_name)
 }
 
 // optional string nck_name = 8;
-inline bool MeetMsg::has_nck_name() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void MeetMsg::set_has_nck_name() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void MeetMsg::clear_has_nck_name() {
-  _has_bits_[0] &= ~0x00000080u;
-}
 inline void MeetMsg::clear_nck_name() {
   nck_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_nck_name();
 }
 inline const ::std::string& MeetMsg::nck_name() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.nck_name)
   return nck_name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_nck_name(const ::std::string& value) {
-  set_has_nck_name();
+  
   nck_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MeetMsg.nck_name)
 }
 inline void MeetMsg::set_nck_name(const char* value) {
-  set_has_nck_name();
+  
   nck_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MeetMsg.nck_name)
 }
 inline void MeetMsg::set_nck_name(const char* value, size_t size) {
-  set_has_nck_name();
+  
   nck_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.nck_name)
 }
 inline ::std::string* MeetMsg::mutable_nck_name() {
-  set_has_nck_name();
+  
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.nck_name)
   return nck_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MeetMsg::release_nck_name() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.nck_name)
-  clear_has_nck_name();
+  
   return nck_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_allocated_nck_name(::std::string* nck_name) {
   if (nck_name != NULL) {
-    set_has_nck_name();
+    
   } else {
-    clear_has_nck_name();
+    
   }
   nck_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), nck_name);
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.nck_name)
 }
 
 // optional string usr_token = 9;
-inline bool MeetMsg::has_usr_token() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void MeetMsg::set_has_usr_token() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void MeetMsg::clear_has_usr_token() {
-  _has_bits_[0] &= ~0x00000100u;
-}
 inline void MeetMsg::clear_usr_token() {
   usr_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  clear_has_usr_token();
 }
 inline const ::std::string& MeetMsg::usr_token() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.usr_token)
   return usr_token_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_usr_token(const ::std::string& value) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
   // @@protoc_insertion_point(field_set:pms.MeetMsg.usr_token)
 }
 inline void MeetMsg::set_usr_token(const char* value) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.MeetMsg.usr_token)
 }
 inline void MeetMsg::set_usr_token(const char* value, size_t size) {
-  set_has_usr_token();
+  
   usr_token_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
   // @@protoc_insertion_point(field_set_pointer:pms.MeetMsg.usr_token)
 }
 inline ::std::string* MeetMsg::mutable_usr_token() {
-  set_has_usr_token();
+  
   // @@protoc_insertion_point(field_mutable:pms.MeetMsg.usr_token)
   return usr_token_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline ::std::string* MeetMsg::release_usr_token() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.usr_token)
-  clear_has_usr_token();
+  
   return usr_token_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 inline void MeetMsg::set_allocated_usr_token(::std::string* usr_token) {
   if (usr_token != NULL) {
-    set_has_usr_token();
+    
   } else {
-    clear_has_usr_token();
+    
   }
   usr_token_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_token);
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.usr_token)
 }
 
 // optional sint64 msg_seqs = 10;
-inline bool MeetMsg::has_msg_seqs() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void MeetMsg::set_has_msg_seqs() {
-  _has_bits_[0] |= 0x00000200u;
-}
-inline void MeetMsg::clear_has_msg_seqs() {
-  _has_bits_[0] &= ~0x00000200u;
-}
 inline void MeetMsg::clear_msg_seqs() {
   msg_seqs_ = GOOGLE_LONGLONG(0);
-  clear_has_msg_seqs();
 }
 inline ::google::protobuf::int64 MeetMsg::msg_seqs() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.msg_seqs)
   return msg_seqs_;
 }
 inline void MeetMsg::set_msg_seqs(::google::protobuf::int64 value) {
-  set_has_msg_seqs();
+  
   msg_seqs_ = value;
   // @@protoc_insertion_point(field_set:pms.MeetMsg.msg_seqs)
 }
 
 // optional sint32 mem_num = 11;
-inline bool MeetMsg::has_mem_num() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void MeetMsg::set_has_mem_num() {
-  _has_bits_[0] |= 0x00000400u;
-}
-inline void MeetMsg::clear_has_mem_num() {
-  _has_bits_[0] &= ~0x00000400u;
-}
 inline void MeetMsg::clear_mem_num() {
   mem_num_ = 0;
-  clear_has_mem_num();
 }
 inline ::google::protobuf::int32 MeetMsg::mem_num() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.mem_num)
   return mem_num_;
 }
 inline void MeetMsg::set_mem_num(::google::protobuf::int32 value) {
-  set_has_mem_num();
+  
   mem_num_ = value;
   // @@protoc_insertion_point(field_set:pms.MeetMsg.mem_num)
 }
 
 // optional .pms.ToUser usr_toto = 12;
 inline bool MeetMsg::has_usr_toto() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
-}
-inline void MeetMsg::set_has_usr_toto() {
-  _has_bits_[0] |= 0x00000800u;
-}
-inline void MeetMsg::clear_has_usr_toto() {
-  _has_bits_[0] &= ~0x00000800u;
+  return !_is_default_instance_ && usr_toto_ != NULL;
 }
 inline void MeetMsg::clear_usr_toto() {
-  if (usr_toto_ != NULL) usr_toto_->::pms::ToUser::Clear();
-  clear_has_usr_toto();
+  if (GetArenaNoVirtual() == NULL && usr_toto_ != NULL) delete usr_toto_;
+  usr_toto_ = NULL;
 }
 inline const ::pms::ToUser& MeetMsg::usr_toto() const {
   // @@protoc_insertion_point(field_get:pms.MeetMsg.usr_toto)
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  return usr_toto_ != NULL ? *usr_toto_ : *default_instance().usr_toto_;
+#else
   return usr_toto_ != NULL ? *usr_toto_ : *default_instance_->usr_toto_;
+#endif
 }
 inline ::pms::ToUser* MeetMsg::mutable_usr_toto() {
-  set_has_usr_toto();
+  
   if (usr_toto_ == NULL) {
     usr_toto_ = new ::pms::ToUser;
   }
@@ -1420,7 +1214,7 @@ inline ::pms::ToUser* MeetMsg::mutable_usr_toto() {
 }
 inline ::pms::ToUser* MeetMsg::release_usr_toto() {
   // @@protoc_insertion_point(field_release:pms.MeetMsg.usr_toto)
-  clear_has_usr_toto();
+  
   ::pms::ToUser* temp = usr_toto_;
   usr_toto_ = NULL;
   return temp;
@@ -1429,9 +1223,9 @@ inline void MeetMsg::set_allocated_usr_toto(::pms::ToUser* usr_toto) {
   delete usr_toto_;
   usr_toto_ = usr_toto;
   if (usr_toto) {
-    set_has_usr_toto();
+    
   } else {
-    clear_has_usr_toto();
+    
   }
   // @@protoc_insertion_point(field_set_allocated:pms.MeetMsg.usr_toto)
 }

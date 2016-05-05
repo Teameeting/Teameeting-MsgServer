@@ -6,20 +6,12 @@ package org.dync.teameeting.sdkmsgclient;
 public final class MeetingMsg {
   private MeetingMsg() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+      com.google.protobuf.ExtensionRegistryLite registry) {
   }
   public interface LoginOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.Login)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:Login)
+      com.google.protobuf.MessageLiteOrBuilder {
 
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 1;</code>
-     */
-    boolean hasUsrFrom();
     /**
      * <pre>
      * user id sending from
@@ -45,14 +37,6 @@ public final class MeetingMsg {
      *
      * <code>optional string usr_token = 2;</code>
      */
-    boolean hasUsrToken();
-    /**
-     * <pre>
-     * user token
-     * </pre>
-     *
-     * <code>optional string usr_token = 2;</code>
-     */
     java.lang.String getUsrToken();
     /**
      * <pre>
@@ -64,10 +48,6 @@ public final class MeetingMsg {
     com.google.protobuf.ByteString
         getUsrTokenBytes();
 
-    /**
-     * <code>optional string usr_nname = 3;</code>
-     */
-    boolean hasUsrNname();
     /**
      * <code>optional string usr_nname = 3;</code>
      */
@@ -79,52 +59,20 @@ public final class MeetingMsg {
         getUsrNnameBytes();
   }
   /**
-   * Protobuf type {@code pms.Login}
+   * Protobuf type {@code Login}
    */
   public  static final class Login extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.Login)
+      com.google.protobuf.GeneratedMessageLite<
+          Login, Login.Builder> implements
+      // @@protoc_insertion_point(message_implements:Login)
       LoginOrBuilder {
-    // Use Login.newBuilder() to construct.
-    private Login(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private Login() {
       usrFrom_ = "";
       usrToken_ = "";
       usrNname_ = "";
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Login_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Login_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.Builder.class);
-    }
-
-    private int bitField0_;
     public static final int USR_FROM_FIELD_NUMBER = 1;
-    private volatile java.lang.Object usrFrom_;
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 1;</code>
-     */
-    public boolean hasUsrFrom() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
+    private java.lang.String usrFrom_;
     /**
      * <pre>
      * user id sending from
@@ -133,18 +81,7 @@ public final class MeetingMsg {
      * <code>optional string usr_from = 1;</code>
      */
     public java.lang.String getUsrFrom() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrFrom_ = s;
-        }
-        return s;
-      }
+      return usrFrom_;
     }
     /**
      * <pre>
@@ -155,30 +92,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrFromBytes() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrFrom_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(usrFrom_);
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFrom(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrFrom_ = value;
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void clearUsrFrom() {
+      
+      usrFrom_ = getDefaultInstance().getUsrFrom();
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFromBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrFrom_ = value.toStringUtf8();
     }
 
     public static final int USR_TOKEN_FIELD_NUMBER = 2;
-    private volatile java.lang.Object usrToken_;
-    /**
-     * <pre>
-     * user token
-     * </pre>
-     *
-     * <code>optional string usr_token = 2;</code>
-     */
-    public boolean hasUsrToken() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
+    private java.lang.String usrToken_;
     /**
      * <pre>
      * user token
@@ -187,18 +147,7 @@ public final class MeetingMsg {
      * <code>optional string usr_token = 2;</code>
      */
     public java.lang.String getUsrToken() {
-      java.lang.Object ref = usrToken_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrToken_ = s;
-        }
-        return s;
-      }
+      return usrToken_;
     }
     /**
      * <pre>
@@ -209,232 +158,213 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrTokenBytes() {
-      java.lang.Object ref = usrToken_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrToken_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(usrToken_);
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 2;</code>
+     */
+    private void setUsrToken(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrToken_ = value;
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 2;</code>
+     */
+    private void clearUsrToken() {
+      
+      usrToken_ = getDefaultInstance().getUsrToken();
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 2;</code>
+     */
+    private void setUsrTokenBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrToken_ = value.toStringUtf8();
     }
 
     public static final int USR_NNAME_FIELD_NUMBER = 3;
-    private volatile java.lang.Object usrNname_;
-    /**
-     * <code>optional string usr_nname = 3;</code>
-     */
-    public boolean hasUsrNname() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
+    private java.lang.String usrNname_;
     /**
      * <code>optional string usr_nname = 3;</code>
      */
     public java.lang.String getUsrNname() {
-      java.lang.Object ref = usrNname_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrNname_ = s;
-        }
-        return s;
-      }
+      return usrNname_;
     }
     /**
      * <code>optional string usr_nname = 3;</code>
      */
     public com.google.protobuf.ByteString
         getUsrNnameBytes() {
-      java.lang.Object ref = usrNname_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrNname_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
+      return com.google.protobuf.ByteString.copyFromUtf8(usrNname_);
+    }
+    /**
+     * <code>optional string usr_nname = 3;</code>
+     */
+    private void setUsrNname(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrNname_ = value;
+    }
+    /**
+     * <code>optional string usr_nname = 3;</code>
+     */
+    private void clearUsrNname() {
+      
+      usrNname_ = getDefaultInstance().getUsrNname();
+    }
+    /**
+     * <code>optional string usr_nname = 3;</code>
+     */
+    private void setUsrNnameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrNname_ = value.toStringUtf8();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!usrFrom_.isEmpty()) {
+        output.writeString(1, getUsrFrom());
       }
+      if (!usrToken_.isEmpty()) {
+        output.writeString(2, getUsrToken());
+      }
+      if (!usrNname_.isEmpty()) {
+        output.writeString(3, getUsrNname());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!usrFrom_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsrFrom());
+      }
+      if (!usrToken_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getUsrToken());
+      }
+      if (!usrNname_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(3, getUsrNname());
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.MeetingMsg.Login prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
-     * Protobuf type {@code pms.Login}
+     * Protobuf type {@code Login}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.Login)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.Login, Builder> implements
+        // @@protoc_insertion_point(builder_implements:Login)
         org.dync.teameeting.sdkmsgclient.MeetingMsg.LoginOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Login_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Login_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        usrFrom_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        usrToken_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        usrNname_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Login_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Login getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Login build() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.Login result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Login buildPartial() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.Login result = new org.dync.teameeting.sdkmsgclient.MeetingMsg.Login(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.usrFrom_ = usrFrom_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.usrToken_ = usrToken_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.usrNname_ = usrNname_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private java.lang.Object usrFrom_ = "";
-      /**
-       * <pre>
-       * user id sending from
-       * </pre>
-       *
-       * <code>optional string usr_from = 1;</code>
-       */
-      public boolean hasUsrFrom() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
       /**
        * <pre>
        * user id sending from
@@ -443,18 +373,7 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 1;</code>
        */
       public java.lang.String getUsrFrom() {
-        java.lang.Object ref = usrFrom_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrFrom_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrFrom();
       }
       /**
        * <pre>
@@ -465,16 +384,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrFromBytes() {
-        java.lang.Object ref = usrFrom_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrFrom_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrFromBytes();
       }
       /**
        * <pre>
@@ -485,12 +395,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrFrom(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFrom(value);
         return this;
       }
       /**
@@ -501,9 +407,8 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 1;</code>
        */
       public Builder clearUsrFrom() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        usrFrom_ = getDefaultInstance().getUsrFrom();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrFrom();
         return this;
       }
       /**
@@ -515,26 +420,11 @@ public final class MeetingMsg {
        */
       public Builder setUsrFromBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFromBytes(value);
         return this;
       }
 
-      private java.lang.Object usrToken_ = "";
-      /**
-       * <pre>
-       * user token
-       * </pre>
-       *
-       * <code>optional string usr_token = 2;</code>
-       */
-      public boolean hasUsrToken() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
       /**
        * <pre>
        * user token
@@ -543,18 +433,7 @@ public final class MeetingMsg {
        * <code>optional string usr_token = 2;</code>
        */
       public java.lang.String getUsrToken() {
-        java.lang.Object ref = usrToken_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrToken_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrToken();
       }
       /**
        * <pre>
@@ -565,16 +444,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrTokenBytes() {
-        java.lang.Object ref = usrToken_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrToken_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrTokenBytes();
       }
       /**
        * <pre>
@@ -585,12 +455,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrToken(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        usrToken_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrToken(value);
         return this;
       }
       /**
@@ -601,9 +467,8 @@ public final class MeetingMsg {
        * <code>optional string usr_token = 2;</code>
        */
       public Builder clearUsrToken() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        usrToken_ = getDefaultInstance().getUsrToken();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrToken();
         return this;
       }
       /**
@@ -615,75 +480,39 @@ public final class MeetingMsg {
        */
       public Builder setUsrTokenBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        usrToken_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrTokenBytes(value);
         return this;
       }
 
-      private java.lang.Object usrNname_ = "";
-      /**
-       * <code>optional string usr_nname = 3;</code>
-       */
-      public boolean hasUsrNname() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
       /**
        * <code>optional string usr_nname = 3;</code>
        */
       public java.lang.String getUsrNname() {
-        java.lang.Object ref = usrNname_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrNname_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrNname();
       }
       /**
        * <code>optional string usr_nname = 3;</code>
        */
       public com.google.protobuf.ByteString
           getUsrNnameBytes() {
-        java.lang.Object ref = usrNname_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrNname_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrNnameBytes();
       }
       /**
        * <code>optional string usr_nname = 3;</code>
        */
       public Builder setUsrNname(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        usrNname_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrNname(value);
         return this;
       }
       /**
        * <code>optional string usr_nname = 3;</code>
        */
       public Builder clearUsrNname() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        usrNname_ = getDefaultInstance().getUsrNname();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrNname();
         return this;
       }
       /**
@@ -691,75 +520,130 @@ public final class MeetingMsg {
        */
       public Builder setUsrNnameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        usrNname_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrNnameBytes(value);
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.Login)
+      // @@protoc_insertion_point(builder_scope:Login)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.MeetingMsg.Login();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.Login other = (org.dync.teameeting.sdkmsgclient.MeetingMsg.Login) arg1;
+          usrFrom_ = visitor.visitString(!usrFrom_.isEmpty(), usrFrom_,
+              !other.usrFrom_.isEmpty(), other.usrFrom_);
+          usrToken_ = visitor.visitString(!usrToken_.isEmpty(), usrToken_,
+              !other.usrToken_.isEmpty(), other.usrToken_);
+          usrNname_ = visitor.visitString(!usrNname_.isEmpty(), usrNname_,
+              !other.usrNname_.isEmpty(), other.usrNname_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 10: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrFrom_ = s;
+                  break;
+                }
+                case 18: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrToken_ = s;
+                  break;
+                }
+                case 26: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrNname_ = s;
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.MeetingMsg.Login.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.Login)
+
+    // @@protoc_insertion_point(class_scope:Login)
     private static final org.dync.teameeting.sdkmsgclient.MeetingMsg.Login DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.MeetingMsg.Login();
+      DEFAULT_INSTANCE = new Login();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Login getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Login>
-        PARSER = new com.google.protobuf.AbstractParser<Login>() {
-      public Login parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<Login> PARSER;
 
     public static com.google.protobuf.Parser<Login> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Login> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.MeetingMsg.Login getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
   public interface LogoutOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.Logout)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:Logout)
+      com.google.protobuf.MessageLiteOrBuilder {
 
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 1;</code>
-     */
-    boolean hasUsrFrom();
     /**
      * <pre>
      * user id sending from
@@ -778,14 +662,6 @@ public final class MeetingMsg {
     com.google.protobuf.ByteString
         getUsrFromBytes();
 
-    /**
-     * <pre>
-     * user token
-     * </pre>
-     *
-     * <code>optional string usr_token = 2;</code>
-     */
-    boolean hasUsrToken();
     /**
      * <pre>
      * user token
@@ -805,51 +681,19 @@ public final class MeetingMsg {
         getUsrTokenBytes();
   }
   /**
-   * Protobuf type {@code pms.Logout}
+   * Protobuf type {@code Logout}
    */
   public  static final class Logout extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.Logout)
+      com.google.protobuf.GeneratedMessageLite<
+          Logout, Logout.Builder> implements
+      // @@protoc_insertion_point(message_implements:Logout)
       LogoutOrBuilder {
-    // Use Logout.newBuilder() to construct.
-    private Logout(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private Logout() {
       usrFrom_ = "";
       usrToken_ = "";
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Logout_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Logout_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.Builder.class);
-    }
-
-    private int bitField0_;
     public static final int USR_FROM_FIELD_NUMBER = 1;
-    private volatile java.lang.Object usrFrom_;
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 1;</code>
-     */
-    public boolean hasUsrFrom() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
+    private java.lang.String usrFrom_;
     /**
      * <pre>
      * user id sending from
@@ -858,18 +702,7 @@ public final class MeetingMsg {
      * <code>optional string usr_from = 1;</code>
      */
     public java.lang.String getUsrFrom() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrFrom_ = s;
-        }
-        return s;
-      }
+      return usrFrom_;
     }
     /**
      * <pre>
@@ -880,30 +713,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrFromBytes() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrFrom_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(usrFrom_);
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFrom(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrFrom_ = value;
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void clearUsrFrom() {
+      
+      usrFrom_ = getDefaultInstance().getUsrFrom();
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFromBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrFrom_ = value.toStringUtf8();
     }
 
     public static final int USR_TOKEN_FIELD_NUMBER = 2;
-    private volatile java.lang.Object usrToken_;
-    /**
-     * <pre>
-     * user token
-     * </pre>
-     *
-     * <code>optional string usr_token = 2;</code>
-     */
-    public boolean hasUsrToken() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
+    private java.lang.String usrToken_;
     /**
      * <pre>
      * user token
@@ -912,18 +768,7 @@ public final class MeetingMsg {
      * <code>optional string usr_token = 2;</code>
      */
     public java.lang.String getUsrToken() {
-      java.lang.Object ref = usrToken_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrToken_ = s;
-        }
-        return s;
-      }
+      return usrToken_;
     }
     /**
      * <pre>
@@ -934,184 +779,160 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrTokenBytes() {
-      java.lang.Object ref = usrToken_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrToken_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
+      return com.google.protobuf.ByteString.copyFromUtf8(usrToken_);
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 2;</code>
+     */
+    private void setUsrToken(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrToken_ = value;
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 2;</code>
+     */
+    private void clearUsrToken() {
+      
+      usrToken_ = getDefaultInstance().getUsrToken();
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 2;</code>
+     */
+    private void setUsrTokenBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrToken_ = value.toStringUtf8();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!usrFrom_.isEmpty()) {
+        output.writeString(1, getUsrFrom());
       }
+      if (!usrToken_.isEmpty()) {
+        output.writeString(2, getUsrToken());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!usrFrom_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsrFrom());
+      }
+      if (!usrToken_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getUsrToken());
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
-     * Protobuf type {@code pms.Logout}
+     * Protobuf type {@code Logout}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.Logout)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout, Builder> implements
+        // @@protoc_insertion_point(builder_implements:Logout)
         org.dync.teameeting.sdkmsgclient.MeetingMsg.LogoutOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Logout_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Logout_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        usrFrom_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        usrToken_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
-        return this;
-      }
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Logout_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout build() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout buildPartial() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout result = new org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.usrFrom_ = usrFrom_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.usrToken_ = usrToken_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private java.lang.Object usrFrom_ = "";
-      /**
-       * <pre>
-       * user id sending from
-       * </pre>
-       *
-       * <code>optional string usr_from = 1;</code>
-       */
-      public boolean hasUsrFrom() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
       /**
        * <pre>
        * user id sending from
@@ -1120,18 +941,7 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 1;</code>
        */
       public java.lang.String getUsrFrom() {
-        java.lang.Object ref = usrFrom_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrFrom_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrFrom();
       }
       /**
        * <pre>
@@ -1142,16 +952,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrFromBytes() {
-        java.lang.Object ref = usrFrom_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrFrom_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrFromBytes();
       }
       /**
        * <pre>
@@ -1162,12 +963,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrFrom(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFrom(value);
         return this;
       }
       /**
@@ -1178,9 +975,8 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 1;</code>
        */
       public Builder clearUsrFrom() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        usrFrom_ = getDefaultInstance().getUsrFrom();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrFrom();
         return this;
       }
       /**
@@ -1192,26 +988,11 @@ public final class MeetingMsg {
        */
       public Builder setUsrFromBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFromBytes(value);
         return this;
       }
 
-      private java.lang.Object usrToken_ = "";
-      /**
-       * <pre>
-       * user token
-       * </pre>
-       *
-       * <code>optional string usr_token = 2;</code>
-       */
-      public boolean hasUsrToken() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
       /**
        * <pre>
        * user token
@@ -1220,18 +1001,7 @@ public final class MeetingMsg {
        * <code>optional string usr_token = 2;</code>
        */
       public java.lang.String getUsrToken() {
-        java.lang.Object ref = usrToken_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrToken_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrToken();
       }
       /**
        * <pre>
@@ -1242,16 +1012,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrTokenBytes() {
-        java.lang.Object ref = usrToken_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrToken_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrTokenBytes();
       }
       /**
        * <pre>
@@ -1262,12 +1023,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrToken(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        usrToken_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrToken(value);
         return this;
       }
       /**
@@ -1278,9 +1035,8 @@ public final class MeetingMsg {
        * <code>optional string usr_token = 2;</code>
        */
       public Builder clearUsrToken() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        usrToken_ = getDefaultInstance().getUsrToken();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrToken();
         return this;
       }
       /**
@@ -1292,75 +1048,122 @@ public final class MeetingMsg {
        */
       public Builder setUsrTokenBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        usrToken_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrTokenBytes(value);
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.Logout)
+      // @@protoc_insertion_point(builder_scope:Logout)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout other = (org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout) arg1;
+          usrFrom_ = visitor.visitString(!usrFrom_.isEmpty(), usrFrom_,
+              !other.usrFrom_.isEmpty(), other.usrFrom_);
+          usrToken_ = visitor.visitString(!usrToken_.isEmpty(), usrToken_,
+              !other.usrToken_.isEmpty(), other.usrToken_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 10: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrFrom_ = s;
+                  break;
+                }
+                case 18: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrToken_ = s;
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.Logout)
+
+    // @@protoc_insertion_point(class_scope:Logout)
     private static final org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout();
+      DEFAULT_INSTANCE = new Logout();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Logout>
-        PARSER = new com.google.protobuf.AbstractParser<Logout>() {
-      public Logout parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<Logout> PARSER;
 
     public static com.google.protobuf.Parser<Logout> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Logout> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.MeetingMsg.Logout getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
   public interface KeepOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.Keep)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:Keep)
+      com.google.protobuf.MessageLiteOrBuilder {
 
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 1;</code>
-     */
-    boolean hasUsrFrom();
     /**
      * <pre>
      * user id sending from
@@ -1380,50 +1183,18 @@ public final class MeetingMsg {
         getUsrFromBytes();
   }
   /**
-   * Protobuf type {@code pms.Keep}
+   * Protobuf type {@code Keep}
    */
   public  static final class Keep extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.Keep)
+      com.google.protobuf.GeneratedMessageLite<
+          Keep, Keep.Builder> implements
+      // @@protoc_insertion_point(message_implements:Keep)
       KeepOrBuilder {
-    // Use Keep.newBuilder() to construct.
-    private Keep(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private Keep() {
       usrFrom_ = "";
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Keep_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Keep_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.Builder.class);
-    }
-
-    private int bitField0_;
     public static final int USR_FROM_FIELD_NUMBER = 1;
-    private volatile java.lang.Object usrFrom_;
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 1;</code>
-     */
-    public boolean hasUsrFrom() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
+    private java.lang.String usrFrom_;
     /**
      * <pre>
      * user id sending from
@@ -1432,18 +1203,7 @@ public final class MeetingMsg {
      * <code>optional string usr_from = 1;</code>
      */
     public java.lang.String getUsrFrom() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrFrom_ = s;
-        }
-        return s;
-      }
+      return usrFrom_;
     }
     /**
      * <pre>
@@ -1454,178 +1214,153 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrFromBytes() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrFrom_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
+      return com.google.protobuf.ByteString.copyFromUtf8(usrFrom_);
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFrom(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrFrom_ = value;
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void clearUsrFrom() {
+      
+      usrFrom_ = getDefaultInstance().getUsrFrom();
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFromBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrFrom_ = value.toStringUtf8();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!usrFrom_.isEmpty()) {
+        output.writeString(1, getUsrFrom());
       }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!usrFrom_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsrFrom());
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
-     * Protobuf type {@code pms.Keep}
+     * Protobuf type {@code Keep}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.Keep)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep, Builder> implements
+        // @@protoc_insertion_point(builder_implements:Keep)
         org.dync.teameeting.sdkmsgclient.MeetingMsg.KeepOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Keep_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Keep_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        usrFrom_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_Keep_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep build() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep buildPartial() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep result = new org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.usrFrom_ = usrFrom_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private java.lang.Object usrFrom_ = "";
-      /**
-       * <pre>
-       * user id sending from
-       * </pre>
-       *
-       * <code>optional string usr_from = 1;</code>
-       */
-      public boolean hasUsrFrom() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
       /**
        * <pre>
        * user id sending from
@@ -1634,18 +1369,7 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 1;</code>
        */
       public java.lang.String getUsrFrom() {
-        java.lang.Object ref = usrFrom_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrFrom_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrFrom();
       }
       /**
        * <pre>
@@ -1656,16 +1380,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrFromBytes() {
-        java.lang.Object ref = usrFrom_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrFrom_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrFromBytes();
       }
       /**
        * <pre>
@@ -1676,12 +1391,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrFrom(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFrom(value);
         return this;
       }
       /**
@@ -1692,9 +1403,8 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 1;</code>
        */
       public Builder clearUsrFrom() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        usrFrom_ = getDefaultInstance().getUsrFrom();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrFrom();
         return this;
       }
       /**
@@ -1706,81 +1416,128 @@ public final class MeetingMsg {
        */
       public Builder setUsrFromBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFromBytes(value);
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.Keep)
+      // @@protoc_insertion_point(builder_scope:Keep)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep other = (org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep) arg1;
+          usrFrom_ = visitor.visitString(!usrFrom_.isEmpty(), usrFrom_,
+              !other.usrFrom_.isEmpty(), other.usrFrom_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 10: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrFrom_ = s;
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.Keep)
+
+    // @@protoc_insertion_point(class_scope:Keep)
     private static final org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep();
+      DEFAULT_INSTANCE = new Keep();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<Keep>
-        PARSER = new com.google.protobuf.AbstractParser<Keep>() {
-      public Keep parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<Keep> PARSER;
 
     public static com.google.protobuf.Parser<Keep> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Keep> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.MeetingMsg.Keep getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
   public interface MeetMsgOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.MeetMsg)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:MeetMsg)
+      com.google.protobuf.MessageLiteOrBuilder {
 
     /**
      * <pre>
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+     * <code>optional .EMsgHead msg_head = 1;</code>
      */
-    boolean hasMsgHead();
+    int getMsgHeadValue();
     /**
      * <pre>
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+     * <code>optional .EMsgHead msg_head = 1;</code>
      */
     org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead getMsgHead();
 
@@ -1789,15 +1546,15 @@ public final class MeetingMsg {
      * msg tag
      * </pre>
      *
-     * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+     * <code>optional .EMsgTag msg_tag = 2;</code>
      */
-    boolean hasMsgTag();
+    int getMsgTagValue();
     /**
      * <pre>
      * msg tag
      * </pre>
      *
-     * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+     * <code>optional .EMsgTag msg_tag = 2;</code>
      */
     org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag getMsgTag();
 
@@ -1806,26 +1563,18 @@ public final class MeetingMsg {
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+     * <code>optional .EMsgType msg_type = 3;</code>
      */
-    boolean hasMsgType();
+    int getMsgTypeValue();
     /**
      * <pre>
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+     * <code>optional .EMsgType msg_type = 3;</code>
      */
     org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType getMsgType();
 
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 4;</code>
-     */
-    boolean hasUsrFrom();
     /**
      * <pre>
      * user id sending from
@@ -1844,14 +1593,6 @@ public final class MeetingMsg {
     com.google.protobuf.ByteString
         getUsrFromBytes();
 
-    /**
-     * <pre>
-     * msg content
-     * </pre>
-     *
-     * <code>optional string msg_cont = 5;</code>
-     */
-    boolean hasMsgCont();
     /**
      * <pre>
      * msg content
@@ -1877,14 +1618,6 @@ public final class MeetingMsg {
      *
      * <code>optional string rom_id = 6;</code>
      */
-    boolean hasRomId();
-    /**
-     * <pre>
-     * user room id
-     * </pre>
-     *
-     * <code>optional string rom_id = 6;</code>
-     */
     java.lang.String getRomId();
     /**
      * <pre>
@@ -1896,14 +1629,6 @@ public final class MeetingMsg {
     com.google.protobuf.ByteString
         getRomIdBytes();
 
-    /**
-     * <pre>
-     * user room name
-     * </pre>
-     *
-     * <code>optional string rom_name = 7;</code>
-     */
-    boolean hasRomName();
     /**
      * <pre>
      * user room name
@@ -1929,14 +1654,6 @@ public final class MeetingMsg {
      *
      * <code>optional string nck_name = 8;</code>
      */
-    boolean hasNckName();
-    /**
-     * <pre>
-     * user nick name
-     * </pre>
-     *
-     * <code>optional string nck_name = 8;</code>
-     */
     java.lang.String getNckName();
     /**
      * <pre>
@@ -1948,14 +1665,6 @@ public final class MeetingMsg {
     com.google.protobuf.ByteString
         getNckNameBytes();
 
-    /**
-     * <pre>
-     * user token
-     * </pre>
-     *
-     * <code>optional string usr_token = 9;</code>
-     */
-    boolean hasUsrToken();
     /**
      * <pre>
      * user token
@@ -1981,24 +1690,8 @@ public final class MeetingMsg {
      *
      * <code>optional sint64 msg_seqs = 10;</code>
      */
-    boolean hasMsgSeqs();
-    /**
-     * <pre>
-     * msg sequence number
-     * </pre>
-     *
-     * <code>optional sint64 msg_seqs = 10;</code>
-     */
     long getMsgSeqs();
 
-    /**
-     * <pre>
-     * room member number
-     * </pre>
-     *
-     * <code>optional sint32 mem_num = 11;</code>
-     */
-    boolean hasMemNum();
     /**
      * <pre>
      * room member number
@@ -2013,7 +1706,7 @@ public final class MeetingMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 12;</code>
+     * <code>optional .ToUser usr_toto = 12;</code>
      */
     boolean hasUsrToto();
     /**
@@ -2021,33 +1714,22 @@ public final class MeetingMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 12;</code>
+     * <code>optional .ToUser usr_toto = 12;</code>
      */
     org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser getUsrToto();
-    /**
-     * <pre>
-     * user ids sending to, the string from pms::ToUser
-     * </pre>
-     *
-     * <code>optional .pms.ToUser usr_toto = 12;</code>
-     */
-    org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder getUsrTotoOrBuilder();
   }
   /**
-   * Protobuf type {@code pms.MeetMsg}
+   * Protobuf type {@code MeetMsg}
    */
   public  static final class MeetMsg extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.MeetMsg)
+      com.google.protobuf.GeneratedMessageLite<
+          MeetMsg, MeetMsg.Builder> implements
+      // @@protoc_insertion_point(message_implements:MeetMsg)
       MeetMsgOrBuilder {
-    // Use MeetMsg.newBuilder() to construct.
-    private MeetMsg(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private MeetMsg() {
-      msgHead_ = 1;
-      msgTag_ = 3;
-      msgType_ = 1;
+      msgHead_ = 0;
+      msgTag_ = 0;
+      msgType_ = 0;
       usrFrom_ = "";
       msgCont_ = "";
       romId_ = "";
@@ -2057,25 +1739,6 @@ public final class MeetingMsg {
       msgSeqs_ = 0L;
       memNum_ = 0;
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_MeetMsg_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_MeetMsg_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.Builder.class);
-    }
-
-    private int bitField0_;
     public static final int MSG_HEAD_FIELD_NUMBER = 1;
     private int msgHead_;
     /**
@@ -2083,21 +1746,56 @@ public final class MeetingMsg {
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+     * <code>optional .EMsgHead msg_head = 1;</code>
      */
-    public boolean hasMsgHead() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+    public int getMsgHeadValue() {
+      return msgHead_;
     }
     /**
      * <pre>
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+     * <code>optional .EMsgHead msg_head = 1;</code>
      */
     public org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead getMsgHead() {
       org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead result = org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.forNumber(msgHead_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.HSND : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * msg type
+     * </pre>
+     *
+     * <code>optional .EMsgHead msg_head = 1;</code>
+     */
+    private void setMsgHeadValue(int value) {
+        msgHead_ = value;
+    }
+    /**
+     * <pre>
+     * msg type
+     * </pre>
+     *
+     * <code>optional .EMsgHead msg_head = 1;</code>
+     */
+    private void setMsgHead(org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      msgHead_ = value.getNumber();
+    }
+    /**
+     * <pre>
+     * msg type
+     * </pre>
+     *
+     * <code>optional .EMsgHead msg_head = 1;</code>
+     */
+    private void clearMsgHead() {
+      
+      msgHead_ = 0;
     }
 
     public static final int MSG_TAG_FIELD_NUMBER = 2;
@@ -2107,21 +1805,56 @@ public final class MeetingMsg {
      * msg tag
      * </pre>
      *
-     * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+     * <code>optional .EMsgTag msg_tag = 2;</code>
      */
-    public boolean hasMsgTag() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+    public int getMsgTagValue() {
+      return msgTag_;
     }
     /**
      * <pre>
      * msg tag
      * </pre>
      *
-     * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+     * <code>optional .EMsgTag msg_tag = 2;</code>
      */
     public org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag getMsgTag() {
       org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag result = org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.forNumber(msgTag_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.TCHAT : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * msg tag
+     * </pre>
+     *
+     * <code>optional .EMsgTag msg_tag = 2;</code>
+     */
+    private void setMsgTagValue(int value) {
+        msgTag_ = value;
+    }
+    /**
+     * <pre>
+     * msg tag
+     * </pre>
+     *
+     * <code>optional .EMsgTag msg_tag = 2;</code>
+     */
+    private void setMsgTag(org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      msgTag_ = value.getNumber();
+    }
+    /**
+     * <pre>
+     * msg tag
+     * </pre>
+     *
+     * <code>optional .EMsgTag msg_tag = 2;</code>
+     */
+    private void clearMsgTag() {
+      
+      msgTag_ = 0;
     }
 
     public static final int MSG_TYPE_FIELD_NUMBER = 3;
@@ -2131,35 +1864,60 @@ public final class MeetingMsg {
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+     * <code>optional .EMsgType msg_type = 3;</code>
      */
-    public boolean hasMsgType() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+    public int getMsgTypeValue() {
+      return msgType_;
     }
     /**
      * <pre>
      * msg type
      * </pre>
      *
-     * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+     * <code>optional .EMsgType msg_type = 3;</code>
      */
     public org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType getMsgType() {
       org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType result = org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.forNumber(msgType_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.TMSG : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.UNRECOGNIZED : result;
+    }
+    /**
+     * <pre>
+     * msg type
+     * </pre>
+     *
+     * <code>optional .EMsgType msg_type = 3;</code>
+     */
+    private void setMsgTypeValue(int value) {
+        msgType_ = value;
+    }
+    /**
+     * <pre>
+     * msg type
+     * </pre>
+     *
+     * <code>optional .EMsgType msg_type = 3;</code>
+     */
+    private void setMsgType(org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      msgType_ = value.getNumber();
+    }
+    /**
+     * <pre>
+     * msg type
+     * </pre>
+     *
+     * <code>optional .EMsgType msg_type = 3;</code>
+     */
+    private void clearMsgType() {
+      
+      msgType_ = 0;
     }
 
     public static final int USR_FROM_FIELD_NUMBER = 4;
-    private volatile java.lang.Object usrFrom_;
-    /**
-     * <pre>
-     * user id sending from
-     * </pre>
-     *
-     * <code>optional string usr_from = 4;</code>
-     */
-    public boolean hasUsrFrom() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
+    private java.lang.String usrFrom_;
     /**
      * <pre>
      * user id sending from
@@ -2168,18 +1926,7 @@ public final class MeetingMsg {
      * <code>optional string usr_from = 4;</code>
      */
     public java.lang.String getUsrFrom() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrFrom_ = s;
-        }
-        return s;
-      }
+      return usrFrom_;
     }
     /**
      * <pre>
@@ -2190,30 +1937,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrFromBytes() {
-      java.lang.Object ref = usrFrom_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrFrom_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(usrFrom_);
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 4;</code>
+     */
+    private void setUsrFrom(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrFrom_ = value;
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 4;</code>
+     */
+    private void clearUsrFrom() {
+      
+      usrFrom_ = getDefaultInstance().getUsrFrom();
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 4;</code>
+     */
+    private void setUsrFromBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrFrom_ = value.toStringUtf8();
     }
 
     public static final int MSG_CONT_FIELD_NUMBER = 5;
-    private volatile java.lang.Object msgCont_;
-    /**
-     * <pre>
-     * msg content
-     * </pre>
-     *
-     * <code>optional string msg_cont = 5;</code>
-     */
-    public boolean hasMsgCont() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
+    private java.lang.String msgCont_;
     /**
      * <pre>
      * msg content
@@ -2222,18 +1992,7 @@ public final class MeetingMsg {
      * <code>optional string msg_cont = 5;</code>
      */
     public java.lang.String getMsgCont() {
-      java.lang.Object ref = msgCont_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          msgCont_ = s;
-        }
-        return s;
-      }
+      return msgCont_;
     }
     /**
      * <pre>
@@ -2244,30 +2003,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getMsgContBytes() {
-      java.lang.Object ref = msgCont_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        msgCont_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(msgCont_);
+    }
+    /**
+     * <pre>
+     * msg content
+     * </pre>
+     *
+     * <code>optional string msg_cont = 5;</code>
+     */
+    private void setMsgCont(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      msgCont_ = value;
+    }
+    /**
+     * <pre>
+     * msg content
+     * </pre>
+     *
+     * <code>optional string msg_cont = 5;</code>
+     */
+    private void clearMsgCont() {
+      
+      msgCont_ = getDefaultInstance().getMsgCont();
+    }
+    /**
+     * <pre>
+     * msg content
+     * </pre>
+     *
+     * <code>optional string msg_cont = 5;</code>
+     */
+    private void setMsgContBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      msgCont_ = value.toStringUtf8();
     }
 
     public static final int ROM_ID_FIELD_NUMBER = 6;
-    private volatile java.lang.Object romId_;
-    /**
-     * <pre>
-     * user room id
-     * </pre>
-     *
-     * <code>optional string rom_id = 6;</code>
-     */
-    public boolean hasRomId() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
+    private java.lang.String romId_;
     /**
      * <pre>
      * user room id
@@ -2276,18 +2058,7 @@ public final class MeetingMsg {
      * <code>optional string rom_id = 6;</code>
      */
     public java.lang.String getRomId() {
-      java.lang.Object ref = romId_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          romId_ = s;
-        }
-        return s;
-      }
+      return romId_;
     }
     /**
      * <pre>
@@ -2298,30 +2069,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getRomIdBytes() {
-      java.lang.Object ref = romId_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        romId_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(romId_);
+    }
+    /**
+     * <pre>
+     * user room id
+     * </pre>
+     *
+     * <code>optional string rom_id = 6;</code>
+     */
+    private void setRomId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      romId_ = value;
+    }
+    /**
+     * <pre>
+     * user room id
+     * </pre>
+     *
+     * <code>optional string rom_id = 6;</code>
+     */
+    private void clearRomId() {
+      
+      romId_ = getDefaultInstance().getRomId();
+    }
+    /**
+     * <pre>
+     * user room id
+     * </pre>
+     *
+     * <code>optional string rom_id = 6;</code>
+     */
+    private void setRomIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      romId_ = value.toStringUtf8();
     }
 
     public static final int ROM_NAME_FIELD_NUMBER = 7;
-    private volatile java.lang.Object romName_;
-    /**
-     * <pre>
-     * user room name
-     * </pre>
-     *
-     * <code>optional string rom_name = 7;</code>
-     */
-    public boolean hasRomName() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
+    private java.lang.String romName_;
     /**
      * <pre>
      * user room name
@@ -2330,18 +2124,7 @@ public final class MeetingMsg {
      * <code>optional string rom_name = 7;</code>
      */
     public java.lang.String getRomName() {
-      java.lang.Object ref = romName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          romName_ = s;
-        }
-        return s;
-      }
+      return romName_;
     }
     /**
      * <pre>
@@ -2352,30 +2135,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getRomNameBytes() {
-      java.lang.Object ref = romName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        romName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(romName_);
+    }
+    /**
+     * <pre>
+     * user room name
+     * </pre>
+     *
+     * <code>optional string rom_name = 7;</code>
+     */
+    private void setRomName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      romName_ = value;
+    }
+    /**
+     * <pre>
+     * user room name
+     * </pre>
+     *
+     * <code>optional string rom_name = 7;</code>
+     */
+    private void clearRomName() {
+      
+      romName_ = getDefaultInstance().getRomName();
+    }
+    /**
+     * <pre>
+     * user room name
+     * </pre>
+     *
+     * <code>optional string rom_name = 7;</code>
+     */
+    private void setRomNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      romName_ = value.toStringUtf8();
     }
 
     public static final int NCK_NAME_FIELD_NUMBER = 8;
-    private volatile java.lang.Object nckName_;
-    /**
-     * <pre>
-     * user nick name
-     * </pre>
-     *
-     * <code>optional string nck_name = 8;</code>
-     */
-    public boolean hasNckName() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
+    private java.lang.String nckName_;
     /**
      * <pre>
      * user nick name
@@ -2384,18 +2190,7 @@ public final class MeetingMsg {
      * <code>optional string nck_name = 8;</code>
      */
     public java.lang.String getNckName() {
-      java.lang.Object ref = nckName_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          nckName_ = s;
-        }
-        return s;
-      }
+      return nckName_;
     }
     /**
      * <pre>
@@ -2406,30 +2201,53 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getNckNameBytes() {
-      java.lang.Object ref = nckName_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        nckName_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(nckName_);
+    }
+    /**
+     * <pre>
+     * user nick name
+     * </pre>
+     *
+     * <code>optional string nck_name = 8;</code>
+     */
+    private void setNckName(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      nckName_ = value;
+    }
+    /**
+     * <pre>
+     * user nick name
+     * </pre>
+     *
+     * <code>optional string nck_name = 8;</code>
+     */
+    private void clearNckName() {
+      
+      nckName_ = getDefaultInstance().getNckName();
+    }
+    /**
+     * <pre>
+     * user nick name
+     * </pre>
+     *
+     * <code>optional string nck_name = 8;</code>
+     */
+    private void setNckNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      nckName_ = value.toStringUtf8();
     }
 
     public static final int USR_TOKEN_FIELD_NUMBER = 9;
-    private volatile java.lang.Object usrToken_;
-    /**
-     * <pre>
-     * user token
-     * </pre>
-     *
-     * <code>optional string usr_token = 9;</code>
-     */
-    public boolean hasUsrToken() {
-      return ((bitField0_ & 0x00000100) == 0x00000100);
-    }
+    private java.lang.String usrToken_;
     /**
      * <pre>
      * user token
@@ -2438,18 +2256,7 @@ public final class MeetingMsg {
      * <code>optional string usr_token = 9;</code>
      */
     public java.lang.String getUsrToken() {
-      java.lang.Object ref = usrToken_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          usrToken_ = s;
-        }
-        return s;
-      }
+      return usrToken_;
     }
     /**
      * <pre>
@@ -2460,16 +2267,49 @@ public final class MeetingMsg {
      */
     public com.google.protobuf.ByteString
         getUsrTokenBytes() {
-      java.lang.Object ref = usrToken_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        usrToken_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+      return com.google.protobuf.ByteString.copyFromUtf8(usrToken_);
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 9;</code>
+     */
+    private void setUsrToken(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrToken_ = value;
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 9;</code>
+     */
+    private void clearUsrToken() {
+      
+      usrToken_ = getDefaultInstance().getUsrToken();
+    }
+    /**
+     * <pre>
+     * user token
+     * </pre>
+     *
+     * <code>optional string usr_token = 9;</code>
+     */
+    private void setUsrTokenBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrToken_ = value.toStringUtf8();
     }
 
     public static final int MSG_SEQS_FIELD_NUMBER = 10;
@@ -2481,8 +2321,8 @@ public final class MeetingMsg {
      *
      * <code>optional sint64 msg_seqs = 10;</code>
      */
-    public boolean hasMsgSeqs() {
-      return ((bitField0_ & 0x00000200) == 0x00000200);
+    public long getMsgSeqs() {
+      return msgSeqs_;
     }
     /**
      * <pre>
@@ -2491,8 +2331,20 @@ public final class MeetingMsg {
      *
      * <code>optional sint64 msg_seqs = 10;</code>
      */
-    public long getMsgSeqs() {
-      return msgSeqs_;
+    private void setMsgSeqs(long value) {
+      
+      msgSeqs_ = value;
+    }
+    /**
+     * <pre>
+     * msg sequence number
+     * </pre>
+     *
+     * <code>optional sint64 msg_seqs = 10;</code>
+     */
+    private void clearMsgSeqs() {
+      
+      msgSeqs_ = 0L;
     }
 
     public static final int MEM_NUM_FIELD_NUMBER = 11;
@@ -2504,8 +2356,8 @@ public final class MeetingMsg {
      *
      * <code>optional sint32 mem_num = 11;</code>
      */
-    public boolean hasMemNum() {
-      return ((bitField0_ & 0x00000400) == 0x00000400);
+    public int getMemNum() {
+      return memNum_;
     }
     /**
      * <pre>
@@ -2514,8 +2366,20 @@ public final class MeetingMsg {
      *
      * <code>optional sint32 mem_num = 11;</code>
      */
-    public int getMemNum() {
-      return memNum_;
+    private void setMemNum(int value) {
+      
+      memNum_ = value;
+    }
+    /**
+     * <pre>
+     * room member number
+     * </pre>
+     *
+     * <code>optional sint32 mem_num = 11;</code>
+     */
+    private void clearMemNum() {
+      
+      memNum_ = 0;
     }
 
     public static final int USR_TOTO_FIELD_NUMBER = 12;
@@ -2525,17 +2389,17 @@ public final class MeetingMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 12;</code>
+     * <code>optional .ToUser usr_toto = 12;</code>
      */
     public boolean hasUsrToto() {
-      return ((bitField0_ & 0x00000800) == 0x00000800);
+      return usrToto_ != null;
     }
     /**
      * <pre>
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 12;</code>
+     * <code>optional .ToUser usr_toto = 12;</code>
      */
     public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser getUsrToto() {
       return usrToto_ == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance() : usrToto_;
@@ -2545,272 +2409,276 @@ public final class MeetingMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 12;</code>
+     * <code>optional .ToUser usr_toto = 12;</code>
      */
-    public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder getUsrTotoOrBuilder() {
-      return usrToto_ == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance() : usrToto_;
+    private void setUsrToto(org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      usrToto_ = value;
+      
+      }
+    /**
+     * <pre>
+     * user ids sending to, the string from pms::ToUser
+     * </pre>
+     *
+     * <code>optional .ToUser usr_toto = 12;</code>
+     */
+    private void setUsrToto(
+        org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder builderForValue) {
+      usrToto_ = builderForValue.build();
+      
+    }
+    /**
+     * <pre>
+     * user ids sending to, the string from pms::ToUser
+     * </pre>
+     *
+     * <code>optional .ToUser usr_toto = 12;</code>
+     */
+    private void mergeUsrToto(org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser value) {
+      if (usrToto_ != null &&
+          usrToto_ != org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance()) {
+        usrToto_ =
+          org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.newBuilder(usrToto_).mergeFrom(value).buildPartial();
+      } else {
+        usrToto_ = value;
+      }
+      
+    }
+    /**
+     * <pre>
+     * user ids sending to, the string from pms::ToUser
+     * </pre>
+     *
+     * <code>optional .ToUser usr_toto = 12;</code>
+     */
+    private void clearUsrToto() {  usrToto_ = null;
+      
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (msgHead_ != org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.HSND.getNumber()) {
+        output.writeEnum(1, msgHead_);
+      }
+      if (msgTag_ != org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.TENTER.getNumber()) {
+        output.writeEnum(2, msgTag_);
+      }
+      if (msgType_ != org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.TMSG.getNumber()) {
+        output.writeEnum(3, msgType_);
+      }
+      if (!usrFrom_.isEmpty()) {
+        output.writeString(4, getUsrFrom());
+      }
+      if (!msgCont_.isEmpty()) {
+        output.writeString(5, getMsgCont());
+      }
+      if (!romId_.isEmpty()) {
+        output.writeString(6, getRomId());
+      }
+      if (!romName_.isEmpty()) {
+        output.writeString(7, getRomName());
+      }
+      if (!nckName_.isEmpty()) {
+        output.writeString(8, getNckName());
+      }
+      if (!usrToken_.isEmpty()) {
+        output.writeString(9, getUsrToken());
+      }
+      if (msgSeqs_ != 0L) {
+        output.writeSInt64(10, msgSeqs_);
+      }
+      if (memNum_ != 0) {
+        output.writeSInt32(11, memNum_);
+      }
+      if (usrToto_ != null) {
+        output.writeMessage(12, getUsrToto());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (msgHead_ != org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.HSND.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, msgHead_);
+      }
+      if (msgTag_ != org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.TENTER.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, msgTag_);
+      }
+      if (msgType_ != org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.TMSG.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, msgType_);
+      }
+      if (!usrFrom_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getUsrFrom());
+      }
+      if (!msgCont_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(5, getMsgCont());
+      }
+      if (!romId_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(6, getRomId());
+      }
+      if (!romName_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(7, getRomName());
+      }
+      if (!nckName_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(8, getNckName());
+      }
+      if (!usrToken_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(9, getUsrToken());
+      }
+      if (msgSeqs_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt64Size(10, msgSeqs_);
+      }
+      if (memNum_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt32Size(11, memNum_);
+      }
+      if (usrToto_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(12, getUsrToto());
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
-     * Protobuf type {@code pms.MeetMsg}
+     * Protobuf type {@code MeetMsg}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.MeetMsg)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg, Builder> implements
+        // @@protoc_insertion_point(builder_implements:MeetMsg)
         org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsgOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_MeetMsg_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_MeetMsg_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.class, org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
+
+      /**
+       * <pre>
+       * msg type
+       * </pre>
+       *
+       * <code>optional .EMsgHead msg_head = 1;</code>
+       */
+      public int getMsgHeadValue() {
+        return instance.getMsgHeadValue();
       }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getUsrTotoFieldBuilder();
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        msgHead_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        msgTag_ = 3;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        msgType_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        usrFrom_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        msgCont_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
-        romId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
-        romName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
-        nckName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000080);
-        usrToken_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
-        msgSeqs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000200);
-        memNum_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000400);
-        if (usrTotoBuilder_ == null) {
-          usrToto_ = null;
-        } else {
-          usrTotoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000800);
+      /**
+       * <pre>
+       * msg type
+       * </pre>
+       *
+       * <code>optional .EMsgHead msg_head = 1;</code>
+       */
+      public Builder setMsgHeadValue(int value) {
+        copyOnWrite();
+        instance.setMsgHeadValue(value);
         return this;
       }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.internal_static_pms_MeetMsg_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg build() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg buildPartial() {
-        org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg result = new org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.msgHead_ = msgHead_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.msgTag_ = msgTag_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.msgType_ = msgType_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.usrFrom_ = usrFrom_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.msgCont_ = msgCont_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.romId_ = romId_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.romName_ = romName_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
-        result.nckName_ = nckName_;
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-          to_bitField0_ |= 0x00000100;
-        }
-        result.usrToken_ = usrToken_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-          to_bitField0_ |= 0x00000200;
-        }
-        result.msgSeqs_ = msgSeqs_;
-        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-          to_bitField0_ |= 0x00000400;
-        }
-        result.memNum_ = memNum_;
-        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-          to_bitField0_ |= 0x00000800;
-        }
-        if (usrTotoBuilder_ == null) {
-          result.usrToto_ = usrToto_;
-        } else {
-          result.usrToto_ = usrTotoBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private int msgHead_ = 1;
       /**
        * <pre>
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
-       */
-      public boolean hasMsgHead() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <pre>
-       * msg type
-       * </pre>
-       *
-       * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+       * <code>optional .EMsgHead msg_head = 1;</code>
        */
       public org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead getMsgHead() {
-        org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead result = org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.forNumber(msgHead_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead.HSND : result;
+        return instance.getMsgHead();
       }
       /**
        * <pre>
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+       * <code>optional .EMsgHead msg_head = 1;</code>
        */
       public Builder setMsgHead(org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgHead value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        msgHead_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setMsgHead(value);
         return this;
       }
       /**
@@ -2818,51 +2686,56 @@ public final class MeetingMsg {
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgHead msg_head = 1 [default = HSND];</code>
+       * <code>optional .EMsgHead msg_head = 1;</code>
        */
       public Builder clearMsgHead() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        msgHead_ = 1;
-        onChanged();
+        copyOnWrite();
+        instance.clearMsgHead();
         return this;
       }
 
-      private int msgTag_ = 3;
       /**
        * <pre>
        * msg tag
        * </pre>
        *
-       * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+       * <code>optional .EMsgTag msg_tag = 2;</code>
        */
-      public boolean hasMsgTag() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+      public int getMsgTagValue() {
+        return instance.getMsgTagValue();
       }
       /**
        * <pre>
        * msg tag
        * </pre>
        *
-       * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+       * <code>optional .EMsgTag msg_tag = 2;</code>
+       */
+      public Builder setMsgTagValue(int value) {
+        copyOnWrite();
+        instance.setMsgTagValue(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * msg tag
+       * </pre>
+       *
+       * <code>optional .EMsgTag msg_tag = 2;</code>
        */
       public org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag getMsgTag() {
-        org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag result = org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.forNumber(msgTag_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag.TCHAT : result;
+        return instance.getMsgTag();
       }
       /**
        * <pre>
        * msg tag
        * </pre>
        *
-       * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+       * <code>optional .EMsgTag msg_tag = 2;</code>
        */
       public Builder setMsgTag(org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgTag value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000002;
-        msgTag_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setMsgTag(value);
         return this;
       }
       /**
@@ -2870,51 +2743,56 @@ public final class MeetingMsg {
        * msg tag
        * </pre>
        *
-       * <code>optional .pms.EMsgTag msg_tag = 2 [default = TCHAT];</code>
+       * <code>optional .EMsgTag msg_tag = 2;</code>
        */
       public Builder clearMsgTag() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        msgTag_ = 3;
-        onChanged();
+        copyOnWrite();
+        instance.clearMsgTag();
         return this;
       }
 
-      private int msgType_ = 1;
       /**
        * <pre>
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+       * <code>optional .EMsgType msg_type = 3;</code>
        */
-      public boolean hasMsgType() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+      public int getMsgTypeValue() {
+        return instance.getMsgTypeValue();
       }
       /**
        * <pre>
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+       * <code>optional .EMsgType msg_type = 3;</code>
+       */
+      public Builder setMsgTypeValue(int value) {
+        copyOnWrite();
+        instance.setMsgTypeValue(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * msg type
+       * </pre>
+       *
+       * <code>optional .EMsgType msg_type = 3;</code>
        */
       public org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType getMsgType() {
-        org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType result = org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.forNumber(msgType_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType.TMSG : result;
+        return instance.getMsgType();
       }
       /**
        * <pre>
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+       * <code>optional .EMsgType msg_type = 3;</code>
        */
       public Builder setMsgType(org.dync.teameeting.sdkmsgclient.MeetMsgType.EMsgType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000004;
-        msgType_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setMsgType(value);
         return this;
       }
       /**
@@ -2922,26 +2800,14 @@ public final class MeetingMsg {
        * msg type
        * </pre>
        *
-       * <code>optional .pms.EMsgType msg_type = 3 [default = TMSG];</code>
+       * <code>optional .EMsgType msg_type = 3;</code>
        */
       public Builder clearMsgType() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        msgType_ = 1;
-        onChanged();
+        copyOnWrite();
+        instance.clearMsgType();
         return this;
       }
 
-      private java.lang.Object usrFrom_ = "";
-      /**
-       * <pre>
-       * user id sending from
-       * </pre>
-       *
-       * <code>optional string usr_from = 4;</code>
-       */
-      public boolean hasUsrFrom() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
       /**
        * <pre>
        * user id sending from
@@ -2950,18 +2816,7 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 4;</code>
        */
       public java.lang.String getUsrFrom() {
-        java.lang.Object ref = usrFrom_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrFrom_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrFrom();
       }
       /**
        * <pre>
@@ -2972,16 +2827,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrFromBytes() {
-        java.lang.Object ref = usrFrom_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrFrom_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrFromBytes();
       }
       /**
        * <pre>
@@ -2992,12 +2838,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrFrom(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFrom(value);
         return this;
       }
       /**
@@ -3008,9 +2850,8 @@ public final class MeetingMsg {
        * <code>optional string usr_from = 4;</code>
        */
       public Builder clearUsrFrom() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        usrFrom_ = getDefaultInstance().getUsrFrom();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrFrom();
         return this;
       }
       /**
@@ -3022,26 +2863,11 @@ public final class MeetingMsg {
        */
       public Builder setUsrFromBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        usrFrom_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrFromBytes(value);
         return this;
       }
 
-      private java.lang.Object msgCont_ = "";
-      /**
-       * <pre>
-       * msg content
-       * </pre>
-       *
-       * <code>optional string msg_cont = 5;</code>
-       */
-      public boolean hasMsgCont() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
       /**
        * <pre>
        * msg content
@@ -3050,18 +2876,7 @@ public final class MeetingMsg {
        * <code>optional string msg_cont = 5;</code>
        */
       public java.lang.String getMsgCont() {
-        java.lang.Object ref = msgCont_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            msgCont_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getMsgCont();
       }
       /**
        * <pre>
@@ -3072,16 +2887,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getMsgContBytes() {
-        java.lang.Object ref = msgCont_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          msgCont_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getMsgContBytes();
       }
       /**
        * <pre>
@@ -3092,12 +2898,8 @@ public final class MeetingMsg {
        */
       public Builder setMsgCont(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        msgCont_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setMsgCont(value);
         return this;
       }
       /**
@@ -3108,9 +2910,8 @@ public final class MeetingMsg {
        * <code>optional string msg_cont = 5;</code>
        */
       public Builder clearMsgCont() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        msgCont_ = getDefaultInstance().getMsgCont();
-        onChanged();
+        copyOnWrite();
+        instance.clearMsgCont();
         return this;
       }
       /**
@@ -3122,26 +2923,11 @@ public final class MeetingMsg {
        */
       public Builder setMsgContBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
-        msgCont_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setMsgContBytes(value);
         return this;
       }
 
-      private java.lang.Object romId_ = "";
-      /**
-       * <pre>
-       * user room id
-       * </pre>
-       *
-       * <code>optional string rom_id = 6;</code>
-       */
-      public boolean hasRomId() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
       /**
        * <pre>
        * user room id
@@ -3150,18 +2936,7 @@ public final class MeetingMsg {
        * <code>optional string rom_id = 6;</code>
        */
       public java.lang.String getRomId() {
-        java.lang.Object ref = romId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            romId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getRomId();
       }
       /**
        * <pre>
@@ -3172,16 +2947,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getRomIdBytes() {
-        java.lang.Object ref = romId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          romId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getRomIdBytes();
       }
       /**
        * <pre>
@@ -3192,12 +2958,8 @@ public final class MeetingMsg {
        */
       public Builder setRomId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        romId_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setRomId(value);
         return this;
       }
       /**
@@ -3208,9 +2970,8 @@ public final class MeetingMsg {
        * <code>optional string rom_id = 6;</code>
        */
       public Builder clearRomId() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        romId_ = getDefaultInstance().getRomId();
-        onChanged();
+        copyOnWrite();
+        instance.clearRomId();
         return this;
       }
       /**
@@ -3222,26 +2983,11 @@ public final class MeetingMsg {
        */
       public Builder setRomIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
-        romId_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setRomIdBytes(value);
         return this;
       }
 
-      private java.lang.Object romName_ = "";
-      /**
-       * <pre>
-       * user room name
-       * </pre>
-       *
-       * <code>optional string rom_name = 7;</code>
-       */
-      public boolean hasRomName() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
       /**
        * <pre>
        * user room name
@@ -3250,18 +2996,7 @@ public final class MeetingMsg {
        * <code>optional string rom_name = 7;</code>
        */
       public java.lang.String getRomName() {
-        java.lang.Object ref = romName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            romName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getRomName();
       }
       /**
        * <pre>
@@ -3272,16 +3007,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getRomNameBytes() {
-        java.lang.Object ref = romName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          romName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getRomNameBytes();
       }
       /**
        * <pre>
@@ -3292,12 +3018,8 @@ public final class MeetingMsg {
        */
       public Builder setRomName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        romName_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setRomName(value);
         return this;
       }
       /**
@@ -3308,9 +3030,8 @@ public final class MeetingMsg {
        * <code>optional string rom_name = 7;</code>
        */
       public Builder clearRomName() {
-        bitField0_ = (bitField0_ & ~0x00000040);
-        romName_ = getDefaultInstance().getRomName();
-        onChanged();
+        copyOnWrite();
+        instance.clearRomName();
         return this;
       }
       /**
@@ -3322,26 +3043,11 @@ public final class MeetingMsg {
        */
       public Builder setRomNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
-        romName_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setRomNameBytes(value);
         return this;
       }
 
-      private java.lang.Object nckName_ = "";
-      /**
-       * <pre>
-       * user nick name
-       * </pre>
-       *
-       * <code>optional string nck_name = 8;</code>
-       */
-      public boolean hasNckName() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
       /**
        * <pre>
        * user nick name
@@ -3350,18 +3056,7 @@ public final class MeetingMsg {
        * <code>optional string nck_name = 8;</code>
        */
       public java.lang.String getNckName() {
-        java.lang.Object ref = nckName_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            nckName_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getNckName();
       }
       /**
        * <pre>
@@ -3372,16 +3067,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getNckNameBytes() {
-        java.lang.Object ref = nckName_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          nckName_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getNckNameBytes();
       }
       /**
        * <pre>
@@ -3392,12 +3078,8 @@ public final class MeetingMsg {
        */
       public Builder setNckName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        nckName_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setNckName(value);
         return this;
       }
       /**
@@ -3408,9 +3090,8 @@ public final class MeetingMsg {
        * <code>optional string nck_name = 8;</code>
        */
       public Builder clearNckName() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        nckName_ = getDefaultInstance().getNckName();
-        onChanged();
+        copyOnWrite();
+        instance.clearNckName();
         return this;
       }
       /**
@@ -3422,26 +3103,11 @@ public final class MeetingMsg {
        */
       public Builder setNckNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
-        nckName_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setNckNameBytes(value);
         return this;
       }
 
-      private java.lang.Object usrToken_ = "";
-      /**
-       * <pre>
-       * user token
-       * </pre>
-       *
-       * <code>optional string usr_token = 9;</code>
-       */
-      public boolean hasUsrToken() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
-      }
       /**
        * <pre>
        * user token
@@ -3450,18 +3116,7 @@ public final class MeetingMsg {
        * <code>optional string usr_token = 9;</code>
        */
       public java.lang.String getUsrToken() {
-        java.lang.Object ref = usrToken_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            usrToken_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
+        return instance.getUsrToken();
       }
       /**
        * <pre>
@@ -3472,16 +3127,7 @@ public final class MeetingMsg {
        */
       public com.google.protobuf.ByteString
           getUsrTokenBytes() {
-        java.lang.Object ref = usrToken_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          usrToken_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+        return instance.getUsrTokenBytes();
       }
       /**
        * <pre>
@@ -3492,12 +3138,8 @@ public final class MeetingMsg {
        */
       public Builder setUsrToken(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        usrToken_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrToken(value);
         return this;
       }
       /**
@@ -3508,9 +3150,8 @@ public final class MeetingMsg {
        * <code>optional string usr_token = 9;</code>
        */
       public Builder clearUsrToken() {
-        bitField0_ = (bitField0_ & ~0x00000100);
-        usrToken_ = getDefaultInstance().getUsrToken();
-        onChanged();
+        copyOnWrite();
+        instance.clearUsrToken();
         return this;
       }
       /**
@@ -3522,26 +3163,11 @@ public final class MeetingMsg {
        */
       public Builder setUsrTokenBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
-        usrToken_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setUsrTokenBytes(value);
         return this;
       }
 
-      private long msgSeqs_ ;
-      /**
-       * <pre>
-       * msg sequence number
-       * </pre>
-       *
-       * <code>optional sint64 msg_seqs = 10;</code>
-       */
-      public boolean hasMsgSeqs() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
-      }
       /**
        * <pre>
        * msg sequence number
@@ -3550,7 +3176,7 @@ public final class MeetingMsg {
        * <code>optional sint64 msg_seqs = 10;</code>
        */
       public long getMsgSeqs() {
-        return msgSeqs_;
+        return instance.getMsgSeqs();
       }
       /**
        * <pre>
@@ -3560,9 +3186,8 @@ public final class MeetingMsg {
        * <code>optional sint64 msg_seqs = 10;</code>
        */
       public Builder setMsgSeqs(long value) {
-        bitField0_ |= 0x00000200;
-        msgSeqs_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setMsgSeqs(value);
         return this;
       }
       /**
@@ -3573,23 +3198,11 @@ public final class MeetingMsg {
        * <code>optional sint64 msg_seqs = 10;</code>
        */
       public Builder clearMsgSeqs() {
-        bitField0_ = (bitField0_ & ~0x00000200);
-        msgSeqs_ = 0L;
-        onChanged();
+        copyOnWrite();
+        instance.clearMsgSeqs();
         return this;
       }
 
-      private int memNum_ ;
-      /**
-       * <pre>
-       * room member number
-       * </pre>
-       *
-       * <code>optional sint32 mem_num = 11;</code>
-       */
-      public boolean hasMemNum() {
-        return ((bitField0_ & 0x00000400) == 0x00000400);
-      }
       /**
        * <pre>
        * room member number
@@ -3598,7 +3211,7 @@ public final class MeetingMsg {
        * <code>optional sint32 mem_num = 11;</code>
        */
       public int getMemNum() {
-        return memNum_;
+        return instance.getMemNum();
       }
       /**
        * <pre>
@@ -3608,9 +3221,8 @@ public final class MeetingMsg {
        * <code>optional sint32 mem_num = 11;</code>
        */
       public Builder setMemNum(int value) {
-        bitField0_ |= 0x00000400;
-        memNum_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setMemNum(value);
         return this;
       }
       /**
@@ -3621,75 +3233,54 @@ public final class MeetingMsg {
        * <code>optional sint32 mem_num = 11;</code>
        */
       public Builder clearMemNum() {
-        bitField0_ = (bitField0_ & ~0x00000400);
-        memNum_ = 0;
-        onChanged();
+        copyOnWrite();
+        instance.clearMemNum();
         return this;
       }
 
-      private org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser usrToto_ = null;
-      private com.google.protobuf.SingleFieldBuilder<
-          org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder> usrTotoBuilder_;
       /**
        * <pre>
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
+       * <code>optional .ToUser usr_toto = 12;</code>
        */
       public boolean hasUsrToto() {
-        return ((bitField0_ & 0x00000800) == 0x00000800);
+        return instance.hasUsrToto();
       }
       /**
        * <pre>
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
+       * <code>optional .ToUser usr_toto = 12;</code>
        */
       public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser getUsrToto() {
-        if (usrTotoBuilder_ == null) {
-          return usrToto_ == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance() : usrToto_;
-        } else {
-          return usrTotoBuilder_.getMessage();
-        }
+        return instance.getUsrToto();
       }
       /**
        * <pre>
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
+       * <code>optional .ToUser usr_toto = 12;</code>
        */
       public Builder setUsrToto(org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser value) {
-        if (usrTotoBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          usrToto_ = value;
-          onChanged();
-        } else {
-          usrTotoBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000800;
+        copyOnWrite();
+        instance.setUsrToto(value);
         return this;
-      }
+        }
       /**
        * <pre>
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
+       * <code>optional .ToUser usr_toto = 12;</code>
        */
       public Builder setUsrToto(
           org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder builderForValue) {
-        if (usrTotoBuilder_ == null) {
-          usrToto_ = builderForValue.build();
-          onChanged();
-        } else {
-          usrTotoBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000800;
+        copyOnWrite();
+        instance.setUsrToto(builderForValue);
         return this;
       }
       /**
@@ -3697,23 +3288,11 @@ public final class MeetingMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
+       * <code>optional .ToUser usr_toto = 12;</code>
        */
       public Builder mergeUsrToto(org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser value) {
-        if (usrTotoBuilder_ == null) {
-          if (((bitField0_ & 0x00000800) == 0x00000800) &&
-              usrToto_ != null &&
-              usrToto_ != org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance()) {
-            usrToto_ =
-              org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.newBuilder(usrToto_).mergeFrom(value).buildPartial();
-          } else {
-            usrToto_ = value;
-          }
-          onChanged();
-        } else {
-          usrTotoBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000800;
+        copyOnWrite();
+        instance.mergeUsrToto(value);
         return this;
       }
       /**
@@ -3721,198 +3300,203 @@ public final class MeetingMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
+       * <code>optional .ToUser usr_toto = 12;</code>
        */
-      public Builder clearUsrToto() {
-        if (usrTotoBuilder_ == null) {
-          usrToto_ = null;
-          onChanged();
-        } else {
-          usrTotoBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000800);
+      public Builder clearUsrToto() {  copyOnWrite();
+        instance.clearUsrToto();
         return this;
-      }
-      /**
-       * <pre>
-       * user ids sending to, the string from pms::ToUser
-       * </pre>
-       *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
-       */
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder getUsrTotoBuilder() {
-        bitField0_ |= 0x00000800;
-        onChanged();
-        return getUsrTotoFieldBuilder().getBuilder();
-      }
-      /**
-       * <pre>
-       * user ids sending to, the string from pms::ToUser
-       * </pre>
-       *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
-       */
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder getUsrTotoOrBuilder() {
-        if (usrTotoBuilder_ != null) {
-          return usrTotoBuilder_.getMessageOrBuilder();
-        } else {
-          return usrToto_ == null ?
-              org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance() : usrToto_;
-        }
-      }
-      /**
-       * <pre>
-       * user ids sending to, the string from pms::ToUser
-       * </pre>
-       *
-       * <code>optional .pms.ToUser usr_toto = 12;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder> 
-          getUsrTotoFieldBuilder() {
-        if (usrTotoBuilder_ == null) {
-          usrTotoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder>(
-                  getUsrToto(),
-                  getParentForChildren(),
-                  isClean());
-          usrToto_ = null;
-        }
-        return usrTotoBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.MeetMsg)
+      // @@protoc_insertion_point(builder_scope:MeetMsg)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg other = (org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg) arg1;
+          msgHead_ = visitor.visitInt(msgHead_ != 0, msgHead_,    other.msgHead_ != 0, other.msgHead_);
+          msgTag_ = visitor.visitInt(msgTag_ != 0, msgTag_,    other.msgTag_ != 0, other.msgTag_);
+          msgType_ = visitor.visitInt(msgType_ != 0, msgType_,    other.msgType_ != 0, other.msgType_);
+          usrFrom_ = visitor.visitString(!usrFrom_.isEmpty(), usrFrom_,
+              !other.usrFrom_.isEmpty(), other.usrFrom_);
+          msgCont_ = visitor.visitString(!msgCont_.isEmpty(), msgCont_,
+              !other.msgCont_.isEmpty(), other.msgCont_);
+          romId_ = visitor.visitString(!romId_.isEmpty(), romId_,
+              !other.romId_.isEmpty(), other.romId_);
+          romName_ = visitor.visitString(!romName_.isEmpty(), romName_,
+              !other.romName_.isEmpty(), other.romName_);
+          nckName_ = visitor.visitString(!nckName_.isEmpty(), nckName_,
+              !other.nckName_.isEmpty(), other.nckName_);
+          usrToken_ = visitor.visitString(!usrToken_.isEmpty(), usrToken_,
+              !other.usrToken_.isEmpty(), other.usrToken_);
+          msgSeqs_ = visitor.visitLong(msgSeqs_ != 0L, msgSeqs_,
+              other.msgSeqs_ != 0L, other.msgSeqs_);
+          memNum_ = visitor.visitInt(memNum_ != 0, memNum_,
+              other.memNum_ != 0, other.memNum_);
+          usrToto_ = visitor.visitMessage(usrToto_, other.usrToto_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 8: {
+                  int rawValue = input.readEnum();
+
+                  msgHead_ = rawValue;
+                  break;
+                }
+                case 16: {
+                  int rawValue = input.readEnum();
+
+                  msgTag_ = rawValue;
+                  break;
+                }
+                case 24: {
+                  int rawValue = input.readEnum();
+
+                  msgType_ = rawValue;
+                  break;
+                }
+                case 34: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrFrom_ = s;
+                  break;
+                }
+                case 42: {
+                  String s = input.readStringRequireUtf8();
+
+                  msgCont_ = s;
+                  break;
+                }
+                case 50: {
+                  String s = input.readStringRequireUtf8();
+
+                  romId_ = s;
+                  break;
+                }
+                case 58: {
+                  String s = input.readStringRequireUtf8();
+
+                  romName_ = s;
+                  break;
+                }
+                case 66: {
+                  String s = input.readStringRequireUtf8();
+
+                  nckName_ = s;
+                  break;
+                }
+                case 74: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrToken_ = s;
+                  break;
+                }
+                case 80: {
+
+                  msgSeqs_ = input.readSInt64();
+                  break;
+                }
+                case 88: {
+
+                  memNum_ = input.readSInt32();
+                  break;
+                }
+                case 98: {
+                  org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder subBuilder = null;
+                  if (usrToto_ != null) {
+                    subBuilder = usrToto_.toBuilder();
+                  }
+                  usrToto_ = input.readMessage(org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.parser(), extensionRegistry);
+                  if (subBuilder != null) {
+                    subBuilder.mergeFrom(usrToto_);
+                    usrToto_ = subBuilder.buildPartial();
+                  }
+
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.MeetMsg)
+
+    // @@protoc_insertion_point(class_scope:MeetMsg)
     private static final org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg();
+      DEFAULT_INSTANCE = new MeetMsg();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<MeetMsg>
-        PARSER = new com.google.protobuf.AbstractParser<MeetMsg>() {
-      public MeetMsg parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<MeetMsg> PARSER;
 
     public static com.google.protobuf.Parser<MeetMsg> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MeetMsg> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.MeetingMsg.MeetMsg getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_Login_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_Login_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_Logout_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_Logout_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_Keep_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_Keep_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_MeetMsg_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_MeetMsg_fieldAccessorTable;
 
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
   static {
-    java.lang.String[] descriptorData = {
-      "\n\016meet_msg.proto\022\003pms\032\020common_msg.proto\032" +
-      "\023meet_msg_type.proto\"?\n\005Login\022\020\n\010usr_fro" +
-      "m\030\001 \001(\t\022\021\n\tusr_token\030\002 \001(\t\022\021\n\tusr_nname\030" +
-      "\003 \001(\t\"-\n\006Logout\022\020\n\010usr_from\030\001 \001(\t\022\021\n\tusr" +
-      "_token\030\002 \001(\t\"\030\n\004Keep\022\020\n\010usr_from\030\001 \001(\t\"\252" +
-      "\002\n\007MeetMsg\022%\n\010msg_head\030\001 \001(\0162\r.pms.EMsgH" +
-      "ead:\004HSND\022$\n\007msg_tag\030\002 \001(\0162\014.pms.EMsgTag" +
-      ":\005TCHAT\022%\n\010msg_type\030\003 \001(\0162\r.pms.EMsgType" +
-      ":\004TMSG\022\020\n\010usr_from\030\004 \001(\t\022\020\n\010msg_cont\030\005 \001" +
-      "(\t\022\016\n\006rom_id\030\006 \001(\t\022\020\n\010rom_name\030\007 \001(\t\022\020\n\010",
-      "nck_name\030\010 \001(\t\022\021\n\tusr_token\030\t \001(\t\022\020\n\010msg" +
-      "_seqs\030\n \001(\022\022\017\n\007mem_num\030\013 \001(\021\022\035\n\010usr_toto" +
-      "\030\014 \001(\0132\013.pms.ToUserB0\n org.dync.teameeti" +
-      "ng.sdkmsgclientB\nMeetingMsgH\002"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          org.dync.teameeting.sdkmsgclient.CommonMsg.getDescriptor(),
-          org.dync.teameeting.sdkmsgclient.MeetMsgType.getDescriptor(),
-        }, assigner);
-    internal_static_pms_Login_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_pms_Login_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_Login_descriptor,
-        new java.lang.String[] { "UsrFrom", "UsrToken", "UsrNname", });
-    internal_static_pms_Logout_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_pms_Logout_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_Logout_descriptor,
-        new java.lang.String[] { "UsrFrom", "UsrToken", });
-    internal_static_pms_Keep_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_pms_Keep_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_Keep_descriptor,
-        new java.lang.String[] { "UsrFrom", });
-    internal_static_pms_MeetMsg_descriptor =
-      getDescriptor().getMessageTypes().get(3);
-    internal_static_pms_MeetMsg_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_MeetMsg_descriptor,
-        new java.lang.String[] { "MsgHead", "MsgTag", "MsgType", "UsrFrom", "MsgCont", "RomId", "RomName", "NckName", "UsrToken", "MsgSeqs", "MemNum", "UsrToto", });
-    org.dync.teameeting.sdkmsgclient.CommonMsg.getDescriptor();
-    org.dync.teameeting.sdkmsgclient.MeetMsgType.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

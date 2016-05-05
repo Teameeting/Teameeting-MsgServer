@@ -6,59 +6,60 @@ package org.dync.teameeting.sdkmsgclient;
 public final class CommonMsg {
   private CommonMsg() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+      com.google.protobuf.ExtensionRegistryLite registry) {
   }
   /**
    * <pre>
    * the server cmd
    * </pre>
    *
-   * Protobuf enum {@code pms.EServerCmd}
+   * Protobuf enum {@code EServerCmd}
    */
   public enum EServerCmd
-      implements com.google.protobuf.ProtocolMessageEnum {
+      implements com.google.protobuf.Internal.EnumLite {
     /**
-     * <code>CLOGIN = 1;</code>
+     * <code>CLOGIN = 0;</code>
      */
-    CLOGIN(1),
+    CLOGIN(0),
     /**
-     * <code>CSNDMSG = 2;</code>
+     * <code>CSNDMSG = 1;</code>
      */
-    CSNDMSG(2),
+    CSNDMSG(1),
     /**
-     * <code>CGETMSG = 3;</code>
+     * <code>CGETMSG = 2;</code>
      */
-    CGETMSG(3),
+    CGETMSG(2),
     /**
-     * <code>CLOGOUT = 4;</code>
+     * <code>CLOGOUT = 3;</code>
      */
-    CLOGOUT(4),
+    CLOGOUT(3),
     /**
-     * <code>CKEEPALIVE = 5;</code>
+     * <code>CKEEPALIVE = 4;</code>
      */
-    CKEEPALIVE(5),
+    CKEEPALIVE(4),
+    UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>CLOGIN = 1;</code>
+     * <code>CLOGIN = 0;</code>
      */
-    public static final int CLOGIN_VALUE = 1;
+    public static final int CLOGIN_VALUE = 0;
     /**
-     * <code>CSNDMSG = 2;</code>
+     * <code>CSNDMSG = 1;</code>
      */
-    public static final int CSNDMSG_VALUE = 2;
+    public static final int CSNDMSG_VALUE = 1;
     /**
-     * <code>CGETMSG = 3;</code>
+     * <code>CGETMSG = 2;</code>
      */
-    public static final int CGETMSG_VALUE = 3;
+    public static final int CGETMSG_VALUE = 2;
     /**
-     * <code>CLOGOUT = 4;</code>
+     * <code>CLOGOUT = 3;</code>
      */
-    public static final int CLOGOUT_VALUE = 4;
+    public static final int CLOGOUT_VALUE = 3;
     /**
-     * <code>CKEEPALIVE = 5;</code>
+     * <code>CKEEPALIVE = 4;</code>
      */
-    public static final int CKEEPALIVE_VALUE = 5;
+    public static final int CKEEPALIVE_VALUE = 4;
 
 
     public final int getNumber() {
@@ -75,11 +76,11 @@ public final class CommonMsg {
 
     public static EServerCmd forNumber(int value) {
       switch (value) {
-        case 1: return CLOGIN;
-        case 2: return CSNDMSG;
-        case 3: return CGETMSG;
-        case 4: return CLOGOUT;
-        case 5: return CKEEPALIVE;
+        case 0: return CLOGIN;
+        case 1: return CSNDMSG;
+        case 2: return CGETMSG;
+        case 3: return CLOGOUT;
+        case 4: return CKEEPALIVE;
         default: return null;
       }
     }
@@ -96,37 +97,13 @@ public final class CommonMsg {
             }
           };
 
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final EServerCmd[] VALUES = values();
-
-    public static EServerCmd valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
     private final int value;
 
     private EServerCmd(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:pms.EServerCmd)
+    // @@protoc_insertion_point(enum_scope:EServerCmd)
   }
 
   /**
@@ -137,44 +114,61 @@ public final class CommonMsg {
    * it can tell server this client belong to which server
    * </pre>
    *
-   * Protobuf enum {@code pms.EModuleType}
+   * Protobuf enum {@code EModuleType}
    */
   public enum EModuleType
-      implements com.google.protobuf.ProtocolMessageEnum {
+      implements com.google.protobuf.Internal.EnumLite {
     /**
-     * <code>TMEETING = 3;</code>
+     * <code>TINVALID0 = 0;</code>
      */
-    TMEETING(3),
+    TINVALID0(0),
     /**
-     * <code>TP2P = 4;</code>
+     * <code>TINVALID1 = 1;</code>
      */
-    TP2P(4),
+    TINVALID1(1),
     /**
-     * <code>TLIVE = 5;</code>
+     * <code>TMEETING = 2;</code>
      */
-    TLIVE(5),
+    TMEETING(2),
     /**
-     * <code>TCALLCENTER = 6;</code>
+     * <code>TP2P = 3;</code>
      */
-    TCALLCENTER(6),
+    TP2P(3),
+    /**
+     * <code>TLIVE = 4;</code>
+     */
+    TLIVE(4),
+    /**
+     * <code>TCALLCENTER = 5;</code>
+     */
+    TCALLCENTER(5),
+    UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>TMEETING = 3;</code>
+     * <code>TINVALID0 = 0;</code>
      */
-    public static final int TMEETING_VALUE = 3;
+    public static final int TINVALID0_VALUE = 0;
     /**
-     * <code>TP2P = 4;</code>
+     * <code>TINVALID1 = 1;</code>
      */
-    public static final int TP2P_VALUE = 4;
+    public static final int TINVALID1_VALUE = 1;
     /**
-     * <code>TLIVE = 5;</code>
+     * <code>TMEETING = 2;</code>
      */
-    public static final int TLIVE_VALUE = 5;
+    public static final int TMEETING_VALUE = 2;
     /**
-     * <code>TCALLCENTER = 6;</code>
+     * <code>TP2P = 3;</code>
      */
-    public static final int TCALLCENTER_VALUE = 6;
+    public static final int TP2P_VALUE = 3;
+    /**
+     * <code>TLIVE = 4;</code>
+     */
+    public static final int TLIVE_VALUE = 4;
+    /**
+     * <code>TCALLCENTER = 5;</code>
+     */
+    public static final int TCALLCENTER_VALUE = 5;
 
 
     public final int getNumber() {
@@ -191,10 +185,12 @@ public final class CommonMsg {
 
     public static EModuleType forNumber(int value) {
       switch (value) {
-        case 3: return TMEETING;
-        case 4: return TP2P;
-        case 5: return TLIVE;
-        case 6: return TCALLCENTER;
+        case 0: return TINVALID0;
+        case 1: return TINVALID1;
+        case 2: return TMEETING;
+        case 3: return TP2P;
+        case 4: return TLIVE;
+        case 5: return TCALLCENTER;
         default: return null;
       }
     }
@@ -211,65 +207,37 @@ public final class CommonMsg {
             }
           };
 
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(ordinal());
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.getDescriptor().getEnumTypes().get(1);
-    }
-
-    private static final EModuleType[] VALUES = values();
-
-    public static EModuleType valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
     private final int value;
 
     private EModuleType(int value) {
       this.value = value;
     }
 
-    // @@protoc_insertion_point(enum_scope:pms.EModuleType)
+    // @@protoc_insertion_point(enum_scope:EModuleType)
   }
 
   public interface MsgReqOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.MsgReq)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:MsgReq)
+      com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
-    boolean hasSvrCmds();
+    int getSvrCmdsValue();
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
     org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd getSvrCmds();
 
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
-    boolean hasModType();
+    int getModTypeValue();
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
     org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType getModType();
 
-    /**
-     * <code>optional bytes content = 3;</code>
-     */
-    boolean hasContent();
     /**
      * <code>optional bytes content = 3;</code>
      */
@@ -280,70 +248,94 @@ public final class CommonMsg {
    * this is for request
    * </pre>
    *
-   * Protobuf type {@code pms.MsgReq}
+   * Protobuf type {@code MsgReq}
    */
   public  static final class MsgReq extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.MsgReq)
+      com.google.protobuf.GeneratedMessageLite<
+          MsgReq, MsgReq.Builder> implements
+      // @@protoc_insertion_point(message_implements:MsgReq)
       MsgReqOrBuilder {
-    // Use MsgReq.newBuilder() to construct.
-    private MsgReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private MsgReq() {
-      svrCmds_ = 1;
-      modType_ = 3;
+      svrCmds_ = 0;
+      modType_ = 0;
       content_ = com.google.protobuf.ByteString.EMPTY;
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgReq_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgReq_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.class, org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.Builder.class);
-    }
-
-    private int bitField0_;
     public static final int SVR_CMDS_FIELD_NUMBER = 1;
     private int svrCmds_;
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
-    public boolean hasSvrCmds() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+    public int getSvrCmdsValue() {
+      return svrCmds_;
     }
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
     public org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd getSvrCmds() {
       org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd result = org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.forNumber(svrCmds_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
+     */
+    private void setSvrCmdsValue(int value) {
+        svrCmds_ = value;
+    }
+    /**
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
+     */
+    private void setSvrCmds(org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      svrCmds_ = value.getNumber();
+    }
+    /**
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
+     */
+    private void clearSvrCmds() {
+      
+      svrCmds_ = 0;
     }
 
     public static final int MOD_TYPE_FIELD_NUMBER = 2;
     private int modType_;
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
-    public boolean hasModType() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+    public int getModTypeValue() {
+      return modType_;
     }
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
     public org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType getModType() {
       org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType result = org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.forNumber(modType_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TMEETING : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>optional .EModuleType mod_type = 2;</code>
+     */
+    private void setModTypeValue(int value) {
+        modType_ = value;
+    }
+    /**
+     * <code>optional .EModuleType mod_type = 2;</code>
+     */
+    private void setModType(org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      modType_ = value.getNumber();
+    }
+    /**
+     * <code>optional .EModuleType mod_type = 2;</code>
+     */
+    private void clearModType() {
+      
+      modType_ = 0;
     }
 
     public static final int CONTENT_FIELD_NUMBER = 3;
@@ -351,371 +343,383 @@ public final class CommonMsg {
     /**
      * <code>optional bytes content = 3;</code>
      */
-    public boolean hasContent() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+    public com.google.protobuf.ByteString getContent() {
+      return content_;
     }
     /**
      * <code>optional bytes content = 3;</code>
      */
-    public com.google.protobuf.ByteString getContent() {
-      return content_;
+    private void setContent(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      content_ = value;
+    }
+    /**
+     * <code>optional bytes content = 3;</code>
+     */
+    private void clearContent() {
+      
+      content_ = getDefaultInstance().getContent();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (svrCmds_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN.getNumber()) {
+        output.writeEnum(1, svrCmds_);
+      }
+      if (modType_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TINVALID0.getNumber()) {
+        output.writeEnum(2, modType_);
+      }
+      if (!content_.isEmpty()) {
+        output.writeBytes(3, content_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (svrCmds_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, svrCmds_);
+      }
+      if (modType_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TINVALID0.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, modType_);
+      }
+      if (!content_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, content_);
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * <pre>
      * this is for request
      * </pre>
      *
-     * Protobuf type {@code pms.MsgReq}
+     * Protobuf type {@code MsgReq}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.MsgReq)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq, Builder> implements
+        // @@protoc_insertion_point(builder_implements:MsgReq)
         org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReqOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgReq_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgReq_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.class, org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
+
+      /**
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
+       */
+      public int getSvrCmdsValue() {
+        return instance.getSvrCmdsValue();
       }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        svrCmds_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        modType_ = 3;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        content_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000004);
+      /**
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
+       */
+      public Builder setSvrCmdsValue(int value) {
+        copyOnWrite();
+        instance.setSvrCmdsValue(value);
         return this;
       }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgReq_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq build() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq buildPartial() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq result = new org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.svrCmds_ = svrCmds_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.modType_ = modType_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.content_ = content_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private int svrCmds_ = 1;
       /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
-       */
-      public boolean hasSvrCmds() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
        */
       public org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd getSvrCmds() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd result = org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.forNumber(svrCmds_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN : result;
+        return instance.getSvrCmds();
       }
       /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
        */
       public Builder setSvrCmds(org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        svrCmds_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setSvrCmds(value);
         return this;
       }
       /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
        */
       public Builder clearSvrCmds() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        svrCmds_ = 1;
-        onChanged();
+        copyOnWrite();
+        instance.clearSvrCmds();
         return this;
       }
 
-      private int modType_ = 3;
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
-      public boolean hasModType() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+      public int getModTypeValue() {
+        return instance.getModTypeValue();
       }
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
+       */
+      public Builder setModTypeValue(int value) {
+        copyOnWrite();
+        instance.setModTypeValue(value);
+        return this;
+      }
+      /**
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
       public org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType getModType() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType result = org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.forNumber(modType_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TMEETING : result;
+        return instance.getModType();
       }
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
       public Builder setModType(org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000002;
-        modType_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setModType(value);
         return this;
       }
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
       public Builder clearModType() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        modType_ = 3;
-        onChanged();
+        copyOnWrite();
+        instance.clearModType();
         return this;
       }
 
-      private com.google.protobuf.ByteString content_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>optional bytes content = 3;</code>
-       */
-      public boolean hasContent() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
       /**
        * <code>optional bytes content = 3;</code>
        */
       public com.google.protobuf.ByteString getContent() {
-        return content_;
+        return instance.getContent();
       }
       /**
        * <code>optional bytes content = 3;</code>
        */
       public Builder setContent(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        content_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setContent(value);
         return this;
       }
       /**
        * <code>optional bytes content = 3;</code>
        */
       public Builder clearContent() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        content_ = getDefaultInstance().getContent();
-        onChanged();
+        copyOnWrite();
+        instance.clearContent();
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.MsgReq)
+      // @@protoc_insertion_point(builder_scope:MsgReq)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq other = (org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq) arg1;
+          svrCmds_ = visitor.visitInt(svrCmds_ != 0, svrCmds_,    other.svrCmds_ != 0, other.svrCmds_);
+          modType_ = visitor.visitInt(modType_ != 0, modType_,    other.modType_ != 0, other.modType_);
+          content_ = visitor.visitByteString(content_ != com.google.protobuf.ByteString.EMPTY, content_,
+              other.content_ != com.google.protobuf.ByteString.EMPTY, other.content_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 8: {
+                  int rawValue = input.readEnum();
+
+                  svrCmds_ = rawValue;
+                  break;
+                }
+                case 16: {
+                  int rawValue = input.readEnum();
+
+                  modType_ = rawValue;
+                  break;
+                }
+                case 26: {
+
+                  content_ = input.readBytes();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.MsgReq)
+
+    // @@protoc_insertion_point(class_scope:MsgReq)
     private static final org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq();
+      DEFAULT_INSTANCE = new MsgReq();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<MsgReq>
-        PARSER = new com.google.protobuf.AbstractParser<MsgReq>() {
-      public MsgReq parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<MsgReq> PARSER;
 
     public static com.google.protobuf.Parser<MsgReq> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MsgReq> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgReq getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
   public interface MsgRepOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.MsgRep)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:MsgRep)
+      com.google.protobuf.MessageLiteOrBuilder {
 
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
-    boolean hasSvrCmds();
+    int getSvrCmdsValue();
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
     org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd getSvrCmds();
 
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
-    boolean hasModType();
+    int getModTypeValue();
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
     org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType getModType();
 
     /**
      * <code>optional bytes rsp_cont = 3;</code>
      */
-    boolean hasRspCont();
-    /**
-     * <code>optional bytes rsp_cont = 3;</code>
-     */
     com.google.protobuf.ByteString getRspCont();
 
-    /**
-     * <code>optional sint32 rsp_code = 4;</code>
-     */
-    boolean hasRspCode();
     /**
      * <code>optional sint32 rsp_code = 4;</code>
      */
@@ -726,71 +730,95 @@ public final class CommonMsg {
    * this is for response
    * </pre>
    *
-   * Protobuf type {@code pms.MsgRep}
+   * Protobuf type {@code MsgRep}
    */
   public  static final class MsgRep extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.MsgRep)
+      com.google.protobuf.GeneratedMessageLite<
+          MsgRep, MsgRep.Builder> implements
+      // @@protoc_insertion_point(message_implements:MsgRep)
       MsgRepOrBuilder {
-    // Use MsgRep.newBuilder() to construct.
-    private MsgRep(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private MsgRep() {
-      svrCmds_ = 1;
-      modType_ = 3;
+      svrCmds_ = 0;
+      modType_ = 0;
       rspCont_ = com.google.protobuf.ByteString.EMPTY;
       rspCode_ = 0;
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgRep_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgRep_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.class, org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.Builder.class);
-    }
-
-    private int bitField0_;
     public static final int SVR_CMDS_FIELD_NUMBER = 1;
     private int svrCmds_;
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
-    public boolean hasSvrCmds() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+    public int getSvrCmdsValue() {
+      return svrCmds_;
     }
     /**
-     * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
      */
     public org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd getSvrCmds() {
       org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd result = org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.forNumber(svrCmds_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
+     */
+    private void setSvrCmdsValue(int value) {
+        svrCmds_ = value;
+    }
+    /**
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
+     */
+    private void setSvrCmds(org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      svrCmds_ = value.getNumber();
+    }
+    /**
+     * <code>optional .EServerCmd svr_cmds = 1;</code>
+     */
+    private void clearSvrCmds() {
+      
+      svrCmds_ = 0;
     }
 
     public static final int MOD_TYPE_FIELD_NUMBER = 2;
     private int modType_;
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
-    public boolean hasModType() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+    public int getModTypeValue() {
+      return modType_;
     }
     /**
-     * <code>optional .pms.EModuleType mod_type = 2;</code>
+     * <code>optional .EModuleType mod_type = 2;</code>
      */
     public org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType getModType() {
       org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType result = org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.forNumber(modType_);
-      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TMEETING : result;
+      return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>optional .EModuleType mod_type = 2;</code>
+     */
+    private void setModTypeValue(int value) {
+        modType_ = value;
+    }
+    /**
+     * <code>optional .EModuleType mod_type = 2;</code>
+     */
+    private void setModType(org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      
+      modType_ = value.getNumber();
+    }
+    /**
+     * <code>optional .EModuleType mod_type = 2;</code>
+     */
+    private void clearModType() {
+      
+      modType_ = 0;
     }
 
     public static final int RSP_CONT_FIELD_NUMBER = 3;
@@ -798,14 +826,25 @@ public final class CommonMsg {
     /**
      * <code>optional bytes rsp_cont = 3;</code>
      */
-    public boolean hasRspCont() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+    public com.google.protobuf.ByteString getRspCont() {
+      return rspCont_;
     }
     /**
      * <code>optional bytes rsp_cont = 3;</code>
      */
-    public com.google.protobuf.ByteString getRspCont() {
-      return rspCont_;
+    private void setRspCont(com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      rspCont_ = value;
+    }
+    /**
+     * <code>optional bytes rsp_cont = 3;</code>
+     */
+    private void clearRspCont() {
+      
+      rspCont_ = getDefaultInstance().getRspCont();
     }
 
     public static final int RSP_CODE_FIELD_NUMBER = 4;
@@ -813,382 +852,398 @@ public final class CommonMsg {
     /**
      * <code>optional sint32 rsp_code = 4;</code>
      */
-    public boolean hasRspCode() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+    public int getRspCode() {
+      return rspCode_;
     }
     /**
      * <code>optional sint32 rsp_code = 4;</code>
      */
-    public int getRspCode() {
-      return rspCode_;
+    private void setRspCode(int value) {
+      
+      rspCode_ = value;
+    }
+    /**
+     * <code>optional sint32 rsp_code = 4;</code>
+     */
+    private void clearRspCode() {
+      
+      rspCode_ = 0;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (svrCmds_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN.getNumber()) {
+        output.writeEnum(1, svrCmds_);
+      }
+      if (modType_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TINVALID0.getNumber()) {
+        output.writeEnum(2, modType_);
+      }
+      if (!rspCont_.isEmpty()) {
+        output.writeBytes(3, rspCont_);
+      }
+      if (rspCode_ != 0) {
+        output.writeSInt32(4, rspCode_);
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (svrCmds_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, svrCmds_);
+      }
+      if (modType_ != org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TINVALID0.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, modType_);
+      }
+      if (!rspCont_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, rspCont_);
+      }
+      if (rspCode_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt32Size(4, rspCode_);
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * <pre>
      * this is for response
      * </pre>
      *
-     * Protobuf type {@code pms.MsgRep}
+     * Protobuf type {@code MsgRep}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.MsgRep)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep, Builder> implements
+        // @@protoc_insertion_point(builder_implements:MsgRep)
         org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRepOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgRep_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgRep_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.class, org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
+
+      /**
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
+       */
+      public int getSvrCmdsValue() {
+        return instance.getSvrCmdsValue();
       }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        svrCmds_ = 1;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        modType_ = 3;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        rspCont_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        rspCode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
+      /**
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
+       */
+      public Builder setSvrCmdsValue(int value) {
+        copyOnWrite();
+        instance.setSvrCmdsValue(value);
         return this;
       }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_MsgRep_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep build() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep buildPartial() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep result = new org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.svrCmds_ = svrCmds_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.modType_ = modType_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.rspCont_ = rspCont_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.rspCode_ = rspCode_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private int svrCmds_ = 1;
       /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
-       */
-      public boolean hasSvrCmds() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
        */
       public org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd getSvrCmds() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd result = org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.forNumber(svrCmds_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd.CLOGIN : result;
+        return instance.getSvrCmds();
       }
       /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
        */
       public Builder setSvrCmds(org.dync.teameeting.sdkmsgclient.CommonMsg.EServerCmd value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        svrCmds_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setSvrCmds(value);
         return this;
       }
       /**
-       * <code>optional .pms.EServerCmd svr_cmds = 1;</code>
+       * <code>optional .EServerCmd svr_cmds = 1;</code>
        */
       public Builder clearSvrCmds() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        svrCmds_ = 1;
-        onChanged();
+        copyOnWrite();
+        instance.clearSvrCmds();
         return this;
       }
 
-      private int modType_ = 3;
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
-      public boolean hasModType() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+      public int getModTypeValue() {
+        return instance.getModTypeValue();
       }
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
+       */
+      public Builder setModTypeValue(int value) {
+        copyOnWrite();
+        instance.setModTypeValue(value);
+        return this;
+      }
+      /**
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
       public org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType getModType() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType result = org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.forNumber(modType_);
-        return result == null ? org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType.TMEETING : result;
+        return instance.getModType();
       }
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
       public Builder setModType(org.dync.teameeting.sdkmsgclient.CommonMsg.EModuleType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000002;
-        modType_ = value.getNumber();
-        onChanged();
+        copyOnWrite();
+        instance.setModType(value);
         return this;
       }
       /**
-       * <code>optional .pms.EModuleType mod_type = 2;</code>
+       * <code>optional .EModuleType mod_type = 2;</code>
        */
       public Builder clearModType() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        modType_ = 3;
-        onChanged();
+        copyOnWrite();
+        instance.clearModType();
         return this;
       }
 
-      private com.google.protobuf.ByteString rspCont_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>optional bytes rsp_cont = 3;</code>
-       */
-      public boolean hasRspCont() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
       /**
        * <code>optional bytes rsp_cont = 3;</code>
        */
       public com.google.protobuf.ByteString getRspCont() {
-        return rspCont_;
+        return instance.getRspCont();
       }
       /**
        * <code>optional bytes rsp_cont = 3;</code>
        */
       public Builder setRspCont(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        rspCont_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setRspCont(value);
         return this;
       }
       /**
        * <code>optional bytes rsp_cont = 3;</code>
        */
       public Builder clearRspCont() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        rspCont_ = getDefaultInstance().getRspCont();
-        onChanged();
+        copyOnWrite();
+        instance.clearRspCont();
         return this;
       }
 
-      private int rspCode_ ;
-      /**
-       * <code>optional sint32 rsp_code = 4;</code>
-       */
-      public boolean hasRspCode() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
       /**
        * <code>optional sint32 rsp_code = 4;</code>
        */
       public int getRspCode() {
-        return rspCode_;
+        return instance.getRspCode();
       }
       /**
        * <code>optional sint32 rsp_code = 4;</code>
        */
       public Builder setRspCode(int value) {
-        bitField0_ |= 0x00000008;
-        rspCode_ = value;
-        onChanged();
+        copyOnWrite();
+        instance.setRspCode(value);
         return this;
       }
       /**
        * <code>optional sint32 rsp_code = 4;</code>
        */
       public Builder clearRspCode() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        rspCode_ = 0;
-        onChanged();
+        copyOnWrite();
+        instance.clearRspCode();
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.MsgRep)
+      // @@protoc_insertion_point(builder_scope:MsgRep)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep other = (org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep) arg1;
+          svrCmds_ = visitor.visitInt(svrCmds_ != 0, svrCmds_,    other.svrCmds_ != 0, other.svrCmds_);
+          modType_ = visitor.visitInt(modType_ != 0, modType_,    other.modType_ != 0, other.modType_);
+          rspCont_ = visitor.visitByteString(rspCont_ != com.google.protobuf.ByteString.EMPTY, rspCont_,
+              other.rspCont_ != com.google.protobuf.ByteString.EMPTY, other.rspCont_);
+          rspCode_ = visitor.visitInt(rspCode_ != 0, rspCode_,
+              other.rspCode_ != 0, other.rspCode_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 8: {
+                  int rawValue = input.readEnum();
+
+                  svrCmds_ = rawValue;
+                  break;
+                }
+                case 16: {
+                  int rawValue = input.readEnum();
+
+                  modType_ = rawValue;
+                  break;
+                }
+                case 26: {
+
+                  rspCont_ = input.readBytes();
+                  break;
+                }
+                case 32: {
+
+                  rspCode_ = input.readSInt32();
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.MsgRep)
+
+    // @@protoc_insertion_point(class_scope:MsgRep)
     private static final org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep();
+      DEFAULT_INSTANCE = new MsgRep();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<MsgRep>
-        PARSER = new com.google.protobuf.AbstractParser<MsgRep>() {
-      public MsgRep parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<MsgRep> PARSER;
 
     public static com.google.protobuf.Parser<MsgRep> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MsgRep> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.CommonMsg.MsgRep getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
   public interface ToUserOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:pms.ToUser)
-      com.google.protobuf.MessageOrBuilder {
+      // @@protoc_insertion_point(interface_extends:ToUser)
+      com.google.protobuf.MessageLiteOrBuilder {
 
     /**
      * <code>repeated string users = 1;</code>
      */
-    com.google.protobuf.ProtocolStringList
+    java.util.List<String>
         getUsersList();
     /**
      * <code>repeated string users = 1;</code>
@@ -1209,44 +1264,22 @@ public final class CommonMsg {
    * users send to
    * </pre>
    *
-   * Protobuf type {@code pms.ToUser}
+   * Protobuf type {@code ToUser}
    */
   public  static final class ToUser extends
-      com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:pms.ToUser)
+      com.google.protobuf.GeneratedMessageLite<
+          ToUser, ToUser.Builder> implements
+      // @@protoc_insertion_point(message_implements:ToUser)
       ToUserOrBuilder {
-    // Use ToUser.newBuilder() to construct.
-    private ToUser(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-    }
     private ToUser() {
-      users_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      users_ = com.google.protobuf.GeneratedMessageLite.emptyProtobufList();
     }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_ToUser_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_ToUser_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.class, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder.class);
-    }
-
     public static final int USERS_FIELD_NUMBER = 1;
-    private com.google.protobuf.LazyStringList users_;
+    private com.google.protobuf.Internal.ProtobufList<String> users_;
     /**
      * <code>repeated string users = 1;</code>
      */
-    public com.google.protobuf.ProtocolStringList
-        getUsersList() {
+    public java.util.List<String> getUsersList() {
       return users_;
     }
     /**
@@ -1266,205 +1299,210 @@ public final class CommonMsg {
      */
     public com.google.protobuf.ByteString
         getUsersBytes(int index) {
-      return users_.getByteString(index);
+      return com.google.protobuf.ByteString.copyFromUtf8(
+          users_.get(index));
+    }
+    private void ensureUsersIsMutable() {
+      if (!users_.isModifiable()) {
+        users_ =
+            com.google.protobuf.GeneratedMessageLite.mutableCopy(users_);
+       }
+    }
+    /**
+     * <code>repeated string users = 1;</code>
+     */
+    private void setUsers(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUsersIsMutable();
+      users_.set(index, value);
+    }
+    /**
+     * <code>repeated string users = 1;</code>
+     */
+    private void addUsers(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUsersIsMutable();
+      users_.add(value);
+    }
+    /**
+     * <code>repeated string users = 1;</code>
+     */
+    private void addAllUsers(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureUsersIsMutable();
+      com.google.protobuf.AbstractMessageLite.addAll(
+          values, users_);
+    }
+    /**
+     * <code>repeated string users = 1;</code>
+     */
+    private void clearUsers() {
+      users_ = com.google.protobuf.GeneratedMessageLite.emptyProtobufList();
+    }
+    /**
+     * <code>repeated string users = 1;</code>
+     */
+    private void addUsersBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      ensureUsersIsMutable();
+      users_.add(value.toStringUtf8());
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < users_.size(); i++) {
+        output.writeString(1, users_.get(i));
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < users_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeStringSizeNoTag(users_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getUsersList().size();
+      }
+      memoizedSerializedSize = size;
+      return size;
     }
 
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
     }
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessage
-          .parseWithIOException(PARSER, input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
     }
 
-    public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * <pre>
      * users send to
      * </pre>
      *
-     * Protobuf type {@code pms.ToUser}
+     * Protobuf type {@code ToUser}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:pms.ToUser)
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser, Builder> implements
+        // @@protoc_insertion_point(builder_implements:ToUser)
         org.dync.teameeting.sdkmsgclient.CommonMsg.ToUserOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_ToUser_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_ToUser_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.class, org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.Builder.class);
-      }
-
       // Construct using org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.newBuilder()
       private Builder() {
-        maybeForceBuilderInitialization();
+        super(DEFAULT_INSTANCE);
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        users_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
 
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.internal_static_pms_ToUser_descriptor;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser getDefaultInstanceForType() {
-        return org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.getDefaultInstance();
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser build() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser buildPartial() {
-        org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser result = new org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser(this);
-        int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          users_ = users_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.users_ = users_;
-        onBuilt();
-        return result;
-      }
-
-      private int bitField0_;
-
-      private com.google.protobuf.LazyStringList users_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureUsersIsMutable() {
-        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          users_ = new com.google.protobuf.LazyStringArrayList(users_);
-          bitField0_ |= 0x00000001;
-         }
-      }
       /**
        * <code>repeated string users = 1;</code>
        */
-      public com.google.protobuf.ProtocolStringList
+      public java.util.List<String>
           getUsersList() {
-        return users_.getUnmodifiableView();
+        return java.util.Collections.unmodifiableList(
+            instance.getUsersList());
       }
       /**
        * <code>repeated string users = 1;</code>
        */
       public int getUsersCount() {
-        return users_.size();
+        return instance.getUsersCount();
       }
       /**
        * <code>repeated string users = 1;</code>
        */
       public java.lang.String getUsers(int index) {
-        return users_.get(index);
+        return instance.getUsers(index);
       }
       /**
        * <code>repeated string users = 1;</code>
        */
       public com.google.protobuf.ByteString
           getUsersBytes(int index) {
-        return users_.getByteString(index);
+        return instance.getUsersBytes(index);
       }
       /**
        * <code>repeated string users = 1;</code>
        */
       public Builder setUsers(
           int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUsersIsMutable();
-        users_.set(index, value);
-        onChanged();
+        copyOnWrite();
+        instance.setUsers(index, value);
         return this;
       }
       /**
@@ -1472,12 +1510,8 @@ public final class CommonMsg {
        */
       public Builder addUsers(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUsersIsMutable();
-        users_.add(value);
-        onChanged();
+        copyOnWrite();
+        instance.addUsers(value);
         return this;
       }
       /**
@@ -1485,19 +1519,16 @@ public final class CommonMsg {
        */
       public Builder addAllUsers(
           java.lang.Iterable<java.lang.String> values) {
-        ensureUsersIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, users_);
-        onChanged();
+        copyOnWrite();
+        instance.addAllUsers(values);
         return this;
       }
       /**
        * <code>repeated string users = 1;</code>
        */
       public Builder clearUsers() {
-        users_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
+        copyOnWrite();
+        instance.clearUsers();
         return this;
       }
       /**
@@ -1505,130 +1536,115 @@ public final class CommonMsg {
        */
       public Builder addUsersBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureUsersIsMutable();
-        users_.add(value);
-        onChanged();
+        copyOnWrite();
+        instance.addUsersBytes(value);
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:pms.ToUser)
+      // @@protoc_insertion_point(builder_scope:ToUser)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          users_.makeImmutable();
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser other = (org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser) arg1;
+          users_= visitor.visitList(users_, other.users_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 10: {
+                  String s = input.readStringRequireUtf8();
+                  if (!users_.isModifiable()) {
+                    users_ =
+                        com.google.protobuf.GeneratedMessageLite.mutableCopy(users_);
+                  }
+                  users_.add(s);
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
     }
 
-    // @@protoc_insertion_point(class_scope:pms.ToUser)
+
+    // @@protoc_insertion_point(class_scope:ToUser)
     private static final org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser();
+      DEFAULT_INSTANCE = new ToUser();
+      DEFAULT_INSTANCE.makeImmutable();
     }
 
     public static org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<ToUser>
-        PARSER = new com.google.protobuf.AbstractParser<ToUser>() {
-      public ToUser parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        Builder builder = newBuilder();
-        try {
-          builder.mergeFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(builder.buildPartial());
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(
-                  builder.buildPartial());
-        }
-        return builder.buildPartial();
-      }
-    };
+    private static volatile com.google.protobuf.Parser<ToUser> PARSER;
 
     public static com.google.protobuf.Parser<ToUser> parser() {
-      return PARSER;
+      return DEFAULT_INSTANCE.getParserForType();
     }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ToUser> getParserForType() {
-      return PARSER;
-    }
-
-    public org.dync.teameeting.sdkmsgclient.CommonMsg.ToUser getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
   }
 
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_MsgReq_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_MsgReq_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_MsgRep_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_MsgRep_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_pms_ToUser_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_pms_ToUser_fieldAccessorTable;
 
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static  com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
   static {
-    java.lang.String[] descriptorData = {
-      "\n\020common_msg.proto\022\003pms\"`\n\006MsgReq\022!\n\010svr" +
-      "_cmds\030\001 \001(\0162\017.pms.EServerCmd\022\"\n\010mod_type" +
-      "\030\002 \001(\0162\020.pms.EModuleType\022\017\n\007content\030\003 \001(" +
-      "\014\"s\n\006MsgRep\022!\n\010svr_cmds\030\001 \001(\0162\017.pms.ESer" +
-      "verCmd\022\"\n\010mod_type\030\002 \001(\0162\020.pms.EModuleTy" +
-      "pe\022\020\n\010rsp_cont\030\003 \001(\014\022\020\n\010rsp_code\030\004 \001(\021\"\027" +
-      "\n\006ToUser\022\r\n\005users\030\001 \003(\t*O\n\nEServerCmd\022\n\n" +
-      "\006CLOGIN\020\001\022\013\n\007CSNDMSG\020\002\022\013\n\007CGETMSG\020\003\022\013\n\007C" +
-      "LOGOUT\020\004\022\016\n\nCKEEPALIVE\020\005*A\n\013EModuleType\022" +
-      "\014\n\010TMEETING\020\003\022\010\n\004TP2P\020\004\022\t\n\005TLIVE\020\005\022\017\n\013TC",
-      "ALLCENTER\020\006B/\n org.dync.teameeting.sdkms" +
-      "gclientB\tCommonMsgH\002"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
-          public com.google.protobuf.ExtensionRegistry assignDescriptors(
-              com.google.protobuf.Descriptors.FileDescriptor root) {
-            descriptor = root;
-            return null;
-          }
-        };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
-    internal_static_pms_MsgReq_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_pms_MsgReq_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_MsgReq_descriptor,
-        new java.lang.String[] { "SvrCmds", "ModType", "Content", });
-    internal_static_pms_MsgRep_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_pms_MsgRep_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_MsgRep_descriptor,
-        new java.lang.String[] { "SvrCmds", "ModType", "RspCont", "RspCode", });
-    internal_static_pms_ToUser_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_pms_ToUser_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_pms_ToUser_descriptor,
-        new java.lang.String[] { "Users", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
