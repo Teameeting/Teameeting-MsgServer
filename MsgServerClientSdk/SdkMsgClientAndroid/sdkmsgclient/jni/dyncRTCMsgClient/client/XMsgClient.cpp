@@ -35,12 +35,12 @@ XMsgClient::XMsgClient()
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
 {
-    
+
 }
 
 XMsgClient::~XMsgClient()
 {
-    
+
 }
 
 int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port, bool bAutoConnect)
@@ -54,7 +54,7 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
     if (!m_pMsgProcesser) {
         return -1;
     }
-    
+
     if (!m_pClientImpl) {
         m_pClientImpl = new XTcpClientImpl(*this);
     }
@@ -78,7 +78,7 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
     m_pClientImpl->Connect(server, port, bAutoConnect);
     m_msState = MSCONNECTTING;
     m_pMsgProcesser->ServerState(MSCONNECTTING);
-    
+
     return 0;
 }
 
@@ -93,7 +93,7 @@ int XMsgClient::Unin()
         delete m_pClientImpl;
         m_pClientImpl = NULL;
     }
-    
+
     return 0;
 }
 
@@ -105,52 +105,54 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, cons
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
+        std::vector<std::string> uvec;
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::GetMsg(GETCMD cmd)
+int XMsgClient::GetMsg(pms::EMsgTag tag)
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeGetMsg(outstr, m_uid, m_token, cmd);
+        m_pMsgProcesser->EncodeGetMsg(outstr, m_uid, m_token, tag);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::OptRoom(MEETCMD cmd, const std::string& roomid, const std::string& rname, const std::string& remain)
+int XMsgClient::OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::string& rname, const std::string& remain)
 {
-    if (cmd<=0 || cmd>=MEETCMD::meetcmd_invalid) {
+    if (!pms::EMsgTag_IsValid(tag)) {
         return -1;
     }
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, "a", "", cmd, DCOMMACTION::dcommaction_invalid, SENDTAGS::sendtags_invalid, SENDTYPE::sendtype_invalid);
+        std::vector<std::string> uvec;
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, "", tag, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::list<std::string>& ulist)
+int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::vector<std::string>& uvec)
 {
     if (msg.length()>1024 || rname.length()>128) {
         return -2;
@@ -158,20 +160,18 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        std::string tousers;
-        m_pMsgProcesser->GetMemberToJson(ulist, tousers);
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, tousers, msg, MEETCMD::dcomm, DCOMMACTION::msend, SENDTAGS::sendtags_talk, SENDTYPE::msg);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, SENDTAGS tags, const std::string& msg)
+int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, pms::EMsgTag tag, const std::string& msg)
 {
     if (msg.length()>1024 || rname.length()>128) {
         return -2;
@@ -179,14 +179,15 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, S
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, "a", msg, MEETCMD::dcomm, DCOMMACTION::msend, tags, SENDTYPE::msg);
+        std::vector<std::string> uvec;
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, tag, pms::EMsgType::TMSG);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -220,7 +221,7 @@ int XMsgClient::Logout()
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -252,7 +253,7 @@ int XMsgClient::KeepAlive()
     if (outstr.length()==0) {
         return -1;
     }
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -276,7 +277,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
         ptr[msg.length()+3] = '\0';
         if (m_pClientImpl) {
             int n = m_pClientImpl->SendMessageX(ptr, (int)(msg.length()+3));
-            delete ptr;
+            delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             return n;
@@ -286,7 +287,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 #else
             std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl is NULL" << std::endl;
 #endif
-            delete ptr;
+            delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             LOG(LS_ERROR) << "SendEncodeMsg m_pClientImpl is NULL";
@@ -357,7 +358,7 @@ void XMsgClient::OnTick()
     if (m_msState == MSCONNECTED) {
         RefreshTime();
     }
-    
+
 }
 
 void XMsgClient::OnMessageSent(int err)

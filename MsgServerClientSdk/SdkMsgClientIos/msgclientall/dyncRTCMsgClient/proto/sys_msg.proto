@@ -1,0 +1,30 @@
+syntax="proto2";
+package pms;
+
+import "common_msg.proto";
+import "sys_msg_type.proto";
+
+// this is for server module connecting connection
+message ConnMsg{
+    optional EConnTag           conn_tag = 1;
+    optional ETransferModule    tr_module = 2; // the server module
+    optional string             moduleid = 3;
+    optional string             transferid = 4;
+}
+
+// this is for msg relaying between server
+message RelayMsg{
+    optional EServerCmd         svr_cmds = 1;
+    optional ETransferModule    tr_module = 2; // the server module
+    optional string             connector = 3;
+    optional bytes              content = 4;
+    optional ToUser             touser = 5;
+}
+
+// this is for msg relaying between server
+message TransferMsg{
+    optional ETransferType type         = 1; // the type of transfer
+    optional ETransferFlag flag         = 2 [default = FNOACK]; // the flag
+    optional ETransferPriority priority = 3 [default = PNORMAL];
+    optional bytes   content            = 4; // the message to transfer
+}

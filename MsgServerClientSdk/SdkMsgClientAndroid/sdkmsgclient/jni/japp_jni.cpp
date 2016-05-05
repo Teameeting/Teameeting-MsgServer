@@ -73,19 +73,19 @@ JOWW(int, JMClientApp_SndMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jst
 	return jApp->SndMsg(jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), jstrMsg.ToString8().c_str());
 }
 
-JOWW(int, JMClientApp_GetMsg)(JNIEnv* jni, jobject j_app, jint icmd)
+JOWW(int, JMClientApp_GetMsg)(JNIEnv* jni, jobject j_app, jint itag)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
-	return jApp->GetMsg((GETCMD)icmd);
+	return jApp->GetMsg((pms::EMsgTag)itag);
 }
 
-JOWW(int, JMClientApp_OptRoom)(JNIEnv* jni, jobject j_app, jint icmd, jstring strRoomid, jstring strRname, jstring strRemain)
+JOWW(int, JMClientApp_OptRoom)(JNIEnv* jni, jobject j_app, jint itag, jstring strRoomid, jstring strRname, jstring strRemain)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	JavaString jstrRoomid(strRoomid);
 	JavaString jstrRname(strRname);
 	JavaString jstrRemain(strRemain);
-	return jApp->OptRoom((MEETCMD)icmd, jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), jstrRemain.ToString8().c_str());
+	return jApp->OptRoom((pms::EMsgTag)itag, jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), jstrRemain.ToString8().c_str());
 }
 
 JOWW(int, JMClientApp_SndMsgTo)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jstring strMsg, jobjectArray arrUser)
@@ -93,13 +93,13 @@ JOWW(int, JMClientApp_SndMsgTo)(JNIEnv* jni, jobject j_app, jstring strRoomid, j
 	return 0;
 }
 
-JOWW(int, JMClientApp_NotifyMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jint itags, jstring strMsg)
+JOWW(int, JMClientApp_NotifyMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jint itag, jstring strMsg)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	JavaString jstrRoomid(strRoomid);
 	JavaString jstrRname(strRname);
 	JavaString jstrMsg(strMsg);
-	return jApp->NotifyMsg(jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), (SENDTAGS)itags, jstrMsg.ToString8().c_str());
+	return jApp->NotifyMsg(jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), (pms::EMsgTag)itag, jstrMsg.ToString8().c_str());
 }
 
 JOWW(void, JMClientApp_SetNickName)(JNIEnv* jni, jobject j_app, jstring strNname)

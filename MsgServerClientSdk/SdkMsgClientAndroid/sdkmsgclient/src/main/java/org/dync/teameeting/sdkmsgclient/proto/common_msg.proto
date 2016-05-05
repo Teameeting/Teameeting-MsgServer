@@ -1,0 +1,46 @@
+syntax = "proto2";
+package pms;
+
+option java_package = "org.dync.teameeting.sdkmsgclient";
+option java_outer_classname = "CommonMsg";
+option optimize_for = CODE_SIZE;
+
+// the server cmd
+enum EServerCmd{
+    CLOGIN = 1;
+    CSNDMSG = 2;
+    CGETMSG = 3;
+    CLOGOUT = 4;
+    CKEEPALIVE = 5;
+}
+
+// different server module
+// the module means different business
+// it used between client and server
+// it can tell server this client belong to which server
+enum EModuleType{
+    TMEETING = 3;
+    TP2P = 4;
+    TLIVE = 5;
+    TCALLCENTER = 6;
+}
+
+// this is for request
+message MsgReq{
+    optional EServerCmd     svr_cmds = 1;
+    optional EModuleType    mod_type = 2;
+    optional bytes          content  = 3;
+}
+
+// this is for response
+message MsgRep{
+    optional EServerCmd     svr_cmds = 1;
+    optional EModuleType    mod_type = 2;
+    optional bytes          rsp_cont = 3;
+    optional sint32         rsp_code = 4;
+}
+
+// users send to
+message ToUser{
+    repeated string users = 1;
+}

@@ -22,11 +22,11 @@ public class JMClientApp {
     public native int Unin();
 
     public native int SndMsg(String strRoomid, String strRname, String strMsg);
-    public native int GetMsg(int cmd);
-    public native int OptRoom(int cmd, String strRoomid, String strRname, String strRemain);
+    public native int GetMsg(int tag);
+    public native int OptRoom(int tag, String strRoomid, String strRname, String strRemain);
     public native int SndMsgTo(String strRoomid, String strRname, String strMsg, String[] arrUser);
 
-    public native int NotifyMsg(String strRoomid, String strRname, int tags, String strMsg);
+    public native int NotifyMsg(String strRoomid, String strRname, int tag, String strMsg);
     public native void SetNickName(String strNname);
 
     /**

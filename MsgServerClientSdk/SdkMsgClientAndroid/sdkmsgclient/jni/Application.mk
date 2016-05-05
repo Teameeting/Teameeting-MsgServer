@@ -1,5 +1,5 @@
 APP_BUILD_SCRIPT := $(call my-dir)/toolchain/Android.mk
-APP_MODULES := msgclient-jni jni_utils rtcmsgclient-android
+APP_MODULES := msgclient-jni jni_utils rtcmsgclient-android protobuf
 
 NDK_PATH := /Users/hp/Documents/tools/android-ndk-r10d
 NDK_STL_INC := $(NDK_PATH)/sources/cxx-stl/gnu-libstdc++/4.8/include

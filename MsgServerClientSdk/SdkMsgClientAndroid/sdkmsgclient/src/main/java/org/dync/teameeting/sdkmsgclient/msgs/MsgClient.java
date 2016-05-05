@@ -66,17 +66,17 @@ public abstract class MsgClient{
         }
     }
 
-    protected int MCGetMsg(int cmd) {
+    protected int MCGetMsg(int tag) {
         if (null != mMApp) {
-            return mMApp.GetMsg(cmd);
+            return mMApp.GetMsg(tag);
         } else {
             return -1;
         }
     }
 
-    protected int MCOptRoom(int cmd, String strRoomid, String strRname, String strRemain) {
+    protected int MCOptRoom(int tag, String strRoomid, String strRname, String strRemain) {
         if (null != mMApp) {
-            return mMApp.OptRoom(cmd, strRoomid, strRname, strRemain);
+            return mMApp.OptRoom(tag, strRoomid, strRname, strRemain);
         } else {
             return -1;
         }
@@ -90,9 +90,9 @@ public abstract class MsgClient{
         }
     }
 
-    protected int MCNotifyMsg(String strRoomid, String strRname, int tags, String strMsg) {
+    protected int MCNotifyMsg(String strRoomid, String strRname, int tag, String strMsg) {
         if (null != mMApp) {
-            return mMApp.NotifyMsg(strRoomid, strRname, tags, strMsg);
+            return mMApp.NotifyMsg(strRoomid, strRname, tag, strMsg);
         } else {
             return -1;
         }

@@ -1,0 +1,25 @@
+syntax="proto2";
+package pms;
+
+// the msg content type
+enum EMsgType{
+    TMSG = 1;
+    TFILE = 2;
+    TPIC = 3;
+    TAUD = 4;
+    TVID = 5;
+}
+
+// the msg tag
+enum EMsgTag{
+    TENTER = 1;
+    TLEAVE = 2;
+    TCHAT = 3;
+    TNOTIFY = 4;
+}
+
+// the msg get tag
+enum EMsgHead{
+    HSND = 1;
+    HGET = 2;
+}

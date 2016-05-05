@@ -1,0 +1,53 @@
+syntax="proto2";
+package pms;
+
+// the sever logic module name
+// it userd between servers, not used in client
+enum ETransferModule{
+    MCONNECTOR = 1;
+    MMSGQUEUE = 2;
+    MMEETING = 3;
+    MP2P = 4;
+    MLIVE = 5;
+    MCALLCENTER = 6;
+}
+
+// the type of server transfering msg
+enum ETransferType{
+    TCONN = 1;
+    TTRANS = 2;
+    TQUEUE = 3;
+    TDISPATCH = 4;
+    TPUSH = 5;
+    TLOGIN = 6;
+    TLOGOUT = 7;
+}
+
+// the priority of transfering msg
+// default is normal
+enum ETransferPriority{
+    PLOW = 1;
+    PNORMAL = 2;
+    PHIGH = 3;
+}
+
+// just the flag
+enum ETransferFlag{
+    FNOACK = 1;
+    FNEEDACK = 2;
+    FACK = 3;
+}
+
+// the tag used for connecting of module
+enum EConnTag{
+    THI = 1;
+    THELLO = 2;
+    THELLOHI = 3;
+    TKEEPALIVE = 4;
+}
+
+// the type of connection
+enum EConnType{
+    TTCP = 1;
+    THTTP = 2;
+}

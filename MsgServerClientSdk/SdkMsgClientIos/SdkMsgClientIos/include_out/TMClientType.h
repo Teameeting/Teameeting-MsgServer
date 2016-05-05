@@ -15,28 +15,4 @@ typedef NS_ENUM(NSInteger, MCConnState){
     MCConnStateCONNECTED = 2
 };
 
-typedef NS_ENUM(NSInteger, MCMeetCmd){
-    MCMeetCmdENTER=1,
-    MCMeetCmdLEAVE,
-    MCMeetCmdDCOMM,
-    MCMeetCmdINVALID
-};
-
-typedef NS_ENUM(NSInteger, MCSendTags){
-    MCSendTagsTALK=1,
-    MCSendTagsENTER,
-    MCSendTagsLEAVE,
-    MCSendTagsINVALID
-};
-
-typedef NS_ENUM(NSInteger, MCMessageType){
-    MCMessageTypeREQUEST=1,
-    MCMessageTypeRESPONSE,
-    MCMessageTypeINVALID
-};
-
-typedef NS_ENUM(NSInteger, MCGetCmd){
-    MCGetCmdINVALID=1
-};
-
 #endif

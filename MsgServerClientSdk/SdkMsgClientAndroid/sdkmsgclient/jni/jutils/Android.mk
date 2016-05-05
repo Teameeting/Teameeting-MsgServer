@@ -30,7 +30,7 @@ LOCAL_SRC_FILES := ConvertUTF.cpp \
 ## Widows (call host-path,/cygdrive/path/to/your/file/libstlport_shared.so) 	
 #		   
 #LOCAL_LDLIBS := -llog -lz 
-LOCAL_CFLAGS := -fno-rtti
+LOCAL_CFLAGS := -frtti
 
 LOCAL_C_INCLUDES += $(NDK_STL_INC) 
 					

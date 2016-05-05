@@ -7,9 +7,19 @@
 		<key>SdkMsgClientIos.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>0</integer>
 		</dict>
 		<key>msgclient.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>msgclientall.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>protobuf.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
@@ -28,6 +38,16 @@
 			<true/>
 		</dict>
 		<key>E65B51B61C30095B00A5DE53</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E674DD871CD9F6A3001C2D6B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E674DEDE1CD9FFD7001C2D6B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

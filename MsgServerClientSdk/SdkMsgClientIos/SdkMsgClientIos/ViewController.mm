@@ -81,8 +81,8 @@
     ////////////////////////////////////////////////////
     
     msgsender = [ [TMMsgSender alloc] init];
-    server = @"192.168.7.39";
-    port   = 9210;
+    server = @"192.168.7.207";
+    port   = 6630;
     uid = @"9a4f3730-f643-422a-a3a1-eae557060a90";
     token = @"a405f2ad61030c3e354a144137213f819d32516896d7ed883d1dfb05dcd993bd8578d422bbf1e84f5cce15316374a217";
     nname = @"nickname";
@@ -103,7 +103,7 @@
 - (IBAction)enterButton:(id)sender {
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
-    [msgsender tMOptRoomCmd:MCMeetCmdENTER roomid:roomid rname:@"roomname" remain:@""];
+    [msgsender tMOptRoomCmd:EMsgTag_Tenter roomid:roomid rname:@"roomname" remain:@""];
 }
 
 - (IBAction)sndMsgButton:(id)sender {
@@ -115,13 +115,13 @@
 - (IBAction)leaveButton:(id)sender {
     NSString *leave = @"leaveButton was called";
     NSLog(@"%@", leave);
-    [msgsender tMOptRoomCmd:MCMeetCmdLEAVE roomid:roomid rname:@"roomname" remain:@""];
+    [msgsender tMOptRoomCmd:EMsgTag_Tleave roomid:roomid rname:@"roomname" remain:@""];
 }
 
 - (IBAction)notifyButton:(id)sender {
     NSString *notify = @"notifyButton was called";
     NSLog(@"%@", notify);
-    [msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:MCSendTagsTALK msg:msg];
+    [msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:EMsgTag_Tnotify msg:msg];
 }
 
 -(void)updateResult:(NSString*)backInfo

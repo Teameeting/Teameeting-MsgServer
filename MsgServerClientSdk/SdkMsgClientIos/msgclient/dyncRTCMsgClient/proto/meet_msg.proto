@@ -1,0 +1,35 @@
+syntax="proto2";
+package pms;
+
+import "common_msg.proto";
+import "meet_msg_type.proto";
+
+message Login{
+    optional string         usr_from  = 1; // user id sending from
+    optional string         usr_token = 2; // user token
+    optional string         usr_nname = 3;
+}
+
+message Logout{
+    optional string         usr_from  = 1; // user id sending from
+    optional string         usr_token = 2; // user token
+}
+
+message Keep{
+    optional string         usr_from = 1; // user id sending from
+}
+
+message MeetMsg{
+    optional EMsgHead       msg_head  = 1 [default = HSND]; // msg type
+    optional EMsgTag        msg_tag   = 2 [default = TCHAT]; // msg tag
+    optional EMsgType       msg_type  = 3 [default = TMSG]; // msg type
+    optional string         usr_from  = 4; // user id sending from
+    optional string         msg_cont  = 5; // msg content
+    optional string         rom_id    = 6; // user room id
+    optional string         rom_name  = 7; // user room name
+    optional string         nck_name  = 8; // user nick name
+    optional string         usr_token = 9; // user token
+    optional sint64         msg_seqs  = 10; // msg sequence number
+    optional sint32         mem_num   = 11; // room member number
+    optional ToUser         usr_toto  = 12; // user ids sending to, the string from pms::ToUser
+}

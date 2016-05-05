@@ -2,6 +2,7 @@ package org.dync.teameeting.sdkmsgclient.msgs;
 
 import android.content.Context;
 
+import org.dync.teameeting.sdkmsgclient.MeetMsgType;
 import org.dync.teameeting.sdkmsgclient.jni.JMClientHelper;
 
 
@@ -70,22 +71,22 @@ public class TMMsgSender extends MsgClient {
     /**
      * get msg from server
      * params:
-     *      cmd:
+     *      tag:
      **/
-    public int TMGetMsg(int cmd) {
-        return this.MCGetMsg(cmd);
+    public int TMGetMsg(MeetMsgType.EMsgTag tag) {
+        return this.MCGetMsg(tag.getNumber());
     }
 
     /**
      * operation for room
      * params:
-     *      cmd:the cmd for room, enter or leave
+     *      tag:the tag for this msg, enter or leave
      *      strRoomid:the room id
      *      strRname:the room name
      *      strRemain:remain
      **/
-    public int TMOptRoom(int cmd, String strRoomid, String strRname,  String strRemain) {
-        return this.MCOptRoom(cmd, strRoomid, strRname, strRemain);
+    public int TMOptRoom(MeetMsgType.EMsgTag tag, String strRoomid, String strRname,  String strRemain) {
+        return this.MCOptRoom(tag.getNumber(), strRoomid, strRname, strRemain);
     }
 
     /**
@@ -105,11 +106,11 @@ public class TMMsgSender extends MsgClient {
      * params:
      *      strRoomid:the room id
      *      strRname:the room name
-     *      tags: the tag of this msg
+     *      tag: the tag of this msg
      *      strMsg:the publish id
      **/
-    public int TMNotifyMsg(String strRoomid, String strRname, int tags, String strMsg) {
-        return this.MCNotifyMsg(strRoomid, strRname, tags, strMsg);
+    public int TMNotifyMsg(String strRoomid, String strRname, MeetMsgType.EMsgTag tag, String strMsg) {
+        return this.MCNotifyMsg(strRoomid, strRname, tag.getNumber(), strMsg);
     }
 
     /**

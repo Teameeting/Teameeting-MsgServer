@@ -38,12 +38,15 @@ LOCAL_C_INCLUDES += $(NDK_STL_INC) \
 					$(LOCAL_PATH)/jutils \
 					$(LOCAL_PATH)/dyncRTCMsgClient/ \
                     $(LOCAL_PATH)/dyncRTCMsgClient/rtcmsgs \
-                    $(LOCAL_PATH)/dyncRTCMsgClient/client
+                    $(LOCAL_PATH)/dyncRTCMsgClient/client \
+                    $(LOCAL_PATH)/dyncRTCMsgClient/proto \
+                    $(LOCAL_PATH)/protobuf/src
 
 										
 
 LOCAL_STATIC_LIBRARIES := jni_utils
 LOCAL_STATIC_LIBRARIES += rtcmsgclient-android
 LOCAL_STATIC_LIBRARIES += libgnustl
+LOCAL_STATIC_LIBRARIES += protobuf
 
 include $(BUILD_SHARED_LIBRARY)
