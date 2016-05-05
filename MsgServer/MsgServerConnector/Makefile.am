@@ -39,6 +39,6 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/main.cpp
 
 MsgServerConnector_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-MsgServerConnector_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf.a
+MsgServerConnector_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerConnector_LDADD+=-lpthread -lrt -ldl
 

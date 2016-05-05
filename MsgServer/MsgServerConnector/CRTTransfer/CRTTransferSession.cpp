@@ -206,7 +206,7 @@ void CRTTransferSession::OnTypeConn(const std::string& str)
         LE("OnTypeConn c_msg.ParseFromString error\n");
     }
     LI("OnTypeConn connmsg--->:\n");
-    c_msg.PrintDebugString();
+    //c_msg.PrintDebugString();
 
     if ((c_msg.conn_tag() == pms::EConnTag::THI)) {
         // when other connect to ME:
@@ -282,7 +282,7 @@ void CRTTransferSession::OnTypeDispatch(const std::string& str)
     }
     pms::ToUser to = dmsg.touser();
     LI("OnTypeDispatch dmsg--->:\n");
-    dmsg.PrintDebugString();
+    //dmsg.PrintDebugString();
 
     {
         for(int i = 0;i < to.users_size(); ++i) {

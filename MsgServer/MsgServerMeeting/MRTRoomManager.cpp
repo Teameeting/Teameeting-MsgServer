@@ -24,7 +24,7 @@
 void MRTRoomManager::HandleOptRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
 {
     LI("HandleOptRoom meet msg--->:\n");
-    mmsg.PrintDebugString();
+    //mmsg.PrintDebugString();
 
     switch (mmsg.msg_tag()) {
         case pms::EMsgTag::TENTER:
@@ -67,7 +67,7 @@ void MRTRoomManager::HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::Me
 void MRTRoomManager::HandleDcommRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
 {
     LI("HandleDcommRoom meet msg--->:\n");
-    mmsg.PrintDebugString();
+    //mmsg.PrintDebugString();
 
     std::string resp("");
     MeetingRoomMapIt it = m_meetingRoomMap.find(mmsg.rom_id());
@@ -539,7 +539,7 @@ void MRTRoomManager::GenericConnLostResponse(const std::string& uid
 
 
     LI("GenericConnLostResponse meet msg--->:\n");
-    mmsg.PrintDebugString();
+    //mmsg.PrintDebugString();
     // set response
     resp.set_svr_cmds(pms::EServerCmd::CLOGOUT);
     resp.set_mod_type(pms::EModuleType::TMEETING);
@@ -569,7 +569,7 @@ void MRTRoomManager::ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rm
     pms::MsgRep resp;
 
     LI("ResponseSndMsg meet msg--->:\n");
-    mmsg.PrintDebugString();
+    //mmsg.PrintDebugString();
     // set response
     resp.set_svr_cmds(cmd);
     resp.set_mod_type(pms::EModuleType::TMEETING);

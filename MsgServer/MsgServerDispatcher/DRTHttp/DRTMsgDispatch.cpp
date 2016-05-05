@@ -48,7 +48,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     }
 
     LI("DRTMsgDispatch::OnPushEvent RelayMsg--->:\n");
-    pmsg.PrintDebugString();
+    //pmsg.PrintDebugString();
 
     TOPUSHUSER pushUser;
     for(int i=0;i<pmsg.touser().users_size();++i) {

@@ -200,7 +200,7 @@ void DRTTransferSession::OnTypeConn(const std::string& str)
         return;
     }
     LI("OnTypeConn connmsg--->:\n");
-    c_msg.PrintDebugString();
+    //c_msg.PrintDebugString();
 
     if ((c_msg.conn_tag() == pms::EConnTag::THI)) {
         // when other connect to ME:
@@ -353,7 +353,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
                 m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
 
                 LI("OnTypeQueue dispatch msg--->:\n");
-                dmsg.PrintDebugString();
+                //dmsg.PrintDebugString();
             }
         }
     }
@@ -369,7 +369,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
             m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
 
             LI("OnTypeQueue push msg--->:\n");
-            pmsg.PrintDebugString();
+            //pmsg.PrintDebugString();
         }
     }
 #else

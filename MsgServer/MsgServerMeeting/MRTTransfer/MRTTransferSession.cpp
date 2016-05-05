@@ -201,7 +201,7 @@ void MRTTransferSession::OnTypeConn(const std::string& str)
         LE("OnTypeConn c_msg.ParseFromString error\n");
     }
     LI("OnTypeConn connmsg--->:\n");
-    c_msg.PrintDebugString();
+    //c_msg.PrintDebugString();
 
     if ((c_msg.conn_tag() == pms::EConnTag::THELLO)) {
         // when ME connector to other:

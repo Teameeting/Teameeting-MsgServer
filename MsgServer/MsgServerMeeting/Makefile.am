@@ -36,5 +36,5 @@ MsgServerMeeting_SOURCES=$(top_srcdir)/MRTHttp/MRTHttpSvrConn.cpp \
 						   $(top_srcdir)/main.cpp
 
 MsgServerMeeting_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-MsgServerMeeting_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf.a
+MsgServerMeeting_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerMeeting_LDADD+=-lpthread -lrt -ldl

@@ -53,7 +53,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     meet.set_rom_name(rname);
     meet.set_nck_name(nname);
     meet.set_usr_token(token);
-    for(int i=0;i<to.size();++i) {
+    for(int i=0;i<(int)to.size();++i) {
          touser->add_users(to.at(i));
     }
 
@@ -129,8 +129,6 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
     if (!resp.ParseFromString(strmsg)) {
         LOG(LS_ERROR) << "RecvData resp.ParseFromString error!";
     }
-    std::cout << "XMsgProcess::DecodeRecvData--->" << std::endl;
-    resp.PrintDebugString();
     switch (resp.svr_cmds()) {
         case pms::EServerCmd::CLOGIN:
             DecodeLogin(resp.rsp_code(), resp.rsp_cont());

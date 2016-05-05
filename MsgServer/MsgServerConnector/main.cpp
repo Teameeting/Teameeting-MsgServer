@@ -13,7 +13,7 @@
 #include <google/protobuf/message.h>
 
 #ifndef _TEST_
-#define _TEST_ 0
+#define _TEST_ 1
 #endif
 
 int main(int argc, const char * argv[]) {

@@ -46,8 +46,7 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
 #if DEF_PROTO
     pms::MeetMsg meet;
     meet.ParseFromString(msg);
-    LOG(INFO) << "RTMsgClient::OnSndMsg--->" << std::endl;
-    meet.PrintDebugString();
+    LOG(INFO) << "RTMsgClient::OnSndMsg--->";
     switch(meet.msg_tag()) {
         case pms::EMsgTag::TCHAT:
             {

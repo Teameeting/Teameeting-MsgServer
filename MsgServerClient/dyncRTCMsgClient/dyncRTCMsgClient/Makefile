@@ -89,7 +89,7 @@ librtcmsgclient-linux.a: $(CFILES:.c=.o) $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
 	ranlib librtcmsgclient-linux.a
 
 msgclient: $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o)
-	$(C++) -o msgclient $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o) $(CPPFLAGS) -L/usr/local/lib -lprotobuf
+	$(C++) -o msgclient $(CPPFILES:.cpp=.o) $(CCFILES:.cc=.o) $(CPPFLAGS) -L/usr/local/lib -lprotobuf-lite
 
 install: 
 	install -m 664 librtcmsgclient-linux.a ./lib_linux_a/

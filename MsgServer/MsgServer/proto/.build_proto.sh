@@ -2,7 +2,7 @@
 
 cp build_proto.sh .build_proto.sh
 
-rm *.h *.cc
+rm *.h *.cc *.o
 
 protoc common_msg.proto --cpp_out=./ -I./
 protoc meet_msg.proto --cpp_out=./ -I./
