@@ -1,13 +1,13 @@
 #!/bin/sh
 
-echo "untar connector.tar.bz2..."
+echo "untar connector.tar.gz..."
 sleep 1
-tar -jxvf connector.tar.bz2
+tar -zxvf connector.tar.gz
 
-echo "untar dispatcher.tar.bz2..."
+echo "untar dispatcher.tar.gz..."
 sleep 1
-tar -jxvf dispatcher.tar.bz2
+tar -zxvf dispatcher.tar.gz
 
-echo "untar meeting.tar.bz2..."
+echo "untar meeting.tar.gz..."
 sleep 1
-tar -jxvf meeting.tar.bz2
+tar -zxvf meeting.tar.gz

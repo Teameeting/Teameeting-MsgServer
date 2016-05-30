@@ -335,9 +335,9 @@ int MRTConnManager::ConnTimerCallback(const char*pData, int nLen)
         if (root["type"].asInt() == SESSEVENT::_sess_lost) {//offline and reconnect
             std::string s("");
             if (root["module"].asInt()== pms::ETransferModule::MCONNECTOR) {// connect to connector
-                s = "/dync/teameeting/connector/" + root["ip"].asString();
+                s = "/dync/msgserver/connector/" + root["ip"].asString();
             } else if (root["module"].asInt()== pms::ETransferModule::MMSGQUEUE) {// connect to msgqueue
-                s = "/dync/teameeting/dispatcher/" + root["ip"].asString();
+                s = "/dync/msgserver/dispatcher/" + root["ip"].asString();
             } else {
                 return 0;
             }

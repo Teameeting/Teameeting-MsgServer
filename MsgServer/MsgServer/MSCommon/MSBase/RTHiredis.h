@@ -13,8 +13,7 @@
 #include <iostream>
 #include <list>
 #include <string>
-#include "hiredis.h"
-#include "rtklog.h"
+#include <hiredis/hiredis.h>
 #include "RTSingleton.h"
 
 #define HI_USER_CONNECTOR_ID "hi_user_connector_id"
@@ -27,24 +26,30 @@ public:
 
     void SetHostAddr(const char* host, int port) {
         if(!host || port <= 2048) {
-            LE("RTHiredis SetHostAddr failed\n");
+            printf("RTHiredis SetHostAddr failed\n");
          return;
         }
         m_host = host;
         m_port = port;
     }
 
-    void CmdPing();
+    bool CmdPing();
     bool CmdSet(const std::string key, const std::string value);
     bool CmdGet(const std::string key, std::string& value);
+    bool CmdSet(const std::string key, int value);
+    bool CmdGet(const std::string key, int* value);
     bool CmdDel(const std::string key);
+    bool CmdIncr(const std::string key);
     bool CmdHSet(const std::string hid, const std::string key, const std::string value);
     bool CmdHGet(const std::string hid, const std::string key, std::string& value);
     bool CmdHDel(const std::string hid, const std::string key, std::string& res);
     bool CmdHExists(const std::string hid, const std::string key, std::string& res);
+    bool CmdHSet(const std::string hid, int key, const std::string value);
+    bool CmdHGet(const std::string hid, int key, std::string& value);
     bool CmdHLen(const std::string hid, int* len);
     bool CmdHKeys(const std::string hid, std::list<std::string>* ress);
     bool CmdHVals(const std::string hid, std::list<std::string>* ress);
+    bool GenericIncrId(const std::string& key, long long* value);
     virtual void MakeAbstract() = 0;
 protected:
     RTHiredis():
@@ -54,6 +59,9 @@ protected:
         ,m_sTimeout(1)
         ,m_msTimeout(500){}
     virtual ~RTHiredis(){ DisConn(); }
+    redisContext* GetContext() { return m_redisContext; }
+    std::string GetHost() { return m_host; }
+    int GetPort() { return m_port; }
 private:
     bool HandleReply(redisReply* reply, std::string* res);
     bool HandleHReply(redisReply* reply, std::list<std::string>* res);

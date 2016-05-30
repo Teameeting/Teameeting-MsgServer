@@ -11,7 +11,7 @@ cd build_shell<br>
 msgserver为编译后文件目录<br>
 在完成编译后，运行untar.sh解压文件msgserver.tar.bz2<br>
 cd msgserver <br>
-sudo ./teameeting.sh -i 即可安装整个项目的可执行文件到/usr/local/dync/teameeting/ <br>
+sudo ./install.sh -i 即可安装整个项目的可执行文件到/usr/local/dync/msgserver/ <br>
 <br>
 运行./start.sh 即可启动程序<br>
 ./start.sh<br>

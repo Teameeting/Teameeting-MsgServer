@@ -29,11 +29,13 @@ libMSCommon_a_SOURCES= \
 				$(top_srcdir)/proto/meet_msg_type.pb.cc \
 				$(top_srcdir)/proto/sys_msg.pb.cc \
 				$(top_srcdir)/proto/sys_msg_type.pb.cc \
+				$(top_srcdir)/proto/sequence_msg.pb.cc \
 				$(top_srcdir)/MSCommon/sigslot.cc \
 				$(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTDispatch.cpp \
+				$(top_srcdir)/MSCommon/MSBase/RTEventLooper.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTEventTimer.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTJSBuffer.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTUtils.cpp \

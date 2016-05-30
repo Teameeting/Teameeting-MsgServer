@@ -29,7 +29,8 @@ ServerConfig::~ServerConfig(){
 
 int ServerConfig::init(const std::string& f){
 
-	int ret = 0;
+	int ret = -1;
+    printf("ServerConfig::init file name:%s\n", f.c_str());
     FILE* pf = fopen(f.c_str(), "r");
     if (pf) {
         rapidjson::FileStream fs(pf);
@@ -111,10 +112,10 @@ int ServerConfig::parseFromJson(const rapidjson::Document& root){
     Level = root["Level"].GetInt();
 
 	ret = loadPortsConfigs(root["PortConfigs"]);
-    //printf("Ip:%s, type:%s, zkurl:%s, nodepath:%s, module:%s, projeect:%s, httpip:%s, logpath:%s, debug:%d, level:%d\n", IP.c_str(), Type.c_str(), ZkUrl.c_str(), NodePath.c_str()
-    //        , ModulePath.c_str(), ProjectPath.c_str()
-    //        , HttpIp.c_str(), LogPath.c_str()
-    //        , Debug, Level);
+    printf("Ip:%s, type:%s, zkurl:%s, nodepath:%s, module:%s, projeect:%s, httpip:%s, logpath:%s, debug:%d, level:%d\n", IP.c_str(), Type.c_str(), ZkUrl.c_str(), NodePath.c_str()
+            , ModulePath.c_str(), ProjectPath.c_str()
+            , HttpIp.c_str(), LogPath.c_str()
+            , Debug, Level);
 
 	return ret;
 }
@@ -130,6 +131,7 @@ int ServerConfig::loadPortsConfigs(const rapidjson::Value& v){
         fprintf(stderr, "loadPortsConfigs error");
         return -1;
     }
+    printf("loadPortsConfigs Type:%d\n", Type.GetInt());
     if (Type.GetInt()==1) {
         const rapidjson::Value& ListenWebcon = Port["ListenWebcon"];
         const rapidjson::Value& ListenModule = Port["ListenModule"];
@@ -170,6 +172,13 @@ int ServerConfig::loadPortsConfigs(const rapidjson::Value& v){
         portConfig.meeting.AcceptHttp = AcceptHttp.GetInt();
         //printf("meeting type:%d, webcon:%d, module:%d, clicon:%d\n\n", portConfig.MTYPE, portConfig.meeting.AcceptConn
         //        , portConfig.meeting.AcceptDisp, portConfig.meeting.AcceptHttp);
+    } else if (Type.GetInt()==4) {
+        const rapidjson::Value& ListenClicon = Port["ListenClicon"];
+        if(!ListenClicon.IsInt()){
+            return -1;
+        }
+        portConfig.MTYPE = Type.GetInt();
+        portConfig.sequence.ListenClicon = ListenClicon.GetInt();
     }
 
     return 0;
@@ -211,6 +220,11 @@ string ServerConfig::toStyledString() const{
         vvv["AcceptConn"] = x.meeting.AcceptConn;
         vvv["AcceptDisp"] = x.meeting.AcceptDisp;
         vvv["AcceptHttp"] = x.meeting.AcceptHttp;
+        vv["Port"] = vvv;
+    } else if (x.MTYPE==4) {
+        vv["Type"] = x.MTYPE;
+        rapidjson::Value vvv;
+        vvv["ListenClicon"] = x.sequence.ListenClicon;
         vv["Port"] = vvv;
     }
     jDoc.AddMember("PortConfigs", vv, jDoc.GetAllocator());

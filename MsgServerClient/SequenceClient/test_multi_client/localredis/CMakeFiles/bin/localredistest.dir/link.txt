@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/bin/localredistest.dir/src/main.cpp.o CMakeFiles/bin/localredistest.dir/src/RTHiredis.cpp.o CMakeFiles/bin/localredistest.dir/src/RTSingleton.cpp.o  -o bin/localredistest  -L/usr/local/lib -rdynamic -lhiredis -lssl -lcrypto -Wl,-rpath,/usr/local/lib 

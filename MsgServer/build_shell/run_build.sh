@@ -390,7 +390,7 @@ else
 fi
 
 ####################    building 3rdpartylibs    ###########################
-if [ "no"x = "yes"x ]
+if [ "yes"x = "yes"x ]
 then
     SRC_PATH=$BASE_PATH/MsgServer/MSCommon
     BUILD_NAME=ThirdParybLibs
@@ -421,6 +421,8 @@ else
     logerr "building mscommonlib not running..."
 fi
 
+exit
+
 ####################    building msgserverconnector    ###########################
 if [ "yes"x = "yes"x ]
 then
@@ -434,7 +436,7 @@ then
         exit 1
     fi
     cd $SRC_PATH
-    tar_tar_bz2 connector
+    tar_tar_gz connector
 else
     logerr "building msgserverconnector not running..."
 fi
@@ -452,7 +454,7 @@ then
         exit 1
     fi
     cd $SRC_PATH
-    tar_tar_bz2 dispatcher
+    tar_tar_gz dispatcher
 else
     logerr "building msgserverdispatcher not running..."
 fi
@@ -470,31 +472,31 @@ then
         exit 1
     fi
     cd $SRC_PATH
-    tar_tar_bz2 meeting
+    tar_tar_gz meeting
 else
     logerr "building msgservermeeting not running..."
 fi
 
-####################    taring all.tar.bz2 to msgserver    ###########################
+####################    taring all.tar.gz to msgserver    ###########################
 if [ "yes"x = "yes"x ]
 then
     loginfo "tar all the bin program..."
     sleep 1
     cd $CUR_PATH
-    rm msgserver.tar.bz2
+    rm msgserver.tar.gz
     rm -rf msgserver
     mkdir -p msgserver
-    mv *.tar.bz2 msgserver
+    mv *.tar.gz msgserver
     cp *.sh msgserver
     rm msgserver/run_build.sh
-    tar -jcvf msgserver.tar.bz2 msgserver
+    tar -zcvf msgserver.tar.gz msgserver
     loginfo "tar all the bin program ok..."
     sleep 1
 
     find $BASE_PATH -iname *.o | xargs rm
     loginfo "remove all the *.o ..."
 else
-    logerr "taring all.tar.bz2 not running..."
+    logerr "taring all.tar.gz not running..."
 fi
 
 end_log

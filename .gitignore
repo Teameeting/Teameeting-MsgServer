@@ -12,6 +12,7 @@
 *.in
 *.cache
 *.so
+*.rdb
 Makefile
 output.0
 traces.0
@@ -23,6 +24,7 @@ tags
 *.png
 *.ycm_extra_conf.py
 *.ycm_extra_conf.pyc
+*.tar.gz
 MsgServer/MsgServerConnector/MsgServerConnector
 MsgServer/MsgServerConnector/connector/bin
 MsgServer/MsgServerDispatcher/MsgServerDispatcher
