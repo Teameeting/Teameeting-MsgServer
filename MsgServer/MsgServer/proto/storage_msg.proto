@@ -1,0 +1,16 @@
+syntax="proto3";
+package pms;
+
+option optimize_for = LITE_RUNTIME;
+
+// this is the msg for store msg to redis
+message StorageMsg{
+    string      userid      = 1; // userid
+    string      msgid       = 2; // message id
+    sint64      sequence    = 3; // sequence
+    string      content     = 4; // message
+}
+
+message PackedStoreMsg{
+    repeated    StorageMsg     msgs = 1;
+}

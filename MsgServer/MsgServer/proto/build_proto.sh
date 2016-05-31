@@ -14,3 +14,4 @@ protoc sys_msg_type.proto --cpp_out=./ -I./
 
 protoc sequence_msg.proto --cpp_out=./ -I./
 
+protoc storage_msg.proto --cpp_out=./ -I./

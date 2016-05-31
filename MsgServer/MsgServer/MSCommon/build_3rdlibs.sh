@@ -118,7 +118,10 @@ sleep 1
 LIB_SRC_PATH=$LIB_BASE_PATH/zkclient
 LIB_NAME=libzkclient.a
 cd $LIB_SRC_PATH
-sh build.sh
+if [ "$PARAM_FORCE"x = "yes"x ]
+then
+    sh build.sh
+fi
 build_lib $LIB_SRC_PATH $LIB_NAME
 rm -rf CMakeCache.txt  CMakeFiles  cmake_install.cmake
 if [ $? -ne 0 ]

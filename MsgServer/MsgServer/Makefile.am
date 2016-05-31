@@ -30,6 +30,7 @@ libMSCommon_a_SOURCES= \
 				$(top_srcdir)/proto/sys_msg.pb.cc \
 				$(top_srcdir)/proto/sys_msg_type.pb.cc \
 				$(top_srcdir)/proto/sequence_msg.pb.cc \
+				$(top_srcdir)/proto/storage_msg.pb.cc \
 				$(top_srcdir)/MSCommon/sigslot.cc \
 				$(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
