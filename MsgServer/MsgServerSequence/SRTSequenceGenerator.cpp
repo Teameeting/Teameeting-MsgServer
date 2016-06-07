@@ -41,7 +41,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
         return;
     }
     std::string str(pData, nSize);
-    pms::PackedSeqnMsg packed;
+    pms::PackedStoreMsg packed;
     packed.ParseFromString(str);
     for(int i=0;i<packed.msgs_size();++i)
     {

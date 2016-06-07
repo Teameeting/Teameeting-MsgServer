@@ -8,7 +8,7 @@
 
 #include "SRTSequenceRedis.h"
 #include "SRTRedisManager.h"
-#include "../MsgServer/proto/sequence_msg.pb.h"
+#include "../MsgServer/proto/storage_msg.pb.h"
 
 void SRTSequenceRedis::Init(SRTRedisManager* manager, const std::string& ip, int port)
 {
@@ -37,7 +37,7 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
     if (!pData || nSize<=0) return;
     long long seq = 0;
     std::string str(pData, nSize);
-    pms::SequenceMsg request;
+    pms::StorageMsg request;
     request.ParseFromString(str);
     GenericIncrId(request.userid(), &seq);
     RequestResponse(request.userid(), request.msgid(), seq);

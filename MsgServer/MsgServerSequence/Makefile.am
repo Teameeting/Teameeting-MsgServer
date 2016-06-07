@@ -28,6 +28,8 @@ MsgServerSequence_SOURCES=$(top_srcdir)/SRTListener/SRTSequenceListener.cpp \
 						   $(top_srcdir)/SRTTransfer/SRTTransferSession.cpp \
 						   $(top_srcdir)/SRTSequenceRedis.cpp \
 						   $(top_srcdir)/SRTResponseCollection.cpp \
+						   $(top_srcdir)/SRTConnManager.cpp \
+						   $(top_srcdir)/SRTConnDispatcher.cpp \
 						   $(top_srcdir)/SRTRedisManager.cpp \
 						   $(top_srcdir)/SRTSequenceGenerator.cpp \
 						   $(top_srcdir)/SRTSequenceManager.cpp \

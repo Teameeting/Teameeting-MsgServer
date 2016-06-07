@@ -25,6 +25,7 @@
 #include <google/protobuf/message_lite.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include "storage_msg_type.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace pms {
@@ -103,15 +104,21 @@ class StorageMsg : public ::google::protobuf::MessageLite {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 mflag = 1;
+  // optional .pms.EStorageType mflag = 1;
   void clear_mflag();
   static const int kMflagFieldNumber = 1;
-  ::google::protobuf::int32 mflag() const;
-  void set_mflag(::google::protobuf::int32 value);
+  ::pms::EStorageType mflag() const;
+  void set_mflag(::pms::EStorageType value);
 
-  // optional string userid = 2;
+  // optional sint32 result = 2;
+  void clear_result();
+  static const int kResultFieldNumber = 2;
+  ::google::protobuf::int32 result() const;
+  void set_result(::google::protobuf::int32 value);
+
+  // optional string userid = 3;
   void clear_userid();
-  static const int kUseridFieldNumber = 2;
+  static const int kUseridFieldNumber = 3;
   const ::std::string& userid() const;
   void set_userid(const ::std::string& value);
   void set_userid(const char* value);
@@ -120,9 +127,9 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_userid();
   void set_allocated_userid(::std::string* userid);
 
-  // optional string msgid = 3;
+  // optional string msgid = 4;
   void clear_msgid();
-  static const int kMsgidFieldNumber = 3;
+  static const int kMsgidFieldNumber = 4;
   const ::std::string& msgid() const;
   void set_msgid(const ::std::string& value);
   void set_msgid(const char* value);
@@ -131,15 +138,15 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_msgid();
   void set_allocated_msgid(::std::string* msgid);
 
-  // optional sint64 sequence = 4;
+  // optional sint64 sequence = 5;
   void clear_sequence();
-  static const int kSequenceFieldNumber = 4;
+  static const int kSequenceFieldNumber = 5;
   ::google::protobuf::int64 sequence() const;
   void set_sequence(::google::protobuf::int64 value);
 
-  // optional string content = 5;
+  // optional string content = 6;
   void clear_content();
-  static const int kContentFieldNumber = 5;
+  static const int kContentFieldNumber = 6;
   const ::std::string& content() const;
   void set_content(const ::std::string& value);
   void set_content(const char* value);
@@ -155,11 +162,12 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::google::protobuf::Arena* _arena_ptr_;
 
   bool _is_default_instance_;
+  int mflag_;
+  ::google::protobuf::int32 result_;
   ::google::protobuf::internal::ArenaStringPtr userid_;
   ::google::protobuf::internal::ArenaStringPtr msgid_;
   ::google::protobuf::int64 sequence_;
   ::google::protobuf::internal::ArenaStringPtr content_;
-  ::google::protobuf::int32 mflag_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_storage_5fmsg_2eproto_impl();
@@ -278,21 +286,35 @@ class PackedStoreMsg : public ::google::protobuf::MessageLite {
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // StorageMsg
 
-// optional int32 mflag = 1;
+// optional .pms.EStorageType mflag = 1;
 inline void StorageMsg::clear_mflag() {
   mflag_ = 0;
 }
-inline ::google::protobuf::int32 StorageMsg::mflag() const {
+inline ::pms::EStorageType StorageMsg::mflag() const {
   // @@protoc_insertion_point(field_get:pms.StorageMsg.mflag)
-  return mflag_;
+  return static_cast< ::pms::EStorageType >(mflag_);
 }
-inline void StorageMsg::set_mflag(::google::protobuf::int32 value) {
+inline void StorageMsg::set_mflag(::pms::EStorageType value) {
   
   mflag_ = value;
   // @@protoc_insertion_point(field_set:pms.StorageMsg.mflag)
 }
 
-// optional string userid = 2;
+// optional sint32 result = 2;
+inline void StorageMsg::clear_result() {
+  result_ = 0;
+}
+inline ::google::protobuf::int32 StorageMsg::result() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.result)
+  return result_;
+}
+inline void StorageMsg::set_result(::google::protobuf::int32 value) {
+  
+  result_ = value;
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.result)
+}
+
+// optional string userid = 3;
 inline void StorageMsg::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -336,7 +358,7 @@ inline void StorageMsg::set_allocated_userid(::std::string* userid) {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.userid)
 }
 
-// optional string msgid = 3;
+// optional string msgid = 4;
 inline void StorageMsg::clear_msgid() {
   msgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -380,7 +402,7 @@ inline void StorageMsg::set_allocated_msgid(::std::string* msgid) {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.msgid)
 }
 
-// optional sint64 sequence = 4;
+// optional sint64 sequence = 5;
 inline void StorageMsg::clear_sequence() {
   sequence_ = GOOGLE_LONGLONG(0);
 }
@@ -394,7 +416,7 @@ inline void StorageMsg::set_sequence(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:pms.StorageMsg.sequence)
 }
 
-// optional string content = 5;
+// optional string content = 6;
 inline void StorageMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

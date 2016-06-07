@@ -16,7 +16,7 @@
 #include "SRTRedisManager.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/sequence_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 #define REQUEST_DATA_SIZE (int(sizeof(SRTSequenceGenerator::RequestData)))
 

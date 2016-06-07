@@ -1,0 +1,10 @@
+syntax="proto3";
+package pms;
+
+option optimize_for = LITE_RUNTIME;
+
+// the type of storeage msg
+enum EStorageType{
+    TREAD       = 0;
+    TWRITE      = 1;
+}

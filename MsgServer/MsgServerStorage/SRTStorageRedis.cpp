@@ -9,6 +9,7 @@
 #include "SRTStorageRedis.h"
 #include "SRTRedisGroup.h"
 #include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
 #include "OSThread.h"
 
 static int g_push_event_counter = 0;
@@ -96,7 +97,7 @@ void SRTStorageRedis::OnPushEvent(const char*pData, int nSize)
     std::string str(pData, nSize);
     m_RecvStoreMsg.ParseFromString(str);
     // 1 write, 2 read
-    if (m_RecvStoreMsg.mflag() == 1)
+    if (m_RecvStoreMsg.mflag() == pms::EStorageType::TREAD)
     {
         //bool ok = CmdHSet(m_RecvStoreMsg.userid(), m_RecvStoreMsg.msgid(), m_RecvStoreMsg.content());
         char key[1024] = {'\0'};
@@ -115,7 +116,7 @@ void SRTStorageRedis::OnPushEvent(const char*pData, int nSize)
         {
             m_RedisGroup->PostData(m_RecvStoreMsg.SerializeAsString());
         }
-    } else if (m_RecvStoreMsg.mflag() == 2)
+    } else if (m_RecvStoreMsg.mflag() == pms::EStorageType::TWRITE)
     {
         std::string str("");
         char key[1024] = {'\0'};

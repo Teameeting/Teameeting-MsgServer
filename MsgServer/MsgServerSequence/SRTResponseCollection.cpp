@@ -11,7 +11,7 @@
 
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/sequence_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int clientNum, const std::string& userid, const std::string& msgid, long long seqn)
 : m_pRedisManager(manager)

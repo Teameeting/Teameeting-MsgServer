@@ -35,12 +35,10 @@ Task* SRTSequenceListener::GetSessionTask(int osSocket, struct sockaddr_in* addr
     //theTask will get an kReadEvent event
     theSocket->RequestEvent(EV_RE);
     theTask->SetTimer(120*1000);
-    theTask->InitConf();
 
     StrPtrLen* remoteStr = theSocket->GetRemoteAddrStr();
     //LI("SRTSequenceListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
 
-    SRTSequenceManager::Instance().AddTransferSession(theTask);
     this->RunNormal();
 
     return theTask;

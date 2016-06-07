@@ -22,7 +22,7 @@
 #include "LinkedList.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/sequence_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 class SRTTransferSession;
 class SRTResponseCollection;
@@ -73,7 +73,7 @@ private:
     List                                m_SeqnResp2Send;
     OSMutex                             m_Mutex2Send;
     int                                 m_PackedCounter;
-    std::vector<pms::PackedSeqnMsg*>    m_PackedSeqnMsgs;
+    std::vector<pms::PackedStoreMsg*>    m_PackedSeqnMsgs;
 };
 
 #endif /* defined(__MsgServerSequence__SRTRedisManager__) */

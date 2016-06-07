@@ -16,7 +16,7 @@
 
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/sequence_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 #define MAX_PROCESS_MSG_ONCE 200
 

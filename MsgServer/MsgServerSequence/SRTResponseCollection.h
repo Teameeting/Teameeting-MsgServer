@@ -18,7 +18,7 @@
 #include "sigslot.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/sequence_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 class SRTRedisManager;
 
@@ -53,7 +53,7 @@ public:
             if ((++counter) == cnumber)
             {
                 printf("seqn recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
-                pms::SequenceMsg msg;
+                pms::StorageMsg msg;
                 msg.set_userid(pcoll->GetUserid());
                 msg.set_msgid(msgid);
                 msg.set_sequence(*seqns.rbegin());

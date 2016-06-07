@@ -20,43 +20,76 @@
 #include "SRTRedisManager.h"
 
 #define DEF_PROTO 1
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/meet_msg.pb.h"
+#include "MsgServer/proto/meet_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 class SRTTransferSession
     : public RTTcpNoTimeout
     , public RTJSBuffer
+    , public RTTransfer
     , public RTObserverConnection{
 public:
     SRTTransferSession();
     virtual ~SRTTransferSession();
     void Init();
-    void InitConf();
     void Unit();
     bool Connect(const std::string addr, int port);
+    bool Connect();
     void Disconn();
+    bool RefreshTime();
+    void KeepAlive();
 
     void SendTransferData(const char* pData, int nLen);
     void SendTransferData(const std::string& data);
 
-    void RefreshTime();
+    void SetModuleId(std::string& moduleId) { m_moduleId = moduleId; }
+    void TestConnection();
 
-    // from RTTcpNoTimeout
+    std::string& GetTransferAddr() { return m_addr; }
+    int GetTransferPort() { return m_port; }
+    int GetConnectingStatus() { return m_connectingStatus; };
+public:
+    void EstablishConnection();
+
+// from RTTcpNoTimeout
 public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen) { printf("OnTickEvent\n");}
+    virtual void OnTickEvent(const char*pData, int nLen) {}
 
-// from RTObserverConnection
-    virtual void ConnectionDisconnected();
+// from RTTransfer
+public:
+    virtual void OnTransfer(const std::string& str);
+    virtual void OnMsgAck(pms::TransferMsg& tmsg);
+    virtual void OnTypeConn(const std::string& str);
+    virtual void OnTypeTrans(const std::string& str);
+    virtual void OnTypeQueue(const std::string& str);
+    virtual void OnTypeDispatch(const std::string& str);
+    virtual void OnTypePush(const std::string& str);
+    virtual void OnTypeTLogin(const std::string& str);
+    virtual void OnTypeTLogout(const std::string& str);
+
 protected:
-    virtual void OnRecvMessage(const char*message, int nLen);
-private:
-    long long       mRecvRequest;
-    List            m_listRequest;
-    OSMutex         m_mutexList;
-    SRTRedisManager                     m_RedisManager;
+   virtual void OnRecvMessage(const char*message, int nLen);
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 
+private:
+    std::string     m_transferSessId;
+    UInt64          m_lastUpdateTime;
+    std::string     m_moduleId;
+    std::string     m_addr;
+    int             m_port;
+    int             m_connectingStatus;
+
+    SRTRedisManager                     m_RedisManager;
 };
 
 #endif /* defined(__MsgServerStorage__SRTTransferSession__) */

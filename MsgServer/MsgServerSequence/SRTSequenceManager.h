@@ -28,7 +28,7 @@
 #include "MsgServer/proto/meet_msg_type.pb.h"
 #include "MsgServer/proto/sys_msg.pb.h"
 #include "MsgServer/proto/sys_msg_type.pb.h"
-#include "MsgServer/proto/sequence_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"

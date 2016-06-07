@@ -32,7 +32,7 @@ void SRTRedisManager::Init(SRTTransferSession* sess)
     ListZero(&m_SeqnResp2Send);
     for(int i=0;i<PACKED_MSG_POOL_SIZE;++i)
     {
-        pms::PackedSeqnMsg* psm = new pms::PackedSeqnMsg;
+        pms::PackedStoreMsg* psm = new pms::PackedStoreMsg;
         for(int j=0;j<PACKED_MSG_ONCE_NUM;++j)
         {
             psm->add_msgs();
@@ -168,7 +168,7 @@ void SRTRedisManager::OnAddAndCheckSeqn(const std::string& msg)
         this->Signal(kIdleEvent);
     }
 #else
-    m_PackedSeqnMsgs.
+
 #endif
 
 }
@@ -187,13 +187,13 @@ void SRTRedisManager::OnPushEvent(const char*pData, int nSize)
 void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
 {
      ListElement *elem = NULL;
-    pms::PackedSeqnMsg * pit = new pms::PackedSeqnMsg;
+    pms::PackedStoreMsg * pit = new pms::PackedStoreMsg;
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
         if((elem = m_SeqnResp2Send.first) != NULL)
         {
             std::string s((const char*)elem->content, elem->size);
-            pms::SequenceMsg* tit = pit->add_msgs();
+            pms::StorageMsg* tit = pit->add_msgs();
             tit->ParseFromString(s);
             {
                 OSMutexLocker locker(&m_Mutex2Send);

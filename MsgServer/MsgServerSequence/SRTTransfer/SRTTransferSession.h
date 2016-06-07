@@ -13,7 +13,7 @@
 #include <iostream>
 #include "SocketUtils.h"
 #include "TCPSocket.h"
-#include "RTTcp.h"
+#include "RTTcpNoTimeout.h"
 #include "RTJSBuffer.h"
 #include "RTTransfer.h"
 #include "RTObserverConnection.h"
@@ -25,9 +25,10 @@
 #include "MsgServer/proto/meet_msg_type.pb.h"
 #include "MsgServer/proto/sys_msg.pb.h"
 #include "MsgServer/proto/sys_msg_type.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 class SRTTransferSession
-    : public RTTcp
+    : public RTTcpNoTimeout
     , public RTJSBuffer
     , public RTTransfer
     , public RTObserverConnection{
@@ -35,17 +36,26 @@ public:
     SRTTransferSession();
     virtual ~SRTTransferSession();
     void Init();
-    void InitConf();
     void Unit();
     bool Connect(const std::string addr, int port);
+    bool Connect();
     void Disconn();
+    bool RefreshTime();
+    void KeepAlive();
 
     void SendTransferData(const char* pData, int nLen);
     void SendTransferData(const std::string& data);
 
-    void RefreshTime();
+    void SetModuleId(std::string& moduleId) { m_moduleId = moduleId; }
+    void TestConnection();
 
-    // from RTTcp
+    std::string& GetTransferAddr() { return m_addr; }
+    int GetTransferPort() { return m_port; }
+    int GetConnectingStatus() { return m_connectingStatus; };
+public:
+    void EstablishConnection();
+
+// from RTTcpNoTimeout
 public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
@@ -65,16 +75,20 @@ public:
     virtual void OnTypeTLogin(const std::string& str);
     virtual void OnTypeTLogout(const std::string& str);
 
-// from RTObserverConnection
-    virtual void ConnectionDisconnected();
 protected:
-    virtual void OnRecvMessage(const char*message, int nLen);
-private:
-    long long       mRecvRequest;
-    List            m_listRequest;
-    OSMutex         m_mutexList;
-    SRTSequenceGenerator                m_SequenceGenerator;
+   virtual void OnRecvMessage(const char*message, int nLen);
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 
+private:
+    std::string     m_transferSessId;
+    UInt64          m_lastUpdateTime;
+    std::string     m_moduleId;
+    std::string     m_addr;
+    int             m_port;
+    int             m_connectingStatus;
+    SRTSequenceGenerator                m_SequenceGenerator;
 };
 
 #endif /* defined(__MsgServerSequence__SRTTransferSession__) */

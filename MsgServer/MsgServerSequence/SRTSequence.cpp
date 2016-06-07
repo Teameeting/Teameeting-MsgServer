@@ -138,7 +138,7 @@ int	SRTSequence::Start(const char*pSequenceIp, unsigned short usSequencePort)
     SRTSequenceManager::Instance().PushRedisHosts(addr);
 
     std::string ssid;
-    //////LI("SRTSequence ip:%s, port:%u\n", pSequenceIp, usSequencePort);
+    LI("SRTSequence ip:%s, port:%u\n", pSequenceIp, usSequencePort);
     if (usSequencePort > 0) {
         m_pSequenceListener = new SRTSequenceListener();
         OS_Error err = m_pSequenceListener->Initialize(INADDR_ANY, usSequencePort);
@@ -148,7 +148,7 @@ int	SRTSequence::Start(const char*pSequenceIp, unsigned short usSequencePort)
             m_pSequenceListener = NULL;
             return -1;
         }
-        //////LI("Start Sequence service:(%d) ok...,socketFD:%d\n", usSequencePort, m_pSequenceListener->GetSocketFD());
+        LI("Start Sequence service:(%d) ok...,socketFD:%d\n", usSequencePort, m_pSequenceListener->GetSocketFD());
         m_pSequenceListener->RequestEvent(EV_RE);
     }
 	return 0;

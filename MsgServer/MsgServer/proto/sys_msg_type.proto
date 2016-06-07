@@ -12,6 +12,9 @@ enum ETransferModule{
     MP2P        = 3;
     MLIVE       = 4;
     MCALLCENTER = 5;
+    MLOGICAL    = 6;
+    MSEQUENCE   = 7;
+    MSTORAGE    = 8;
 }
 
 // the type of server transfering msg
