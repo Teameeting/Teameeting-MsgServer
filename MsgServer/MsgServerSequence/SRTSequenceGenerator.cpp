@@ -37,11 +37,6 @@ void SRTSequenceGenerator::Unin()
 // from RTEventLooper
 void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
 {
-
-}
-
-void SRTSequenceGenerator::OnWakeupEvent(const char*pData, int nSize)
-{
     if (!pData || nSize <= 0) {
         return;
     }
@@ -71,7 +66,6 @@ void SRTSequenceGenerator::OnWakeupEvent(const char*pData, int nSize)
         }
     }
 }
-
 
 void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
 {

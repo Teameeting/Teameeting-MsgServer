@@ -12,7 +12,6 @@
 #include "TimeoutTask.h"
 #include "RTUtils.hpp"
 #include "SRTStorageManager.h"
-#include "RTHiredis.h"
 #include "SRTStorageRedis.h"
 
 
@@ -35,7 +34,7 @@ void SRTStorage::PrintVersion()
 void SRTStorage::Initialize(int evTbSize)
 {
 	// Initialize utility classes
-    //////LI("Hello server...\n");
+    LI("Hello server...\n");
 	bool inDontFork = false;
 	OS::Initialize();//initialize
 	OSThread::Initialize();// initialize
@@ -96,7 +95,7 @@ void SRTStorage::DeInitialize()
 
 	Socket::Uninitialize();// uninitialize EventThread
 	OS::UnInitialize();
-    //////LI("ByeBye server...\n");
+    LI("ByeBye server...\n");
 }
 
 SRTStorage* SRTStorage::Inst()
@@ -133,12 +132,11 @@ int	SRTStorage::Start(const char*pStorageIp, unsigned short usStoragePort)
     char addr[24] = {0};
     sprintf(addr, "%s %d", ip1, port);
     SRTStorageManager::Instance().PushRedisHosts(addr);
-    memset(addr, 0, 24);
-    sprintf(addr, "%s %d", ip2, port);
-    SRTStorageManager::Instance().PushRedisHosts(addr);
+    //memset(addr, 0, 24);
+    //sprintf(addr, "%s %d", ip2, port);
+    //SRTStorageManager::Instance().PushRedisHosts(addr);
 
     std::string ssid;
-    //////LI("SRTStorage ip:%s, port:%u\n", pStorageIp, usStoragePort);
     if (usStoragePort > 0) {
         m_pStorageListener = new SRTStorageListener();
         OS_Error err = m_pStorageListener->Initialize(INADDR_ANY, usStoragePort);
@@ -148,7 +146,7 @@ int	SRTStorage::Start(const char*pStorageIp, unsigned short usStoragePort)
             m_pStorageListener = NULL;
             return -1;
         }
-        //////LI("Start Storage service:(%d) ok...,socketFD:%d\n", usStoragePort, m_pStorageListener->GetSocketFD());
+        LI("Start Storage service:(%d) ok...,socketFD:%d\n", usStoragePort, m_pStorageListener->GetSocketFD());
         m_pStorageListener->RequestEvent(EV_RE);
     }
 	return 0;
@@ -166,6 +164,4 @@ void SRTStorage::Stop()
     SRTStorageManager::Instance().SignalKill();
     SRTStorageManager::Instance().ClearAll();
     SRTStorageManager::Instance().UninManager();
-    //SRTStorageManager::Instance().ClearRedisServer();
-    //RTHiredisRemote::Instance().DisConn();
 }

@@ -81,7 +81,18 @@ then
 fi
 sleep 1
 
+####################    building libxredis  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/xredis
+LIB_NAME=libxredis.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
+sleep 1
 ####################    building libhttp  ##########################
+
 LIB_SRC_PATH=$LIB_BASE_PATH/libhttp
 LIB_NAME=libhttp.a
 build_lib $LIB_SRC_PATH $LIB_NAME

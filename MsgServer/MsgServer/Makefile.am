@@ -35,6 +35,7 @@ libMSCommon_a_SOURCES= \
 				$(top_srcdir)/MSCommon/config_parser.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTHiredis.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTTcp.cpp \
+				$(top_srcdir)/MSCommon/MSBase/RTTcpNoTimeout.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTDispatch.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTEventLooper.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTEventTimer.cpp \

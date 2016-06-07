@@ -103,9 +103,15 @@ class StorageMsg : public ::google::protobuf::MessageLite {
 
   // accessors -------------------------------------------------------
 
-  // optional string userid = 1;
+  // optional int32 mflag = 1;
+  void clear_mflag();
+  static const int kMflagFieldNumber = 1;
+  ::google::protobuf::int32 mflag() const;
+  void set_mflag(::google::protobuf::int32 value);
+
+  // optional string userid = 2;
   void clear_userid();
-  static const int kUseridFieldNumber = 1;
+  static const int kUseridFieldNumber = 2;
   const ::std::string& userid() const;
   void set_userid(const ::std::string& value);
   void set_userid(const char* value);
@@ -114,9 +120,9 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_userid();
   void set_allocated_userid(::std::string* userid);
 
-  // optional string msgid = 2;
+  // optional string msgid = 3;
   void clear_msgid();
-  static const int kMsgidFieldNumber = 2;
+  static const int kMsgidFieldNumber = 3;
   const ::std::string& msgid() const;
   void set_msgid(const ::std::string& value);
   void set_msgid(const char* value);
@@ -125,15 +131,15 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_msgid();
   void set_allocated_msgid(::std::string* msgid);
 
-  // optional sint64 sequence = 3;
+  // optional sint64 sequence = 4;
   void clear_sequence();
-  static const int kSequenceFieldNumber = 3;
+  static const int kSequenceFieldNumber = 4;
   ::google::protobuf::int64 sequence() const;
   void set_sequence(::google::protobuf::int64 value);
 
-  // optional string content = 4;
+  // optional string content = 5;
   void clear_content();
-  static const int kContentFieldNumber = 4;
+  static const int kContentFieldNumber = 5;
   const ::std::string& content() const;
   void set_content(const ::std::string& value);
   void set_content(const char* value);
@@ -153,6 +159,7 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr msgid_;
   ::google::protobuf::int64 sequence_;
   ::google::protobuf::internal::ArenaStringPtr content_;
+  ::google::protobuf::int32 mflag_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_storage_5fmsg_2eproto_impl();
@@ -271,7 +278,21 @@ class PackedStoreMsg : public ::google::protobuf::MessageLite {
 #if !PROTOBUF_INLINE_NOT_IN_HEADERS
 // StorageMsg
 
-// optional string userid = 1;
+// optional int32 mflag = 1;
+inline void StorageMsg::clear_mflag() {
+  mflag_ = 0;
+}
+inline ::google::protobuf::int32 StorageMsg::mflag() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.mflag)
+  return mflag_;
+}
+inline void StorageMsg::set_mflag(::google::protobuf::int32 value) {
+  
+  mflag_ = value;
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.mflag)
+}
+
+// optional string userid = 2;
 inline void StorageMsg::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -315,7 +336,7 @@ inline void StorageMsg::set_allocated_userid(::std::string* userid) {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.userid)
 }
 
-// optional string msgid = 2;
+// optional string msgid = 3;
 inline void StorageMsg::clear_msgid() {
   msgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -359,7 +380,7 @@ inline void StorageMsg::set_allocated_msgid(::std::string* msgid) {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.msgid)
 }
 
-// optional sint64 sequence = 3;
+// optional sint64 sequence = 4;
 inline void StorageMsg::clear_sequence() {
   sequence_ = GOOGLE_LONGLONG(0);
 }
@@ -373,7 +394,7 @@ inline void StorageMsg::set_sequence(::google::protobuf::int64 value) {
   // @@protoc_insertion_point(field_set:pms.StorageMsg.sequence)
 }
 
-// optional string content = 4;
+// optional string content = 5;
 inline void StorageMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

@@ -35,7 +35,7 @@ int main(int argc, const char * argv[]) {
 
     SeqnClient::Initialize(1024);
     SeqnClient* pSClient = SeqnClient::Inst();
-    int res = pSClient->Start(argv[1], "192.168.7.207", 6650);
+    int res = pSClient->Start(argv[1], "192.168.7.207", 6660);
     int test = 0;
     if (res != 0) {
         LI("SeqnClient start failed and goto exit, res:%d\n", res);

@@ -8,7 +8,11 @@ RTEventTimer::RTEventTimer(int timeout, ExecutorDelay executor)
 , mTimeout(timeout+1)
 , fTimeoutTask(NULL, (timeout+1) * 1000)
 , fTickTime(0)
+, mOutTime(-1)
 , mExecutorDelay(executor)
+, mExecutorDelay2(NULL)
+, mExecutor2Param1(NULL)
+, mExecutor2Param2(NULL)
 {
 	ListZero(&mListDelay);
 	fTimeoutTask.SetTask(this);
@@ -61,11 +65,14 @@ SInt64 RTEventTimer::Run()
                     if (mExecutorDelay) {
                         mExecutorDelay((const char*)elem->content, (int)elem->size);
                     }
+                    if (mExecutorDelay2) {
+                        mExecutorDelay2(mExecutor2Param1, mExecutor2Param2);
+                    }
                     ListRemoveHead(&mListDelay);
                 }
             }
 			events -= Task::kTimeoutEvent;
-            return -1;
+            return mOutTime;
 		}
 		else
 		{

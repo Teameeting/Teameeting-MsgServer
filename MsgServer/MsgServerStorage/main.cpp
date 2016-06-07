@@ -16,6 +16,12 @@
 #define _TEST_ 1
 #endif
 
+static void sighandler(int sig_no)
+{
+    printf("catch sighandler:%d\n", sig_no);
+     exit(0);
+}
+
 int main(int argc, const char * argv[]) {
     //////LI("Hello, Storage!!!\n");
     SRTStorage::PrintVersion();
@@ -46,21 +52,30 @@ int main(int argc, const char * argv[]) {
         L_Init(level, logpath.c_str());
 #endif
 
+#if 0
     L_Init(0, NULL);
+#else
+    L_Init(0, "./serverlog.log");
+#endif
     SRTStorage::Initialize(1024);
     SRTStorage* pStorage = SRTStorage::Inst();
     //////LI("server listen port:%u\n", RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon);
     //int res = pStorage->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
     //                  RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon
     //                  );
+    //signal(SIGUSR1, sighandler);
+    //signal(SIGUSR2, sighandler);
     int res = pStorage->Start("192.168.7.207", 6660);
     int test = 0;
     if (res != 0) {
         //////LI("SRTStorage start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 25) {
+#if 0
+    while (test++ < 60) {
+#else
     while (1) {
+#endif
         pStorage->DoTick();
         sleep(1);
         //break;

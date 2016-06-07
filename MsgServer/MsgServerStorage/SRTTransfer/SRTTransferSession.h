@@ -13,23 +13,17 @@
 #include <iostream>
 #include "SocketUtils.h"
 #include "TCPSocket.h"
-#include "RTTcp.h"
+#include "RTTcpNoTimeout.h"
 #include "RTJSBuffer.h"
 #include "RTTransfer.h"
 #include "RTObserverConnection.h"
-#include "SRTStorageGenerator.h"
+#include "SRTRedisManager.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
 
 class SRTTransferSession
-    : public RTTcp
+    : public RTTcpNoTimeout
     , public RTJSBuffer
-    , public RTTransfer
     , public RTObserverConnection{
 public:
     SRTTransferSession();
@@ -45,25 +39,13 @@ public:
 
     void RefreshTime();
 
-    // from RTTcp
+    // from RTTcpNoTimeout
 public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen) {}
-
-// from RTTransfer
-public:
-    virtual void OnTransfer(const std::string& str);
-    virtual void OnMsgAck(pms::TransferMsg& tmsg);
-    virtual void OnTypeConn(const std::string& str);
-    virtual void OnTypeTrans(const std::string& str);
-    virtual void OnTypeQueue(const std::string& str);
-    virtual void OnTypeDispatch(const std::string& str);
-    virtual void OnTypePush(const std::string& str);
-    virtual void OnTypeTLogin(const std::string& str);
-    virtual void OnTypeTLogout(const std::string& str);
+    virtual void OnTickEvent(const char*pData, int nLen) { printf("OnTickEvent\n");}
 
 // from RTObserverConnection
     virtual void ConnectionDisconnected();
@@ -73,7 +55,7 @@ private:
     long long       mRecvRequest;
     List            m_listRequest;
     OSMutex         m_mutexList;
-    SRTStorageGenerator                m_StorageGenerator;
+    SRTRedisManager                     m_RedisManager;
 
 };
 

@@ -179,12 +179,6 @@ void SRTRedisManager::OnPostEvent(const char*pData, int nSize)
 
 }
 
-void SRTRedisManager::OnWakeupEvent(const char*pData, int nSize)
-{
-
-}
-
-
 void SRTRedisManager::OnPushEvent(const char*pData, int nSize)
 {
 

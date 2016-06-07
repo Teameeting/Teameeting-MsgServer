@@ -14,7 +14,6 @@
 
 SRTTransferSession::SRTTransferSession()
 : RTJSBuffer()
-, RTTransfer()
 , mRecvRequest(0)
 {
     AddObserver(this);
@@ -23,8 +22,8 @@ SRTTransferSession::SRTTransferSession()
 SRTTransferSession::~SRTTransferSession()
 {
     printf("~SRTTransferSession was called\n");
-    DelObserver(this);
     Unit();
+    DelObserver(this);
 }
 
 void SRTTransferSession::Init()
@@ -42,20 +41,20 @@ void SRTTransferSession::Init()
     this->SetTimer(120*1000);
 
     ListZero(&m_listRequest);
-    m_StorageGenerator.Init(this);
+    m_RedisManager.Init(this);
 }
 
 void SRTTransferSession::InitConf()
 {
     ListZero(&m_listRequest);
-    m_StorageGenerator.Init(this);
+    m_RedisManager.Init(this);
 }
 
 void SRTTransferSession::Unit()
 {
-    m_StorageGenerator.Unin();
-    ListEmpty(&m_listRequest);
     Disconn();
+    m_RedisManager.Unin();
+    ListEmpty(&m_listRequest);
 }
 
 bool SRTTransferSession::Connect(const std::string addr, int port)
@@ -80,14 +79,13 @@ void SRTTransferSession::Disconn()
 
 void SRTTransferSession::RefreshTime()
 {
-    this->RTTcp::UpdateTimer();
-    LI("SRTTransferSession::RefreshTime.....\n");
+    this->RTTcpNoTimeout::UpdateTimer();
 }
 
 void SRTTransferSession::SendTransferData(const char* pData, int nLen)
 {
     SRTStorageManager::Instance().SendResponseCounter();
-    RTTcp::SendTransferData(pData, nLen);
+    RTTcpNoTimeout::SendTransferData(pData, nLen);
     GetSocket()->RequestEvent(EV_RE);
 }
 
@@ -96,7 +94,7 @@ void SRTTransferSession::SendTransferData(const std::string& data)
     SendTransferData(data.c_str(), data.length());
 }
 
-// from RTTcp
+// from RTTcpNoTimeout
 void SRTTransferSession::OnRecvData(const char*pData, int nLen)
 {
     if (!pData) {
@@ -108,71 +106,12 @@ void SRTTransferSession::OnRecvData(const char*pData, int nLen)
 void SRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
     SRTStorageManager::Instance().RecvRequestCounter();
-    //SInt64 curTime = OS::Milliseconds();
-    //LI("SRTTransferSession::OnRecvMessage recv request:%lld, time:%lld\n", mRecvRequest++, curTime);
-    m_StorageGenerator.WakeupData(message, nLen);
-}
-
-// from RTTransfer
-
-void SRTTransferSession::OnTransfer(const std::string& str)
-{
-    RTTcp::SendTransferData(str.c_str(), (int)str.length());
-}
-
-void SRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
-{
-#if DEF_PROTO
-    pms::TransferMsg ack_msg;
-    ack_msg.set_type(tmsg.type());
-    ack_msg.set_flag(pms::ETransferFlag::FACK);
-    ack_msg.set_priority(tmsg.priority());
-
-    const std::string s = ack_msg.SerializeAsString();
-    OnTransfer(s);
-#else
-    LE("not define DEF_PROTO\n");
-#endif
-}
-
-void SRTTransferSession::OnTypeConn(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
-}
-
-void SRTTransferSession::OnTypeTrans(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
-}
-
-void SRTTransferSession::OnTypeQueue(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
-}
-
-void SRTTransferSession::OnTypeDispatch(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
-}
-
-void SRTTransferSession::OnTypePush(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
-}
-
-void SRTTransferSession::OnTypeTLogin(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
-}
-
-void SRTTransferSession::OnTypeTLogout(const std::string& str)
-{
-    //LI("%s was called, but not implement\n", __FUNCTION__);
+    m_RedisManager.PushRedisRequest(message, nLen);
 }
 
 void SRTTransferSession::ConnectionDisconnected()
 {
-
+    printf("!!!!!!!!SRTTransferSession::ConnectionDisconnected!!!!!!!!!!\n");
 }
 
 ////////////////////////////////////////////////////////

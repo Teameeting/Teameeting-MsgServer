@@ -7,6 +7,7 @@
 #include "TimeoutTask.h"
 #include "OSMutex.h"
 #include "RTType.h"
+#include <string>
 
 class RTEventLooper
 	: public Task
@@ -21,12 +22,15 @@ public:
 
 	int PostData(const char*pData, int nSize);
 	int SendData(const void*pData, int nSize);
-	int WakeupData(const char*pData, int nSize);
 	int PushData(const char*pData, int nSize);
+
+	int PostData(const std::string& strData) { PostData(strData.c_str(), strData.length()); }
+	int SendData(const std::string& strData) { SendData(strData.c_str(), strData.length()); }
+	int PushData(const std::string& strData) { PushData(strData.c_str(), strData.length()); }
 
 	virtual void OnPostEvent(const char*pData, int nSize) = 0;
 	virtual void OnSendEvent(const void*pData, int nSize) = 0;
-	virtual void OnWakeupEvent(const char*pData, int nSize) = 0;
+	virtual void OnWakeupEvent(const void*pData, int nSize) = 0;
 	virtual void OnPushEvent(const char*pData, int nSize) = 0;
 	virtual void OnTickEvent(const void*pData, int nSize) = 0;
 

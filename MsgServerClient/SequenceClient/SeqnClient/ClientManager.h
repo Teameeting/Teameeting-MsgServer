@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
 #include <unordered_map>
 #include <utility>
 #include <list>
@@ -23,9 +24,7 @@
 
 #define DEF_PROTO 1
 #include "MsgServer/proto/sequence_msg.pb.h"
-
-#define HR_USERID       "hr_userid"
-#define HR_CONNECTORID  "hr_connectorid"
+#include "MsgServer/proto/storage_msg.pb.h"
 
 class ClientManager : public RTSingleton< ClientManager >{
     friend class RTSingleton< ClientManager >;
@@ -34,11 +33,11 @@ public:
     void InitClient(const char* pUserid, const char* pIp, unsigned int port);
     void UninClient();
     void RequestLoop();
-    void GenericMsg(const std::string& userid);
+    void GenericMsg(int type, const std::string& userid);
     int  GenericMsgId(std::string& strMsgId);
-    void DoPackage();
+    void DoPackage(int type);
     void ProcessRecvMessage(const char*data, int nLen);
-    void Keepalive();
+    void Keepalive(int type);
 
     bool SignalKill();
     bool ClearAll();
@@ -51,9 +50,9 @@ private:
     ClientSession*   mClientSession;
     std::string     mUserId;
     bool            mIsRun;
-    FILE*           pSendFile;
-    FILE*           pRecvFile;
-	std::list<pms::SequenceMsg*> m_wait2SndList;
+	std::ifstream   mIfs;
+	std::list<pms::SequenceMsg*> m_sequeWait2SndList;
+	std::list<pms::StorageMsg*> m_storeWait2SndList;
     long long       mSendCounter;
     long long       mRecvCounter;
 };

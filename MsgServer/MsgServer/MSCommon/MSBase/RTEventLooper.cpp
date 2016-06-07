@@ -54,22 +54,6 @@ int RTEventLooper::SendData(const void*pData, int nSize)
 	return nSize;
 }
 
-int RTEventLooper::WakeupData(const char*pData, int nSize)
-{
-    {
-        char* ptr = (char*)malloc(sizeof(char)*(nSize+1));
-        memcpy(ptr, pData, nSize);
-        ptr[nSize] = '\0';
-        {
-            OSMutexLocker locker(&mMutexWakeup);
-            ListAppend(&m_listWakeup, ptr, nSize);
-        }
-    }
-
-    this->Signal(kWakeupEvent);
-    return nSize;
-}
-
 int RTEventLooper::PushData(const char*pData, int nSize)
 {
     {
@@ -136,17 +120,7 @@ SInt64 RTEventLooper::Run()
 		}
 		else if(events&Task::kWakeupEvent)
 		{
-            ListElement *elem = NULL;
-            if((elem = m_listWakeup.first) != NULL)
-            {
-                OnWakeupEvent((const char*)elem->content, elem->size);
-                {
-                    OSMutexLocker locker(&mMutexWakeup);
-                    ListRemoveHead(&m_listWakeup);
-                }
-                if(NULL != m_listWakeup.first)
-                    this->Signal(kWakeupEvent);
-            }
+            OnWakeupEvent(NULL, 0);
 			events -= Task::kWakeupEvent;
 		}
 		else if(events&Task::kPushEvent)

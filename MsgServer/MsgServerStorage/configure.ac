@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT(MsgServerStorage, 1.0.1)
-AC_CONFIG_SRCDIR([SRTStorageGenerator.cpp])
+AC_CONFIG_SRCDIR([SRTStorageManager.cpp])
 AM_INIT_AUTOMAKE()
 AC_CONFIG_HEADERS([config.h])
 

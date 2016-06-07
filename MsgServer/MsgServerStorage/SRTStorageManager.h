@@ -19,7 +19,6 @@
 #include <algorithm>
 #include "RTType.h"
 #include "RTSingleton.h"
-#include "SRTStorageGenerator.h"
 #include "SRTStorageRedis.h"
 
 #define DEF_PROTO 1

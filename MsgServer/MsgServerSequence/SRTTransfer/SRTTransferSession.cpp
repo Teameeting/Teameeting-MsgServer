@@ -81,7 +81,6 @@ void SRTTransferSession::Disconn()
 void SRTTransferSession::RefreshTime()
 {
     this->RTTcp::UpdateTimer();
-    LI("SRTTransferSession::RefreshTime.....\n");
 }
 
 void SRTTransferSession::SendTransferData(const char* pData, int nLen)
@@ -108,9 +107,7 @@ void SRTTransferSession::OnRecvData(const char*pData, int nLen)
 void SRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
     SRTSequenceManager::Instance().RecvRequestCounter();
-    //SInt64 curTime = OS::Milliseconds();
-    //LI("SRTTransferSession::OnRecvMessage recv request:%lld, time:%lld\n", mRecvRequest++, curTime);
-    m_SequenceGenerator.WakeupData(message, nLen);
+    m_SequenceGenerator.PostData(message, nLen);
 }
 
 // from RTTransfer

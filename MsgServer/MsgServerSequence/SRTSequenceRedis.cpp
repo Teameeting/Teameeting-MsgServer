@@ -32,11 +32,6 @@ void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
 
 }
 
-void SRTSequenceRedis::OnWakeupEvent(const char*pData, int nSize)
-{
-
-}
-
 void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
 {
     if (!pData || nSize<=0) return;

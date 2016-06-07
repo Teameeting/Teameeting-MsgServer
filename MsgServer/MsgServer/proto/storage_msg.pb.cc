@@ -68,6 +68,7 @@ static void MergeFromFail(int line) {
 // ===================================================================
 
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int StorageMsg::kMflagFieldNumber;
 const int StorageMsg::kUseridFieldNumber;
 const int StorageMsg::kMsgidFieldNumber;
 const int StorageMsg::kSequenceFieldNumber;
@@ -96,6 +97,7 @@ void StorageMsg::SharedCtor() {
     _is_default_instance_ = false;
   ::google::protobuf::internal::GetEmptyString();
   _cached_size_ = 0;
+  mflag_ = 0;
   userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   msgid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   sequence_ = GOOGLE_LONGLONG(0);
@@ -145,6 +147,7 @@ StorageMsg* StorageMsg::New(::google::protobuf::Arena* arena) const {
 
 void StorageMsg::Clear() {
 // @@protoc_insertion_point(message_clear_start:pms.StorageMsg)
+  mflag_ = 0;
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   msgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   sequence_ = GOOGLE_LONGLONG(0);
@@ -161,9 +164,24 @@ bool StorageMsg::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string userid = 1;
+      // optional int32 mflag = 1;
       case 1: {
-        if (tag == 10) {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &mflag_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_userid;
+        break;
+      }
+
+      // optional string userid = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_userid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_userid()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -173,13 +191,13 @@ bool StorageMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(18)) goto parse_msgid;
+        if (input->ExpectTag(26)) goto parse_msgid;
         break;
       }
 
-      // optional string msgid = 2;
-      case 2: {
-        if (tag == 18) {
+      // optional string msgid = 3;
+      case 3: {
+        if (tag == 26) {
          parse_msgid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_msgid()));
@@ -190,13 +208,13 @@ bool StorageMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_sequence;
+        if (input->ExpectTag(32)) goto parse_sequence;
         break;
       }
 
-      // optional sint64 sequence = 3;
-      case 3: {
-        if (tag == 24) {
+      // optional sint64 sequence = 4;
+      case 4: {
+        if (tag == 32) {
          parse_sequence:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_SINT64>(
@@ -205,13 +223,13 @@ bool StorageMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_content;
+        if (input->ExpectTag(42)) goto parse_content;
         break;
       }
 
-      // optional string content = 4;
-      case 4: {
-        if (tag == 34) {
+      // optional string content = 5;
+      case 5: {
+        if (tag == 42) {
          parse_content:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_content()));
@@ -250,39 +268,44 @@ failure:
 void StorageMsg::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:pms.StorageMsg)
-  // optional string userid = 1;
+  // optional int32 mflag = 1;
+  if (this->mflag() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->mflag(), output);
+  }
+
+  // optional string userid = 2;
   if (this->userid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->userid().data(), this->userid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "pms.StorageMsg.userid");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->userid(), output);
+      2, this->userid(), output);
   }
 
-  // optional string msgid = 2;
+  // optional string msgid = 3;
   if (this->msgid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->msgid().data(), this->msgid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "pms.StorageMsg.msgid");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->msgid(), output);
+      3, this->msgid(), output);
   }
 
-  // optional sint64 sequence = 3;
+  // optional sint64 sequence = 4;
   if (this->sequence() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteSInt64(3, this->sequence(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteSInt64(4, this->sequence(), output);
   }
 
-  // optional string content = 4;
+  // optional string content = 5;
   if (this->content().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->content().data(), this->content().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "pms.StorageMsg.content");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->content(), output);
+      5, this->content(), output);
   }
 
   // @@protoc_insertion_point(serialize_end:pms.StorageMsg)
@@ -292,28 +315,35 @@ int StorageMsg::ByteSize() const {
 // @@protoc_insertion_point(message_byte_size_start:pms.StorageMsg)
   int total_size = 0;
 
-  // optional string userid = 1;
+  // optional int32 mflag = 1;
+  if (this->mflag() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->mflag());
+  }
+
+  // optional string userid = 2;
   if (this->userid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->userid());
   }
 
-  // optional string msgid = 2;
+  // optional string msgid = 3;
   if (this->msgid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->msgid());
   }
 
-  // optional sint64 sequence = 3;
+  // optional sint64 sequence = 4;
   if (this->sequence() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::SInt64Size(
         this->sequence());
   }
 
-  // optional string content = 4;
+  // optional string content = 5;
   if (this->content().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -334,6 +364,9 @@ void StorageMsg::CheckTypeAndMergeFrom(
 void StorageMsg::MergeFrom(const StorageMsg& from) {
 // @@protoc_insertion_point(class_specific_merge_from_start:pms.StorageMsg)
   if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.mflag() != 0) {
+    set_mflag(from.mflag());
+  }
   if (from.userid().size() > 0) {
 
     userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
@@ -368,6 +401,7 @@ void StorageMsg::Swap(StorageMsg* other) {
   InternalSwap(other);
 }
 void StorageMsg::InternalSwap(StorageMsg* other) {
+  std::swap(mflag_, other->mflag_);
   userid_.Swap(&other->userid_);
   msgid_.Swap(&other->msgid_);
   std::swap(sequence_, other->sequence_);
@@ -383,7 +417,21 @@ void StorageMsg::InternalSwap(StorageMsg* other) {
 #if PROTOBUF_INLINE_NOT_IN_HEADERS
 // StorageMsg
 
-// optional string userid = 1;
+// optional int32 mflag = 1;
+void StorageMsg::clear_mflag() {
+  mflag_ = 0;
+}
+ ::google::protobuf::int32 StorageMsg::mflag() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.mflag)
+  return mflag_;
+}
+ void StorageMsg::set_mflag(::google::protobuf::int32 value) {
+  
+  mflag_ = value;
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.mflag)
+}
+
+// optional string userid = 2;
 void StorageMsg::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -427,7 +475,7 @@ void StorageMsg::clear_userid() {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.userid)
 }
 
-// optional string msgid = 2;
+// optional string msgid = 3;
 void StorageMsg::clear_msgid() {
   msgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -471,7 +519,7 @@ void StorageMsg::clear_msgid() {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.msgid)
 }
 
-// optional sint64 sequence = 3;
+// optional sint64 sequence = 4;
 void StorageMsg::clear_sequence() {
   sequence_ = GOOGLE_LONGLONG(0);
 }
@@ -485,7 +533,7 @@ void StorageMsg::clear_sequence() {
   // @@protoc_insertion_point(field_set:pms.StorageMsg.sequence)
 }
 
-// optional string content = 4;
+// optional string content = 5;
 void StorageMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

@@ -18,6 +18,7 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/include \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/common/include \
@@ -27,14 +28,14 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 MsgServerStorage_SOURCES=$(top_srcdir)/SRTListener/SRTStorageListener.cpp \
 						   $(top_srcdir)/SRTTransfer/SRTTransferSession.cpp \
 						   $(top_srcdir)/SRTStorageRedis.cpp \
-						   $(top_srcdir)/SRTResponseCollection.cpp \
+						   $(top_srcdir)/SRTRedisGroup.cpp \
 						   $(top_srcdir)/SRTRedisManager.cpp \
-						   $(top_srcdir)/SRTStorageGenerator.cpp \
+						   $(top_srcdir)/SRTResponseSender.cpp \
 						   $(top_srcdir)/SRTStorageManager.cpp \
 						   $(top_srcdir)/SRTStorage.cpp \
 						   $(top_srcdir)/main.cpp
 
-MsgServerStorage_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
+MsgServerStorage_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lxredis -lhiredis -lhttp -lrtklog -lzkclient
 MsgServerStorage_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerStorage_LDADD+=-lpthread -lrt -ldl
 

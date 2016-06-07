@@ -37,7 +37,7 @@ public:
 public:
     virtual void OnPostEvent(const char*pData, int nSize);
     virtual void OnSendEvent(const void*pData, int nSize) {}
-    virtual void OnWakeupEvent(const char*pData, int nSize);
+    virtual void OnWakeupEvent(const void*pData, int nSize){}
     virtual void OnPushEvent(const char*pData, int nSize);
     virtual void OnTickEvent(const void*pData, int nSize) {}
 private:

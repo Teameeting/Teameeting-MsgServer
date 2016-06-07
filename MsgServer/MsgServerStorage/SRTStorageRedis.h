@@ -9,40 +9,41 @@
 #ifndef __MsgServerStorage__SRTStorageRedis__
 #define __MsgServerStorage__SRTStorageRedis__
 
-#include "RTHiredis.h"
 #include "RTEventLooper.h"
-#include "sigslot.h"
+#include "MsgServer/proto/storage_msg.pb.h"
+#include "OSMutex.h"
+#include <hiredis/hiredis.h>
+#include "xRedisClient.h"
 
-class SRTRedisManager;
+class SRTRedisGroup;
 
-class SRTStorageRedis : public RTHiredis
-                       , public RTEventLooper{
+class SRTStorageRedis : public RTEventLooper{
 
 public:
 
-    void Init(SRTRedisManager* manager, const std::string& ip, int port);
+    void Init(SRTRedisGroup* group, const std::string& ip, int port);
     void Unin();
 
     virtual void MakeAbstract() {}
     bool IsTheSameRedis(const std::string& host, int port);
-    void SetResult(long long seq) { m_Result = seq; }
-    long long GetResult() { return m_Result; }
-    bool IsConnected() { return this->CmdPing(); }
-
-    std::string GetHostForTest() { return this->GetHost(); }
-
-    sigslot::signal3<const std::string&, const std::string&, long long> RequestResponse;
 
 // from RTEventLooper
 public:
     virtual void OnPostEvent(const char*pData, int nSize);
     virtual void OnSendEvent(const void*pData, int nSize) {}
-    virtual void OnWakeupEvent(const char*pData, int nSize);
+    virtual void OnWakeupEvent(const void*pData, int nSize);
     virtual void OnPushEvent(const char*pData, int nSize);
-    virtual void OnTickEvent(const void*pData, int nSize) {}
+    virtual void OnTickEvent(const void*pData, int nSize);
 private:
-    long long   m_Result;
-    SRTRedisManager* m_RedisManager;
+    std::string                      m_Ip;
+    int                              m_Port;
+    SRTRedisGroup*                   m_RedisGroup;
+    pms::StorageMsg                  m_RecvStoreMsg;
+
+    xRedisClient                     m_xRedisClient;
+    RedisDBIdx*                      m_redisDBIdx;
+    RedisNode*                       m_RedisList;
+
 };
 
 
