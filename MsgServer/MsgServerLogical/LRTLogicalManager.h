@@ -34,8 +34,7 @@ public:
 
     bool InitManager()
     {
-        m_SessCount = 0;
-        m_LastOneUsed = m_TransferSessions.end();
+
     }
 
     bool UninManager()
@@ -56,26 +55,8 @@ public:
          }
     }
 
-    void AddTransferSession(LRTTransferSession* session)
-    {
-        m_TransferSessions.push_back(session);
-    }
-    void DelTransferSession(LRTTransferSession* session)
-    {
-        m_TransferSessions.erase(std::find(m_TransferSessions.begin(), m_TransferSessions.end(), session));
-    }
-    LRTTransferSession* PickupTransferSession()
-    {
-        if (m_LastOneUsed == m_TransferSessions.cend())
-        {
-            m_LastOneUsed = m_TransferSessions.cbegin();
-        }
-        return *m_LastOneUsed++;
-    }
-
     bool    SignalKill();
     bool    ClearAll();
-    void    SessionCounter() { ++m_SessCount; }
 protected:
     LRTLogicalManager()
     {
@@ -88,9 +69,7 @@ protected:
     }
 private:
     std::vector<std::string>            m_RedisHosts;
-    long long                           m_SessCount;
     std::list<LRTTransferSession*>      m_TransferSessions;
-    std::list<LRTTransferSession*>::const_iterator    m_LastOneUsed;
 };
 
 #endif /* defined(__MsgServerLogical__LRTLogicalManager__) */

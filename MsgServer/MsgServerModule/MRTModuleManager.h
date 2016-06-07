@@ -34,8 +34,7 @@ public:
 
     bool InitManager()
     {
-        m_SessCount = 0;
-        m_LastOneUsed = m_TransferSessions.end();
+
     }
 
     bool UninManager()
@@ -56,26 +55,8 @@ public:
          }
     }
 
-    void AddTransferSession(MRTTransferSession* session)
-    {
-        m_TransferSessions.push_back(session);
-    }
-    void DelTransferSession(MRTTransferSession* session)
-    {
-        m_TransferSessions.erase(std::find(m_TransferSessions.begin(), m_TransferSessions.end(), session));
-    }
-    MRTTransferSession* PickupTransferSession()
-    {
-        if (m_LastOneUsed == m_TransferSessions.cend())
-        {
-            m_LastOneUsed = m_TransferSessions.cbegin();
-        }
-        return *m_LastOneUsed++;
-    }
-
     bool    SignalKill();
     bool    ClearAll();
-    void    SessionCounter() { ++m_SessCount; }
 protected:
     MRTModuleManager()
     {
@@ -88,9 +69,7 @@ protected:
     }
 private:
     std::vector<std::string>            m_RedisHosts;
-    long long                           m_SessCount;
     std::list<MRTTransferSession*>      m_TransferSessions;
-    std::list<MRTTransferSession*>::const_iterator    m_LastOneUsed;
 };
 
 #endif /* defined(__MsgServerModule__MRTModuleManager__) */
