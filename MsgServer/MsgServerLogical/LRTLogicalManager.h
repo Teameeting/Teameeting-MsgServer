@@ -55,6 +55,11 @@ public:
          }
     }
 
+    bool InsertMsg(pms::StorageMsg*  storeMsg);
+    bool UpdateMsg(pms::StorageMsg** storeMsg);
+    bool DeleteMsg(pms::StorageMsg*  storeMsg);
+    bool SearchMsg(pms::StorageMsg*  storeMsg);
+
     bool    SignalKill();
     bool    ClearAll();
 protected:
@@ -67,9 +72,14 @@ protected:
     {
 
     }
+protected:
+    typedef std::unordered_map<std::string, pms::StorageMsg>    RequestMsgMap;
+    typedef RequestMsgMap::iterator                             RequestMsgMapIt;
 private:
     std::vector<std::string>            m_RedisHosts;
     std::list<LRTTransferSession*>      m_TransferSessions;
+    OSMutex                             m_mutexMsg;
+    RequestMsgMap                       m_requestMsgMap;
 };
 
 #endif /* defined(__MsgServerLogical__LRTLogicalManager__) */

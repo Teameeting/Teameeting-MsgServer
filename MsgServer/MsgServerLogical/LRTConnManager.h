@@ -95,6 +95,10 @@ public:
     bool    ConnectStorage();
     bool TryConnectStorage(const std::string ip, unsigned short port);
 
+    void PushSeqnMsg(const std::string& smsg);
+    void PushStoreReadMsg(const std::string& srmsg);
+    void PushStoreWriteMsg(const std::string& swmsg);
+
     std::list<std::string>* GetSequenceAddrList() { return &m_sequenceAddrList; }
     std::list<std::string>* GetStorageAddrList() { return &m_storageAddrList; }
 
@@ -128,6 +132,9 @@ private:
     LRTConnDispatcher*        m_pConnDispatcher;
     UserConnectorMaps         m_userConnectors;
     ConnectingSessList        m_connectingSessList;
+    LRTTransferSession*       m_sequenceSession;
+    LRTTransferSession*       m_storageWriteSession;
+    LRTTransferSession*       m_storageReadSession;
 };
 
 #endif /* defined(__MsgServerLogical__LRTConnManager__) */

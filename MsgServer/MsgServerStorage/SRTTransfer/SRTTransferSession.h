@@ -36,6 +36,7 @@ public:
     SRTTransferSession();
     virtual ~SRTTransferSession();
     void Init();
+    void InitConf();
     void Unit();
     bool Connect(const std::string addr, int port);
     bool Connect();

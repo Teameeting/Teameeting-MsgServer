@@ -65,7 +65,7 @@ void ClientSession::Disconn()
 
 void ClientSession::SendTransferData(const char* pData, int nLen)
 {
-    //LI("ClientSession::SendTransferData nLen:%d, recvResponse:%lld\n", nLen, mSendRequest++);
+    LI("ClientSession::SendTransferData nLen:%d, sendRequest:%lld\n", nLen, mSendRequest++);
     RTTcp::SendTransferData(pData, nLen);
     GetSocket()->RequestEvent(EV_RE);
 }

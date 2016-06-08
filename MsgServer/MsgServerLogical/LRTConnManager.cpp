@@ -129,7 +129,7 @@ bool LRTConnManager::ConnectStorage()
         sscanf(s.c_str(), "%s %u", ip, &port);
         printf("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
-            DoConnectSequence(ip, port);
+            DoConnectStorage(ip, port);
         }
     }
     return true;
@@ -137,52 +137,64 @@ bool LRTConnManager::ConnectStorage()
 
 bool LRTConnManager::DoConnectSequence(const std::string ip, unsigned short port)
 {
-    LRTTransferSession* sequenceSession = new LRTTransferSession();
-    sequenceSession->Init();
+    m_sequenceSession = new LRTTransferSession();
+    m_sequenceSession->Init();
     // conn to connector
-    while (!sequenceSession->Connect(ip, port)) {
+    while (!m_sequenceSession->Connect(ip, port)) {
         LI("connecting to sequence server %s:%u waiting...\n", ip.c_str(), port);
         usleep(100*1000);
     }
-    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, sequenceSession->GetSocket()->GetSocketFD());
-    sequenceSession->EstablishConnection();
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_sequenceSession->GetSocket()->GetSocketFD());
+    m_sequenceSession->EstablishConnection();
     return true;
 }
 
 bool LRTConnManager::DoConnectStorage(const std::string ip, unsigned short port)
 {
-    LRTTransferSession* storageSession = new LRTTransferSession();
-    storageSession->Init();
+    m_storageWriteSession = new LRTTransferSession();
+    m_storageWriteSession->Init();
     // conn to connector
-    while (!storageSession->Connect(ip, port)) {
+    while (!m_storageWriteSession->Connect(ip, port)) {
         LI("connecting to sequence server %s:%u waiting...\n", ip.c_str(), port);
         usleep(100*1000);
     }
-    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, storageSession->GetSocket()->GetSocketFD());
-    storageSession->EstablishConnection();
+    LI("%s Storage Write port:%u, socketFD:%d\n", __FUNCTION__, port, m_storageWriteSession->GetSocket()->GetSocketFD());
+    m_storageWriteSession->EstablishConnection();
+
+    m_storageReadSession = new LRTTransferSession();
+    m_storageReadSession->Init();
+    // conn to connector
+    while (!m_storageReadSession->Connect(ip, port)) {
+        LI("connecting to sequence server %s:%u waiting...\n", ip.c_str(), port);
+        usleep(100*1000);
+    }
+    LI("%s Storage Read port:%u, socketFD:%d\n", __FUNCTION__, port, m_storageReadSession->GetSocket()->GetSocketFD());
+    m_storageReadSession->EstablishConnection();
     return true;
 }
 
 bool LRTConnManager::TryConnectSequence(const std::string ip, unsigned short port)
 {
     LI("MRTConnManager::TryConneectSequence ip:%s, port:%u\n", ip.c_str(), port);
-    LRTTransferSession* sequenceSession = new LRTTransferSession();
-    sequenceSession->Init();
+    //TODO:
+    //check m_sequenceSession
+    m_sequenceSession = new LRTTransferSession();
+    m_sequenceSession->Init();
     // conn to connector
 
     bool ok = false;
     int times = 0;
     do{
-        ok = sequenceSession->Connect(ip, port);
+        ok = m_sequenceSession->Connect(ip, port);
         LI("try %d times to connect sequence server %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
 
     if (ok) {
-        sequenceSession->EstablishConnection();
+        m_sequenceSession->EstablishConnection();
         return true;
     } else {
-        m_connectingSessList.push_back(sequenceSession);
+        m_connectingSessList.push_back(m_sequenceSession);
         if (m_pConnDispatcher)
             m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
@@ -192,27 +204,67 @@ bool LRTConnManager::TryConnectSequence(const std::string ip, unsigned short por
 bool LRTConnManager::TryConnectStorage(const std::string ip, unsigned short port)
 {
     LI("MRTConnManager::TryConneectStorage ip:%s, port:%u\n", ip.c_str(), port);
-    LRTTransferSession* storageSession = new LRTTransferSession();
-    storageSession->Init();
+    //TODO:
+    //check m_storageReadSession m_storageWriteSession
+    m_storageWriteSession = new LRTTransferSession();
+    m_storageWriteSession->Init();
     // conn to connector
 
     bool ok = false;
     int times = 0;
     do{
-        ok = storageSession->Connect(ip, port);
+        ok = m_storageWriteSession->Connect(ip, port);
         LI("try %d times to connect storage server %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
 
     if (ok) {
-        storageSession->EstablishConnection();
+        m_storageWriteSession->EstablishConnection();
         return true;
     } else {
-        m_connectingSessList.push_back(storageSession);
+        m_connectingSessList.push_back(m_storageWriteSession);
         if (m_pConnDispatcher)
             m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
     }
+
+    m_storageReadSession = new LRTTransferSession();
+    m_storageReadSession->Init();
+    // conn to connector
+
+    do{
+        ok = m_storageReadSession->Connect(ip, port);
+        LI("try %d times to connect storage server %s:%u, waiting...\n", times, ip.c_str(), port);
+        usleep(1000*1000);
+    }while(!ok && ++times < 5);
+
+    if (ok) {
+        m_storageReadSession->EstablishConnection();
+        return true;
+    } else {
+        m_connectingSessList.push_back(m_storageReadSession);
+        if (m_pConnDispatcher)
+            m_pConnDispatcher->Signal(Task::kIdleEvent);
+        return false;
+    }
+}
+
+void LRTConnManager::PushSeqnMsg(const std::string& smsg)
+{
+    if (m_sequenceSession && m_sequenceSession->IsLiveSession())
+        m_sequenceSession->SendTransferData(smsg);
+}
+
+void LRTConnManager::PushStoreReadMsg(const std::string& srmsg)
+{
+    if (m_storageReadSession && m_storageReadSession->IsLiveSession())
+        m_storageReadSession->SendTransferData(srmsg);
+}
+
+void LRTConnManager::PushStoreWriteMsg(const std::string& swmsg)
+{
+    if (m_storageWriteSession && m_storageWriteSession->IsLiveSession())
+        m_storageWriteSession->SendTransferData(swmsg);
 }
 
 void LRTConnManager::RefreshConnection()

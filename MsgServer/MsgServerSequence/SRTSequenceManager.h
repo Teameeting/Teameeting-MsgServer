@@ -50,7 +50,7 @@ public:
 
     bool InitManager()
     {
-        m_LastOneUsed = m_TransferSessions.end();
+
     }
 
     bool UninManager()
@@ -97,23 +97,6 @@ public:
          }
     }
 
-    void AddTransferSession(SRTTransferSession* session)
-    {
-        m_TransferSessions.push_back(session);
-    }
-    void DelTransferSession(SRTTransferSession* session)
-    {
-        m_TransferSessions.erase(std::find(m_TransferSessions.begin(), m_TransferSessions.end(), session));
-    }
-    SRTTransferSession* PickupTransferSession()
-    {
-        if (m_LastOneUsed == m_TransferSessions.cend())
-        {
-            m_LastOneUsed = m_TransferSessions.cbegin();
-        }
-        return *m_LastOneUsed++;
-    }
-
     bool    SignalKill();
     bool    ClearAll();
 protected:
@@ -130,7 +113,6 @@ private:
     std::vector<std::string>            m_RedisHosts;
     std::vector<SRTSequenceRedis*>      m_RedisGroups;
     std::list<SRTTransferSession*>      m_TransferSessions;
-    std::list<SRTTransferSession*>::const_iterator    m_LastOneUsed;
 };
 
 #endif /* defined(__MsgServerSequence__SRTSequenceManager__) */

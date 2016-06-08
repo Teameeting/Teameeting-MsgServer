@@ -132,9 +132,6 @@ int	SRTStorage::Start(const char*pStorageIp, unsigned short usStoragePort)
     char addr[24] = {0};
     sprintf(addr, "%s %d", ip1, port);
     SRTStorageManager::Instance().PushRedisHosts(addr);
-    //memset(addr, 0, 24);
-    //sprintf(addr, "%s %d", ip2, port);
-    //SRTStorageManager::Instance().PushRedisHosts(addr);
 
     std::string ssid;
     if (usStoragePort > 0) {

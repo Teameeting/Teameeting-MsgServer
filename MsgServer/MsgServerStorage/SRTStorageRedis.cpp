@@ -97,33 +97,36 @@ void SRTStorageRedis::OnPushEvent(const char*pData, int nSize)
     std::string str(pData, nSize);
     m_RecvStoreMsg.ParseFromString(str);
     // 1 write, 2 read
-    if (m_RecvStoreMsg.mflag() == pms::EStorageType::TREAD)
+    printf("SRTStorageRedis::OnPushEvent msg flag:%d\n", m_RecvStoreMsg.mflag());
+    if (m_RecvStoreMsg.mflag() == pms::EStorageType::TWRITE)
     {
-        //bool ok = CmdHSet(m_RecvStoreMsg.userid(), m_RecvStoreMsg.msgid(), m_RecvStoreMsg.content());
         char key[1024] = {'\0'};
         sprintf(key, "%s:%s", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.msgid().c_str());
         m_redisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
         bool ok = m_xRedisClient.set(*m_redisDBIdx, key, m_RecvStoreMsg.content().c_str());
+        printf("SRTStorageRedis::OnPushEvent ok:%d, key:%s\n", ok, key);
         {
             OSMutexLocker locker(&g_push_event_mutex);
             char num[8] = {0};
-            //printf("SRTStorageRedis::OnPushEvent g_push_event_counter:%d\n\n", ++g_push_event_counter);
+            //printf("SRTStorageRedis::OnPushEvent key:%s, g_push_event_counter:%d\n\n", key, ++g_push_event_counter);
             sprintf(num, "%d", ++g_push_event_counter);
+            m_RecvStoreMsg.set_result(20);
             m_RecvStoreMsg.mutable_content()->append(num);
         }
         if (m_RedisGroup)
         {
             m_RedisGroup->PostData(m_RecvStoreMsg.SerializeAsString());
         }
-    } else if (m_RecvStoreMsg.mflag() == pms::EStorageType::TWRITE)
+    } else if (m_RecvStoreMsg.mflag() == pms::EStorageType::TREAD)
     {
         std::string str("");
         char key[1024] = {'\0'};
         sprintf(key, "%s:%s", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.msgid().c_str());
         m_redisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
-        bool ok = m_xRedisClient.set(*m_redisDBIdx, key, m_RecvStoreMsg.content().c_str());
+        bool ok = m_xRedisClient.get(*m_redisDBIdx, key, str);
+        m_RecvStoreMsg.set_result(30);
         *m_RecvStoreMsg.mutable_content() = str;
         if (m_RedisGroup)
         {

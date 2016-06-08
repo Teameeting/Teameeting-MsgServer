@@ -51,6 +51,11 @@ void SRTTransferSession::Init()
     m_SequenceGenerator.Init(this);
 }
 
+void SRTTransferSession::InitConf()
+{
+    m_SequenceGenerator.Init(this);
+}
+
 void SRTTransferSession::Unit()
 {
     m_SequenceGenerator.Unin();

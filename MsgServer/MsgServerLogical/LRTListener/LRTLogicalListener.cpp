@@ -39,6 +39,7 @@ Task* LRTLogicalListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
     StrPtrLen* remoteStr = theSocket->GetRemoteAddrStr();
     //LI("LRTLogicalListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
 
+    theTask->InitConf();
     this->RunNormal();
 
     return theTask;

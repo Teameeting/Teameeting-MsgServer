@@ -23,6 +23,9 @@ enum EModuleType{
     TP2P        = 3;
     TLIVE       = 4;
     TCALLCENTER = 5;
+    TLOGICAL    = 6;
+    TSEQUENCE   = 7;
+    TSTORAGE    = 8;
 }
 
 // this is for request

@@ -125,17 +125,6 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
 	Assert(pLogicalIp != NULL && strlen(pLogicalIp)>0);
     LRTLogicalManager::Instance().InitManager();
 
-    char *ip1 = "192.168.7.213";
-    char *ip2 = "192.168.7.225";
-    int port = 6379;
-
-    char addr[24] = {0};
-    sprintf(addr, "%s %d", ip1, port);
-    LRTLogicalManager::Instance().PushRedisHosts(addr);
-    //memset(addr, 0, 24);
-    //sprintf(addr, "%s %d", ip2, port);
-    //LRTLogicalManager::Instance().PushRedisHosts(addr);
-
 	if(usSequencePort > 0)
 	{
         char addr[24] = {0};
@@ -147,6 +136,7 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
             return -1;
         }
 	}
+    printf("SequenceServer should already be connected!!!\n\n");
 
     if(usStoragePort > 0)
 	{
@@ -159,6 +149,7 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
             return -1;
         }
 	}
+    printf("StorageServer should already be connected!!!\n\n");
 
     std::string ssid;
     if (usLogicalPort > 0) {

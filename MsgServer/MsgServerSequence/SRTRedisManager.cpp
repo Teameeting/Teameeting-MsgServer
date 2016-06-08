@@ -49,7 +49,7 @@ void SRTRedisManager::Init(SRTTransferSession* sess)
         char ip[16] = {0};
         int port = 0;
         sscanf(s.c_str(), "%s %d", ip, &port);
-        printf("Generator Init ip:%s, port:%d\n", ip, port);
+        printf("SequenceGenerator Redis Init ip:%s, port:%d\n", ip, port);
         RedisGroup* redisGroup = new RedisGroup;
         redisGroup->ip = ip;
         redisGroup->port = port;
@@ -194,6 +194,7 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
         {
             std::string s((const char*)elem->content, elem->size);
             pms::StorageMsg* tit = pit->add_msgs();
+            printf("SRTRedisManager::OnTickEvent result:%d\n", tit->result());
             tit->ParseFromString(s);
             {
                 OSMutexLocker locker(&m_Mutex2Send);
@@ -201,8 +202,13 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
             }
         }
     }
-    std::string ss = pit->SerializeAsString();
-    SRTSequenceManager::Instance().PickupTransferSession()->SendTransferData(ss.c_str(), (int)ss.length());
+    pms::TransferMsg tmsg;
+    tmsg.set_type(pms::ETransferType::TQUEUE);
+    tmsg.set_flag(pms::ETransferFlag::FNOACK);
+    tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+    tmsg.set_content(pit->SerializeAsString());
+    if (m_Session && m_Session->IsLiveSession())
+        m_Session->SendTransferData(tmsg.SerializeAsString());
     delete pit;
     pit = nullptr;
 }

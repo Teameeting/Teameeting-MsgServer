@@ -171,7 +171,6 @@ SInt64 RTTcpNoTimeout::Run()
 				{
                     {
                         OSMutexLocker locker(&mMutexSend);
-                        printf("RTTcpNoTimeout::Run kWriteEvent m_dequeSend.size:%d\n", m_dequeSend.size());
                         m_dequeSend.pop_front();
                     }
 					if(m_dequeSend.size()>0)

@@ -36,13 +36,14 @@ void protobuf_ShutdownFile_storage_5fmsg_5ftype_2eproto();
 
 
 enum EStorageType {
-  TREAD = 0,
-  TWRITE = 1,
+  TINVALID = 0,
+  TREAD = 1,
+  TWRITE = 2,
   EStorageType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EStorageType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EStorageType_IsValid(int value);
-const EStorageType EStorageType_MIN = TREAD;
+const EStorageType EStorageType_MIN = TINVALID;
 const EStorageType EStorageType_MAX = TWRITE;
 const int EStorageType_ARRAYSIZE = EStorageType_MAX + 1;
 

@@ -43,7 +43,7 @@ void SRTResponseSender::Unin()
 
 void SRTResponseSender::PushResponseData(const char*pData, int nSize)
 {
-    printf("SRTResponseSender::PushResponseData g_push_response_counter:%d, QSendMsg.size:%d\n",  ++g_push_response_counter, m_QSendMsg.size());
+    //printf("SRTResponseSender::PushResponseData g_push_response_counter:%d, QSendMsg.size:%d\n",  ++g_push_response_counter, m_QSendMsg.size());
     {
         OSMutexLocker locker(&m_Mutex2Send);
         std::string str(pData, nSize);
@@ -89,7 +89,14 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
     if (hasData)
     {
         if (m_TransferSession && m_TransferSession->IsLiveSession())
-            m_TransferSession->SendTransferData(m_SendPackedMsg.SerializeAsString());
+        {
+            pms::TransferMsg tmsg;
+            tmsg.set_type(pms::ETransferType::TPUSH);
+            tmsg.set_flag(pms::ETransferFlag::FNOACK);
+            tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+            tmsg.set_content(m_SendPackedMsg.SerializeAsString());
+            m_TransferSession->SendTransferData(tmsg.SerializeAsString());
+        }
         for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
         {
             m_SendPackedMsg.mutable_msgs(i)->Clear();

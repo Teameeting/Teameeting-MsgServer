@@ -24,6 +24,10 @@
 
 #define DEF_PROTO 1
 #include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "MsgServer/proto/common_msg.pb.h"
 
 class ClientManager : public RTSingleton< ClientManager >{
     friend class RTSingleton< ClientManager >;
@@ -52,6 +56,8 @@ private:
 	std::ifstream   mIfs;
 	std::list<pms::StorageMsg*> m_sequeWait2SndList;
 	std::list<pms::StorageMsg*> m_storeWait2SndList;
+	std::list<pms::StorageMsg*> m_logicW2SndList;
+	std::list<pms::StorageMsg*> m_logicR2SndList;
     long long       mSendCounter;
     long long       mRecvCounter;
 };

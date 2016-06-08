@@ -11,6 +11,9 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <string>
+#include <unordered_map>
+#include <utility>
 #include "SocketUtils.h"
 #include "TCPSocket.h"
 #include "RTTcpNoTimeout.h"
@@ -25,6 +28,7 @@
 #include "MsgServer/proto/sys_msg.pb.h"
 #include "MsgServer/proto/sys_msg_type.pb.h"
 #include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
 
 class LRTTransferSession
     : public RTTcpNoTimeout
@@ -35,6 +39,7 @@ public:
     LRTTransferSession();
     virtual ~LRTTransferSession();
     void Init();
+    void InitConf();
     void Unit();
     bool Connect(const std::string addr, int port);
     bool Connect();
@@ -73,6 +78,7 @@ public:
     virtual void OnTypePush(const std::string& str);
     virtual void OnTypeTLogin(const std::string& str);
     virtual void OnTypeTLogout(const std::string& str);
+
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);

@@ -47,6 +47,10 @@ void LRTTransferSession::Init()
 
     socket->SetTask(this);
     this->SetTimer(120*1000);
+}
+
+void LRTTransferSession::InitConf()
+{
 
 }
 
@@ -168,11 +172,13 @@ void LRTTransferSession::OnRecvData(const char*pData, int nLen)
     if (!pData) {
         return;
     }
+    LI("LRTTransferSession::OnRecvData was called\n");
     RTJSBuffer::RecvData(pData, nLen);
 }
 
 void LRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
+    LI("LRTTransferSession::OnRecvMessage was called\n");
     RTTransfer::DoProcessData(message, nLen);
 }
 
@@ -192,7 +198,7 @@ void LRTTransferSession::OnMsgAck(pms::TransferMsg& tmsg)
     ack_msg.set_flag(pms::ETransferFlag::FACK);
     ack_msg.set_priority(tmsg.priority());
 
-    OnTransfer(ack_msg.SerializeAsString());
+    //OnTransfer(ack_msg.SerializeAsString());
 #else
     LE("not define DEF_PROTO\n");
 #endif
@@ -303,13 +309,48 @@ void LRTTransferSession::OnTypeConn(const std::string& str)
 
 void LRTTransferSession::OnTypeTrans(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    LI("%s was called, str.length:%d\n", __FUNCTION__, str.length());
     LRTLogicalManager::Instance().RecvRequestCounter();
+    pms::PackedStoreMsg store;
+    store.ParseFromString(str);
+    for(int i=0;i<store.msgs_size();++i)
+    {
+        if (store.msgs(i).userid().length()==0)continue;
+         printf("LRTTransferSession::OnTypeTrans msgid:%s, mflag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mflag());
+         LRTLogicalManager::Instance().InsertMsg(store.mutable_msgs(i));
+    }
+    pms::TransferMsg tmsg;
+    tmsg.set_type(pms::ETransferType::TTRANS);
+    tmsg.set_flag(pms::ETransferFlag::FNOACK);
+    tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+    tmsg.set_content(str);
+    LRTConnManager::Instance().PushSeqnMsg(tmsg.SerializeAsString());
 }
 
 void LRTTransferSession::OnTypeQueue(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    LI("%s was called, str:%d\n", __FUNCTION__, str.length());
+    pms::PackedStoreMsg store;
+    store.ParseFromString(str);
+    for(int i=0;i<store.msgs_size();++i)
+    {
+        if (store.msgs(i).userid().length()==0)continue;
+         printf("LRTTransferSession::OnTypeQueue 1 msgid:%s, sequence:%lld, mflag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).mflag());
+
+         pms::StorageMsg* pstore = store.mutable_msgs(i);
+         LRTLogicalManager::Instance().UpdateMsg(&pstore);
+    }
+
+    for(int i=0;i<store.msgs_size();++i)
+    {
+         printf("LRTTransferSession::OnTypeQueue 2 msgid:%s, sequence:%lld, mflag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).mflag());
+    }
+    pms::TransferMsg tmsg;
+    tmsg.set_type(pms::ETransferType::TTRANS);
+    tmsg.set_flag(pms::ETransferFlag::FNOACK);
+    tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+    tmsg.set_content(store.SerializeAsString());
+    LRTConnManager::Instance().PushStoreWriteMsg(tmsg.SerializeAsString());
 }
 
 void LRTTransferSession::OnTypeDispatch(const std::string& str)
@@ -319,7 +360,24 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
 
 void LRTTransferSession::OnTypePush(const std::string& str)
 {
-    LI("%s was called\n", __FUNCTION__);
+    pms::PackedStoreMsg store;
+    store.ParseFromString(str);
+    LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
+    for(int i=0;i<store.msgs_size();++i)
+    {
+        if (store.msgs(i).userid().length()==0)continue;
+        printf("LRTTransferSession::OnTypePush msgid:%s, sequence:%lld, result:%d, mflag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mflag());
+
+        LRTLogicalManager::Instance().DeleteMsg(store.mutable_msgs(i));
+    }
+
+    pms::TransferMsg tmsg;
+    tmsg.set_type(pms::ETransferType::TDISPATCH);
+    tmsg.set_flag(pms::ETransferFlag::FNOACK);
+    tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+    tmsg.set_content(str);
+    printf("LRTTransferSession::OnTypePush SendTransferData ...\n");
+    this->SendTransferData(tmsg.SerializeAsString());
 }
 
 void LRTTransferSession::OnTypeTLogin(const std::string& str)

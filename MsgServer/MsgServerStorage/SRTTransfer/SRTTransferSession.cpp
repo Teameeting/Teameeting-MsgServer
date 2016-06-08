@@ -51,6 +51,10 @@ void SRTTransferSession::Init()
     m_RedisManager.Init(this);
 }
 
+void SRTTransferSession::InitConf()
+{
+    m_RedisManager.Init(this);
+}
 void SRTTransferSession::Unit()
 {
     m_RedisManager.Unin();
