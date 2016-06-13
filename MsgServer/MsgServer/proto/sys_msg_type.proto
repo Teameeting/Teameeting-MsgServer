@@ -19,13 +19,15 @@ enum ETransferModule{
 
 // the type of server transfering msg
 enum ETransferType{
-    TCONN       = 0;
-    TTRANS      = 1;
-    TQUEUE      = 2;
-    TDISPATCH   = 3;
-    TPUSH       = 4;
-    TLOGIN      = 5;
-    TLOGOUT     = 6;
+    TCONN         = 0;
+    TTRANS        = 1;
+    TQUEUE        = 2;
+    TDISPATCH     = 3;
+    TPUSH         = 4;
+    TLOGIN        = 5;
+    TLOGOUT       = 6;
+    TREQUEST      = 7;
+    TRESPONSE     = 8;
 }
 
 // the priority of transfering msg

@@ -7,11 +7,11 @@ option optimize_for = LITE_RUNTIME;
 
 // this is the msg for store msg to redis
 message StorageMsg{
-    EStorageType    mflag       = 1;
-    sint32          result      = 2;
-    string          userid      = 3; // userid
-    string          msgid       = 4; // message id
-    sint64          sequence    = 5; // sequence
+    EStorageType    mflag       = 1; // read or write redis
+    sint32          result      = 2; // the redis opt result
+    sint64          sequence    = 3; // sequence
+    string          userid      = 4; // userid
+    string          msgid       = 5; // message id
     string          content     = 6; // message
 }
 

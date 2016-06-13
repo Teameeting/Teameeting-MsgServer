@@ -38,6 +38,7 @@ public:
     void RequestLoop();
     void GenericMsg(int type, const std::string& userid);
     int  GenericMsgId(std::string& strMsgId);
+    int  GenericTempMsgId(std::string& strMsgId);
     void DoPackage(int type);
     void ProcessRecvMessage(const char*data, int nLen);
     void Keepalive(int type);

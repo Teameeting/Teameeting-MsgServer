@@ -36,7 +36,9 @@ public:
     bool CmdPing();
     bool CmdSet(const std::string key, const std::string value);
     bool CmdGet(const std::string key, std::string& value);
-    bool CmdSet(const std::string key, int value);
+    bool CmdSet(const std::string key, long long  value);
+    bool CmdGet(const std::string key, long long* value);
+    bool CmdSet(const std::string key, int  value);
     bool CmdGet(const std::string key, int* value);
     bool CmdDel(const std::string key);
     bool CmdIncr(const std::string key);

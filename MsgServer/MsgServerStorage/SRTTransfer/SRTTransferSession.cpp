@@ -17,7 +17,7 @@
 
 SRTTransferSession::SRTTransferSession()
 : RTJSBuffer()
-, RTTransfer()
+, RTLstorage()
 , m_lastUpdateTime(0)
 , m_moduleId("")
 , m_transferSessId("")
@@ -179,7 +179,7 @@ void SRTTransferSession::OnRecvData(const char*pData, int nLen)
 
 void SRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
-    RTTransfer::DoProcessData(message, nLen);
+    RTLstorage::DoProcessData(message, nLen);
 }
 
 
@@ -329,12 +329,12 @@ void SRTTransferSession::OnTypePush(const std::string& str)
     LI("%s was called\n", __FUNCTION__);
 }
 
-void SRTTransferSession::OnTypeTLogin(const std::string& str)
+void SRTTransferSession::OnTypeRequest(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }
 
-void SRTTransferSession::OnTypeTLogout(const std::string& str)
+void SRTTransferSession::OnTypeResponse(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
 }

@@ -17,6 +17,9 @@
 #include <utility>
 #include "sigslot.h"
 
+#define REQUEST_TYPE_READ (1)
+#define REQUEST_TYPE_WRITE (2)
+
 #define DEF_PROTO 1
 #include "MsgServer/proto/storage_msg.pb.h"
 
@@ -24,7 +27,7 @@ class SRTRedisManager;
 
 class SRTResponseCollection {
 public:
-    SRTResponseCollection(SRTRedisManager* manager, int clientNum, const std::string& userid, const std::string& msgid, long long seqn);
+    SRTResponseCollection(SRTRedisManager* manager, int reqType, int clientNum, const std::string& userid, const std::string& msgid, long long seqn);
     ~SRTResponseCollection();
 
     void AddResponse(const std::string& msgid, long long seqn);
@@ -40,16 +43,13 @@ public:
         SRTResponseCollection* pcoll;
         SRTRedisManager*       rmanager;
         std::set<long long> seqns;
-        //<userid, msgid, seqn>
-        //sigslot::signal3<const std::string&, const std::string&, long long> SequenceResponse;
-        //<userid, pms::SeqnMsg
-        //sigslot::signal2<const std::string&, const std::string&> SequenceResponse;
         //pms::SeqnMsg
-        sigslot::signal1<const std::string&> SequenceResponse;
-        bool AddAndCheckResp(long long seq)
+        sigslot::signal1<const std::string&> WriteResponse;
+        sigslot::signal1<const std::string&> ReadResponse;
+        bool AddAndCheckWrite(long long seq)
         {
             seqns.insert(seq);
-            //printf("AddAndCheckResp counter is:%d, cnumber is:%d\n", counter, cnumber);
+            //printf("AddAndCheckWrite counter is:%d, cnumber is:%d\n", counter, cnumber);
             if ((++counter) == cnumber)
             {
                 printf("seqn recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
@@ -57,7 +57,28 @@ public:
                 msg.set_userid(pcoll->GetUserid());
                 msg.set_msgid(msgid);
                 msg.set_sequence(*seqns.rbegin());
-                SequenceResponse(msg.SerializeAsString());
+                WriteResponse(msg.SerializeAsString());
+                //for(auto x : seqns)
+                //{
+                //     printf("seqn is:%lld\n", x);
+                //}
+                return true;
+            } else {
+                return false;
+            }
+        }
+        bool AddAndCheckRead(long long seq)
+        {
+            seqns.insert(seq);
+            printf("AddAndCheckRead counter is:%d, cnumber is:%d\n", counter, cnumber);
+            if ((++counter) == cnumber)
+            {
+                printf("seqn recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
+                pms::StorageMsg msg;
+                msg.set_userid(pcoll->GetUserid());
+                msg.set_msgid(msgid);
+                msg.set_sequence(*seqns.rbegin());
+                ReadResponse(msg.SerializeAsString());
                 //for(auto x : seqns)
                 //{
                 //     printf("seqn is:%lld\n", x);
@@ -75,8 +96,10 @@ public:
 
 private:
     int                 m_ClientNum;
+    int                 m_ReqType;
     std::string         m_UserId;
-    SeqnResponseMap     m_SeqnResponse;
+    SeqnResponseMap     m_WriteSeqnResponse;
+    SeqnResponseMap     m_ReadSeqnResponse;
     SRTRedisManager*    m_pRedisManager;
 
 };

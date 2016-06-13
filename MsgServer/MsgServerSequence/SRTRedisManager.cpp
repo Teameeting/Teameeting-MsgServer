@@ -14,7 +14,6 @@
 #define SESSION_TIMEOUT (90*1000)
 #define REDIS_GROUP_CLIENT (10)
 #define PACKED_MSG_ONCE_NUM (10)
-#define PACKED_MSG_POOL_SIZE (10)
 
 SRTRedisManager::SRTRedisManager()
     : m_LastUpdateTime(0)
@@ -29,15 +28,10 @@ void SRTRedisManager::Init(SRTTransferSession* sess)
 {
     m_Session = sess;
     m_PackedCounter = 0;
-    ListZero(&m_SeqnResp2Send);
-    for(int i=0;i<PACKED_MSG_POOL_SIZE;++i)
+    for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        pms::PackedStoreMsg* psm = new pms::PackedStoreMsg;
-        for(int j=0;j<PACKED_MSG_ONCE_NUM;++j)
-        {
-            psm->add_msgs();
-        }
-        m_PackedSeqnMsgs.push_back(psm);
+        m_WritePackedMsg.add_msgs();
+        m_ReadPackedMsg.add_msgs();
     }
     //TODO:
     // if redis crash, m_RedisNum should be notifyed
@@ -71,17 +65,28 @@ void SRTRedisManager::Init(SRTTransferSession* sess)
 void SRTRedisManager::Unin()
 {
     m_Session = nullptr;
-    for(auto x : m_PackedSeqnMsgs)
+
+    while(!m_SeqnResp4Read.empty())
     {
-        delete x;
+        m_SeqnResp4Read.pop();
     }
-    m_PackedSeqnMsgs.clear();
-    ListEmpty(&m_SeqnResp2Send);
-    for(auto x : m_ResponseCollections)
+    while(!m_SeqnResp4Write.empty())
+    {
+        m_SeqnResp4Write.pop();
+    }
+
+    for(auto x : m_ReadResponseCollections)
     {
         delete x.second;
     }
-    m_ResponseCollections.clear();
+    m_ReadResponseCollections.clear();
+
+    for(auto x : m_WriteResponseCollections)
+    {
+        delete x.second;
+    }
+    m_WriteResponseCollections.clear();
+
     for(auto x : m_RedisGroupMgr)
     {
         auto redisGroup = x.second;
@@ -102,6 +107,20 @@ void SRTRedisManager::Unin()
  * send to random redis client by redis ip
  *
  */
+
+// post for read
+void SRTRedisManager::PostRedisRequest(const std::string& request)
+{
+    //LI("SRTRedisManager::PushRedisRequest was called\n");
+    //std::string um("");
+    //um.append(request.userid()).append(":").append(request.msgid());
+    for(auto x : m_RedisGroupMgr)
+    {
+        LoopupForRedis((RedisGroup*)x.second)->PostData(request.c_str(), request.length());
+    }
+}
+
+// push for write
 void SRTRedisManager::PushRedisRequest(const std::string& request)
 {
     //LI("SRTRedisManager::PushRedisRequest was called\n");
@@ -109,6 +128,7 @@ void SRTRedisManager::PushRedisRequest(const std::string& request)
     //um.append(request.userid()).append(":").append(request.msgid());
     for(auto x : m_RedisGroupMgr)
     {
+        printf("");
         LoopupForRedis((RedisGroup*)x.second)->PushData(request.c_str(), request.length());
     }
 }
@@ -125,18 +145,18 @@ SRTSequenceRedis* SRTRedisManager::LoopupForRedis(RedisGroup* group)
  * this function store all the seqn by same userid and msgid
  *
  */
-void SRTRedisManager::OnRequestSeqn(const std::string& userid, const std::string& msgid, long long seqn)
+void SRTRedisManager::OnWriteSeqn(const std::string& userid, const std::string& msgid, long long seqn)
 {
-    //LI("SRTRedisManager::OnRequestSeqn userid:%s, msgid:%s, seqn:%lld\n", userid.c_str(), msgid.c_str(), seqn);
-    OSMutexLocker locker(&m_MutexCollection);
-    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_ResponseCollections.find(userid);
-    if (cit != m_ResponseCollections.end())
+    //LI("SRTRedisManager::OnWriteSeqn userid:%s, msgid:%s, seqn:%lld\n", userid.c_str(), msgid.c_str(), seqn);
+    OSMutexLocker locker(&m_MutexWriteCollection);
+    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_WriteResponseCollections.find(userid);
+    if (cit != m_WriteResponseCollections.end())
     {
-        //LI("OnRequestSeqn userid find out:%s\n", userid.c_str());
+        //LI("OnWriteSeqn userid find out:%s\n", userid.c_str());
         cit->second->AddResponse(msgid, seqn);
     } else {
-        //LI("OnRequestSeqn userid not find out:%s\n", userid.c_str());
-        m_ResponseCollections.insert(make_pair(userid, new SRTResponseCollection(this, m_RedisNum, userid, msgid, seqn)));
+        //LI("OnWriteSeqn userid not find out:%s\n", userid.c_str());
+        m_WriteResponseCollections.insert(make_pair(userid, new SRTResponseCollection(this, REQUEST_TYPE_WRITE, m_RedisNum, userid, msgid, seqn)));
     }
 }
 
@@ -148,35 +168,94 @@ void SRTRedisManager::OnRequestSeqn(const std::string& userid, const std::string
  * this function just push to list and fire event
  *
  */
-void SRTRedisManager::OnAddAndCheckSeqn(const std::string& msg)
+void SRTRedisManager::OnAddAndCheckWrite(const std::string& msg)
 {
-    //LI("SRTRedisManager::OnAddAndCheckSeqn userid:%s, msgid:%s, seqn:%lld\n", userid.c_str(), msgid.c_str(), seqn);
-#if 1
+    //LI("SRTRedisManager::OnAddAndCheckWrite userid:%s, msgid:%s, seqn:%lld\n", userid.c_str(), msgid.c_str(), seqn);
     {
-        char* ptr = (char*)malloc(sizeof(char)*((int)msg.length()+1));
-        memcpy(ptr, msg.c_str(), (int)msg.length());
-        ptr[(int)msg.length()] = '\0';
-        {
-            OSMutexLocker locker(&m_Mutex2Send);
-            m_PackedCounter++;
-            ListAppend(&m_SeqnResp2Send, ptr, (int)msg.length());
-        }
+        OSMutexLocker locker(&m_Mutex4Write);
+        m_SeqnResp4Write.push(msg);
     }
-    if (m_PackedCounter==PACKED_MSG_ONCE_NUM)
+    this->Signal(kIdleEvent);
+}
+
+/**
+ * after redis client get seqn
+ * this method will be invoked by redis client
+ *
+ * this function store all the seqn by same userid and msgid
+ *
+ */
+void SRTRedisManager::OnReadSeqn(const std::string& userid, const std::string& msgid, long long seqn)
+{
+    LI("SRTRedisManager::OnReadSeqn userid:%s, seqn:%lld\n", userid.c_str(), seqn);
+    OSMutexLocker locker(&m_MutexReadCollection);
+    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_ReadResponseCollections.find(userid);
+    if (cit != m_ReadResponseCollections.end())
     {
-        m_PackedCounter = 0;
-        this->Signal(kIdleEvent);
+        LI("OnReadSeqn userid find out:%s\n", userid.c_str());
+        cit->second->AddResponse(msgid, seqn);
+    } else {
+        LI("OnReadSeqn userid not find out:%s\n", userid.c_str());
+        m_ReadResponseCollections.insert(make_pair(userid, new SRTResponseCollection(this, REQUEST_TYPE_READ, m_RedisNum, userid, msgid, seqn)));
     }
-#else
+}
 
-#endif
 
+/**
+ * after collection all the seqn with same userid and msgid
+ * this method will be invoked by MsgSeqn
+ *
+ * this function just push to list and fire event
+ *
+ */
+void SRTRedisManager::OnAddAndCheckRead(const std::string& msg)
+{
+    {
+        OSMutexLocker locker(&m_Mutex4Read);
+        m_SeqnResp4Read.push(msg);
+    }
+    this->Signal(kWakeupEvent);
 }
 
 // from RTEventLooper
 void SRTRedisManager::OnPostEvent(const char*pData, int nSize)
 {
 
+}
+
+void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
+{
+    if (m_SeqnResp4Read.size()==0) return;
+    bool hasData = false;
+    for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+    {
+        if(m_SeqnResp4Read.size()>0)
+        {
+            hasData = true;
+            m_ReadPackedMsg.mutable_msgs(i)->ParseFromString(m_SeqnResp4Read.front());
+            {
+                OSMutexLocker locker(&m_Mutex4Read);
+                m_SeqnResp4Read.pop();
+            }
+        }
+    }
+    if (hasData)
+    {
+        if (m_Session && m_Session->IsLiveSession())
+        {
+            printf("SRTRedisManager::OnWakeupEvent TREQUEST\n");
+            pms::TransferMsg tmsg;
+            tmsg.set_type(pms::ETransferType::TRESPONSE);
+            tmsg.set_flag(pms::ETransferFlag::FNOACK);
+            tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+            tmsg.set_content(m_ReadPackedMsg.SerializeAsString());
+            m_Session->SendTransferData(tmsg.SerializeAsString());
+        }
+        for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+        {
+             m_ReadPackedMsg.mutable_msgs(i)->Clear();
+        }
+    }
 }
 
 void SRTRedisManager::OnPushEvent(const char*pData, int nSize)
@@ -186,31 +265,36 @@ void SRTRedisManager::OnPushEvent(const char*pData, int nSize)
 
 void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
 {
-     ListElement *elem = NULL;
-    pms::PackedStoreMsg * pit = new pms::PackedStoreMsg;
+    if (m_SeqnResp4Write.size()==0) return;
+    bool hasData = false;
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        if((elem = m_SeqnResp2Send.first) != NULL)
+        if(m_SeqnResp4Write.size()>0)
         {
-            std::string s((const char*)elem->content, elem->size);
-            pms::StorageMsg* tit = pit->add_msgs();
-            printf("SRTRedisManager::OnTickEvent result:%d\n", tit->result());
-            tit->ParseFromString(s);
+            hasData = true;
+            m_WritePackedMsg.mutable_msgs(i)->ParseFromString(m_SeqnResp4Write.front());
             {
-                OSMutexLocker locker(&m_Mutex2Send);
-                ListRemoveHead(&m_SeqnResp2Send);
+                OSMutexLocker locker(&m_Mutex4Write);
+                m_SeqnResp4Write.pop();
             }
         }
     }
-    pms::TransferMsg tmsg;
-    tmsg.set_type(pms::ETransferType::TQUEUE);
-    tmsg.set_flag(pms::ETransferFlag::FNOACK);
-    tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-    tmsg.set_content(pit->SerializeAsString());
-    if (m_Session && m_Session->IsLiveSession())
-        m_Session->SendTransferData(tmsg.SerializeAsString());
-    delete pit;
-    pit = nullptr;
+    if (hasData)
+    {
+        if (m_Session && m_Session->IsLiveSession())
+        {
+            pms::TransferMsg tmsg;
+            tmsg.set_type(pms::ETransferType::TQUEUE);
+            tmsg.set_flag(pms::ETransferFlag::FNOACK);
+            tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+            tmsg.set_content(m_WritePackedMsg.SerializeAsString());
+            m_Session->SendTransferData(tmsg.SerializeAsString());
+        }
+        for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+        {
+             m_WritePackedMsg.mutable_msgs(i)->Clear();
+        }
+    }
 }
 
 

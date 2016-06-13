@@ -29,6 +29,11 @@ class LRTLogicalManager : public RTSingleton< LRTLogicalManager >{
     friend class RTSingleton< LRTLogicalManager >;
 public:
 
+    typedef struct TransfMsgInfo {
+        LRTTransferSession*     sess;
+        pms::StorageMsg         smsg;
+    } TransMsgInfo;
+
     bool RecvRequestCounter();
     bool SendResponseCounter();
 
@@ -55,31 +60,31 @@ public:
          }
     }
 
-    bool InsertMsg(pms::StorageMsg*  storeMsg);
+    bool InsertMsg(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
     bool UpdateMsg(pms::StorageMsg** storeMsg);
-    bool DeleteMsg(pms::StorageMsg*  storeMsg);
+    bool RespAndDelMsg(pms::StorageMsg*  storeMsg);
     bool SearchMsg(pms::StorageMsg*  storeMsg);
+    bool GetMaxSeq(pms::StorageMsg*  storeMsg);
+
+    bool AddSeqReadMsg(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
+    bool RespDelSeqMsg(pms::StorageMsg* storeMsg);
 
     bool    SignalKill();
     bool    ClearAll();
 protected:
-    LRTLogicalManager()
-    {
+    LRTLogicalManager(){}
 
-    }
-
-    ~LRTLogicalManager()
-    {
-
-    }
+    ~LRTLogicalManager(){}
 protected:
-    typedef std::unordered_map<std::string, pms::StorageMsg>    RequestMsgMap;
-    typedef RequestMsgMap::iterator                             RequestMsgMapIt;
+    typedef std::unordered_map<std::string, TransMsgInfo>       TransMsgInfoMap;
+    typedef TransMsgInfoMap::iterator                           TransMsgInfoMapIt;
+
 private:
     std::vector<std::string>            m_RedisHosts;
-    std::list<LRTTransferSession*>      m_TransferSessions;
     OSMutex                             m_mutexMsg;
-    RequestMsgMap                       m_requestMsgMap;
+    OSMutex                             m_mutexSeqReadMsg;
+    TransMsgInfoMap                     m_transMsgInfoMap;
+    TransMsgInfoMap                     m_seqReadMsgInfoMap;
 };
 
 #endif /* defined(__MsgServerLogical__LRTLogicalManager__) */

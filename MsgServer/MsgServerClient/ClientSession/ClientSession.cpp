@@ -84,6 +84,7 @@ void ClientSession::UpdateTime()
 // from RTTcp
 void ClientSession::OnRecvData(const char*pData, int nLen)
 {
+    printf("ClientSession::OnRecvData was called...nLen:%d\n", nLen);
     if (!pData) {
         return;
     }
@@ -93,7 +94,7 @@ void ClientSession::OnRecvData(const char*pData, int nLen)
 void ClientSession::OnRecvMessage(const char*message, int nLen)
 {
     // write message into worker list
-    //LI("ClientSession::OnRecvMessage nLen:%d, recvResponse:%lld\n", nLen, mRecvResponse++);
+    LI("ClientSession::OnRecvMessage nLen:%d, recvResponse:%lld\n", nLen, mRecvResponse++);
     ClientManager::Instance().ProcessRecvMessage(message, nLen);
 }
 

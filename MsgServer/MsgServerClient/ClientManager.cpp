@@ -24,6 +24,9 @@
 #define MSG_TYPE_STORE      (2)
 #define MSG_TYPE_LOGIC_W    (3)
 #define MSG_TYPE_LOGIC_R    (4)
+#define MSG_TYPE_LSEQN_W    (5)
+#define MSG_TYPE_LSEQN_R    (6)
+#define MSG_TYPE_SYNC_MSG   (7)
 
 #define TEST_MEMORY_LEAK    (1)
 #define TEST_FUNCTIONAL     (1)
@@ -84,7 +87,10 @@ void ClientManager::RequestLoop()
     printf("###### TEST_NOTHING is enabled\n");
 
 #endif
-	int type = MSG_TYPE_LOGIC_W;
+	//int type = MSG_TYPE_LSEQN_R;
+	//int type = MSG_TYPE_LOGIC_W;
+	int type = MSG_TYPE_LOGIC_R;
+	//int type = MSG_TYPE_SYNC_MSG;
 	while(mIsRun)
 	{
 #if (TEST_MEMORY_LEAK==0)
@@ -98,7 +104,7 @@ void ClientManager::RequestLoop()
 				break;
 		}
 #elif (TEST_FUNCTIONAL==1)
-        sleep(3);
+        sleep(1);
 		if (test_times++ < count)
 		{
 			GenericMsg(type, mUserId);
@@ -163,17 +169,70 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			m_logicW2SndList.push_back(p_storage);
 		}
 	} else if (type == MSG_TYPE_LOGIC_R) {
+        std::vector<std::string> v;
+        v.push_back("dandan_25");
+        v.push_back("dandan_26");
+        v.push_back("dandan_27");
+        v.push_back("dandan_28");
+        v.push_back("dandan_29");
+        std::vector<int> ii;
+        ii.push_back(25);
+        ii.push_back(26);
+        ii.push_back(27);
+        ii.push_back(28);
+        ii.push_back(29);
+		//for(int i=0;i<PACKED_MSG_NUM;++i) {
+		for(int i=0;i<5;++i) {
+			pms::StorageMsg* p_storage = new pms::StorageMsg;
+			p_storage->set_mflag(pms::EStorageType::TREAD);
+			std::string msgId;
+			GenericMsgId(msgId);
+			p_storage->set_msgid(msgId);
+			p_storage->set_userid("dandan");
+			p_storage->set_sequence(ii[i]);
+			p_storage->set_content("");
+			m_logicR2SndList.push_back(p_storage);
+		}
+	} else if (type == MSG_TYPE_LSEQN_W) {
+        printf("type:%d, lseqn_w:%d, twrite:%d\n", type, MSG_TYPE_LSEQN_W, pms::EStorageType::TWRITE);
 		for(int i=0;i<PACKED_MSG_NUM;++i) {
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
 			std::string msgId;
 			GenericMsgId(msgId);
+			p_storage->set_mflag(pms::EStorageType::TWRITE);
+			p_storage->set_msgid(msgId);
+			p_storage->set_userid(userid);
+			p_storage->set_content("hello redis");
+            printf("---->generic msg mflag:%d\n", p_storage->mflag());
+			m_logicW2SndList.push_back(p_storage);
+		}
+	} else if (type == MSG_TYPE_LSEQN_R) {
+        printf("type:%d, lseqn_r:%d, tread:%d\n", type, MSG_TYPE_LSEQN_R, pms::EStorageType::TWRITE);
+		for(int i=0;i<PACKED_MSG_NUM;++i) {
+			pms::StorageMsg* p_storage = new pms::StorageMsg;
+			std::string msgId;
+			GenericTempMsgId(msgId);
 			p_storage->set_mflag(pms::EStorageType::TREAD);
 			p_storage->set_msgid(msgId);
 			p_storage->set_userid(userid);
-			p_storage->set_sequence(100);
 			p_storage->set_content("hello redis");
+            printf("---->generic msg mflag:%d\n", p_storage->mflag());
 			m_logicR2SndList.push_back(p_storage);
 		}
+	} else if (type == MSG_TYPE_SYNC_MSG) {
+        printf("type:%d, sync_msg:%d, tread:%d\n", type, MSG_TYPE_SYNC_MSG, pms::EStorageType::TWRITE);
+		//for(int i=0;i<PACKED_MSG_NUM;++i) {
+			pms::StorageMsg* p_storage = new pms::StorageMsg;
+			std::string msgId;
+			GenericTempMsgId(msgId);
+			p_storage->set_mflag(pms::EStorageType::TREAD);
+			p_storage->set_msgid(msgId);
+			p_storage->set_userid(userid);
+			p_storage->set_sequence(25);
+			p_storage->set_content("hello redis");
+            printf("---->generic msg mflag:%d\n", p_storage->mflag());
+			m_logicR2SndList.push_back(p_storage);
+		//}
 	}
 
 	SInt64 curTime = OS::Milliseconds();
@@ -189,6 +248,15 @@ int ClientManager::GenericMsgId(std::string& strMsgId)
     strMsgId = msgid;
     return 0;
 }
+
+int ClientManager::GenericTempMsgId(std::string& strMsgId)
+{
+    char msgid[32] = {0};
+    sprintf(msgid, "temp:%s_%d", mUserId.c_str(), ++s_msg_id);
+    strMsgId = msgid;
+    return 0;
+}
+
 
 
 void ClientManager::DoPackage(int type)
@@ -268,7 +336,31 @@ void ClientManager::DoPackage(int type)
 		}
 
         pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TQUEUE);
+        tmsg.set_type(pms::ETransferType::TDISPATCH);
+        tmsg.set_flag(pms::ETransferFlag::FNEEDACK);
+        tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+        tmsg.set_content(pit->SerializeAsString());
+		mClientSession->SendTransferData(tmsg.SerializeAsString());
+		delete pit;
+		pit = nullptr;
+    }
+    else if (type == MSG_TYPE_LSEQN_W)
+	{
+		if (m_logicW2SndList.size()==0) return;
+		pms::PackedStoreMsg * pit = new pms::PackedStoreMsg;
+		for (int i=0;i<_MAX_MSG_SEND_NUM;++i) {
+			if (m_logicW2SndList.size()>0) {
+				pms::StorageMsg* tit = pit->add_msgs();
+				pms::StorageMsg* ttit = m_logicW2SndList.front();
+				tit->CopyFrom(*(ttit));
+				delete ttit;
+				ttit = nullptr;
+				m_logicW2SndList.pop_front();
+			}
+		}
+
+        pms::TransferMsg tmsg;
+        tmsg.set_type(pms::ETransferType::TTRANS);
         tmsg.set_flag(pms::ETransferFlag::FNEEDACK);
         tmsg.set_priority(pms::ETransferPriority::PNORMAL);
         tmsg.set_content(pit->SerializeAsString());
@@ -276,12 +368,61 @@ void ClientManager::DoPackage(int type)
 		delete pit;
 		pit = nullptr;
 	}
+    else if (type == MSG_TYPE_LSEQN_R)
+	{
+		if (m_logicR2SndList.size()==0) return;
+		pms::PackedStoreMsg * pit = new pms::PackedStoreMsg;
+		for (int i=0;i<_MAX_MSG_SEND_NUM;++i) {
+			if (m_logicR2SndList.size()>0) {
+				pms::StorageMsg* tit = pit->add_msgs();
+				pms::StorageMsg* ttit = m_logicR2SndList.front();
+				tit->CopyFrom(*(ttit));
+				delete ttit;
+				ttit = nullptr;
+				m_logicR2SndList.pop_front();
+			}
+		}
 
+        printf("DoPacked MSG_TYPE_LSEQN_R was called, TREQUEST:%d\n", pms::ETransferType::TREQUEST);
+        pms::TransferMsg tmsg;
+        tmsg.set_type(pms::ETransferType::TREQUEST);
+        tmsg.set_flag(pms::ETransferFlag::FNEEDACK);
+        tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+        tmsg.set_content(pit->SerializeAsString());
+		mClientSession->SendTransferData(tmsg.SerializeAsString());
+		delete pit;
+		pit = nullptr;
+    }
+    else if (type == MSG_TYPE_SYNC_MSG)
+	{
+		if (m_logicR2SndList.size()==0) return;
+		pms::PackedStoreMsg * pit = new pms::PackedStoreMsg;
+		for (int i=0;i<_MAX_MSG_SEND_NUM;++i) {
+			if (m_logicR2SndList.size()>0) {
+				pms::StorageMsg* tit = pit->add_msgs();
+				pms::StorageMsg* ttit = m_logicR2SndList.front();
+				tit->CopyFrom(*(ttit));
+				delete ttit;
+				ttit = nullptr;
+				m_logicR2SndList.pop_front();
+			}
+		}
+
+        printf("DoPacked MSG_TYPE_LSEQN_R was called, TREQUEST:%d\n", pms::ETransferType::TREQUEST);
+        pms::TransferMsg tmsg;
+        tmsg.set_type(pms::ETransferType::TREQUEST);
+        tmsg.set_flag(pms::ETransferFlag::FNEEDACK);
+        tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+        tmsg.set_content(pit->SerializeAsString());
+		mClientSession->SendTransferData(tmsg.SerializeAsString());
+		delete pit;
+		pit = nullptr;
+	}
 }
 
 void ClientManager::ProcessRecvMessage(const char*data, int nLen)
 {
-
+    printf("ProcessRecvMessage was called, nLen:%d\n", nLen);
 #if (MSG_TYPE_SQUNE==0)
     std::string msg(data, nLen);
     pms::PackedStoreMsg packMsg;
@@ -303,7 +444,7 @@ void ClientManager::ProcessRecvMessage(const char*data, int nLen)
     char buf[128] = {0};
     sprintf(buf, "recv_time:%lld:mRecvCounter:%lld\n", curTime, ++mRecvCounter);
     LI("%s",buf);
-#elif (MSG_TYPE_LOGIC_W==3)
+#elif (MSG_TYPE_SYNC_MSG==7)
     pms::TransferMsg tmsg;
     const std::string smsg(data, nLen);
     tmsg.ParseFromString(smsg);
@@ -315,6 +456,8 @@ void ClientManager::ProcessRecvMessage(const char*data, int nLen)
             LI("FACK msg received\n");
             // handle ack
             return;
+        } else if (tmsg.flag() == pms::ETransferFlag::FNOACK) {
+            LI("FNOACK msg received\n");
         } else {
             LI("ELSE msg received\n");
             return;
@@ -338,10 +481,11 @@ void ClientManager::ProcessRecvMessage(const char*data, int nLen)
             store.ParseFromString(tmsg.content());
             for(int i=0;i<store.msgs_size();++i)
             {
-                 printf("OnDispatch sequence:%lld, msgid:%s, result:%d\n"\
+                 printf("OnDispatch sequence:%lld, msgid:%s, result:%d, content:%s\n"\
                          , store.msgs(i).sequence()\
                          , store.msgs(i).msgid().c_str() \
-                         , store.msgs(i).result());
+                         , store.msgs(i).result()\
+                         , store.msgs(i).content().c_str());
             }
         } else if (tmsg.type() == pms::ETransferType::TPUSH) {
             LI("TPUSH msg received\n");
@@ -352,6 +496,19 @@ void ClientManager::ProcessRecvMessage(const char*data, int nLen)
         } else if (tmsg.type() == pms::ETransferType::TLOGOUT) {
             LI("TLOGOUT msg received\n");
             //OnTypeTLogout(m_msg.content());
+        } else if (tmsg.type() == pms::ETransferType::TREQUEST) {
+            LI("TREQUEST msg received\n");
+        } else if (tmsg.type() == pms::ETransferType::TRESPONSE) {
+            LI("TRESPONSE msg received\n");
+            pms::PackedStoreMsg store;
+            store.ParseFromString(tmsg.content());
+            for(int i=0;i<store.msgs_size();++i)
+            {
+                 printf("OnResponse sequence:%lld, msgid:%s, result:%d\n"\
+                         , store.msgs(i).sequence()\
+                         , store.msgs(i).msgid().c_str() \
+                         , store.msgs(i).result());
+            }
         } else {
             LE("invalid type::%d", tmsg.type());
         }
@@ -378,6 +535,7 @@ void ClientManager::Keepalive(int type)
 		//p_storage->set_userid("keepalive");
 		//m_storeWait2SndList.push_back(p_storage);
 	}
+		mClientSession->UpdateTime();
 }
 
 bool ClientManager::SignalKill()

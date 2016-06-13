@@ -14,11 +14,12 @@
 #include <string>
 #include <unordered_map>
 #include <utility>
+#include <queue>
 #include "SocketUtils.h"
 #include "TCPSocket.h"
 #include "RTTcpNoTimeout.h"
 #include "RTJSBuffer.h"
-#include "RTTransfer.h"
+#include "RTLstorage.h"
 #include "RTObserverConnection.h"
 
 #define DEF_PROTO 1
@@ -33,7 +34,7 @@
 class LRTTransferSession
     : public RTTcpNoTimeout
     , public RTJSBuffer
-    , public RTTransfer
+    , public RTLstorage
     , public RTObserverConnection{
 public:
     LRTTransferSession();
@@ -56,6 +57,9 @@ public:
     std::string& GetTransferAddr() { return m_addr; }
     int GetTransferPort() { return m_port; }
     int GetConnectingStatus() { return m_connectingStatus; };
+
+    void PushStoreMsg(pms::StorageMsg store);
+
 public:
     void EstablishConnection();
 
@@ -65,7 +69,7 @@ public:
     virtual void OnSendEvent(const char*pData, int nLen) {}
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen);
 
 // from RTTransfer
 public:
@@ -76,8 +80,8 @@ public:
     virtual void OnTypeQueue(const std::string& str);
     virtual void OnTypeDispatch(const std::string& str);
     virtual void OnTypePush(const std::string& str);
-    virtual void OnTypeTLogin(const std::string& str);
-    virtual void OnTypeTLogout(const std::string& str);
+    virtual void OnTypeRequest(const std::string& str);
+    virtual void OnTypeResponse(const std::string& str);
 
 
 protected:
@@ -93,6 +97,10 @@ private:
     std::string     m_addr;
     int             m_port;
     int             m_connectingStatus;
+    pms::PackedStoreMsg     m_respPackedMsg;
+    std::queue<pms::StorageMsg>     m_queueStoreMsg;
+    OSMutex                         m_mutexQueue;
+    int                             m_isRun;
 };
 
 #endif /* defined(__MsgServerLogical__LRTTransferSession__) */

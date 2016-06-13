@@ -71,9 +71,9 @@ static void MergeFromFail(int line) {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int StorageMsg::kMflagFieldNumber;
 const int StorageMsg::kResultFieldNumber;
+const int StorageMsg::kSequenceFieldNumber;
 const int StorageMsg::kUseridFieldNumber;
 const int StorageMsg::kMsgidFieldNumber;
-const int StorageMsg::kSequenceFieldNumber;
 const int StorageMsg::kContentFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -101,9 +101,9 @@ void StorageMsg::SharedCtor() {
   _cached_size_ = 0;
   mflag_ = 0;
   result_ = 0;
+  sequence_ = GOOGLE_LONGLONG(0);
   userid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   msgid_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  sequence_ = GOOGLE_LONGLONG(0);
   content_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
@@ -166,10 +166,9 @@ void StorageMsg::Clear() {
            ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
 } while (0)
 
-  ZR_(mflag_, result_);
+  ZR_(mflag_, sequence_);
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   msgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  sequence_ = GOOGLE_LONGLONG(0);
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 
 #undef ZR_HELPER_
@@ -213,13 +212,28 @@ bool StorageMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(26)) goto parse_userid;
+        if (input->ExpectTag(24)) goto parse_sequence;
         break;
       }
 
-      // optional string userid = 3;
+      // optional sint64 sequence = 3;
       case 3: {
-        if (tag == 26) {
+        if (tag == 24) {
+         parse_sequence:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_SINT64>(
+                 input, &sequence_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_userid;
+        break;
+      }
+
+      // optional string userid = 4;
+      case 4: {
+        if (tag == 34) {
          parse_userid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_userid()));
@@ -230,13 +244,13 @@ bool StorageMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_msgid;
+        if (input->ExpectTag(42)) goto parse_msgid;
         break;
       }
 
-      // optional string msgid = 4;
-      case 4: {
-        if (tag == 34) {
+      // optional string msgid = 5;
+      case 5: {
+        if (tag == 42) {
          parse_msgid:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_msgid()));
@@ -244,21 +258,6 @@ bool StorageMsg::MergePartialFromCodedStream(
             this->msgid().data(), this->msgid().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "pms.StorageMsg.msgid"));
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(40)) goto parse_sequence;
-        break;
-      }
-
-      // optional sint64 sequence = 5;
-      case 5: {
-        if (tag == 40) {
-         parse_sequence:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_SINT64>(
-                 input, &sequence_)));
-
         } else {
           goto handle_unusual;
         }
@@ -318,29 +317,29 @@ void StorageMsg::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteSInt32(2, this->result(), output);
   }
 
-  // optional string userid = 3;
+  // optional sint64 sequence = 3;
+  if (this->sequence() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt64(3, this->sequence(), output);
+  }
+
+  // optional string userid = 4;
   if (this->userid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->userid().data(), this->userid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "pms.StorageMsg.userid");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->userid(), output);
+      4, this->userid(), output);
   }
 
-  // optional string msgid = 4;
+  // optional string msgid = 5;
   if (this->msgid().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->msgid().data(), this->msgid().length(),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "pms.StorageMsg.msgid");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      4, this->msgid(), output);
-  }
-
-  // optional sint64 sequence = 5;
-  if (this->sequence() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteSInt64(5, this->sequence(), output);
+      5, this->msgid(), output);
   }
 
   // optional string content = 6;
@@ -373,25 +372,25 @@ int StorageMsg::ByteSize() const {
         this->result());
   }
 
-  // optional string userid = 3;
+  // optional sint64 sequence = 3;
+  if (this->sequence() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::SInt64Size(
+        this->sequence());
+  }
+
+  // optional string userid = 4;
   if (this->userid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->userid());
   }
 
-  // optional string msgid = 4;
+  // optional string msgid = 5;
   if (this->msgid().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->msgid());
-  }
-
-  // optional sint64 sequence = 5;
-  if (this->sequence() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::SInt64Size(
-        this->sequence());
   }
 
   // optional string content = 6;
@@ -421,6 +420,9 @@ void StorageMsg::MergeFrom(const StorageMsg& from) {
   if (from.result() != 0) {
     set_result(from.result());
   }
+  if (from.sequence() != 0) {
+    set_sequence(from.sequence());
+  }
   if (from.userid().size() > 0) {
 
     userid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.userid_);
@@ -428,9 +430,6 @@ void StorageMsg::MergeFrom(const StorageMsg& from) {
   if (from.msgid().size() > 0) {
 
     msgid_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.msgid_);
-  }
-  if (from.sequence() != 0) {
-    set_sequence(from.sequence());
   }
   if (from.content().size() > 0) {
 
@@ -457,9 +456,9 @@ void StorageMsg::Swap(StorageMsg* other) {
 void StorageMsg::InternalSwap(StorageMsg* other) {
   std::swap(mflag_, other->mflag_);
   std::swap(result_, other->result_);
+  std::swap(sequence_, other->sequence_);
   userid_.Swap(&other->userid_);
   msgid_.Swap(&other->msgid_);
-  std::swap(sequence_, other->sequence_);
   content_.Swap(&other->content_);
   _unknown_fields_.Swap(&other->_unknown_fields_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -500,7 +499,21 @@ void StorageMsg::clear_result() {
   // @@protoc_insertion_point(field_set:pms.StorageMsg.result)
 }
 
-// optional string userid = 3;
+// optional sint64 sequence = 3;
+void StorageMsg::clear_sequence() {
+  sequence_ = GOOGLE_LONGLONG(0);
+}
+ ::google::protobuf::int64 StorageMsg::sequence() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.sequence)
+  return sequence_;
+}
+ void StorageMsg::set_sequence(::google::protobuf::int64 value) {
+  
+  sequence_ = value;
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.sequence)
+}
+
+// optional string userid = 4;
 void StorageMsg::clear_userid() {
   userid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -544,7 +557,7 @@ void StorageMsg::clear_userid() {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.userid)
 }
 
-// optional string msgid = 4;
+// optional string msgid = 5;
 void StorageMsg::clear_msgid() {
   msgid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -586,20 +599,6 @@ void StorageMsg::clear_msgid() {
   }
   msgid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), msgid);
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.msgid)
-}
-
-// optional sint64 sequence = 5;
-void StorageMsg::clear_sequence() {
-  sequence_ = GOOGLE_LONGLONG(0);
-}
- ::google::protobuf::int64 StorageMsg::sequence() const {
-  // @@protoc_insertion_point(field_get:pms.StorageMsg.sequence)
-  return sequence_;
-}
- void StorageMsg::set_sequence(::google::protobuf::int64 value) {
-  
-  sequence_ = value;
-  // @@protoc_insertion_point(field_set:pms.StorageMsg.sequence)
 }
 
 // optional string content = 6;

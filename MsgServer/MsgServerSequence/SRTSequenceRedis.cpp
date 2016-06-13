@@ -16,31 +16,48 @@ void SRTSequenceRedis::Init(SRTRedisManager* manager, const std::string& ip, int
     this->SetHostAddr(ip.c_str(), port);
     this->Connect();
     m_RedisManager = manager;
-    RequestResponse.connect(m_RedisManager, &SRTRedisManager::OnRequestSeqn);
+    WriteResponse.connect(m_RedisManager, &SRTRedisManager::OnWriteSeqn);
+    ReadResponse.connect(m_RedisManager, &SRTRedisManager::OnReadSeqn);
 }
 
 void SRTSequenceRedis::Unin()
 {
     //LI("SRTSequenceRedis::Unin was called, host:%s\n", GetHostForTest().c_str());
-    RequestResponse.disconnect(m_RedisManager);
+    ReadResponse.disconnect(m_RedisManager);
+    WriteResponse.disconnect(m_RedisManager);
     this->DisConn();
 }
 
 // from RTEventLooper
+// post for read
 void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
 {
-
-}
-
-void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
-{
     if (!pData || nSize<=0) return;
-    long long seq = 0;
     std::string str(pData, nSize);
     pms::StorageMsg request;
     request.ParseFromString(str);
-    GenericIncrId(request.userid(), &seq);
-    RequestResponse(request.userid(), request.msgid(), seq);
+    if (request.mflag()==pms::EStorageType::TREAD)
+    {
+        long long seq = 0;
+        CmdGet(request.userid(), &seq);
+        ReadResponse(request.userid(), request.msgid(), seq);
+    }
+}
+
+// push for write
+void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
+{
+    if (!pData || nSize<=0) return;
+    std::string str(pData, nSize);
+    pms::StorageMsg request;
+    request.ParseFromString(str);
+    if (request.mflag()==pms::EStorageType::TWRITE)
+    {
+        long long seq = 0;
+        GenericIncrId(request.userid(), &seq);
+        WriteResponse(request.userid(), request.msgid(), seq);
+
+    }
 }
 
 bool SRTSequenceRedis::IsTheSameRedis(const std::string& host, int port)

@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <utility>
 #include <string>
+#include <queue>
 #include "RTEventLooper.h"
 #include "SRTSequenceRedis.h"
 #include "sigslot.h"
@@ -36,6 +37,7 @@ public:
     void Init(SRTTransferSession* sess);
     void Unin();
 
+    void PostRedisRequest(const std::string& request);
     void PushRedisRequest(const std::string& request);
 
 public:
@@ -50,15 +52,17 @@ public:
 
     SRTSequenceRedis* LoopupForRedis(RedisGroup* group);
 public:
-    void OnRequestSeqn(const std::string& userid, const std::string& msgid, long long seqn);
-    //void OnAddAndCheckSeqn(const std::string& userid, const std::string& msgid, long long seqn);
-    void OnAddAndCheckSeqn(const std::string& msg);
+    void OnWriteSeqn(const std::string& userid, const std::string& msgid, long long seqn);
+    void OnAddAndCheckWrite(const std::string& msg);
+
+    void OnReadSeqn(const std::string& userid, const std::string& msgid, long long seqn);
+    void OnAddAndCheckRead(const std::string& msg);
 
 // from RTEventLooper
 public:
     virtual void OnPostEvent(const char*pData, int nSize);
     virtual void OnSendEvent(const void*pData, int nSize) {}
-    virtual void OnWakeupEvent(const void*pData, int nSize){}
+    virtual void OnWakeupEvent(const void*pData, int nSize);
     virtual void OnPushEvent(const char*pData, int nSize);
     virtual void OnTickEvent(const void*pData, int nSize);
 
@@ -68,12 +72,17 @@ private:
     std::vector<std::string>            m_RedisHosts;
     SInt64                              m_LastUpdateTime;
     RedisGroupMgr                       m_RedisGroupMgr;
-    std::unordered_map<std::string, SRTResponseCollection*> m_ResponseCollections;
-    OSMutex                             m_MutexCollection;
-    List                                m_SeqnResp2Send;
-    OSMutex                             m_Mutex2Send;
+    std::unordered_map<std::string, SRTResponseCollection*> m_ReadResponseCollections;
+    std::unordered_map<std::string, SRTResponseCollection*> m_WriteResponseCollections;
+    OSMutex                             m_MutexReadCollection;
+    OSMutex                             m_MutexWriteCollection;
+    std::queue<std::string>             m_SeqnResp4Read;
+    std::queue<std::string>             m_SeqnResp4Write;
+    OSMutex                             m_Mutex4Read;
+    OSMutex                             m_Mutex4Write;
     int                                 m_PackedCounter;
-    std::vector<pms::PackedStoreMsg*>    m_PackedSeqnMsgs;
+    pms::PackedStoreMsg                 m_WritePackedMsg;
+    pms::PackedStoreMsg                 m_ReadPackedMsg;
 };
 
 #endif /* defined(__MsgServerSequence__SRTRedisManager__) */

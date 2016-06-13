@@ -39,6 +39,10 @@ void SRTResponseSender::Unin()
 {
     m_IsRun = 0;
     m_TransferSession = nullptr;
+    while(!m_QSendMsg.empty())
+    {
+        m_QSendMsg.pop();
+    }
 }
 
 void SRTResponseSender::PushResponseData(const char*pData, int nSize)

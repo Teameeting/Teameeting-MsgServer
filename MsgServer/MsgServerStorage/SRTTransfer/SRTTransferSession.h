@@ -15,7 +15,7 @@
 #include "TCPSocket.h"
 #include "RTTcpNoTimeout.h"
 #include "RTJSBuffer.h"
-#include "RTTransfer.h"
+#include "RTLstorage.h"
 #include "RTObserverConnection.h"
 #include "SRTRedisManager.h"
 
@@ -30,7 +30,7 @@
 class SRTTransferSession
     : public RTTcpNoTimeout
     , public RTJSBuffer
-    , public RTTransfer
+    , public RTLstorage
     , public RTObserverConnection{
 public:
     SRTTransferSession();
@@ -73,8 +73,8 @@ public:
     virtual void OnTypeQueue(const std::string& str);
     virtual void OnTypeDispatch(const std::string& str);
     virtual void OnTypePush(const std::string& str);
-    virtual void OnTypeTLogin(const std::string& str);
-    virtual void OnTypeTLogout(const std::string& str);
+    virtual void OnTypeRequest(const std::string& str);
+    virtual void OnTypeResponse(const std::string& str);
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);

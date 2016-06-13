@@ -192,7 +192,7 @@ SInt64 RTTcpNoTimeout::Run()
 		}
 		else if(events&Task::kIdleEvent)
 		{
-			//OnTickEvent("", 0);
+			OnTickEvent("", 0);
 			events -= Task::kIdleEvent;
 		}
 		else

@@ -137,15 +137,25 @@ bool LRTConnManager::ConnectStorage()
 
 bool LRTConnManager::DoConnectSequence(const std::string ip, unsigned short port)
 {
-    m_sequenceSession = new LRTTransferSession();
-    m_sequenceSession->Init();
+    m_sequenceWriteSession = new LRTTransferSession();
+    m_sequenceWriteSession->Init();
     // conn to connector
-    while (!m_sequenceSession->Connect(ip, port)) {
-        LI("connecting to sequence server %s:%u waiting...\n", ip.c_str(), port);
+    while (!m_sequenceWriteSession->Connect(ip, port)) {
+        LI("connecting to sequence server write %s:%u waiting...\n", ip.c_str(), port);
         usleep(100*1000);
     }
-    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_sequenceSession->GetSocket()->GetSocketFD());
-    m_sequenceSession->EstablishConnection();
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_sequenceWriteSession->GetSocket()->GetSocketFD());
+    m_sequenceWriteSession->EstablishConnection();
+
+    m_sequenceReadSession = new LRTTransferSession();
+    m_sequenceReadSession->Init();
+    // conn to connector
+    while (!m_sequenceReadSession->Connect(ip, port)) {
+        LI("connecting to sequence server read %s:%u waiting...\n", ip.c_str(), port);
+        usleep(100*1000);
+    }
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_sequenceReadSession->GetSocket()->GetSocketFD());
+    m_sequenceReadSession->EstablishConnection();
     return true;
 }
 
@@ -177,24 +187,45 @@ bool LRTConnManager::TryConnectSequence(const std::string ip, unsigned short por
 {
     LI("MRTConnManager::TryConneectSequence ip:%s, port:%u\n", ip.c_str(), port);
     //TODO:
-    //check m_sequenceSession
-    m_sequenceSession = new LRTTransferSession();
-    m_sequenceSession->Init();
+    //check m_sequenceWriteSession
+    m_sequenceWriteSession = new LRTTransferSession();
+    m_sequenceWriteSession->Init();
     // conn to connector
 
     bool ok = false;
     int times = 0;
     do{
-        ok = m_sequenceSession->Connect(ip, port);
-        LI("try %d times to connect sequence server %s:%u, waiting...\n", times, ip.c_str(), port);
+        ok = m_sequenceWriteSession->Connect(ip, port);
+        LI("try %d times to connect sequence server write %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
 
     if (ok) {
-        m_sequenceSession->EstablishConnection();
+        m_sequenceWriteSession->EstablishConnection();
         return true;
     } else {
-        m_connectingSessList.push_back(m_sequenceSession);
+        m_connectingSessList.push_back(m_sequenceWriteSession);
+        if (m_pConnDispatcher)
+            m_pConnDispatcher->Signal(Task::kIdleEvent);
+        return false;
+    }
+
+    //check m_sequenceReadSession
+    m_sequenceReadSession = new LRTTransferSession();
+    m_sequenceReadSession->Init();
+    // conn to connector
+
+    do{
+        ok = m_sequenceReadSession->Connect(ip, port);
+        LI("try %d times to connect sequence server read %s:%u, waiting...\n", times, ip.c_str(), port);
+        usleep(1000*1000);
+    }while(!ok && ++times < 5);
+
+    if (ok) {
+        m_sequenceReadSession->EstablishConnection();
+        return true;
+    } else {
+        m_connectingSessList.push_back(m_sequenceReadSession);
         if (m_pConnDispatcher)
             m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
@@ -249,10 +280,16 @@ bool LRTConnManager::TryConnectStorage(const std::string ip, unsigned short port
     }
 }
 
-void LRTConnManager::PushSeqnMsg(const std::string& smsg)
+void LRTConnManager::PushSeqnReadMsg(const std::string& smsg)
 {
-    if (m_sequenceSession && m_sequenceSession->IsLiveSession())
-        m_sequenceSession->SendTransferData(smsg);
+    if (m_sequenceReadSession && m_sequenceReadSession->IsLiveSession())
+        m_sequenceReadSession->SendTransferData(smsg);
+}
+
+void LRTConnManager::PushSeqnWriteMsg(const std::string& smsg)
+{
+    if (m_sequenceWriteSession && m_sequenceWriteSession->IsLiveSession())
+        m_sequenceWriteSession->SendTransferData(smsg);
 }
 
 void LRTConnManager::PushStoreReadMsg(const std::string& srmsg)

@@ -101,7 +101,7 @@ void SRTStorageRedis::OnPushEvent(const char*pData, int nSize)
     if (m_RecvStoreMsg.mflag() == pms::EStorageType::TWRITE)
     {
         char key[1024] = {'\0'};
-        sprintf(key, "%s:%s", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.msgid().c_str());
+        sprintf(key, "%s:%lld", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.sequence());
         m_redisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
         bool ok = m_xRedisClient.set(*m_redisDBIdx, key, m_RecvStoreMsg.content().c_str());
@@ -122,7 +122,7 @@ void SRTStorageRedis::OnPushEvent(const char*pData, int nSize)
     {
         std::string str("");
         char key[1024] = {'\0'};
-        sprintf(key, "%s:%s", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.msgid().c_str());
+        sprintf(key, "%s:%lld", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.sequence());
         m_redisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
         bool ok = m_xRedisClient.get(*m_redisDBIdx, key, str);

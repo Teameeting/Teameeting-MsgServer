@@ -100,6 +100,46 @@ bool RTHiredis::CmdGet(const std::string key, std::string& value)
     return true;
 }
 
+bool RTHiredis::CmdSet(const std::string key, long long value)
+{
+    if (!m_redisContext || key.empty()) {
+        return false;
+    }
+    redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "SET %s %lld", key.c_str(), value);
+    if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
+        if (m_redisReply) {
+            printf("error::%s\n", m_redisReply->str);
+        }
+        return false;
+    }
+    freeReplyObject((void*)m_redisReply);
+    return true;
+}
+
+bool RTHiredis::CmdGet(const std::string key, long long* value)
+{
+    if (!m_redisContext || key.empty() || value == nullptr) {
+        return false;
+    }
+    redisReply* m_redisReply = (redisReply*)redisCommand(m_redisContext, "GET %s", key.c_str());
+    if (!m_redisReply || m_redisReply->type == REDIS_REPLY_ERROR) {
+        if (m_redisReply) {
+            printf("error::%s\n", m_redisReply->str);
+        }
+        return false;
+    }
+    if (m_redisReply->str) {
+        printf("CmdGet str long long:%s\n", m_redisReply->str);
+        char* endptr;
+        *value = (long long)strtoll(m_redisReply->str, &endptr, 10);
+    } else if (m_redisReply->integer) {
+        printf("CmdGet integaer long long :%lld\n", m_redisReply->integer);
+         *value = m_redisReply->integer;
+    }
+    freeReplyObject((void*)m_redisReply);
+    return true;
+}
+
 bool RTHiredis::CmdSet(const std::string key, int value)
 {
     if (!m_redisContext || key.empty()) {

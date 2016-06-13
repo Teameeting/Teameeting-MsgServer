@@ -13,11 +13,12 @@
 #define DEF_PROTO 1
 #include "MsgServer/proto/storage_msg.pb.h"
 
-SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int clientNum, const std::string& userid, const std::string& msgid, long long seqn)
+SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int reqType, int clientNum, const std::string& userid, const std::string& msgid, long long seqn)
 : m_pRedisManager(manager)
 , m_ClientNum(clientNum)
+, m_ReqType(reqType)
+, m_UserId(userid)
 {
-    m_UserId = userid;
     AddResponse(msgid, seqn);
 }
 
@@ -28,20 +29,41 @@ SRTResponseCollection::~SRTResponseCollection()
 
 void SRTResponseCollection::AddResponse(const std::string& msgid, long long seqn)
 {
-    SeqnResponseMapCIt cit = m_SeqnResponse.find(msgid);
-    if (cit != m_SeqnResponse.end())
+    printf("SRTResponseCollection::AddResponse m_ReqType:%d\n", m_ReqType);
+    if (m_ReqType==REQUEST_TYPE_READ)
     {
-        //printf("SRTResponseCollection::AddResponse find msgid:%s\n", msgid.c_str());
-        if (cit->second->AddAndCheckResp(seqn))
+        SeqnResponseMapCIt cit = m_ReadSeqnResponse.find(msgid);
+        if (cit != m_ReadSeqnResponse.end())
         {
-             delete cit->second;
-             m_SeqnResponse.erase(cit);
-             //printf("after erase m_SeqnResponse.size:%d\n", m_SeqnResponse.size());
+            printf("SRTResponseCollection::AddResponse find msgid:%s\n", msgid.c_str());
+            if (cit->second->AddAndCheckRead(seqn))
+            {
+                delete cit->second;
+                m_ReadSeqnResponse.erase(cit);
+                printf("after erase m_SeqnResponse.size:%d\n", m_ReadSeqnResponse.size());
+            }
+        } else {
+            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", msgid.c_str());
+            m_ReadSeqnResponse.insert(make_pair(msgid, new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, msgid, this, m_pRedisManager)));
+            printf("after insert m_ReadSeqnResponse.size:%d\n", m_ReadSeqnResponse.size());
         }
-    } else {
-        //printf("SRTResponseCollection::AddResponse not find msgid:%s\n", msgid.c_str());
-        m_SeqnResponse.insert(make_pair(msgid, new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, msgid, this, m_pRedisManager)));
-        //printf("after insert m_SeqnResponse.size:%d\n", m_SeqnResponse.size());
+    } else if (m_ReqType==REQUEST_TYPE_WRITE)
+    {
+        SeqnResponseMapCIt cit = m_WriteSeqnResponse.find(msgid);
+        if (cit != m_WriteSeqnResponse.end())
+        {
+            printf("SRTResponseCollection::AddResponse find msgid:%s\n", msgid.c_str());
+            if (cit->second->AddAndCheckWrite(seqn))
+            {
+                delete cit->second;
+                m_WriteSeqnResponse.erase(cit);
+                printf("after erase m_WriteSeqnResponse.size:%d\n", m_WriteSeqnResponse.size());
+            }
+        } else {
+            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", msgid.c_str());
+            m_WriteSeqnResponse.insert(make_pair(msgid, new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, msgid, this, m_pRedisManager)));
+            printf("after insert m_WriteSeqnResponse.size:%d\n", m_WriteSeqnResponse.size());
+        }
     }
 }
 
@@ -59,11 +81,13 @@ SRTResponseCollection::MsgSeqn::MsgSeqn(int clientNum, long long seqn, const std
 , rmanager(manager)
 {
     seqns.insert(seqn);
-    SequenceResponse.connect(rmanager, &SRTRedisManager::OnAddAndCheckSeqn);
+    WriteResponse.connect(rmanager, &SRTRedisManager::OnAddAndCheckWrite);
+    ReadResponse.connect(rmanager, &SRTRedisManager::OnAddAndCheckRead);
 }
 SRTResponseCollection::MsgSeqn::~MsgSeqn()
 {
+    ReadResponse.disconnect(rmanager);
+    WriteResponse.disconnect(rmanager);
     seqns.clear();
-    SequenceResponse.disconnect(rmanager);
 }
 

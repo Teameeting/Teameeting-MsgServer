@@ -52,7 +52,8 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
                 m_Session->RefreshTime();
             continue;
         }
-        m_RedisManager.PushRedisRequest(packed.msgs(i).SerializeAsString());
+        printf("SRTSequenceGenerator::OnPostEvent was called, m_RedisManager.PushRedisRequest\n");
+        m_RedisManager.PostRedisRequest(packed.msgs(i).SerializeAsString());
     }
     SInt64 curTime = OS::Milliseconds();
     if (m_LastUpdateTime + SESSION_TIMEOUT < curTime)
@@ -69,7 +70,35 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
 
 void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
 {
-
+    if (!pData || nSize <= 0) {
+        return;
+    }
+    std::string str(pData, nSize);
+    pms::PackedStoreMsg packed;
+    packed.ParseFromString(str);
+    for(int i=0;i<packed.msgs_size();++i)
+    {
+        if (packed.msgs(i).userid().compare("keepalive")==0)
+        {
+            //if here is not get in time, the following will be work too
+            if (m_Session && m_Session->IsLiveSession())
+                m_Session->RefreshTime();
+            continue;
+        }
+        printf("SRTSequenceGenerator::OnPushEvent was called, m_RedisManager.PushRedisRequest\n");
+        m_RedisManager.PushRedisRequest(packed.msgs(i).SerializeAsString());
+    }
+    SInt64 curTime = OS::Milliseconds();
+    if (m_LastUpdateTime + SESSION_TIMEOUT < curTime)
+    {
+        m_LastUpdateTime = curTime;
+        if (m_Session && m_Session->IsLiveSession())
+        {
+            m_Session->RefreshTime();
+        } else {
+            Assert(false);
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////

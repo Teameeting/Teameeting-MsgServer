@@ -31,7 +31,8 @@ public:
 
     std::string GetHostForTest() { return this->GetHost(); }
 
-    sigslot::signal3<const std::string&, const std::string&, long long> RequestResponse;
+    sigslot::signal3<const std::string&, const std::string&, long long> WriteResponse;
+    sigslot::signal3<const std::string&, const std::string&, long long> ReadResponse;
 
 // from RTEventLooper
 public:
