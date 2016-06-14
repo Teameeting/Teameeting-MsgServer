@@ -17,6 +17,8 @@
 #include "proto/common_msg.pb.h"
 #include "proto/meet_msg.pb.h"
 #include "proto/meet_msg_type.pb.h"
+#include "proto/storage_msg.pb.h"
+#include "proto/storage_msg_type.pb.h"
 #else
 #include "RTSignalMsg.h"
 #include "RTMeetMsg.h"
@@ -38,6 +40,9 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid);
 
+    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn);
+    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn);
+
     int DecodeRecvData(const char* pData, int nLen);
 
 public:
@@ -53,6 +58,8 @@ protected:
     int DecodeGetMsg(int code, const std::string& cont);
     int DecodeLogout(int code, const std::string& cont);
     int DecodeKeepAlive(int code, const std::string& cont);
+    int DecodeSyncSeqn(int code, const std::string& cont);
+    int DecodeSyncData(int code, const std::string& cont);
 private:
     XMsgCallback        &m_callback;
     XMsgClientHelper    &m_helper;

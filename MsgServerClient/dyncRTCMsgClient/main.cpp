@@ -8,9 +8,10 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <google/protobuf/message.h>
 #include "webrtc/base/logging.h"
 #include "RTConnClientManager.hpp"
-#include <google/protobuf/message.h>
+#include "RTClientTest.hpp"
 
 #define KRUN 1
 #define KRUNONCE 2
@@ -22,8 +23,10 @@
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
     rtc::LogMessage::LogToDebug(rtc::INFO);
-    RTConnClientManager manager;
-    manager.RunTest(KRUN);
+    //RTConnClientManager manager;
+    //manager.RunTest(KRUN);
+    RTClientTest test;
+    test.RunTest(KRUNONCE);
     google::protobuf::ShutdownProtobufLibrary();
     LOG(INFO) << "bye bye client...";
     return 0;

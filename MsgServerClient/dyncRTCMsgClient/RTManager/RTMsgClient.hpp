@@ -39,6 +39,9 @@ public:
     void EnterRoom();
     void LeaveRoom();
     void SendMsg(const std::string& msg);
+
+    void SyncSeqn();
+    void SyncData();
 public:
     const std::string& GetUserId() { return mUserid; }
     int GetRecvNums() { return mRecvNum; }

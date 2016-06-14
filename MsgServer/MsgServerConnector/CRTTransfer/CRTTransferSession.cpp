@@ -142,12 +142,13 @@ void CRTTransferSession::ConnectionConnNotify(const std::string& uid, const std:
 #endif
 }
 
-void CRTTransferSession::TransferMsg(const std::string& msg)
+void CRTTransferSession::TransferMsg(pms::EServerCmd cmd, const std::string& msg)
 {
 #if DEF_PROTO
     pms::TransferMsg t_msg;
     pms::RelayMsg r_msg;
 
+    r_msg.set_svr_cmds(cmd);
     r_msg.set_tr_module(pms::ETransferModule::MCONNECTOR);
     r_msg.set_connector(CRTConnManager::Instance().ConnectorId());
     r_msg.set_content(msg);

@@ -174,10 +174,10 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
         LI("Starting Dispatcher Http service:(%d) ok...\n", usHttpPort);
     }
 
-    if (!(DRTConnManager::Instance().ConnectHttpSvrConn())) {
-        LE("ConnectHttpSvrConn failed\n");
-        return -1;
-    }
+    //if (!(DRTConnManager::Instance().ConnectHttpSvrConn())) {
+    //    LE("ConnectHttpSvrConn failed\n");
+    //    return -1;
+    //}
 
    return 0;
 }

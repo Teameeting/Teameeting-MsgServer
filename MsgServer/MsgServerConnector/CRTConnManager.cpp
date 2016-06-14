@@ -163,7 +163,7 @@ bool CRTConnManager::DelUser(pms::EConnType type, const std::string& uid, std::s
 
 void CRTConnManager::ConnectionLostNotify(const std::string& uid, const std::string& token)
 {
-    ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MMEETING);
+    ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MLIVE);
     if (pmi && pmi->pModule) {
         pmi->pModule->ConnectionLostNotify(uid, token);
     } else {
@@ -182,7 +182,7 @@ void CRTConnManager::ConnectionLostNotify(const std::string& uid, const std::str
 
 void CRTConnManager::ConnectionConnNotify(const std::string& uid, const std::string& token)
 {
-    ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MMEETING);
+    ModuleInfo* pmi = findModuleInfo(uid, pms::ETransferModule::MLIVE);
     if (pmi && pmi->pModule) {
         pmi->pModule->ConnectionConnNotify(uid, token);
     } else {
@@ -205,11 +205,11 @@ void CRTConnManager::TransferSessionLostNotify(const std::string& sid)
     DelTypeModuleSession(sid);
 }
 
-void CRTConnManager::TransferMsg(pms::EModuleType module, const std::string& uid, const std::string& msg)
+void CRTConnManager::TransferMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& uid, const std::string& msg)
 {
     ModuleInfo* pmi = findModuleInfo(uid, (pms::ETransferModule)module);
     if (pmi && pmi->pModule) {
-        pmi->pModule->TransferMsg(msg);
+        pmi->pModule->TransferMsg(cmd, msg);
     } else {
         LE("TransferMsg module type:%d is NULL\n", (int)module);
         Assert(false);

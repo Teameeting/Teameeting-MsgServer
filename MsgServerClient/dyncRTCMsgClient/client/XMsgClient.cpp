@@ -34,6 +34,7 @@ XMsgClient::XMsgClient()
 , m_autoConnect(true)
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
+, m_curSeqn(20)
 {
 
 }
@@ -190,6 +191,39 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, p
 
     return SendEncodeMsg(outstr);
 }
+
+int XMsgClient::SyncSeqn()
+{
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, m_curSeqn);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+    printf("XMsgClient::SyncSeqn was called\n");
+
+    return SendEncodeMsg(outstr);
+}
+
+int XMsgClient::SyncData()
+{
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+     printf("XMsgClient::SyncData was called\n");
+   }
+
+    return SendEncodeMsg(outstr);
+}
+
 
 ////////////////////////////////////////////
 ////////////////private/////////////////////

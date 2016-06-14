@@ -39,6 +39,8 @@ public:
     virtual void OnGetMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnLogout(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnResponse(const char*pData, int nLen)=0;
 
 private:

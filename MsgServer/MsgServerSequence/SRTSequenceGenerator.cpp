@@ -52,7 +52,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
                 m_Session->RefreshTime();
             continue;
         }
-        printf("SRTSequenceGenerator::OnPostEvent was called, m_RedisManager.PushRedisRequest\n");
+        printf("SRTSequenceGenerator::OnPostEvent was called, m_RedisManager.PostRedisRequest\n");
         m_RedisManager.PostRedisRequest(packed.msgs(i).SerializeAsString());
     }
     SInt64 curTime = OS::Milliseconds();

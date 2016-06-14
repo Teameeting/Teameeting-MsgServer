@@ -180,6 +180,29 @@ void RTMsgClient::SendMsg(const std::string& msg)
     }
 }
 
+void RTMsgClient::SyncSeqn()
+{
+    mIsOnline = true;
+    if (mIsOnline) {
+        printf("RTMsgClient::SyncSeqn was called\n");
+
+        Init();
+        Connecting();
+        mMsgClient.SyncSeqn();
+    }
+}
+
+void RTMsgClient::SyncData()
+{
+    mIsOnline = true;
+    if (mIsOnline) {
+        printf("RTMsgClient::SyncData was called\n");
+
+        Init();
+        Connecting();
+        mMsgClient.SyncData();
+    }
+}
 
 void RTMsgClient::ShowRecvMsg()
 {

@@ -42,7 +42,7 @@ public:
     void SendTransferData(const char* pData, int nLen);
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void ConnectionConnNotify(const std::string& uid, const std::string& token);
-    void TransferMsg(const std::string& msg);
+    void TransferMsg(pms::EServerCmd cmd, const std::string& msg);
 
     void TestConnection();
 

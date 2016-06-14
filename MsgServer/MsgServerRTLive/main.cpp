@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
 #if 0
     L_Init(0, NULL);
 #else
-    L_Init(0, "./logical.log");
+    L_Init(0, "./ms_rtlive.log");
 #endif
     LRTRTLive::Initialize(1024);
     LRTRTLive* pRTLive = LRTRTLive::Inst();
@@ -65,7 +65,7 @@ int main(int argc, const char * argv[]) {
     //                  );
     //signal(SIGUSR1, sighandler);
     //signal(SIGUSR2, sighandler);
-    int res = pRTLive->Start("192.168.7.207", 6650, "192.168.7.207", 6660, "192.168.7.207", 6670);
+    int res = pRTLive->Start("192.168.7.207", 6680, "192.168.7.207", 6620, "192.168.7.207", 6670, "192.168.7.207", 6640);
     int test = 0;
     if (res != 0) {
         LI("LRTRTLive start failed and goto exit, res:%d\n", res);

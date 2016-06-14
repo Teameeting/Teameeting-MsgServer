@@ -44,6 +44,9 @@ public:
 
     int NotifyMsg(const std::string& roomid, const std::string& rname, pms::EMsgTag tag, const std::string& msg);
 
+    int SyncSeqn();
+    int SyncData();
+
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
 
@@ -83,6 +86,7 @@ private:
     bool                     m_autoConnect;
     bool                     m_login;
     MSState                  m_msState;
+    long long                m_curSeqn;
 };
 
 

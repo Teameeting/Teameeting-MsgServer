@@ -308,6 +308,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
         LE("r_msg.ParseFromString error\n");
         return;
     }
+    LI("DRTTransferSession::OnTypeQueue was called\n");
     //get all user
     pms::ToUser auser = rmsg.touser();
     bool needDispatch = false;

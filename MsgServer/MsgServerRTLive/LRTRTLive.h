@@ -34,13 +34,14 @@ public:
 	static LRTRTLive* Inst();
 
 public:
-	int		Start(const char*pSequenceIp, unsigned short usSequencePort, const char*pStorageIp, unsigned short usStoragePort, const char*pModuleIp, unsigned short usModulePort);
+	int		Start(const char*pRTLiveIp, unsigned short usRTLivePort, const char*pConnectorIp, unsigned short usConnectorPort, const char*pLogicalIp, unsigned short usLogicalPort, const char*pDispatcherIp, unsigned short usDispatcherPort);
+
 	void	DoTick();
 	void	Stop();
 
 private:
 
-    LRTRTLiveListener    *m_pModuleListener;
+    LRTRTLiveListener    *m_pRTLiveListener;
 
 };
 

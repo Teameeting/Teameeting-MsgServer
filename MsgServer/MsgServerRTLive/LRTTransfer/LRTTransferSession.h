@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <queue>
 #include "SocketUtils.h"
 #include "TCPSocket.h"
 #include "RTTcpNoTimeout.h"
@@ -35,6 +36,7 @@ public:
     LRTTransferSession();
     virtual ~LRTTransferSession();
     void Init();
+    void InitConf();
     void Unit();
     bool Connect(const std::string addr, int port);
     bool Connect();
@@ -54,13 +56,25 @@ public:
 public:
     void EstablishConnection();
 
+    void PushSeqnReq2Queue(const std::string& str)
+    {
+        OSMutexLocker locker(&m_mutexQueueSeqn);
+        m_queueSeqnMsg.push(str);
+    }
+
+    void PushDataReq2Queue(const std::string& str)
+    {
+        OSMutexLocker locker(&m_mutexQueueData);
+        m_queueDataMsg.push(str);
+    }
+
 // from RTTcpNoTimeout
 public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
-    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen);
     virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen) {}
+    virtual void OnTickEvent(const char*pData, int nLen);
 
 // from RTTransfer
 public:
@@ -87,6 +101,14 @@ private:
     std::string     m_addr;
     int             m_port;
     int             m_connectingStatus;
+
+    pms::PackedStoreMsg         m_packedSeqnMsg;
+    std::queue<std::string>     m_queueSeqnMsg;
+    OSMutex                     m_mutexQueueSeqn;
+
+    pms::PackedStoreMsg         m_packedDataMsg;
+    std::queue<std::string>     m_queueDataMsg;
+    OSMutex                     m_mutexQueueData;
 };
 
 #endif /* defined(__MsgServerRTLive__LRTTransferSession__) */

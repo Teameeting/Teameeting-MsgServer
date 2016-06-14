@@ -17,7 +17,7 @@
 
 static bool		g_inited = false;
 static char*	g_pVersion = (char*)"0.01.20150810";
-static LRTRTLive*	g_pModule = NULL;
+static LRTRTLive*	g_pRTLive = NULL;
 
 void LRTRTLive::PrintVersion()
 {
@@ -71,14 +71,14 @@ void LRTRTLive::Initialize(int evTbSize)
 
 	Socket::StartThread();// start EventThread
 	OSThread::Sleep(100);
-	g_pModule = new LRTRTLive();
+	g_pRTLive = new LRTRTLive();
 	g_inited = true;
 }
 
 void LRTRTLive::DeInitialize()
 {
-	delete g_pModule;
-	g_pModule = NULL;
+	delete g_pRTLive;
+	g_pRTLive = NULL;
 	g_inited = false;
 	TaskThreadPool::RemoveThreads();
 
@@ -100,78 +100,82 @@ void LRTRTLive::DeInitialize()
 
 LRTRTLive* LRTRTLive::Inst()
 {
-	Assert(g_pModule != NULL);
-	return g_pModule;
+	Assert(g_pRTLive != NULL);
+	return g_pRTLive;
 }
 
 LRTRTLive::LRTRTLive(void)
-: m_pModuleListener(NULL)
+: m_pRTLiveListener(NULL)
 {
 
 }
 
 LRTRTLive::~LRTRTLive(void)
 {
-    if (m_pModuleListener)
+    if (m_pRTLiveListener)
     {
-        delete m_pModuleListener;
-        m_pModuleListener = NULL;
+        delete m_pRTLiveListener;
+        m_pRTLiveListener = NULL;
     }
 }
 
-int	LRTRTLive::Start(const char*pSequenceIp, unsigned short usSequencePort, const char*pStorageIp, unsigned short usStoragePort, const char*pModuleIp, unsigned short usModulePort)
+int	LRTRTLive::Start(const char*pRTLiveIp, unsigned short usRTLivePort, const char*pConnectorIp, unsigned short usConnectorPort, const char*pLogicalIp, unsigned short usLogicalPort, const char*pDispatcherIp, unsigned short usDispatcherPort)
 {
 	Assert(g_inited);
-	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
+	Assert(pRTLiveIp != NULL && strlen(pRTLiveIp)>0);
     LRTRTLiveManager::Instance().InitManager();
+    LRTConnManager::Instance().InitManager();
 
-    char *ip1 = "192.168.7.213";
-    char *ip2 = "192.168.7.225";
-    int port = 6379;
-
-    char addr[24] = {0};
-    sprintf(addr, "%s %d", ip1, port);
-    LRTRTLiveManager::Instance().PushRedisHosts(addr);
-    //memset(addr, 0, 24);
-    //sprintf(addr, "%s %d", ip2, port);
-    //LRTRTLiveManager::Instance().PushRedisHosts(addr);
-
-	if(usSequencePort > 0)
+	if(usLogicalPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pSequenceIp, usSequencePort);
-        LRTConnManager::Instance().GetSequenceAddrList()->push_front(addr);
+        sprintf(addr, "%s %u", pLogicalIp, usLogicalPort);
+        printf("logical addr:%s\n", addr);
+        LRTConnManager::Instance().GetLogicalAddrList()->push_front(addr);
 
-        if (!(LRTConnManager::Instance().ConnectSequence())) {
-            LE("Start to ConnectSequence failed\n");
+        if (!(LRTConnManager::Instance().ConnectLogical())) {
+            LE("Start to ConnectLogical failed\n");
             return -1;
         }
 	}
 
-    if(usStoragePort > 0)
+    if(usConnectorPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pStorageIp, usStoragePort);
-        LRTConnManager::Instance().GetStorageAddrList()->push_front(addr);
+        sprintf(addr, "%s %u", pConnectorIp, usConnectorPort);
+        printf("connector addr:%s\n", addr);
+        LRTConnManager::Instance().GetConnectorAddrList()->push_front(addr);
 
-        if (!(LRTConnManager::Instance().ConnectStorage())) {
-            LE("Start to ConnectStorage failed\n");
+        if (!(LRTConnManager::Instance().ConnectConnector())) {
+            LE("Start to ConnectConnector failed\n");
             return -1;
         }
 	}
 
-    std::string ssid;
-    if (usModulePort > 0) {
-        m_pModuleListener = new LRTRTLiveListener();
-        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
+    if(usDispatcherPort > 0)
+	{
+        char addr[24] = {0};
+        sprintf(addr, "%s %u", pDispatcherIp, usDispatcherPort);
+        printf("dispatcher addr:%s\n", addr);
+        LRTConnManager::Instance().GetDispatcherAddrList()->push_front(addr);
+
+        if (!(LRTConnManager::Instance().ConnectDispatcher())) {
+            LE("Start to ConnectDispatcher failed\n");
+            return -1;
+        }
+	}
+
+    if (usRTLivePort > 0) {
+        m_pRTLiveListener = new LRTRTLiveListener();
+        OS_Error err = m_pRTLiveListener->Initialize(INADDR_ANY, usRTLivePort);
         if (err!=OS_NoErr) {
-            LE("CreateModuleListener error port:%d\n", usModulePort);
-            delete m_pModuleListener;
-            m_pModuleListener = NULL;
+            LE("CreateRTLiveListener error port:%d\n", usRTLivePort);
+            delete m_pRTLiveListener;
+            m_pRTLiveListener = NULL;
             return -1;
         }
-        LI("Start Module service:(%d) ok...,socketFD:%d\n", usModulePort, m_pModuleListener->GetSocketFD());
-        m_pModuleListener->RequestEvent(EV_RE);
+        LI("Start RTLive service:(%d) ok...,socketFD:%d\n", usRTLivePort, m_pRTLiveListener->GetSocketFD());
+        m_pRTLiveListener->RequestEvent(EV_RE);
     }
 	return 0;
 }
@@ -179,12 +183,13 @@ int	LRTRTLive::Start(const char*pSequenceIp, unsigned short usSequencePort, cons
 void LRTRTLive::DoTick()
 {
 #if 1
-    //LRTRTLiveManager::Instance().GenerateModule();
+    LRTConnManager::Instance().RefreshConnection();
 #endif
 }
 
 void LRTRTLive::Stop()
 {
+    LRTConnManager::Instance().UninManager();
     LRTRTLiveManager::Instance().SignalKill();
     LRTRTLiveManager::Instance().ClearAll();
     LRTRTLiveManager::Instance().UninManager();

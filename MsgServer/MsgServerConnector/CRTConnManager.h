@@ -142,7 +142,7 @@ public:
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void ConnectionConnNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
-    void TransferMsg(pms::EModuleType mType, const std::string& uid, const std::string& msg);
+    void TransferMsg(pms::EServerCmd cmd, pms::EModuleType type, const std::string& uid, const std::string& msg);
     bool    SignalKill();
     bool    ClearAll();
 

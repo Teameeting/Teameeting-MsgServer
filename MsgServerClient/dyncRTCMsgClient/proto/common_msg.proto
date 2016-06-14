@@ -10,6 +10,8 @@ enum EServerCmd{
     CGETMSG     = 2;
     CLOGOUT     = 3;
     CKEEPALIVE  = 4;
+    CSYNCSEQN   = 5;
+    CSYNCDATA   = 6;
 }
 
 // different server module
@@ -23,6 +25,9 @@ enum EModuleType{
     TP2P        = 3;
     TLIVE       = 4;
     TCALLCENTER = 5;
+    TLOGICAL    = 6;
+    TSEQUENCE   = 7;
+    TSTORAGE    = 8;
 }
 
 // this is for request

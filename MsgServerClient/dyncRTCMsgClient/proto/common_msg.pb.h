@@ -45,12 +45,14 @@ enum EServerCmd {
   CGETMSG = 2,
   CLOGOUT = 3,
   CKEEPALIVE = 4,
+  CSYNCSEQN = 5,
+  CSYNCDATA = 6,
   EServerCmd_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EServerCmd_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EServerCmd_IsValid(int value);
 const EServerCmd EServerCmd_MIN = CLOGIN;
-const EServerCmd EServerCmd_MAX = CKEEPALIVE;
+const EServerCmd EServerCmd_MAX = CSYNCDATA;
 const int EServerCmd_ARRAYSIZE = EServerCmd_MAX + 1;
 
 enum EModuleType {
@@ -60,12 +62,15 @@ enum EModuleType {
   TP2P = 3,
   TLIVE = 4,
   TCALLCENTER = 5,
+  TLOGICAL = 6,
+  TSEQUENCE = 7,
+  TSTORAGE = 8,
   EModuleType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EModuleType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EModuleType_IsValid(int value);
 const EModuleType EModuleType_MIN = TINVALID0;
-const EModuleType EModuleType_MAX = TCALLCENTER;
+const EModuleType EModuleType_MAX = TSTORAGE;
 const int EModuleType_ARRAYSIZE = EModuleType_MAX + 1;
 
 // ===================================================================

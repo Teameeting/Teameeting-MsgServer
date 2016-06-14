@@ -42,7 +42,7 @@ public:
         LRTTransferSession*     pModule;
         _ModuleInfo() {
             flag = 0;
-            othModuleType = pms::ETransferModule::MLOGICAL;
+            othModuleType = pms::ETransferModule::MLIVE;
             othModuleId = "";
             pModule = NULL;
         }
@@ -56,7 +56,7 @@ public:
         std::string moduleId;
         std::set<std::string> sessionIds;
         _TypeModuleSessionInfo() {
-            moduleType = pms::ETransferModule::MLOGICAL;
+            moduleType = pms::ETransferModule::MLIVE;
             moduleId = "";
             sessionIds.clear();
         }
@@ -89,20 +89,30 @@ public:
 
     void TransferSessionLostNotify(const std::string& sid);
 
-    bool    ConnectSequence();
-    bool TryConnectSequence(const std::string ip, unsigned short port);
+    void InitManager();
+    void UninManager();
 
-    bool    ConnectStorage();
-    bool TryConnectStorage(const std::string ip, unsigned short port);
+    bool    ConnectLogical();
+    bool TryConnectLogical(const std::string ip, unsigned short port);
 
-    std::list<std::string>* GetSequenceAddrList() { return &m_sequenceAddrList; }
-    std::list<std::string>* GetStorageAddrList() { return &m_storageAddrList; }
+    bool    ConnectConnector();
+    bool TryConnectConnector(const std::string ip, unsigned short port);
+
+    bool    ConnectDispatcher();
+    bool TryConnectDispatcher(const std::string ip, unsigned short port);
+
+    std::list<std::string>* GetLogicalAddrList() { return &m_logicalAddrList; }
+    std::list<std::string>* GetConnectorAddrList() { return &m_connectorAddrList; }
+    std::list<std::string>* GetDispatcherAddrList() { return &m_dispatcherAddrList; }
 
     void    RefreshConnection();
     void    SendTransferData(const std::string mid, const std::string uid, const std::string msg);
 
-    void SetModuleId(const std::string& mid) { m_logicalId = mid; }
-    std::string& ModuleId() { return m_logicalId; }
+    void PushSeqnReq2Queue(const std::string& str);
+    void PushDataReq2Queue(const std::string& str);
+
+    void SetRTLiveId(const std::string& mid) { m_rtliveId = mid; }
+    std::string& RTLiveId() { return m_rtliveId; }
     bool    SignalKill();
     bool    ClearAll();
 
@@ -119,15 +129,23 @@ protected:
     LRTConnManager():m_pConnDispatcher(NULL) { }
     ~LRTConnManager() { }
 private:
-    bool DoConnectSequence(const std::string ip, unsigned short port);
-    bool DoConnectStorage(const std::string ip, unsigned short port);
-    std::list<std::string>    m_sequenceAddrList;
-    std::list<std::string>    m_storageAddrList;
-    std::string               m_logicalId;
+    bool DoConnectLogical(const std::string ip, unsigned short port);
+    bool DoConnectConnector(const std::string ip, unsigned short port);
+    bool DoConnectDispatcher(const std::string ip, unsigned short port);
+
+    std::list<std::string>    m_logicalAddrList;
+    std::list<std::string>    m_connectorAddrList;
+    std::list<std::string>    m_dispatcherAddrList;
+
+    std::string               m_rtliveId;
     OSMutex                   m_mutexMembers;
     LRTConnDispatcher*        m_pConnDispatcher;
     UserConnectorMaps         m_userConnectors;
     ConnectingSessList        m_connectingSessList;
+
+    LRTTransferSession*       m_logicalSession;
+    LRTTransferSession*       m_dispatcherSession;
+
 };
 
 #endif /* defined(__MsgServerRTLive__LRTConnManager__) */

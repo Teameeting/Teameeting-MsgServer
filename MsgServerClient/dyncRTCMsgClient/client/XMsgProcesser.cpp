@@ -117,6 +117,44 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn)
+{
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_mflag(pms::EStorageType::TREAD);
+    store.set_userid(userid);
+    store.set_sequence(seqn);
+
+    printf("XMsgProcesser::EncodeSyncSeqn was called\n");
+    req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
+    req.set_mod_type(pms::EModuleType::TLIVE);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
+#endif
+    return 0;
+}
+
+int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn)
+{
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_mflag(pms::EStorageType::TREAD);
+    store.set_userid(userid);
+    store.set_sequence(seqn);
+
+    printf("XMsgProcesser::EncodeSyncSeqn was called\n");
+    req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+    req.set_mod_type(pms::EModuleType::TLIVE);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
+#endif
+    return 0;
+}
+
 /////////////////////////////////////////////////////
 ///////////////////DECODE MEETMSG////////////////////
 /////////////////////////////////////////////////////
@@ -148,6 +186,12 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 
         case pms::EServerCmd::CKEEPALIVE:
             DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
+            break;
+        case pms::EServerCmd::CSYNCSEQN:
+            DecodeSyncSeqn(resp.rsp_code(), resp.rsp_cont());
+            break;
+        case pms::EServerCmd::CSYNCDATA:
+            DecodeSyncData(resp.rsp_code(), resp.rsp_cont());
             break;
 
         default:
@@ -185,6 +229,22 @@ int XMsgProcesser::DecodeLogout(int code, const std::string& cont)
 
 int XMsgProcesser::DecodeKeepAlive(int code, const std::string& cont)
 {
+    return 0;
+}
+
+int XMsgProcesser::DecodeSyncSeqn(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("DecodeSyncSeqn userid:%s, sequence:%lld\n", store.userid().c_str(), store.sequence());
+    return 0;
+}
+
+int XMsgProcesser::DecodeSyncData(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("DecodeSyncData userid:%s, sequence:%lld, content:%s\n\n", store.userid().c_str(), store.sequence(), store.content().c_str());
     return 0;
 }
 

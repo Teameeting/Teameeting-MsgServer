@@ -93,127 +93,165 @@ LRTConnManager::ModuleInfo* LRTConnManager::findConnectorInfoById(const std::str
     return pInfo;
 }
 
-bool LRTConnManager::ConnectSequence()
+void LRTConnManager::InitManager()
 {
-    if (m_sequenceAddrList.size() == 0) {
+    m_logicalAddrList.clear();
+    m_connectorAddrList.clear();
+    m_dispatcherAddrList.clear();
+}
+
+void LRTConnManager::UninManager()
+{
+    m_logicalAddrList.clear();
+    m_connectorAddrList.clear();
+    m_dispatcherAddrList.clear();
+}
+
+
+bool LRTConnManager::ConnectLogical()
+{
+    if (m_logicalAddrList.size() == 0) {
         return false;
     }
     if (m_pConnDispatcher==NULL)
         m_pConnDispatcher = new LRTConnDispatcher();
     std::list<std::string>::iterator it;
-    for (it=m_sequenceAddrList.begin(); it!=m_sequenceAddrList.end(); it++) {
+    for (it=m_logicalAddrList.begin(); it!=m_logicalAddrList.end(); it++) {
         std::string s = *it;
+        printf("ConnectLogical logical addr:%s\n", s.c_str());
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
         printf("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
-            DoConnectSequence(ip, port);
+            DoConnectLogical(ip, port);
         }
     }
     return true;
 }
 
-bool LRTConnManager::ConnectStorage()
+bool LRTConnManager::TryConnectLogical(const std::string ip, unsigned short port)
 {
-    if (m_storageAddrList.size() == 0) {
-        return false;
-    }
-    if (m_pConnDispatcher==NULL)
-        m_pConnDispatcher = new LRTConnDispatcher();
-    std::list<std::string>::iterator it;
-    for (it=m_storageAddrList.begin(); it!=m_storageAddrList.end(); it++) {
-        std::string s = *it;
-        char ip[16] = {0};
-        unsigned int port = 0;
-        sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
-        if (strlen(ip)>0 && port > 2048) {
-            DoConnectSequence(ip, port);
-        }
-    }
-    return true;
-}
-
-bool LRTConnManager::DoConnectSequence(const std::string ip, unsigned short port)
-{
-    LRTTransferSession* sequenceSession = new LRTTransferSession();
-    sequenceSession->Init();
-    // conn to connector
-    while (!sequenceSession->Connect(ip, port)) {
-        LI("connecting to sequence server %s:%u waiting...\n", ip.c_str(), port);
-        usleep(100*1000);
-    }
-    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, sequenceSession->GetSocket()->GetSocketFD());
-    sequenceSession->EstablishConnection();
-    return true;
-}
-
-bool LRTConnManager::DoConnectStorage(const std::string ip, unsigned short port)
-{
-    LRTTransferSession* storageSession = new LRTTransferSession();
-    storageSession->Init();
-    // conn to connector
-    while (!storageSession->Connect(ip, port)) {
-        LI("connecting to sequence server %s:%u waiting...\n", ip.c_str(), port);
-        usleep(100*1000);
-    }
-    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, storageSession->GetSocket()->GetSocketFD());
-    storageSession->EstablishConnection();
-    return true;
-}
-
-bool LRTConnManager::TryConnectSequence(const std::string ip, unsigned short port)
-{
-    LI("LRTConnManager::TryConneectSequence ip:%s, port:%u\n", ip.c_str(), port);
-    LRTTransferSession* sequenceSession = new LRTTransferSession();
-    sequenceSession->Init();
-    // conn to connector
+    LI("LRTConnManager::TryConneectLogical ip:%s, port:%u\n", ip.c_str(), port);
+    LRTTransferSession* logicalSession = new LRTTransferSession();
+    logicalSession->Init();
+    // conn to logical
 
     bool ok = false;
     int times = 0;
     do{
-        ok = sequenceSession->Connect(ip, port);
-        LI("try %d times to connect sequence server %s:%u, waiting...\n", times, ip.c_str(), port);
+        ok = logicalSession->Connect(ip, port);
+        LI("try %d times to connect logical server %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
 
     if (ok) {
-        sequenceSession->EstablishConnection();
+        logicalSession->EstablishConnection();
         return true;
     } else {
-        m_connectingSessList.push_back(sequenceSession);
+        m_connectingSessList.push_back(logicalSession);
         if (m_pConnDispatcher)
             m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
     }
 }
 
-bool LRTConnManager::TryConnectStorage(const std::string ip, unsigned short port)
+bool LRTConnManager::ConnectConnector()
 {
-    LI("LRTConnManager::TryConneectStorage ip:%s, port:%u\n", ip.c_str(), port);
-    LRTTransferSession* storageSession = new LRTTransferSession();
-    storageSession->Init();
+    if (m_connectorAddrList.size() == 0) {
+        return false;
+    }
+    if (m_pConnDispatcher==NULL)
+        m_pConnDispatcher = new LRTConnDispatcher();
+    std::list<std::string>::iterator it;
+    for (it=m_connectorAddrList.begin(); it!=m_connectorAddrList.end(); it++) {
+        std::string s = *it;
+        printf("ConnectConnector connector addr:%s\n", s.c_str());
+        char ip[16] = {0};
+        unsigned int port = 0;
+        sscanf(s.c_str(), "%s %u", ip, &port);
+        printf("ip:%s, port:%u\n", ip, port);
+        if (strlen(ip)>0 && port > 2048) {
+            DoConnectConnector(ip, port);
+        }
+    }
+    return true;
+}
+
+bool LRTConnManager::TryConnectConnector(const std::string ip, unsigned short port)
+{
+    LI("LRTConnManager::TryConneectConnector ip:%s, port:%u\n", ip.c_str(), port);
+    LRTTransferSession* connectorSession = new LRTTransferSession();
+    connectorSession->Init();
     // conn to connector
 
     bool ok = false;
     int times = 0;
     do{
-        ok = storageSession->Connect(ip, port);
-        LI("try %d times to connect storage server %s:%u, waiting...\n", times, ip.c_str(), port);
+        ok = connectorSession->Connect(ip, port);
+        LI("try %d times to connect connector server %s:%u, waiting...\n", times, ip.c_str(), port);
         usleep(1000*1000);
     }while(!ok && ++times < 5);
 
     if (ok) {
-        storageSession->EstablishConnection();
+        connectorSession->EstablishConnection();
         return true;
     } else {
-        m_connectingSessList.push_back(storageSession);
+        m_connectingSessList.push_back(connectorSession);
         if (m_pConnDispatcher)
             m_pConnDispatcher->Signal(Task::kIdleEvent);
         return false;
     }
 }
+
+bool LRTConnManager::ConnectDispatcher()
+{
+    if (m_dispatcherAddrList.size() == 0) {
+        return false;
+    }
+    if (m_pConnDispatcher==NULL)
+        m_pConnDispatcher = new LRTConnDispatcher();
+    std::list<std::string>::iterator it;
+    for (it=m_dispatcherAddrList.begin(); it!=m_dispatcherAddrList.end(); it++) {
+        std::string s = *it;
+        printf("ConnectDispatcher dispatcher addr:%s\n", s.c_str());
+        char ip[16] = {0};
+        unsigned int port = 0;
+        sscanf(s.c_str(), "%s %u", ip, &port);
+        printf("ip:%s, port:%u\n", ip, port);
+        if (strlen(ip)>0 && port > 2048) {
+            DoConnectDispatcher(ip, port);
+        }
+    }
+    return true;
+}
+
+bool LRTConnManager::TryConnectDispatcher(const std::string ip, unsigned short port)
+{
+    LI("LRTConnManager::TryConneectLogical ip:%s, port:%u\n", ip.c_str(), port);
+    LRTTransferSession* dispatcherSession = new LRTTransferSession();
+    dispatcherSession->Init();
+    // conn to dispatcher
+
+    bool ok = false;
+    int times = 0;
+    do{
+        ok = dispatcherSession->Connect(ip, port);
+        LI("try %d times to connect dispatcher server %s:%u, waiting...\n", times, ip.c_str(), port);
+        usleep(1000*1000);
+    }while(!ok && ++times < 5);
+
+    if (ok) {
+        dispatcherSession->EstablishConnection();
+        return true;
+    } else {
+        m_connectingSessList.push_back(dispatcherSession);
+        if (m_pConnDispatcher)
+            m_pConnDispatcher->Signal(Task::kIdleEvent);
+        return false;
+    }
+}
+
 
 void LRTConnManager::RefreshConnection()
 {
@@ -223,14 +261,44 @@ void LRTConnManager::RefreshConnection()
         ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             pmi = it->second;
-            if (pmi && pmi->othModuleType == pms::ETransferModule::MCONNECTOR) {
-                if (pmi->pModule && pmi->pModule->RefreshTime()) {
+            //if (pmi && pmi->othModuleType == pms::ETransferModule::MCONNECTOR) {
+                if (pmi && pmi->pModule && pmi->pModule->RefreshTime()) {
                     pmi->pModule->KeepAlive();
                 }
-            }
+            //}
         }
     }
 }
+
+void LRTConnManager::SendTransferData(const std::string mid, const std::string uid, const std::string msg)
+{
+     if (m_dispatcherSession && m_dispatcherSession->IsLiveSession())
+     {
+        m_dispatcherSession->SendTransferData(msg);
+     } else {
+         LE("LRTConnManager::SendTransferData m_dispatcherSession can not use, has error\n");
+     }
+}
+
+
+void LRTConnManager::PushSeqnReq2Queue(const std::string& str)
+{
+     if (m_logicalSession && m_logicalSession->IsLiveSession())
+     {
+         m_logicalSession->PushSeqnReq2Queue(str);
+         m_logicalSession->Signal(Task::kWakeupEvent);
+     }
+}
+
+void LRTConnManager::PushDataReq2Queue(const std::string& str)
+{
+     if (m_logicalSession && m_logicalSession->IsLiveSession())
+     {
+         m_logicalSession->PushDataReq2Queue(str);
+         m_logicalSession->Signal(Task::kIdleEvent);
+     }
+}
+
 
 bool LRTConnManager::SignalKill()
 {
@@ -268,8 +336,7 @@ bool LRTConnManager::ClearAll()
         }
         s_TypeModuleSessionInfoList.clear();
     }
-    m_sequenceAddrList.clear();
-    m_storageAddrList.clear();
+    m_logicalAddrList.clear();
      return true;
 }
 
@@ -413,7 +480,7 @@ void LRTConnManager::ProcessRecvEvent(const char*pData, int nLen)
         data.connect.port = root["port"].asInt();
         LI("OnReadEvent EventData mtype:%d, module:%d, ip:%s, port:%d\n", data.mtype, data.connect.module, data.connect.ip, data.connect.port);
         if (data.connect.module == TRANSFERMODULE::mconnector) {// connect to connector
-            TryConnectSequence(data.connect.ip, data.connect.port);
+            TryConnectLogical(data.connect.ip, data.connect.port);
         }
     }
 }
@@ -476,5 +543,49 @@ int LRTConnManager::DispTimerCallback(const char*pData, int nLen)
     return 0;
 }
 
+///////////////////////////////////////////////////////////
+////////////////////private////////////////////////////////
+///////////////////////////////////////////////////////////
 
+bool LRTConnManager::DoConnectLogical(const std::string ip, unsigned short port)
+{
+    //LRTTransferSession* logicalSession = new LRTTransferSession();
+    m_logicalSession = new LRTTransferSession();
+    m_logicalSession->Init();
+    // conn to logical
+    while (!m_logicalSession->Connect(ip, port)) {
+        LI("connecting to logical server %s:%u waiting...\n", ip.c_str(), port);
+        usleep(100*1000);
+    }
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_logicalSession->GetSocket()->GetSocketFD());
+    m_logicalSession->EstablishConnection();
+    return true;
+}
 
+bool LRTConnManager::DoConnectConnector(const std::string ip, unsigned short port)
+{
+    LRTTransferSession* connectorSession = new LRTTransferSession();
+    connectorSession->Init();
+    // conn to logical
+    while (!connectorSession->Connect(ip, port)) {
+        LI("connecting to connector server %s:%u waiting...\n", ip.c_str(), port);
+        usleep(100*1000);
+    }
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, connectorSession->GetSocket()->GetSocketFD());
+    connectorSession->EstablishConnection();
+    return true;
+}
+
+bool LRTConnManager::DoConnectDispatcher(const std::string ip, unsigned short port)
+{
+    m_dispatcherSession = new LRTTransferSession();
+    m_dispatcherSession->Init();
+    // conn to logical
+    while (!m_dispatcherSession->Connect(ip, port)) {
+        LI("connecting to dispatcher server %s:%u waiting...\n", ip.c_str(), port);
+        usleep(100*1000);
+    }
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_dispatcherSession->GetSocket()->GetSocketFD());
+    m_dispatcherSession->EstablishConnection();
+    return true;
+}

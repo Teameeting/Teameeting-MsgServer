@@ -41,6 +41,10 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
         OnGetMsg(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CLOGOUT) {
         OnLogout(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CSYNCSEQN) {
+        OnSyncSeqn(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CSYNCDATA) {
+        OnSyncData(request.svr_cmds(), request.mod_type(), request.content());
     } else {
         LE("parse MsgReq params error\n");
     }
