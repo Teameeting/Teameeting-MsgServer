@@ -310,14 +310,12 @@ void SRTTransferSession::OnTypeConn(const std::string& str)
 
 void SRTTransferSession::OnTypeTrans(const std::string& str)
 {
-    LI("%s was called, str.length:%d\n", __FUNCTION__, str.length());
-    SRTSequenceManager::Instance().RecvRequestCounter();
-    m_SequenceGenerator.PushData(str.c_str(), str.length());
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void SRTTransferSession::OnTypeQueue(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void SRTTransferSession::OnTypeDispatch(const std::string& str)
@@ -330,18 +328,29 @@ void SRTTransferSession::OnTypePush(const std::string& str)
     LI("%s was called\n", __FUNCTION__);
 }
 
-void SRTTransferSession::OnTypeRequest(const std::string& str)
+void SRTTransferSession::OnTypeWriteRequest(const std::string& str)
 {
-    LI("%s was called, call PostData, fuck!~\n", __FUNCTION__);
+    LI("%s was called, PushData for write\n", __FUNCTION__);
+    SRTSequenceManager::Instance().RecvRequestCounter();
+    m_SequenceGenerator.PushData(str.c_str(), str.length());
+}
+
+void SRTTransferSession::OnTypeWriteResponse(const std::string& str)
+{
+    LI("%s was called, PushData for write Response\n", __FUNCTION__);
+}
+
+void SRTTransferSession::OnTypeReadRequest(const std::string& str)
+{
+    LI("%s was called, PostData for read\n", __FUNCTION__);
     SRTSequenceManager::Instance().RecvRequestCounter();
     m_SequenceGenerator.PostData(str.c_str(), str.length());
 }
 
-void SRTTransferSession::OnTypeResponse(const std::string& str)
+void SRTTransferSession::OnTypeReadResponse(const std::string& str)
 {
-    LI("%s was called\n", __FUNCTION__);
+    LI("%s was called, PostData for read Response\n", __FUNCTION__);
 }
-
 
 void SRTTransferSession::ConnectionDisconnected()
 {

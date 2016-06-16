@@ -15,6 +15,9 @@
 #include "XMsgCallback.h"
 #include "RTHttpClient.hpp"
 
+#include "../proto/common_msg.pb.h"
+#include "../proto/sys_msg_type.pb.h"
+
 class RTMsgClient : public XMsgCallback{
 public:
     RTMsgClient(const std::string& uid);
@@ -33,15 +36,18 @@ public:
     int Register();
     int ApplyRoom();
 
-    void Init();
+    void Init(int module);
     void Unin();
     bool Connecting();
     void EnterRoom();
     void LeaveRoom();
     void SendMsg(const std::string& msg);
 
+    void InitSync();
+
     void SyncSeqn();
     void SyncData();
+    void SendMessage(const std::string& msg);
 public:
     const std::string& GetUserId() { return mUserid; }
     int GetRecvNums() { return mRecvNum; }

@@ -31,6 +31,7 @@ int RTLstorage::DoProcessData(const char *pData, int nLen)
     }
 
     {
+        printf("RTLstorage::DoProcessData m_msg.flag:%d\n", m_msg.flag());
         if (m_msg.flag() == pms::ETransferFlag::FNEEDACK) {
             OnMsgAck(m_msg);
         } else if (m_msg.flag() == pms::ETransferFlag::FACK) {
@@ -45,6 +46,14 @@ int RTLstorage::DoProcessData(const char *pData, int nLen)
     {
         if (m_msg.type() == pms::ETransferType::TCONN) {
             OnTypeConn(m_msg.content());
+        } else if (m_msg.type() == pms::ETransferType::TWRITE_REQUEST) {
+            OnTypeWriteRequest(m_msg.content());
+        } else if (m_msg.type() == pms::ETransferType::TWRITE_RESPONSE) {
+            OnTypeWriteResponse(m_msg.content());
+        } else if (m_msg.type() == pms::ETransferType::TREAD_REQUEST) {
+            OnTypeReadRequest(m_msg.content());
+        } else if (m_msg.type() == pms::ETransferType::TREAD_RESPONSE) {
+            OnTypeReadResponse(m_msg.content());
         } else if (m_msg.type() == pms::ETransferType::TTRANS) {
             OnTypeTrans(m_msg.content());
         } else if (m_msg.type() == pms::ETransferType::TQUEUE) {
@@ -53,10 +62,6 @@ int RTLstorage::DoProcessData(const char *pData, int nLen)
             OnTypeDispatch(m_msg.content());
         } else if (m_msg.type() == pms::ETransferType::TPUSH) {
             OnTypePush(m_msg.content());
-        } else if (m_msg.type() == pms::ETransferType::TREQUEST) {
-            OnTypeRequest(m_msg.content());
-        } else if (m_msg.type() == pms::ETransferType::TRESPONSE) {
-            OnTypeResponse(m_msg.content());
         } else {
             LE("invalid type::%d", m_msg.type());
         }

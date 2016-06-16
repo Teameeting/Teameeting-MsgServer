@@ -52,18 +52,18 @@ public:
 
     SRTSequenceRedis* LoopupForRedis(RedisGroup* group);
 public:
-    void OnWriteSeqn(const std::string& userid, const std::string& msgid, long long seqn);
+    void OnWriteSeqn(const pms::StorageMsg& request, long long seqn);
     void OnAddAndCheckWrite(const std::string& msg);
 
-    void OnReadSeqn(const std::string& userid, const std::string& msgid, long long seqn);
+    void OnReadSeqn(const pms::StorageMsg& request, long long seqn);
     void OnAddAndCheckRead(const std::string& msg);
 
 // from RTEventLooper
 public:
-    virtual void OnPostEvent(const char*pData, int nSize);
+    virtual void OnPostEvent(const char*pData, int nSize) {}
     virtual void OnSendEvent(const void*pData, int nSize) {}
     virtual void OnWakeupEvent(const void*pData, int nSize);
-    virtual void OnPushEvent(const char*pData, int nSize);
+    virtual void OnPushEvent(const char*pData, int nSize) {}
     virtual void OnTickEvent(const void*pData, int nSize);
 
 private:
@@ -72,15 +72,21 @@ private:
     std::vector<std::string>            m_RedisHosts;
     SInt64                              m_LastUpdateTime;
     RedisGroupMgr                       m_RedisGroupMgr;
+
     std::unordered_map<std::string, SRTResponseCollection*> m_ReadResponseCollections;
     std::unordered_map<std::string, SRTResponseCollection*> m_WriteResponseCollections;
+
     OSMutex                             m_MutexReadCollection;
     OSMutex                             m_MutexWriteCollection;
+
     std::queue<std::string>             m_SeqnResp4Read;
     std::queue<std::string>             m_SeqnResp4Write;
+
     OSMutex                             m_Mutex4Read;
     OSMutex                             m_Mutex4Write;
+
     int                                 m_PackedCounter;
+
     pms::PackedStoreMsg                 m_WritePackedMsg;
     pms::PackedStoreMsg                 m_ReadPackedMsg;
 };

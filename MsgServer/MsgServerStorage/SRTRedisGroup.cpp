@@ -9,6 +9,8 @@
 #include "SRTRedisGroup.h"
 #include "SRTStorageManager.h"
 #include "SRTTransferSession.h"
+#include "SRTStorageRedis.h"
+
 
 #define REDIS_GROUP_CLIENT (10)
 #define REDIS_GROUP_CLIENT_MAX (REDIS_GROUP_CLIENT*10007)
@@ -16,7 +18,9 @@
 
 static int g_push_request_counter = 0;
 static int g_post_event_counter = 0;
+
 static int g_push_redis_index = 0;
+static int g_post_redis_index = 0;
 
 
 SRTRedisGroup::SRTRedisGroup(SRTTransferSession *sess, const std::string& ip, int port)
@@ -27,7 +31,14 @@ SRTRedisGroup::SRTRedisGroup(SRTTransferSession *sess, const std::string& ip, in
     {
         SRTStorageRedis* redis = new SRTStorageRedis();;
         redis->Init(this, ip, port);
-        m_Redises.push_back(redis);
+        m_WriteRedises.push_back(redis);
+    }
+
+    for (int i=0;i<REDIS_GROUP_CLIENT;++i)
+    {
+        SRTStorageRedis* redis = new SRTStorageRedis();;
+        redis->Init(this, ip, port);
+        m_ReadRedises.push_back(redis);
     }
     m_ResponseSender.Init(sess);
 }
@@ -35,40 +46,55 @@ SRTRedisGroup::SRTRedisGroup(SRTTransferSession *sess, const std::string& ip, in
 SRTRedisGroup::~SRTRedisGroup()
 {
     m_ResponseSender.Unin();
-    for (auto x : m_Redises)
+    for (auto x : m_ReadRedises)
     {
         x->Unin();
         delete x;
         x = nullptr;
     }
-    m_Redises.clear();
+    m_ReadRedises.clear();
+    for (auto x : m_WriteRedises)
+    {
+        x->Unin();
+        delete x;
+        x = nullptr;
+    }
+    m_WriteRedises.clear();
 }
 
-void SRTRedisGroup::DispatchPushData(const char*pData, int nSize)
+void SRTRedisGroup::DispatchPushData(const std::string& data)
 {
-    if (!pData || nSize <=0)
-    {
-        printf("SRTRedisGroup::DispatchPushData pData or size is wrong\n", nSize);
-        return;
-    }
     //printf("SRTRedisGroup::DispatchPushData g_push_request_counter:%d\n", ++g_push_request_counter);
-    std::string str(pData, nSize);
-    m_RecvPackedMsg.ParseFromString(str);
+    m_RecvPushMsg.ParseFromString(data);
     {
-        for (int i=0;i<m_RecvPackedMsg.msgs_size();++i)
+        for (int i=0;i<m_RecvPushMsg.msgs_size();++i)
         {
-            m_Redises[g_push_redis_index++%REDIS_GROUP_CLIENT]->PushData(m_RecvPackedMsg.msgs(i).SerializeAsString());
-            m_RecvPackedMsg.mutable_msgs(i)->Clear();
+            m_WriteRedises[g_push_redis_index++%REDIS_GROUP_CLIENT]->PushToQueue(m_RecvPushMsg.msgs(i));
+            m_RecvPushMsg.mutable_msgs(i)->Clear();
             if (g_push_redis_index == REDIS_GROUP_CLIENT_MAX)
                 g_push_redis_index = 0;
         }
     }
 }
 
+void SRTRedisGroup::DispatchPostData(const std::string& data)
+{
+    //printf("SRTRedisGroup::DispatchPostData g_post_request_counter:%d\n", ++g_post_request_counter);
+    m_RecvPostMsg.ParseFromString(data);
+    {
+        for (int i=0;i<m_RecvPostMsg.msgs_size();++i)
+        {
+            m_ReadRedises[g_post_redis_index++%REDIS_GROUP_CLIENT]->PostToQueue(m_RecvPostMsg.msgs(i));
+            m_RecvPostMsg.mutable_msgs(i)->Clear();
+            if (g_post_redis_index == REDIS_GROUP_CLIENT_MAX)
+                g_post_redis_index = 0;
+        }
+    }
+}
 
 void SRTRedisGroup::OnPostEvent(const char*pData, int nSize)
 {
-    m_ResponseSender.PushResponseData(pData, nSize);
+    m_ResponseSender.PostResponseData(pData, nSize);
 }
 
 void SRTRedisGroup::OnSendEvent(const void*pData, int nSize)
@@ -83,7 +109,7 @@ void SRTRedisGroup::OnWakeupEvent(const void*pData, int nSize)
 
 void SRTRedisGroup::OnPushEvent(const char*pData, int nSize)
 {
-
+    m_ResponseSender.PushResponseData(pData, nSize);
 }
 
 void SRTRedisGroup::OnTickEvent(const void*pData, int nSize)

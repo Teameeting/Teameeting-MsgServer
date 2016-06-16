@@ -35,6 +35,7 @@ void SRTSequenceGenerator::Unin()
 }
 
 // from RTEventLooper
+// Post for read
 void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
 {
     if (!pData || nSize <= 0) {
@@ -52,7 +53,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
                 m_Session->RefreshTime();
             continue;
         }
-        printf("SRTSequenceGenerator::OnPostEvent was called, m_RedisManager.PostRedisRequest\n");
+        // Post for read
         m_RedisManager.PostRedisRequest(packed.msgs(i).SerializeAsString());
     }
     SInt64 curTime = OS::Milliseconds();
@@ -68,6 +69,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
     }
 }
 
+// Push for write
 void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
 {
     if (!pData || nSize <= 0) {
@@ -85,7 +87,7 @@ void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
                 m_Session->RefreshTime();
             continue;
         }
-        printf("SRTSequenceGenerator::OnPushEvent was called, m_RedisManager.PushRedisRequest\n");
+        // Push for write
         m_RedisManager.PushRedisRequest(packed.msgs(i).SerializeAsString());
     }
     SInt64 curTime = OS::Milliseconds();

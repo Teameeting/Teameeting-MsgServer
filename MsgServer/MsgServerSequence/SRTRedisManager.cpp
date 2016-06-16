@@ -111,9 +111,7 @@ void SRTRedisManager::Unin()
 // post for read
 void SRTRedisManager::PostRedisRequest(const std::string& request)
 {
-    //LI("SRTRedisManager::PushRedisRequest was called\n");
-    //std::string um("");
-    //um.append(request.userid()).append(":").append(request.msgid());
+    LI("SRTRedisManager::PostRedisRequest was called\n");
     for(auto x : m_RedisGroupMgr)
     {
         LoopupForRedis((RedisGroup*)x.second)->PostData(request.c_str(), request.length());
@@ -123,12 +121,9 @@ void SRTRedisManager::PostRedisRequest(const std::string& request)
 // push for write
 void SRTRedisManager::PushRedisRequest(const std::string& request)
 {
-    //LI("SRTRedisManager::PushRedisRequest was called\n");
-    //std::string um("");
-    //um.append(request.userid()).append(":").append(request.msgid());
+    LI("SRTRedisManager::PushRedisRequest was called\n");
     for(auto x : m_RedisGroupMgr)
     {
-        printf("");
         LoopupForRedis((RedisGroup*)x.second)->PushData(request.c_str(), request.length());
     }
 }
@@ -145,18 +140,18 @@ SRTSequenceRedis* SRTRedisManager::LoopupForRedis(RedisGroup* group)
  * this function store all the seqn by same userid and msgid
  *
  */
-void SRTRedisManager::OnWriteSeqn(const std::string& userid, const std::string& msgid, long long seqn)
+void SRTRedisManager::OnWriteSeqn(const pms::StorageMsg& request, long long seqn)
 {
-    //LI("SRTRedisManager::OnWriteSeqn userid:%s, msgid:%s, seqn:%lld\n", userid.c_str(), msgid.c_str(), seqn);
+    LI("SRTRedisManager::OnWriteSeqn userid:%s, msgid:%s, seqn:%lld\n", request.userid().c_str(), request.msgid().c_str(), seqn);
     OSMutexLocker locker(&m_MutexWriteCollection);
-    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_WriteResponseCollections.find(userid);
+    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_WriteResponseCollections.find(request.userid());
     if (cit != m_WriteResponseCollections.end())
     {
-        //LI("OnWriteSeqn userid find out:%s\n", userid.c_str());
-        cit->second->AddResponse(msgid, seqn);
+        LI("OnWriteSeqn userid find out:%s\n", request.userid().c_str());
+        cit->second->AddResponse(request, seqn);
     } else {
-        //LI("OnWriteSeqn userid not find out:%s\n", userid.c_str());
-        m_WriteResponseCollections.insert(make_pair(userid, new SRTResponseCollection(this, REQUEST_TYPE_WRITE, m_RedisNum, userid, msgid, seqn)));
+        LI("OnWriteSeqn userid not find out:%s\n", request.userid().c_str());
+        m_WriteResponseCollections.insert(make_pair(request.userid(), new SRTResponseCollection(this, REQUEST_TYPE_WRITE, m_RedisNum, request, seqn)));
     }
 }
 
@@ -170,7 +165,6 @@ void SRTRedisManager::OnWriteSeqn(const std::string& userid, const std::string& 
  */
 void SRTRedisManager::OnAddAndCheckWrite(const std::string& msg)
 {
-    //LI("SRTRedisManager::OnAddAndCheckWrite userid:%s, msgid:%s, seqn:%lld\n", userid.c_str(), msgid.c_str(), seqn);
     {
         OSMutexLocker locker(&m_Mutex4Write);
         m_SeqnResp4Write.push(msg);
@@ -185,18 +179,18 @@ void SRTRedisManager::OnAddAndCheckWrite(const std::string& msg)
  * this function store all the seqn by same userid and msgid
  *
  */
-void SRTRedisManager::OnReadSeqn(const std::string& userid, const std::string& msgid, long long seqn)
+void SRTRedisManager::OnReadSeqn(const pms::StorageMsg& request, long long seqn)
 {
-    LI("SRTRedisManager::OnReadSeqn userid:%s, seqn:%lld\n", userid.c_str(), seqn);
+    LI("SRTRedisManager::OnReadSeqn userid:%s, msgid:%s, seqn:%lld\n", request.userid().c_str(), request.msgid().c_str(), seqn);
     OSMutexLocker locker(&m_MutexReadCollection);
-    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_ReadResponseCollections.find(userid);
+    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_ReadResponseCollections.find(request.userid());
     if (cit != m_ReadResponseCollections.end())
     {
-        LI("OnReadSeqn userid find out:%s\n", userid.c_str());
-        cit->second->AddResponse(msgid, seqn);
+        LI("OnReadSeqn userid find out:%s\n", request.userid().c_str());
+        cit->second->AddResponse(request, seqn);
     } else {
-        LI("OnReadSeqn userid not find out:%s\n", userid.c_str());
-        m_ReadResponseCollections.insert(make_pair(userid, new SRTResponseCollection(this, REQUEST_TYPE_READ, m_RedisNum, userid, msgid, seqn)));
+        LI("OnReadSeqn userid not find out:%s\n", request.userid().c_str());
+        m_ReadResponseCollections.insert(make_pair(request.userid(), new SRTResponseCollection(this, REQUEST_TYPE_READ, m_RedisNum, request, seqn)));
     }
 }
 
@@ -218,11 +212,8 @@ void SRTRedisManager::OnAddAndCheckRead(const std::string& msg)
 }
 
 // from RTEventLooper
-void SRTRedisManager::OnPostEvent(const char*pData, int nSize)
-{
 
-}
-
+// this is for read
 void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
 {
     if (m_SeqnResp4Read.size()==0) return;
@@ -244,11 +235,17 @@ void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
         if (m_Session && m_Session->IsLiveSession())
         {
             printf("SRTRedisManager::OnWakeupEvent TREQUEST\n");
+
+            pms::RelayMsg rmsg;
+            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
+            rmsg.set_content(m_ReadPackedMsg.SerializeAsString());
+
             pms::TransferMsg tmsg;
-            tmsg.set_type(pms::ETransferType::TRESPONSE);
+            tmsg.set_type(pms::ETransferType::TREAD_RESPONSE);
             tmsg.set_flag(pms::ETransferFlag::FNOACK);
             tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-            tmsg.set_content(m_ReadPackedMsg.SerializeAsString());
+            tmsg.set_content(rmsg.SerializeAsString());
+
             m_Session->SendTransferData(tmsg.SerializeAsString());
         }
         for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
@@ -258,11 +255,7 @@ void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
     }
 }
 
-void SRTRedisManager::OnPushEvent(const char*pData, int nSize)
-{
-
-}
-
+// this is for write
 void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
 {
     if (m_SeqnResp4Write.size()==0) return;
@@ -283,11 +276,16 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
     {
         if (m_Session && m_Session->IsLiveSession())
         {
+            pms::RelayMsg rmsg;
+            rmsg.set_svr_cmds(pms::EServerCmd::CNEWMSGSEQN);
+            rmsg.set_content(m_WritePackedMsg.SerializeAsString());
+
             pms::TransferMsg tmsg;
-            tmsg.set_type(pms::ETransferType::TQUEUE);
+            tmsg.set_type(pms::ETransferType::TWRITE_RESPONSE);
             tmsg.set_flag(pms::ETransferFlag::FNOACK);
             tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-            tmsg.set_content(m_WritePackedMsg.SerializeAsString());
+            tmsg.set_content(rmsg.SerializeAsString());
+
             m_Session->SendTransferData(tmsg.SerializeAsString());
         }
         for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)

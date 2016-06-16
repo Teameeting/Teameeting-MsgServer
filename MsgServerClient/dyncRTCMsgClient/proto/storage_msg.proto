@@ -2,17 +2,19 @@ syntax="proto3";
 package pms;
 
 import "storage_msg_type.proto";
+import "common_msg.proto";
 
 option optimize_for = LITE_RUNTIME;
 
 // this is the msg for store msg to redis
 message StorageMsg{
-    EStorageType    mflag       = 1; // read or write redis
-    sint32          result      = 2; // the redis opt result
-    sint64          sequence    = 3; // sequence
-    string          userid      = 4; // userid
-    string          msgid       = 5; // message id
-    string          content     = 6; // message
+    EServerCmd      svrcmd      = 1; // server cmd
+    EStorageTag     mtag        = 2; // seqn or data
+    sint32          result      = 3; // the redis opt result
+    sint64          sequence    = 4; // sequence
+    string          userid      = 5; // userid
+    string          msgid       = 6; // message id
+    string          content     = 7; // message
 }
 
 message PackedStoreMsg{

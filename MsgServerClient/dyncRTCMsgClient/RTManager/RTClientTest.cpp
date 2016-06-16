@@ -60,9 +60,40 @@ void RTClientTest::OnMessage(rtc::Message* msg)
 void RTClientTest::RunOnce()
 {
     //TODO:
-    RTMsgClient client("dandan");
-    //client.SyncSeqn();
-    client.SyncData();
-    while(1);
+    //TestSync();
+    TestSend();
 }
 
+void RTClientTest::TestSend()
+{
+    RTMsgClient client("dandan");
+    client.InitSync();
+    int t = 1000000;
+    //while(t--)
+    {
+        std::string str("hello world");
+        client.SendMessage(str);
+        //rtc::Thread::SleepMs(10);
+    }
+    t = 10;
+    while(t--)
+        rtc::Thread::SleepMs(1000);
+    client.Unin();
+}
+
+void RTClientTest::TestSync()
+{
+    RTMsgClient client("dandan");
+    client.InitSync();
+    int t = 1000000;
+    while(t--)
+    {
+        client.SyncSeqn();
+        client.SyncData();
+        rtc::Thread::SleepMs(10);
+    }
+    t = 10;
+    while(t--)
+        rtc::Thread::SleepMs(1000);
+    client.Unin();
+}

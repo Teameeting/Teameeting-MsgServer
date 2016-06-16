@@ -18,11 +18,11 @@
 #include "OSMutex.h"
 #include "RTEventLooper.h"
 #include "SRTResponseSender.h"
-#include "SRTStorageRedis.h"
 
 #define DEF_PROTO 1
 #include "MsgServer/proto/storage_msg.pb.h"
 
+class SRTStorageRedis;
 class SRTTransferSession;
 
 class SRTRedisGroup : public RTEventLooper {
@@ -30,7 +30,8 @@ class SRTRedisGroup : public RTEventLooper {
         SRTRedisGroup(SRTTransferSession *sess, const std::string& ip, int port);
         virtual ~SRTRedisGroup();
 
-        void DispatchPushData(const char*pData, int nSize);
+        void DispatchPushData(const std::string& data);
+        void DispatchPostData(const std::string& data);
 
         // from RTEventLooper
     public:
@@ -44,8 +45,11 @@ class SRTRedisGroup : public RTEventLooper {
         int                              m_Port;
         std::string                      m_Ip;
 
-        std::vector<SRTStorageRedis*>    m_Redises;
-        pms::PackedStoreMsg              m_RecvPackedMsg;
+        std::vector<SRTStorageRedis*>    m_WriteRedises;
+        std::vector<SRTStorageRedis*>    m_ReadRedises;
+
+        pms::PackedStoreMsg              m_RecvPushMsg;
+        pms::PackedStoreMsg              m_RecvPostMsg;
         SRTResponseSender                m_ResponseSender;
 };
 

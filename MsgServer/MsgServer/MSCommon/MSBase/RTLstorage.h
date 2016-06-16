@@ -40,8 +40,11 @@ public:
     virtual void OnTypeQueue(const std::string& str) = 0;
     virtual void OnTypeDispatch(const std::string& str) = 0;
     virtual void OnTypePush(const std::string& str) = 0;
-    virtual void OnTypeRequest(const std::string& str) = 0;
-    virtual void OnTypeResponse(const std::string& str) = 0;
+
+    virtual void OnTypeWriteRequest(const std::string& str) = 0;
+    virtual void OnTypeWriteResponse(const std::string& str) = 0;
+    virtual void OnTypeReadRequest(const std::string& str) = 0;
+    virtual void OnTypeReadResponse(const std::string& str) = 0;
 
 private:
 

@@ -11,6 +11,8 @@
 #include <sstream>
 #include <string>
 
+
+
 int gTestClientNum = 2;
 int gTestMessageNum = 5;
 int gTestLoginNum = 10;
@@ -34,7 +36,7 @@ void RTMsgRoom::Before()
         sprintf(cn, "room%d-user%d", mRoomNum, i);
         RTMsgClient *c = new RTMsgClient(cn);
         c->Register();
-        c->Init();
+        c->Init(pms::EModuleType::TMEETING);
         c->Connecting();
         c->SetRoomId(mRoomId);
         c->EnterRoom();
@@ -89,7 +91,7 @@ void RTMsgRoom::RunOnce()
     client.Register();
     client.ApplyRoom();
     std::string msg = "this is a test msg";
-    client.Init();
+    client.Init(pms::EModuleType::TMEETING);
     client.Connecting();
     client.EnterRoom();
     while (1) {
@@ -184,7 +186,7 @@ void RTMsgRoom::TestLogin()
             continue;
         }
         p = *lit;
-        p->Init();
+        p->Init(pms::EModuleType::TMEETING);
         p->Connecting();
         rtc::Thread::SleepMs(100);
     }
@@ -211,7 +213,7 @@ void RTMsgRoom::TestInit()
         sprintf(cn, "room%d-user%d", mRoomNum, i);
         RTMsgClient *c = new RTMsgClient(cn);
         c->Register();
-        c->Init();
+        c->Init(pms::EModuleType::TMEETING);
         c->Connecting();
         mClientList.push_back(c);
         printf("RTMsgRoom::TestInit number %d client userid:%s\n", i, c->GetUserId().c_str());
@@ -244,7 +246,7 @@ void RTMsgRoom::TestUnin()
 
 void RTMsgRoom::TempEnterRoom(MsgClientListIt it)
 {
-    (*it)->Init();
+    (*it)->Init(pms::EModuleType::TMEETING);
     (*it)->Connecting();
     (*it)->EnterRoom();
     printf("user %s TempEnterRoom\n", (*it)->GetUserId().c_str());

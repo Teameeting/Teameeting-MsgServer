@@ -44,7 +44,7 @@ XMsgClient::~XMsgClient()
 
 }
 
-int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port, bool bAutoConnect)
+int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, int module, const std::string& server, int port, bool bAutoConnect)
 {
     if (!cb) {
         return -1;
@@ -69,6 +69,7 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
     m_uid = uid;
     m_token = token;
     m_nname = nname;
+    m_module = (pms::EModuleType)module;
     if (server.length()>0) {
         m_server = server;
     }
@@ -107,7 +108,7 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, cons
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG, m_module);
     } else {
         return -1;
     }
@@ -122,7 +123,7 @@ int XMsgClient::GetMsg(pms::EMsgTag tag)
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeGetMsg(outstr, m_uid, m_token, tag);
+        m_pMsgProcesser->EncodeGetMsg(outstr, m_uid, m_token, tag, m_module);
     } else {
         return -1;
     }
@@ -142,7 +143,7 @@ int XMsgClient::OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, "", tag, pms::EMsgType::TMSG);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, "", tag, pms::EMsgType::TMSG, m_module);
     } else {
         return -1;
     }
@@ -161,7 +162,7 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG, m_module);
     } else {
         return -1;
     }
@@ -181,7 +182,7 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, p
     if (m_pMsgProcesser) {
         //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, tag, pms::EMsgType::TMSG);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, tag, pms::EMsgType::TMSG, m_module);
     } else {
         return -1;
     }
@@ -196,7 +197,7 @@ int XMsgClient::SyncSeqn()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, m_curSeqn);
+        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, m_curSeqn, m_module);
     } else {
         return -1;
     }
@@ -212,7 +213,7 @@ int XMsgClient::SyncData()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn);
+        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn, m_module);
     } else {
         return -1;
     }
@@ -233,7 +234,7 @@ int XMsgClient::Login()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token, m_nname);
+        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token, m_nname, m_module);
     } else {
         return -1;
     }
@@ -248,7 +249,7 @@ int XMsgClient::Logout()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeLogout(outstr, m_uid, m_token);
+        m_pMsgProcesser->EncodeLogout(outstr, m_uid, m_token, m_module);
     } else {
         return -1;
     }
@@ -280,7 +281,7 @@ int XMsgClient::KeepAlive()
     std::string outstr;
     if (m_pMsgProcesser) {
         //outstr, userid
-        m_pMsgProcesser->EncodeKeepAlive(outstr, m_uid);
+        m_pMsgProcesser->EncodeKeepAlive(outstr, m_uid, m_module);
     } else {
         return -1;
     }

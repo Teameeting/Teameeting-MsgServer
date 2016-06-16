@@ -80,9 +80,11 @@ public:
     virtual void OnTypeQueue(const std::string& str);
     virtual void OnTypeDispatch(const std::string& str);
     virtual void OnTypePush(const std::string& str);
-    virtual void OnTypeRequest(const std::string& str);
-    virtual void OnTypeResponse(const std::string& str);
 
+    virtual void OnTypeWriteRequest(const std::string& str);
+    virtual void OnTypeWriteResponse(const std::string& str);
+    virtual void OnTypeReadRequest(const std::string& str);
+    virtual void OnTypeReadResponse(const std::string& str);
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);
@@ -101,6 +103,9 @@ private:
     std::queue<pms::StorageMsg>     m_queueStoreMsg;
     OSMutex                         m_mutexQueue;
     int                             m_isRun;
+    unsigned int                    m_tmpWMsgId;
+    unsigned int                    m_tmpRSeqnId;
+    unsigned int                    m_tmpRDataId;
 };
 
 #endif /* defined(__MsgServerLogical__LRTTransferSession__) */

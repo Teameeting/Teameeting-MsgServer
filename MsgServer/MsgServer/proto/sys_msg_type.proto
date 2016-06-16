@@ -26,8 +26,10 @@ enum ETransferType{
     TPUSH         = 4;
     TLOGIN        = 5;
     TLOGOUT       = 6;
-    TREQUEST      = 7;
-    TRESPONSE     = 8;
+    TWRITE_REQUEST      = 7;
+    TWRITE_RESPONSE     = 8;
+    TREAD_REQUEST       = 9;
+    TREAD_RESPONSE      = 10;
 }
 
 // the priority of transfering msg
@@ -43,6 +45,11 @@ enum ETransferFlag{
     FNOACK      = 0;
     FNEEDACK    = 1;
     FACK        = 2;
+}
+
+enum ETransferTag{
+    SEQN        = 0;
+    DATA        = 1;
 }
 
 // the tag used for connecting of module

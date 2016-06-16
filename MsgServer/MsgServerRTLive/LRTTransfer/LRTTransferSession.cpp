@@ -197,6 +197,7 @@ void LRTTransferSession::OnRecvMessage(const char*message, int nLen)
     RTTransfer::DoProcessData(message, nLen);
 }
 
+// process seqn read
 void LRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
 {
     LI("LRTTransferSession::OnWakeupEvent was called\n");
@@ -216,12 +217,17 @@ void LRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
     }
     if (hasData)
     {
+        pms::RelayMsg rmsg;
+        rmsg.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
+        rmsg.set_content(m_packedSeqnMsg.SerializeAsString());
+
         pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TREQUEST);
+        tmsg.set_type(pms::ETransferType::TREAD_REQUEST);
         tmsg.set_flag(pms::ETransferFlag::FNOACK);
         tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-        tmsg.set_content(m_packedSeqnMsg.SerializeAsString());
-        LI("LRTTransferSession::OnWakeupEvent send request to logical server\n");
+        tmsg.set_content(rmsg.SerializeAsString());
+
+        LI("LRTTransferSession::OnWakeupEvent send seqn read request to logical server\n");
         this->SendTransferData(tmsg.SerializeAsString());
         for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
         {
@@ -230,6 +236,7 @@ void LRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
     }
 }
 
+// process data read
 void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
 {
     LI("LRTTransferSession::OnTickEvent was called\n");
@@ -249,12 +256,17 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
     }
     if (hasData)
     {
+        pms::RelayMsg rmsg;
+        rmsg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+        rmsg.set_content(m_packedDataMsg.SerializeAsString());
+
         pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TDISPATCH);
+        tmsg.set_type(pms::ETransferType::TREAD_REQUEST);
         tmsg.set_flag(pms::ETransferFlag::FNOACK);
         tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-        tmsg.set_content(m_packedDataMsg.SerializeAsString());
-        LI("LRTTransferSession::OnWakeupEvent send request to logical server\n");
+        tmsg.set_content(rmsg.SerializeAsString());
+
+        LI("LRTTransferSession::OnWakeupEvent send data read request to logical server\n");
         this->SendTransferData(tmsg.SerializeAsString());
         for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
         {
@@ -434,10 +446,10 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
         pms::RelayMsg r_msg;
         pms::MsgRep resp;
 
-        LI("ResponseSndMsg meet msg--->:\n");
         // set response
-        //resp.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
-        resp.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+        LI("LRTTransferSession::OnTypeDispatch --->store.svrcmd:%d\n", store.msgs(i).svrcmd());
+
+        resp.set_svr_cmds(store.msgs(i).svrcmd());
         resp.set_mod_type(pms::EModuleType::TLIVE);
         resp.set_rsp_code(0);
         resp.set_rsp_cont(store.msgs(i).SerializeAsString());

@@ -9,8 +9,10 @@
 #ifndef __MsgServerStorage__SRTStorageRedis__
 #define __MsgServerStorage__SRTStorageRedis__
 
+#include <queue>
 #include "RTEventLooper.h"
 #include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
 #include "OSMutex.h"
 #include <hiredis/hiredis.h>
 #include "xRedisClient.h"
@@ -20,19 +22,27 @@ class SRTRedisGroup;
 class SRTStorageRedis : public RTEventLooper{
 
 public:
+    SRTStorageRedis(){}
+    virtual ~SRTStorageRedis(){}
 
     void Init(SRTRedisGroup* group, const std::string& ip, int port);
     void Unin();
 
     virtual void MakeAbstract() {}
-    bool IsTheSameRedis(const std::string& host, int port);
+    bool IsTheSameRedis(const std::string& host, int port)
+    {
+        return ((m_Ip.compare(host)==0) && (m_Port==port));
+    }
+
+    void PushToQueue(pms::StorageMsg request);
+    void PostToQueue(pms::StorageMsg request);
 
 // from RTEventLooper
 public:
-    virtual void OnPostEvent(const char*pData, int nSize);
+    virtual void OnPostEvent(const char*pData, int nSize){}
     virtual void OnSendEvent(const void*pData, int nSize) {}
     virtual void OnWakeupEvent(const void*pData, int nSize);
-    virtual void OnPushEvent(const char*pData, int nSize);
+    virtual void OnPushEvent(const char*pData, int nSize){}
     virtual void OnTickEvent(const void*pData, int nSize);
 private:
     std::string                      m_Ip;
@@ -41,10 +51,15 @@ private:
     pms::StorageMsg                  m_RecvStoreMsg;
 
     xRedisClient                     m_xRedisClient;
-    RedisDBIdx*                      m_redisDBIdx;
+    RedisDBIdx*                      m_RedisDBIdx;
     RedisNode*                       m_RedisList;
 
-};
+    OSMutex                          m_MutexRecvPush;
+    std::queue<pms::StorageMsg>      m_QueuePushMsg;
 
+    OSMutex                          m_MutexRecvPost;
+    std::queue<pms::StorageMsg>      m_QueuePostMsg;
+
+};
 
 #endif /* defined(__MsgServerStorage__SRTStorageRedis__) */

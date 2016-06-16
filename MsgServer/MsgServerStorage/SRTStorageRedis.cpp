@@ -34,9 +34,6 @@ enum {
  CACHE_TYPE_MAX,
 };
 
-
-
-
 void SRTStorageRedis::Init(SRTRedisGroup* group, const std::string& ip, int port)
 {
     //LI("SRTStorageRedis::Init was called, ip:%s, port:%d\n", ip.c_str(), port);
@@ -55,7 +52,7 @@ void SRTStorageRedis::Init(SRTRedisGroup* group, const std::string& ip, int port
 
     m_xRedisClient.Init(CACHE_TYPE_MAX);
     m_xRedisClient.ConnectRedisCache(m_RedisList, 1, CACHE_TYPE_1);
-    m_redisDBIdx = new RedisDBIdx(&m_xRedisClient);
+    m_RedisDBIdx = new RedisDBIdx(&m_xRedisClient);
 }
 
 void SRTStorageRedis::Unin()
@@ -67,82 +64,86 @@ void SRTStorageRedis::Unin()
         delete m_RedisList;
         m_RedisList = nullptr;
     }
-    if (m_redisDBIdx)
+    if (m_RedisDBIdx)
     {
-         delete m_redisDBIdx;
-         m_redisDBIdx = nullptr;
+         delete m_RedisDBIdx;
+         m_RedisDBIdx = nullptr;
     }
-    //this->DisConn();
 }
 
 // from RTEventLooper
-void SRTStorageRedis::OnPostEvent(const char*pData, int nSize)
-{
 
-}
-
+// for read
 void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
 {
-
+    printf("SRTStorageRedis::OnWakeupEvent for read...\n");
+    pms::StorageMsg store = m_QueuePostMsg.front();
+    std::string str("");
+    char key[1024] = {'\0'};
+    sprintf(key, "%s:%lld", store.userid().c_str(), store.sequence());
+    m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+    bool ok = m_xRedisClient.get(*m_RedisDBIdx, key, str);
+    store.set_result(30);
+    *store.mutable_content() = str;
+    printf("SRTStorageRedis::OnWakeupEvent msgid:%s\n", store.msgid().c_str());
+    if (m_RedisGroup)
+    {
+        m_RedisGroup->PostData(store.SerializeAsString());
+    } else {
+        assert(false);
+    }
+    {
+        OSMutexLocker locker(&m_MutexRecvPush);
+        m_QueuePostMsg.pop();
+    }
 }
 
-void SRTStorageRedis::OnPushEvent(const char*pData, int nSize)
-{
-    //printf("OnPushEvent...\n");
-    if (!pData || nSize <=0)
-    {
-        printf("SRTStorageRedis::OnPushEvent params erroooooooooooooooooooooooor\n");
-        return;
-    }
-    std::string str(pData, nSize);
-    m_RecvStoreMsg.ParseFromString(str);
-    // 1 write, 2 read
-    printf("SRTStorageRedis::OnPushEvent msg flag:%d\n", m_RecvStoreMsg.mflag());
-    if (m_RecvStoreMsg.mflag() == pms::EStorageType::TWRITE)
-    {
-        char key[1024] = {'\0'};
-        sprintf(key, "%s:%lld", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.sequence());
-        m_redisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
-
-        bool ok = m_xRedisClient.set(*m_redisDBIdx, key, m_RecvStoreMsg.content().c_str());
-        printf("SRTStorageRedis::OnPushEvent ok:%d, key:%s\n", ok, key);
-        {
-            OSMutexLocker locker(&g_push_event_mutex);
-            char num[8] = {0};
-            //printf("SRTStorageRedis::OnPushEvent key:%s, g_push_event_counter:%d\n\n", key, ++g_push_event_counter);
-            sprintf(num, "%d", ++g_push_event_counter);
-            m_RecvStoreMsg.set_result(20);
-            m_RecvStoreMsg.mutable_content()->append(num);
-        }
-        if (m_RedisGroup)
-        {
-            m_RedisGroup->PostData(m_RecvStoreMsg.SerializeAsString());
-        }
-    } else if (m_RecvStoreMsg.mflag() == pms::EStorageType::TREAD)
-    {
-        std::string str("");
-        char key[1024] = {'\0'};
-        sprintf(key, "%s:%lld", m_RecvStoreMsg.userid().c_str(), m_RecvStoreMsg.sequence());
-        m_redisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
-
-        bool ok = m_xRedisClient.get(*m_redisDBIdx, key, str);
-        m_RecvStoreMsg.set_result(30);
-        *m_RecvStoreMsg.mutable_content() = str;
-        if (m_RedisGroup)
-        {
-            m_RedisGroup->PostData(m_RecvStoreMsg.SerializeAsString());
-        }
-    }
-    m_RecvStoreMsg.Clear();
-}
-
+// for write
 void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
 {
+    printf("SRTStorageRedis::OnTickEvent for write...\n");
+    pms::StorageMsg store = m_QueuePushMsg.front();
+    char key[1024] = {'\0'};
+    sprintf(key, "%s:%lld", store.userid().c_str(), store.sequence());
+    m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
+    printf("SRTStorageRedis::OnTickEvent msgid:%s\n", store.msgid().c_str());
+    if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
+    {
+        store.set_result(20);
+    } else {
+        assert(false);
+    }
+    if (m_RedisGroup)
+    {
+        m_RedisGroup->PushData(store.SerializeAsString());
+    } else {
+         assert(false);
+    }
+    {
+        OSMutexLocker locker(&m_MutexRecvPush);
+        m_QueuePushMsg.pop();
+    }
 }
 
-bool SRTStorageRedis::IsTheSameRedis(const std::string& host, int port)
+// for write
+void SRTStorageRedis::PushToQueue(pms::StorageMsg request)
 {
-    return ((m_Ip.compare(host)==0) && (m_Port==port));
+    {
+        OSMutexLocker locker(&m_MutexRecvPush);
+        m_QueuePushMsg.push(request);
+    }
+    this->Signal(Task::kIdleEvent);
 }
+
+// for read
+void SRTStorageRedis::PostToQueue(pms::StorageMsg request)
+{
+    {
+        OSMutexLocker locker(&m_MutexRecvPush);
+        m_QueuePostMsg.push(request);
+    }
+    this->Signal(Task::kWakeupEvent);
+}
+
 ///////////////////////////////////////////////////////

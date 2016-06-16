@@ -309,14 +309,12 @@ void SRTTransferSession::OnTypeConn(const std::string& str)
 
 void SRTTransferSession::OnTypeTrans(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
-    SRTStorageManager::Instance().RecvRequestCounter();
-    m_RedisManager.PushRedisRequest(str.c_str(), str.length());
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void SRTTransferSession::OnTypeQueue(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void SRTTransferSession::OnTypeDispatch(const std::string& str)
@@ -329,14 +327,28 @@ void SRTTransferSession::OnTypePush(const std::string& str)
     LI("%s was called\n", __FUNCTION__);
 }
 
-void SRTTransferSession::OnTypeRequest(const std::string& str)
+void SRTTransferSession::OnTypeWriteRequest(const std::string& str)
 {
-    LI("%s was called\n", __FUNCTION__);
+    LI("%s was called, push for write\n", __FUNCTION__);
+    SRTStorageManager::Instance().RecvRequestCounter();
+    m_RedisManager.PushRedisRequest(str);
 }
 
-void SRTTransferSession::OnTypeResponse(const std::string& str)
+void SRTTransferSession::OnTypeWriteResponse(const std::string& str)
 {
-    LI("%s was called\n", __FUNCTION__);
+
+}
+
+void SRTTransferSession::OnTypeReadRequest(const std::string& str)
+{
+    LI("%s was called, post for read\n", __FUNCTION__);
+    SRTStorageManager::Instance().RecvRequestCounter();
+    m_RedisManager.PostRedisRequest(str);
+}
+
+void SRTTransferSession::OnTypeReadResponse(const std::string& str)
+{
+
 }
 
 

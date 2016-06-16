@@ -37,22 +37,27 @@ class SRTResponseSender : public RTEventLooper {
         void Unin();
 
         void PushResponseData(const char*pData, int nSize);
+        void PostResponseData(const char*pData, int nSize);
 
         // from RTEventLooper
     public:
-        virtual void OnPostEvent(const char*pData, int nSize);
+        virtual void OnPostEvent(const char*pData, int nSize){}
         virtual void OnSendEvent(const void*pData, int nSize) {}
         virtual void OnWakeupEvent(const void*pData, int nSize);
-        virtual void OnPushEvent(const char*pData, int nSize);
+        virtual void OnPushEvent(const char*pData, int nSize){}
         virtual void OnTickEvent(const void*pData, int nSize);
 
     private:
         int                              m_IsRun;
         SRTTransferSession*              m_TransferSession;
 
-        OSMutex                          m_Mutex2Send;
-        pms::PackedStoreMsg              m_SendPackedMsg;
-        std::queue<std::string>          m_QSendMsg;
+        OSMutex                          m_MutexPush;
+        pms::PackedStoreMsg              m_SendPushMsg;
+        std::queue<std::string>          m_QPushMsg;
+
+        OSMutex                          m_MutexPost;
+        pms::PackedStoreMsg              m_SendPostMsg;
+        std::queue<std::string>          m_QPostMsg;
 };
 
 #endif /* defined(__MsgServerStorage__SRTResponseSender__) */

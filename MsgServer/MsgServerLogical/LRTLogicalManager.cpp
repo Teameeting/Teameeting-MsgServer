@@ -75,7 +75,7 @@ bool LRTLogicalManager::UpdateMsg(pms::StorageMsg** storeMsg)
         {
             // store sequence, get content, send to store
             it->second.smsg.set_sequence((*storeMsg)->sequence());
-            (*storeMsg)->set_mflag(it->second.smsg.mflag());
+            (*storeMsg)->set_mtag(it->second.smsg.mtag());
             (*storeMsg)->set_content(it->second.smsg.content());
         } else {
             printf("ERROR HERE, UpdateMsg msg id:%s, userid:%s is not here\n", (*storeMsg)->msgid().c_str(), (*storeMsg)->userid().c_str());

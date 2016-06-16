@@ -22,6 +22,9 @@ public:
 
     void RunTest(int flag);
     virtual void OnMessage(rtc::Message* msg);
+
+    void TestSync();
+    void TestSend();
 public:
     void RunOnce();
 private:

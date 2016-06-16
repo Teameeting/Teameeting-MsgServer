@@ -31,3 +31,7 @@ MsgServer/MsgServerDispatcher/MsgServerDispatcher
 MsgServer/MsgServerDispatcher/dispatcher/bin
 MsgServer/MsgServerMeeting/MsgServerMeeting
 MsgServer/MsgServerMeeting/meeting/bin
+MsgServer/MsgServerSequence/MsgServerSequence
+MsgServer/MsgServerStorage/MsgServerStorage
+MsgServer/MsgServerLogical/MsgServerLogical
+MsgServer/MsgServerRTLive/MsgServerRTLive

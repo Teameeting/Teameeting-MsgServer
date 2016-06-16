@@ -33,7 +33,7 @@ public:
     XMsgClient();
     ~XMsgClient();
 
-    int Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server="", int port=0, bool bAutoConnect=true);
+    int Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, int module, const std::string& server="", int port=0, bool bAutoConnect=true);
     int Unin();
 
     int SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg);
@@ -87,6 +87,7 @@ private:
     bool                     m_login;
     MSState                  m_msState;
     long long                m_curSeqn;
+    pms::EModuleType         m_module;
 };
 
 

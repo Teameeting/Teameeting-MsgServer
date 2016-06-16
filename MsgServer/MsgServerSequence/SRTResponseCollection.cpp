@@ -13,13 +13,12 @@
 #define DEF_PROTO 1
 #include "MsgServer/proto/storage_msg.pb.h"
 
-SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int reqType, int clientNum, const std::string& userid, const std::string& msgid, long long seqn)
+SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int reqType, int clientNum, const pms::StorageMsg& request, long long seqn)
 : m_pRedisManager(manager)
 , m_ClientNum(clientNum)
 , m_ReqType(reqType)
-, m_UserId(userid)
 {
-    AddResponse(msgid, seqn);
+    AddResponse(request, seqn);
 }
 
 SRTResponseCollection::~SRTResponseCollection()
@@ -27,45 +26,42 @@ SRTResponseCollection::~SRTResponseCollection()
 
 }
 
-void SRTResponseCollection::AddResponse(const std::string& msgid, long long seqn)
+void SRTResponseCollection::AddResponse(const pms::StorageMsg& request, long long seqn)
 {
-    printf("SRTResponseCollection::AddResponse m_ReqType:%d\n", m_ReqType);
+    printf("SRTResponseCollection::AddResponse new m_ReqType:%d, userid:%s, msgid:%s, seqn:%lld\n", m_ReqType, request.userid().c_str(), request.msgid().c_str(), seqn);
     if (m_ReqType==REQUEST_TYPE_READ)
     {
-        SeqnResponseMapCIt cit = m_ReadSeqnResponse.find(msgid);
+        SeqnResponseMapCIt cit = m_ReadSeqnResponse.find(request.msgid());
         if (cit != m_ReadSeqnResponse.end())
         {
-            printf("SRTResponseCollection::AddResponse find msgid:%s\n", msgid.c_str());
+            printf("SRTResponseCollection::AddResponse find msgid:%s\n", request.msgid().c_str());
             if (cit->second->AddAndCheckRead(seqn))
             {
                 delete cit->second;
                 m_ReadSeqnResponse.erase(cit);
-                printf("after erase m_SeqnResponse.size:%d\n", m_ReadSeqnResponse.size());
             }
         } else {
-            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", msgid.c_str());
-            m_ReadSeqnResponse.insert(make_pair(msgid, new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, msgid, this, m_pRedisManager)));
-            printf("after insert m_ReadSeqnResponse.size:%d\n", m_ReadSeqnResponse.size());
+            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", request.msgid().c_str());
+            m_ReadSeqnResponse.insert(make_pair(request.msgid(), new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, m_pRedisManager, request)));
         }
     } else if (m_ReqType==REQUEST_TYPE_WRITE)
     {
-        SeqnResponseMapCIt cit = m_WriteSeqnResponse.find(msgid);
+        SeqnResponseMapCIt cit = m_WriteSeqnResponse.find(request.msgid());
         if (cit != m_WriteSeqnResponse.end())
         {
-            printf("SRTResponseCollection::AddResponse find msgid:%s\n", msgid.c_str());
+            printf("SRTResponseCollection::AddResponse find msgid:%s\n", request.msgid().c_str());
             if (cit->second->AddAndCheckWrite(seqn))
             {
                 delete cit->second;
                 m_WriteSeqnResponse.erase(cit);
-                printf("after erase m_WriteSeqnResponse.size:%d\n", m_WriteSeqnResponse.size());
             }
         } else {
-            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", msgid.c_str());
-            m_WriteSeqnResponse.insert(make_pair(msgid, new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, msgid, this, m_pRedisManager)));
-            printf("after insert m_WriteSeqnResponse.size:%d\n", m_WriteSeqnResponse.size());
+            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", request.msgid().c_str());
+            m_WriteSeqnResponse.insert(make_pair(request.msgid(), new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, m_pRedisManager, request)));
         }
     }
 }
+
 
 ///////////////////inner class MsgSeqn//////////////////////////////////
 ///////////////////move here because//////////////////////////////////
@@ -73,12 +69,11 @@ void SRTResponseCollection::AddResponse(const std::string& msgid, long long seqn
 ///////////////////cannot be used in *.h//////////////////////////////////
 
 
-SRTResponseCollection::MsgSeqn::MsgSeqn(int clientNum, long long seqn, const std::string& mid, SRTResponseCollection* coll, SRTRedisManager* manager)
+SRTResponseCollection::MsgSeqn::MsgSeqn(int clientNum, long long seqn, SRTRedisManager* manager, const pms::StorageMsg& request)
 : cnumber(clientNum)
 , counter(1)
-, msgid(mid)
-, pcoll(coll)
 , rmanager(manager)
+, storage(request)
 {
     seqns.insert(seqn);
     WriteResponse.connect(rmanager, &SRTRedisManager::OnAddAndCheckWrite);

@@ -143,9 +143,9 @@ int RTMsgClient::ApplyRoom()
 #endif
 }
 
-void RTMsgClient::Init()
+void RTMsgClient::Init(int module)
 {
-    mMsgClient.Init(this, mUserid, mAuth, mUname, mMsgServer, mMsgPort);
+    mMsgClient.Init(this, mUserid, mAuth, mUname, module, mMsgServer, mMsgPort);
 }
 
 void RTMsgClient::Unin()
@@ -180,14 +180,18 @@ void RTMsgClient::SendMsg(const std::string& msg)
     }
 }
 
+void RTMsgClient::InitSync()
+{
+    mIsOnline = true;
+    Init(pms::EModuleType::TLIVE);
+    Connecting();
+}
+
 void RTMsgClient::SyncSeqn()
 {
     mIsOnline = true;
     if (mIsOnline) {
         printf("RTMsgClient::SyncSeqn was called\n");
-
-        Init();
-        Connecting();
         mMsgClient.SyncSeqn();
     }
 }
@@ -197,10 +201,16 @@ void RTMsgClient::SyncData()
     mIsOnline = true;
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
-
-        Init();
-        Connecting();
         mMsgClient.SyncData();
+    }
+}
+
+void RTMsgClient::SendMessage(const std::string& msg)
+{
+    mIsOnline = true;
+    if (mIsOnline) {
+        printf("RTMsgClient::SyncData was called\n");
+        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg);
     }
 }
 

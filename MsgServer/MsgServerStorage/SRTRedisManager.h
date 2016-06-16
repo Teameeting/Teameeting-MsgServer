@@ -31,7 +31,8 @@ public:
     void Init(SRTTransferSession* sess);
     void Unin();
 
-    void PushRedisRequest(const char* request, int len);
+    void PushRedisRequest(const std::string& request);
+    void PostRedisRequest(const std::string& request);
 
 public:
 

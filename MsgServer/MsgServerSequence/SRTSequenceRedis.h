@@ -12,6 +12,8 @@
 #include "RTHiredis.h"
 #include "RTEventLooper.h"
 #include "sigslot.h"
+#include "../MsgServer/proto/storage_msg.pb.h"
+#include "../MsgServer/proto/storage_msg_type.pb.h"
 
 class SRTRedisManager;
 
@@ -31,8 +33,8 @@ public:
 
     std::string GetHostForTest() { return this->GetHost(); }
 
-    sigslot::signal3<const std::string&, const std::string&, long long> WriteResponse;
-    sigslot::signal3<const std::string&, const std::string&, long long> ReadResponse;
+    sigslot::signal2<const pms::StorageMsg&, long long> WriteResponse;
+    sigslot::signal2<const pms::StorageMsg&, long long> ReadResponse;
 
 // from RTEventLooper
 public:

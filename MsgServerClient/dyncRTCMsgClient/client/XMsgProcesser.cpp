@@ -20,7 +20,7 @@
 #include <string>
 #endif
 
-int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname)
+int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -30,7 +30,7 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     login.set_usr_nname(nname);
 
     req.set_svr_cmds(pms::EServerCmd::CLOGIN);
-    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(login.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
@@ -38,7 +38,7 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     return 0;
 }
 
-int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type)
+int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -58,7 +58,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     }
 
     req.set_svr_cmds(pms::EServerCmd::CSNDMSG);
-    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(meet.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
@@ -66,7 +66,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     return 0;
 }
 
-int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag)
+int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -76,7 +76,7 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
     meet.set_usr_token(token);
 
     req.set_svr_cmds(pms::EServerCmd::CGETMSG);
-    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(meet.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
@@ -84,7 +84,7 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
     return 0;
 }
 
-int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token)
+int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -93,7 +93,7 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     logout.set_usr_token(token);
 
     req.set_svr_cmds(pms::EServerCmd::CLOGOUT);
-    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(logout.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
@@ -101,7 +101,7 @@ int XMsgProcesser::EncodeLogout(std::string& outstr, const std::string& userid, 
     return 0;
 }
 
-int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& userid)
+int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& userid, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -109,7 +109,7 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     keep.set_usr_from(userid);
 
     req.set_svr_cmds(pms::EServerCmd::CKEEPALIVE);
-    req.set_mod_type(pms::EModuleType::TMEETING);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(keep.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
@@ -117,18 +117,19 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn)
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
-    store.set_mflag(pms::EStorageType::TREAD);
+    store.set_svrcmd(pms::EServerCmd::CSYNCSEQN);
+    store.set_mtag(pms::EStorageTag::TSEQN);
     store.set_userid(userid);
     store.set_sequence(seqn);
 
     printf("XMsgProcesser::EncodeSyncSeqn was called\n");
     req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
-    req.set_mod_type(pms::EModuleType::TLIVE);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
@@ -136,18 +137,19 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn)
+int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
-    store.set_mflag(pms::EStorageType::TREAD);
+    store.set_svrcmd(pms::EServerCmd::CSYNCDATA);
+    store.set_mtag(pms::EStorageTag::TDATA);
     store.set_userid(userid);
     store.set_sequence(seqn);
 
     printf("XMsgProcesser::EncodeSyncSeqn was called\n");
     req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
-    req.set_mod_type(pms::EModuleType::TLIVE);
+    req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
     outstr = req.SerializeAsString();
 #else

@@ -73,8 +73,11 @@ public:
     virtual void OnTypeQueue(const std::string& str);
     virtual void OnTypeDispatch(const std::string& str);
     virtual void OnTypePush(const std::string& str);
-    virtual void OnTypeRequest(const std::string& str);
-    virtual void OnTypeResponse(const std::string& str);
+
+    virtual void OnTypeWriteRequest(const std::string& str);
+    virtual void OnTypeWriteResponse(const std::string& str);
+    virtual void OnTypeReadRequest(const std::string& str);
+    virtual void OnTypeReadResponse(const std::string& str);
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);

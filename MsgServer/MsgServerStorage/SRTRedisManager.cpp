@@ -40,9 +40,14 @@ void SRTRedisManager::Unin()
 }
 
 
-void SRTRedisManager::PushRedisRequest(const char* request, int len)
+void SRTRedisManager::PushRedisRequest(const std::string& request)
 {
-    m_RedisGroup->DispatchPushData(request, len);
+    m_RedisGroup->DispatchPushData(request);
+}
+
+void SRTRedisManager::PostRedisRequest(const std::string& request)
+{
+    m_RedisGroup->DispatchPostData(request);
 }
 
 ///////////////////////////////////////////////////////

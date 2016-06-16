@@ -34,14 +34,14 @@ public:
     ~XMsgProcesser(){}
 public:
 
-    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname);
-    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type);
-    int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag);
-    int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token);
-    int EncodeKeepAlive(std::string& outstr, const std::string& userid);
+    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module);
+    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module);
+    int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag, int module);
+    int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
+    int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
-    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn);
-    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn);
+    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
+    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
 
     int DecodeRecvData(const char* pData, int nLen);
 

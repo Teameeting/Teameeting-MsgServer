@@ -32,36 +32,32 @@ void SRTSequenceRedis::Unin()
 // post for read
 void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
 {
-    printf("%s was called, nSize:%d\n", __FUNCTION__, nSize);
-    if (!pData || nSize<=0) { printf("OnPostEvent pData is NULL, so return;\n");return; }//return;
+    if (!pData || nSize<=0) return;
     std::string str(pData, nSize);
     pms::StorageMsg request;
     request.ParseFromString(str);
-    printf("OnPostEvent mflag is:%d\n", request.mflag());
-    if (request.mflag()==pms::EStorageType::TREAD)
     {
+        printf("SRTSequenceRedis::OnPostEvent msgid:%s\n", request.msgid().c_str());
         long long seq = 0;
         CmdGet(request.userid(), &seq);
         printf("OnPostEvent GetSeq is:%lld\n", seq);
-        ReadResponse(request.userid(), request.msgid(), seq);
+        ReadResponse(request, seq);
     }
 }
 
 // push for write
 void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
 {
-    printf("%s was called, nSize:%d\n", __FUNCTION__, nSize);
     if (!pData || nSize<=0) return;
     std::string str(pData, nSize);
     pms::StorageMsg request;
     request.ParseFromString(str);
-    if (request.mflag()==pms::EStorageType::TWRITE)
     {
+        printf("SRTSequenceRedis::OnPushEvent msgid:%s\n", request.msgid().c_str());
         long long seq = 0;
         GenericIncrId(request.userid(), &seq);
         printf("OnPushEvent IncrSeq is:%lld\n", seq);
-        WriteResponse(request.userid(), request.msgid(), seq);
-
+        WriteResponse(request, seq);
     }
 }
 

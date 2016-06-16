@@ -30,7 +30,11 @@ void SRTResponseSender::Init(SRTTransferSession *sess)
     m_TransferSession = sess;
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        m_SendPackedMsg.add_msgs();
+        m_SendPushMsg.add_msgs();
+    }
+    for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+    {
+        m_SendPostMsg.add_msgs();
     }
     printf("SRTResponseSender::Init was called...\n");
 }
@@ -39,54 +43,54 @@ void SRTResponseSender::Unin()
 {
     m_IsRun = 0;
     m_TransferSession = nullptr;
-    while(!m_QSendMsg.empty())
+    while(!m_QPostMsg.empty())
     {
-        m_QSendMsg.pop();
+        m_QPostMsg.pop();
+    }
+    while(!m_QPushMsg.empty())
+    {
+        m_QPushMsg.pop();
     }
 }
 
 void SRTResponseSender::PushResponseData(const char*pData, int nSize)
 {
-    //printf("SRTResponseSender::PushResponseData g_push_response_counter:%d, QSendMsg.size:%d\n",  ++g_push_response_counter, m_QSendMsg.size());
+    //printf("SRTResponseSender::PushResponseData g_push_response_counter:%d, QPushMsg.size:%d\n",  ++g_push_response_counter, m_QPushMsg.size());
     {
-        OSMutexLocker locker(&m_Mutex2Send);
+        OSMutexLocker locker(&m_MutexPush);
         std::string str(pData, nSize);
-        m_QSendMsg.push(str);
+        m_QPushMsg.push(str);
     }
     this->Signal(Task::kIdleEvent);
 }
 
-void SRTResponseSender::OnPostEvent(const char*pData, int nSize)
+void SRTResponseSender::PostResponseData(const char*pData, int nSize)
 {
-
+    //printf("SRTResponseSender::PostResponseData g_post_response_counter:%d, QPostMsg.size:%d\n",  ++g_post_response_counter, m_QPostMsg.size());
+    {
+        OSMutexLocker locker(&m_MutexPost);
+        std::string str(pData, nSize);
+        m_QPostMsg.push(str);
+    }
+    this->Signal(Task::kWakeupEvent);
 }
 
 void SRTResponseSender::OnWakeupEvent(const void*pData, int nSize)
 {
-
-}
-
-void SRTResponseSender::OnPushEvent(const char*pData, int nSize)
-{
-
-}
-
-void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
-{
 #if 1
     if (!m_IsRun) return;
-    if(m_QSendMsg.size()==0) return;
+    if(m_QPostMsg.size()==0) return;
     bool hasData = false;
-    //printf("SRTResponseSender::OnTickEvent g_idle_event_counter:%d, m_QSendMsg.size:%d\n",  ++g_idle_event_counter, m_QSendMsg.size());
+    //printf("SRTResponseSender::OnWakeupEvent g_wakeup_event_counter:%d, m_QPostMsg.size:%d\n",  ++g_wakeup_event_counter, m_QPostMsg.size());
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        if(m_QSendMsg.size()>0)
+        if(m_QPostMsg.size()>0)
         {
             hasData = true;
-            m_SendPackedMsg.mutable_msgs(i)->ParseFromString(m_QSendMsg.front());
+            m_SendPostMsg.mutable_msgs(i)->ParseFromString(m_QPostMsg.front());
             {
-                OSMutexLocker locker(&m_Mutex2Send);
-                m_QSendMsg.pop();
+                OSMutexLocker locker(&m_MutexPost);
+                m_QPostMsg.pop();
             }
         }
     }
@@ -94,16 +98,64 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
     {
         if (m_TransferSession && m_TransferSession->IsLiveSession())
         {
+            pms::RelayMsg rmsg;
+            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+            rmsg.set_content(m_SendPostMsg.SerializeAsString());
+
             pms::TransferMsg tmsg;
-            tmsg.set_type(pms::ETransferType::TPUSH);
+            tmsg.set_type(pms::ETransferType::TREAD_RESPONSE);
             tmsg.set_flag(pms::ETransferFlag::FNOACK);
             tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-            tmsg.set_content(m_SendPackedMsg.SerializeAsString());
+            tmsg.set_content(rmsg.SerializeAsString());
+
             m_TransferSession->SendTransferData(tmsg.SerializeAsString());
         }
         for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
         {
-            m_SendPackedMsg.mutable_msgs(i)->Clear();
+            m_SendPostMsg.mutable_msgs(i)->Clear();
+        }
+    }
+#endif
+}
+
+void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
+{
+#if 1
+    if (!m_IsRun) return;
+    if(m_QPushMsg.size()==0) return;
+    bool hasData = false;
+    //printf("SRTResponseSender::OnTickEvent g_idle_event_counter:%d, m_QSendMsg.size:%d\n",  ++g_idle_event_counter, m_QPushMsg.size());
+    for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+    {
+        if(m_QPushMsg.size()>0)
+        {
+            hasData = true;
+            m_SendPushMsg.mutable_msgs(i)->ParseFromString(m_QPushMsg.front());
+            {
+                OSMutexLocker locker(&m_MutexPush);
+                m_QPushMsg.pop();
+            }
+        }
+    }
+    if (hasData)
+    {
+        if (m_TransferSession && m_TransferSession->IsLiveSession())
+        {
+            pms::RelayMsg rmsg;
+            rmsg.set_svr_cmds(pms::EServerCmd::CNEWMSGDATA);
+            rmsg.set_content(m_SendPostMsg.SerializeAsString());
+
+            pms::TransferMsg tmsg;
+            tmsg.set_type(pms::ETransferType::TWRITE_RESPONSE);
+            tmsg.set_flag(pms::ETransferFlag::FNOACK);
+            tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+            tmsg.set_content(rmsg.SerializeAsString());
+
+            m_TransferSession->SendTransferData(tmsg.SerializeAsString());
+        }
+        for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+        {
+            m_SendPushMsg.mutable_msgs(i)->Clear();
         }
     }
 #endif

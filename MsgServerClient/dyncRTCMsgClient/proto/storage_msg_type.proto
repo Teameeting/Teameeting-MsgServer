@@ -3,9 +3,9 @@ package pms;
 
 option optimize_for = LITE_RUNTIME;
 
-// the type of storeage msg
-enum EStorageType{
-    TINVALID    = 0;
-    TREAD       = 1;
-    TWRITE      = 2;
+// the tag of storeage msg
+enum EStorageTag{
+    TSEQN       = 0;
+    TDATA       = 1;
 }
+
