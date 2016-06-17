@@ -256,22 +256,22 @@ void MRTTransferSession::OnTypeTrans(const std::string& str)
         LE("OnTypeTrans r_msg.ParseFromString error\n");
     }
 
-    pms::MeetMsg m_msg;
-    if (!m_msg.ParseFromString(r_msg.content())) {
-        LE("OnTypeTrans m_msg.ParseFromString error\n");
+    pms::Entity e_msg;
+    if (!e_msg.ParseFromString(r_msg.content())) {
+        LE("OnTypeTrans e_msg.ParseFromString error\n");
     }
-    switch (m_msg.msg_tag()) {
+    switch (e_msg.msg_tag()) {
         case pms::EMsgTag::TENTER:
         case pms::EMsgTag::TLEAVE:
         {
-            MRTRoomManager::Instance().HandleOptRoom(r_msg, m_msg);
+            MRTRoomManager::Instance().HandleOptRoom(r_msg, e_msg);
         }
             break;
         case pms::EMsgTag::TCHAT:
         case pms::EMsgTag::TNOTIFY:
         {
             //handle msgs
-            MRTRoomManager::Instance().HandleDcommRoom(r_msg, m_msg);
+            MRTRoomManager::Instance().HandleDcommRoom(r_msg, e_msg);
         }
             break;
         default:

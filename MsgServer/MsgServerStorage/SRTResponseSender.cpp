@@ -143,7 +143,7 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
         {
             pms::RelayMsg rmsg;
             rmsg.set_svr_cmds(pms::EServerCmd::CNEWMSGDATA);
-            rmsg.set_content(m_SendPostMsg.SerializeAsString());
+            rmsg.set_content(m_SendPushMsg.SerializeAsString());
 
             pms::TransferMsg tmsg;
             tmsg.set_type(pms::ETransferType::TWRITE_RESPONSE);

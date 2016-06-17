@@ -17,7 +17,7 @@ class RTHttpSender
 {
 public:
 	RTHttpSender(void);
-    RTHttpSender(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& msg);
+    RTHttpSender(int cmd, pms::RelayMsg& rmsg, pms::Entity& msg);
 	virtual ~RTHttpSender(void);
 
 public:
@@ -26,7 +26,7 @@ public:
     http_method&  GetMethod() { return m_method; }
     int           GetCmd() { return m_cmd; }
     pms::RelayMsg&     GetTransmsg() { return m_transmsg; }
-    pms::MeetMsg&      GetMeetmsg() { return m_meetmsg; }
+    pms::Entity&      GetMeetmsg() { return m_meetmsg; }
 
 public:
 	//* For RCTcp
@@ -47,7 +47,7 @@ private:
     http_method     m_method;
     int             m_cmd;
     pms::RelayMsg        m_transmsg;
-    pms::MeetMsg         m_meetmsg;
+    pms::Entity          m_meetmsg;
 };
 
 #endif	// __MsgServerMeeting_MRT_HTTP_SENDER_H__

@@ -21,7 +21,7 @@
 #include "RTZKClient.hpp"
 
 
-void MRTRoomManager::HandleOptRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
+void MRTRoomManager::HandleOptRoom(pms::RelayMsg& rmsg, pms::Entity& mmsg)
 {
     LI("HandleOptRoom meet msg--->:\n");
     //mmsg.PrintDebugString();
@@ -44,7 +44,7 @@ void MRTRoomManager::HandleOptRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
 }
 
 
-void MRTRoomManager::HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& mmsg, std::string& data)
+void MRTRoomManager::HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::Entity& mmsg, std::string& data)
 {
     switch (cmd) {
         case M_HTTP_CMD_GET_MEETING_INFO:
@@ -64,7 +64,7 @@ void MRTRoomManager::HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::Me
 }
 
 
-void MRTRoomManager::HandleDcommRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
+void MRTRoomManager::HandleDcommRoom(pms::RelayMsg& rmsg, pms::Entity& mmsg)
 {
     LI("HandleDcommRoom meet msg--->:\n");
     //mmsg.PrintDebugString();
@@ -133,7 +133,7 @@ void MRTRoomManager::HandleDcommRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
     }
 }
 
-void MRTRoomManager::EnterRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
+void MRTRoomManager::EnterRoom(pms::RelayMsg& rmsg, pms::Entity& mmsg)
 {
     //* 1, Find Room
     MeetingRoomMapIt it = m_meetingRoomMap.find(mmsg.rom_id());
@@ -199,7 +199,7 @@ void MRTRoomManager::EnterRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
     return;
 }
 
-void MRTRoomManager::LeaveRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
+void MRTRoomManager::LeaveRoom(pms::RelayMsg& rmsg, pms::Entity& mmsg)
 {
     //* 1, Remove myself in Room MemberList;
     MeetingRoomMapIt it = m_meetingRoomMap.find(mmsg.rom_id());
@@ -468,7 +468,7 @@ void MRTRoomManager::SendWaitingMsgs(MeetingRoomMapIt mit)
     pWml.clear();
 }
 
-void MRTRoomManager::OnGetMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg, std::string& data)
+void MRTRoomManager::OnGetMemberList(pms::RelayMsg& rmsg, pms::Entity& mmsg, std::string& data)
 {
 #if DEF_PROTO
     //* 1, Update room member list.
@@ -497,7 +497,7 @@ void MRTRoomManager::OnGetMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg, st
 #endif
 }
 
-void MRTRoomManager::GenericResponse(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::MeetMsg& mmsg, const pms::ToUser* tos, std::string& response)
+void MRTRoomManager::GenericResponse(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::Entity& mmsg, const pms::ToUser* tos, std::string& response)
 {
     switch (mmsg.msg_tag()) {
         case pms::EMsgTag::TENTER:
@@ -526,7 +526,7 @@ void MRTRoomManager::GenericConnLostResponse(const std::string& uid
     pms::TransferMsg t_msg;
     pms::RelayMsg r_msg;
     pms::MsgRep resp;
-    pms::MeetMsg mmsg;
+    pms::Entity mmsg;
 
     mmsg.set_msg_head(pms::EMsgHead::HSND);
     mmsg.set_msg_tag(pms::EMsgTag::TLEAVE);
@@ -561,7 +561,7 @@ void MRTRoomManager::GenericConnLostResponse(const std::string& uid
 #endif
 }
 
-void MRTRoomManager::ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::MeetMsg& mmsg, const pms::ToUser* tos,  std::string& response)
+void MRTRoomManager::ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::Entity& mmsg, const pms::ToUser* tos,  std::string& response)
 {
 #if DEF_PROTO
     pms::TransferMsg t_msg;

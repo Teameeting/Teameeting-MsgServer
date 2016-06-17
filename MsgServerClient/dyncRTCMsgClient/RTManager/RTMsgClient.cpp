@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <vector>
 #include "RTMsgClient.hpp"
 #include "webrtc/base/logging.h"
 #include "proto/common_msg.pb.h"
@@ -44,31 +45,46 @@ RTMsgClient::~RTMsgClient()
 void RTMsgClient::OnSndMsg(const std::string& msg)
 {
 #if DEF_PROTO
-    pms::MeetMsg meet;
-    meet.ParseFromString(msg);
+    pms::Entity entity;
+    entity.ParseFromString(msg);
     LOG(INFO) << "RTMsgClient::OnSndMsg--->";
-    switch(meet.msg_tag()) {
+    switch(entity.msg_tag()) {
         case pms::EMsgTag::TCHAT:
             {
-                LOG(INFO) <<  mUserid + " recv num:" << mRecvNum << " EMsgTag::TCHAT: " << meet.msg_cont();
+                LOG(INFO) <<  mUserid + " recv num:" << mRecvNum << " EMsgTag::TCHAT: " << entity.msg_cont();
                 mRecvNum++;
-                //mMsgList.push_back(meet.msg_cont());
+                //mMsgList.push_back(entity.msg_cont());
             }
             break;
         case pms::EMsgTag::TENTER:
             {
-                LOG(INFO) << "EMsgTag::TENTER " << meet.msg_cont();
+                LOG(INFO) << "EMsgTag::TENTER " << entity.msg_cont();
             }
             break;
         case pms::EMsgTag::TLEAVE:
             {
-                LOG(INFO) << "EMsgTag::TLEAVE " << meet.msg_cont();
+                LOG(INFO) << "EMsgTag::TLEAVE " << entity.msg_cont();
             }
             break;
         case pms::EMsgTag::TNOTIFY:
             {
-                LOG(INFO) << "EMsgTag::TNOTIFY " << meet.msg_cont();
+                LOG(INFO) << "EMsgTag::TNOTIFY " << entity.msg_cont();
             }
+            break;
+        case pms::EMsgTag::TSSSEQN:
+            {
+                LOG(INFO) << "EMsgTag::TSSSEQN " << entity.msg_cont();
+                printf("server command to sync seqn was called\n");
+                //SyncSeqn();
+            }
+            break;
+        case pms::EMsgTag::TSSDATA:
+            {
+                LOG(INFO) << "EMsgTag::TSSDATA " << entity.msg_cont();
+                printf("server command to sync data was called\n");
+                //SyncData();
+            }
+            break;
         default:
             {
 
@@ -211,6 +227,17 @@ void RTMsgClient::SendMessage(const std::string& msg)
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
         mMsgClient.SndMsg(mCurRoomId, "RoomName", msg);
+    }
+}
+
+void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
+{
+    mIsOnline = true;
+    if (mIsOnline) {
+        printf("RTMsgClient::SyncData was called\n");
+        std::vector<std::string> v;
+        v.push_back(name);
+        mMsgClient.SndMsgTo(mCurRoomId, "RoomName", msg, v);
     }
 }
 

@@ -58,7 +58,8 @@ public:
     int GetTransferPort() { return m_port; }
     int GetConnectingStatus() { return m_connectingStatus; };
 
-    void PushStoreMsg(pms::StorageMsg store);
+    void PushReadMsg(pms::StorageMsg store);
+    void PushWriteMsg(pms::StorageMsg store);
 
 public:
     void EstablishConnection();
@@ -68,7 +69,7 @@ public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
-    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen);
     virtual void OnTickEvent(const char*pData, int nLen);
 
 // from RTTransfer
@@ -99,10 +100,17 @@ private:
     std::string     m_addr;
     int             m_port;
     int             m_connectingStatus;
-    pms::PackedStoreMsg     m_respPackedMsg;
-    std::queue<pms::StorageMsg>     m_queueStoreMsg;
-    OSMutex                         m_mutexQueue;
+
+    pms::PackedStoreMsg             m_respReadMsg;
+    std::queue<pms::StorageMsg>     m_queueReadMsg;
+    OSMutex                         m_mutexQRead;
+
+    pms::PackedStoreMsg             m_respWriteMsg;
+    std::queue<pms::StorageMsg>     m_queueWriteMsg;
+    OSMutex                         m_mutexQWrite;
+
     int                             m_isRun;
+
     unsigned int                    m_tmpWMsgId;
     unsigned int                    m_tmpRSeqnId;
     unsigned int                    m_tmpRDataId;

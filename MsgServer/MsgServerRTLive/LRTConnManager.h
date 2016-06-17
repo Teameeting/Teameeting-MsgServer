@@ -108,6 +108,7 @@ public:
     void    RefreshConnection();
     void    SendTransferData(const std::string mid, const std::string uid, const std::string msg);
 
+    void PushNewMsg2Queue(const std::string& str);
     void PushSeqnReq2Queue(const std::string& str);
     void PushDataReq2Queue(const std::string& str);
 

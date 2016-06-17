@@ -33,6 +33,20 @@ enum EModuleType{
     TSTORAGE    = 8;
 }
 
+// the msg flag
+enum EMsgFlag{
+    FINVALID = 0;
+    FSINGLE  = 1;
+    FMULTI   = 2;
+    FGROUP   = 3;
+}
+
+// the msg role
+enum EMsgRole{
+    RSENDER = 0; // sender
+    RRECVER = 1; // recver
+}
+
 // this is for request
 message MsgReq{
     EServerCmd     svr_cmds = 1;

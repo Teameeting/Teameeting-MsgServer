@@ -17,7 +17,8 @@
 
 #define TIMEOUT_TS (60*1000)
 
-static int g_idle_event_counter = 0;
+static int g_read_event_counter = 0;
+static int g_write_event_counter = 0;
 
 LRTTransferSession::LRTTransferSession()
 : RTJSBuffer()
@@ -56,7 +57,11 @@ void LRTTransferSession::Init()
     this->SetTimer(120*1000);
     for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        m_respPackedMsg.add_msgs();
+        m_respReadMsg.add_msgs();
+    }
+    for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+    {
+        m_respWriteMsg.add_msgs();
     }
     m_isRun = 1;
 }
@@ -65,7 +70,11 @@ void LRTTransferSession::InitConf()
 {
     for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        m_respPackedMsg.add_msgs();
+        m_respReadMsg.add_msgs();
+    }
+    for(int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+    {
+        m_respWriteMsg.add_msgs();
     }
     m_isRun = 1;
 }
@@ -183,11 +192,20 @@ void LRTTransferSession::SendTransferData(const std::string& data)
     SendTransferData(data.c_str(), data.length());
 }
 
-void LRTTransferSession::PushStoreMsg(pms::StorageMsg store)
+void LRTTransferSession::PushReadMsg(pms::StorageMsg store)
 {
     {
-        OSMutexLocker locker(&m_mutexQueue);
-        m_queueStoreMsg.push(store);
+        OSMutexLocker locker(&m_mutexQRead);
+        m_queueReadMsg.push(store);
+    }
+    this->Signal(Task::kPushEvent);
+}
+
+void LRTTransferSession::PushWriteMsg(pms::StorageMsg store)
+{
+    {
+        OSMutexLocker locker(&m_mutexQWrite);
+        m_queueWriteMsg.push(store);
     }
     this->Signal(Task::kIdleEvent);
 }
@@ -209,21 +227,22 @@ void LRTTransferSession::OnRecvMessage(const char*message, int nLen)
     RTLstorage::DoProcessData(message, nLen);
 }
 
-void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
+// for read
+void LRTTransferSession::OnPushEvent(const char*pData, int nLen)
 {
     if (!m_isRun) return;
-    if(m_queueStoreMsg.size()==0) return;
+    if(m_queueReadMsg.size()==0) return;
     bool hasData = false;
-    printf("LRTResponseSender::OnTickEvent g_idle_event_counter:%d, m_queueStoreMsg.size:%d\n",  ++g_idle_event_counter, m_queueStoreMsg.size());
+    printf("LRTTransferSession::OnPushEvent g_idle_event_counter:%d, m_queueReadMsg.size:%d\n",  ++g_read_event_counter, m_queueReadMsg.size());
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
-        if(m_queueStoreMsg.size()>0)
+        if(m_queueReadMsg.size()>0)
         {
             hasData = true;
-            *(m_respPackedMsg.mutable_msgs(i)) = m_queueStoreMsg.front();
+            *(m_respReadMsg.mutable_msgs(i)) = m_queueReadMsg.front();
             {
-                OSMutexLocker locker(&m_mutexQueue);
-                m_queueStoreMsg.pop();
+                OSMutexLocker locker(&m_mutexQRead);
+                m_queueReadMsg.pop();
             }
         }
     }
@@ -234,13 +253,48 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
             tmsg.set_type(pms::ETransferType::TDISPATCH);
             tmsg.set_flag(pms::ETransferFlag::FNOACK);
             tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-            tmsg.set_content(m_respPackedMsg.SerializeAsString());
-            printf("LRTTransferSession::OnTickEvent SendTransferData ...\n");
+            tmsg.set_content(m_respReadMsg.SerializeAsString());
             this->SendTransferData(tmsg.SerializeAsString());
         }
         for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
         {
-            m_respPackedMsg.mutable_msgs(i)->Clear();
+            m_respReadMsg.mutable_msgs(i)->Clear();
+        }
+    }
+}
+
+// for write
+void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
+{
+    if (!m_isRun) return;
+    if(m_queueWriteMsg.size()==0) return;
+    bool hasData = false;
+    printf("LRTTransferSession::OnTickEvent g_idle_event_counter:%d, m_queueWriteMsg.size:%d\n",  ++g_write_event_counter, m_queueWriteMsg.size());
+    for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+    {
+        if(m_queueWriteMsg.size()>0)
+        {
+            hasData = true;
+            *(m_respWriteMsg.mutable_msgs(i)) = m_queueWriteMsg.front();
+            {
+                OSMutexLocker locker(&m_mutexQWrite);
+                m_queueWriteMsg.pop();
+            }
+        }
+    }
+    if (hasData)
+    {
+        {
+            pms::TransferMsg tmsg;
+            tmsg.set_type(pms::ETransferType::TQUEUE);
+            tmsg.set_flag(pms::ETransferFlag::FNOACK);
+            tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+            tmsg.set_content(m_respWriteMsg.SerializeAsString());
+            this->SendTransferData(tmsg.SerializeAsString());
+        }
+        for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
+        {
+            m_respWriteMsg.mutable_msgs(i)->Clear();
         }
     }
 }
@@ -403,10 +457,14 @@ void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
         {
             if (store.msgs(i).userid().length()==0)continue;
             printf("LRTTransferSession::OnTypeWriteRequest NEWMSG msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
-            char msgid[16] = {0};
-            sprintf(msgid, "wm:%u", m_tmpWMsgId++);
-            store.mutable_msgs(i)->set_msgid(msgid);
-            LRTLogicalManager::Instance().InsertMsg(this, store.mutable_msgs(i));
+            if (store.msgs(i).msgid().length()==0)
+            {
+                char msgid[16] = {0};
+                sprintf(msgid, "wm:%u", m_tmpWMsgId++);
+                store.mutable_msgs(i)->set_msgid(msgid);
+            }
+            assert(store.mutable_msgs(i)->msgid().length()!=0);
+            LRTLogicalManager::Instance().InsertDataWrite(this, store.mutable_msgs(i));
         }
         pms::TransferMsg tmsg;
         tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
@@ -432,15 +490,28 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).userid().length()==0)continue;
-            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 1 msgid:%s, sequence:%lld, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).mtag());
+            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 1 userid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
+                    , store.msgs(i).userid().c_str(), store.msgs(i).msgid().c_str()\
+                    , store.msgs(i).sequence(), store.msgs(i).mtag(), store.msgs(i).content().c_str());
 
             pms::StorageMsg* pstore = store.mutable_msgs(i);
-            LRTLogicalManager::Instance().UpdateMsg(&pstore);
+            LRTLogicalManager::Instance().UpdateDataWrite(&pstore);
+
+            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 111 userid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
+                    , store.msgs(i).userid().c_str(), store.msgs(i).msgid().c_str()\
+                    , store.msgs(i).sequence(), store.msgs(i).mtag(), store.msgs(i).content().c_str());
         }
 
         for(int i=0;i<store.msgs_size();++i)
         {
-            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 2 msgid:%s, sequence:%lld, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).mtag());
+            if (store.msgs(i).userid().length()==0)continue;
+            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 2 userid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
+                    , store.msgs(i).userid().c_str(), store.msgs(i).msgid().c_str()\
+                    , store.msgs(i).sequence(), store.msgs(i).mtag(), store.msgs(i).content().c_str());
+
+            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 222 userid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
+                    , store.mutable_msgs(i)->userid().c_str(), store.mutable_msgs(i)->msgid().c_str()\
+                    , store.mutable_msgs(i)->sequence(), store.mutable_msgs(i)->mtag(), store.mutable_msgs(i)->content().c_str());
         }
         pms::TransferMsg tmsg;
         tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
@@ -458,7 +529,7 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
             if (store.msgs(i).userid().length()==0)continue;
             printf("LRTTransferSession::OnTypeWriteResponse NEWMSGDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mtag());
 
-            LRTLogicalManager::Instance().RespAndDelMsg(store.mutable_msgs(i));
+            LRTLogicalManager::Instance().DeleteDataWrite(store.mutable_msgs(i));
         }
     } else {
         LE("OnTypeWriteResponse not handle svr_cmd:%d\n", rmsg.svr_cmds());
@@ -481,7 +552,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
             sprintf(msgid, "rs:%u", m_tmpRSeqnId++);
             store.mutable_msgs(i)->set_msgid(msgid);
             printf("LRTTransferSession::OnTypeReadRequest SYNCSEQN msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
-            LRTLogicalManager::Instance().AddSeqReadMsg(this, store.mutable_msgs(i));
+            LRTLogicalManager::Instance().InsertSeqnRead(this, store.mutable_msgs(i));
         }
         pms::TransferMsg tmsg;
         tmsg.set_type(pms::ETransferType::TREAD_REQUEST);
@@ -499,7 +570,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
             sprintf(msgid, "rd:%u", m_tmpRDataId++);
             store.mutable_msgs(i)->set_msgid(msgid);
             printf("LRTTransferSession::OnTypeReadRequest SYNCDATA msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
-            LRTLogicalManager::Instance().InsertMsg(this, store.mutable_msgs(i));
+            LRTLogicalManager::Instance().InsertDataRead(this, store.mutable_msgs(i));
         }
         pms::TransferMsg tmsg;
         tmsg.set_type(pms::ETransferType::TREAD_REQUEST);
@@ -527,7 +598,7 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
             if (store.msgs(i).userid().length()==0)continue;
             printf("LRTTransferSession::OnTypeReadResponse SYNCSEQN msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mtag());
 
-            LRTLogicalManager::Instance().RespDelSeqMsg(store.mutable_msgs(i));
+            LRTLogicalManager::Instance().DeleteSeqnRead(store.mutable_msgs(i));
         }
     } else if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCDATA)
     {
@@ -539,7 +610,7 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
             if (store.msgs(i).userid().length()==0)continue;
             printf("LRTTransferSession::OnTypeReadResponse SYNCDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mtag());
 
-            LRTLogicalManager::Instance().RespAndDelMsg(store.mutable_msgs(i));
+            LRTLogicalManager::Instance().DeleteDataRead(store.mutable_msgs(i));
         }
     } else {
         LE("OnTypeReadResponse not handle svr_cmd:%d\n", rmsg.svr_cmds());

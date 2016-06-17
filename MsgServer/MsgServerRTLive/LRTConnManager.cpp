@@ -280,6 +280,14 @@ void LRTConnManager::SendTransferData(const std::string mid, const std::string u
      }
 }
 
+void LRTConnManager::PushNewMsg2Queue(const std::string& str)
+{
+     if (m_logicalSession && m_logicalSession->IsLiveSession())
+     {
+         m_logicalSession->PushNewMsg2Queue(str);
+         m_logicalSession->Signal(Task::kPushEvent);
+     }
+}
 
 void LRTConnManager::PushSeqnReq2Queue(const std::string& str)
 {
@@ -298,7 +306,6 @@ void LRTConnManager::PushDataReq2Queue(const std::string& str)
          m_logicalSession->Signal(Task::kIdleEvent);
      }
 }
-
 
 bool LRTConnManager::SignalKill()
 {

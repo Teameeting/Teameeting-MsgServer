@@ -67,8 +67,8 @@ public:
         int             _wtype;
         int             _wtags;
         pms::RelayMsg        _wtmsg;
-        pms::MeetMsg         _wmsg;
-        _waiting_msg(int wtype, int wtags, pms::RelayMsg& wtmsg, pms::MeetMsg& wmsg):
+        pms::Entity          _wmsg;
+        _waiting_msg(int wtype, int wtags, pms::RelayMsg& wtmsg, pms::Entity& wmsg):
         _wtype(wtype),_wtags(wtags),_wtmsg(wtmsg),_wmsg(wmsg){}
     }WaitingMsg;
     typedef std::list<WaitingMsg> WaitingMsgsList;
@@ -104,7 +104,7 @@ public:
 
     MemberStatus GetRoomMemberStatus(const std::string& uid);
 
-    void AddWaitingMsgToList(int type, int tag, pms::RelayMsg& tmsg, pms::MeetMsg& mmsg);
+    void AddWaitingMsgToList(int type, int tag, pms::RelayMsg& tmsg, pms::Entity& emsg);
     WaitingMsgsList& GetWaitingMsgs() { return m_waitingMsgsList; }
 
     const std::string& GetRoomId() { return m_roomId; }

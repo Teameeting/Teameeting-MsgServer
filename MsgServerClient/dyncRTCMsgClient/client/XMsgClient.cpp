@@ -106,9 +106,10 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, cons
     }
     std::string outstr;
     if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG, m_module);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
+                , m_nname, roomid, rname, uvec, msg\
+                , pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FGROUP);
     } else {
         return -1;
     }
@@ -141,9 +142,10 @@ int XMsgClient::OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::
     }
     std::string outstr;
     if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, "", tag, pms::EMsgType::TMSG, m_module);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
+                , m_nname, roomid, rname, uvec, ""\
+                , tag, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FINVALID);
     } else {
         return -1;
     }
@@ -159,10 +161,20 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
     if (msg.length()>1024 || rname.length()>128) {
         return -2;
     }
+    if (uvec.size()==0) {
+        return -3;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, pms::EMsgTag::TCHAT, pms::EMsgType::TMSG, m_module);
+        if (uvec.size()==1) {
+            m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
+                    , m_nname, roomid, rname, uvec, msg\
+                    , pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FSINGLE);
+        } else {
+            m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
+                    , m_nname, roomid, rname, uvec, msg\
+                    , pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FMULTI);
+        }
     } else {
         return -1;
     }
@@ -180,9 +192,10 @@ int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, p
     }
     std::string outstr;
     if (m_pMsgProcesser) {
-        //outstr, userid, pass, roomid, to, msg, cmd, action, tags, type
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token, m_nname, roomid, rname, uvec, msg, tag, pms::EMsgType::TMSG, m_module);
+        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
+                , m_nname, roomid, rname, uvec, msg\
+                , tag, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FGROUP);
     } else {
         return -1;
     }

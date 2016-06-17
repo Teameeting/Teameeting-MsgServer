@@ -129,7 +129,7 @@ void MRTHttpSvrConn::HttpUpdateSessionMeetingStatus(const char* sign, const char
 
 
 //* HTTP_GET
-void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg)
+void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::Entity& msg)
 {
     int outLen = 0;
     char data[512] = {0};
@@ -145,7 +145,7 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg)
     }
 }
 
-void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg) const
+void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::Entity& msg) const
 {
     int outLen = 0;
     char data[512] = {0};
@@ -161,7 +161,7 @@ void MRTHttpSvrConn::HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg) 
     }
 }
 
-void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& msg)
+void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::Entity& msg)
 {
     int outLen = 0;
     char data[512] = {0};
@@ -177,7 +177,7 @@ void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg&
     }
 }
 
-void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& msg) const
+void MRTHttpSvrConn::HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::Entity& msg) const
 {
     int outLen = 0;
     char data[512] = {0};

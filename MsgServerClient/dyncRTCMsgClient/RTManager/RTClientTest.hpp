@@ -20,17 +20,19 @@ public:
     RTClientTest();
     ~RTClientTest();
 
-    void RunTest(int flag);
+    void RunTest(int flag, const std::string& name);
     virtual void OnMessage(rtc::Message* msg);
 
     void TestSync();
     void TestSend();
+    void TestSendOnce();
 public:
     void RunOnce();
 private:
     bool    mIsRun;
     bool    mThreadRun;
     int     mTimes;
+    std::string mName;
 };
 
 #endif /* RTClientTest_hpp */

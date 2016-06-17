@@ -54,6 +54,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
             continue;
         }
         // Post for read
+        if (packed.msgs(i).userid().length()==0)continue;
         m_RedisManager.PostRedisRequest(packed.msgs(i).SerializeAsString());
     }
     SInt64 curTime = OS::Milliseconds();
@@ -88,6 +89,7 @@ void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
             continue;
         }
         // Push for write
+        if (packed.msgs(i).userid().length()==0)continue;
         m_RedisManager.PushRedisRequest(packed.msgs(i).SerializeAsString());
     }
     SInt64 curTime = OS::Milliseconds();

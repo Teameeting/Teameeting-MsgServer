@@ -38,28 +38,29 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     return 0;
 }
 
-int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module)
+int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag)
 {
 #if DEF_PROTO
     pms::MsgReq req;
-    pms::MeetMsg meet;
-    pms::ToUser *touser = meet.mutable_usr_toto();
-    meet.set_msg_head(pms::EMsgHead::HSND);
-    meet.set_msg_tag((pms::EMsgTag)tag);
-    meet.set_msg_type((pms::EMsgType)type);
-    meet.set_usr_from(userid);
-    meet.set_msg_cont(msg);
-    meet.set_rom_id(roomid);
-    meet.set_rom_name(rname);
-    meet.set_nck_name(nname);
-    meet.set_usr_token(token);
+    pms::Entity entity;
+    pms::ToUser *touser = entity.mutable_usr_toto();
+    entity.set_msg_head(pms::EMsgHead::HSND);
+    entity.set_msg_tag((pms::EMsgTag)tag);
+    entity.set_msg_type((pms::EMsgType)type);
+    entity.set_msg_flag((pms::EMsgFlag)flag);
+    entity.set_usr_from(userid);
+    entity.set_msg_cont(msg);
+    entity.set_rom_id(roomid);
+    entity.set_rom_name(rname);
+    entity.set_nck_name(nname);
+    entity.set_usr_token(token);
     for(int i=0;i<(int)to.size();++i) {
          touser->add_users(to.at(i));
     }
 
     req.set_svr_cmds(pms::EServerCmd::CSNDMSG);
     req.set_mod_type((pms::EModuleType)module);
-    req.set_content(meet.SerializeAsString());
+    req.set_content(entity.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
 #endif
@@ -70,14 +71,14 @@ int XMsgProcesser::EncodeGetMsg(std::string& outstr, const std::string& userid, 
 {
 #if DEF_PROTO
     pms::MsgReq req;
-    pms::MeetMsg meet;
-    meet.set_msg_tag((pms::EMsgTag)tag);
-    meet.set_usr_from(userid);
-    meet.set_usr_token(token);
+    pms::Entity entity;
+    entity.set_msg_tag((pms::EMsgTag)tag);
+    entity.set_usr_from(userid);
+    entity.set_usr_token(token);
 
     req.set_svr_cmds(pms::EServerCmd::CGETMSG);
     req.set_mod_type((pms::EModuleType)module);
-    req.set_content(meet.SerializeAsString());
+    req.set_content(entity.SerializeAsString());
     outstr = req.SerializeAsString();
 #else
 #endif

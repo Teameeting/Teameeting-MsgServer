@@ -35,12 +35,12 @@ class MRTRoomManager : public RTSingleton< MRTRoomManager >{
     friend class RTSingleton< MRTRoomManager >;
 public:
 
-    void HandleOptRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg);
-    void HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& mmsg, std::string& data);
-    void HandleDcommRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg);
+    void HandleOptRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
+    void HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::Entity& emsg, std::string& data);
+    void HandleDcommRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
 
-    void EnterRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg);
-    void LeaveRoom(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg);
+    void EnterRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
+    void LeaveRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
 
     bool Init(const std::string& msgQueueIp, unsigned short msgQueuePort, const std::string& httpIp, unsigned short httpPort, const std::string& httpHost);
     bool ConnectMsgQueue(const std::string& msgQueueIp, unsigned short msgQueuePort);
@@ -79,10 +79,10 @@ private:
 
     int ChangeToJson(const std::string from, std::string& users);
     void SendWaitingMsgs(MeetingRoomMapIt mit);
-    void OnGetMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& mmsg, std::string& data);
-    void GenericResponse(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::MeetMsg& mmsg, const pms::ToUser* tos, std::string& response);
+    void OnGetMemberList(pms::RelayMsg& rmsg, pms::Entity& emsg, std::string& data);
+    void GenericResponse(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::Entity& emsg, const pms::ToUser* tos, std::string& response);
     void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, int nmem, const std::string& cont, const pms::ToUser* tos, std::string& response);
-    void ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::MeetMsg& mmsg, const pms::ToUser* tos, std::string& response);
+    void ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::Entity& emsg, const pms::ToUser* tos, std::string& response);
 
 
     void AddUserMeetingRoomId(const std::string& uid, const std::string& roomid) {

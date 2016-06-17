@@ -25,6 +25,7 @@ LRTTransferSession::LRTTransferSession()
 , m_addr("")
 , m_port(0)
 , m_connectingStatus(0)
+, m_wNewMsgId(0)
 {
     AddObserver(this);
 }
@@ -50,6 +51,10 @@ void LRTTransferSession::Init()
     this->SetTimer(120*1000);
     for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
     {
+         m_packedNewMsg.add_msgs();
+    }
+    for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
+    {
          m_packedSeqnMsg.add_msgs();
     }
     for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
@@ -61,6 +66,10 @@ void LRTTransferSession::Init()
 
 void LRTTransferSession::InitConf()
 {
+    for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
+    {
+         m_packedNewMsg.add_msgs();
+    }
     for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
     {
          m_packedSeqnMsg.add_msgs();
@@ -232,6 +241,45 @@ void LRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
         for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
         {
              m_packedSeqnMsg.mutable_msgs(i)->Clear();
+        }
+    }
+}
+
+// process new msgs
+void LRTTransferSession::OnPushEvent(const char*pData, int nLen)
+{
+    LI("LRTTransferSession::OnPushEvent was called\n");
+    if (m_queueNewMsg.size()==0) return;
+    bool hasData = false;
+    for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
+    {
+        if (m_queueNewMsg.size()>0)
+        {
+            hasData = true;
+            m_packedNewMsg.mutable_msgs(i)->ParseFromString(m_queueNewMsg.front());
+            {
+                 OSMutexLocker locker(&m_mutexQueueNew);
+                 m_queueNewMsg.pop();
+            }
+        }
+    }
+    if (hasData)
+    {
+        pms::RelayMsg rmsg;
+        rmsg.set_svr_cmds(pms::EServerCmd::CNEWMSG);
+        rmsg.set_content(m_packedNewMsg.SerializeAsString());
+
+        pms::TransferMsg tmsg;
+        tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
+        tmsg.set_flag(pms::ETransferFlag::FNOACK);
+        tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+        tmsg.set_content(rmsg.SerializeAsString());
+
+        LI("LRTTransferSession::OnPushEvent send seqn write request to logical server\n");
+        this->SendTransferData(tmsg.SerializeAsString());
+        for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
+        {
+             m_packedNewMsg.mutable_msgs(i)->Clear();
         }
     }
 }
@@ -409,7 +457,50 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     LI("LRTTransferSession::OnTypeTrans srv:cmd:%d\n", r_msg.svr_cmds());
     if (r_msg.svr_cmds() == pms::EServerCmd::CSNDMSG)
     {
+        pms::Entity e_msg;
+        e_msg.ParseFromString(r_msg.content());
+        LI("LRTTransferSession::OnTypeTrans Entity msg flag is:%d\n", e_msg.msg_flag());
 
+        if (e_msg.msg_flag()==pms::EMsgFlag::FGROUP)
+        {
+            pms::StorageMsg store;
+            store.set_svrcmd(pms::EServerCmd::CNEWMSG);
+            store.set_userid(e_msg.usr_from());
+            //store.set_content(e_msg.msg_cont());
+            // store the Entity to redis
+            store.set_content(r_msg.content());
+            LI("LRTTransferSession::OnTypeTrans sndmsg usr_from:%s, cont:%s\n", e_msg.usr_from().c_str(), e_msg.msg_cont().c_str());
+
+            LRTConnManager::Instance().PushNewMsg2Queue(store.SerializeAsString());
+        } else if (e_msg.msg_flag()==pms::EMsgFlag::FSINGLE)
+        {
+            LI("LRTTransferSession::OnTypeTrans sndmsg usr_from:%s, msg_flag:%d, usr_toto.size:%d\n"\
+                    , e_msg.usr_from().c_str(), e_msg.msg_flag(), e_msg.usr_toto().users_size());
+            assert(e_msg.usr_toto().users_size()==1);
+
+            pms::StorageMsg sender;
+            sender.set_svrcmd(pms::EServerCmd::CNEWMSG);
+            sender.set_userid(e_msg.usr_from());
+            sender.set_mrole(pms::EMsgRole::RSENDER);
+            sender.set_mflag(pms::EMsgFlag::FSINGLE);
+            // store the Entity to redis
+            sender.set_content(r_msg.content());
+            LRTConnManager::Instance().PushNewMsg2Queue(sender.SerializeAsString());
+
+            pms::StorageMsg recver;
+            recver.set_svrcmd(pms::EServerCmd::CNEWMSG);
+            recver.set_userid(e_msg.usr_toto().users(0));
+            recver.set_mrole(pms::EMsgRole::RRECVER);
+            sender.set_mflag(pms::EMsgFlag::FSINGLE);
+            // store the Entity to redis
+            recver.set_content(r_msg.content());
+            LRTConnManager::Instance().PushNewMsg2Queue(recver.SerializeAsString());
+        } else if (e_msg.msg_flag()==pms::EMsgFlag::FMULTI)
+        {
+
+        } else {
+            LI("LRTTransferSession::OnTypeTrans Entity msg flag:%d not handle\n\n", e_msg.msg_flag());
+        }
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CSYNCSEQN)
     {
         pms::StorageMsg s_msg;
@@ -425,11 +516,73 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     }
 }
 
+// for write
 void LRTTransferSession::OnTypeQueue(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    LI("%s was called\n", __FUNCTION__);
+    pms::PackedStoreMsg store;
+    store.ParseFromString(str);
+    for(int i=0;i<store.msgs_size();++i)
+    {
+        if (store.msgs(i).userid().length()==0) break;
+        LI("OnTypeQueue sequence:%lld, userid:%s\n"\
+                , store.msgs(i).sequence()\
+                , store.msgs(i).userid().c_str());
+
+        pms::TransferMsg t_msg;
+        pms::RelayMsg r_msg;
+        pms::MsgRep resp;
+
+        // set response
+        LI("LRTTransferSession::OnTypeQueue --->store.svrcmd:%d\n", store.msgs(i).svrcmd());
+        LI("LRTTransferSession::OnTypeQueue --->store.userid:%s, msgid:%s, seqn:%lld, mflag:%d, mrole:%d\n"\
+                , store.msgs(i).userid().c_str()\
+                , store.msgs(i).msgid().c_str()\
+                , store.msgs(i).sequence()\
+                , store.msgs(i).mflag()\
+                , store.msgs(i).mrole());
+        if (store.msgs(i).svrcmd()==pms::EServerCmd::CNEWMSG)
+        {
+            pms::Entity entity;
+            if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
+            {
+                entity.set_msg_tag(pms::EMsgTag::TSSSEQN);
+
+            } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
+            {
+                entity.set_msg_tag(pms::EMsgTag::TSSDATA);
+            } else {
+
+                LI("LRTTransferSession::OnTypeQueue --->store.mrole:%d not handle\n\n", store.msgs(i).mrole());
+            }
+
+            resp.set_svr_cmds(pms::EServerCmd::CSNDMSG);
+            resp.set_mod_type(pms::EModuleType::TLIVE);
+            resp.set_rsp_code(0);
+            resp.set_rsp_cont(entity.SerializeAsString());
+
+            // set relay
+            r_msg.set_svr_cmds(pms::EServerCmd::CSNDMSG);
+            r_msg.set_tr_module(pms::ETransferModule::MLIVE);
+            r_msg.set_connector("");
+            r_msg.set_content(resp.SerializeAsString());
+            pms::ToUser *pto = new pms::ToUser;
+            LI("LRTTransferSession::OnTypeQueue send response to usr:%s\n", store.msgs(i).userid().c_str());
+            pto->add_users()->assign(store.msgs(i).userid());
+            r_msg.set_allocated_touser(pto);
+
+            // set transfer
+            t_msg.set_type(pms::ETransferType::TQUEUE);
+            t_msg.set_content(r_msg.SerializeAsString());
+            std::string response = t_msg.SerializeAsString();
+            LRTConnManager::Instance().SendTransferData("", "", response);
+        } else {
+            LI("LRTTransferSession::OnTypeQueue srv:cmd:%d not handle\n", r_msg.svr_cmds());
+        }
+    }
 }
 
+// for read
 void LRTTransferSession::OnTypeDispatch(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
@@ -448,27 +601,57 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
 
         // set response
         LI("LRTTransferSession::OnTypeDispatch --->store.svrcmd:%d\n", store.msgs(i).svrcmd());
+        LI("LRTTransferSession::OnTypeDispatch --->store.userid:%s, msgid:%s, seqn:%lld, cont:%s\n"\
+                , store.msgs(i).userid().c_str()\
+                , store.msgs(i).msgid().c_str()\
+                , store.msgs(i).sequence()\
+                , store.msgs(i).content().c_str());
+        if (store.msgs(i).svrcmd()==pms::EServerCmd::CSYNCSEQN)
+        {
+            resp.set_svr_cmds(store.msgs(i).svrcmd());
+            resp.set_mod_type(pms::EModuleType::TLIVE);
+            resp.set_rsp_code(0);
+            resp.set_rsp_cont(store.msgs(i).SerializeAsString());
 
-        resp.set_svr_cmds(store.msgs(i).svrcmd());
-        resp.set_mod_type(pms::EModuleType::TLIVE);
-        resp.set_rsp_code(0);
-        resp.set_rsp_cont(store.msgs(i).SerializeAsString());
+            // set relay
+            r_msg.set_svr_cmds(store.msgs(i).svrcmd());
+            r_msg.set_tr_module(pms::ETransferModule::MLIVE);
+            r_msg.set_connector("");
+            r_msg.set_content(resp.SerializeAsString());
+            pms::ToUser *pto = new pms::ToUser;
+            pto->add_users()->assign(store.msgs(i).userid());
+            r_msg.set_allocated_touser(pto);
 
-        // set relay
-        //r_msg.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
-        r_msg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
-        r_msg.set_tr_module(pms::ETransferModule::MLIVE);
-        r_msg.set_connector("");
-        r_msg.set_content(resp.SerializeAsString());
-        pms::ToUser *pto = new pms::ToUser;
-        pto->add_users()->assign(store.msgs(i).userid());
-        r_msg.set_allocated_touser(pto);
+            // set transfer
+            t_msg.set_type(pms::ETransferType::TQUEUE);
+            t_msg.set_content(r_msg.SerializeAsString());
+            std::string response = t_msg.SerializeAsString();
+            LRTConnManager::Instance().SendTransferData("", "", response);
 
-        // set transfer
-        t_msg.set_type(pms::ETransferType::TQUEUE);
-        t_msg.set_content(r_msg.SerializeAsString());
-        std::string response = t_msg.SerializeAsString();
-        LRTConnManager::Instance().SendTransferData("", "", response);
+        } else if (store.msgs(i).svrcmd()==pms::EServerCmd::CSYNCDATA)
+        {
+            resp.set_svr_cmds(store.msgs(i).svrcmd());
+            resp.set_mod_type(pms::EModuleType::TLIVE);
+            resp.set_rsp_code(0);
+            resp.set_rsp_cont(store.msgs(i).SerializeAsString());
+
+            // set relay
+            r_msg.set_svr_cmds(store.msgs(i).svrcmd());
+            r_msg.set_tr_module(pms::ETransferModule::MLIVE);
+            r_msg.set_connector("");
+            r_msg.set_content(resp.SerializeAsString());
+            pms::ToUser *pto = new pms::ToUser;
+            pto->add_users()->assign(store.msgs(i).userid());
+            r_msg.set_allocated_touser(pto);
+
+            // set transfer
+            t_msg.set_type(pms::ETransferType::TQUEUE);
+            t_msg.set_content(r_msg.SerializeAsString());
+            std::string response = t_msg.SerializeAsString();
+            LRTConnManager::Instance().SendTransferData("", "", response);
+        } else {
+            LI("LRTTransferSession::OnTypeDispatch srv:cmd:%d not handle\n", r_msg.svr_cmds());
+        }
     }
 }
 

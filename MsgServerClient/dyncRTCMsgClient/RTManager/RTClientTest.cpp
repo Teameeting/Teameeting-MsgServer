@@ -28,9 +28,10 @@ RTClientTest::~RTClientTest()
         this->Stop();
 }
 
-void RTClientTest::RunTest(int flag)
+void RTClientTest::RunTest(int flag, const std::string& name)
 {
     mIsRun = true;
+    mName = name;
     this->Start();
     mThreadRun = true;
     if (flag == kRunOnce) {
@@ -61,7 +62,8 @@ void RTClientTest::RunOnce()
 {
     //TODO:
     //TestSync();
-    TestSend();
+    //TestSend();
+    TestSendOnce();
 }
 
 void RTClientTest::TestSend()
@@ -69,15 +71,40 @@ void RTClientTest::TestSend()
     RTMsgClient client("dandan");
     client.InitSync();
     int t = 1000000;
-    //while(t--)
+    while(t--)
     {
-        std::string str("hello world");
-        client.SendMessage(str);
-        //rtc::Thread::SleepMs(10);
+        std::string m("hello world");
+        std::string n("xddxdd");
+        //client.SendMessage(m);
+        client.SendMessageTo(m, n);
+        rtc::Thread::SleepMs(10);
     }
     t = 10;
     while(t--)
         rtc::Thread::SleepMs(1000);
+    client.Unin();
+}
+
+void RTClientTest::TestSendOnce()
+{
+    RTMsgClient client(mName);
+    client.InitSync();
+    int t = 1000000;
+    {
+    }
+    if (mName.compare("xddxdd")==0)
+    {
+        while(1)
+            rtc::Thread::SleepMs(1000);
+    } else {
+        std::cout << "TestSendOnce name:" << mName << std::endl;
+        std::string m("hello world");
+        std::string n("xddxdd");
+        client.SendMessageTo(m, n);
+        t = 15;
+        while(t--)
+            rtc::Thread::SleepMs(1000);
+    }
     client.Unin();
 }
 
@@ -86,11 +113,13 @@ void RTClientTest::TestSync()
     RTMsgClient client("dandan");
     client.InitSync();
     int t = 1000000;
-    while(t--)
+    while(1)
     {
+        std::string str("hello world");
+        client.SendMessage(str);
         client.SyncSeqn();
         client.SyncData();
-        rtc::Thread::SleepMs(10);
+        rtc::Thread::SleepMs(1000);
     }
     t = 10;
     while(t--)

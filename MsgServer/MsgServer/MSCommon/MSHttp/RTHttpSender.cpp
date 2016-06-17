@@ -19,7 +19,7 @@ RTHttpSender::RTHttpSender(void)
 	m_pBuffer = new char[m_nBufLen];
 }
 
-RTHttpSender::RTHttpSender(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& msg)
+RTHttpSender::RTHttpSender(int cmd, pms::RelayMsg& rmsg, pms::Entity& msg)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
 , m_nBufOffset(0)

@@ -22,11 +22,16 @@
 
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
+
+    if (argc<2) {
+        std::cout << "please add param username!!!" << std::endl;
+         return 0;
+    }
     rtc::LogMessage::LogToDebug(rtc::INFO);
     //RTConnClientManager manager;
     //manager.RunTest(KRUN);
     RTClientTest test;
-    test.RunTest(KRUNONCE);
+    test.RunTest(KRUNONCE, argv[1]);
     google::protobuf::ShutdownProtobufLibrary();
     LOG(INFO) << "bye bye client...";
     return 0;

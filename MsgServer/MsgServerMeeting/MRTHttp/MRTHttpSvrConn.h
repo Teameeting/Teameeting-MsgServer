@@ -41,10 +41,10 @@ public:
     void HttpUpdateSessionMeetingStatus(const char* sign, const char* sessionid, const char* sessionstatus);
 
     //* HTTP_GET
-    void HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg);
-    void HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::MeetMsg& msg) const;
-    void HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& msg);
-    void HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::MeetMsg& msg) const;
+    void HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::Entity& msg);
+    void HttpGetMeetingInfo(pms::RelayMsg& rmsg, pms::Entity& msg) const;
+    void HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::Entity& msg);
+    void HttpGetMeetingMemberList(pms::RelayMsg& rmsg, pms::Entity& msg) const;
 
 public:
     //* For RCHttp
@@ -55,7 +55,7 @@ public:
         //* For RTConnHttp
     public:
         MSender():RTHttpSender(){}
-        MSender(int cmd, pms::RelayMsg& rmsg, pms::MeetMsg& msg):RTHttpSender(cmd, rmsg, msg){}
+        MSender(int cmd, pms::RelayMsg& rmsg, pms::Entity& msg):RTHttpSender(cmd, rmsg, msg){}
         virtual void OnResponse(const char*pData, int nLen);
     };
 

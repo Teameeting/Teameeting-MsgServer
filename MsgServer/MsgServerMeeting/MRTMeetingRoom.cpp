@@ -221,8 +221,8 @@ void MRTMeetingRoom::CheckMembers()
 
 }
 
-void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, pms::RelayMsg& rmsg, pms::MeetMsg& mmsg)
+void MRTMeetingRoom::AddWaitingMsgToList(int type, int tag, pms::RelayMsg& rmsg, pms::Entity& emsg)
 {
     OSMutexLocker locker(&m_wmsgMutex);
-    m_waitingMsgsList.push_back(WaitingMsg(type, tag, rmsg, mmsg));
+    m_waitingMsgsList.push_back(WaitingMsg(type, tag, rmsg, emsg));
 }

@@ -60,14 +60,17 @@ public:
          }
     }
 
-    bool InsertMsg(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
-    bool UpdateMsg(pms::StorageMsg** storeMsg);
-    bool RespAndDelMsg(pms::StorageMsg*  storeMsg);
-    bool SearchMsg(pms::StorageMsg*  storeMsg);
-    bool GetMaxSeq(pms::StorageMsg*  storeMsg);
+    bool InsertDataWrite(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
+    bool UpdateDataWrite(pms::StorageMsg** storeMsg);
+    bool DeleteDataWrite(pms::StorageMsg*  storeMsg);
 
-    bool AddSeqReadMsg(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
-    bool RespDelSeqMsg(pms::StorageMsg* storeMsg);
+    bool InsertDataRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
+    bool UpdateDataRead(pms::StorageMsg** storeMsg);
+    bool DeleteDataRead(pms::StorageMsg*  storeMsg);
+
+    bool InsertSeqnRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
+    bool UpdateSeqnRead(pms::StorageMsg** storeMsg);
+    bool DeleteSeqnRead(pms::StorageMsg*  storeMsg);
 
     bool    SignalKill();
     bool    ClearAll();
@@ -81,10 +84,13 @@ protected:
 
 private:
     std::vector<std::string>            m_RedisHosts;
-    OSMutex                             m_mutexMsg;
-    OSMutex                             m_mutexSeqReadMsg;
-    TransMsgInfoMap                     m_transMsgInfoMap;
-    TransMsgInfoMap                     m_seqReadMsgInfoMap;
+    OSMutex                             m_mutexDataWrite;
+    OSMutex                             m_mutexDataRead;
+    OSMutex                             m_mutexSeqnRead;
+
+    TransMsgInfoMap                     m_dataWriteMap;
+    TransMsgInfoMap                     m_dataReadMap;
+    TransMsgInfoMap                     m_seqnReadMap;
 };
 
 #endif /* defined(__MsgServerLogical__LRTLogicalManager__) */

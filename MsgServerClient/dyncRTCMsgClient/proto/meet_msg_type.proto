@@ -5,8 +5,8 @@ option optimize_for = LITE_RUNTIME;
 
 // the msg content type
 enum EMsgType{
-    TMSG    = 0;
-    TFILE   = 1;
+    TTXT    = 0;
+    TFIL    = 1;
     TPIC    = 2;
     TAUD    = 3;
     TVID    = 4;
@@ -18,6 +18,8 @@ enum EMsgTag{
     TLEAVE  = 1;
     TCHAT   = 2;
     TNOTIFY = 3;
+    TSSSEQN = 4; // server sync seqn
+    TSSDATA = 5; // server sync data
 }
 
 // the msg get tag

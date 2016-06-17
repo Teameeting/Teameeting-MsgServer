@@ -10,11 +10,13 @@ option optimize_for = LITE_RUNTIME;
 message StorageMsg{
     EServerCmd      svrcmd      = 1; // server cmd
     EStorageTag     mtag        = 2; // seqn or data
-    sint32          result      = 3; // the redis opt result
-    sint64          sequence    = 4; // sequence
-    string          userid      = 5; // userid
-    string          msgid       = 6; // message id
-    string          content     = 7; // message
+    EMsgFlag        mflag       = 3; // group or single
+    EMsgRole        mrole       = 4; // sender or recver
+    sint32          result      = 5; // the redis opt result
+    sint64          sequence    = 6; // sequence
+    string          userid      = 7; // userid
+    string          msgid       = 8; // message id
+    string          content     = 9; // message
 }
 
 message PackedStoreMsg{

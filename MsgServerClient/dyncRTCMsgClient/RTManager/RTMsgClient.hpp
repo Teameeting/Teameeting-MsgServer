@@ -48,6 +48,7 @@ public:
     void SyncSeqn();
     void SyncData();
     void SendMessage(const std::string& msg);
+    void SendMessageTo(const std::string& msg, const std::string& name);
 public:
     const std::string& GetUserId() { return mUserid; }
     int GetRecvNums() { return mRecvNum; }

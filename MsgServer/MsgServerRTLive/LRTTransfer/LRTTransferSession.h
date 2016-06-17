@@ -56,6 +56,12 @@ public:
 public:
     void EstablishConnection();
 
+    void PushNewMsg2Queue(const std::string& str)
+    {
+        OSMutexLocker locker(&m_mutexQueueNew);
+        m_queueNewMsg.push(str);
+    }
+
     void PushSeqnReq2Queue(const std::string& str)
     {
         OSMutexLocker locker(&m_mutexQueueSeqn);
@@ -73,7 +79,7 @@ public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
     virtual void OnWakeupEvent(const char*pData, int nLen);
-    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen);
     virtual void OnTickEvent(const char*pData, int nLen);
 
 // from RTTransfer
@@ -102,6 +108,10 @@ private:
     int             m_port;
     int             m_connectingStatus;
 
+    pms::PackedStoreMsg         m_packedNewMsg;
+    std::queue<std::string>     m_queueNewMsg;
+    OSMutex                     m_mutexQueueNew;
+
     pms::PackedStoreMsg         m_packedSeqnMsg;
     std::queue<std::string>     m_queueSeqnMsg;
     OSMutex                     m_mutexQueueSeqn;
@@ -109,6 +119,8 @@ private:
     pms::PackedStoreMsg         m_packedDataMsg;
     std::queue<std::string>     m_queueDataMsg;
     OSMutex                     m_mutexQueueData;
+
+    unsigned int                m_wNewMsgId;
 };
 
 #endif /* defined(__MsgServerRTLive__LRTTransferSession__) */

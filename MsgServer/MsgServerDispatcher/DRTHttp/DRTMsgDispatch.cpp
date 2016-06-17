@@ -33,7 +33,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     std::string msg(pData, nLen);
     pms::RelayMsg pmsg;
     pms::MsgRep respmsg;
-    pms::MeetMsg mmsg;
+    pms::Entity mmsg;
     if (!pmsg.ParseFromString(msg)) {
         LE("pmsg.ParseFromString error\n");
         return;

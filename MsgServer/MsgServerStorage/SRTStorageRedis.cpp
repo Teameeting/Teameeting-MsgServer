@@ -107,7 +107,7 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
     sprintf(key, "%s:%lld", store.userid().c_str(), store.sequence());
     m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
-    printf("SRTStorageRedis::OnTickEvent msgid:%s\n", store.msgid().c_str());
+    printf("SRTStorageRedis::OnTickEvent userid:%s, msgid:%s\n", store.userid().c_str(), store.msgid().c_str());
     if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
     {
         store.set_result(20);

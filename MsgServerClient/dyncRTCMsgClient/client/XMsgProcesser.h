@@ -35,7 +35,7 @@ public:
 public:
 
     int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module);
-    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module);
+    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag, int module);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);

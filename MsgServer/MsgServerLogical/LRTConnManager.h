@@ -133,6 +133,7 @@ private:
     LRTConnDispatcher*        m_pConnDispatcher;
     UserConnectorMaps         m_userConnectors;
     ConnectingSessList        m_connectingSessList;
+
     LRTTransferSession*       m_sequenceWriteSession;
     LRTTransferSession*       m_sequenceReadSession;
     LRTTransferSession*       m_storageWriteSession;
