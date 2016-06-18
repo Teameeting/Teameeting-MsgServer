@@ -23,6 +23,11 @@ public:
 
     virtual void OnLogin(int code, const std::string& userid) = 0;
     virtual void OnLogout(int code, const std::string& userid) = 0;
+    virtual void OnSndMsg(int code, const std::string& cont) = 0;
+    virtual void OnGetMsg(int code, const std::string& cont) = 0;
+    virtual void OnKeepLive(int code, const std::string& cont) = 0;
+    virtual void OnSyncSeqn(int code, const std::string& cont) = 0;
+    virtual void OnSyncData(int code, const std::string& cont) = 0;
 };
 
 class XMsgClient
@@ -63,6 +68,11 @@ public:
     // For XMsgClientHelper
     virtual void OnLogin(int code, const std::string& userid);
     virtual void OnLogout(int code, const std::string& userid);
+    virtual void OnSndMsg(int code, const std::string& userid);
+    virtual void OnGetMsg(int code, const std::string& userid);
+    virtual void OnKeepLive(int code, const std::string& userid);
+    virtual void OnSyncSeqn(int code, const std::string& userid);
+    virtual void OnSyncData(int code, const std::string& userid);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);
@@ -75,9 +85,11 @@ private:
     unsigned short readShort(char** pptr);
     void writeShort(char** pptr, unsigned short anInt);
 private:
+
+    XMsgCallback*            m_pCallback;
     XTcpClientImpl*          m_pClientImpl;
     XMsgProcesser*           m_pMsgProcesser;
-    uint32_t                   m_lastUpdateTime;
+    uint32_t                 m_lastUpdateTime;
     std::string              m_uid;
     std::string              m_token;
     std::string              m_nname;
@@ -87,6 +99,7 @@ private:
     bool                     m_login;
     MSState                  m_msState;
     long long                m_curSeqn;
+    long long                m_maxSeqn;
     pms::EModuleType         m_module;
 };
 

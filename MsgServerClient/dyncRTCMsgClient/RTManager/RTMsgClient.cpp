@@ -33,7 +33,10 @@ RTMsgClient::RTMsgClient(const std::string& uid)
 , mDisconnNum(0)
 , mConnFailNum(0)
 , mCond(PTHREAD_COND_INITIALIZER)
-, mMutex(PTHREAD_MUTEX_INITIALIZER){
+, mMutex(PTHREAD_MUTEX_INITIALIZER)
+, mPData(NULL)
+, mDataCallback(NULL)
+{
 
 }
 
@@ -75,6 +78,14 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
             {
                 LOG(INFO) << "EMsgTag::TSSSEQN " << entity.msg_cont();
                 printf("server command to sync seqn was called\n");
+                if (mDataCallback && mPData)
+                {
+                     mDataCallback(mPData, 1);
+                }
+                else
+                {
+                    printf("pms::EMsgTag::TSSSEQN mDataCallback or mPData is null\n");
+                }
                 //SyncSeqn();
             }
             break;
@@ -82,6 +93,14 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
             {
                 LOG(INFO) << "EMsgTag::TSSDATA " << entity.msg_cont();
                 printf("server command to sync data was called\n");
+                if (mDataCallback && mPData)
+                {
+                     mDataCallback(mPData, 2);
+                }
+                else
+                {
+                    printf("pms::EMsgTag::TSSDATA mDataCallback or mPData is null\n");
+                }
                 //SyncData();
             }
             break;
@@ -198,46 +217,57 @@ void RTMsgClient::SendMsg(const std::string& msg)
 
 void RTMsgClient::InitSync()
 {
-    mIsOnline = true;
     Init(pms::EModuleType::TLIVE);
     Connecting();
 }
 
 void RTMsgClient::SyncSeqn()
 {
-    mIsOnline = true;
     if (mIsOnline) {
         printf("RTMsgClient::SyncSeqn was called\n");
         mMsgClient.SyncSeqn();
+    }
+    else
+    {
+         printf("RTMsgClient::SyncSeqn mIsOnline is false\n");
     }
 }
 
 void RTMsgClient::SyncData()
 {
-    mIsOnline = true;
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
         mMsgClient.SyncData();
+    }
+    else
+    {
+         printf("RTMsgClient::SyncSeqn mIsOnline is false\n");
     }
 }
 
 void RTMsgClient::SendMessage(const std::string& msg)
 {
-    mIsOnline = true;
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
         mMsgClient.SndMsg(mCurRoomId, "RoomName", msg);
+    }
+    else
+    {
+         printf("RTMsgClient::SyncSeqn mIsOnline is false\n");
     }
 }
 
 void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
 {
-    mIsOnline = true;
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
         std::vector<std::string> v;
         v.push_back(name);
         mMsgClient.SndMsgTo(mCurRoomId, "RoomName", msg, v);
+    }
+    else
+    {
+         printf("RTMsgClient::SyncSeqn mIsOnline is false\n");
     }
 }
 

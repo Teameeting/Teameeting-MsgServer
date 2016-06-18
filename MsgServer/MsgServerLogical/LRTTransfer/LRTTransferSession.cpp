@@ -596,7 +596,11 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).userid().length()==0)continue;
-            printf("LRTTransferSession::OnTypeReadResponse SYNCSEQN msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mtag());
+            printf("LRTTransferSession::OnTypeReadResponse SYNCSEQN msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n"\
+                    , store.msgs(i).msgid().c_str()\
+                    , store.msgs(i).sequence()\
+                    , store.msgs(i).result()\
+                    , store.msgs(i).mtag());
 
             LRTLogicalManager::Instance().DeleteSeqnRead(store.mutable_msgs(i));
         }
@@ -608,7 +612,13 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).userid().length()==0)continue;
-            printf("LRTTransferSession::OnTypeReadResponse SYNCDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mtag());
+            printf("LRTTransferSession::OnTypeReadResponse SYNCDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d, cont.len:%d, cont:%s\n\n"\
+                    , store.msgs(i).msgid().c_str()\
+                    , store.msgs(i).sequence()\
+                    , store.msgs(i).result()\
+                    , store.msgs(i).mtag()\
+                    , store.msgs(i).content().length()\
+                    , store.msgs(i).content().c_str());
 
             LRTLogicalManager::Instance().DeleteDataRead(store.mutable_msgs(i));
         }

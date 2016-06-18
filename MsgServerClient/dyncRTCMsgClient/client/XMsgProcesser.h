@@ -30,7 +30,7 @@ class XMsgClientHelper;
 
 class XMsgProcesser{
 public:
-    XMsgProcesser(XMsgCallback& cb, XMsgClientHelper& helper):m_callback(cb), m_helper(helper){}
+    XMsgProcesser(XMsgClientHelper& helper):m_helper(helper){}
     ~XMsgProcesser(){}
 public:
 
@@ -40,17 +40,10 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
-    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
-    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
+    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module);
+    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module);
 
     int DecodeRecvData(const char* pData, int nLen);
-
-public:
-    //handle XTcpClient callback
-    void ServerConnected();
-    void ServerDisconnect();
-    void ServerConnectionFailure();
-    void ServerState(MSState state);
 
 protected:
     int DecodeLogin(int code, const std::string& cont);
@@ -61,7 +54,6 @@ protected:
     int DecodeSyncSeqn(int code, const std::string& cont);
     int DecodeSyncData(int code, const std::string& cont);
 private:
-    XMsgCallback        &m_callback;
     XMsgClientHelper    &m_helper;
 };
 

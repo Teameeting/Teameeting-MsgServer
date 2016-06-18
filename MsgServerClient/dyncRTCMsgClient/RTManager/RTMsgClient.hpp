@@ -23,6 +23,9 @@ public:
     RTMsgClient(const std::string& uid);
     virtual ~RTMsgClient();
 public:
+
+    typedef void (*DataCallback)(void* pd, int data);
+
     // from XMsgCallback
     virtual void OnSndMsg(const std::string& msg);
     virtual void OnGetMsg(const std::string& msg);
@@ -35,6 +38,9 @@ public:
     void SetRoomId(const std::string& roomid) { mCurRoomId = roomid; }
     int Register();
     int ApplyRoom();
+
+    void SetPData(void* pd) { mPData = pd; }
+    void SetDataCallback(DataCallback cb) { mDataCallback = cb; }
 
     void Init(int module);
     void Unin();
@@ -76,6 +82,9 @@ private:
     int             mConnFailNum;
     pthread_cond_t          mCond;
     pthread_mutex_t         mMutex;
+
+    void*                   mPData;
+    DataCallback            mDataCallback;
 };
 
 #endif /* RTMsgClient_hpp */

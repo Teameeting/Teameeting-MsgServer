@@ -34,9 +34,10 @@ XMsgClient::XMsgClient()
 , m_autoConnect(true)
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
-, m_curSeqn(20)
+, m_curSeqn(2)
+, m_maxSeqn(2)
 {
-
+    printf("XMsgClient XMsgClient ok!!\n");
 }
 
 XMsgClient::~XMsgClient()
@@ -50,7 +51,8 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
         return -1;
     }
     if (!m_pMsgProcesser) {
-        m_pMsgProcesser = new XMsgProcesser(*cb, *this);
+        m_pMsgProcesser = new XMsgProcesser(*this);
+        m_pCallback = cb;
     }
     if (!m_pMsgProcesser) {
         return -1;
@@ -79,21 +81,23 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
     m_autoConnect = bAutoConnect;
     m_pClientImpl->Connect(server, port, bAutoConnect);
     m_msState = MSCONNECTTING;
-    m_pMsgProcesser->ServerState(MSCONNECTTING);
+    m_pCallback->OnMsgServerState(MSCONNECTTING);
 
+    printf("XMsgClient Init ok!!\n");
     return 0;
 }
 
 int XMsgClient::Unin()
 {
+    m_pCallback = nullptr;
     if (m_pClientImpl) {
         m_pClientImpl->Disconnect();
         if (m_pMsgProcesser) {
             delete m_pMsgProcesser;
-            m_pMsgProcesser = NULL;
+            m_pMsgProcesser = nullptr;
         }
         delete m_pClientImpl;
-        m_pClientImpl = NULL;
+        m_pClientImpl = nullptr;
     }
 
     return 0;
@@ -117,6 +121,7 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, cons
         return -1;
     }
 
+    printf("XMsgClient SndMsg ok!!\n");
     return SendEncodeMsg(outstr);
 }
 
@@ -210,7 +215,7 @@ int XMsgClient::SyncSeqn()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, m_curSeqn, m_module);
+        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, m_curSeqn, m_maxSeqn, m_module);
     } else {
         return -1;
     }
@@ -226,7 +231,7 @@ int XMsgClient::SyncData()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn, m_module);
+        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn, m_maxSeqn, m_module);
     } else {
         return -1;
     }
@@ -381,22 +386,22 @@ void XMsgClient::OnServerConnected()
 void XMsgClient::OnServerDisconnect()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
-    if (m_pMsgProcesser) {
+    if (m_pCallback) {
         m_login = false;
         m_msState = MSNOT_CONNECTED;
-        m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
-        m_pMsgProcesser->ServerDisconnect();
+        m_pCallback->OnMsgServerState(MSNOT_CONNECTED);
+        m_pCallback->OnMsgServerDisconnect();
     }
 }
 
 void XMsgClient::OnServerConnectionFailure()
 {
     //LOG(INFO) << __FUNCTION__ << " was called";
-    if (m_pMsgProcesser) {
+    if (m_pCallback) {
         m_login = false;
         m_msState = MSNOT_CONNECTED;
-        m_pMsgProcesser->ServerState(MSNOT_CONNECTED);
-        m_pMsgProcesser->ServerConnectionFailure();
+        m_pCallback->OnMsgServerState(MSNOT_CONNECTED);
+        m_pCallback->OnMsgServerConnectionFailure();
     }
 }
 
@@ -437,8 +442,8 @@ void XMsgClient::OnLogin(int code, const std::string& userid)
     if (code == 0) {
         m_login = true;
         m_msState = MSCONNECTED;
-        m_pMsgProcesser->ServerState(MSCONNECTED);
-        m_pMsgProcesser->ServerConnected();
+        m_pCallback->OnMsgServerState(MSCONNECTED);
+        m_pCallback->OnMsgServerConnected();
     } else {
         Login();
     }
@@ -453,6 +458,67 @@ void XMsgClient::OnLogout(int code, const std::string& userid)
 #endif
     m_login = false;
 }
+
+void XMsgClient::OnSndMsg(int code, const std::string& cont)
+{
+    if (m_pCallback)
+        m_pCallback->OnSndMsg(cont);
+    else
+        printf("XMsgClient::OnSndMsg m_pCallback is null\n");
+
+    pms::Entity entity;
+    entity.ParseFromString(cont);
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XMsgClient::OnSndMsg sequence:%lld\n\n"\
+            , entity.msg_seqs());
+    m_maxSeqn = entity.msg_seqs();
+    return;
+}
+
+void XMsgClient::OnGetMsg(int code, const std::string& cont)
+{
+    if (m_pCallback)
+        m_pCallback->OnGetMsg(cont);
+    else
+        printf("XMsgClient::OnSndMsg m_pCallback is null\n");
+    return;
+}
+
+void XMsgClient::OnKeepLive(int code, const std::string& cont)
+{
+
+}
+
+void XMsgClient::OnSyncSeqn(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XMsgClient::OnSyncSeqn userid:%s, sequence:%lld, maxseqn:%lld\n"\
+            , store.userid().c_str(), store.sequence(), store.maxseqn());
+    m_curSeqn = store.sequence();
+    m_maxSeqn = store.maxseqn();
+    return;
+}
+
+void XMsgClient::OnSyncData(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XMsgClient::OnSyncData userid:%s, sequence:%lld, maxseqn:%lld\n\n"\
+            , store.userid().c_str()\
+            , store.sequence()\
+            , store.maxseqn());
+    m_maxSeqn = store.maxseqn();
+    pms::Entity entity;
+    entity.ParseFromString(store.content());
+    printf("OnSyncData entity.usr_from:%s, usr_toto:%s, msg_cont:%s\n"\
+            , entity.usr_from().c_str()\
+            , entity.usr_toto().users(0).c_str()\
+            , entity.msg_cont().c_str());
+    return;
+}
+
 
 //////////////////////////////////////////////////
 //////////////XJSBuffer///////////////////////////

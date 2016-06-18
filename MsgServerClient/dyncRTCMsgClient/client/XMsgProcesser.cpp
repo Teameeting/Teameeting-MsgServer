@@ -118,15 +118,17 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module)
 {
 #if DEF_PROTO
+    printf("EncodeSyncSeqn userid:%s, seqn:%lld\n", userid.c_str(), seqn);
     pms::MsgReq req;
     pms::StorageMsg store;
     store.set_svrcmd(pms::EServerCmd::CSYNCSEQN);
     store.set_mtag(pms::EStorageTag::TSEQN);
     store.set_userid(userid);
     store.set_sequence(seqn);
+    store.set_maxseqn(maxseqn);
 
     printf("XMsgProcesser::EncodeSyncSeqn was called\n");
     req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
@@ -138,7 +140,7 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
+int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -147,8 +149,9 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     store.set_mtag(pms::EStorageTag::TDATA);
     store.set_userid(userid);
     store.set_sequence(seqn);
+    store.set_maxseqn(maxseqn);
 
-    printf("XMsgProcesser::EncodeSyncSeqn was called\n");
+    printf("XMsgProcesser::EncodeSyncData was called\n");
     req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -165,6 +168,7 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
 int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 {
 #if DEF_PROTO
+    printf("XMsgProcesser::DecodeRecvData\n\n");
     const std::string strmsg(pData, nLen);
     pms::MsgRep resp;
     if (!resp.ParseFromString(strmsg)) {
@@ -214,13 +218,13 @@ int XMsgProcesser::DecodeLogin(int code, const std::string& cont)
 
 int XMsgProcesser::DecodeSndMsg(int code, const std::string& cont)
 {
-    m_callback.OnSndMsg(cont);
+    m_helper.OnSndMsg(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeGetMsg(int code, const std::string& cont)
 {
-    m_callback.OnGetMsg(cont);
+    m_helper.OnGetMsg(code, cont);
     return 0;
 }
 
@@ -232,42 +236,18 @@ int XMsgProcesser::DecodeLogout(int code, const std::string& cont)
 
 int XMsgProcesser::DecodeKeepAlive(int code, const std::string& cont)
 {
+    m_helper.OnKeepLive(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeSyncSeqn(int code, const std::string& cont)
 {
-    pms::StorageMsg store;
-    store.ParseFromString(cont);
-    printf("DecodeSyncSeqn userid:%s, sequence:%lld\n", store.userid().c_str(), store.sequence());
+    m_helper.OnSyncSeqn(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeSyncData(int code, const std::string& cont)
 {
-    pms::StorageMsg store;
-    store.ParseFromString(cont);
-    printf("DecodeSyncData userid:%s, sequence:%lld, content:%s\n\n", store.userid().c_str(), store.sequence(), store.content().c_str());
+    m_helper.OnSyncData(code, cont);
     return 0;
 }
-
-void XMsgProcesser::ServerConnected()
-{
-    m_callback.OnMsgServerConnected();
-}
-
-void XMsgProcesser::ServerDisconnect()
-{
-    m_callback.OnMsgServerDisconnect();
-}
-
-void XMsgProcesser::ServerConnectionFailure()
-{
-    m_callback.OnMsgServerConnectionFailure();
-}
-
-void XMsgProcesser::ServerState(MSState state)
-{
-    m_callback.OnMsgServerState(state);
-}
-

@@ -511,8 +511,18 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     {
         pms::StorageMsg s_msg;
         s_msg.ParseFromString(r_msg.content());
-        LI("SYNC DATA sequence:%lld, userid:%s\n", s_msg.sequence(), s_msg.userid().c_str());
-        LRTConnManager::Instance().PushDataReq2Queue(r_msg.content());
+        LI("SYNC DATA sequence:%lld, maxseqn:%lld, userid:%s\n", s_msg.sequence(), s_msg.maxseqn(), s_msg.userid().c_str());
+        int index = s_msg.maxseqn() - s_msg.sequence();
+        assert(index>=0);
+        for(int i=0;i<index;++i)
+        {
+            pms::StorageMsg s;
+            s.MergeFrom(s_msg);
+            s.set_sequence(s_msg.sequence()+1+i);
+            LI("SYNC DATA the each sequence is:%lld, maxseqn:%lld, userid:%s\n"\
+                    , s.sequence(), s.maxseqn(), s.userid().c_str());
+            LRTConnManager::Instance().PushDataReq2Queue(s.SerializeAsString());
+        }
     }
 }
 
@@ -547,10 +557,11 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
             if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
             {
                 entity.set_msg_tag(pms::EMsgTag::TSSSEQN);
-
+                entity.set_msg_seqs(store.msgs(i).sequence());
             } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
             {
                 entity.set_msg_tag(pms::EMsgTag::TSSDATA);
+                entity.set_msg_seqs(store.msgs(i).sequence());
             } else {
 
                 LI("LRTTransferSession::OnTypeQueue --->store.mrole:%d not handle\n\n", store.msgs(i).mrole());
@@ -590,7 +601,7 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
     store.ParseFromString(str);
     for(int i=0;i<store.msgs_size();++i)
     {
-        if (store.msgs(i).userid().length()==0) break;
+        if (store.msgs(i).userid().length()==0) continue;
         LI("OnTypeDispatch sequence:%lld, userid:%s\n"\
                 , store.msgs(i).sequence()\
                 , store.msgs(i).userid().c_str());
@@ -601,11 +612,12 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
 
         // set response
         LI("LRTTransferSession::OnTypeDispatch --->store.svrcmd:%d\n", store.msgs(i).svrcmd());
-        LI("LRTTransferSession::OnTypeDispatch --->store.userid:%s, msgid:%s, seqn:%lld, cont:%s\n"\
+        LI("LRTTransferSession::OnTypeDispatch --->store.userid:%s, msgid:%s, seqn:%lld, cont:%s, cont.length:%d\n\n"\
                 , store.msgs(i).userid().c_str()\
                 , store.msgs(i).msgid().c_str()\
                 , store.msgs(i).sequence()\
-                , store.msgs(i).content().c_str());
+                , store.msgs(i).content().c_str()\
+                , store.msgs(i).content().length());
         if (store.msgs(i).svrcmd()==pms::EServerCmd::CSYNCSEQN)
         {
             resp.set_svr_cmds(store.msgs(i).svrcmd());

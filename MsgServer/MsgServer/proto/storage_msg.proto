@@ -14,9 +14,10 @@ message StorageMsg{
     EMsgRole        mrole       = 4; // sender or recver
     sint32          result      = 5; // the redis opt result
     sint64          sequence    = 6; // sequence
-    string          userid      = 7; // userid
-    string          msgid       = 8; // message id
-    string          content     = 9; // message
+    sint64          maxseqn     = 7; // max sequence
+    string          userid      = 8; // userid
+    string          msgid       = 9; // message id
+    string          content     = 10; // message
 }
 
 message PackedStoreMsg{

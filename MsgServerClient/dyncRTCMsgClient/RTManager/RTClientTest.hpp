@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "webrtc/base/thread.h"
 #include "webrtc/base/messagequeue.h"
+#include "RTMsgClient.hpp"
 
 class RTClientTest
 : public rtc::MessageHandler
@@ -26,6 +27,13 @@ public:
     void TestSync();
     void TestSend();
     void TestSendOnce();
+
+    void RunSyncSeqn();
+    void RunSyncData();
+
+    void ClientDataCallback(int data);
+    static void ClientDataCallbackStatic(void* pd, int data);
+
 public:
     void RunOnce();
 private:
@@ -33,6 +41,7 @@ private:
     bool    mThreadRun;
     int     mTimes;
     std::string mName;
+    RTMsgClient*    mMsgClient;
 };
 
 #endif /* RTClientTest_hpp */
