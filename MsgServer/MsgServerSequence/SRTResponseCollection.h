@@ -52,7 +52,7 @@ public:
             //printf("AddAndCheckWrite counter is:%d, cnumber is:%d\n", counter, cnumber);
             if ((++counter) == cnumber)
             {
-                printf("seqn recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
+                printf("write recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
                 storage.set_sequence(*seqns.rbegin());
                 WriteResponse(storage.SerializeAsString());
                 //for(auto x : seqns)
@@ -70,7 +70,7 @@ public:
             printf("AddAndCheckRead counter is:%d, cnumber is:%d\n", counter, cnumber);
             if ((++counter) == cnumber)
             {
-                printf("seqn recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
+                printf("read recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
                 storage.set_sequence(*seqns.rbegin());
                 ReadResponse(storage.SerializeAsString());
                 //for(auto x : seqns)

@@ -121,7 +121,6 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
 int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module)
 {
 #if DEF_PROTO
-    printf("EncodeSyncSeqn userid:%s, seqn:%lld\n", userid.c_str(), seqn);
     pms::MsgReq req;
     pms::StorageMsg store;
     store.set_svrcmd(pms::EServerCmd::CSYNCSEQN);
@@ -130,7 +129,6 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     store.set_sequence(seqn);
     store.set_maxseqn(maxseqn);
 
-    printf("XMsgProcesser::EncodeSyncSeqn was called\n");
     req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -151,7 +149,6 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     store.set_sequence(seqn);
     store.set_maxseqn(maxseqn);
 
-    printf("XMsgProcesser::EncodeSyncData was called\n");
     req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -168,7 +165,6 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
 int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 {
 #if DEF_PROTO
-    printf("XMsgProcesser::DecodeRecvData\n\n");
     const std::string strmsg(pData, nLen);
     pms::MsgRep resp;
     if (!resp.ParseFromString(strmsg)) {

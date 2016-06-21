@@ -7,10 +7,13 @@
 //
 
 #include "RTClientTest.hpp"
+
+extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+}
 
 const int kStop = 1;
 const int kRunOnce = 2;
@@ -62,7 +65,6 @@ void RTClientTest::RunTest(int flag, const std::string& name)
 
 void RTClientTest::OnMessage(rtc::Message* msg)
 {
-    printf("RTClientTest::OnMessage msg_id:%u\n", msg->message_id);
     if (msg->message_id == kStop) {
         mIsRun = false;
     } else if (msg->message_id == kRunOnce) {
@@ -102,6 +104,7 @@ void RTClientTest::ClientDataCallback(int data)
     {
         printf("ClientDataCallback was called, server sync data\n");
         PostDelayed(kPostDelay, this, kRunSyncData);
+        PostDelayed(kPostDelay, this, kRunSyncSeqn);
     } else {
         printf("ClientDataCallback was called, data :%d not handle\n\n", data);
     }
@@ -109,14 +112,12 @@ void RTClientTest::ClientDataCallback(int data)
 
 void RTClientTest::RunSyncSeqn()
 {
-    printf("RTClientTest::RunSyncSeqn was called\n");
     if (mMsgClient)
         mMsgClient->SyncSeqn();
 }
 
 void RTClientTest::RunSyncData()
 {
-    printf("RTClientTest::RunSyncData was called\n");
     if (mMsgClient)
         mMsgClient->SyncData();
 }
@@ -126,7 +127,8 @@ void RTClientTest::RunOnce()
     //TODO:
     //TestSync();
     //TestSend();
-    TestSendOnce();
+    //TestSendOnce();
+    TestSendLoop();
 }
 
 void RTClientTest::TestSend()
@@ -147,25 +149,49 @@ void RTClientTest::TestSend()
 
 void RTClientTest::TestSendOnce()
 {
-    int t = 1000000;
     if (mName.compare("xddxdd")==0)
     {
         //while(1)
         //    rtc::Thread::SleepMs(1000);
     } else {
-        std::cout << "TestSendOnce name:" << mName << std::endl;
-        std::string m("hello world");
-        std::string n("xddxdd");
-        mMsgClient->SendMessageTo(m, n);
-        //t = 15;
-        //while(t--)
+        long long i = 0;
+        {
+            char ii[32] = {0};
+            std::cout << "TestSendOnce name:" << mName << std::endl;
+            sprintf(ii, "hello world%lld\n", i++);
+            std::string m(ii);
+            std::string n("xddxdd");
+            mMsgClient->SendMessageTo(m, n);
+            rtc::Thread::SleepMs(500);
+        }
+    }
+}
+
+void RTClientTest::TestSendLoop()
+{
+    if (mName.compare("xddxdd")==0)
+    {
+        //while(1)
         //    rtc::Thread::SleepMs(1000);
+    } else {
+        long long i = 0;
+        //int t = 5;
+        //while(t--)
+        while(1)
+        {
+            char ii[16] = {0};
+            std::cout << "TestSendOnce name:" << mName << std::endl;
+            sprintf(ii, "hello world%lld", i++);
+            std::string m(ii);
+            std::string n("xddxdd");
+            mMsgClient->SendMessageTo(m, n);
+            rtc::Thread::SleepMs(200);
+        }
     }
 }
 
 void RTClientTest::TestSync()
 {
-    int t = 1000000;
     //while(1)
     {
         std::string str("hello world");
@@ -174,7 +200,7 @@ void RTClientTest::TestSync()
         mMsgClient->SyncData();
         rtc::Thread::SleepMs(1000);
     }
-    t = 10;
+    int t = 10;
     while(t--)
         rtc::Thread::SleepMs(1000);
 }

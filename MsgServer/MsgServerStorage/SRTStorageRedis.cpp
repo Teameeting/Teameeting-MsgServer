@@ -76,7 +76,7 @@ void SRTStorageRedis::Unin()
 // for read
 void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
 {
-    printf("SRTStorageRedis::OnWakeupEvent for read...\n");
+    if (m_QueuePostMsg.size()==0) return;
     pms::StorageMsg store = m_QueuePostMsg.front();
     std::string str("");
     char key[1024] = {'\0'};
@@ -85,16 +85,24 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
     bool ok = m_xRedisClient.get(*m_RedisDBIdx, key, str);
     store.set_result(30);
     *store.mutable_content() = str;
-    printf("SRTStorageRedis::OnWakeupEvent msgid:%s\n", store.msgid().c_str());
+    printf("SRTStorageRedis::OnWakeupEvent read msgid:%s, userid:%s, seqn:%lld, maxseqn:%lld\n"\
+            , store.msgid().c_str()\
+            , store.userid().c_str()\
+            , store.sequence()\
+            , store.maxseqn());
     if (m_RedisGroup)
     {
         m_RedisGroup->PostData(store.SerializeAsString());
+        {
+            OSMutexLocker locker(&m_MutexRecvPush);
+            m_QueuePostMsg.pop();
+        }
     } else {
         assert(false);
     }
+    if (m_QueuePostMsg.size()>0)
     {
-        OSMutexLocker locker(&m_MutexRecvPush);
-        m_QueuePostMsg.pop();
+        this->Signal(Task::kWakeupEvent);
     }
 }
 
@@ -102,6 +110,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
 void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
 {
     printf("SRTStorageRedis::OnTickEvent for write...\n");
+    if (m_QueuePushMsg.size()==0) return;
     pms::StorageMsg store = m_QueuePushMsg.front();
     char key[1024] = {'\0'};
     sprintf(key, "%s:%lld", store.userid().c_str(), store.sequence());
@@ -117,12 +126,16 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
     if (m_RedisGroup)
     {
         m_RedisGroup->PushData(store.SerializeAsString());
+        {
+            OSMutexLocker locker(&m_MutexRecvPush);
+            m_QueuePushMsg.pop();
+        }
     } else {
          assert(false);
     }
+    if (m_QueuePushMsg.size()>0)
     {
-        OSMutexLocker locker(&m_MutexRecvPush);
-        m_QueuePushMsg.pop();
+        this->Signal(Task::kIdleEvent);
     }
 }
 

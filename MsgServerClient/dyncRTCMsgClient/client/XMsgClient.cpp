@@ -34,7 +34,7 @@ XMsgClient::XMsgClient()
 , m_autoConnect(true)
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
-, m_curSeqn(2)
+, m_curSeqn(250)
 , m_maxSeqn(2)
 {
     printf("XMsgClient XMsgClient ok!!\n");
@@ -229,6 +229,12 @@ int XMsgClient::SyncSeqn()
 
 int XMsgClient::SyncData()
 {
+    printf("XMsgClient::SyncData m_curSeqn is:%lld, m_maxSeqn %lld, wait...\n", m_curSeqn, m_maxSeqn);
+    if (m_curSeqn>m_maxSeqn)
+    {
+         printf("XMsgClient::SyncData m_curSeqn %lld is bigger than m_maxSeqn %lld, wait...\n", m_curSeqn, m_maxSeqn);
+         return -1;
+    }
     std::string outstr;
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn, m_maxSeqn, m_module);
@@ -472,7 +478,8 @@ void XMsgClient::OnSndMsg(int code, const std::string& cont)
     store.ParseFromString(cont);
     printf("XMsgClient::OnSndMsg sequence:%lld\n\n"\
             , entity.msg_seqs());
-    m_maxSeqn = entity.msg_seqs();
+
+    m_maxSeqn = (entity.msg_seqs() > m_maxSeqn ? entity.msg_seqs() : m_maxSeqn);
     return;
 }
 
@@ -497,7 +504,7 @@ void XMsgClient::OnSyncSeqn(int code, const std::string& cont)
     printf("XMsgClient::OnSyncSeqn userid:%s, sequence:%lld, maxseqn:%lld\n"\
             , store.userid().c_str(), store.sequence(), store.maxseqn());
     m_curSeqn = store.sequence();
-    m_maxSeqn = store.maxseqn();
+    m_maxSeqn = (store.maxseqn() > m_maxSeqn ? store.maxseqn() : m_maxSeqn);
     return;
 }
 
@@ -509,7 +516,7 @@ void XMsgClient::OnSyncData(int code, const std::string& cont)
             , store.userid().c_str()\
             , store.sequence()\
             , store.maxseqn());
-    m_maxSeqn = store.maxseqn();
+    m_maxSeqn = (store.maxseqn() > m_maxSeqn ? store.maxseqn() : m_maxSeqn);
     pms::Entity entity;
     entity.ParseFromString(store.content());
     printf("OnSyncData entity.usr_from:%s, usr_toto:%s, msg_cont:%s\n"\

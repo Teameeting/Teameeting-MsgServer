@@ -58,20 +58,29 @@ public:
 
     void PushNewMsg2Queue(const std::string& str)
     {
-        OSMutexLocker locker(&m_mutexQueueNew);
-        m_queueNewMsg.push(str);
+        {
+            OSMutexLocker locker(&m_mutexQueueNew);
+            m_queueNewMsg.push(str);
+        }
+        this->Signal(Task::kPushEvent);
     }
 
     void PushSeqnReq2Queue(const std::string& str)
     {
-        OSMutexLocker locker(&m_mutexQueueSeqn);
-        m_queueSeqnMsg.push(str);
+        {
+            OSMutexLocker locker(&m_mutexQueueSeqn);
+            m_queueSeqnMsg.push(str);
+        }
+        this->Signal(Task::kWakeupEvent);
     }
 
     void PushDataReq2Queue(const std::string& str)
     {
-        OSMutexLocker locker(&m_mutexQueueData);
-        m_queueDataMsg.push(str);
+        {
+            OSMutexLocker locker(&m_mutexQueueData);
+            m_queueDataMsg.push(str);
+        }
+        this->Signal(Task::kIdleEvent);
     }
 
 // from RTTcpNoTimeout

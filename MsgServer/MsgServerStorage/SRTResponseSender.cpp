@@ -92,6 +92,8 @@ void SRTResponseSender::OnWakeupEvent(const void*pData, int nSize)
                 OSMutexLocker locker(&m_MutexPost);
                 m_QPostMsg.pop();
             }
+        } else {
+            break;
         }
     }
     if (hasData)
@@ -115,6 +117,10 @@ void SRTResponseSender::OnWakeupEvent(const void*pData, int nSize)
             m_SendPostMsg.mutable_msgs(i)->Clear();
         }
     }
+    if(m_QPostMsg.size()>0)
+    {
+        this->Signal(Task::kWakeupEvent);
+    }
 #endif
 }
 
@@ -135,6 +141,8 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
                 OSMutexLocker locker(&m_MutexPush);
                 m_QPushMsg.pop();
             }
+        } else {
+             break;
         }
     }
     if (hasData)
@@ -157,6 +165,10 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
         {
             m_SendPushMsg.mutable_msgs(i)->Clear();
         }
+    }
+    if(m_QPushMsg.size()>0)
+    {
+        this->Signal(Task::kIdleEvent);
     }
 #endif
 }

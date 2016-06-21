@@ -69,7 +69,11 @@ void SRTRedisGroup::DispatchPushData(const std::string& data)
     {
         for (int i=0;i<m_RecvPushMsg.msgs_size();++i)
         {
-            if (m_RecvPushMsg.msgs(i).userid().length()==0) continue;
+            if (m_RecvPushMsg.msgs(i).userid().length()==0)
+            {
+                LI("%s m_RecvPushMsg.msgs(%d) userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             m_WriteRedises[g_push_redis_index++%REDIS_GROUP_CLIENT]->PushToQueue(m_RecvPushMsg.msgs(i));
             m_RecvPushMsg.mutable_msgs(i)->Clear();
             if (g_push_redis_index == REDIS_GROUP_CLIENT_MAX)
@@ -85,7 +89,11 @@ void SRTRedisGroup::DispatchPostData(const std::string& data)
     {
         for (int i=0;i<m_RecvPostMsg.msgs_size();++i)
         {
-            if (m_RecvPostMsg.msgs(i).userid().length()==0) continue;
+            if (m_RecvPostMsg.msgs(i).userid().length()==0)
+            {
+                LI("%s m_RecvPostMsg.msgs(%d) userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             m_ReadRedises[g_post_redis_index++%REDIS_GROUP_CLIENT]->PostToQueue(m_RecvPostMsg.msgs(i));
             m_RecvPostMsg.mutable_msgs(i)->Clear();
             if (g_post_redis_index == REDIS_GROUP_CLIENT_MAX)

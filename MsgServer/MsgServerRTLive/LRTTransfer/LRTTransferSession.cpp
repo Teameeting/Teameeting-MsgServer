@@ -16,6 +16,8 @@
 #define TIMEOUT_TS (60*1000)
 #define MSG_PACKED_ONCE_NUM (10)
 
+static int g_on_ticket_time = 0;
+
 LRTTransferSession::LRTTransferSession()
 : RTJSBuffer()
 , RTTransfer()
@@ -222,6 +224,8 @@ void LRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
                  OSMutexLocker locker(&m_mutexQueueSeqn);
                  m_queueSeqnMsg.pop();
             }
+        } else {
+             break;
         }
     }
     if (hasData)
@@ -243,6 +247,10 @@ void LRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
              m_packedSeqnMsg.mutable_msgs(i)->Clear();
         }
     }
+    if (m_queueSeqnMsg.size()>0)
+    {
+        this->Signal(Task::kWakeupEvent);
+    }
 }
 
 // process new msgs
@@ -261,6 +269,8 @@ void LRTTransferSession::OnPushEvent(const char*pData, int nLen)
                  OSMutexLocker locker(&m_mutexQueueNew);
                  m_queueNewMsg.pop();
             }
+        } else {
+            break;
         }
     }
     if (hasData)
@@ -282,16 +292,22 @@ void LRTTransferSession::OnPushEvent(const char*pData, int nLen)
              m_packedNewMsg.mutable_msgs(i)->Clear();
         }
     }
+    if (m_queueNewMsg.size()>0)
+    {
+        this->Signal(Task::kPushEvent);
+    }
 }
 
 // process data read
 void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
 {
-    LI("LRTTransferSession::OnTickEvent was called\n");
+    LI("LRTTransferSession::OnTickEvent was called, m_queueDataMsg.size:%d, g_on_ticket_time:%d\n"\
+            , m_queueDataMsg.size(), ++g_on_ticket_time);
     if (m_queueDataMsg.size()==0) return;
     bool hasData = false;
     for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
     {
+        LI("LRTTransferSession::OnTickEvent loop m_queueDataMsg.size:%d\n", m_queueDataMsg.size());
         if (m_queueDataMsg.size()>0)
         {
             hasData = true;
@@ -300,6 +316,13 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
                  OSMutexLocker locker(&m_mutexQueueData);
                  m_queueDataMsg.pop();
             }
+            printf("OnTickEvent read request sequence:%lld, maxseqn:%lld, userid:%s, m_queue.size:%d\n"\
+                    , m_packedDataMsg.msgs(i).sequence()\
+                    , m_packedDataMsg.msgs(i).maxseqn()\
+                    , m_packedDataMsg.msgs(i).userid().c_str()\
+                    , m_queueDataMsg.size());
+        } else {
+            break;
         }
     }
     if (hasData)
@@ -314,12 +337,15 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
         tmsg.set_priority(pms::ETransferPriority::PNORMAL);
         tmsg.set_content(rmsg.SerializeAsString());
 
-        LI("LRTTransferSession::OnWakeupEvent send data read request to logical server\n");
         this->SendTransferData(tmsg.SerializeAsString());
         for(int i=0;i<MSG_PACKED_ONCE_NUM;++i)
         {
              m_packedDataMsg.mutable_msgs(i)->Clear();
         }
+    }
+    if (m_queueDataMsg.size()>0)
+    {
+        this->Signal(Task::kIdleEvent);
     }
 }
 
@@ -511,8 +537,9 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     {
         pms::StorageMsg s_msg;
         s_msg.ParseFromString(r_msg.content());
-        LI("SYNC DATA sequence:%lld, maxseqn:%lld, userid:%s\n", s_msg.sequence(), s_msg.maxseqn(), s_msg.userid().c_str());
         int index = s_msg.maxseqn() - s_msg.sequence();
+        LI("SYNC DATA sequence:%lld, maxseqn:%lld, userid:%s, index:%d\n"\
+                , s_msg.sequence(), s_msg.maxseqn(), s_msg.userid().c_str(), index);
         assert(index>=0);
         for(int i=0;i<index;++i)
         {
@@ -601,7 +628,12 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
     store.ParseFromString(str);
     for(int i=0;i<store.msgs_size();++i)
     {
-        if (store.msgs(i).userid().length()==0) continue;
+        if (store.msgs(i).userid().length()==0)
+        {
+            LI("%s store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+            break;
+        }
+
         LI("OnTypeDispatch sequence:%lld, userid:%s\n"\
                 , store.msgs(i).sequence()\
                 , store.msgs(i).userid().c_str());
@@ -612,11 +644,10 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
 
         // set response
         LI("LRTTransferSession::OnTypeDispatch --->store.svrcmd:%d\n", store.msgs(i).svrcmd());
-        LI("LRTTransferSession::OnTypeDispatch --->store.userid:%s, msgid:%s, seqn:%lld, cont:%s, cont.length:%d\n\n"\
+        LI("LRTTransferSession::OnTypeDispatch --->store.userid:%s, msgid:%s, seqn:%lld, cont.length:%d\n\n"\
                 , store.msgs(i).userid().c_str()\
                 , store.msgs(i).msgid().c_str()\
                 , store.msgs(i).sequence()\
-                , store.msgs(i).content().c_str()\
                 , store.msgs(i).content().length());
         if (store.msgs(i).svrcmd()==pms::EServerCmd::CSYNCSEQN)
         {

@@ -244,6 +244,8 @@ void LRTTransferSession::OnPushEvent(const char*pData, int nLen)
                 OSMutexLocker locker(&m_mutexQRead);
                 m_queueReadMsg.pop();
             }
+        } else {
+             break;
         }
     }
     if (hasData)
@@ -260,6 +262,10 @@ void LRTTransferSession::OnPushEvent(const char*pData, int nLen)
         {
             m_respReadMsg.mutable_msgs(i)->Clear();
         }
+    }
+    if(m_queueReadMsg.size()>0)
+    {
+        this->Signal(Task::kPushEvent);
     }
 }
 
@@ -280,6 +286,8 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
                 OSMutexLocker locker(&m_mutexQWrite);
                 m_queueWriteMsg.pop();
             }
+        } else {
+             break;
         }
     }
     if (hasData)
@@ -296,6 +304,10 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
         {
             m_respWriteMsg.mutable_msgs(i)->Clear();
         }
+    }
+    if(m_queueWriteMsg.size()>0)
+    {
+        this->Signal(Task::kIdleEvent);
     }
 }
 
@@ -455,7 +467,11 @@ void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
         store.ParseFromString(rmsg.content());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%S store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             printf("LRTTransferSession::OnTypeWriteRequest NEWMSG msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
             if (store.msgs(i).msgid().length()==0)
             {
@@ -489,7 +505,11 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
         store.ParseFromString(rmsg.content());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s newmsgseqn  store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 1 userid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
                     , store.msgs(i).userid().c_str(), store.msgs(i).msgid().c_str()\
                     , store.msgs(i).sequence(), store.msgs(i).mtag(), store.msgs(i).content().c_str());
@@ -504,7 +524,11 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
 
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 2 userid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
                     , store.msgs(i).userid().c_str(), store.msgs(i).msgid().c_str()\
                     , store.msgs(i).sequence(), store.msgs(i).mtag(), store.msgs(i).content().c_str());
@@ -526,7 +550,11 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
         LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s newmsgdata store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             printf("LRTTransferSession::OnTypeWriteResponse NEWMSGDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n", store.msgs(i).msgid().c_str(), store.msgs(i).sequence(), store.msgs(i).result(), store.msgs(i).mtag());
 
             LRTLogicalManager::Instance().DeleteDataWrite(store.mutable_msgs(i));
@@ -547,7 +575,11 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
         store.ParseFromString(rmsg.content());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s csyncseqn store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             char msgid[16] = {0};
             sprintf(msgid, "rs:%u", m_tmpRSeqnId++);
             store.mutable_msgs(i)->set_msgid(msgid);
@@ -565,11 +597,19 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
         store.ParseFromString(rmsg.content());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s csyncdata  store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             char msgid[16] = {0};
             sprintf(msgid, "rd:%u", m_tmpRDataId++);
             store.mutable_msgs(i)->set_msgid(msgid);
-            printf("LRTTransferSession::OnTypeReadRequest SYNCDATA msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
+            printf("LRTTransferSession::OnTypeReadRequest SYNCDATA msgid:%s, mtag:%d, seqn:%lld, maxseqn:%lld\n"\
+                    , store.msgs(i).msgid().c_str()\
+                    , store.msgs(i).mtag()\
+                    , store.msgs(i).sequence()\
+                    , store.msgs(i).maxseqn());
             LRTLogicalManager::Instance().InsertDataRead(this, store.mutable_msgs(i));
         }
         pms::TransferMsg tmsg;
@@ -595,7 +635,11 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
         LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s syncseqn store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             printf("LRTTransferSession::OnTypeReadResponse SYNCSEQN msgid:%s, sequence:%lld, result:%d, mtag:%d\n\n"\
                     , store.msgs(i).msgid().c_str()\
                     , store.msgs(i).sequence()\
@@ -611,7 +655,11 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
         LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
         for(int i=0;i<store.msgs_size();++i)
         {
-            if (store.msgs(i).userid().length()==0)continue;
+            if (store.msgs(i).userid().length()==0)
+            {
+                LI("%s syncdata store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
+                break;
+            }
             printf("LRTTransferSession::OnTypeReadResponse SYNCDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d, cont.len:%d, cont:%s\n\n"\
                     , store.msgs(i).msgid().c_str()\
                     , store.msgs(i).sequence()\

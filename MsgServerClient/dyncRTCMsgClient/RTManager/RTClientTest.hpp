@@ -27,6 +27,7 @@ public:
     void TestSync();
     void TestSend();
     void TestSendOnce();
+    void TestSendLoop();
 
     void RunSyncSeqn();
     void RunSyncData();

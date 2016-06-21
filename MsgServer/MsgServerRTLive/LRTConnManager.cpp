@@ -14,6 +14,8 @@
 #include "LRTTransferSession.h"
 #include "RTZKClient.hpp"
 
+static int ticket_time = 0;
+
 std::string     LRTConnManager::s_cohttpIp;
 unsigned short  LRTConnManager::s_cohttpPort;
 std::string     LRTConnManager::s_cohttpHost;
@@ -285,7 +287,6 @@ void LRTConnManager::PushNewMsg2Queue(const std::string& str)
      if (m_logicalSession && m_logicalSession->IsLiveSession())
      {
          m_logicalSession->PushNewMsg2Queue(str);
-         m_logicalSession->Signal(Task::kPushEvent);
      }
 }
 
@@ -294,7 +295,6 @@ void LRTConnManager::PushSeqnReq2Queue(const std::string& str)
      if (m_logicalSession && m_logicalSession->IsLiveSession())
      {
          m_logicalSession->PushSeqnReq2Queue(str);
-         m_logicalSession->Signal(Task::kWakeupEvent);
      }
 }
 
@@ -302,8 +302,8 @@ void LRTConnManager::PushDataReq2Queue(const std::string& str)
 {
      if (m_logicalSession && m_logicalSession->IsLiveSession())
      {
+         printf("LRTConnManager::PushDataReq2Queue ticket_time:%d\n", ++ticket_time);
          m_logicalSession->PushDataReq2Queue(str);
-         m_logicalSession->Signal(Task::kIdleEvent);
      }
 }
 

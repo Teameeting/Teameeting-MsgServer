@@ -29,7 +29,7 @@ bool LRTRTLiveManager::RecvRequestCounter()
     SInt64 curTime = OS::Milliseconds();
     char buf[128] = {0};
     sprintf(buf, "recv_time:%lld:gRecvCounter:%lld\n", curTime, ++gRecvCounter);
-    LI("%s", buf);
+    //LI("%s", buf);
     memset(buf, 0, 128);
     return false;
 }
@@ -39,7 +39,7 @@ bool LRTRTLiveManager::SendResponseCounter()
     SInt64 curTime = OS::Milliseconds();
     char buf[128] = {0};
     sprintf(buf, "send_time:%lld:gSendCounter:%lld\n", curTime, ++gSendCounter);
-    LI("%s", buf);
+    //LI("%s", buf);
     memset(buf, 0, 128);
     return false;
 }

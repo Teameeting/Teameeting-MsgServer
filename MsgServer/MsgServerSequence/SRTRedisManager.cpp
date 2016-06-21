@@ -228,6 +228,8 @@ void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
                 OSMutexLocker locker(&m_Mutex4Read);
                 m_SeqnResp4Read.pop();
             }
+        } else {
+            break;
         }
     }
     if (hasData)
@@ -253,6 +255,10 @@ void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
              m_ReadPackedMsg.mutable_msgs(i)->Clear();
         }
     }
+    if (m_SeqnResp4Read.size()>0)
+    {
+        this->Signal(kWakeupEvent);
+    }
 }
 
 // this is for write
@@ -270,6 +276,8 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
                 OSMutexLocker locker(&m_Mutex4Write);
                 m_SeqnResp4Write.pop();
             }
+        } else {
+            break;
         }
     }
     if (hasData)
@@ -292,6 +300,10 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
         {
              m_WritePackedMsg.mutable_msgs(i)->Clear();
         }
+    }
+    if (m_SeqnResp4Write.size()>0)
+    {
+        this->Signal(kIdleEvent);
     }
 }
 
