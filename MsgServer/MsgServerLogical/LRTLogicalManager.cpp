@@ -223,6 +223,28 @@ bool LRTLogicalManager::DeleteSeqnRead(pms::StorageMsg*  storeMsg)
     return true;
 }
 
+bool LRTLogicalManager::GetSessFromId(const std::string& userid, const std::string& msgid, LRTTransferSession** sess)
+{
+    assert(userid.length()>0);
+    assert(msgid.length()>0);
+    assert(sess);
+    char id[1024] = {0};
+    sprintf(id, "%s:%s", userid.c_str(), msgid.c_str());
+    printf("GetSessFromMsg map id is:%s\n", id);
+    {
+        OSMutexLocker locker(&m_mutexSeqnRead);
+        TransMsgInfoMapIt it = m_seqnReadMap.find(id);
+        if (it!=m_seqnReadMap.end())
+        {
+            *sess = it->second.sess;
+        } else {
+            printf("ERROR HERE, GetSessFromMsg userid:%s is not here\n", id);
+            assert(false);
+        }
+    }
+    return true;
+}
+
 bool LRTLogicalManager::ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seqn)
 {
     if (storeMsg->userid().length()==0) return false;

@@ -221,7 +221,7 @@ void RTClientTest::TestSync()
     //while(1)
     {
         std::string str("hello world");
-        //mMsgClient->SendMessage(str);
+        mMsgClient->SendMessage(str);
         mMsgClient->SyncSeqn();
         mMsgClient->SyncData();
         rtc::Thread::SleepMs(1000);

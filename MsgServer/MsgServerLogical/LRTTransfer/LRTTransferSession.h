@@ -114,6 +114,8 @@ private:
     unsigned int                    m_tmpWMsgId;
     unsigned int                    m_tmpRSeqnId;
     unsigned int                    m_tmpRDataId;
+    unsigned int                    m_tmpRSeqn4DataId;
+    unsigned int                    m_tmpRData2Id;
 };
 
 #endif /* defined(__MsgServerLogical__LRTTransferSession__) */

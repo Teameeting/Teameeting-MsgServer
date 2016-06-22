@@ -559,9 +559,7 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
                 , s_msg.sequence(), s_msg.userid().c_str());
 
         // first set sync seqn for data cmd, send to sync seqn
-        s_msg.set_svrcmd(pms::EServerCmd::CSSEQN4DATA);
-        LRTConnManager::Instance().PushSeqnReq2Queue(s_msg.SerializeAsString());
-        //LRTConnManager::Instance().PushDataReq2Queue(r_msg.content());
+        LRTConnManager::Instance().PushDataReq2Queue(r_msg.content());
     }
 }
 
@@ -723,21 +721,6 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
             t_msg.set_content(r_msg.SerializeAsString());
             std::string response = t_msg.SerializeAsString();
             LRTConnManager::Instance().SendTransferData("", "", response);
-
-
-        } else if (store.msgs(i).svrcmd()==pms::EServerCmd::CSSEQN4DATA)
-        {
-            long long s = store.msgs(i).sequence(), ms = store.msgs(i).maxseqn();
-            LI("LRTTransferSession::OnTypeDispatch CSSEQN4DATA seqn:%lld, maxseqn:%lld\n", s, ms);
-            assert(ms>s);
-            for(int j=1,k=ms-s;j<=k;++j)
-            {
-                store.mutable_msgs(i)->set_sequence(s+j);
-                store.mutable_msgs(i)->set_svrcmd(pms::EServerCmd::CSYNCDATA);
-                LI("CSSEQN4DATA send to sync data, the each sequence is:%lld, maxseqn:%lld, userid:%s\n"\
-                , store.msgs(i).sequence(), store.msgs(i).maxseqn(), store.msgs(i).userid().c_str());
-                LRTConnManager::Instance().PushDataReq2Queue(store.msgs(i).SerializeAsString());
-            }
 
         } else if (store.msgs(i).svrcmd()==pms::EServerCmd::CSYNCDATA)
         {

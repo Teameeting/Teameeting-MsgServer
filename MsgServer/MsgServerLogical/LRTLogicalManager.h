@@ -71,6 +71,8 @@ public:
     bool InsertSeqnRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg);
     bool UpdateSeqnRead(pms::StorageMsg** storeMsg);
     bool DeleteSeqnRead(pms::StorageMsg*  storeMsg);
+    bool GetSessFromId(const std::string& userid, const std::string& msgid, LRTTransferSession** sess);
+
 
     bool ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seqn);
     bool UpdateLocalSeqn(pms::StorageMsg*  storeMsg);
