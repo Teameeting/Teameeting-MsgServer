@@ -5,16 +5,18 @@ option optimize_for = LITE_RUNTIME;
 
 // the server cmd
 enum EServerCmd{
-    CLOGIN      = 0;
-    CSNDMSG     = 1;
-    CGETMSG     = 2;
-    CLOGOUT     = 3;
-    CKEEPALIVE  = 4;
-    CSYNCSEQN   = 5;
-    CSYNCDATA   = 6;
-    CNEWMSG     = 7;
-    CNEWMSGSEQN = 8;
-    CNEWMSGDATA = 9;
+    CLOGIN              = 0;
+    CSNDMSG             = 1;
+    CGETMSG             = 2;
+    CLOGOUT             = 3;
+    CKEEPALIVE          = 4;
+    CSYNCSEQN           = 5;
+    CSSEQN4DATA         = 6;
+    CSYNCDATA           = 7;
+    CNEWMSG             = 8;
+    CNEWMSGSEQN         = 9;
+    CNEWMSGDATA         = 10;
+    CGROUPNOTIFY        = 11;
 }
 
 // different server module
@@ -31,6 +33,7 @@ enum EModuleType{
     TLOGICAL    = 6;
     TSEQUENCE   = 7;
     TSTORAGE    = 8;
+    TGRPNOTIFY  = 9;
 }
 
 // the msg flag
@@ -45,6 +48,12 @@ enum EMsgFlag{
 enum EMsgRole{
     RSENDER = 0; // sender
     RRECVER = 1; // recver
+}
+
+// the msg read type
+enum EMsgRType{
+    RREADLOCAL  = 0; // read local logcal server
+    RREADREMOTE = 1; // read remote sequence/storage server
 }
 
 // this is for request

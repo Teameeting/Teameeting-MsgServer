@@ -1,25 +1,25 @@
 //
-//  RTClientTest.hpp
+//  RTGroupTest.hpp
 //  dyncRTCMsgClient
 //
 //  Created by hp on 2/23/16.
 //  Copyright © 2016 Dync. All rights reserved.
 //
 
-#ifndef RTClientTest_hpp
-#define RTClientTest_hpp
+#ifndef RTGroupTest_hpp
+#define RTGroupTest_hpp
 
 #include <stdio.h>
 #include "webrtc/base/thread.h"
 #include "webrtc/base/messagequeue.h"
 #include "RTMsgClient.hpp"
 
-class RTClientTest
+class RTGroupTest
 : public rtc::MessageHandler
 , public rtc::Thread{
 public:
-    RTClientTest();
-    ~RTClientTest();
+    RTGroupTest();
+    ~RTGroupTest();
 
     void RunTest(int flag, const std::string& name);
     virtual void OnMessage(rtc::Message* msg);
@@ -46,4 +46,4 @@ private:
     RTMsgClient*    mMsgClient;
 };
 
-#endif /* RTClientTest_hpp */
+#endif /* RTGroupTest_hpp */

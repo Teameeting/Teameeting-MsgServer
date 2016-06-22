@@ -72,6 +72,10 @@ public:
     bool UpdateSeqnRead(pms::StorageMsg** storeMsg);
     bool DeleteSeqnRead(pms::StorageMsg*  storeMsg);
 
+    bool ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seqn);
+    bool UpdateLocalSeqn(pms::StorageMsg*  storeMsg);
+    bool UpdateLocalMaxSeqn(pms::StorageMsg*  storeMsg);
+
     bool    SignalKill();
     bool    ClearAll();
 protected:
@@ -82,15 +86,22 @@ protected:
     typedef std::unordered_map<std::string, TransMsgInfo>       TransMsgInfoMap;
     typedef TransMsgInfoMap::iterator                           TransMsgInfoMapIt;
 
+    typedef std::unordered_map<std::string, long long>          UserLocalSeqnMap;
+    typedef UserLocalSeqnMap::iterator                           UserLocalSeqnMapIt;
+
 private:
     std::vector<std::string>            m_RedisHosts;
     OSMutex                             m_mutexDataWrite;
     OSMutex                             m_mutexDataRead;
     OSMutex                             m_mutexSeqnRead;
 
+    OSMutex                             m_mutexLocalSeqn;
+
     TransMsgInfoMap                     m_dataWriteMap;
     TransMsgInfoMap                     m_dataReadMap;
     TransMsgInfoMap                     m_seqnReadMap;
+
+    UserLocalSeqnMap                    m_localSeqnMap;
 };
 
 #endif /* defined(__MsgServerLogical__LRTLogicalManager__) */

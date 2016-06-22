@@ -1,12 +1,12 @@
 //
-//  RTClientTest.cpp
+//  RTGroupTest.cpp
 //  dyncRTCMsgClient
 //
 //  Created by hp on 2/23/16.
 //  Copyright © 2016 Dync. All rights reserved.
 //
 
-#include "RTClientTest.hpp"
+#include "RTGroupTest.hpp"
 
 extern "C" {
 #include <stdio.h>
@@ -21,7 +21,7 @@ const int kRunSyncSeqn = 3;
 const int kRunSyncData = 4;
 const int kPostDelay = 3000;
 
-RTClientTest::RTClientTest()
+RTGroupTest::RTGroupTest()
 : rtc::MessageHandler()
 , rtc::Thread(NULL)
 , mIsRun(false)
@@ -32,7 +32,7 @@ RTClientTest::RTClientTest()
 
 }
 
-RTClientTest::~RTClientTest()
+RTGroupTest::~RTGroupTest()
 {
     if (mMsgClient)
     {
@@ -44,20 +44,14 @@ RTClientTest::~RTClientTest()
         this->Stop();
 }
 
-void RTClientTest::RunTest(int flag, const std::string& name)
+void RTGroupTest::RunTest(int flag, const std::string& name)
 {
     mIsRun = true;
     mName = name;
     mMsgClient = new RTMsgClient(mName);
     mMsgClient->SetPData(this);
-    mMsgClient->SetDataCallback(&RTClientTest::ClientDataCallbackStatic);
+    mMsgClient->SetDataCallback(&RTGroupTest::ClientDataCallbackStatic);
     mMsgClient->InitSync();
-    if (name.compare("xddxdd")==0)
-    {
-        mMsgClient->TestSetCurSeqn(290945);
-    } else {
-        mMsgClient->TestSetCurSeqn(337055);
-    }
     this->Start();
     mThreadRun = true;
     if (flag == kRunOnce) {
@@ -66,10 +60,10 @@ void RTClientTest::RunTest(int flag, const std::string& name)
     while (mIsRun) {
         rtc::Thread::SleepMs(1000);
     }
-    printf("RTClientTest::RunTest finished...\n");
+    printf("RTGroupTest::RunTest finished...\n");
 }
 
-void RTClientTest::OnMessage(rtc::Message* msg)
+void RTGroupTest::OnMessage(rtc::Message* msg)
 {
     if (msg->message_id == kStop) {
         mIsRun = false;
@@ -87,9 +81,9 @@ void RTClientTest::OnMessage(rtc::Message* msg)
 /////////////////////////////////////////////////////
 /////////////////////////////////////////////////////
 
-void RTClientTest::ClientDataCallbackStatic(void* pd, int data)
+void RTGroupTest::ClientDataCallbackStatic(void* pd, int data)
 {
-    RTClientTest* pc = (RTClientTest*)pd;
+    RTGroupTest* pc = (RTGroupTest*)pd;
     if (pc)
     {
         pc->ClientDataCallback(data);
@@ -100,7 +94,7 @@ void RTClientTest::ClientDataCallbackStatic(void* pd, int data)
     }
 }
 
-void RTClientTest::ClientDataCallback(int data)
+void RTGroupTest::ClientDataCallback(int data)
 {
     if (data==1)
     {
@@ -116,28 +110,28 @@ void RTClientTest::ClientDataCallback(int data)
     }
 }
 
-void RTClientTest::RunSyncSeqn()
+void RTGroupTest::RunSyncSeqn()
 {
     if (mMsgClient)
         mMsgClient->SyncSeqn();
 }
 
-void RTClientTest::RunSyncData()
+void RTGroupTest::RunSyncData()
 {
     if (mMsgClient)
         mMsgClient->SyncData();
 }
 
-void RTClientTest::RunOnce()
+void RTGroupTest::RunOnce()
 {
     //TODO:
     //TestSync();
     //TestSend();
-    TestSendOnce();
-    //TestSendLoop();
+    //TestSendOnce();
+    TestSendLoop();
 }
 
-void RTClientTest::TestSend()
+void RTGroupTest::TestSend()
 {
     int t = 1000000;
     while(t--)
@@ -153,7 +147,7 @@ void RTClientTest::TestSend()
         rtc::Thread::SleepMs(1000);
 }
 
-void RTClientTest::TestSendGroup()
+void RTGroupTest::TestSendGroup()
 {
     if (mName.compare("xddxdd")==0)
     {
@@ -173,7 +167,7 @@ void RTClientTest::TestSendGroup()
 }
 
 
-void RTClientTest::TestSendOnce()
+void RTGroupTest::TestSendOnce()
 {
     if (mName.compare("xddxdd")==0)
     {
@@ -193,7 +187,7 @@ void RTClientTest::TestSendOnce()
     }
 }
 
-void RTClientTest::TestSendLoop()
+void RTGroupTest::TestSendLoop()
 {
     if (mName.compare("xddxdd")==0)
     {
@@ -216,12 +210,12 @@ void RTClientTest::TestSendLoop()
     }
 }
 
-void RTClientTest::TestSync()
+void RTGroupTest::TestSync()
 {
     //while(1)
     {
         std::string str("hello world");
-        //mMsgClient->SendMessage(str);
+        mMsgClient->SendMessage(str);
         mMsgClient->SyncSeqn();
         mMsgClient->SyncData();
         rtc::Thread::SleepMs(1000);

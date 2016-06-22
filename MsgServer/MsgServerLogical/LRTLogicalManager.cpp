@@ -223,6 +223,63 @@ bool LRTLogicalManager::DeleteSeqnRead(pms::StorageMsg*  storeMsg)
     return true;
 }
 
+bool LRTLogicalManager::ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seqn)
+{
+    if (storeMsg->userid().length()==0) return false;
+    printf("ReadLocalSeqn userid is:%s\n", storeMsg->userid().c_str());
+    bool found = false;
+    {
+        OSMutexLocker locker(&m_mutexLocalSeqn);
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
+        if (it!=m_localSeqnMap.end())
+        {
+            *seqn = it->second;
+            found = true;
+        } else {
+            found = false;
+        }
+    }
+    return found;
+}
+
+bool LRTLogicalManager::UpdateLocalSeqn(pms::StorageMsg*  storeMsg)
+{
+    if (storeMsg->userid().length()==0) return false;
+    printf("UpdateLocalSeqn userid is:%s\n", storeMsg->userid().c_str());
+    {
+        OSMutexLocker locker(&m_mutexLocalSeqn);
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
+        if (it!=m_localSeqnMap.end())
+        {
+            assert(storeMsg->sequence() > it->second);
+            it->second = storeMsg->sequence();
+        } else {
+            m_localSeqnMap.insert(std::make_pair(storeMsg->userid(), storeMsg->sequence()));
+        }
+        printf("UpdateLocalSeqn m_localSeqnMap.size:%d\n", m_localSeqnMap.size());
+    }
+    return true;
+}
+
+bool LRTLogicalManager::UpdateLocalMaxSeqn(pms::StorageMsg*  storeMsg)
+{
+    if (storeMsg->userid().length()==0) return false;
+    printf("UpdateLocalSeqn userid is:%s\n", storeMsg->userid().c_str());
+    {
+        OSMutexLocker locker(&m_mutexLocalSeqn);
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
+        if (it!=m_localSeqnMap.end())
+        {
+            assert(storeMsg->maxseqn() > it->second);
+            it->second = storeMsg->maxseqn();
+        } else {
+            m_localSeqnMap.insert(std::make_pair(storeMsg->userid(), storeMsg->maxseqn()));
+        }
+        printf("UpdateLocalSeqn m_localSeqnMap.size:%d\n", m_localSeqnMap.size());
+    }
+    return true;
+}
+
 bool LRTLogicalManager::SignalKill()
 {
     return true;

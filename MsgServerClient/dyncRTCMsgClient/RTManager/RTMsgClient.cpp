@@ -19,6 +19,7 @@
 
 RTMsgClient::RTMsgClient(const std::string& uid)
 : mMsgClient()
+, mGrpMsgClient()
 , mHttpClient()
 , mUserid(uid)
 , mAuth("")
@@ -268,6 +269,31 @@ void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
     else
     {
          printf("RTMsgClient::SyncSeqn mIsOnline is false\n");
+    }
+}
+
+
+void RTMsgClient::GrpInit(int module)
+{
+
+    mGrpMsgClient.Init(this, mUserid, mAuth, module, mMsgServer, mMsgPort);
+}
+
+void RTMsgClient::GrpUnin()
+{
+
+    mGrpMsgClient.Unin();
+}
+bool RTMsgClient::GrpConnecting()
+{
+    while(mGrpMsgClient.MSStatus()!=MSState::MSCONNECTED)sleep(1);
+    return true;
+}
+
+void RTMsgClient::GrpGenNotify()
+{
+    if (mIsOnline) {
+        mGrpMsgClient.GroupNotify(mUserid, mCurRoomId);
     }
 }
 

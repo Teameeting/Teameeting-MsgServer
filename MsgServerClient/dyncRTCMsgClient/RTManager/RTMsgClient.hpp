@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <unordered_set>
+#include "XGrpMsgClient.h"
 #include "XMsgClient.h"
 #include "XMsgCallback.h"
 #include "RTHttpClient.hpp"
@@ -55,6 +56,15 @@ public:
     void SyncData();
     void SendMessage(const std::string& msg);
     void SendMessageTo(const std::string& msg, const std::string& name);
+
+    void TestSetCurSeqn(long long seqn) { mMsgClient.TestSetCurSeqn(seqn); }
+
+
+    // for group
+    void GrpInit(int module);
+    void GrpUnin();
+    bool GrpConnecting();
+    void GrpGenNotify();
 public:
     const std::string& GetUserId() { return mUserid; }
     int GetRecvNums() { return mRecvNum; }
@@ -85,6 +95,8 @@ private:
 
     void*                   mPData;
     DataCallback            mDataCallback;
+
+    XGrpMsgClient   mGrpMsgClient;
 };
 
 #endif /* RTMsgClient_hpp */

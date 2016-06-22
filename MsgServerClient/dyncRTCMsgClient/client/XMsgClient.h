@@ -54,6 +54,7 @@ public:
 
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
+    void TestSetCurSeqn(long long seqn) { m_curSeqn = seqn; }
 
 public:
     // For XTcpClientCallback
@@ -99,7 +100,6 @@ private:
     bool                     m_login;
     MSState                  m_msState;
     long long                m_curSeqn;
-    long long                m_maxSeqn;
     pms::EModuleType         m_module;
 };
 

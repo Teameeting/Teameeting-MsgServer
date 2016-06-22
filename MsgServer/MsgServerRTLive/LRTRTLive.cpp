@@ -119,7 +119,7 @@ LRTRTLive::~LRTRTLive(void)
     }
 }
 
-int	LRTRTLive::Start(const char*pRTLiveIp, unsigned short usRTLivePort, const char*pConnectorIp, unsigned short usConnectorPort, const char*pLogicalIp, unsigned short usLogicalPort, const char*pDispatcherIp, unsigned short usDispatcherPort)
+int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char*pRTLiveIp, unsigned short usRTLivePort, const char*pConnectorIp, unsigned short usConnectorPort, const char*pLogicalIp, unsigned short usLogicalPort, const char*pDispatcherIp, unsigned short usDispatcherPort)
 {
 	Assert(g_inited);
 	Assert(pRTLiveIp != NULL && strlen(pRTLiveIp)>0);
@@ -176,6 +176,19 @@ int	LRTRTLive::Start(const char*pRTLiveIp, unsigned short usRTLivePort, const ch
         }
         LI("Start RTLive service:(%d) ok...,socketFD:%d\n", usRTLivePort, m_pRTLiveListener->GetSocketFD());
         m_pRTLiveListener->RequestEvent(EV_RE);
+    }
+
+    if (usGroupPort > 0) {
+        m_pGroupListener = new LRTGroupListener();
+        OS_Error err = m_pGroupListener->Initialize(INADDR_ANY, usGroupPort);
+        if (err!=OS_NoErr) {
+            LE("CreateGroupListener error port:%d\n", usGroupPort);
+            delete m_pGroupListener;
+            m_pGroupListener = NULL;
+            return -1;
+        }
+        LI("Start RTLive group service:(%d) ok...,socketFD:%d\n", usGroupPort, m_pGroupListener->GetSocketFD());
+        m_pGroupListener->RequestEvent(EV_RE);
     }
 	return 0;
 }

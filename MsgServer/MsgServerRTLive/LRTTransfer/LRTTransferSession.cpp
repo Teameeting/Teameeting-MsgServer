@@ -316,9 +316,8 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
                  OSMutexLocker locker(&m_mutexQueueData);
                  m_queueDataMsg.pop();
             }
-            printf("OnTickEvent read request sequence:%lld, maxseqn:%lld, userid:%s, m_queue.size:%d\n"\
+            printf("OnTickEvent read request sequence:%lld, userid:%s, m_queue.size:%d\n"\
                     , m_packedDataMsg.msgs(i).sequence()\
-                    , m_packedDataMsg.msgs(i).maxseqn()\
                     , m_packedDataMsg.msgs(i).userid().c_str()\
                     , m_queueDataMsg.size());
         } else {
@@ -489,15 +488,34 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
 
         if (e_msg.msg_flag()==pms::EMsgFlag::FGROUP)
         {
-            pms::StorageMsg store;
-            store.set_svrcmd(pms::EServerCmd::CNEWMSG);
-            store.set_userid(e_msg.usr_from());
-            //store.set_content(e_msg.msg_cont());
-            // store the Entity to redis
-            store.set_content(r_msg.content());
-            LI("LRTTransferSession::OnTypeTrans sndmsg usr_from:%s, cont:%s\n", e_msg.usr_from().c_str(), e_msg.msg_cont().c_str());
+            LI("LRTTransferSession::OnTypeTrans sndmsggroup usr_from:%s, msg_flag:%d, groupid:%s\n"\
+                    , e_msg.usr_from().c_str(), e_msg.msg_flag(), e_msg.rom_id().c_str());
+            assert(e_msg.rom_id().length()>0);
 
-            LRTConnManager::Instance().PushNewMsg2Queue(store.SerializeAsString());
+            pms::StorageMsg sender;
+            sender.set_svrcmd(pms::EServerCmd::CNEWMSG);
+            sender.set_userid(e_msg.usr_from());
+            sender.set_mrole(pms::EMsgRole::RSENDER);
+            sender.set_mflag(pms::EMsgFlag::FGROUP);
+            // store the Entity to redis
+            sender.set_content(r_msg.content());
+            LRTConnManager::Instance().PushNewMsg2Queue(sender.SerializeAsString());
+
+            // if the msg send to group
+            // here change the userid and groupid
+            // in order to store msg by userid
+            // and tell group module the groupid
+            // when recv response, change the userid and groupid back
+            pms::StorageMsg recver;
+            recver.set_svrcmd(pms::EServerCmd::CNEWMSG);
+            recver.set_userid(e_msg.rom_id());
+            recver.set_mrole(pms::EMsgRole::RRECVER);
+            recver.set_mflag(pms::EMsgFlag::FGROUP);
+            recver.set_groupid(e_msg.usr_from());
+            // store the Entity to redis
+            recver.set_content(r_msg.content());
+            LRTConnManager::Instance().PushNewMsg2Queue(recver.SerializeAsString());
+
         } else if (e_msg.msg_flag()==pms::EMsgFlag::FSINGLE)
         {
             LI("LRTTransferSession::OnTypeTrans sndmsg usr_from:%s, msg_flag:%d, usr_toto.size:%d\n"\
@@ -517,7 +535,7 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
             recver.set_svrcmd(pms::EServerCmd::CNEWMSG);
             recver.set_userid(e_msg.usr_toto().users(0));
             recver.set_mrole(pms::EMsgRole::RRECVER);
-            sender.set_mflag(pms::EMsgFlag::FSINGLE);
+            recver.set_mflag(pms::EMsgFlag::FSINGLE);
             // store the Entity to redis
             recver.set_content(r_msg.content());
             LRTConnManager::Instance().PushNewMsg2Queue(recver.SerializeAsString());
@@ -537,19 +555,13 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     {
         pms::StorageMsg s_msg;
         s_msg.ParseFromString(r_msg.content());
-        int index = s_msg.maxseqn() - s_msg.sequence();
-        LI("SYNC DATA sequence:%lld, maxseqn:%lld, userid:%s, index:%d\n"\
-                , s_msg.sequence(), s_msg.maxseqn(), s_msg.userid().c_str(), index);
-        assert(index>=0);
-        for(int i=0;i<index;++i)
-        {
-            pms::StorageMsg s;
-            s.MergeFrom(s_msg);
-            s.set_sequence(s_msg.sequence()+1+i);
-            LI("SYNC DATA the each sequence is:%lld, maxseqn:%lld, userid:%s\n"\
-                    , s.sequence(), s.maxseqn(), s.userid().c_str());
-            LRTConnManager::Instance().PushDataReq2Queue(s.SerializeAsString());
-        }
+        LI("SYNC DATA sequence:%lld, userid:%s\n"\
+                , s_msg.sequence(), s_msg.userid().c_str());
+
+        // first set sync seqn for data cmd, send to sync seqn
+        s_msg.set_svrcmd(pms::EServerCmd::CSSEQN4DATA);
+        LRTConnManager::Instance().PushSeqnReq2Queue(s_msg.SerializeAsString());
+        //LRTConnManager::Instance().PushDataReq2Queue(r_msg.content());
     }
 }
 
@@ -581,17 +593,58 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
         if (store.msgs(i).svrcmd()==pms::EServerCmd::CNEWMSG)
         {
             pms::Entity entity;
-            if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
+            if (store.msgs(i).mflag()==pms::EMsgFlag::FGROUP)
             {
-                entity.set_msg_tag(pms::EMsgTag::TSSSEQN);
-                entity.set_msg_seqs(store.msgs(i).sequence());
-            } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
-            {
-                entity.set_msg_tag(pms::EMsgTag::TSSDATA);
-                entity.set_msg_seqs(store.msgs(i).sequence());
-            } else {
+                if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
+                {
+                    entity.set_msg_tag(pms::EMsgTag::TSSSEQN);
+                    entity.set_msg_seqs(store.msgs(i).sequence());
+                } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
+                {
+                    // group to notify members to sync data from this group
+                    // the store.msgs(i).groupid should be entity's userid
+                    // the store.msgs(i).userid should be entity's rom_id
+                    pms::MsgRep resp;
+                    pms::StorageMsg st;
 
-                LI("LRTTransferSession::OnTypeQueue --->store.mrole:%d not handle\n\n", store.msgs(i).mrole());
+                    st.set_svrcmd(pms::EServerCmd::CGROUPNOTIFY);
+                    st.set_mflag(pms::EMsgFlag::FGROUP);
+                    st.set_sequence(store.msgs(i).sequence());
+                    st.set_groupid(store.msgs(i).userid());
+                    st.set_userid(store.msgs(i).groupid());
+
+                    resp.set_svr_cmds(pms::EServerCmd::CGROUPNOTIFY);
+                    resp.set_rsp_code(0);
+                    resp.set_mod_type(pms::EModuleType::TLIVE);
+                    resp.set_rsp_cont(st.SerializeAsString());
+                    std::string s = resp.SerializeAsString();
+                    LI("LRTTransferSession::OnTypeQueue --->group msg seqn:%lld, from who userid:%s, to groupid:%s\n\n", store.msgs(i).sequence(), store.msgs(i).userid().c_str(), store.msgs(i).groupid().c_str());
+                    //TODO:
+                    //how to let others server connect to here, find the special group users relayer
+                    //send to
+                    continue;
+                } else {
+
+                    LI("LRTTransferSession::OnTypeQueue --->store.mrole:%d not handle\n\n", store.msgs(i).mrole());
+                }
+            } else if (store.msgs(i).mflag()==pms::EMsgFlag::FSINGLE)
+            {
+                if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
+                {
+                    // after generate new msg, notify sender sync seqn
+                    entity.set_msg_tag(pms::EMsgTag::TSSSEQN);
+                    entity.set_msg_seqs(store.msgs(i).sequence());
+                } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
+                {
+                    // after generate new msg, notify recver sync data
+                    entity.set_msg_tag(pms::EMsgTag::TSSDATA);
+                    entity.set_msg_seqs(store.msgs(i).sequence());
+                } else {
+
+                    LI("LRTTransferSession::OnTypeQueue --->store.mrole:%d not handle\n\n", store.msgs(i).mrole());
+                }
+            } else {
+                LI("LRTTransferSession::OnTypeQueue --->store.mflag:%d not handle\n\n", store.msgs(i).mflag());
             }
 
             resp.set_svr_cmds(pms::EServerCmd::CSNDMSG);
@@ -671,8 +724,24 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
             std::string response = t_msg.SerializeAsString();
             LRTConnManager::Instance().SendTransferData("", "", response);
 
+
+        } else if (store.msgs(i).svrcmd()==pms::EServerCmd::CSSEQN4DATA)
+        {
+            long long s = store.msgs(i).sequence(), ms = store.msgs(i).maxseqn();
+            LI("LRTTransferSession::OnTypeDispatch CSSEQN4DATA seqn:%lld, maxseqn:%lld\n", s, ms);
+            assert(ms>s);
+            for(int j=1,k=ms-s;j<=k;++j)
+            {
+                store.mutable_msgs(i)->set_sequence(s+j);
+                store.mutable_msgs(i)->set_svrcmd(pms::EServerCmd::CSYNCDATA);
+                LI("CSSEQN4DATA send to sync data, the each sequence is:%lld, maxseqn:%lld, userid:%s\n"\
+                , store.msgs(i).sequence(), store.msgs(i).maxseqn(), store.msgs(i).userid().c_str());
+                LRTConnManager::Instance().PushDataReq2Queue(store.msgs(i).SerializeAsString());
+            }
+
         } else if (store.msgs(i).svrcmd()==pms::EServerCmd::CSYNCDATA)
         {
+            LI("LRTTransferSession::OnTypeDispatch CSYNCDATA seqn:%lld, maxseqn:%lld\n", store.msgs(i).sequence(), store.msgs(i).maxseqn());
             resp.set_svr_cmds(store.msgs(i).svrcmd());
             resp.set_mod_type(pms::EModuleType::TLIVE);
             resp.set_rsp_code(0);

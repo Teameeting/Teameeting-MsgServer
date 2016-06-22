@@ -34,6 +34,9 @@ public:
     void AddResponse(const pms::StorageMsg& request, long long seqn);
     //const std::string& GetUserid() { return m_UserId; }
 
+    // for all the sequence request
+    // read request update maxseqn()
+    // write request udpate sequence()
     class MsgSeqn {
         public:
         MsgSeqn(int clientNum, long long seqn, SRTRedisManager* manager, const pms::StorageMsg& request);
@@ -71,7 +74,8 @@ public:
             if ((++counter) == cnumber)
             {
                 printf("read recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
-                storage.set_sequence(*seqns.rbegin());
+                //storage.set_sequence(*seqns.rbegin());
+                storage.set_maxseqn(*seqns.rbegin());
                 ReadResponse(storage.SerializeAsString());
                 //for(auto x : seqns)
                 //{

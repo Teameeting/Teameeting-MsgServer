@@ -118,7 +118,7 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module)
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -127,7 +127,6 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     store.set_mtag(pms::EStorageTag::TSEQN);
     store.set_userid(userid);
     store.set_sequence(seqn);
-    store.set_maxseqn(maxseqn);
 
     req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
     req.set_mod_type((pms::EModuleType)module);
@@ -138,7 +137,7 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module)
+int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -147,7 +146,6 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     store.set_mtag(pms::EStorageTag::TDATA);
     store.set_userid(userid);
     store.set_sequence(seqn);
-    store.set_maxseqn(maxseqn);
 
     req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
     req.set_mod_type((pms::EModuleType)module);

@@ -40,8 +40,8 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
-    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module);
-    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, long long maxseqn, int module);
+    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
+    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
 
     int DecodeRecvData(const char* pData, int nLen);
 
