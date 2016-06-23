@@ -30,6 +30,7 @@ LRTGroupSession::LRTGroupSession()
 , m_wNewMsgId(0)
 {
     AddObserver(this);
+    printf("LRTGroupSession was called\n");
 }
 
 LRTGroupSession::~LRTGroupSession()
@@ -128,7 +129,7 @@ bool LRTGroupSession::RefreshTime()
     UInt64 now = OS::Milliseconds();
     if (m_lastUpdateTime <= now) {
         m_lastUpdateTime = now  + TIMEOUT_TS;
-        RTTcpNoTimeout::UpdateTimer();
+        RTTcp::UpdateTimer();
         return true;
     } else {
         return false;
@@ -185,7 +186,7 @@ void LRTGroupSession::EstablishConnection()
 void LRTGroupSession::SendTransferData(const char* pData, int nLen)
 {
     LRTRTLiveManager::Instance().SendResponseCounter();
-    RTTcpNoTimeout::SendTransferData(pData, nLen);
+    RTTcp::SendTransferData(pData, nLen);
     GetSocket()->RequestEvent(EV_RE);
 }
 
@@ -194,7 +195,7 @@ void LRTGroupSession::SendTransferData(const std::string& data)
     SendTransferData(data.c_str(), data.length());
 }
 
-// from RTTcpNoTimeout
+// from RTTcp
 void LRTGroupSession::OnRecvData(const char*pData, int nLen)
 {
     if (!pData) {
@@ -205,7 +206,6 @@ void LRTGroupSession::OnRecvData(const char*pData, int nLen)
 
 void LRTGroupSession::OnRecvMessage(const char*message, int nLen)
 {
-    //RTTransfer::DoProcessData(message, nLen);
     LRTGrpConnTcp::DoProcessData(message, nLen);
 }
 
@@ -354,42 +354,148 @@ void LRTGroupSession::OnTickEvent(const char*pData, int nLen)
 
 void LRTGroupSession::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
+    LI("%s was called\n", __FUNCTION__);
+    pms::Login login;
+    if (!login.ParseFromString(msg)) {
+        LE("login.ParseFromString error\n");
+    }
 
+    m_userid = login.usr_from();
+    m_token = login.usr_token();
+    LI("Onlogin user:%s login\n", m_userid.c_str());
+    std::string sid;
+    {
+        //store userid & pass
+        LRTConnManager::ConnectionInfo* pci = new LRTConnManager::ConnectionInfo();
+        if (pci) {
+            GenericSessionId(sid);
+            pci->_connId = sid;
+            pci->_userId = m_userid;
+            pci->_token = m_token;
+            pci->_pConn = this;
+            pci->_connType = pms::EConnType::TTCP;
+            pci->_flag = 1;
+            LRTConnManager::Instance().AddUser(pms::EConnType::TTCP, m_userid, pci);
+            //LRTConnManager::Instance().ConnectionConnNotify(m_userId, m_token);
+
+            // send response
+            std::string resp;
+            GenericResponse(pms::EServerCmd::CLOGIN, module, 0, resp);
+            SendResponse(0, resp.c_str());
+            m_login = true;
+            return;
+        } else {
+            LE("new ConnectionInfo error userid:%s\n", m_userid.c_str());
+            std::string resp;
+            GenericResponse(pms::EServerCmd::CLOGIN, module, 101, resp);
+            SendResponse(0, resp.c_str());
+            m_login = false;
+            return;
+        }
+    }
 }
 
 void LRTGroupSession::OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void LRTGroupSession::OnGetMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void LRTGroupSession::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
+    LI("%s was called\n", __FUNCTION__);
+    pms::Logout logout;
+    if (!logout.ParseFromString(msg)) {
+        LE("login.ParseFromString error\n");
+    }
+    assert(logout.usr_from().compare(m_userid)==0);
+    LI("OnLogout user:%s logout\n", m_userid.c_str());
+    assert(logout.usr_from().compare(m_userid)==0);
+    std::string token;
+    LRTConnManager::Instance().DelUser(pms::EConnType::TTCP, m_userid, token);
+    //LRTConnManager::Instance().ConnectionLostNotify(m_userid, m_token);
 
+    m_userid = "";
+    m_token = "";
+    std::string resp;
+    GenericResponse(pms::EServerCmd::CLOGOUT, module, 0, resp);
+    SendResponse(0, resp.c_str());
+    m_login = false;
+    return;
 }
 
 void LRTGroupSession::OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-
+    LI("%s was called\n", __FUNCTION__);
+    if (m_login) {
+        pms::Keep keep;
+        if (!keep.ParseFromString(msg)) {
+            LE("login.ParseFromString error\n");
+        }
+        LI("Userid:%s OnKeepAlive\n", keep.usr_from().c_str());
+        RTTcp::UpdateTimer();
+    }
 }
 
 void LRTGroupSession::OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void LRTGroupSession::OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
-
+    LI("%s was called\n", __FUNCTION__);
 }
+
+void LRTGroupSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+    LI("%s was called\n", __FUNCTION__);
+    pms::PackedStoreMsg packed;
+    packed.ParseFromString(msg);
+    for(int i=0;i<packed.msgs_size();++i)
+    {
+        if (packed.msgs(i).userid().length()==0)break;
+        printf("LRTGroupSession::OnGroupNotify userid:%s, groupid:%s, svrcmd:%d, mflag:%d, sequence:%lld\n"\
+                , packed.msgs(i).userid().c_str()\
+                , packed.msgs(i).groupid().c_str()\
+                , packed.msgs(i).svrcmd()\
+                , packed.msgs(i).mflag()\
+                , packed.msgs(i).sequence());
+
+        pms::TransferMsg t_msg;
+        pms::RelayMsg r_msg;
+        pms::MsgRep resp;
+        resp.set_svr_cmds(pms::EServerCmd::CGROUPNOTIFY);
+        resp.set_mod_type(pms::EModuleType::TLIVE);
+        resp.set_rsp_code(0);
+        resp.set_rsp_cont(packed.msgs(i).SerializeAsString());
+
+        // set relay
+        r_msg.set_svr_cmds(pms::EServerCmd::CGROUPNOTIFY);
+        r_msg.set_tr_module(pms::ETransferModule::MLIVE);
+        r_msg.set_connector("");
+        r_msg.set_content(resp.SerializeAsString());
+        pms::ToUser *pto = new pms::ToUser;
+        pto->add_users()->assign(packed.msgs(i).userid());
+        r_msg.set_allocated_touser(pto);
+
+        // set transfer
+        t_msg.set_type(pms::ETransferType::TQUEUE);
+        t_msg.set_content(r_msg.SerializeAsString());
+        std::string response = t_msg.SerializeAsString();
+        LRTConnManager::Instance().SendTransferData("", "", response);
+    }
+}
+
 
 void LRTGroupSession::OnResponse(const char*pData, int nLen)
 {
-    RTTcpNoTimeout::SendTransferData(pData, nLen);
+    LI("%s was called\n", __FUNCTION__);
+    RTTcp::SendTransferData(pData, nLen);
 }
 
 void LRTGroupSession::ConnectionDisconnected()
@@ -398,6 +504,21 @@ void LRTGroupSession::ConnectionDisconnected()
         m_connectingStatus = 0;
         LRTConnManager::Instance().TransferSessionLostNotify(m_transferSessId);
     }
+}
+
+void LRTGroupSession::GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& resp)
+{
+#if DEF_PROTO
+    pms::MsgRep response;
+
+    response.set_svr_cmds(cmd);
+    response.set_mod_type(module);
+    response.set_rsp_code(code);
+    resp = response.SerializeAsString();
+
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
 ////////////////////////////////////////////////////////

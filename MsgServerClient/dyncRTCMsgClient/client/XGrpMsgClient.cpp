@@ -50,6 +50,7 @@ int XGrpMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::str
     }
     if (!m_pGrpMsgProcesser) {
         m_pGrpMsgProcesser = new XGrpMsgProcesser(*this);
+        m_pGrpMsgProcesser->Init();
         m_pCallback = cb;
     }
     if (!m_pGrpMsgProcesser) {
@@ -132,6 +133,38 @@ int XGrpMsgClient::GroupNotifys(const std::vector<std::string>& userids, const s
     return SendEncodeMsg(outstr);
 }
 
+int XGrpMsgClient::GenSyncDataRequest(const std::string& userid, const std::string& groupid, long long seqn)
+{
+    std::string outstr;
+    if (m_pGrpMsgProcesser) {
+        m_pGrpMsgProcesser->EncodeSyncDataRequest(outstr, userid, groupid, seqn, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    printf("XGrpMsgClient GenSyncDataRequest ok!!\n");
+    return SendEncodeMsg(outstr);
+}
+
+
+int XGrpMsgClient::GenSyncDataRequests(const std::vector<std::string>& userids, const std::string& groupid, long long seqn)
+{
+    std::string outstr;
+    if (m_pGrpMsgProcesser) {
+        m_pGrpMsgProcesser->EncodeSyncDataRequests(outstr, userids, groupid, seqn, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    printf("XGrpMsgClient GenSyncDataRequests ok!!\n");
+    return SendEncodeMsg(outstr);
+}
 
 ////////////////////////////////////////////
 ////////////////private/////////////////////
@@ -268,13 +301,13 @@ unsigned short XGrpMsgClient::readShort(char** pptr)
 
 void XGrpMsgClient::OnServerConnected()
 {
-    //LOG(INFO) << __FUNCTION__ << " was called";
+    LOG(INFO) << __FUNCTION__ << " was called";
     Login();
 }
 
 void XGrpMsgClient::OnServerDisconnect()
 {
-    //LOG(INFO) << __FUNCTION__ << " was called";
+    LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pCallback) {
         m_login = false;
         m_msState = MSNOT_CONNECTED;
@@ -285,7 +318,7 @@ void XGrpMsgClient::OnServerDisconnect()
 
 void XGrpMsgClient::OnServerConnectionFailure()
 {
-    //LOG(INFO) << __FUNCTION__ << " was called";
+    LOG(INFO) << __FUNCTION__ << " was called";
     if (m_pCallback) {
         m_login = false;
         m_msState = MSNOT_CONNECTED;
@@ -357,10 +390,16 @@ void XGrpMsgClient::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XGrpMsgClient::OnSyncData userid:%s, sequence:%lld, groupid:%s\n\n"\
+    printf("XGrpMsgClient::OnGroupNotify userid:%s, sequence:%lld, groupid:%s, mflag:%d, svrcmd:%d\n\n"\
             , store.userid().c_str()\
             , store.sequence()\
-            , store.groupid().c_str());
+            , store.groupid().c_str()\
+            , store.mflag()\
+            , store.svrcmd());
+    // check userid, groupid, send sync data request
+    std::string mem_user("xddxdd");
+    GenSyncDataRequest(mem_user, store.groupid(), store.sequence());
+
     return;
 }
 

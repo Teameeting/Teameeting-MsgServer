@@ -5,18 +5,19 @@ option optimize_for = LITE_RUNTIME;
 
 // the server cmd
 enum EServerCmd{
-    CLOGIN              = 0;
-    CSNDMSG             = 1;
-    CGETMSG             = 2;
-    CLOGOUT             = 3;
-    CKEEPALIVE          = 4;
-    CSYNCSEQN           = 5;
-    CSSEQN4DATA         = 6;
-    CSYNCDATA           = 7;
-    CNEWMSG             = 8;
-    CNEWMSGSEQN         = 9;
-    CNEWMSGDATA         = 10;
-    CGROUPNOTIFY        = 11;
+    CLOGIN                  = 0;
+    CSNDMSG                 = 1;
+    CGETMSG                 = 2;
+    CLOGOUT                 = 3;
+    CKEEPALIVE              = 4;
+    CSYNCSEQN               = 5;
+    CSSEQN4DATA             = 6;
+    CSYNCDATA               = 7;
+    CSYNCGROUPDATA          = 8;
+    CNEWMSG                 = 9;
+    CNEWMSGSEQN             = 10;
+    CNEWMSGDATA             = 11;
+    CGROUPNOTIFY            = 12;
 }
 
 // different server module

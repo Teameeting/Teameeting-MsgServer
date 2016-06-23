@@ -32,6 +32,9 @@ public:
     int GroupNotify(const std::string& userid, const std::string& groupid);
     int GroupNotifys(const std::vector<std::string>& userids, const std::string& groupid);
 
+    int GenSyncDataRequest(const std::string& userid, const std::string& groupid, long long seqn);
+    int GenSyncDataRequests(const std::vector<std::string>& userids, const std::string& groupid, long long seqn);
+
     MSState MSStatus() { return m_msState; }
 
 public:

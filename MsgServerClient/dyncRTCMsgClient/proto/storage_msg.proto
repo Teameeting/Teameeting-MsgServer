@@ -9,16 +9,18 @@ option optimize_for = LITE_RUNTIME;
 // this is the msg for store msg to redis
 message StorageMsg{
     EServerCmd      svrcmd      = 1; // server cmd
-    EStorageTag     mtag        = 2; // seqn or data
-    EMsgFlag        mflag       = 3; // group or single
-    EMsgRole        mrole       = 4; // sender or recver
-    sint32          result      = 5; // the redis opt result
-    sint64          sequence    = 6; // sequence
-    sint64          maxseqn     = 7; // max sequence
-    string          msgid       = 8; // message id
-    string          userid      = 9; // userid
-    string          groupid     = 10; // groupid
-    string          content     = 11; // message
+    EServerCmd      tsvrcmd     = 2; // temp server cmd for backup group cmd
+    EStorageTag     mtag        = 3; // seqn or data
+    EMsgFlag        mflag       = 4; // group or single
+    EMsgRole        mrole       = 5; // sender or recver
+    sint32          result      = 6; // the redis opt result
+    sint64          sequence    = 7; // sequence
+    sint64          maxseqn     = 8; // max sequence
+    string          msgid       = 9; // message id
+    string          userid      = 10; // userid
+    string          tuserid     = 11; // temp userid for backup group cmd
+    string          groupid     = 12; // groupid
+    string          content     = 13; // message
 }
 
 message PackedStoreMsg{

@@ -273,7 +273,7 @@ bool LRTLogicalManager::UpdateLocalSeqn(pms::StorageMsg*  storeMsg)
         UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
         if (it!=m_localSeqnMap.end())
         {
-            assert(storeMsg->sequence() > it->second);
+            assert(storeMsg->sequence() >= it->second);
             it->second = storeMsg->sequence();
         } else {
             m_localSeqnMap.insert(std::make_pair(storeMsg->userid(), storeMsg->sequence()));

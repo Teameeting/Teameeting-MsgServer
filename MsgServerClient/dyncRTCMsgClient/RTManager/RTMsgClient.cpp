@@ -276,7 +276,7 @@ void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
 void RTMsgClient::GrpInit(int module)
 {
 
-    mGrpMsgClient.Init(this, mUserid, mAuth, module, mMsgServer, mMsgPort);
+    mGrpMsgClient.Init(this, mUserid, mAuth, module, "192.168.7.207", 6690);
 }
 
 void RTMsgClient::GrpUnin()
@@ -284,9 +284,12 @@ void RTMsgClient::GrpUnin()
 
     mGrpMsgClient.Unin();
 }
+
 bool RTMsgClient::GrpConnecting()
 {
+    printf("RTMsgClient::GrpConnecting\n");
     while(mGrpMsgClient.MSStatus()!=MSState::MSCONNECTED)sleep(1);
+    printf("RTMsgClient::GrpConnecting ok\n");
     return true;
 }
 
@@ -296,6 +299,20 @@ void RTMsgClient::GrpGenNotify()
         mGrpMsgClient.GroupNotify(mUserid, mCurRoomId);
     }
 }
+
+void RTMsgClient::GrpInitSync()
+{
+    GrpInit(pms::EModuleType::TLIVE);
+    GrpConnecting();
+}
+
+void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string groupid, long long curseqn)
+{
+    if (mIsOnline) {
+        mMsgClient.SyncGroupData(userid, groupid, curseqn);
+    }
+}
+
 
 void RTMsgClient::ShowRecvMsg()
 {

@@ -49,6 +49,9 @@ public:
     int EncodeGroupNotify(std::string& outstr, const std::string& userid, const std::string& groupid, long long curseqn, int module);
     int EncodeGroupNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, long long curseqn,  int module);
 
+    int EncodeSyncDataRequest(std::string& outstr, const std::string& userid, const std::string& groupid, long long curseqn, int module);
+    int EncodeSyncDataRequests(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, long long curseqn,  int module);
+
     int DecodeRecvData(const char* pData, int nLen);
 
 protected:

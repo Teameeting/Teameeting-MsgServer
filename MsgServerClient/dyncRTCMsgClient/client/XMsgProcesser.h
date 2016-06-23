@@ -42,6 +42,7 @@ public:
 
     int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
     int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
+    int EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, long long seqn, int module);
 
     int DecodeRecvData(const char* pData, int nLen);
 
@@ -53,6 +54,8 @@ protected:
     int DecodeKeepAlive(int code, const std::string& cont);
     int DecodeSyncSeqn(int code, const std::string& cont);
     int DecodeSyncData(int code, const std::string& cont);
+    int DecodeGroupNotify(int code, const std::string& cont);
+    int DecodeSyncGroupData(int code, const std::string& cont);
 private:
     XMsgClientHelper    &m_helper;
 };

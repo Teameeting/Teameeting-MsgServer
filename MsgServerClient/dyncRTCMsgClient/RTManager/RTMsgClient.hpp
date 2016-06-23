@@ -65,6 +65,9 @@ public:
     void GrpUnin();
     bool GrpConnecting();
     void GrpGenNotify();
+    void GrpInitSync();
+    void GrpSyncGroupData(const std::string& userid, const std::string groupid, long long curseqn);
+
 public:
     const std::string& GetUserId() { return mUserid; }
     int GetRecvNums() { return mRecvNum; }

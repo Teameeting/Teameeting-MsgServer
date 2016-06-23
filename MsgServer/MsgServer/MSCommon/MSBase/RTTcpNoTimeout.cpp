@@ -2,7 +2,8 @@
 #include "RTJSBuffer.h"
 #include "atomic.h"
 
-unsigned int RTTcpNoTimeout::sSessionIDCounterNo = kFirstTCPSessionID;
+unsigned int RTTcpNoTimeout::sSessionIDCounterNo = kFirstTCPNoTimeoutSessionID;
+
 RTTcpNoTimeout::RTTcpNoTimeout()
 : Task()
 , fTimeoutTask(NULL, 120 * 1000)

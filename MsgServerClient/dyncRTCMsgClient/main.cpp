@@ -12,6 +12,7 @@
 #include "webrtc/base/logging.h"
 #include "RTConnClientManager.hpp"
 #include "RTClientTest.hpp"
+#include "RTGroupTest.hpp"
 
 #define KRUN 1
 #define KRUNONCE 2
@@ -23,15 +24,21 @@
 int main(int argc, const char * argv[]) {
     std::cout << "Hello, World!\n";
 
-    if (argc<2) {
-        std::cout << "please add param username!!!" << std::endl;
+    if (argc<3) {
+        std::cout << "please add param username and group or single!!!" << std::endl;
          return 0;
     }
     rtc::LogMessage::LogToDebug(rtc::INFO);
     //RTConnClientManager manager;
     //manager.RunTest(KRUN);
-    RTClientTest test;
-    test.RunTest(KRUNONCE, argv[1]);
+    if (strcmp(argv[2], "group")==0)
+    {
+        RTGroupTest gtest;
+        gtest.RunTest(KRUNONCE, argv[1]);
+    } else {
+        RTClientTest test;
+        test.RunTest(KRUNONCE, argv[1]);
+    }
     google::protobuf::ShutdownProtobufLibrary();
     LOG(INFO) << "bye bye client...";
     return 0;

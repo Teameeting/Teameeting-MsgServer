@@ -14,7 +14,7 @@
 #include <queue>
 #include "SocketUtils.h"
 #include "TCPSocket.h"
-#include "RTTcpNoTimeout.h"
+#include "RTTcp.h"
 #include "RTJSBuffer.h"
 #include "LRTGrpConnTcp.h"
 #include "RTObserverConnection.h"
@@ -28,9 +28,9 @@
 #include "MsgServer/proto/storage_msg.pb.h"
 
 class LRTGroupSession
-    : public RTTcpNoTimeout
-    , public RTJSBuffer
+    : public RTTcp
     , public LRTGrpConnTcp
+    , public RTJSBuffer
     , public RTObserverConnection{
 public:
     LRTGroupSession();
@@ -53,6 +53,8 @@ public:
     std::string& GetTransferAddr() { return m_addr; }
     int GetTransferPort() { return m_port; }
     int GetConnectingStatus() { return m_connectingStatus; };
+    void GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& resp);
+
 public:
     void EstablishConnection();
 
@@ -101,6 +103,8 @@ public:
     virtual void OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+
     virtual void OnResponse(const char*pData, int nLen);
 
 protected:
@@ -130,6 +134,9 @@ private:
     OSMutex                     m_mutexQueueData;
 
     unsigned int                m_wNewMsgId;
+    std::string                 m_userid;
+    std::string                 m_token;
+    bool                        m_login;
 };
 
 #endif /* defined(__MsgServerRTLive__LRTGroupSession__) */

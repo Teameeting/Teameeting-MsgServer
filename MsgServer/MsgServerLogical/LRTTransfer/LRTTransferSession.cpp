@@ -639,7 +639,9 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
 
                 long long s = store.msgs(i).sequence(), ms = seqn;
                 LI("LRTTransferSession::OnTypeReadRequest after get max, seqn:%lld, maxseqn:%lld\n", s, ms);
-                assert(ms>s);
+                // ???????? shoule be eauql here?
+                LI("LRTTransferSession::OnTypeReadRequest should be equal here\n");
+                assert(ms>=s);
                 store.mutable_msgs(i)->set_maxseqn(seqn);// update maxseqn
                 for(int j=1,k=ms-s;j<=k;++j)
                 {
@@ -659,7 +661,10 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
                 sprintf(msgid, "rs:%u", m_tmpRSeqn4DataId++);
                 store.mutable_msgs(i)->set_msgid(msgid);
                 store.mutable_msgs(i)->set_svrcmd(pms::EServerCmd::CSSEQN4DATA); // modify cmd, to sync seqn from remote
-                printf("LRTTransferSession::OnTypeReadRequest change to SYNCSEQN4DATA msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
+                printf("LRTTransferSession::OnTypeReadRequest change to SYNCSEQN4DATA msgid:%s, mtag:%d, svrcmd:%d, tsvrcmd:%d\n"\
+                        , store.msgs(i).msgid().c_str(), store.msgs(i).mtag()\
+                        , store.msgs(i).svrcmd()\
+                        , store.msgs(i).tsvrcmd());
                 LRTLogicalManager::Instance().InsertSeqnRead(this, store.mutable_msgs(i));
                 s_store.add_msgs()->MergeFrom(store.msgs(i));
             }
@@ -773,12 +778,17 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
                 LI("%s syncdata store.msgs(%d).userid length is 0\n", __FUNCTION__, i);
                 break;
             }
-            printf("LRTTransferSession::OnTypeReadResponse SYNCDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d, svrcmd:%d, userid:%s\n\n"\
+            if (store.msgs(i).tsvrcmd()==pms::EServerCmd::CSYNCGROUPDATA)
+            {
+                store.mutable_msgs(i)->set_svrcmd(pms::EServerCmd::CSYNCGROUPDATA);
+            }
+            printf("LRTTransferSession::OnTypeReadResponse SYNCDATA  msgid:%s, sequence:%lld, result:%d, mtag:%d, svrcmd:%d, tsvrcmd:%d, userid:%s\n\n"\
                     , store.msgs(i).msgid().c_str()\
                     , store.msgs(i).sequence()\
                     , store.msgs(i).result()\
                     , store.msgs(i).mtag()\
                     , store.msgs(i).svrcmd()\
+                    , store.msgs(i).tsvrcmd()\
                     , store.msgs(i).userid().c_str());
 
             LRTLogicalManager::Instance().DeleteDataRead(store.mutable_msgs(i));

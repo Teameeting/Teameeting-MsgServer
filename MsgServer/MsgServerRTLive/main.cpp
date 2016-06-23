@@ -65,6 +65,7 @@ int main(int argc, const char * argv[]) {
     //                  );
     //signal(SIGUSR1, sighandler);
     //signal(SIGUSR2, sighandler);
+    //6690 for group client module
     int res = pRTLive->Start("192.168.7.207", 6690, "192.168.7.207", 6680, "192.168.7.207", 6620, "192.168.7.207", 6670, "192.168.7.207", 6640);
     int test = 0;
     if (res != 0) {

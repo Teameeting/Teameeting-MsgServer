@@ -12,6 +12,7 @@
 #include <json/json.h>
 #include "OSMutex.h"
 #include "LRTTransferSession.h"
+#include "LRTGroupSession.h"
 #include "RTZKClient.hpp"
 
 static int ticket_time = 0;
@@ -23,12 +24,14 @@ std::string     LRTConnManager::s_cohttpHost;
 static OSMutex       s_mutex;
 static OSMutex       s_mutexModule;
 static OSMutex       s_mutexTypeModule;
+static OSMutex       s_mutexConnection;
 
 static LRTConnManager::ModuleInfoMaps                 s_ModuleInfoMap(0);
 static LRTConnManager::TypeModuleSessionInfoLists     s_TypeModuleSessionInfoList(0);
+static LRTConnManager::ConnectionInfoMaps             s_ConnectionInfoMap(0);
 
 
-LRTConnManager::ModuleInfo* LRTConnManager::findConnectorInfo(const std::string& userid)
+LRTConnManager::ModuleInfo* LRTConnManager::findConnModuleInfo(const std::string& userid)
 {
     return findModuleInfo(userid, pms::ETransferModule::MCONNECTOR);
 }
@@ -63,7 +66,7 @@ LRTConnManager::ModuleInfo* LRTConnManager::findModuleInfoBySid(const std::strin
     return pInfo;
 }
 
-LRTConnManager::ModuleInfo* LRTConnManager::findConnectorInfoById(const std::string& userid, const std::string& connector)
+LRTConnManager::ModuleInfo* LRTConnManager::findModuleInfoByMid(const std::string& userid, const std::string& connector)
 {
 
     if (userid.length()==0 || connector.length()==0) {
@@ -93,6 +96,44 @@ LRTConnManager::ModuleInfo* LRTConnManager::findConnectorInfoById(const std::str
         LE("findConnectorInfoById sessionid is null\n");
     }
     return pInfo;
+}
+
+LRTConnManager::ConnectionInfo* LRTConnManager::findConnectionInfoById(const std::string& uid)
+{
+    LRTConnManager::ConnectionInfo* pInfo = NULL;
+    {
+        OSMutexLocker locker(&s_mutexConnection);
+        LRTConnManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
+        if (it!=s_ConnectionInfoMap.end()) {
+            pInfo = it->second;
+        }
+    }
+    return pInfo;
+}
+
+
+bool LRTConnManager::SendToGroupModule(const std::string& userid, const std::string& msg)
+{
+    LRTConnManager::ConnectionInfo* pci = findConnectionInfoById(userid);
+    if (!pci) {
+        LE("LRTConnManager::SendToGroupModule not find user:%s connection\n", userid.c_str());
+        return false;
+    } else { //!pci
+        if (pci->_pConn && pci->_pConn->IsLiveSession()) {
+            if (pci->_connType == pms::EConnType::TTCP) {
+                LRTGroupSession *ct = dynamic_cast<LRTGroupSession*>(pci->_pConn);
+                if (ct) {
+                    ct->SendTransferData(msg);
+                }
+            } else {
+                LE("LRTConnManager::SendToGroupModule conn type not handle :%d\n", pci->_connType);
+            }
+            return true;
+        } else {
+            LE("LRTConnManager::SendToGroupModule conn not alive\n");
+             return false;
+        }
+    }
 }
 
 void LRTConnManager::InitManager()
@@ -424,6 +465,44 @@ bool LRTConnManager::DelTypeModuleSession(const std::string& sid)
     }
     return found;
 }
+
+bool LRTConnManager::AddUser(pms::EConnType type, const std::string& uid, LRTConnManager::ConnectionInfo* pInfo)
+{
+    if (uid.length()==0 || !pInfo) return false;
+    {
+        OSMutexLocker locker(&s_mutexConnection);
+        LRTConnManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
+        if (it!=s_ConnectionInfoMap.end()) {
+            //ConnectionLostNotify(uid, it->second->_token);
+            delete it->second;
+            it->second = NULL;
+            s_ConnectionInfoMap.erase(uid);
+        }
+        s_ConnectionInfoMap.insert(make_pair(uid, pInfo));
+    }
+    return true;
+}
+
+bool LRTConnManager::DelUser(pms::EConnType type, const std::string& uid, std::string& token)
+{
+    if (uid.length()==0) return false;
+    {
+        OSMutexLocker locker(&s_mutexConnection);
+        LRTConnManager::ConnectionInfoMapsIt it = s_ConnectionInfoMap.find(uid);
+        if (it!=s_ConnectionInfoMap.end()) {
+            token = it->second->_token;
+            delete it->second;
+            it->second = NULL;
+            s_ConnectionInfoMap.erase(uid);
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+
+
 
 void LRTConnManager::TransferSessionLostNotify(const std::string& sid)
 {

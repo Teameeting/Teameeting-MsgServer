@@ -24,11 +24,10 @@ public:
     void RunTest(int flag, const std::string& name);
     virtual void OnMessage(rtc::Message* msg);
 
-    void TestSync();
-    void TestSend();
     void TestSendGroup();
     void TestSendOnce();
     void TestSendLoop();
+
 
     void RunSyncSeqn();
     void RunSyncData();

@@ -143,8 +143,31 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     pms::MsgReq req;
     pms::StorageMsg store;
     store.set_svrcmd(pms::EServerCmd::CSYNCDATA);
+    store.set_tsvrcmd(pms::EServerCmd::CSYNCDATA);
     store.set_mtag(pms::EStorageTag::TDATA);
     store.set_userid(userid);
+    store.set_sequence(seqn);
+
+    req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
+#endif
+    return 0;
+}
+
+int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, long long seqn, int module)
+{
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_svrcmd(pms::EServerCmd::CSYNCGROUPDATA);
+    store.set_tsvrcmd(pms::EServerCmd::CSYNCGROUPDATA);
+    store.set_mtag(pms::EStorageTag::TDATA);
+    store.set_userid(groupid);
+    store.set_tuserid(userid);
+    store.set_groupid(groupid);
     store.set_sequence(seqn);
 
     req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
@@ -194,6 +217,13 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         case pms::EServerCmd::CSYNCDATA:
             DecodeSyncData(resp.rsp_code(), resp.rsp_cont());
             break;
+        case pms::EServerCmd::CGROUPNOTIFY:
+            DecodeGroupNotify(resp.rsp_code(), resp.rsp_cont());
+            break;
+        case pms::EServerCmd::CSYNCGROUPDATA:
+            DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
+            break;
+
 
         default:
             LOG(LS_ERROR) << "invalid svr_cmds type:" << resp.svr_cmds();
@@ -243,5 +273,17 @@ int XMsgProcesser::DecodeSyncSeqn(int code, const std::string& cont)
 int XMsgProcesser::DecodeSyncData(int code, const std::string& cont)
 {
     m_helper.OnSyncData(code, cont);
+    return 0;
+}
+
+int XMsgProcesser::DecodeGroupNotify(int code, const std::string& cont)
+{
+    m_helper.OnGroupNotify(code, cont);
+    return 0;
+}
+
+int XMsgProcesser::DecodeSyncGroupData(int code, const std::string& cont)
+{
+    m_helper.OnSyncGroupData(code, cont);
     return 0;
 }

@@ -35,6 +35,8 @@ int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
         OnKeepAlive(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CLOGIN) {
         OnLogin(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CGROUPNOTIFY) {
+        OnGroupNotify(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CSNDMSG) {
         OnSndMsg(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CGETMSG) {
@@ -58,12 +60,6 @@ int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
 char* LRTGrpConnTcp::GenerateResponse(int code, const std::string&query, const char*pData, int nLen, int&outLen)
 {
     return (char*)"";
-}
-
-
-void LRTGrpConnTcp::SendResponse(int code, const std::string&query, const char*pData, int nLen)
-{
-
 }
 
 void LRTGrpConnTcp::SendResponse(int code, const std::string&strContent)

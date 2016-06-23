@@ -14,7 +14,7 @@
 
 enum
 {
-    kFirstTCPSessionID     = 1,    //UInt32
+    kFirstTCPNoTimeoutSessionID     = 1,    //UInt32
 };
 
 class RTTcpNoTimeout

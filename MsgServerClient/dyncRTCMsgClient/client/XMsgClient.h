@@ -28,6 +28,8 @@ public:
     virtual void OnKeepLive(int code, const std::string& cont) = 0;
     virtual void OnSyncSeqn(int code, const std::string& cont) = 0;
     virtual void OnSyncData(int code, const std::string& cont) = 0;
+    virtual void OnGroupNotify(int code, const std::string& cont) = 0;
+    virtual void OnSyncGroupData(int code, const std::string& cont) = 0;
 };
 
 class XMsgClient
@@ -51,6 +53,7 @@ public:
 
     int SyncSeqn();
     int SyncData();
+    int SyncGroupData(const std::string& userid, const std::string& gropuid, long long seqn);
 
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
@@ -74,6 +77,8 @@ public:
     virtual void OnKeepLive(int code, const std::string& userid);
     virtual void OnSyncSeqn(int code, const std::string& userid);
     virtual void OnSyncData(int code, const std::string& userid);
+    virtual void OnGroupNotify(int code, const std::string& userid);
+    virtual void OnSyncGroupData(int code, const std::string& userid);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);
@@ -100,6 +105,7 @@ private:
     bool                     m_login;
     MSState                  m_msState;
     long long                m_curSeqn;
+    long long                m_curGroupSeqn;
     pms::EModuleType         m_module;
 };
 

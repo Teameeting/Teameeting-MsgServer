@@ -133,8 +133,15 @@ void RTClientTest::RunOnce()
     //TODO:
     //TestSync();
     //TestSend();
-    TestSendOnce();
+    ////if (mName.compare("xddxdd")==0)
+    ////{
+    //    //TestSyncGroup();
+    ////} else {
+    //    //TestSendGroup();
+    ////}
+    //TestSendOnce();
     //TestSendLoop();
+    TestSendGroupLoop();
 }
 
 void RTClientTest::TestSend()
@@ -172,6 +179,21 @@ void RTClientTest::TestSendGroup()
     }
 }
 
+void RTClientTest::TestSyncGroup()
+{
+    if (mName.compare("xddxdd")==0)
+    {
+        mMsgClient->GrpSyncGroupData("xddxdd", "4008696859", 10);
+        //while(1)
+        //    rtc::Thread::SleepMs(1000);
+    } else {
+        {
+            std::cout << "TestSyncGroup name:" << mName << std::endl;
+
+            rtc::Thread::SleepMs(500);
+        }
+    }
+}
 
 void RTClientTest::TestSendOnce()
 {
@@ -211,6 +233,29 @@ void RTClientTest::TestSendLoop()
             std::string m(ii);
             std::string n("xddxdd");
             mMsgClient->SendMessageTo(m, n);
+            rtc::Thread::SleepMs(200);
+        }
+    }
+}
+
+void RTClientTest::TestSendGroupLoop()
+{
+    if (mName.compare("xddxdd")==0)
+    {
+        //while(1)
+        //    rtc::Thread::SleepMs(1000);
+    } else {
+        long long i = 0;
+        //int t = 5;
+        //while(t--)
+        while(1)
+        {
+            char ii[16] = {0};
+            std::cout << "TestSendGroupLoop name:" << mName << std::endl;
+            sprintf(ii, "hello world%lld", i++);
+            std::string m(ii);
+            std::string n("xddxdd");
+            mMsgClient->SendMessage(m);
             rtc::Thread::SleepMs(200);
         }
     }

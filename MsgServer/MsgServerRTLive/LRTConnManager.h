@@ -18,6 +18,7 @@
 #include "RTMessage.h"
 #include "OSMutex.h"
 #include "RTSingleton.h"
+#include "RTTcp.h"
 #include "RTType.h"
 #include "LRTConnDispatcher.h"
 #include "RTEventTimer.h"
@@ -62,6 +63,28 @@ public:
         }
     }TypeModuleSessionInfo;
 
+    //store the user id and connection
+    typedef struct _ConnectionInfo{
+        std::string     _connId;
+        std::string     _connAddr;
+        std::string     _connPort;
+        std::string     _userId;
+        std::string     _token;
+        RTTcp*          _pConn;
+        pms::EConnType  _connType;
+        int             _flag;
+        _ConnectionInfo():_connId("")
+                        , _connAddr("")
+                        , _connPort("")
+                        , _userId("")
+                        , _token("")
+                        , _pConn(NULL)
+                        , _connType(pms::EConnType::TTCP)
+                        , _flag(0){
+        }
+    }ConnectionInfo;
+
+
     typedef std::unordered_map< std::string, ModuleInfo* >      ModuleInfoMaps;
     typedef ModuleInfoMaps::iterator                            ModuleInfoMapsIt;
 
@@ -73,19 +96,33 @@ public:
 
     typedef std::list< LRTTransferSession* > ConnectingSessList;
 
+
+    //<user_id, connection_info>
+    typedef std::unordered_map< std::string, ConnectionInfo* >  ConnectionInfoMaps;
+    typedef ConnectionInfoMaps::iterator                        ConnectionInfoMapsIt;
+
     static std::string      s_cohttpIp;
     static unsigned short   s_cohttpPort;
     static std::string      s_cohttpHost;
 
-    ModuleInfo*       findConnectorInfo(const std::string& userid);
+    ModuleInfo*       findConnModuleInfo(const std::string& userid);
     ModuleInfo*       findModuleInfo(const std::string& userid, pms::ETransferModule module);
     ModuleInfo*       findModuleInfoBySid(const std::string& sid);
-    ModuleInfo*       findConnectorInfoById(const std::string& userid, const std::string& connector);
+    ModuleInfo*       findModuleInfoByMid(const std::string& userid, const std::string& connector);
 
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
     bool DelModuleInfo(const std::string& sid, EventData& data);
     bool AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid);
     bool DelTypeModuleSession(const std::string& sid);
+
+
+    bool AddUser(pms::EConnType type, const std::string& uid, ConnectionInfo* pInfo);
+    // return true means delete one
+    // return false means not delete
+    bool DelUser(pms::EConnType type, const std::string& uid, std::string& token);
+    ConnectionInfo*   findConnectionInfoById(const std::string& uid);
+    bool SendToGroupModule(const std::string& userid, const std::string& msg);
+
 
     void TransferSessionLostNotify(const std::string& sid);
 

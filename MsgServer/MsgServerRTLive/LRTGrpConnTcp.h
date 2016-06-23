@@ -30,7 +30,6 @@ public:
     int DoProcessData(const char* pData, int nLen);
 
     char* GenerateResponse(int code, const std::string&query, const char*pData, int nLen, int&outLen);
-    void SendResponse(int code, const std::string&query, const char*pData, int nLen);
     void SendResponse(int code, const std::string&strContent);
 
 public:
@@ -41,6 +40,7 @@ public:
     virtual void OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnResponse(const char*pData, int nLen)=0;
 
 private:
