@@ -3,15 +3,10 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "CRTConnManager.h"
-#include "RTMessage.h"
 #include "RTUtils.hpp"
 
 #define DEF_PTORO 1
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "ProtoCommon.h"
 
 std::string		CRTConnection::gStrAddr;
 unsigned short	CRTConnection::gUsPort = 0;
@@ -87,12 +82,7 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* 
     {
         //check & auth
 #if 0
-        std::string pass;
-        RTHiredisRemote::Instance().CmdGet(pUserid, pass);
-        if (pass.compare(pPass)!=0) {
-            LE("OnLogin pass not same redis error\n");
-            return;
-        }
+
 #endif
         m_userId = pUserid;
         m_token = pPass;

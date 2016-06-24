@@ -20,7 +20,7 @@
 #include "SRTResponseSender.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
+#include "ProtoCommon.h"
 
 class SRTStorageRedis;
 class SRTTransferSession;

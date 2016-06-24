@@ -137,27 +137,27 @@ SRTSequenceRedis* SRTRedisManager::LoopupForRedis(RedisGroup* group)
  * after redis client get seqn
  * this method will be invoked by redis client
  *
- * this function store all the seqn by same userid and msgid
+ * this function store all the seqn by same ruserid and msgid
  *
  */
-void SRTRedisManager::OnWriteSeqn(const pms::StorageMsg& request, long long seqn)
+void SRTRedisManager::OnWriteSeqn(const pms::StorageMsg& request, int64 seqn)
 {
-    LI("SRTRedisManager::OnWriteSeqn userid:%s, msgid:%s, seqn:%lld\n", request.userid().c_str(), request.msgid().c_str(), seqn);
+    LI("SRTRedisManager::OnWriteSeqn ruserid:%s, msgid:%s, seqn:%lld\n", request.ruserid().c_str(), request.msgid().c_str(), seqn);
     OSMutexLocker locker(&m_MutexWriteCollection);
-    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_WriteResponseCollections.find(request.userid());
+    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_WriteResponseCollections.find(request.ruserid());
     if (cit != m_WriteResponseCollections.end())
     {
-        LI("OnWriteSeqn userid find out:%s\n", request.userid().c_str());
+        LI("OnWriteSeqn ruserid find out:%s\n", request.ruserid().c_str());
         cit->second->AddResponse(request, seqn);
     } else {
-        LI("OnWriteSeqn userid not find out:%s\n", request.userid().c_str());
-        m_WriteResponseCollections.insert(make_pair(request.userid(), new SRTResponseCollection(this, REQUEST_TYPE_WRITE, m_RedisNum, request, seqn)));
+        LI("OnWriteSeqn ruserid not find out:%s\n", request.ruserid().c_str());
+        m_WriteResponseCollections.insert(make_pair(request.ruserid(), new SRTResponseCollection(this, REQUEST_TYPE_WRITE, m_RedisNum, request, seqn)));
     }
 }
 
 
 /**
- * after collection all the seqn with same userid and msgid
+ * after collection all the seqn with same ruserid and msgid
  * this method will be invoked by MsgSeqn
  *
  * this function just push to list and fire event
@@ -176,27 +176,27 @@ void SRTRedisManager::OnAddAndCheckWrite(const std::string& msg)
  * after redis client get seqn
  * this method will be invoked by redis client
  *
- * this function store all the seqn by same userid and msgid
+ * this function store all the seqn by same ruserid and msgid
  *
  */
-void SRTRedisManager::OnReadSeqn(const pms::StorageMsg& request, long long seqn)
+void SRTRedisManager::OnReadSeqn(const pms::StorageMsg& request, int64 seqn)
 {
-    LI("SRTRedisManager::OnReadSeqn userid:%s, msgid:%s, seqn:%lld\n", request.userid().c_str(), request.msgid().c_str(), seqn);
+    LI("SRTRedisManager::OnReadSeqn ruserid:%s, msgid:%s, seqn:%lld\n", request.ruserid().c_str(), request.msgid().c_str(), seqn);
     OSMutexLocker locker(&m_MutexReadCollection);
-    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_ReadResponseCollections.find(request.userid());
+    std::unordered_map<std::string, SRTResponseCollection*>::const_iterator cit = m_ReadResponseCollections.find(request.ruserid());
     if (cit != m_ReadResponseCollections.end())
     {
-        LI("OnReadSeqn userid find out:%s\n", request.userid().c_str());
+        LI("OnReadSeqn ruserid find out:%s\n", request.ruserid().c_str());
         cit->second->AddResponse(request, seqn);
     } else {
-        LI("OnReadSeqn userid not find out:%s\n", request.userid().c_str());
-        m_ReadResponseCollections.insert(make_pair(request.userid(), new SRTResponseCollection(this, REQUEST_TYPE_READ, m_RedisNum, request, seqn)));
+        LI("OnReadSeqn ruserid not find out:%s\n", request.ruserid().c_str());
+        m_ReadResponseCollections.insert(make_pair(request.ruserid(), new SRTResponseCollection(this, REQUEST_TYPE_READ, m_RedisNum, request, seqn)));
     }
 }
 
 
 /**
- * after collection all the seqn with same userid and msgid
+ * after collection all the seqn with same ruserid and msgid
  * this method will be invoked by MsgSeqn
  *
  * this function just push to list and fire event

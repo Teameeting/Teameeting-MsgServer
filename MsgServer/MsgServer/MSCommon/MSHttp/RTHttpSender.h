@@ -2,14 +2,9 @@
 #define __RT_HTTP_SENDER_H__
 #include "RTTcp.h"
 #include "RTConnHttp.h"
-#include "RTMessage.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "../../ProtoCommon.h"
 
 class RTHttpSender
 	: public RTTcp

@@ -3,7 +3,6 @@
 #include "RTHttp.h"
 #include "RTConnHttp.h"
 #include "OSMutex.h"
-#include "RTMessage.h"
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
 

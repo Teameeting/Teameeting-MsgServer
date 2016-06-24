@@ -8,7 +8,7 @@ option optimize_for = LITE_RUNTIME;
 
 // this is the msg for store msg to redis
 message StorageMsg{
-    EServerCmd      svrcmd      = 1; // server cmd
+    EServerCmd      rsvrcmd     = 1; // real server cmd
     EServerCmd      tsvrcmd     = 2; // temp server cmd for backup group cmd
     EStorageTag     mtag        = 3; // seqn or data
     EMsgFlag        mflag       = 4; // group or single
@@ -17,8 +17,8 @@ message StorageMsg{
     sint64          sequence    = 7; // sequence
     sint64          maxseqn     = 8; // max sequence
     string          msgid       = 9; // message id
-    string          userid      = 10; // userid
-    string          tuserid     = 11; // temp userid for backup group cmd
+    string          storeid     = 10; // storage userid
+    string          ruserid     = 11; // real userid
     string          groupid     = 12; // groupid
     string          content     = 13; // message
 }

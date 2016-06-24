@@ -1,13 +1,5 @@
-//
-//  RTMsgCommon.h
-//  dyncRTMsgMeeting
-//
-//  Created by hp on 1/4/16.
-//  Copyright © 2016 Dync. All rights reserved.
-//
-
-#ifndef RTMsgCommon_h
-#define RTMsgCommon_h
+#ifndef _PROTO_COMMON_H_
+#define _PROTO_COMMON_H_
 
 #include "../proto/common_msg.pb.h"
 #include "../proto/entity_msg.pb.h"
@@ -19,6 +11,4 @@
 
 using namespace google::protobuf;
 
-#define INVALID_JSON_PARAMS "invjsonparams"
-
-#endif /* RTMsgCommon_h */
+#endif // _PROTO_COMMON_H_

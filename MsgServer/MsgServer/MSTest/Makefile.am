@@ -12,7 +12,6 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../MSCommon/ \
 		   -I$(top_srcdir)/../MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MSCommon/MSCommon/ \
 		   -I$(top_srcdir)/../MSCommon/MSHttp/ \
-		   -I$(top_srcdir)/../MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MSCommon/MSThirdParty/hiredis/ \

@@ -16,8 +16,7 @@
 #include "XMsgCallback.h"
 #include "RTHttpClient.hpp"
 
-#include "../proto/common_msg.pb.h"
-#include "../proto/sys_msg_type.pb.h"
+#include "RTMsgCommon.h"
 
 class RTMsgClient : public XMsgCallback{
 public:
@@ -57,7 +56,10 @@ public:
     void SendMessage(const std::string& msg);
     void SendMessageTo(const std::string& msg, const std::string& name);
 
-    void TestSetCurSeqn(long long seqn) { mMsgClient.TestSetCurSeqn(seqn); }
+    void TestSetCurSeqn(int64 seqn) {
+        printf("!!!!!!!!!!!!!!!TestSetCurSeqn set new sequence for client!!!!!!!!!!!!!!!!!!!!!!!!!!!!!seqn:%lld\n\n", seqn);
+        mMsgClient.TestSetCurSeqn(seqn);
+    }
 
 
     // for group
@@ -66,7 +68,7 @@ public:
     bool GrpConnecting();
     void GrpGenNotify();
     void GrpInitSync();
-    void GrpSyncGroupData(const std::string& userid, const std::string groupid, long long curseqn);
+    void GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn);
 
 public:
     const std::string& GetUserId() { return mUserid; }
@@ -77,6 +79,7 @@ public:
     void ShowRecvMsg();
 private:
     XMsgClient      mMsgClient;
+    XGrpMsgClient   mGrpMsgClient;
     RTHttpClient    mHttpClient;
     std::string     mUserid;
     std::string     mAuth;
@@ -99,7 +102,6 @@ private:
     void*                   mPData;
     DataCallback            mDataCallback;
 
-    XGrpMsgClient   mGrpMsgClient;
 };
 
 #endif /* RTMsgClient_hpp */

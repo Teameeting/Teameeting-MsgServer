@@ -12,7 +12,6 @@
 #include "TimeoutTask.h"
 #include "RTUtils.hpp"
 #include "SRTSequenceManager.h"
-#include "RTHiredis.h"
 #include "SRTSequenceRedis.h"
 
 
@@ -167,5 +166,4 @@ void SRTSequence::Stop()
     SRTSequenceManager::Instance().ClearAll();
     SRTSequenceManager::Instance().UninManager();
     //SRTSequenceManager::Instance().ClearRedisServer();
-    //RTHiredisRemote::Instance().DisConn();
 }

@@ -1,6 +1,6 @@
 #ifndef __MsgServerDispatcher_DRT_HTTP_SVR_CONN_H__
 #define __MsgServerDispatcher_DRT_HTTP_SVR_CONN_H__
-#include "RTMessage.h"
+
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
 #include "RTHttpSender.h"
@@ -24,8 +24,8 @@ public:
     //* HTTP_POST
     void HttpPushMeetingMsg(const char* meetingid, const char* msgFromId, const char* meetingOnlineMembers, const char* pushMsg, const char* notification, const char* extra);
     void HttpPushCommonMsg(const char* sign, const char* targetid, const char* pushMsg, const char* notification, const char* extra);
-    
-    
+
+
 public:
 	//* For RCHttp
     virtual int  OnWriteEvent(const char*pData, int nLen, int* nOutLen);
@@ -37,7 +37,7 @@ public:
         DSender():RTHttpSender(){}
         virtual void OnResponse(const char*pData, int nLen);
     };
-    
+
 private:
     std::string           m_httpIp;
     unsigned short        m_httpPort;

@@ -7,7 +7,6 @@
 //
 
 #include "CRTTransferSession.h"
-#include "RTMessage.h"
 #include "CRTConnManager.h"
 #include "RTUtils.hpp"
 

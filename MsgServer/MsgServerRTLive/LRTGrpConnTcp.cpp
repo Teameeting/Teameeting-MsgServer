@@ -9,7 +9,6 @@
 #include <string.h>
 #include "LRTGrpConnTcp.h"
 #include "rtklog.h"
-#include "RTMsgCommon.h"
 
 LRTGrpConnTcp::LRTGrpConnTcp()
 {

@@ -11,8 +11,7 @@
 
 #include <queue>
 #include "RTEventLooper.h"
-#include "MsgServer/proto/storage_msg.pb.h"
-#include "MsgServer/proto/storage_msg_type.pb.h"
+#include "ProtoCommon.h"
 #include "OSMutex.h"
 #include <hiredis/hiredis.h>
 #include "xRedisClient.h"
@@ -28,7 +27,6 @@ public:
     void Init(SRTRedisGroup* group, const std::string& ip, int port);
     void Unin();
 
-    virtual void MakeAbstract() {}
     bool IsTheSameRedis(const std::string& host, int port)
     {
         return ((m_Ip.compare(host)==0) && (m_Port==port));

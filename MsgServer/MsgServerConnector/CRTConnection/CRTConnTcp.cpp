@@ -9,7 +9,6 @@
 #include <string.h>
 #include "CRTConnTcp.h"
 #include "rtklog.h"
-#include "RTMsgCommon.h"
 
 CRTConnTcp::CRTConnTcp()
 {

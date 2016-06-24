@@ -16,7 +16,6 @@
 #include "rtklog.h"
 #include "MRTMeetingRoom.h"
 #include "StatusCode.h"
-#include "RTHttpMsg.h"
 #include "RTUtils.hpp"
 #include "RTZKClient.hpp"
 
@@ -476,15 +475,17 @@ void MRTRoomManager::OnGetMemberList(pms::RelayMsg& rmsg, pms::Entity& mmsg, std
     //* 3, Check msgs list, and send to notify other members(not in room)
     MeetingRoomMapIt it = m_meetingRoomMap.find(mmsg.rom_id());
     if (it != m_meetingRoomMap.end()) {
-        MEETINGMEMBERLIST memList;
-        std::string err;
-        memList.GetMsg(data, err);
-        if (err.length()==0) {
-            it->second->UpdateMemberList(memList._uslist);
-        } else {
-            LE("OnGetMemberList error:%s, mmsg.rom_id:%s\n", err.c_str(), mmsg.rom_id().c_str());
-            assert(false);
-        }
+        printf("MRTRoomManager::OnGetMemberList not handle here, please implement!!!!!!!!!!!!\n");
+        assert(false);
+        ////MEETINGMEMBERLIST memList;
+        ////std::string err;
+        ////memList.GetMsg(data, err);
+        ////if (err.length()==0) {
+        ////    it->second->UpdateMemberList(memList._uslist);
+        ////} else {
+        ////    LE("OnGetMemberList error:%s, mmsg.rom_id:%s\n", err.c_str(), mmsg.rom_id().c_str());
+        ////    assert(false);
+        ////}
     } else {
         // not find room
         return;
@@ -530,7 +531,7 @@ void MRTRoomManager::GenericConnLostResponse(const std::string& uid
 
     mmsg.set_msg_head(pms::EMsgHead::HSND);
     mmsg.set_msg_tag(pms::EMsgTag::TLEAVE);
-    mmsg.set_msg_type(pms::EMsgType::TMSG);
+    mmsg.set_msg_type(pms::EMsgType::TTXT);
     mmsg.set_usr_from(uid);
     mmsg.set_usr_token(token);
     mmsg.set_rom_id(roomid);

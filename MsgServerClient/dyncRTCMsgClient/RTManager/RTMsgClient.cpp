@@ -11,9 +11,6 @@
 #include <vector>
 #include "RTMsgClient.hpp"
 #include "webrtc/base/logging.h"
-#include "proto/common_msg.pb.h"
-#include "proto/meet_msg.pb.h"
-#include "proto/meet_msg_type.pb.h"
 
 #define DEF_PROTO 1
 
@@ -306,7 +303,7 @@ void RTMsgClient::GrpInitSync()
     GrpConnecting();
 }
 
-void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string groupid, long long curseqn)
+void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn)
 {
     if (mIsOnline) {
         mMsgClient.SyncGroupData(userid, groupid, curseqn);

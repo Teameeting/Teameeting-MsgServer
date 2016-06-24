@@ -18,6 +18,8 @@
 #include "XMsgCallback.h"
 #include "XJSBuffer.h"
 
+#include "RTMsgCommon.h"
+
 class XGrpMsgClient
 : public XTcpClientCallback
 , public XGrpMsgClientHelper
@@ -32,8 +34,8 @@ public:
     int GroupNotify(const std::string& userid, const std::string& groupid);
     int GroupNotifys(const std::vector<std::string>& userids, const std::string& groupid);
 
-    int GenSyncDataRequest(const std::string& userid, const std::string& groupid, long long seqn);
-    int GenSyncDataRequests(const std::vector<std::string>& userids, const std::string& groupid, long long seqn);
+    int GenSyncDataRequest(const std::string& userid, const std::string& groupid, int64 seqn);
+    int GenSyncDataRequests(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
 
@@ -76,7 +78,7 @@ private:
     bool                     m_autoConnect;
     bool                     m_login;
     MSState                  m_msState;
-    long long                m_curSeqn;
+    int64                    m_curSeqn;
     pms::EModuleType         m_module;
 };
 

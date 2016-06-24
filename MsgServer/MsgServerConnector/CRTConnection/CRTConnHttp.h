@@ -3,7 +3,6 @@
 #include "http_common.h"
 #include <map>
 #include <string>
-#include "RTMeetMsg.h"
 
 class CRTConnHttp
 {

@@ -12,11 +12,8 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include "proto/common_msg.pb.h"
-#include "proto/storage_msg.pb.h"
-#include "proto/storage_msg_type.pb.h"
-#include "proto/meet_msg.pb.h"
-#include "proto/meet_msg_type.pb.h"
+
+#include "RTMsgCommon.h"
 
 #define PACKED_MSG_NUM_ONCE (10)
 
@@ -46,11 +43,11 @@ public:
     int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
-    int EncodeGroupNotify(std::string& outstr, const std::string& userid, const std::string& groupid, long long curseqn, int module);
-    int EncodeGroupNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, long long curseqn,  int module);
+    int EncodeGroupNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
+    int EncodeGroupNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);
 
-    int EncodeSyncDataRequest(std::string& outstr, const std::string& userid, const std::string& groupid, long long curseqn, int module);
-    int EncodeSyncDataRequests(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, long long curseqn,  int module);
+    int EncodeSyncDataRequest(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
+    int EncodeSyncDataRequests(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);
 
     int DecodeRecvData(const char* pData, int nLen);
 

@@ -9,7 +9,6 @@
 #include "MRTModuleManager.h"
 #include <assert.h>
 #include <algorithm>
-#include "MsgServer/MSCommon/MSBase/RTHiredis.h"
 #include "MRTTransferSession.h"
 #include "OS.h"
 

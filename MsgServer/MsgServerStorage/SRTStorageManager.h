@@ -22,7 +22,7 @@
 #include "SRTStorageRedis.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
+#include "ProtoCommon.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"

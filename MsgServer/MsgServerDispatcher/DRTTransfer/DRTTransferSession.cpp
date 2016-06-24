@@ -8,7 +8,6 @@
 
 #include <list>
 #include "DRTTransferSession.h"
-#include "RTMessage.h"
 #include "DRTConnManager.h"
 #include "RTUtils.hpp"
 

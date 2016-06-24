@@ -12,19 +12,11 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#define DEF_PROTO 1
-#if DEF_PROTO
-#include "proto/common_msg.pb.h"
-#include "proto/meet_msg.pb.h"
-#include "proto/meet_msg_type.pb.h"
-#include "proto/storage_msg.pb.h"
-#include "proto/storage_msg_type.pb.h"
-#else
-#include "RTSignalMsg.h"
-#include "RTMeetMsg.h"
-#include "RTMessage.h"
-#endif
 #include "XMsgCallback.h"
+
+#include "RTMsgCommon.h"
+
+#define DEF_PROTO 1
 
 class XMsgClientHelper;
 
@@ -40,9 +32,9 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
-    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
-    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module);
-    int EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, long long seqn, int module);
+    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module);
+    int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module);
+    int EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module);
 
     int DecodeRecvData(const char* pData, int nLen);
 

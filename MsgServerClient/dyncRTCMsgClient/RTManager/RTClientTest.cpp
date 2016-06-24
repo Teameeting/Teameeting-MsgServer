@@ -54,9 +54,9 @@ void RTClientTest::RunTest(int flag, const std::string& name)
     mMsgClient->InitSync();
     if (name.compare("xddxdd")==0)
     {
-        mMsgClient->TestSetCurSeqn(290945);
+        mMsgClient->TestSetCurSeqn(0);
     } else {
-        mMsgClient->TestSetCurSeqn(337055);
+        mMsgClient->TestSetCurSeqn(0);
     }
     this->Start();
     mThreadRun = true;
@@ -130,8 +130,9 @@ void RTClientTest::RunSyncData()
 
 void RTClientTest::RunOnce()
 {
+
     //TODO:
-    //TestSync();
+    TestSync();
     //TestSend();
     ////if (mName.compare("xddxdd")==0)
     ////{
@@ -141,7 +142,8 @@ void RTClientTest::RunOnce()
     ////}
     //TestSendOnce();
     //TestSendLoop();
-    TestSendGroupLoop();
+    //TestSendGroupLoop();
+    //TestSendGroup();
 }
 
 void RTClientTest::TestSend()
@@ -206,7 +208,7 @@ void RTClientTest::TestSendOnce()
         {
             char ii[32] = {0};
             std::cout << "TestSendOnce name:" << mName << std::endl;
-            sprintf(ii, "hello world%lld\n", i++);
+            sprintf(ii, "hahahaha heihiehiehie%lld\n", i++);
             std::string m(ii);
             std::string n("xddxdd");
             mMsgClient->SendMessageTo(m, n);
@@ -266,7 +268,7 @@ void RTClientTest::TestSync()
     //while(1)
     {
         std::string str("hello world");
-        mMsgClient->SendMessage(str);
+        //mMsgClient->SendMessage(str);
         mMsgClient->SyncSeqn();
         mMsgClient->SyncData();
         rtc::Thread::SleepMs(1000);

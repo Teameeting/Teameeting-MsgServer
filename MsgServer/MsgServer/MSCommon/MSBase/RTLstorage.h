@@ -11,19 +11,11 @@
 
 #include <stdio.h>
 #include <string>
-#include "RTMeetMsg.h"
-#include "RTMessage.h"
 #include "rtklog.h"
 #include "OSMutex.h"
 
 #define DEF_PROTO 1
-#if DEF_PROTO
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
-#endif
+#include "../../ProtoCommon.h"
 
 class RTLstorage{
 public:

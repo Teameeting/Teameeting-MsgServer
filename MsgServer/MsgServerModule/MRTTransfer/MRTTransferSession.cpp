@@ -8,7 +8,6 @@
 
 #include <list>
 #include "MRTTransferSession.h"
-#include "RTMessage.h"
 #include "RTUtils.hpp"
 #include "MRTConnManager.h"
 #include "MRTModuleManager.h"

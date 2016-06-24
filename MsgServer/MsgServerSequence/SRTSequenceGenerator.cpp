@@ -46,7 +46,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
     packed.ParseFromString(str);
     for(int i=0;i<packed.msgs_size();++i)
     {
-        if (packed.msgs(i).userid().compare("keepalive")==0)
+        if (packed.msgs(i).ruserid().compare("keepalive")==0)
         {
             //if here is not get in time, the following will be work too
             if (m_Session && m_Session->IsLiveSession())
@@ -54,9 +54,9 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
             continue;
         }
         // Post for read
-        if (packed.msgs(i).userid().length()==0)
+        if (packed.msgs(i).ruserid().length()==0)
         {
-            LI("%s packed.msgs(%d) userid length is 0\n", __FUNCTION__, i);
+            LI("%s packed.msgs(%d) ruserid length is 0\n", __FUNCTION__, i);
             break;
         }
         m_RedisManager.PostRedisRequest(packed.msgs(i).SerializeAsString());
@@ -85,7 +85,7 @@ void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
     packed.ParseFromString(str);
     for(int i=0;i<packed.msgs_size();++i)
     {
-        if (packed.msgs(i).userid().compare("keepalive")==0)
+        if (packed.msgs(i).ruserid().compare("keepalive")==0)
         {
             //if here is not get in time, the following will be work too
             if (m_Session && m_Session->IsLiveSession())
@@ -93,9 +93,9 @@ void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
             continue;
         }
         // Push for write
-        if (packed.msgs(i).userid().length()==0)
+        if (packed.msgs(i).ruserid().length()==0)
         {
-            LI("%s packed.msgs(%d) userid length is 0\n", __FUNCTION__, i);
+            LI("%s packed.msgs(%d) ruserid length is 0\n", __FUNCTION__, i);
             break;
         }
         m_RedisManager.PushRedisRequest(packed.msgs(i).SerializeAsString());

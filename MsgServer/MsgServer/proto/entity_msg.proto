@@ -2,7 +2,7 @@ syntax="proto3";
 package pms;
 
 import "common_msg.proto";
-import "meet_msg_type.proto";
+import "entity_msg_type.proto";
 
 option optimize_for = LITE_RUNTIME;
 

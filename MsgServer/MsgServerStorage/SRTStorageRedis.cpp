@@ -8,8 +8,6 @@
 
 #include "SRTStorageRedis.h"
 #include "SRTRedisGroup.h"
-#include "MsgServer/proto/storage_msg.pb.h"
-#include "MsgServer/proto/storage_msg_type.pb.h"
 #include "OSThread.h"
 
 static int g_push_event_counter = 0;
@@ -80,14 +78,14 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
     pms::StorageMsg store = m_QueuePostMsg.front();
     std::string str("");
     char key[1024] = {'\0'};
-    sprintf(key, "%s:%lld", store.userid().c_str(), store.sequence());
+    sprintf(key, "%s:%lld", store.storeid().c_str(), store.sequence());
     m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
     bool ok = m_xRedisClient.get(*m_RedisDBIdx, key, str);
     store.set_result(30);
     *store.mutable_content() = str;
-    printf("SRTStorageRedis::OnWakeupEvent read msgid:%s, userid:%s, seqn:%lld, maxseqn:%lld\n"\
+    printf("SRTStorageRedis::OnWakeupEvent read msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld\n"\
             , store.msgid().c_str()\
-            , store.userid().c_str()\
+            , store.storeid().c_str()\
             , store.sequence()\
             , store.maxseqn());
     if (m_RedisGroup)
@@ -113,10 +111,10 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
     if (m_QueuePushMsg.size()==0) return;
     pms::StorageMsg store = m_QueuePushMsg.front();
     char key[1024] = {'\0'};
-    sprintf(key, "%s:%lld", store.userid().c_str(), store.sequence());
+    sprintf(key, "%s:%lld", store.storeid().c_str(), store.sequence());
     m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
-    printf("SRTStorageRedis::OnTickEvent userid:%s, msgid:%s\n", store.userid().c_str(), store.msgid().c_str());
+    printf("SRTStorageRedis::OnTickEvent storeid:%s, msgid:%s\n", store.storeid().c_str(), store.msgid().c_str());
     if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
     {
         store.set_result(20);

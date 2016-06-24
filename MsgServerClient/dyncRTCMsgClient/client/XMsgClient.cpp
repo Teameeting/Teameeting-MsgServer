@@ -34,8 +34,8 @@ XMsgClient::XMsgClient()
 , m_autoConnect(true)
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
-, m_curSeqn(337055)
-, m_curGroupSeqn(90)
+, m_curSeqn(0)
+, m_curGroupSeqn(0)
 {
     printf("XMsgClient XMsgClient ok!!\n");
 }
@@ -244,7 +244,7 @@ int XMsgClient::SyncData()
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncGroupData(const std::string& userid, const std::string& groupid, long long seqn)
+int XMsgClient::SyncGroupData(const std::string& userid, const std::string& groupid, int64 seqn)
 {
     printf("XMsgClient::SyncGroupData userid:%s, groupid:%s, seqn is:%lld, wait...\n"\
             , userid.c_str(), groupid.c_str(), seqn);
@@ -514,8 +514,8 @@ void XMsgClient::OnSyncSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XMsgClient::OnSyncSeqn userid:%s, sequence:%lld, maxseqn:%lld, m_curSeqn:%lld\n"\
-            , store.userid().c_str(), store.sequence(), store.maxseqn(), m_curSeqn);
+    printf("XMsgClient::OnSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld, m_curSeqn:%lld\n"\
+            , store.ruserid().c_str(), store.sequence(), store.maxseqn(), m_curSeqn);
     printf("XMsgClient::OnSyncSeqn should be equal here???\n");
     //assert(store.maxseqn()>=m_curSeqn);
     if (store.maxseqn()>=m_curSeqn)
@@ -529,8 +529,9 @@ void XMsgClient::OnSyncData(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XMsgClient::OnSyncData userid:%s, sequence:%lld, maxseqn:%lld, m_curSeqn:%lld\n\n"\
-            , store.userid().c_str()\
+    printf("XMsgClient::OnSyncData ruserid:%s, storeid:%s, sequence:%lld, maxseqn:%lld, m_curSeqn:%lld\n\n"\
+            , store.ruserid().c_str()\
+            , store.storeid().c_str()\
             , store.sequence()\
             , store.maxseqn()\
             , m_curSeqn);
@@ -543,6 +544,11 @@ void XMsgClient::OnSyncData(int code, const std::string& cont)
 
     pms::Entity entity;
     entity.ParseFromString(store.content());
+    if (entity.usr_toto().users_size()==0)
+    {
+        printf("OnSyncData usr_toto.size is 0 so return\n");
+        return;
+    }
     printf("OnSyncData entity.usr_from:%s, usr_toto:%s, msg_cont:%s\n"\
             , entity.usr_from().c_str()\
             , entity.usr_toto().users(0).c_str()\
@@ -554,13 +560,13 @@ void XMsgClient::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XMsgClient::OnGroupNotify userid:%s, groupid:%s, svrcmd:%d, mflag:%d, sequence:%lld\n\n"\
-            , store.userid().c_str()\
+    printf("XMsgClient::OnGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n\n"\
+            , store.ruserid().c_str()\
             , store.groupid().c_str()\
-            , store.svrcmd()\
+            , store.rsvrcmd()\
             , store.mflag()\
             , store.sequence());
-    SyncGroupData(store.userid(), store.groupid(), m_curGroupSeqn);
+    SyncGroupData(store.ruserid(), store.groupid(), m_curGroupSeqn);
     return;
 }
 
@@ -568,10 +574,10 @@ void XMsgClient::OnSyncGroupData(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XMsgClient::OnSyncGroupData userid:%s, groupid:%s, svrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
-            , store.userid().c_str()\
+    printf("XMsgClient::OnSyncGroupData ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
+            , store.ruserid().c_str()\
             , store.groupid().c_str()\
-            , store.svrcmd()\
+            , store.rsvrcmd()\
             , store.mflag()\
             , store.sequence()\
             , store.maxseqn());

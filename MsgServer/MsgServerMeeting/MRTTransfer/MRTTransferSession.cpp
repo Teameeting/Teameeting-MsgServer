@@ -7,7 +7,6 @@
 //
 
 #include "MRTTransferSession.h"
-#include "RTMessage.h"
 #include "MRTRoomManager.h"
 #include "MRTConnManager.h"
 #include "MRTHttpSvrConn.h"

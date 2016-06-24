@@ -140,7 +140,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			std::string msgId;
 			GenericMsgId(msgId);
 			p_sequence->set_msgid(msgId);
-			p_sequence->set_userid(userid);
+			p_sequence->set_storeid(userid);
+			p_sequence->set_ruserid(userid);
 			m_sequeWait2SndList.push_back(p_sequence);
 		}
 	} else if (type == MSG_TYPE_STORE) {
@@ -150,7 +151,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			GenericMsgId(msgId);
 			p_storage->set_mflag(pms::EStorageType::TREAD);
 			p_storage->set_msgid(msgId);
-			p_storage->set_userid(userid);
+			p_storage->set_storeid(userid);
+			p_storage->set_ruserid(userid);
 			p_storage->set_sequence(100);
 			p_storage->set_content("hello redis");
 			m_storeWait2SndList.push_back(p_storage);
@@ -163,7 +165,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			GenericMsgId(msgId);
 			p_storage->set_mflag(pms::EStorageType::TWRITE);
 			p_storage->set_msgid(msgId);
-			p_storage->set_userid(userid);
+			p_storage->set_storeid(userid);
+			p_storage->set_ruserid(userid);
 			p_storage->set_content("hello redis");
             printf("---->generic msg mflag:%d\n", p_storage->mflag());
 			m_logicW2SndList.push_back(p_storage);
@@ -188,7 +191,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			std::string msgId;
 			GenericMsgId(msgId);
 			p_storage->set_msgid(msgId);
-			p_storage->set_userid("dandan");
+			p_storage->set_storeid("dandan");
+			p_storage->set_ruserid("dandan");
 			p_storage->set_sequence(ii[i]);
 			p_storage->set_content("");
 			m_logicR2SndList.push_back(p_storage);
@@ -201,7 +205,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			GenericMsgId(msgId);
 			p_storage->set_mflag(pms::EStorageType::TWRITE);
 			p_storage->set_msgid(msgId);
-			p_storage->set_userid(userid);
+			p_storage->set_storeid(userid);
+			p_storage->set_ruserid(userid);
 			p_storage->set_content("hello redis");
             printf("---->generic msg mflag:%d\n", p_storage->mflag());
 			m_logicW2SndList.push_back(p_storage);
@@ -214,7 +219,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			GenericTempMsgId(msgId);
 			p_storage->set_mflag(pms::EStorageType::TREAD);
 			p_storage->set_msgid(msgId);
-			p_storage->set_userid(userid);
+			p_storage->set_storeid(userid);
+			p_storage->set_ruserid(userid);
 			p_storage->set_content("hello redis");
             printf("---->generic msg mflag:%d\n", p_storage->mflag());
 			m_logicR2SndList.push_back(p_storage);
@@ -227,7 +233,8 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			GenericTempMsgId(msgId);
 			p_storage->set_mflag(pms::EStorageType::TREAD);
 			p_storage->set_msgid(msgId);
-			p_storage->set_userid(userid);
+			p_storage->set_storeid(userid);
+			p_storage->set_ruserid(userid);
 			p_storage->set_sequence(25);
 			p_storage->set_content("hello redis");
             printf("---->generic msg mflag:%d\n", p_storage->mflag());
@@ -525,14 +532,16 @@ void ClientManager::Keepalive(int type)
 		LI("ClientManager::Keepalive...\n");
 		mClientSession->UpdateTime();
 		pms::StorageMsg* p_sequence = new pms::StorageMsg;
-		p_sequence->set_userid("keepalive");
+		p_sequence->set_storeid("keepalive");
+		p_sequence->set_ruserid("keepalive");
 		m_sequeWait2SndList.push_back(p_sequence);
 	} else if (type == MSG_TYPE_STORE)
 	{
 		LI("ClientManager::Keepalive self...not sending\n");
 		mClientSession->UpdateTime();
 		//pms::StorageMsg* p_storage = new pms::StorageMsg;
-		//p_storage->set_userid("keepalive");
+		//p_storage->set_storeid("keepalive");
+		//p_storage->set_ruserid("keepalive");
 		//m_storeWait2SndList.push_back(p_storage);
 	}
 		mClientSession->UpdateTime();

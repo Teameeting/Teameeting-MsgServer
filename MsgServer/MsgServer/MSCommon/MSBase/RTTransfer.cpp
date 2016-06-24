@@ -8,7 +8,6 @@
 #include <sstream>
 #include "RTTransfer.h"
 #include "http_common.h"
-#include "RTMsgCommon.h"
 
 RTTransfer::RTTransfer()
 {

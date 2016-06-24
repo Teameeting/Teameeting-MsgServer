@@ -9,32 +9,31 @@
 #ifndef __MsgServerSequence__SRTSequenceRedis__
 #define __MsgServerSequence__SRTSequenceRedis__
 
-#include "RTHiredis.h"
 #include "RTEventLooper.h"
 #include "sigslot.h"
-#include "../MsgServer/proto/storage_msg.pb.h"
-#include "../MsgServer/proto/storage_msg_type.pb.h"
+#include "ProtoCommon.h"
+#include <hiredis/hiredis.h>
+#include "xRedisClient.h"
 
 class SRTRedisManager;
 
-class SRTSequenceRedis : public RTHiredis
-                       , public RTEventLooper{
+class SRTSequenceRedis : public RTEventLooper{
 
 public:
+
+    SRTSequenceRedis(){}
+    virtual ~SRTSequenceRedis(){}
 
     void Init(SRTRedisManager* manager, const std::string& ip, int port);
     void Unin();
 
-    virtual void MakeAbstract() {}
-    bool IsTheSameRedis(const std::string& host, int port);
-    void SetResult(long long seq) { m_Result = seq; }
-    long long GetResult() { return m_Result; }
-    bool IsConnected() { return this->CmdPing(); }
+    bool IsTheSameRedis(const std::string& host, int port)
+    {
+        return ((m_Ip.compare(host)==0) && (m_Port==port));
+    }
 
-    std::string GetHostForTest() { return this->GetHost(); }
-
-    sigslot::signal2<const pms::StorageMsg&, long long> WriteResponse;
-    sigslot::signal2<const pms::StorageMsg&, long long> ReadResponse;
+    sigslot::signal2<const pms::StorageMsg&, int64> WriteResponse;
+    sigslot::signal2<const pms::StorageMsg&, int64> ReadResponse;
 
 // from RTEventLooper
 public:
@@ -44,8 +43,13 @@ public:
     virtual void OnPushEvent(const char*pData, int nSize);
     virtual void OnTickEvent(const void*pData, int nSize) {}
 private:
-    long long   m_Result;
+    std::string                      m_Ip;
+    int                              m_Port;
     SRTRedisManager* m_RedisManager;
+
+    xRedisClient                     m_xRedisClient;
+    RedisDBIdx*                      m_RedisDBIdx;
+    RedisNode*                       m_RedisList;
 };
 
 

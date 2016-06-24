@@ -124,6 +124,8 @@ void RTGroupTest::RunSyncData()
 
 void RTGroupTest::RunOnce()
 {
+    mMsgClient->SyncSeqn();
+    rtc::Thread::SleepMs(500);
     //TODO:
     ////TestSendGroup();
     //TestSendOnce();

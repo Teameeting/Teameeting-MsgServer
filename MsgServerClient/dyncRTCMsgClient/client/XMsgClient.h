@@ -16,6 +16,8 @@
 #include "XMsgCallback.h"
 #include "XJSBuffer.h"
 
+#include "RTMsgCommon.h"
+
 class XMsgClientHelper {
 public:
     XMsgClientHelper() {}
@@ -53,11 +55,11 @@ public:
 
     int SyncSeqn();
     int SyncData();
-    int SyncGroupData(const std::string& userid, const std::string& gropuid, long long seqn);
+    int SyncGroupData(const std::string& userid, const std::string& gropuid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
-    void TestSetCurSeqn(long long seqn) { m_curSeqn = seqn; }
+    void TestSetCurSeqn(int64 seqn) { m_curSeqn = seqn; }
 
 public:
     // For XTcpClientCallback
@@ -104,8 +106,8 @@ private:
     bool                     m_autoConnect;
     bool                     m_login;
     MSState                  m_msState;
-    long long                m_curSeqn;
-    long long                m_curGroupSeqn;
+    int64                    m_curSeqn;
+    int64                    m_curGroupSeqn;
     pms::EModuleType         m_module;
 };
 

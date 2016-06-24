@@ -1,7 +1,6 @@
 #ifndef __MsgServerMeeting_MRT_HTTP_SVR_CONN_H__
 #define __MsgServerMeeting_MRT_HTTP_SVR_CONN_H__
 #include "OSMutex.h"
-#include "RTMessage.h"
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
 #include "RTHttpSender.h"
@@ -12,11 +11,7 @@
 #define M_HTTP_CMD_GET_MEMBER_LIST      (2)
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "ProtoCommon.h"
 
 class MRTHttpSvrConn : public RTHttpSvrConn
 {

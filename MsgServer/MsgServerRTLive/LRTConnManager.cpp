@@ -14,6 +14,7 @@
 #include "LRTTransferSession.h"
 #include "LRTGroupSession.h"
 #include "RTZKClient.hpp"
+#include "ProtoCommon.h"
 
 static int ticket_time = 0;
 
@@ -565,7 +566,7 @@ void LRTConnManager::ProcessRecvEvent(const char*pData, int nLen)
         memcpy(data.connect.ip, root["ip"].asString().c_str(), (int)root["ip"].asString().length());
         data.connect.port = root["port"].asInt();
         LI("OnReadEvent EventData mtype:%d, module:%d, ip:%s, port:%d\n", data.mtype, data.connect.module, data.connect.ip, data.connect.port);
-        if (data.connect.module == TRANSFERMODULE::mconnector) {// connect to connector
+        if (data.connect.module == pms::ETransferModule::MCONNECTOR) {// connect to connector
             TryConnectLogical(data.connect.ip, data.connect.port);
         }
     }

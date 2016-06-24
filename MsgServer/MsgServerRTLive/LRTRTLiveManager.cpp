@@ -9,13 +9,12 @@
 #include "LRTRTLiveManager.h"
 #include <assert.h>
 #include <algorithm>
-#include "MsgServer/MSCommon/MSBase/RTHiredis.h"
 #include "LRTTransferSession.h"
 #include "OS.h"
 
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
+#include "ProtoCommon.h"
 
 #define MAX_PROCESS_MSG_ONCE 200
 

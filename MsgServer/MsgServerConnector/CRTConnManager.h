@@ -16,17 +16,12 @@
 #include <list>
 #include <set>
 #include "CRTTransferSession.h"
-#include "RTMessage.h"
 #include "RTTcp.h"
 #include "RTType.h"
 #include "RTSingleton.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "ProtoCommon.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"

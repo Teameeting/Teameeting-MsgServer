@@ -9,14 +9,12 @@
 #include "SRTSequenceManager.h"
 #include <assert.h>
 #include <algorithm>
-#include "MsgServer/MSCommon/MSBase/RTHiredis.h"
 #include "SRTTransferSession.h"
 #include "SRTSequenceGenerator.h"
 #include "OS.h"
 
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
 
 #define MAX_PROCESS_MSG_ONCE 200
 

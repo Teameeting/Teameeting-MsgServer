@@ -11,7 +11,6 @@
 #include "CRTConnection.h"
 #include "CRTConnectionTcp.h"
 #include "rtklog.h"
-#include "RTSignalMsg.h"
 
 std::string CRTDispatchConnection::m_connIp;
 std::string CRTDispatchConnection::m_connPort;

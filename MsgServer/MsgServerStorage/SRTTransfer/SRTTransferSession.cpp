@@ -8,7 +8,6 @@
 
 #include <list>
 #include "SRTTransferSession.h"
-#include "RTMessage.h"
 #include "RTUtils.hpp"
 #include "SRTConnManager.h"
 #include "SRTStorageManager.h"

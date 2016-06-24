@@ -9,13 +9,11 @@
 #include "LRTLogicalManager.h"
 #include <assert.h>
 #include <algorithm>
-#include "MsgServer/MSCommon/MSBase/RTHiredis.h"
 #include "LRTTransferSession.h"
 #include "OS.h"
 
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
 
 #define MAX_PROCESS_MSG_ONCE 200
 
@@ -48,9 +46,9 @@ bool LRTLogicalManager::SendResponseCounter()
 
 bool LRTLogicalManager::InsertDataWrite(LRTTransferSession* sess, pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
+    if (storeMsg->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->userid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
     printf("InsertDataWrite map id is:%s\n", id);
     TransMsgInfo info;
     info.sess = sess;
@@ -65,9 +63,9 @@ bool LRTLogicalManager::InsertDataWrite(LRTTransferSession* sess, pms::StorageMs
 
 bool LRTLogicalManager::UpdateDataWrite(pms::StorageMsg** storeMsg)
 {
-    if ((*storeMsg)->userid().length()==0) return false;
+    if ((*storeMsg)->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", (*storeMsg)->userid().c_str(), (*storeMsg)->msgid().c_str());
+    sprintf(id, "%s:%s", (*storeMsg)->ruserid().c_str(), (*storeMsg)->msgid().c_str());
     printf("UpdateDataWrite map id is:%s\n", id);
 
     {
@@ -76,8 +74,8 @@ bool LRTLogicalManager::UpdateDataWrite(pms::StorageMsg** storeMsg)
         if (it!=m_dataWriteMap.end())
         {
             // store sequence, get content, send to store
-            printf("UpdateDataWrite userid:%s, seqn:%lld, msgid:%s, content:%s\n"\
-                    , (*storeMsg)->userid().c_str(), (*storeMsg)->sequence()\
+            printf("UpdateDataWrite ruserid:%s, seqn:%lld, msgid:%s, content:%s\n"\
+                    , (*storeMsg)->ruserid().c_str(), (*storeMsg)->sequence()\
                     , (*storeMsg)->msgid().c_str(), (*storeMsg)->content().c_str());
 
             it->second.smsg.set_sequence((*storeMsg)->sequence());
@@ -85,7 +83,7 @@ bool LRTLogicalManager::UpdateDataWrite(pms::StorageMsg** storeMsg)
             (*storeMsg)->set_mtag(it->second.smsg.mtag());
             (*storeMsg)->set_content(it->second.smsg.content());
         } else {
-            printf("ERROR HERE, UpdateDataWrite msg id:%s, userid:%s is not here\n", (*storeMsg)->msgid().c_str(), (*storeMsg)->userid().c_str());
+            printf("ERROR HERE, UpdateDataWrite msg id:%s, ruserid:%s is not here\n", (*storeMsg)->msgid().c_str(), (*storeMsg)->ruserid().c_str());
             assert(false);
         }
     }
@@ -94,9 +92,9 @@ bool LRTLogicalManager::UpdateDataWrite(pms::StorageMsg** storeMsg)
 
 bool LRTLogicalManager::DeleteDataWrite(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
+    if (storeMsg->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->userid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
     printf("DeleteDataWrite map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexDataWrite);
@@ -112,7 +110,7 @@ bool LRTLogicalManager::DeleteDataWrite(pms::StorageMsg*  storeMsg)
             m_dataWriteMap.erase(it);
             printf("2, DeleteDataWrite m_dataWriteMap.size:%d\n", m_dataWriteMap.size());
         } else {
-            printf("ERROR HERE, DeleteDataWrite msg id:%s, userid:%s is not here\n", storeMsg->msgid().c_str(), storeMsg->userid().c_str());
+            printf("ERROR HERE, DeleteDataWrite msg id:%s, ruserid:%s is not here\n", storeMsg->msgid().c_str(), storeMsg->ruserid().c_str());
             assert(false);
         }
     }
@@ -122,9 +120,9 @@ bool LRTLogicalManager::DeleteDataWrite(pms::StorageMsg*  storeMsg)
 
 bool LRTLogicalManager::InsertDataRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
+    if (storeMsg->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->userid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
     printf("InsertDataRead map id is:%s\n", id);
     TransMsgInfo info;
     info.sess = sess;
@@ -146,9 +144,9 @@ bool LRTLogicalManager::UpdateDataRead(pms::StorageMsg** storeMsg)
 
 bool LRTLogicalManager::DeleteDataRead(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
+    if (storeMsg->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->userid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
     printf("DeleteDataRead map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexDataRead);
@@ -164,7 +162,7 @@ bool LRTLogicalManager::DeleteDataRead(pms::StorageMsg*  storeMsg)
             m_dataReadMap.erase(it);
             printf("2, DeleteDataRead m_dataReadMap.size:%d\n", m_dataReadMap.size());
         } else {
-            printf("ERROR HERE, DeleteDataRead msg id:%s, userid:%s is not here\n", storeMsg->msgid().c_str(), storeMsg->userid().c_str());
+            printf("ERROR HERE, DeleteDataRead msg id:%s, ruserid:%s is not here\n", storeMsg->msgid().c_str(), storeMsg->ruserid().c_str());
             assert(false);
         }
     }
@@ -174,9 +172,9 @@ bool LRTLogicalManager::DeleteDataRead(pms::StorageMsg*  storeMsg)
 
 bool LRTLogicalManager::InsertSeqnRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
+    if (storeMsg->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->userid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
     printf("InsertSeqnRead map id is:%s\n", id);
     TransMsgInfo info;
     info.sess = sess;
@@ -198,9 +196,9 @@ bool LRTLogicalManager::UpdateSeqnRead(pms::StorageMsg** storeMsg)
 
 bool LRTLogicalManager::DeleteSeqnRead(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
+    if (storeMsg->ruserid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->userid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
     printf("DeleteSeqnRead map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexSeqnRead);
@@ -216,20 +214,20 @@ bool LRTLogicalManager::DeleteSeqnRead(pms::StorageMsg*  storeMsg)
             m_seqnReadMap.erase(it);
             printf("2, DeleteSeqnRead m_seqnReadMap.size:%d\n", m_seqnReadMap.size());
         } else {
-            printf("ERROR HERE, DeleteSeqnRead userid:%s is not here\n", id);
+            printf("ERROR HERE, DeleteSeqnRead ruserid:%s is not here\n", id);
             assert(false);
         }
     }
     return true;
 }
 
-bool LRTLogicalManager::GetSessFromId(const std::string& userid, const std::string& msgid, LRTTransferSession** sess)
+bool LRTLogicalManager::GetSessFromId(const std::string& ruserid, const std::string& msgid, LRTTransferSession** sess)
 {
-    assert(userid.length()>0);
+    assert(ruserid.length()>0);
     assert(msgid.length()>0);
     assert(sess);
     char id[1024] = {0};
-    sprintf(id, "%s:%s", userid.c_str(), msgid.c_str());
+    sprintf(id, "%s:%s", ruserid.c_str(), msgid.c_str());
     printf("GetSessFromMsg map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexSeqnRead);
@@ -238,21 +236,21 @@ bool LRTLogicalManager::GetSessFromId(const std::string& userid, const std::stri
         {
             *sess = it->second.sess;
         } else {
-            printf("ERROR HERE, GetSessFromMsg userid:%s is not here\n", id);
+            printf("ERROR HERE, GetSessFromMsg ruserid:%s is not here\n", id);
             assert(false);
         }
     }
     return true;
 }
 
-bool LRTLogicalManager::ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seqn)
+bool LRTLogicalManager::ReadLocalSeqn(pms::StorageMsg*  storeMsg, int64* seqn)
 {
-    if (storeMsg->userid().length()==0) return false;
-    printf("ReadLocalSeqn userid is:%s\n", storeMsg->userid().c_str());
+    if (storeMsg->ruserid().length()==0) return false;
+    printf("ReadLocalSeqn ruserid is:%s\n", storeMsg->ruserid().c_str());
     bool found = false;
     {
         OSMutexLocker locker(&m_mutexLocalSeqn);
-        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->ruserid());
         if (it!=m_localSeqnMap.end())
         {
             *seqn = it->second;
@@ -266,17 +264,18 @@ bool LRTLogicalManager::ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seq
 
 bool LRTLogicalManager::UpdateLocalSeqn(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
-    printf("UpdateLocalSeqn userid is:%s\n", storeMsg->userid().c_str());
+    if (storeMsg->storeid().length()==0) return false;
+    printf("UpdateLocalSeqn storeid is:%s\n", storeMsg->storeid().c_str());
     {
         OSMutexLocker locker(&m_mutexLocalSeqn);
-        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->storeid());
         if (it!=m_localSeqnMap.end())
         {
+            printf("UpdateLocalSeqn storeMsg->sequence:%lld, it->second:%lld\n", storeMsg->sequence(), it->second);
             assert(storeMsg->sequence() >= it->second);
             it->second = storeMsg->sequence();
         } else {
-            m_localSeqnMap.insert(std::make_pair(storeMsg->userid(), storeMsg->sequence()));
+            m_localSeqnMap.insert(std::make_pair(storeMsg->storeid(), storeMsg->sequence()));
         }
         printf("UpdateLocalSeqn m_localSeqnMap.size:%d\n", m_localSeqnMap.size());
     }
@@ -285,17 +284,19 @@ bool LRTLogicalManager::UpdateLocalSeqn(pms::StorageMsg*  storeMsg)
 
 bool LRTLogicalManager::UpdateLocalMaxSeqn(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->userid().length()==0) return false;
-    printf("UpdateLocalSeqn userid is:%s\n", storeMsg->userid().c_str());
+    if (storeMsg->storeid().length()==0) return false;
+    printf("UpdateLocalMaxSeqn storeid is:%s, maxseqn:%lld, sequence:%lld\n"\
+            , storeMsg->storeid().c_str(), storeMsg->maxseqn(), storeMsg->sequence());
     {
         OSMutexLocker locker(&m_mutexLocalSeqn);
-        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->userid());
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->storeid());
         if (it!=m_localSeqnMap.end())
         {
-            assert(storeMsg->maxseqn() > it->second);
+            printf("UpdateLocalMaxSeqn storeMsg->maxseqn:%lld, it->second:%lld\n", storeMsg->maxseqn(), it->second);
+            assert(storeMsg->maxseqn() >= it->second);
             it->second = storeMsg->maxseqn();
         } else {
-            m_localSeqnMap.insert(std::make_pair(storeMsg->userid(), storeMsg->maxseqn()));
+            m_localSeqnMap.insert(std::make_pair(storeMsg->storeid(), storeMsg->maxseqn()));
         }
         printf("UpdateLocalSeqn m_localSeqnMap.size:%d\n", m_localSeqnMap.size());
     }

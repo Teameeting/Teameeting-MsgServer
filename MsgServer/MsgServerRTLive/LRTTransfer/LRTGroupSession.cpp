@@ -8,7 +8,6 @@
 
 #include <list>
 #include "LRTGroupSession.h"
-#include "RTMessage.h"
 #include "RTUtils.hpp"
 #include "LRTConnManager.h"
 #include "LRTRTLiveManager.h"
@@ -317,9 +316,9 @@ void LRTGroupSession::OnTickEvent(const char*pData, int nLen)
                  OSMutexLocker locker(&m_mutexQueueData);
                  m_queueDataMsg.pop();
             }
-            printf("OnTickEvent read request sequence:%lld, userid:%s, m_queue.size:%d\n"\
+            printf("OnTickEvent read request sequence:%lld, ruserid:%s, m_queue.size:%d\n"\
                     , m_packedDataMsg.msgs(i).sequence()\
-                    , m_packedDataMsg.msgs(i).userid().c_str()\
+                    , m_packedDataMsg.msgs(i).ruserid().c_str()\
                     , m_queueDataMsg.size());
         } else {
             break;
@@ -458,11 +457,11 @@ void LRTGroupSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module
     packed.ParseFromString(msg);
     for(int i=0;i<packed.msgs_size();++i)
     {
-        if (packed.msgs(i).userid().length()==0)break;
-        printf("LRTGroupSession::OnGroupNotify userid:%s, groupid:%s, svrcmd:%d, mflag:%d, sequence:%lld\n"\
-                , packed.msgs(i).userid().c_str()\
+        if (packed.msgs(i).ruserid().length()==0)break;
+        printf("LRTGroupSession::OnGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n"\
+                , packed.msgs(i).ruserid().c_str()\
                 , packed.msgs(i).groupid().c_str()\
-                , packed.msgs(i).svrcmd()\
+                , packed.msgs(i).rsvrcmd()\
                 , packed.msgs(i).mflag()\
                 , packed.msgs(i).sequence());
 
@@ -480,7 +479,7 @@ void LRTGroupSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module
         r_msg.set_connector("");
         r_msg.set_content(resp.SerializeAsString());
         pms::ToUser *pto = new pms::ToUser;
-        pto->add_users()->assign(packed.msgs(i).userid());
+        pto->add_users()->assign(packed.msgs(i).ruserid());
         r_msg.set_allocated_touser(pto);
 
         // set transfer

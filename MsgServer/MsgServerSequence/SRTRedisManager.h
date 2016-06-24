@@ -23,7 +23,7 @@
 #include "LinkedList.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
+#include "ProtoCommon.h"
 
 class SRTTransferSession;
 class SRTResponseCollection;
@@ -52,10 +52,10 @@ public:
 
     SRTSequenceRedis* LoopupForRedis(RedisGroup* group);
 public:
-    void OnWriteSeqn(const pms::StorageMsg& request, long long seqn);
+    void OnWriteSeqn(const pms::StorageMsg& request, int64 seqn);
     void OnAddAndCheckWrite(const std::string& msg);
 
-    void OnReadSeqn(const pms::StorageMsg& request, long long seqn);
+    void OnReadSeqn(const pms::StorageMsg& request, int64 seqn);
     void OnAddAndCheckRead(const std::string& msg);
 
 // from RTEventLooper

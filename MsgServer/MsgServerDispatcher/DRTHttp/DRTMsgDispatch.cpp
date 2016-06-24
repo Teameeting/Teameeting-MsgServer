@@ -7,10 +7,10 @@
 //
 
 #include "DRTMsgDispatch.hpp"
-#include "RTMeetMsg.h"
 #include "DRTConnManager.h"
 #include "RTUtils.hpp"
 #include "DRTTransferSession.h"
+#include "ProtoCommon.h"
 
 DRTMsgDispatch::DRTMsgDispatch()
 : RTDispatch()
@@ -50,6 +50,9 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     LI("DRTMsgDispatch::OnPushEvent RelayMsg--->:\n");
     //pmsg.PrintDebugString();
 
+    printf("DRTMsgDispatch::OnPushEvent the Push function not implement!!!!!!!!!!\n");
+    assert(false);
+#if 0
     TOPUSHUSER pushUser;
     for(int i=0;i<pmsg.touser().users_size();++i) {
         pushUser._us.push_back((pmsg.touser().users(i)));
@@ -73,6 +76,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
         std::string no = mmsg.nck_name() + "喊你进房间\"" + mmsg.rom_name() + "\"啦~";
         DRTConnManager::Instance().PushMeetingMsg(mmsg.rom_id(), mmsg.usr_from(), pushUser.ToJson(), mmsg.msg_cont(), no, strPushMsg);
     }
+#endif
 #else
     LE("not define DEF_PROTO\n");
 #endif

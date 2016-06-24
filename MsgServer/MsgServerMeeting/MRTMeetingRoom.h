@@ -21,15 +21,9 @@
 #include "scoped_ptr.h"
 #include "scoped_ref_ptr.h"
 #include "OSMutex.h"
-#include "RTMeetMsg.h"
-#include "RTMessage.h"
 
 #define DEF_PROTO
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/meet_msg.pb.h"
-#include "MsgServer/proto/meet_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "ProtoCommon.h"
 
 class MRTMeetingRoom : public rtc::RefCountedObject< rtc::scoped_ptr<MRTMeetingRoom> >{
 public:

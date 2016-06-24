@@ -11,9 +11,8 @@
 
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
 
-SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int reqType, int clientNum, const pms::StorageMsg& request, long long seqn)
+SRTResponseCollection::SRTResponseCollection(SRTRedisManager* manager, int reqType, int clientNum, const pms::StorageMsg& request, int64 seqn)
 : m_pRedisManager(manager)
 , m_ClientNum(clientNum)
 , m_ReqType(reqType)
@@ -26,9 +25,9 @@ SRTResponseCollection::~SRTResponseCollection()
 
 }
 
-void SRTResponseCollection::AddResponse(const pms::StorageMsg& request, long long seqn)
+void SRTResponseCollection::AddResponse(const pms::StorageMsg& request, int64 seqn)
 {
-    printf("SRTResponseCollection::AddResponse new m_ReqType:%d, userid:%s, msgid:%s, seqn:%lld\n", m_ReqType, request.userid().c_str(), request.msgid().c_str(), seqn);
+    printf("SRTResponseCollection::AddResponse new m_ReqType:%d, ruserid:%s, msgid:%s, seqn:%lld\n", m_ReqType, request.ruserid().c_str(), request.msgid().c_str(), seqn);
     if (m_ReqType==REQUEST_TYPE_READ)
     {
         SeqnResponseMapCIt cit = m_ReadSeqnResponse.find(request.msgid());
@@ -69,7 +68,7 @@ void SRTResponseCollection::AddResponse(const pms::StorageMsg& request, long lon
 ///////////////////cannot be used in *.h//////////////////////////////////
 
 
-SRTResponseCollection::MsgSeqn::MsgSeqn(int clientNum, long long seqn, SRTRedisManager* manager, const pms::StorageMsg& request)
+SRTResponseCollection::MsgSeqn::MsgSeqn(int clientNum, int64 seqn, SRTRedisManager* manager, const pms::StorageMsg& request)
 : cnumber(clientNum)
 , counter(1)
 , rmanager(manager)

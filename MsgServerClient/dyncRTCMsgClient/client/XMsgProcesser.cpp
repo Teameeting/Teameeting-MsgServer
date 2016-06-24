@@ -118,14 +118,16 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
-    store.set_svrcmd(pms::EServerCmd::CSYNCSEQN);
+    store.set_rsvrcmd(pms::EServerCmd::CSYNCSEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CSYNCSEQN);
     store.set_mtag(pms::EStorageTag::TSEQN);
-    store.set_userid(userid);
+    store.set_storeid(userid);
+    store.set_ruserid(userid);
     store.set_sequence(seqn);
 
     req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
@@ -137,15 +139,16 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, long long seqn, int module)
+int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
-    store.set_svrcmd(pms::EServerCmd::CSYNCDATA);
+    store.set_rsvrcmd(pms::EServerCmd::CSYNCDATA);
     store.set_tsvrcmd(pms::EServerCmd::CSYNCDATA);
     store.set_mtag(pms::EStorageTag::TDATA);
-    store.set_userid(userid);
+    store.set_storeid(userid);
+    store.set_ruserid(userid);
     store.set_sequence(seqn);
 
     req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
@@ -157,16 +160,16 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, long long seqn, int module)
+int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
-    store.set_svrcmd(pms::EServerCmd::CSYNCGROUPDATA);
+    store.set_rsvrcmd(pms::EServerCmd::CSYNCGROUPDATA);
     store.set_tsvrcmd(pms::EServerCmd::CSYNCGROUPDATA);
     store.set_mtag(pms::EStorageTag::TDATA);
-    store.set_userid(groupid);
-    store.set_tuserid(userid);
+    store.set_storeid(groupid);
+    store.set_ruserid(userid);
     store.set_groupid(groupid);
     store.set_sequence(seqn);
 

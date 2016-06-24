@@ -8,7 +8,6 @@
 #include <sstream>
 #include "RTLstorage.h"
 #include "http_common.h"
-#include "RTMsgCommon.h"
 
 RTLstorage::RTLstorage()
 {

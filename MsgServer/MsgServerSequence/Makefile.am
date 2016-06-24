@@ -14,10 +14,10 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/include \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/common/include \
@@ -36,7 +36,7 @@ MsgServerSequence_SOURCES=$(top_srcdir)/SRTListener/SRTSequenceListener.cpp \
 						   $(top_srcdir)/SRTSequence.cpp \
 						   $(top_srcdir)/main.cpp
 
-MsgServerSequence_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
+MsgServerSequence_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lxredis -lhiredis -lhttp -lrtklog -lzkclient
 MsgServerSequence_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerSequence_LDADD+=-lpthread -lrt -ldl
 

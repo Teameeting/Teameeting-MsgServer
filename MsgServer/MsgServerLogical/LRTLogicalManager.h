@@ -21,7 +21,7 @@
 #include "RTSingleton.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/storage_msg.pb.h"
+#include "ProtoCommon.h"
 
 class LRTTransferSession;
 
@@ -74,7 +74,7 @@ public:
     bool GetSessFromId(const std::string& userid, const std::string& msgid, LRTTransferSession** sess);
 
 
-    bool ReadLocalSeqn(pms::StorageMsg*  storeMsg, long long* seqn);
+    bool ReadLocalSeqn(pms::StorageMsg*  storeMsg, int64* seqn);
     bool UpdateLocalSeqn(pms::StorageMsg*  storeMsg);
     bool UpdateLocalMaxSeqn(pms::StorageMsg*  storeMsg);
 
@@ -88,7 +88,7 @@ protected:
     typedef std::unordered_map<std::string, TransMsgInfo>       TransMsgInfoMap;
     typedef TransMsgInfoMap::iterator                           TransMsgInfoMapIt;
 
-    typedef std::unordered_map<std::string, long long>          UserLocalSeqnMap;
+    typedef std::unordered_map<std::string, int64>          UserLocalSeqnMap;
     typedef UserLocalSeqnMap::iterator                           UserLocalSeqnMapIt;
 
 private:
