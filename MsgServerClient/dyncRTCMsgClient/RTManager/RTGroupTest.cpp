@@ -112,82 +112,17 @@ void RTGroupTest::ClientDataCallback(int data)
 
 void RTGroupTest::RunSyncSeqn()
 {
-    if (mMsgClient)
-        mMsgClient->SyncSeqn();
+    printf("RTGroupTest::RunSyncSeqn was called\n");
 }
 
 void RTGroupTest::RunSyncData()
 {
-    if (mMsgClient)
-        mMsgClient->SyncData();
+    printf("RTGroupTest::RunSyncData was called\n");
 }
+
 
 void RTGroupTest::RunOnce()
 {
-    mMsgClient->SyncSeqn();
-    rtc::Thread::SleepMs(500);
     //TODO:
-    ////TestSendGroup();
-    //TestSendOnce();
-    //TestSendLoop();
 }
 
-void RTGroupTest::TestSendGroup()
-{
-    if (mName.compare("xddxdd")==0)
-    {
-        //while(1)
-        //    rtc::Thread::SleepMs(1000);
-    } else {
-        {
-            std::cout << "TestSendOnce name:" << mName << std::endl;
-            mMsgClient->GrpGenNotify();
-
-            rtc::Thread::SleepMs(500);
-        }
-    }
-}
-
-
-void RTGroupTest::TestSendOnce()
-{
-    if (mName.compare("xddxdd")==0)
-    {
-        //while(1)
-        //    rtc::Thread::SleepMs(1000);
-    } else {
-        long long i = 0;
-        {
-            char ii[32] = {0};
-            std::cout << "TestSendOnce name:" << mName << std::endl;
-            sprintf(ii, "hello world%lld\n", i++);
-            std::string m(ii);
-            std::string n("xddxdd");
-            mMsgClient->SendMessageTo(m, n);
-            rtc::Thread::SleepMs(500);
-        }
-    }
-}
-
-void RTGroupTest::TestSendLoop()
-{
-    if (mName.compare("xddxdd")==0)
-    {
-        //while(1)
-        //    rtc::Thread::SleepMs(1000);
-    } else {
-        long long i = 0;
-        //int t = 5;
-        //while(t--)
-        while(1)
-        {
-            char ii[16] = {0};
-            std::cout << "TestSendOnce name:" << mName << std::endl;
-            sprintf(ii, "hello world%lld", i++);
-            std::string m(ii);
-            std::string n("xddxdd");
-            mMsgClient->SendMessageTo(m, n);
-            rtc::Thread::SleepMs(200);
-        }
-    }
-}

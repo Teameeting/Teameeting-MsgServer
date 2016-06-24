@@ -90,19 +90,19 @@ int XGrpMsgProcesser::EncodeGroupNotifys(std::string& outstr, const std::vector<
     return 0;
 }
 
-int XGrpMsgProcesser::EncodeSyncDataRequest(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module)
+int XGrpMsgProcesser::EncodeGroupSyncData(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module)
 {
     std::vector<std::string> v;
     v.push_back(userid);
     printf("EncodeGroupNotify userid:%s, groupid:%s, curseqn:%lld, module:%d\n", userid.c_str(), groupid.c_str(), curseqn, module);
-    EncodeSyncDataRequests(outstr, v, groupid, curseqn, module);
+    EncodeGroupSyncDatas(outstr, v, groupid, curseqn, module);
     return 0;
 }
 
-int XGrpMsgProcesser::EncodeSyncDataRequests(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn, int module)
+int XGrpMsgProcesser::EncodeGroupSyncDatas(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn, int module)
 {
     pms::MsgReq req;
-    printf("EncodeGroupNotifys userids.size:%lu\n", userids.size());
+    printf("EncodeGroupSyncDatas userids.size:%lu\n", userids.size());
     for(int i=0,j=(userids.size()<=PACKED_MSG_NUM_ONCE)?userids.size():PACKED_MSG_NUM_ONCE; i<j;++i)
     {
         if (userids.at(i).length()==0)break;
@@ -151,7 +151,7 @@ int XGrpMsgProcesser::DecodeRecvData(const char* pData, int nLen)
             DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
             break;
         case pms::EServerCmd::CGROUPNOTIFY:
-            DecodeGroupNotify(resp.rsp_code(), resp.rsp_cont());
+            DecodeGroupSyncData(resp.rsp_code(), resp.rsp_cont());
             break;
 
         default:
@@ -179,9 +179,9 @@ int XGrpMsgProcesser::DecodeKeepAlive(int code, const std::string& cont)
     return 0;
 }
 
-int XGrpMsgProcesser::DecodeGroupNotify(int code, const std::string& cont)
+int XGrpMsgProcesser::DecodeGroupSyncData(int code, const std::string& cont)
 {
-    m_helper.OnGroupNotify(code, cont);
+    m_helper.OnGroupSyncData(code, cont);
     return 0;
 }
 

@@ -137,7 +137,7 @@ int XGrpMsgClient::GenSyncDataRequest(const std::string& userid, const std::stri
 {
     std::string outstr;
     if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeSyncDataRequest(outstr, userid, groupid, seqn, m_module);
+        m_pGrpMsgProcesser->EncodeGroupSyncData(outstr, userid, groupid, seqn, m_module);
     } else {
         return -1;
     }
@@ -154,7 +154,7 @@ int XGrpMsgClient::GenSyncDataRequests(const std::vector<std::string>& userids, 
 {
     std::string outstr;
     if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeSyncDataRequests(outstr, userids, groupid, seqn, m_module);
+        m_pGrpMsgProcesser->EncodeGroupSyncDatas(outstr, userids, groupid, seqn, m_module);
     } else {
         return -1;
     }
@@ -386,11 +386,11 @@ void XGrpMsgClient::OnKeepLive(int code, const std::string& cont)
 
 }
 
-void XGrpMsgClient::OnGroupNotify(int code, const std::string& cont)
+void XGrpMsgClient::OnGroupSyncData(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XGrpMsgClient::OnGroupNotify ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
+    printf("XGrpMsgClient::OnGroupSyncData ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
             , store.ruserid().c_str()\
             , store.sequence()\
             , store.groupid().c_str()\
