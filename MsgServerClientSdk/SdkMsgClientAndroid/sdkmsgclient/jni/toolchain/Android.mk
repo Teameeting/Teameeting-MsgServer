@@ -16,6 +16,6 @@ MY_ROOT_PATH := $(call my-dir)/..
 
 # library
 include $(MY_ROOT_PATH)/protobuf/Android.mk
-include $(MY_ROOT_PATH)/dyncRTCMsgClient/Android.mk
+include $(MY_ROOT_PATH)/client_common/Android.mk
 include $(MY_ROOT_PATH)/jutils/Android.mk
 include $(MY_ROOT_PATH)/Android.mk

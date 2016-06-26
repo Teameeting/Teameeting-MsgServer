@@ -29,6 +29,14 @@ typedef GPB_ENUM(EServerCmd) {
   EServerCmd_Cgetmsg = 2,
   EServerCmd_Clogout = 3,
   EServerCmd_Ckeepalive = 4,
+  EServerCmd_Csyncseqn = 5,
+  EServerCmd_Csseqn4Data = 6,
+  EServerCmd_Csyncdata = 7,
+  EServerCmd_Csyncgroupdata = 8,
+  EServerCmd_Cnewmsg = 9,
+  EServerCmd_Cnewmsgseqn = 10,
+  EServerCmd_Cnewmsgdata = 11,
+  EServerCmd_Cgroupnotify = 12,
 };
 
 GPBEnumDescriptor *EServerCmd_EnumDescriptor(void);
@@ -54,6 +62,10 @@ typedef GPB_ENUM(EModuleType) {
   EModuleType_Tp2P = 3,
   EModuleType_Tlive = 4,
   EModuleType_Tcallcenter = 5,
+  EModuleType_Tlogical = 6,
+  EModuleType_Tsequence = 7,
+  EModuleType_Tstorage = 8,
+  EModuleType_Tgrpnotify = 9,
 };
 
 GPBEnumDescriptor *EModuleType_EnumDescriptor(void);
@@ -61,6 +73,68 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void);
 /// Checks to see if the given value is defined by the enum or was not known at
 /// the time this source was generated.
 BOOL EModuleType_IsValidValue(int32_t value);
+
+#pragma mark - Enum EMsgFlag
+
+/// the msg flag
+typedef GPB_ENUM(EMsgFlag) {
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgFlag_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EMsgFlag_Finvalid = 0,
+  EMsgFlag_Fsingle = 1,
+  EMsgFlag_Fmulti = 2,
+  EMsgFlag_Fgroup = 3,
+};
+
+GPBEnumDescriptor *EMsgFlag_EnumDescriptor(void);
+
+/// Checks to see if the given value is defined by the enum or was not known at
+/// the time this source was generated.
+BOOL EMsgFlag_IsValidValue(int32_t value);
+
+#pragma mark - Enum EMsgRole
+
+/// the msg role
+typedef GPB_ENUM(EMsgRole) {
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgRole_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  /// sender
+  EMsgRole_Rsender = 0,
+
+  /// recver
+  EMsgRole_Rrecver = 1,
+};
+
+GPBEnumDescriptor *EMsgRole_EnumDescriptor(void);
+
+/// Checks to see if the given value is defined by the enum or was not known at
+/// the time this source was generated.
+BOOL EMsgRole_IsValidValue(int32_t value);
+
+#pragma mark - Enum EMsgRType
+
+/// the msg read type
+typedef GPB_ENUM(EMsgRType) {
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgRType_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  /// read local logcal server
+  EMsgRType_Rreadlocal = 0,
+
+  /// read remote sequence/storage server
+  EMsgRType_Rreadremote = 1,
+};
+
+GPBEnumDescriptor *EMsgRType_EnumDescriptor(void);
+
+/// Checks to see if the given value is defined by the enum or was not known at
+/// the time this source was generated.
+BOOL EMsgRType_IsValidValue(int32_t value);
 
 #pragma mark - CommonMsgRoot
 

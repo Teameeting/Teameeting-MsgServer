@@ -23,7 +23,7 @@ static GPBFileDescriptor *CommonMsgRoot_FileDescriptor(void) {
   if (!descriptor) {
     GPBDebugCheckRuntimeVersion();
     descriptor = [[GPBFileDescriptor alloc] initWithPackage:@"pms"
-                                                     syntax:GPBFileSyntaxProto2];
+                                                     syntax:GPBFileSyntaxProto3];
   }
   return descriptor;
 }
@@ -35,20 +35,32 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
   if (!descriptor) {
     static const char *valueNames =
         "Clogin\000Csndmsg\000Cgetmsg\000Clogout\000Ckeepaliv"
-        "e\000";
+        "e\000Csyncseqn\000Csseqn4Data\000Csyncdata\000Csyncg"
+        "roupdata\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata"
+        "\000Cgroupnotify\000";
     static const int32_t values[] = {
         EServerCmd_Clogin,
         EServerCmd_Csndmsg,
         EServerCmd_Cgetmsg,
         EServerCmd_Clogout,
         EServerCmd_Ckeepalive,
+        EServerCmd_Csyncseqn,
+        EServerCmd_Csseqn4Data,
+        EServerCmd_Csyncdata,
+        EServerCmd_Csyncgroupdata,
+        EServerCmd_Cnewmsg,
+        EServerCmd_Cnewmsgseqn,
+        EServerCmd_Cnewmsgdata,
+        EServerCmd_Cgroupnotify,
     };
+    static const char *extraTextFormatInfo = "\001\006f\002c\000";
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EServerCmd)
                                        valueNames:valueNames
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
-                                     enumVerifier:EServerCmd_IsValidValue];
+                                     enumVerifier:EServerCmd_IsValidValue
+                              extraTextFormatInfo:extraTextFormatInfo];
     if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
       [worker release];
     }
@@ -63,6 +75,14 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cgetmsg:
     case EServerCmd_Clogout:
     case EServerCmd_Ckeepalive:
+    case EServerCmd_Csyncseqn:
+    case EServerCmd_Csseqn4Data:
+    case EServerCmd_Csyncdata:
+    case EServerCmd_Csyncgroupdata:
+    case EServerCmd_Cnewmsg:
+    case EServerCmd_Cnewmsgseqn:
+    case EServerCmd_Cnewmsgdata:
+    case EServerCmd_Cgroupnotify:
       return YES;
     default:
       return NO;
@@ -75,14 +95,22 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void) {
   static GPBEnumDescriptor *descriptor = NULL;
   if (!descriptor) {
     static const char *valueNames =
-        "Tmeeting\000Tp2P\000Tlive\000Tcallcenter\000";
+        "Tinvalid0\000Tinvalid1\000Tmeeting\000Tp2P\000Tlive\000"
+        "Tcallcenter\000Tlogical\000Tsequence\000Tstorage\000"
+        "Tgrpnotify\000";
     static const int32_t values[] = {
+        EModuleType_Tinvalid0,
+        EModuleType_Tinvalid1,
         EModuleType_Tmeeting,
         EModuleType_Tp2P,
         EModuleType_Tlive,
         EModuleType_Tcallcenter,
+        EModuleType_Tlogical,
+        EModuleType_Tsequence,
+        EModuleType_Tstorage,
+        EModuleType_Tgrpnotify,
     };
-    static const char *extraTextFormatInfo = "\001\001b\002\000";
+    static const char *extraTextFormatInfo = "\001\003b\002\000";
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EModuleType)
                                        valueNames:valueNames
@@ -99,10 +127,122 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void) {
 
 BOOL EModuleType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case EModuleType_Tinvalid0:
+    case EModuleType_Tinvalid1:
     case EModuleType_Tmeeting:
     case EModuleType_Tp2P:
     case EModuleType_Tlive:
     case EModuleType_Tcallcenter:
+    case EModuleType_Tlogical:
+    case EModuleType_Tsequence:
+    case EModuleType_Tstorage:
+    case EModuleType_Tgrpnotify:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum EMsgFlag
+
+GPBEnumDescriptor *EMsgFlag_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Finvalid\000Fsingle\000Fmulti\000Fgroup\000";
+    static const int32_t values[] = {
+        EMsgFlag_Finvalid,
+        EMsgFlag_Fsingle,
+        EMsgFlag_Fmulti,
+        EMsgFlag_Fgroup,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgFlag)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:EMsgFlag_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL EMsgFlag_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case EMsgFlag_Finvalid:
+    case EMsgFlag_Fsingle:
+    case EMsgFlag_Fmulti:
+    case EMsgFlag_Fgroup:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum EMsgRole
+
+GPBEnumDescriptor *EMsgRole_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Rsender\000Rrecver\000";
+    static const int32_t values[] = {
+        EMsgRole_Rsender,
+        EMsgRole_Rrecver,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgRole)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:EMsgRole_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL EMsgRole_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case EMsgRole_Rsender:
+    case EMsgRole_Rrecver:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum EMsgRType
+
+GPBEnumDescriptor *EMsgRType_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Rreadlocal\000Rreadremote\000";
+    static const int32_t values[] = {
+        EMsgRType_Rreadlocal,
+        EMsgRType_Rreadremote,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgRType)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:EMsgRType_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL EMsgRType_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case EMsgRType_Rreadlocal:
+    case EMsgRType_Rreadremote:
       return YES;
     default:
       return NO;
@@ -113,9 +253,9 @@ BOOL EModuleType_IsValidValue(int32_t value__) {
 
 @implementation MsgReq
 
-@dynamic hasSvrCmds, svrCmds;
-@dynamic hasModType, modType;
-@dynamic hasContent, content;
+@dynamic svrCmds;
+@dynamic modType;
+@dynamic content;
 
 typedef struct MsgReq__storage_ {
   uint32_t _has_storage_[1];
@@ -129,36 +269,33 @@ typedef struct MsgReq__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueEnum = EServerCmd_Clogin,
-        .core.name = "svrCmds",
-        .core.dataTypeSpecific.enumDescFunc = EServerCmd_EnumDescriptor,
-        .core.number = MsgReq_FieldNumber_SvrCmds,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(MsgReq__storage_, svrCmds),
-        .core.flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "svrCmds",
+        .dataTypeSpecific.enumDescFunc = EServerCmd_EnumDescriptor,
+        .number = MsgReq_FieldNumber_SvrCmds,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(MsgReq__storage_, svrCmds),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueEnum = EModuleType_Tmeeting,
-        .core.name = "modType",
-        .core.dataTypeSpecific.enumDescFunc = EModuleType_EnumDescriptor,
-        .core.number = MsgReq_FieldNumber_ModType,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(MsgReq__storage_, modType),
-        .core.flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "modType",
+        .dataTypeSpecific.enumDescFunc = EModuleType_EnumDescriptor,
+        .number = MsgReq_FieldNumber_ModType,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(MsgReq__storage_, modType),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "content",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgReq_FieldNumber_Content,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(MsgReq__storage_, content),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "content",
+        .dataTypeSpecific.className = NULL,
+        .number = MsgReq_FieldNumber_Content,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(MsgReq__storage_, content),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -166,9 +303,9 @@ typedef struct MsgReq__storage_ {
                                      rootClass:[CommonMsgRoot class]
                                           file:CommonMsgRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(MsgReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
+                                         flags:0];
     NSAssert(descriptor == nil, @"Startup recursed!");
     descriptor = localDescriptor;
   }
@@ -177,14 +314,38 @@ typedef struct MsgReq__storage_ {
 
 @end
 
+int32_t MsgReq_SvrCmds_RawValue(MsgReq *message) {
+  GPBDescriptor *descriptor = [MsgReq descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgReq_FieldNumber_SvrCmds];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMsgReq_SvrCmds_RawValue(MsgReq *message, int32_t value) {
+  GPBDescriptor *descriptor = [MsgReq descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgReq_FieldNumber_SvrCmds];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+int32_t MsgReq_ModType_RawValue(MsgReq *message) {
+  GPBDescriptor *descriptor = [MsgReq descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgReq_FieldNumber_ModType];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMsgReq_ModType_RawValue(MsgReq *message, int32_t value) {
+  GPBDescriptor *descriptor = [MsgReq descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgReq_FieldNumber_ModType];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
 #pragma mark - MsgRep
 
 @implementation MsgRep
 
-@dynamic hasSvrCmds, svrCmds;
-@dynamic hasModType, modType;
-@dynamic hasRspCont, rspCont;
-@dynamic hasRspCode, rspCode;
+@dynamic svrCmds;
+@dynamic modType;
+@dynamic rspCont;
+@dynamic rspCode;
 
 typedef struct MsgRep__storage_ {
   uint32_t _has_storage_[1];
@@ -199,46 +360,42 @@ typedef struct MsgRep__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueEnum = EServerCmd_Clogin,
-        .core.name = "svrCmds",
-        .core.dataTypeSpecific.enumDescFunc = EServerCmd_EnumDescriptor,
-        .core.number = MsgRep_FieldNumber_SvrCmds,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(MsgRep__storage_, svrCmds),
-        .core.flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "svrCmds",
+        .dataTypeSpecific.enumDescFunc = EServerCmd_EnumDescriptor,
+        .number = MsgRep_FieldNumber_SvrCmds,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(MsgRep__storage_, svrCmds),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueEnum = EModuleType_Tmeeting,
-        .core.name = "modType",
-        .core.dataTypeSpecific.enumDescFunc = EModuleType_EnumDescriptor,
-        .core.number = MsgRep_FieldNumber_ModType,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(MsgRep__storage_, modType),
-        .core.flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
-        .core.dataType = GPBDataTypeEnum,
+        .name = "modType",
+        .dataTypeSpecific.enumDescFunc = EModuleType_EnumDescriptor,
+        .number = MsgRep_FieldNumber_ModType,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(MsgRep__storage_, modType),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "rspCont",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgRep_FieldNumber_RspCont,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(MsgRep__storage_, rspCont),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "rspCont",
+        .dataTypeSpecific.className = NULL,
+        .number = MsgRep_FieldNumber_RspCont,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(MsgRep__storage_, rspCont),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeBytes,
       },
       {
-        .defaultValue.valueInt32 = 0,
-        .core.name = "rspCode",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgRep_FieldNumber_RspCode,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(MsgRep__storage_, rspCode),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeSInt32,
+        .name = "rspCode",
+        .dataTypeSpecific.className = NULL,
+        .number = MsgRep_FieldNumber_RspCode,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(MsgRep__storage_, rspCode),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -246,9 +403,9 @@ typedef struct MsgRep__storage_ {
                                      rootClass:[CommonMsgRoot class]
                                           file:CommonMsgRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(MsgRep__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
+                                         flags:0];
     NSAssert(descriptor == nil, @"Startup recursed!");
     descriptor = localDescriptor;
   }
@@ -256,6 +413,30 @@ typedef struct MsgRep__storage_ {
 }
 
 @end
+
+int32_t MsgRep_SvrCmds_RawValue(MsgRep *message) {
+  GPBDescriptor *descriptor = [MsgRep descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgRep_FieldNumber_SvrCmds];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMsgRep_SvrCmds_RawValue(MsgRep *message, int32_t value) {
+  GPBDescriptor *descriptor = [MsgRep descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgRep_FieldNumber_SvrCmds];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+int32_t MsgRep_ModType_RawValue(MsgRep *message) {
+  GPBDescriptor *descriptor = [MsgRep descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgRep_FieldNumber_ModType];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetMsgRep_ModType_RawValue(MsgRep *message, int32_t value) {
+  GPBDescriptor *descriptor = [MsgRep descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgRep_FieldNumber_ModType];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
 
 #pragma mark - ToUser
 

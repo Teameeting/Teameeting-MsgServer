@@ -20,11 +20,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// the server cmd
 typedef GPB_ENUM(EServerCmd) {
-  EServerCmd_Clogin = 1,
-  EServerCmd_Csndmsg = 2,
-  EServerCmd_Cgetmsg = 3,
-  EServerCmd_Clogout = 4,
-  EServerCmd_Ckeepalive = 5,
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EServerCmd_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EServerCmd_Clogin = 0,
+  EServerCmd_Csndmsg = 1,
+  EServerCmd_Cgetmsg = 2,
+  EServerCmd_Clogout = 3,
+  EServerCmd_Ckeepalive = 4,
+  EServerCmd_Csyncseqn = 5,
+  EServerCmd_Csseqn4Data = 6,
+  EServerCmd_Csyncdata = 7,
+  EServerCmd_Csyncgroupdata = 8,
+  EServerCmd_Cnewmsg = 9,
+  EServerCmd_Cnewmsgseqn = 10,
+  EServerCmd_Cnewmsgdata = 11,
+  EServerCmd_Cgroupnotify = 12,
 };
 
 GPBEnumDescriptor *EServerCmd_EnumDescriptor(void);
@@ -40,10 +52,20 @@ BOOL EServerCmd_IsValidValue(int32_t value);
 /// it used between client and server
 /// it can tell server this client belong to which server
 typedef GPB_ENUM(EModuleType) {
-  EModuleType_Tmeeting = 3,
-  EModuleType_Tp2P = 4,
-  EModuleType_Tlive = 5,
-  EModuleType_Tcallcenter = 6,
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EModuleType_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EModuleType_Tinvalid0 = 0,
+  EModuleType_Tinvalid1 = 1,
+  EModuleType_Tmeeting = 2,
+  EModuleType_Tp2P = 3,
+  EModuleType_Tlive = 4,
+  EModuleType_Tcallcenter = 5,
+  EModuleType_Tlogical = 6,
+  EModuleType_Tsequence = 7,
+  EModuleType_Tstorage = 8,
+  EModuleType_Tgrpnotify = 9,
 };
 
 GPBEnumDescriptor *EModuleType_EnumDescriptor(void);
@@ -51,6 +73,68 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void);
 /// Checks to see if the given value is defined by the enum or was not known at
 /// the time this source was generated.
 BOOL EModuleType_IsValidValue(int32_t value);
+
+#pragma mark - Enum EMsgFlag
+
+/// the msg flag
+typedef GPB_ENUM(EMsgFlag) {
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgFlag_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  EMsgFlag_Finvalid = 0,
+  EMsgFlag_Fsingle = 1,
+  EMsgFlag_Fmulti = 2,
+  EMsgFlag_Fgroup = 3,
+};
+
+GPBEnumDescriptor *EMsgFlag_EnumDescriptor(void);
+
+/// Checks to see if the given value is defined by the enum or was not known at
+/// the time this source was generated.
+BOOL EMsgFlag_IsValidValue(int32_t value);
+
+#pragma mark - Enum EMsgRole
+
+/// the msg role
+typedef GPB_ENUM(EMsgRole) {
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgRole_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  /// sender
+  EMsgRole_Rsender = 0,
+
+  /// recver
+  EMsgRole_Rrecver = 1,
+};
+
+GPBEnumDescriptor *EMsgRole_EnumDescriptor(void);
+
+/// Checks to see if the given value is defined by the enum or was not known at
+/// the time this source was generated.
+BOOL EMsgRole_IsValidValue(int32_t value);
+
+#pragma mark - Enum EMsgRType
+
+/// the msg read type
+typedef GPB_ENUM(EMsgRType) {
+  /// Value used if any message's field encounters a value that is not defined
+  /// by this enum. The message will also have C functions to get/set the rawValue
+  /// of the field.
+  EMsgRType_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
+  /// read local logcal server
+  EMsgRType_Rreadlocal = 0,
+
+  /// read remote sequence/storage server
+  EMsgRType_Rreadremote = 1,
+};
+
+GPBEnumDescriptor *EMsgRType_EnumDescriptor(void);
+
+/// Checks to see if the given value is defined by the enum or was not known at
+/// the time this source was generated.
+BOOL EMsgRType_IsValidValue(int32_t value);
 
 #pragma mark - CommonMsgRoot
 
@@ -78,15 +162,27 @@ typedef GPB_ENUM(MsgReq_FieldNumber) {
 
 @property(nonatomic, readwrite) EServerCmd svrCmds;
 
-@property(nonatomic, readwrite) BOOL hasSvrCmds;
 @property(nonatomic, readwrite) EModuleType modType;
 
-@property(nonatomic, readwrite) BOOL hasModType;
 @property(nonatomic, readwrite, copy, null_resettable) NSData *content;
-/// Test to see if @c content has been set.
-@property(nonatomic, readwrite) BOOL hasContent;
 
 @end
+
+/// Fetches the raw value of a @c MsgReq's @c svrCmds property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MsgReq_SvrCmds_RawValue(MsgReq *message);
+/// Sets the raw value of an @c MsgReq's @c svrCmds property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMsgReq_SvrCmds_RawValue(MsgReq *message, int32_t value);
+
+/// Fetches the raw value of a @c MsgReq's @c modType property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MsgReq_ModType_RawValue(MsgReq *message);
+/// Sets the raw value of an @c MsgReq's @c modType property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMsgReq_ModType_RawValue(MsgReq *message, int32_t value);
 
 #pragma mark - MsgRep
 
@@ -102,18 +198,29 @@ typedef GPB_ENUM(MsgRep_FieldNumber) {
 
 @property(nonatomic, readwrite) EServerCmd svrCmds;
 
-@property(nonatomic, readwrite) BOOL hasSvrCmds;
 @property(nonatomic, readwrite) EModuleType modType;
 
-@property(nonatomic, readwrite) BOOL hasModType;
 @property(nonatomic, readwrite, copy, null_resettable) NSData *rspCont;
-/// Test to see if @c rspCont has been set.
-@property(nonatomic, readwrite) BOOL hasRspCont;
 
 @property(nonatomic, readwrite) int32_t rspCode;
 
-@property(nonatomic, readwrite) BOOL hasRspCode;
 @end
+
+/// Fetches the raw value of a @c MsgRep's @c svrCmds property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MsgRep_SvrCmds_RawValue(MsgRep *message);
+/// Sets the raw value of an @c MsgRep's @c svrCmds property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMsgRep_SvrCmds_RawValue(MsgRep *message, int32_t value);
+
+/// Fetches the raw value of a @c MsgRep's @c modType property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t MsgRep_ModType_RawValue(MsgRep *message);
+/// Sets the raw value of an @c MsgRep's @c modType property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetMsgRep_ModType_RawValue(MsgRep *message, int32_t value);
 
 #pragma mark - ToUser
 

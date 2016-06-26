@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "TMMsgSender.h"
-#import "MeetMsgType.pbobjc.h"
+#import "EntityMsgType.pbobjc.h"
 
 @interface ViewController () {
     UIButton *mEnterButton;

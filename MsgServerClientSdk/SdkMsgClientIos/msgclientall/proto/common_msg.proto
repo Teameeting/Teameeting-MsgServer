@@ -1,13 +1,23 @@
-syntax="proto2";
+syntax="proto3";
 package pms;
+
+option optimize_for = LITE_RUNTIME;
 
 // the server cmd
 enum EServerCmd{
-    CLOGIN = 1;
-    CSNDMSG = 2;
-    CGETMSG = 3;
-    CLOGOUT = 4;
-    CKEEPALIVE = 5;
+    CLOGIN                  = 0;
+    CSNDMSG                 = 1;
+    CGETMSG                 = 2;
+    CLOGOUT                 = 3;
+    CKEEPALIVE              = 4;
+    CSYNCSEQN               = 5;
+    CSSEQN4DATA             = 6;
+    CSYNCDATA               = 7;
+    CSYNCGROUPDATA          = 8;
+    CNEWMSG                 = 9;
+    CNEWMSGSEQN             = 10;
+    CNEWMSGDATA             = 11;
+    CGROUPNOTIFY            = 12;
 }
 
 // different server module
@@ -15,25 +25,51 @@ enum EServerCmd{
 // it used between client and server
 // it can tell server this client belong to which server
 enum EModuleType{
-    TMEETING = 3;
-    TP2P = 4;
-    TLIVE = 5;
-    TCALLCENTER = 6;
+    TINVALID0   = 0;
+    TINVALID1   = 1;
+    TMEETING    = 2;
+    TP2P        = 3;
+    TLIVE       = 4;
+    TCALLCENTER = 5;
+    TLOGICAL    = 6;
+    TSEQUENCE   = 7;
+    TSTORAGE    = 8;
+    TGRPNOTIFY  = 9;
+}
+
+// the msg flag
+enum EMsgFlag{
+    FINVALID = 0;
+    FSINGLE  = 1;
+    FMULTI   = 2;
+    FGROUP   = 3;
+}
+
+// the msg role
+enum EMsgRole{
+    RSENDER = 0; // sender
+    RRECVER = 1; // recver
+}
+
+// the msg read type
+enum EMsgRType{
+    RREADLOCAL  = 0; // read local logcal server
+    RREADREMOTE = 1; // read remote sequence/storage server
 }
 
 // this is for request
 message MsgReq{
-    optional EServerCmd     svr_cmds = 1;
-    optional EModuleType    mod_type = 2;
-    optional bytes          content  = 3;
+    EServerCmd     svr_cmds = 1;
+    EModuleType    mod_type = 2;
+    bytes          content  = 3;
 }
 
 // this is for response
 message MsgRep{
-    optional EServerCmd     svr_cmds = 1;
-    optional EModuleType    mod_type = 2;
-    optional bytes          rsp_cont = 3;
-    optional sint32         rsp_code = 4;
+    EServerCmd     svr_cmds = 1;
+    EModuleType    mod_type = 2;
+    bytes          rsp_cont = 3;
+    sint32         rsp_code = 4;
 }
 
 // users send to

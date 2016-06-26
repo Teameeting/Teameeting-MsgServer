@@ -35,20 +35,32 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
   if (!descriptor) {
     static const char *valueNames =
         "Clogin\000Csndmsg\000Cgetmsg\000Clogout\000Ckeepaliv"
-        "e\000";
+        "e\000Csyncseqn\000Csseqn4Data\000Csyncdata\000Csyncg"
+        "roupdata\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata"
+        "\000Cgroupnotify\000";
     static const int32_t values[] = {
         EServerCmd_Clogin,
         EServerCmd_Csndmsg,
         EServerCmd_Cgetmsg,
         EServerCmd_Clogout,
         EServerCmd_Ckeepalive,
+        EServerCmd_Csyncseqn,
+        EServerCmd_Csseqn4Data,
+        EServerCmd_Csyncdata,
+        EServerCmd_Csyncgroupdata,
+        EServerCmd_Cnewmsg,
+        EServerCmd_Cnewmsgseqn,
+        EServerCmd_Cnewmsgdata,
+        EServerCmd_Cgroupnotify,
     };
+    static const char *extraTextFormatInfo = "\001\006f\002c\000";
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EServerCmd)
                                        valueNames:valueNames
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
-                                     enumVerifier:EServerCmd_IsValidValue];
+                                     enumVerifier:EServerCmd_IsValidValue
+                              extraTextFormatInfo:extraTextFormatInfo];
     if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
       [worker release];
     }
@@ -63,6 +75,14 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cgetmsg:
     case EServerCmd_Clogout:
     case EServerCmd_Ckeepalive:
+    case EServerCmd_Csyncseqn:
+    case EServerCmd_Csseqn4Data:
+    case EServerCmd_Csyncdata:
+    case EServerCmd_Csyncgroupdata:
+    case EServerCmd_Cnewmsg:
+    case EServerCmd_Cnewmsgseqn:
+    case EServerCmd_Cnewmsgdata:
+    case EServerCmd_Cgroupnotify:
       return YES;
     default:
       return NO;
@@ -76,7 +96,8 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void) {
   if (!descriptor) {
     static const char *valueNames =
         "Tinvalid0\000Tinvalid1\000Tmeeting\000Tp2P\000Tlive\000"
-        "Tcallcenter\000";
+        "Tcallcenter\000Tlogical\000Tsequence\000Tstorage\000"
+        "Tgrpnotify\000";
     static const int32_t values[] = {
         EModuleType_Tinvalid0,
         EModuleType_Tinvalid1,
@@ -84,6 +105,10 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void) {
         EModuleType_Tp2P,
         EModuleType_Tlive,
         EModuleType_Tcallcenter,
+        EModuleType_Tlogical,
+        EModuleType_Tsequence,
+        EModuleType_Tstorage,
+        EModuleType_Tgrpnotify,
     };
     static const char *extraTextFormatInfo = "\001\003b\002\000";
     GPBEnumDescriptor *worker =
@@ -108,6 +133,116 @@ BOOL EModuleType_IsValidValue(int32_t value__) {
     case EModuleType_Tp2P:
     case EModuleType_Tlive:
     case EModuleType_Tcallcenter:
+    case EModuleType_Tlogical:
+    case EModuleType_Tsequence:
+    case EModuleType_Tstorage:
+    case EModuleType_Tgrpnotify:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum EMsgFlag
+
+GPBEnumDescriptor *EMsgFlag_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Finvalid\000Fsingle\000Fmulti\000Fgroup\000";
+    static const int32_t values[] = {
+        EMsgFlag_Finvalid,
+        EMsgFlag_Fsingle,
+        EMsgFlag_Fmulti,
+        EMsgFlag_Fgroup,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgFlag)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:EMsgFlag_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL EMsgFlag_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case EMsgFlag_Finvalid:
+    case EMsgFlag_Fsingle:
+    case EMsgFlag_Fmulti:
+    case EMsgFlag_Fgroup:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum EMsgRole
+
+GPBEnumDescriptor *EMsgRole_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Rsender\000Rrecver\000";
+    static const int32_t values[] = {
+        EMsgRole_Rsender,
+        EMsgRole_Rrecver,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgRole)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:EMsgRole_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL EMsgRole_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case EMsgRole_Rsender:
+    case EMsgRole_Rrecver:
+      return YES;
+    default:
+      return NO;
+  }
+}
+
+#pragma mark - Enum EMsgRType
+
+GPBEnumDescriptor *EMsgRType_EnumDescriptor(void) {
+  static GPBEnumDescriptor *descriptor = NULL;
+  if (!descriptor) {
+    static const char *valueNames =
+        "Rreadlocal\000Rreadremote\000";
+    static const int32_t values[] = {
+        EMsgRType_Rreadlocal,
+        EMsgRType_Rreadremote,
+    };
+    GPBEnumDescriptor *worker =
+        [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgRType)
+                                       valueNames:valueNames
+                                           values:values
+                                            count:(uint32_t)(sizeof(values) / sizeof(int32_t))
+                                     enumVerifier:EMsgRType_IsValidValue];
+    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+      [worker release];
+    }
+  }
+  return descriptor;
+}
+
+BOOL EMsgRType_IsValidValue(int32_t value__) {
+  switch (value__) {
+    case EMsgRType_Rreadlocal:
+    case EMsgRType_Rreadremote:
       return YES;
     default:
       return NO;

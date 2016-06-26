@@ -1,0 +1,29 @@
+syntax="proto3";
+package pms;
+
+option optimize_for = LITE_RUNTIME;
+
+// the msg content type
+enum EMsgType{
+    TTXT    = 0;
+    TFIL    = 1;
+    TPIC    = 2;
+    TAUD    = 3;
+    TVID    = 4;
+}
+
+// the msg tag
+enum EMsgTag{
+    TENTER  = 0;
+    TLEAVE  = 1;
+    TCHAT   = 2;
+    TNOTIFY = 3;
+    TSSSEQN = 4; // server sync seqn
+    TSSDATA = 5; // server sync data
+}
+
+// the msg get tag
+enum EMsgHead{
+    HSND    = 0;
+    HGET    = 1;
+}

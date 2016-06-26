@@ -1,8 +1,8 @@
 #ifndef __JMCLIENT_APP_H__
 #define __JMCLIENT_APP_H__
 #include <jni.h>
-#include "XMsgCallback.h"
-#include "XMsgClient.h"
+#include "core/XMsgCallback.h"
+#include "core/XMsgClient.h"
 
 class JMClientApp : public XMsgClient, public XMsgCallback
 {

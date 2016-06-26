@@ -10,7 +10,7 @@
 #define MsgClientIos_TMMsgSender_h
 #import "MsgClientProtocol.h"
 #import "TMClientType.h"
-#import "MeetMsgType.pbobjc.h"
+#import "EntityMsgType.pbobjc.h"
 
 /**
  * TMMsgSender is used to send msg to other

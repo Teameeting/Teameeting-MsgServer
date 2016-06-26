@@ -21,7 +21,9 @@ MsgClient::~MsgClient()
 
 int MsgClient::MCInit(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, const std::string& server, int port)
 {
-    return Init(cb, uid, token, nname, server, port);
+    int module = 0;
+    std::cout << "MCInit add module here, please implement it!!!" << std::endl;
+    return Init(cb, uid, token, nname, module, server, port);
 }
 
 int MsgClient::MCUnin()

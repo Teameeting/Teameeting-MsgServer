@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MsgClientProtocolImpl.h"
 #import "TMClientType.h"
-#import "MeetMsgType.pbobjc.h"
-#import "MeetMsg.pbobjc.h"
+#import "EntityMsgType.pbobjc.h"
+#import "EntityMsg.pbobjc.h"
 
 @implementation MsgClientProtocolImpl
 
@@ -24,12 +24,13 @@
 {    
     NSLog(@"TMMsgSender::OnSndMsg msg:%@\n", msg);
     NSData* msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
+#if 0 
+    EntityMsg* entityMsg = [EntityMsg parseFromData: msgData error:nullptr];
     MeetMsg* meetMsg = [MeetMsg parseFromData:msgData error:nullptr];
     NSLog(@"TMMsgSender::OnSndMsg MeetMsg:%@\n", [meetMsg debugDescription]);
     NSString* cont = [meetMsg msgCont];
     EMsgTag tag = [meetMsg msgTag];
     
-#if 1
     switch (tag) {
         case EMsgTag_Tchat:
         {

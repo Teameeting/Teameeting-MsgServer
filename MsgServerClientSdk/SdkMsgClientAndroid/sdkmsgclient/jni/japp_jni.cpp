@@ -60,8 +60,14 @@ JOWW(int, JMClientApp_Init)(JNIEnv* jni, jobject j_app, jstring strUid, jstring 
 	JavaString jstrToken(strToken);
 	JavaString jstrNname(strNname);
 	JavaString jstrSvrAddr(strSvrAddr);
-
-	return jApp->Init((jApp), jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), jstrSvrAddr.ToString8().c_str(), nSvrPort);
+	jint module = 0;
+	// Init add module here, please implement
+	// Init add module here, please implement
+	// Init add module here, please implement
+	// Init add module here, please implement
+	// Init add module here, please implement
+	// Init add module here, please implement
+	return jApp->Init((jApp), jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), module, jstrSvrAddr.ToString8().c_str(), nSvrPort);
 }
 
 JOWW(int, JMClientApp_SndMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jstring strMsg)

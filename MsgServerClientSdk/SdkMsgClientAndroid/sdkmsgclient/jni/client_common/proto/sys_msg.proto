@@ -1,0 +1,33 @@
+syntax="proto3";
+package pms;
+
+import "common_msg.proto";
+import "sys_msg_type.proto";
+
+option optimize_for = LITE_RUNTIME;
+
+// this is for server module connecting connection
+message ConnMsg{
+    EConnTag           conn_tag = 1;
+    ETransferModule    tr_module = 2; // the server module
+    string             moduleid = 3;
+    string             transferid = 4;
+}
+
+// this is for msg relaying between server
+// this is used by TransferMsg's content field
+message RelayMsg{
+    EServerCmd         svr_cmds = 1;
+    ETransferModule    tr_module = 2; // the server module
+    string             connector = 3;
+    bytes              content = 4; // this is the application or module msg
+    ToUser             touser = 5;
+}
+
+// this is for msg relaying between server
+message TransferMsg{
+    ETransferType type         = 1; // the type of transfer
+    ETransferFlag flag         = 2; // the flag
+    ETransferPriority priority = 3;
+    bytes   content            = 4; // the message to transfer
+}
