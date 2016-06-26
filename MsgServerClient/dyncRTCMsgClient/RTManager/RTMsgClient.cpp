@@ -290,13 +290,6 @@ bool RTMsgClient::GrpConnecting()
     return true;
 }
 
-void RTMsgClient::GrpGenNotify()
-{
-    if (mIsOnline) {
-        mGrpMsgClient.GroupNotify(mUserid, mCurRoomId);
-    }
-}
-
 void RTMsgClient::GrpInitSync()
 {
     GrpInit(pms::EModuleType::TLIVE);

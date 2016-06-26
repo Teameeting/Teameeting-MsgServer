@@ -66,7 +66,6 @@ public:
     void GrpInit(int module);
     void GrpUnin();
     bool GrpConnecting();
-    void GrpGenNotify();
     void GrpInitSync();
     void GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn);
 

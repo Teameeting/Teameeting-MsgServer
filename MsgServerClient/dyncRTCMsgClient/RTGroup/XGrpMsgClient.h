@@ -31,11 +31,8 @@ public:
     int Init(XMsgCallback* cb, const std::string& uid, const std::string& token, int module, const std::string& server="", int port=0, bool bAutoConnect=true);
     int Unin();
 
-    int GenSyncDataRequest(const std::string& userid, const std::string& groupid, int64 seqn);
-    int GenSyncDataRequests(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn);
-
-    int GroupNotify(const std::string& userid, const std::string& groupid);
-    int GroupNotifys(const std::vector<std::string>& userids, const std::string& groupid);
+    int GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn);
+    int GenGrpSyncDataNotifys(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
 
@@ -53,7 +50,7 @@ public:
     virtual void OnLogin(int code, const std::string& userid);
     virtual void OnLogout(int code, const std::string& userid);
     virtual void OnKeepLive(int code, const std::string& cont);
-    virtual void OnGroupSyncData(int code, const std::string& cont);
+    virtual void OnGroupNotify(int code, const std::string& cont);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);

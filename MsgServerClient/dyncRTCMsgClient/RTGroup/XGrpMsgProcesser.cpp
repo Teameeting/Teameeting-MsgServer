@@ -54,55 +54,19 @@ int XGrpMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& us
     return 0;
 }
 
-int XGrpMsgProcesser::EncodeGroupNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module)
+int XGrpMsgProcesser::EncodeGrpSyncDataNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module)
 {
     std::vector<std::string> v;
     v.push_back(userid);
-    printf("EncodeGroupNotify userid:%s, groupid:%s, curseqn:%lld, module:%d\n", userid.c_str(), groupid.c_str(), curseqn, module);
-    EncodeGroupNotifys(outstr, v, groupid, curseqn, module);
+    printf("EncodeGrpSyncDataNotify userid:%s, groupid:%s, curseqn:%lld, module:%d\n", userid.c_str(), groupid.c_str(), curseqn, module);
+    EncodeGrpSyncDataNotifys(outstr, v, groupid, curseqn, module);
     return 0;
 }
 
-int XGrpMsgProcesser::EncodeGroupNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn, int module)
+int XGrpMsgProcesser::EncodeGrpSyncDataNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn, int module)
 {
     pms::MsgReq req;
-    printf("EncodeGroupNotifys userids.size:%lu\n", userids.size());
-    for(int i=0,j=(userids.size()<=PACKED_MSG_NUM_ONCE)?userids.size():PACKED_MSG_NUM_ONCE; i<j;++i)
-    {
-        if (userids.at(i).length()==0)break;
-        m_packed.mutable_msgs(i)->set_rsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
-        m_packed.mutable_msgs(i)->set_tsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
-        m_packed.mutable_msgs(i)->set_mtag(pms::EStorageTag::TDATA);
-        m_packed.mutable_msgs(i)->set_storeid(userids.at(i));
-        m_packed.mutable_msgs(i)->set_ruserid(userids.at(i));
-        m_packed.mutable_msgs(i)->set_groupid(groupid);
-        m_packed.mutable_msgs(i)->set_sequence(curseqn);
-    }
-
-    req.set_svr_cmds(pms::EServerCmd::CGROUPNOTIFY);
-    req.set_mod_type((pms::EModuleType)module);
-    req.set_content(m_packed.SerializeAsString());
-    outstr = req.SerializeAsString();
-    for(int i=0;i<PACKED_MSG_NUM_ONCE;++i)
-    {
-        m_packed.mutable_msgs(i)->Clear();
-    }
-    return 0;
-}
-
-int XGrpMsgProcesser::EncodeGroupSyncData(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module)
-{
-    std::vector<std::string> v;
-    v.push_back(userid);
-    printf("EncodeGroupNotify userid:%s, groupid:%s, curseqn:%lld, module:%d\n", userid.c_str(), groupid.c_str(), curseqn, module);
-    EncodeGroupSyncDatas(outstr, v, groupid, curseqn, module);
-    return 0;
-}
-
-int XGrpMsgProcesser::EncodeGroupSyncDatas(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn, int module)
-{
-    pms::MsgReq req;
-    printf("EncodeGroupSyncDatas userids.size:%lu\n", userids.size());
+    printf("EncodeGrpSyncDataNotifys userids.size:%lu\n", userids.size());
     for(int i=0,j=(userids.size()<=PACKED_MSG_NUM_ONCE)?userids.size():PACKED_MSG_NUM_ONCE; i<j;++i)
     {
         if (userids.at(i).length()==0)break;
@@ -151,7 +115,7 @@ int XGrpMsgProcesser::DecodeRecvData(const char* pData, int nLen)
             DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
             break;
         case pms::EServerCmd::CGROUPNOTIFY:
-            DecodeGroupSyncData(resp.rsp_code(), resp.rsp_cont());
+            DecodeGroupNotify(resp.rsp_code(), resp.rsp_cont());
             break;
 
         default:
@@ -179,9 +143,9 @@ int XGrpMsgProcesser::DecodeKeepAlive(int code, const std::string& cont)
     return 0;
 }
 
-int XGrpMsgProcesser::DecodeGroupSyncData(int code, const std::string& cont)
+int XGrpMsgProcesser::DecodeGroupNotify(int code, const std::string& cont)
 {
-    m_helper.OnGroupSyncData(code, cont);
+    m_helper.OnGroupNotify(code, cont);
     return 0;
 }
 

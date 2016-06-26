@@ -25,7 +25,7 @@ public:
     virtual void OnLogin(int code, const std::string& userid) = 0;
     virtual void OnLogout(int code, const std::string& userid) = 0;
     virtual void OnKeepLive(int code, const std::string& cont) = 0;
-    virtual void OnGroupSyncData(int code, const std::string& cont) = 0;
+    virtual void OnGroupNotify(int code, const std::string& cont) = 0;
 };
 
 class XGrpMsgProcesser{
@@ -44,12 +44,8 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
-    int EncodeGroupSyncData(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
-    int EncodeGroupSyncDatas(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);
-
-    // this is used server , not here
-    int EncodeGroupNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
-    int EncodeGroupNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);
+    int EncodeGrpSyncDataNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
+    int EncodeGrpSyncDataNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);
 
     int DecodeRecvData(const char* pData, int nLen);
 
@@ -57,7 +53,7 @@ protected:
     int DecodeLogin(int code, const std::string& cont);
     int DecodeLogout(int code, const std::string& cont);
     int DecodeKeepAlive(int code, const std::string& cont);
-    int DecodeGroupSyncData(int code, const std::string& cont);
+    int DecodeGroupNotify(int code, const std::string& cont);
 private:
     XGrpMsgClientHelper    &m_helper;
     pms::PackedStoreMsg  m_packed;

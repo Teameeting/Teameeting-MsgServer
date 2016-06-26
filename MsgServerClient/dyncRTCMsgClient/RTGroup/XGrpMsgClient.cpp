@@ -101,11 +101,11 @@ int XGrpMsgClient::Unin()
     return 0;
 }
 
-int XGrpMsgClient::GroupNotify(const std::string& userid, const std::string& groupid)
+int XGrpMsgClient::GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn)
 {
     std::string outstr;
     if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeGroupNotify(outstr, userid, groupid, m_curSeqn, m_module);
+        m_pGrpMsgProcesser->EncodeGrpSyncDataNotify(outstr, userid, groupid, seqn, m_module);
     } else {
         return -1;
     }
@@ -113,48 +113,16 @@ int XGrpMsgClient::GroupNotify(const std::string& userid, const std::string& gro
         return -1;
     }
 
-    printf("XGrpMsgClient GroupNotify ok!!\n");
-    return SendEncodeMsg(outstr);
-}
-
-int XGrpMsgClient::GroupNotifys(const std::vector<std::string>& userids, const std::string& groupid)
-{
-    std::string outstr;
-    if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeGroupNotifys(outstr, userids, groupid, m_curSeqn, m_module);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-
-    printf("XGrpMsgClient GroupNotifys ok!!\n");
-    return SendEncodeMsg(outstr);
-}
-
-int XGrpMsgClient::GenSyncDataRequest(const std::string& userid, const std::string& groupid, int64 seqn)
-{
-    std::string outstr;
-    if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeGroupSyncData(outstr, userid, groupid, seqn, m_module);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-
-    printf("XGrpMsgClient GenSyncDataRequest ok!!\n");
+    printf("XGrpMsgClient GenGrpSyncDataNotify ok!!\n");
     return SendEncodeMsg(outstr);
 }
 
 
-int XGrpMsgClient::GenSyncDataRequests(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn)
+int XGrpMsgClient::GenGrpSyncDataNotifys(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn)
 {
     std::string outstr;
     if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeGroupSyncDatas(outstr, userids, groupid, seqn, m_module);
+        m_pGrpMsgProcesser->EncodeGrpSyncDataNotifys(outstr, userids, groupid, seqn, m_module);
     } else {
         return -1;
     }
@@ -162,7 +130,7 @@ int XGrpMsgClient::GenSyncDataRequests(const std::vector<std::string>& userids, 
         return -1;
     }
 
-    printf("XGrpMsgClient GenSyncDataRequests ok!!\n");
+    printf("XGrpMsgClient GenGrpSyncDataNotifys ok!!\n");
     return SendEncodeMsg(outstr);
 }
 
@@ -386,11 +354,11 @@ void XGrpMsgClient::OnKeepLive(int code, const std::string& cont)
 
 }
 
-void XGrpMsgClient::OnGroupSyncData(int code, const std::string& cont)
+void XGrpMsgClient::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XGrpMsgClient::OnGroupSyncData ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
+    printf("XGrpMsgClient::OnGroupNotify ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
             , store.ruserid().c_str()\
             , store.sequence()\
             , store.groupid().c_str()\
@@ -398,7 +366,7 @@ void XGrpMsgClient::OnGroupSyncData(int code, const std::string& cont)
             , store.rsvrcmd());
     // check userid, groupid, send sync data request
     std::string mem_user("xddxdd");
-    GenSyncDataRequest(mem_user, store.groupid(), store.sequence());
+    GenGrpSyncDataNotify(mem_user, store.groupid(), store.sequence());
 
     return;
 }
