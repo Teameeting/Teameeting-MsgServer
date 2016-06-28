@@ -61,6 +61,8 @@ public:
         mMsgClient.TestSetCurSeqn(seqn);
     }
 
+    void AddGroup();
+
 
     // for group
     void GrpInit(int module);

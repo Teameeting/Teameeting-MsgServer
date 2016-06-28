@@ -132,7 +132,7 @@ void RTClientTest::RunOnce()
 {
 
     //TODO:
-    TestSync();
+    //TestSync();
     //TestSend();
     ////if (mName.compare("xddxdd")==0)
     ////{
@@ -144,6 +144,7 @@ void RTClientTest::RunOnce()
     //TestSendLoop();
     //TestSendGroupLoop();
     //TestSendGroup();
+    TestAddGroup();
 }
 
 void RTClientTest::TestSend()
@@ -277,3 +278,10 @@ void RTClientTest::TestSync()
     while(t--)
         rtc::Thread::SleepMs(1000);
 }
+
+void RTClientTest::TestAddGroup()
+{
+    printf("RTClientTest::TestAddGroup\n");
+     mMsgClient->AddGroup();
+}
+

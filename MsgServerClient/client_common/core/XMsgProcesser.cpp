@@ -118,14 +118,15 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module)
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
     store.set_rsvrcmd(pms::EServerCmd::CSYNCSEQN);
     store.set_tsvrcmd(pms::EServerCmd::CSYNCSEQN);
-    store.set_mtag(pms::EStorageTag::TSEQN);
+    store.set_mtag((pms::EStorageTag)(tag));
+    store.set_mflag((pms::EMsgFlag)flag);
     store.set_storeid(userid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
@@ -139,14 +140,15 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module)
+int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
     store.set_rsvrcmd(pms::EServerCmd::CSYNCDATA);
     store.set_tsvrcmd(pms::EServerCmd::CSYNCDATA);
-    store.set_mtag(pms::EStorageTag::TDATA);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
     store.set_storeid(userid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
@@ -160,14 +162,38 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module)
+int XMsgProcesser::EncodeSyncGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& token, int64 seqn, int module, int tag, int flag)
+{
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CSYNCSEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CSYNCSEQN);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(groupid);
+    store.set_ruserid(userid);
+    store.set_groupid(groupid);
+    store.set_sequence(seqn);
+
+    req.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
+#endif
+    return 0;
+}
+
+int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module, int tag, int flag)
 {
 #if DEF_PROTO
     pms::MsgReq req;
     pms::StorageMsg store;
     store.set_rsvrcmd(pms::EServerCmd::CSYNCGROUPDATA);
     store.set_tsvrcmd(pms::EServerCmd::CSYNCGROUPDATA);
-    store.set_mtag(pms::EStorageTag::TDATA);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
     store.set_storeid(groupid);
     store.set_ruserid(userid);
     store.set_groupid(groupid);
@@ -226,7 +252,6 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         case pms::EServerCmd::CSYNCGROUPDATA:
             DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
             break;
-
 
         default:
             LOG(LS_ERROR) << "invalid svr_cmds type:" << resp.svr_cmds();

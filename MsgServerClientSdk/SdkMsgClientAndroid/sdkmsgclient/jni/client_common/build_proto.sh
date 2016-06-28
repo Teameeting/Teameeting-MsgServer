@@ -2,8 +2,6 @@
 
 cp build_proto.sh .build_proto.sh
 
-rm -f *.h *.cc *.o
-
 protoc proto/common_msg.proto       --cpp_out=./proto -I./proto
 protoc proto/entity_msg.proto       --cpp_out=./proto -I./proto
 protoc proto/entity_msg_type.proto  --cpp_out=./proto -I./proto

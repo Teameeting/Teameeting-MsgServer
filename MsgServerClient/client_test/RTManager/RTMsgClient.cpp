@@ -217,6 +217,7 @@ void RTMsgClient::InitSync()
 {
     Init(pms::EModuleType::TLIVE);
     Connecting();
+    mIsOnline = true;
 }
 
 void RTMsgClient::SyncSeqn()
@@ -269,6 +270,14 @@ void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
     }
 }
 
+void RTMsgClient::AddGroup()
+{
+    if (mIsOnline) {
+        printf("RTMsgClient::AddGroup was called\n");
+        mMsgClient.AddGroup(mCurRoomId);
+    }
+        printf("RTMsgClient::AddGroup was called~~\n");
+}
 
 void RTMsgClient::GrpInit(int module)
 {
@@ -287,6 +296,7 @@ bool RTMsgClient::GrpConnecting()
     printf("RTMsgClient::GrpConnecting\n");
     while(mGrpMsgClient.MSStatus()!=MSState::MSCONNECTED)sleep(1);
     printf("RTMsgClient::GrpConnecting ok\n");
+    mIsOnline = true;
     return true;
 }
 
@@ -299,7 +309,7 @@ void RTMsgClient::GrpInitSync()
 void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn)
 {
     if (mIsOnline) {
-        mMsgClient.SyncGroupData(userid, groupid, curseqn);
+        mMsgClient.SyncGroupData(groupid);
     }
 }
 

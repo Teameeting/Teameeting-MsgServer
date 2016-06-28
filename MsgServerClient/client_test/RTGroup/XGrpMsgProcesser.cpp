@@ -72,7 +72,7 @@ int XGrpMsgProcesser::EncodeGrpSyncDataNotifys(std::string& outstr, const std::v
         if (userids.at(i).length()==0)break;
         m_packed.mutable_msgs(i)->set_rsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
         m_packed.mutable_msgs(i)->set_tsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
-        m_packed.mutable_msgs(i)->set_mtag(pms::EStorageTag::TDATA);
+        m_packed.mutable_msgs(i)->set_mtag(pms::EStorageTag::TCOMMON);
         m_packed.mutable_msgs(i)->set_storeid(userids.at(i));
         m_packed.mutable_msgs(i)->set_ruserid(userids.at(i));
         m_packed.mutable_msgs(i)->set_groupid(groupid);
