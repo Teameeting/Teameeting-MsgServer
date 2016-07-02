@@ -29,14 +29,11 @@ public:
     virtual void OnLogin(int code, const std::string& userid) = 0;
     virtual void OnLogout(int code, const std::string& userid) = 0;
     virtual void OnSndMsg(int code, const std::string& cont) = 0;
-    virtual void OnGetMsg(int code, const std::string& cont) = 0;
     virtual void OnKeepLive(int code, const std::string& cont) = 0;
     virtual void OnSyncSeqn(int code, const std::string& cont) = 0;
     virtual void OnSyncData(int code, const std::string& cont) = 0;
     virtual void OnGroupNotify(int code, const std::string& cont) = 0;
     virtual void OnSyncGroupData(int code, const std::string& cont) = 0;
-    virtual void OnAddGroup(int code, const std::string& groupid) = 0;
-    virtual void OnDelGroup(int code, const std::string& groupid) = 0;
 };
 
 class XMsgClient
@@ -47,22 +44,22 @@ public:
     XMsgClient();
     ~XMsgClient();
 
-    int Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, int module, const std::string& server="", int port=0, bool bAutoConnect=true);
+    int Init(const std::string& uid, const std::string& token, const std::string& nname, int module);
     int Unin();
 
     int RegisterMsgCb(XMsgCallback* cb);
     int UnRegisterMsgCb(XMsgCallback* cb);
 
-
+    int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
+    
     int AddGroup(const std::string& groupid);
-    int DelGroup(const std::string& groupid);
+    int RmvGroup(const std::string& groupid);
 
-    int SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg);
-    int GetMsg(pms::EMsgTag tag);
-    int OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::string& rname, const std::string& remain);
-    int SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::vector<std::string>& uvec);
-    int NotifyMsg(const std::string& roomid, const std::string& rname, pms::EMsgTag tag, const std::string& msg);
+    int SndMsg(const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag);
+    int SndMsgTo(const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec);
 
+    int SyncMsg();
+    
     int SyncSeqn();
     int SyncData();
     int SyncGroupSeqn();
@@ -89,14 +86,11 @@ public:
     virtual void OnLogin(int code, const std::string& userid);
     virtual void OnLogout(int code, const std::string& userid);
     virtual void OnSndMsg(int code, const std::string& cont);
-    virtual void OnGetMsg(int code, const std::string& cont);
     virtual void OnKeepLive(int code, const std::string& cont);
     virtual void OnSyncSeqn(int code, const std::string& cont);
     virtual void OnSyncData(int code, const std::string& cont);
     virtual void OnGroupNotify(int code, const std::string& cont);
     virtual void OnSyncGroupData(int code, const std::string& cont);
-    virtual void OnAddGroup(int code, const std::string& groupid);
-    virtual void OnDelGroup(int code, const std::string& groupid);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);
@@ -105,15 +99,13 @@ public:
     // <groupid, groupseqn>
     typedef std::map<std::string, int64>        GroupSeqnMap;
     typedef GroupSeqnMap::iterator              GroupSeqnMapIt;
-    typedef std::set<XMsgCallback*>             MsgCallbackSet;
-    typedef MsgCallbackSet::iterator            MsgCallbackSetIt;
 private:
     int Login();
     int Logout();
     bool RefreshTime();
     int KeepAlive();
-    int SyncGroupSeqn(const std::string& groupid, int64 seqn, bool isfirst);
-    int SyncGroupData(const std::string& groupid, int64 seqn, bool isfirst);
+    int SyncGroupSeqn(const std::string& groupid, int64 seqn, int type);
+    int SyncGroupData(const std::string& groupid, int64 seqn, int type);
     int SendEncodeMsg(std::string& msg);
     unsigned short readShort(char** pptr);
     void writeShort(char** pptr, unsigned short anInt);
@@ -138,9 +130,7 @@ private:
     pms::EModuleType         m_module;
 
     GroupSeqnMap             m_mapGroupSeqn;
-    MsgCallbackSet           m_setMsgCallback;
 	rtc::CriticalSection     m_csGroupSeqn;
-	rtc::CriticalSection     m_csMsgCallback;
 };
 
 

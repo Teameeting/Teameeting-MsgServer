@@ -8,11 +8,13 @@
 
 #ifndef MsgClientIos_MsgClientProtocolImpl_h
 #define MsgClientIos_MsgClientProtocolImpl_h
-#import "MsgClientProtocol.h"
+#import "MSClientDelegate.h"
+#import "MSGroupDelegate.h"
+#import "MSTxtMessageDelegate.h"
 
 @protocol ShowResultProtocol;
 
-@interface MsgClientProtocolImpl : NSObject<MsgClientProtocol>
+@interface MsgClientProtocolImpl : NSObject<MSClientDelegate, MSGroupDelegate, MSTxtMessageDelegate>
 
 
 @property (nonatomic, assign) id<ShowResultProtocol> delegate;

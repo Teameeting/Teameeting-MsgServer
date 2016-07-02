@@ -38,12 +38,13 @@ void protobuf_ShutdownFile_storage_5fmsg_5ftype_2eproto();
 enum EStorageTag {
   TSEQN = 0,
   TDATA = 1,
+  TFETCHSEQN = 2,
   EStorageTag_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EStorageTag_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EStorageTag_IsValid(int value);
 const EStorageTag EStorageTag_MIN = TSEQN;
-const EStorageTag EStorageTag_MAX = TDATA;
+const EStorageTag EStorageTag_MAX = TFETCHSEQN;
 const int EStorageTag_ARRAYSIZE = EStorageTag_MAX + 1;
 
 // ===================================================================

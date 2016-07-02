@@ -24,8 +24,8 @@ typedef GPB_ENUM(EStorageTag) {
   /// by this enum. The message will also have C functions to get/set the rawValue
   /// of the field.
   EStorageTag_GPBUnrecognizedEnumeratorValue = kGPBUnrecognizedEnumeratorValue,
-  EStorageTag_Tseqn = 0,
-  EStorageTag_Tdata = 1,
+  EStorageTag_Tcommon = 0,
+  EStorageTag_Tgetnew = 1,
 };
 
 GPBEnumDescriptor *EStorageTag_EnumDescriptor(void);

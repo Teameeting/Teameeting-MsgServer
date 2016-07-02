@@ -7,8 +7,13 @@
 //
 
 #import "ViewController.h"
-#import "TMMsgSender.h"
+#import "MSClientManager.h"
+#import "MSGroupManager.h"
+#import "MSMessageManager.h"
+
 #import "EntityMsgType.pbobjc.h"
+#import "MSSqlite3.h"
+#import "MSSharedSeqnConfig.h"
 
 @interface ViewController () {
     UIButton *mEnterButton;
@@ -80,8 +85,13 @@
     [self.view addSubview:textViewDisplay];
     
     ////////////////////////////////////////////////////
+    clientMgr = [[MSClientManager alloc] init];
+    groupMgr = [[MSGroupManager alloc] init];
+    msgMgr = [[MSMessageManager alloc] init];
+    impl = [[MsgClientProtocolImpl alloc] init];
+    impl.delegate = self;
     
-    msgsender = [ [TMMsgSender alloc] init];
+    
     server = @"192.168.7.207";
     port   = 6630;
     uid = @"9a4f3730-f643-422a-a3a1-eae557060a90";
@@ -89,11 +99,14 @@
     nname = @"nickname";
     roomid = @"400000000440";
     msg = @"hello world";
-    impl = [[MsgClientProtocolImpl alloc] init];
-    impl.delegate = self;
-    if ([msgsender tMInitMsgProtocol:impl uid:uid token:token nname:nname server:server port:port] == -1) {
-        NSLog(@"msgsender Init Protocol error, return -1!!!");
+    int ret = [clientMgr initMsgClientUsrId:uid token:token nName:nname];
+    if (ret != 0) {
+        NSLog(@"clientMgr Init error, return -1!!!");
     }
+    [msgMgr addDelegateId:impl delegateQueue:nil];
+    [groupMgr addDelegateId:impl delegateQueue:nil];
+    [clientMgr addDelegateId:impl delegateQueue:nil];
+    [clientMgr connToServer:server port:port];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -104,26 +117,28 @@
 - (IBAction)enterButton:(id)sender {
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
-
-    [msgsender tMOptRoomCmd:EMsgTag_Tenter roomid:roomid rname:@"roomname" remain:@""];
+    
+    [groupMgr addGroupGrpId:roomid];
+    
 }
 
 - (IBAction)sndMsgButton:(id)sender {
     NSString *sndMsg = @"sndMsgButton was called";
     NSLog(@"%@", sndMsg);
-    [msgsender tMSndMsgRoomid:roomid rname:@"roomname" msg:msg];
+    //[msgsender tMSndMsgRoomid:roomid rname:@"roomname" msg:msg];
+    [msgMgr sendTxtMsgGrpId:roomid cont:sndMsg];
 }
 
 - (IBAction)leaveButton:(id)sender {
     NSString *leave = @"leaveButton was called";
     NSLog(@"%@", leave);
-    [msgsender tMOptRoomCmd:EMsgTag_Tleave roomid:roomid rname:@"roomname" remain:@""];
+    //[msgsender tMOptRoomCmd:EMsgTag_Tleave roomid:roomid rname:@"roomname" remain:@""];
 }
 
 - (IBAction)notifyButton:(id)sender {
     NSString *notify = @"notifyButton was called";
     NSLog(@"%@", notify);
-    [msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:EMsgTag_Tnotify msg:msg];
+    //[msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:EMsgTag_Tnotify msg:msg];
 }
 
 -(void)updateResult:(NSString*)backInfo
@@ -141,6 +156,7 @@
                         nInt:(int)nInt
 {
     NSLog(@"ViewController::resultDisplayCallback was called...");
+   
     
     NSMethodSignature *sig = [self methodSignatureForSelector:@selector(updateResult:mMsg:nInt:)];
     if (!sig) {
@@ -157,6 +173,9 @@
 }
 
 - (void)dealloc {
-    [msgsender tMUint];
+    [clientMgr delDelegateId:impl];
+    [groupMgr delDelegateId:impl];
+    [msgMgr delDelegateId:impl];
+    [clientMgr uninMsgClient];
 }
 @end

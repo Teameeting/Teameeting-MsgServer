@@ -41,12 +41,19 @@ enum EMsgType {
   TPIC = 2,
   TAUD = 3,
   TVID = 4,
+  TEMJ = 5,
+  TSDF = 6,
+  TLIV = 20,
+  TREN = 21,
+  TBLK = 22,
+  TFBD = 23,
+  TMGR = 24,
   EMsgType_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EMsgType_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EMsgType_IsValid(int value);
 const EMsgType EMsgType_MIN = TTXT;
-const EMsgType EMsgType_MAX = TVID;
+const EMsgType EMsgType_MAX = TMGR;
 const int EMsgType_ARRAYSIZE = EMsgType_MAX + 1;
 
 enum EMsgTag {

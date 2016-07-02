@@ -10,6 +10,7 @@
 #define dyncRTCMsgClient_XMsgCallback_h
 
 #include <string>
+#include "RTMsgCommon.h"
 
 enum MSState{
     MSNOT_CONNECTED,
@@ -17,16 +18,28 @@ enum MSState{
     MSCONNECTED
 };
 
+typedef struct MSCbData{
+    int type;
+    std::string data;
+    int64       seqn;
+}MSCbData;
+
 class XMsgCallback {
 public:
-    virtual void OnSndMsg(const std::string& msg) = 0;
-    virtual void OnGetMsg(const std::string& msg) = 0;
+    virtual void OnSndMsg(int code, const std::string& msgid) = 0;
+    virtual void OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data) = 0;
+    virtual void OnRecvMsg(const std::string& msg) = 0;
+    virtual void OnRecvGroupMsg(const std::string& msg) = 0;
+    
+    virtual void OnSyncSeqn(int64 seqn) = 0;
+    virtual void OnSyncGroupSeqn(const std::string& groupid, int64 seqn) = 0;
     
 public:
     virtual void OnMsgServerConnected() = 0;
+    virtual void OnMsgServerConnecting() = 0;
     virtual void OnMsgServerDisconnect() = 0;
     virtual void OnMsgServerConnectionFailure() = 0;
-    virtual void OnMsgServerState(MSState state) = 0;
+    
 public:
     XMsgCallback(){}
     virtual ~XMsgCallback(){}

@@ -9,7 +9,7 @@
 #ifndef MsgClientIos_MsgClientProtocol_h
 #define MsgClientIos_MsgClientProtocol_h
 
-#import "TMClientType.h"
+#import "MSClientType.h"
 
 @protocol MsgClientProtocol <NSObject>
 

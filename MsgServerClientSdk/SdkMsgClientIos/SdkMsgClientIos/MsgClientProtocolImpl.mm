@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MsgClientProtocolImpl.h"
-#import "TMClientType.h"
+#import "MSClientType.h"
 #import "EntityMsgType.pbobjc.h"
 #import "EntityMsg.pbobjc.h"
 
@@ -20,82 +20,113 @@
  *  callback here
  */
 
-- (void) OnSndMsgMsg:(NSString*) msg
-{    
-    NSLog(@"TMMsgSender::OnSndMsg msg:%@\n", msg);
-    NSData* msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
-#if 0 
-    EntityMsg* entityMsg = [EntityMsg parseFromData: msgData error:nullptr];
-    MeetMsg* meetMsg = [MeetMsg parseFromData:msgData error:nullptr];
-    NSLog(@"TMMsgSender::OnSndMsg MeetMsg:%@\n", [meetMsg debugDescription]);
-    NSString* cont = [meetMsg msgCont];
-    EMsgTag tag = [meetMsg msgTag];
+-(void) OnAddGroupSuccessGrpId:(NSString*)grpId
+{
     
-    switch (tag) {
-        case EMsgTag_Tchat:
-        {
-            NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", cont]];
-            [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
-        }
-            break;
-        case EMsgTag_Tenter:
-        {
-            NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", cont]];
-            [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
-        }
-            
-            break;
-        case EMsgTag_Tleave:
-        {
-            NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", cont]];
-            [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
-        }
-            
-            break;
-        case EMsgTag_Tnotify:
-        {
-            NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", cont]];
-            [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
-        }
-            
-            break;
-        default:
-            break;
-    }
-#endif
 }
 
-- (void) OnGetMsgMsg:(NSString*) msg
+-(void) OnAddGroupFailedGrpId:(NSString*)grpId
+                       reason:(NSString*)reason
+                         code:(NSInteger)code
 {
-    NSLog(@"TMMsgSender::OnGetMsg msg:%@\n", msg);
-    [self.delegate resultDisplayCallback:@"" mMsg:msg nInt:0];
+    
+}
+
+// when del an group
+-(void) OnRmvGroupSuccessGrpId:(NSString*)grpId
+{
+    
+}
+
+-(void) OnRmvGroupFailedGrpId:(NSString*)grpId
+                       reason:(NSString*)reason
+                         code:(NSInteger)code
+{
+    
+}
+
+
+// when the msg you send reached server
+-(void)OnSendMessageId:(NSString*)msgId
+                  code:(int)code
+{
+    
+}
+
+// when recv text msg
+-(void)OnRecvTxtMessage:(MSTxtMessage*)txtMsg
+{
+    NSString* content = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: content:%@", [txtMsg content]]];
+    [self.delegate resultDisplayCallback:@"" mMsg:content nInt:0];
+}
+
+// when recv self define msg
+// not used now
+-(void)OnRecvSelfDefMessage:(MSTxtMessage*)sdefMsg
+{
+    
+}
+
+// when hostId begin to live in grpId
+-(void)OnNotifyLiveId:(NSString*)grpId
+               hostId:(NSString*)hostId
+{
+    
+}
+
+// when hostId in grpId recv red-envelope
+-(void)OnNotifyRedEnvelopeGrpId:(NSString*)grpId
+                         hostId:(NSString*)hostId
+{
+    
+}
+
+// when userId was push to blacklist in grpId
+-(void)OnNotifyBlacklist:(NSString*)grpId
+                  userId:(NSString*)userId
+{
+    
+}
+
+// when userId was forbidden in grpId
+-(void)OnNotifyForbidden:(NSString*)grpId
+                  userId:(NSString*)userId
+{
+    
+}
+
+// when userId in grpId was setted to be manager
+-(void)OnNotifySettedMgrGrpId:(NSString*)grpId
+                       userId:(NSString*)userId
+{
+    
 }
 
 - (void) OnMsgServerConnected
 {
     NSString *ns_msc = @"Callback OnMsgServerConnected was called";
-    NSLog(@"TMMsgSender %@\n", ns_msc);
+    NSLog(@"MSMsgSender %@\n", ns_msc);
+    [self.delegate resultDisplayCallback:ns_msc mMsg:@"" nInt:0];
+}
+
+- (void) OnMsgServerConnecting
+{
+    NSString *ns_msc = @"Callback OnMsgServerConnecting was called";
+    NSLog(@"MSMsgSender %@\n", ns_msc);
     [self.delegate resultDisplayCallback:ns_msc mMsg:@"" nInt:0];
 }
 
 - (void) OnMsgServerDisconnect
 {
     NSString *ns_msc = @"Callback OnMsgServerDisconnect was called";
-    NSLog(@"TMMsgSender %@\n", ns_msc);
+    NSLog(@"MSMsgSender %@\n", ns_msc);
     [self.delegate resultDisplayCallback:ns_msc mMsg:@"" nInt:0];
 }
 
 - (void) OnMsgServerConnectionFailure
 {
     NSString *ns_msc = @"Callback OnMsgServerConnectionFailure was called";
-    NSLog(@"TMMsgSender %@\n", ns_msc);
-    [self.delegate resultDisplayCallback:ns_msc mMsg:@"" nInt:0];
-}
-
-- (void) OnMsgServerStateConnState:(MCConnState) state
-{
-    NSString* ns_msc = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: Callback OnMsgServerStateTcpState was called state:%i", (int)state ]];
-    NSLog(@"TMMsgSender %@\n", ns_msc);
+    NSLog(@"MSMsgSender %@\n", ns_msc);
     [self.delegate resultDisplayCallback:ns_msc mMsg:@"" nInt:0];
 }
 
