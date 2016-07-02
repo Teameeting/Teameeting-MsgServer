@@ -5,7 +5,8 @@ option optimize_for = LITE_RUNTIME;
 
 // the tag of storeage msg
 enum EStorageTag{
-    TCOMMON       = 0;
-    TGETNEW       = 1;
+    TSEQN       = 0;
+    TDATA       = 1;
+    TFETCHSEQN  = 2;
 }
 

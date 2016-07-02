@@ -45,6 +45,8 @@ public:
     virtual void OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnCreateSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnDeleteSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnResponse(const char*pData, int nLen);
 public:
     //* For RTObserverConnection

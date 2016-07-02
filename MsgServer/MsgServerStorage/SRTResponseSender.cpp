@@ -101,6 +101,8 @@ void SRTResponseSender::OnWakeupEvent(const void*pData, int nSize)
         if (m_TransferSession && m_TransferSession->IsLiveSession())
         {
             pms::RelayMsg rmsg;
+            // this mean it is about data, not seqn
+            // because this is all read
             rmsg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
             rmsg.set_content(m_SendPostMsg.SerializeAsString());
 
@@ -150,7 +152,9 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
         if (m_TransferSession && m_TransferSession->IsLiveSession())
         {
             pms::RelayMsg rmsg;
-            rmsg.set_svr_cmds(pms::EServerCmd::CNEWMSGDATA);
+            // this mean it is about data, not seqn
+            // because this is all write
+            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
             rmsg.set_content(m_SendPushMsg.SerializeAsString());
 
             pms::TransferMsg tmsg;

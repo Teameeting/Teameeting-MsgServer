@@ -18,6 +18,8 @@ enum EServerCmd{
     CNEWMSGSEQN             = 10;
     CNEWMSGDATA             = 11;
     CGROUPNOTIFY            = 12;
+    CCREATESEQN             = 13;
+    CDELETESEQN             = 14;
 }
 
 // different server module

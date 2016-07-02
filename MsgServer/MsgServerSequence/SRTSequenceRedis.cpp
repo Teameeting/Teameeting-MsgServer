@@ -80,18 +80,98 @@ void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
     pms::StorageMsg request;
     request.ParseFromString(str);
     {
-        int64 seq = 0;
-        std::string str("");
-        char key[1024] = {'\0'};
-        sprintf(key, "%s", request.storeid().c_str());
-        printf("SRTSequenceRedis::OnPostEvent msgid:%s, key:%s\n", request.msgid().c_str(), key);
-        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
-        bool ok = m_xRedisClient.get(*m_RedisDBIdx, key, str);
+        if (request.mflag()==pms::EMsgFlag::FGROUP)
+        {
+            std::string str("");
+            char key[512] = {'\0'};
+            sprintf(key, "grp:%s", request.storeid().c_str());
+            printf("SRTSequenceRedis::OnPostEvent msgid:%s, key:%s\n", request.msgid().c_str(), key);
+            switch (request.tsvrcmd())
+            {
+                case pms::EServerCmd::CSYNCSEQN:
+                case pms::EServerCmd::CSSEQN4DATA:
+                    {
+                        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+                        {
+                            int64 seq = 0;
+                            m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                            if (m_xRedisClient.get(*m_RedisDBIdx, key, str))
+                            {
+                                seq = std::stoll(str);
+                                printf("SRTSequenceRedis::OnPostEvent g read seqn:%s, seq:%lld\n", str.c_str(), seq);
+                            request.set_result(0);
+                                ReadResponse(request, seq);
+                            } else {
+                                printf("SRTSequenceRedis::OnPostEvent g read seqn: get error, key:%s\n", key);
+                                assert(false);
+                            }
+                        } else {
+                            printf("SRTSequenceRedis::OnPostEvent g read seqn key:%s not exists, do nothing\n", key);
+                            request.set_result(-1); // groupid not exists
+                            ReadResponse(request, 0);
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        printf("SRTSequenceRedis::OnPostEvent not handled flag:%d, cmd:%d, tcmd:%d,  ruserid:%s, storeid:%s, key:%s\n"\
+                                , request.mflag()\
+                                , request.rsvrcmd()\
+                                , request.tsvrcmd()\
+                                , request.ruserid().c_str()\
+                                , request.storeid().c_str()\
+                                , key);
+                    }
+                    break;
+            }
+        } else if (request.mflag()==pms::EMsgFlag::FSINGLE)
+        {
+            std::string str("");
+            char key[512] = {'\0'};
+            sprintf(key, "sgl:%s", request.storeid().c_str());
+            printf("SRTSequenceRedis::OnPostEvent msgid:%s, key:%s\n", request.msgid().c_str(), key);
+            switch (request.tsvrcmd())
+            {
+                case pms::EServerCmd::CSYNCSEQN:
+                case pms::EServerCmd::CSSEQN4DATA:
+                    {
+                        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+                        {
+                            int64 seq = 0;
+                            m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                            if (m_xRedisClient.get(*m_RedisDBIdx, key, str))
+                            {
+                                seq = std::stoll(str);
+                                printf("SRTSequenceRedis::OnPostEvent s read seqn:%s, seq:%lld\n", str.c_str(), seq);
+                                request.set_result(0);
+                                ReadResponse(request, seq);
+                            } else {
+                                printf("SRTSequenceRedis::OnPostEvent s read seqn: get error, key:%s\n", key);
+                                assert(false);
+                            }
+                        } else {
+                            m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                            m_xRedisClient.set(*m_RedisDBIdx, key, "0");
+                            request.set_result(0);
+                            printf("SRTSequenceRedis::OnPostEvent s read seqn key not exists, so set 0\n", key);
+                            ReadResponse(request, 0);
+                        }
+                    }
+                    break;
+                default:
+                    {
+                        printf("SRTSequenceRedis::OnPostEvent not handled flag:%d, cmd:%d, tcmd:%d, ruserid:%s, storeid:%s, key:%s\n"\
+                                , request.mflag()\
+                                , request.rsvrcmd()\
+                                , request.tsvrcmd()\
+                                , request.ruserid().c_str()\
+                                , request.storeid().c_str()\
+                                , key);
+                    }
+                    break;
+            }
 
-        seq = std::stoll(str);
-        printf("SRTSequenceRedis::OnPostEvent read seqn:%s, seq:%lld\n", str.c_str(), seq);
-        printf("OnPostEvent GetSeq is:%lld\n", seq);
-        ReadResponse(request, seq);
+        }
     }
 }
 
@@ -103,15 +183,97 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
     pms::StorageMsg request;
     request.ParseFromString(str);
     {
-        int64_t seq = 0;
-        char key[1024] = {'\0'};
-        sprintf(key, "%s", request.storeid().c_str());
-        printf("SRTSequenceRedis::OnPushEvent msgid:%s, key:%s\n", request.msgid().c_str(), key);
-        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
-        bool ok = m_xRedisClient.incr(*m_RedisDBIdx, key, seq);
-
-        printf("OnPushEvent IncrSeq is:%ld\n", seq);
-        WriteResponse(request, seq);
+        if (request.mflag()==pms::EMsgFlag::FGROUP)
+        {
+            char key[512] = {'\0'};
+            sprintf(key, "grp:%s", request.storeid().c_str());
+            printf("SRTSequenceRedis::OnPushEvent msgid:%s, key:%s\n", request.msgid().c_str(), key);
+            switch (request.tsvrcmd())
+            {
+                case pms::EServerCmd::CNEWMSGSEQN:
+                    {
+                        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+                        {
+                            int64_t seq = 0;
+                            m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                            m_xRedisClient.incr(*m_RedisDBIdx, key, seq);
+                            printf("OnPushEvent group IncrSeq is:%ld\n", seq);
+                            request.set_result(0);
+                            WriteResponse(request, seq);
+                        } else {
+                            printf("SRTSequenceRedis::OnPushEvent group newmsg seqn key is not exists!, error\n");
+                            request.set_result(-1);// group id not exists
+                            WriteResponse(request, 0);
+                        }
+                    }
+                    break;
+                case pms::EServerCmd::CCREATESEQN:
+                    {
+                        if (!m_xRedisClient.exists(*m_RedisDBIdx, key))
+                        {
+                            m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                            m_xRedisClient.set(*m_RedisDBIdx, key, "0");
+                            printf("OnPushEvent group createSeq is:%ld\n", 0);
+                            request.set_result(0);
+                            WriteResponse(request, 0);
+                        } else {
+                            printf("SRTSequenceRedis::OnPushEvent group newmsg seqn key is not exists!, error\n");
+                            request.set_result(-2); // groupid already exists
+                            WriteResponse(request, 0);
+                        }
+                    }
+                    break;
+                case pms::EServerCmd::CDELETESEQN:
+                    {
+                        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                        m_xRedisClient.del(*m_RedisDBIdx, key);
+                        printf("SRTSequenceRedis::OnPushEvent group delete key:%s\n", key);
+                        request.set_result(0);
+                        WriteResponse(request, 0);
+                    }
+                    break;
+                default:
+                    {
+                        printf("SRTSequenceRedis::OnPushEvent not handled flag:%d, cmd:%d, tcmd:%d, ruserid:%s, storeid:%s, key:%s\n"\
+                                , request.mflag()\
+                                , request.rsvrcmd()\
+                                , request.tsvrcmd()\
+                                , request.ruserid().c_str()\
+                                , request.storeid().c_str()\
+                                , key);
+                    }
+                    break;
+            }
+        } else if (request.mflag()==pms::EMsgFlag::FSINGLE)
+        {
+            char key[512] = {'\0'};
+            sprintf(key, "sgl:%s", request.storeid().c_str());
+            printf("SRTSequenceRedis::OnPushEvent msgid:%s, key:%s\n", request.msgid().c_str(), key);
+            switch (request.tsvrcmd())
+            {
+                case pms::EServerCmd::CNEWMSGSEQN:
+                    {
+                        int64_t seq = 0;
+                        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                        m_xRedisClient.incr(*m_RedisDBIdx, key, seq);
+                        printf("OnPushEvent single newmsg IncrSeq is:%ld\n", seq);
+                        request.set_result(0);
+                        WriteResponse(request, seq);
+                    }
+                    break;
+                default:
+                    {
+                        printf("SRTSequenceRedis::OnPushEvent not handled flag:%d, cmd:%d, tcmd:%d, ruserid:%s, storeid:%s, key:%s\n"\
+                                , request.mflag()\
+                                , request.rsvrcmd()\
+                                , request.tsvrcmd()\
+                                , request.ruserid().c_str()\
+                                , request.storeid().c_str()\
+                                , key);
+                    }
+                    break;
+            }
+        }
     }
 }
 

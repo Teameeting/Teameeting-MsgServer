@@ -193,7 +193,30 @@ void CRTConnectionTcp::OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, 
     LE("not define DEF_PROTO\n");
 #endif
 }
+
 void CRTConnectionTcp::OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+#if DEF_PROTO
+    if (m_login) {
+        CRTConnManager::Instance().TransferMsg(cmd, module, m_userId, msg);
+    }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
+}
+
+void CRTConnectionTcp::OnCreateSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+#if DEF_PROTO
+    if (m_login) {
+        CRTConnManager::Instance().TransferMsg(cmd, module, m_userId, msg);
+    }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
+}
+
+void CRTConnectionTcp::OnDeleteSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
 #if DEF_PROTO
     if (m_login) {

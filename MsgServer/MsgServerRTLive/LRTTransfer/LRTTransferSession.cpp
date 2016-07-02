@@ -552,6 +552,9 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
         } else {
             LI("LRTTransferSession::OnTypeTrans Entity msg flag:%d not handle\n\n", e_msg.msg_flag());
         }
+    } else if (r_msg.svr_cmds() == pms::EServerCmd::CCREATESEQN)
+    {
+
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CSYNCSEQN)
     {
         pms::StorageMsg s_msg;

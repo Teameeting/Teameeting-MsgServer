@@ -72,7 +72,6 @@ public:
             if ((++counter) == cnumber)
             {
                 printf("read recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
-                //storage.set_sequence(*seqns.rbegin());
                 storage.set_maxseqn(*seqns.rbegin());
                 ReadResponse(storage.SerializeAsString());
                 //for(auto x : seqns)
@@ -94,7 +93,6 @@ private:
 
     int                 m_ClientNum;
     int                 m_ReqType;
-    //std::string         m_UserId;
     SeqnResponseMap     m_WriteSeqnResponse;
     SeqnResponseMap     m_ReadSeqnResponse;
     SRTRedisManager*    m_pRedisManager;

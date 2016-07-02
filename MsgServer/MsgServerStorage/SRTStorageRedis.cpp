@@ -76,18 +76,53 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
 {
     if (m_QueuePostMsg.size()==0) return;
     pms::StorageMsg store = m_QueuePostMsg.front();
-    std::string str("");
-    char key[1024] = {'\0'};
-    sprintf(key, "%s:%lld", store.storeid().c_str(), store.sequence());
-    m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
-    bool ok = m_xRedisClient.get(*m_RedisDBIdx, key, str);
-    store.set_result(30);
-    *store.mutable_content() = str;
-    printf("SRTStorageRedis::OnWakeupEvent read msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld\n"\
-            , store.msgid().c_str()\
-            , store.storeid().c_str()\
-            , store.sequence()\
-            , store.maxseqn());
+    if (store.mflag()==pms::EMsgFlag::FGROUP)
+    {
+        std::string str("");
+        char key[512] = {'\0'};
+        sprintf(key, "grp:%s:%lld", store.storeid().c_str(), store.sequence());
+        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+        {
+            m_xRedisClient.get(*m_RedisDBIdx, key, str);
+            store.set_result(0);
+            *store.mutable_content() = str;
+        } else {
+            store.set_result(-1);// key is not exists
+            *store.mutable_content() = str;
+        }
+        printf("SRTStorageRedis::OnWakeupEvent g read msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\
+                , store.msgid().c_str()\
+                , store.storeid().c_str()\
+                , store.sequence()\
+                , store.maxseqn()\
+                , store.result());
+
+    } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
+    {
+        std::string str("");
+        char key[512] = {'\0'};
+        sprintf(key, "sgl:%s:%lld", store.storeid().c_str(), store.sequence());
+        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+        {
+            m_xRedisClient.get(*m_RedisDBIdx, key, str);
+            store.set_result(0);
+            *store.mutable_content() = str;
+        } else {
+            store.set_result(-1);// key is not exists
+            *store.mutable_content() = str;
+        }
+        printf("SRTStorageRedis::OnWakeupEvent s read msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\
+                , store.msgid().c_str()\
+                , store.storeid().c_str()\
+                , store.sequence()\
+                , store.maxseqn()\
+                , store.result());
+    } else {
+        printf("SRTStorageRedis::OnWakeupEvent mflag:%d error\n", store.mflag());
+        assert(false);
+    }
     if (m_RedisGroup)
     {
         m_RedisGroup->PostData(store.SerializeAsString());
@@ -110,17 +145,61 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
     printf("SRTStorageRedis::OnTickEvent for write...\n");
     if (m_QueuePushMsg.size()==0) return;
     pms::StorageMsg store = m_QueuePushMsg.front();
-    char key[1024] = {'\0'};
-    sprintf(key, "%s:%lld", store.storeid().c_str(), store.sequence());
-    m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
-
-    printf("SRTStorageRedis::OnTickEvent storeid:%s, msgid:%s\n", store.storeid().c_str(), store.msgid().c_str());
-    if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
+    if (store.mflag()==pms::EMsgFlag::FGROUP)
     {
-        store.set_result(20);
+        char key[512] = {'\0'};
+        sprintf(key, "grp:%s:%lld", store.storeid().c_str(), store.sequence());
+        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+
+        printf("SRTStorageRedis::OnTickEvent g storeid:%s, msgid:%s\n", store.storeid().c_str(), store.msgid().c_str());
+        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+        {
+            if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
+            {
+                store.set_result(0);
+            } else {
+                printf("SRTStorageRedis::OnTickEvent g write group msg error\n");
+                assert(false);
+            }
+        } else {
+            store.set_result(-1);// key is not exists
+        }
+        printf("SRTStorageRedis::OnTickEvent g write msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\
+                , store.msgid().c_str()\
+                , store.storeid().c_str()\
+                , store.sequence()\
+                , store.maxseqn()\
+                , store.result());
+    } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
+    {
+        char key[512] = {'\0'};
+        sprintf(key, "sgl:%s:%lld", store.storeid().c_str(), store.sequence());
+        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+
+        printf("SRTStorageRedis::OnTickEvent s storeid:%s, msgid:%s\n", store.storeid().c_str(), store.msgid().c_str());
+        if (m_xRedisClient.exists(*m_RedisDBIdx, key))
+        {
+            if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
+            {
+                store.set_result(0);
+            } else {
+                printf("SRTStorageRedis::OnTickEvent s write group msg error\n");
+                assert(false);
+            }
+        } else {
+            store.set_result(-1);// key is not exists
+        }
+        printf("SRTStorageRedis::OnWakeupEvent s write msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\
+                , store.msgid().c_str()\
+                , store.storeid().c_str()\
+                , store.sequence()\
+                , store.maxseqn()\
+                , store.result());
     } else {
+        printf("SRTStorageRedis::OnTickEvent mflag:%d error\n", store.mflag());
         assert(false);
     }
+
     if (m_RedisGroup)
     {
         m_RedisGroup->PushData(store.SerializeAsString());

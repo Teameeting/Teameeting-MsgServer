@@ -461,7 +461,7 @@ void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
     pms::RelayMsg rmsg;
     rmsg.ParseFromString(str);
 
-    if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSG)
++   if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSG || rmsg.svr_cmds()==pms::EServerCmd::CCREATESEQN)
     {
         LRTLogicalManager::Instance().RecvRequestCounter();
         pms::PackedStoreMsg store;
@@ -500,9 +500,11 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
     pms::RelayMsg rmsg;
     rmsg.ParseFromString(str);
 
-    if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGSEQN)
+    //if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGSEQN)
+    // this is response from wirte seqn
+    if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCSEQN)
     {
-        pms::PackedStoreMsg store;
+        pms::PackedStoreMsg store, newmsg_store;
         store.ParseFromString(rmsg.content());
         for(int i=0;i<store.msgs_size();++i)
         {
@@ -517,6 +519,18 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
 
             pms::StorageMsg* pstore = store.mutable_msgs(i);
             LRTLogicalManager::Instance().UpdateDataWrite(&pstore);
+            if (pstore->tsvrcmd()==pms::EServerCmd::CNEWMSGSEQN)
+            {
+                newmsg_store.add_msgs()->MergeFrom(*pstore);
+            } else if (pstore->tsvrcmd()==pms::EServerCmd::CCREATESEQN)
+            {
+                LRTLogicalManager::Instance().UpdateLocalSeqn(pstore);
+                LRTLogicalManager::Instance().DeleteDataWrite(pstore);
+            } else if (pstore->tsvrcmd()==pms::EServerCmd::CDELETESEQN)
+            {
+                // here should delete local seqn storage
+                LRTLogicalManager::Instance().DeleteDataWrite(pstore);
+            }
 
             printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 111 ruserid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
                     , store.msgs(i).ruserid().c_str(), store.msgs(i).msgid().c_str()\
@@ -530,21 +544,26 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
                 LI("%s store.msgs(%d).ruserid length is 0\n", __FUNCTION__, i);
                 break;
             }
-            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 2 ruserid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
+            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 2 ruserid:%s, msgid:%s, sequence:%lld, mtag:%d, newmsg.msgsize:%d, store.svrcmd:%d\n\n"\
                     , store.msgs(i).ruserid().c_str(), store.msgs(i).msgid().c_str()\
-                    , store.msgs(i).sequence(), store.msgs(i).mtag(), store.msgs(i).content().c_str());
+                    , store.msgs(i).sequence(), store.msgs(i).mtag(), newmsg_store.msgs_size(), store.msgs(i).rsvrcmd());
 
-            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 222 ruserid:%s, msgid:%s, sequence:%lld, mtag:%d, cont:%s\n\n"\
+            printf("LRTTransferSession::OnTypeWriteResponse NEWMSGSEQN 222 ruserid:%s, msgid:%s, sequence:%lld, mtag:%d, newmsg.msgsize:%d, store.svrmcd:%d\n\n"\
                     , store.mutable_msgs(i)->ruserid().c_str(), store.mutable_msgs(i)->msgid().c_str()\
-                    , store.mutable_msgs(i)->sequence(), store.mutable_msgs(i)->mtag(), store.mutable_msgs(i)->content().c_str());
+                    , store.mutable_msgs(i)->sequence(), store.mutable_msgs(i)->mtag(), newmsg_store.msgs_size(), store.msgs(i).rsvrcmd());
         }
-        pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
-        tmsg.set_flag(pms::ETransferFlag::FNOACK);
-        tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-        tmsg.set_content(store.SerializeAsString());
-        LRTConnManager::Instance().PushStoreWriteMsg(tmsg.SerializeAsString());
-    } else if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGDATA)
+        if (newmsg_store.msgs_size()>0)
+        {
+            pms::TransferMsg tmsg;
+            tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
+            tmsg.set_flag(pms::ETransferFlag::FNOACK);
+            tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+            tmsg.set_content(newmsg_store.SerializeAsString());
+            LRTConnManager::Instance().PushStoreWriteMsg(tmsg.SerializeAsString());
+        }
+    //} else if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGDATA)
+    // this means data write
+    } else if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCDATA)
     {
         pms::PackedStoreMsg store;
         store.ParseFromString(rmsg.content());
