@@ -208,6 +208,45 @@ int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& u
     return 0;
 }
 
+
+int XMsgProcesser::EncodeCreateSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag)
+{
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CCREATESEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CCREATESEQN);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(storeid);
+    store.set_ruserid(userid);
+    store.set_sequence(seqn);
+    
+    req.set_svr_cmds(pms::EServerCmd::CCREATESEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
+int XMsgProcesser::EncodeDeleteSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag)
+{
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CDELETESEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CDELETESEQN);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(storeid);
+    store.set_ruserid(userid);
+    store.set_sequence(seqn);
+    
+    req.set_svr_cmds(pms::EServerCmd::CDELETESEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
 /////////////////////////////////////////////////////
 ///////////////////DECODE MEETMSG////////////////////
 /////////////////////////////////////////////////////
@@ -276,7 +315,6 @@ int XMsgProcesser::DecodeSndMsg(int code, const std::string& cont)
 
 int XMsgProcesser::DecodeGetMsg(int code, const std::string& cont)
 {
-    m_helper.OnGetMsg(code, cont);
     return 0;
 }
 
