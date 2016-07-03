@@ -22,7 +22,7 @@
 
 
 
-- (BOOL)insertSeqnId:(NSString*)seqnId
+- (BOOL)insertSeqnSeqnId:(NSString*)seqnId
                  seqn:(NSNumber*)seqn;
 
 - (BOOL)updateSeqnSeqnId:(NSString*)seqnId

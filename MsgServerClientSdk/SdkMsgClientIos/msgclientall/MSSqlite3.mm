@@ -57,9 +57,9 @@
 {
     NSLog(@"insertSeqnSeqnId was called, seqnId:%@", seqnId);
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_STOREID_SEQN];
-    NSString *key = [NSString stringWithFormat:@"seqnId seqn"];
-    NSString *value = [NSString stringWithFormat:@"%@ %lld", seqnId, seqn];
-    NSString *sqlInsert = [NSString stringWithFormat:@"insert into %@(%@) values(%@)", name, key, value];
+    NSString *key = [NSString stringWithFormat:@"'seqnId', 'seqn'"];
+    NSString *value = [NSString stringWithFormat:@"%@, %lld", seqnId, [seqn longLongValue]];
+    NSString *sqlInsert = [NSString stringWithFormat:@"insert into %@(%@) values(%@);", name, key, value];
     NSLog(@"InsertSeqnSeqnId was called, sqlInsert:%@", sqlInsert);
     
     int code = [self runSql:sqlInsert];
@@ -72,9 +72,9 @@
 {
     NSLog(@"insertSeqnSeqnId was called, seqnId:%@", seqnId);
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_STOREID_SEQN];
-    NSString *key = [NSString stringWithFormat:@"%@", seqnId];
-    NSString *value = [NSString stringWithFormat:@"%lld", seqn];
-    NSString *sqlUpdate = [NSString stringWithFormat:@"update %@ set seqn=\"%@\" where seqnId=\"%@\"", name, value, key];
+    NSString *key = [NSString stringWithFormat:@"'%@'", seqnId];
+    NSString *value = [NSString stringWithFormat:@"%lld", [seqn longLongValue]];
+    NSString *sqlUpdate = [NSString stringWithFormat:@"update %@ set seqn=\"%@\" where seqnId=\"%@\";", name, value, key];
     NSLog(@"UpdateSeqnSeqnId was called, sqlUpdate:%@", sqlUpdate);
     
     int code = [self runSql:sqlUpdate];
@@ -88,8 +88,8 @@
     if (!seqn) return false;
     NSLog(@"insertSeqnSeqnId was called, seqnId:%@", seqnId);
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_STOREID_SEQN];
-    NSString *key = [NSString stringWithFormat:@"seqnId=%@", seqnId];
-    NSString *sqlSelect = [NSString stringWithFormat:@"select seqn from %@ where %@", name, key];
+    NSString *key = [NSString stringWithFormat:@"'seqnId'=%@", seqnId];
+    NSString *sqlSelect = [NSString stringWithFormat:@"select seqn from %@ where %@;", name, key];
     NSLog(@"SelectSeqnSeqnId was called, sqlSelect:%@", sqlSelect);
     int code = 0;
     *seqn = [self runSqlSelect:sqlSelect dbName:name code:&code];
@@ -100,8 +100,8 @@
 {
     NSLog(@"deleteSeqnSeqnId was called, seqnId:%@", seqnId);
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_STOREID_SEQN];
-    NSString *key = [NSString stringWithFormat:@"seqnId=%@", seqnId];
-    NSString *sqlDelete = [NSString stringWithFormat:@"delete from %@ where %@", name, key];
+    NSString *key = [NSString stringWithFormat:@"'seqnId'=%@", seqnId];
+    NSString *sqlDelete = [NSString stringWithFormat:@"delete from %@ where %@;", name, key];
     NSLog(@"DeleteSeqnSeqnId was called, sqlInsert:%@", sqlDelete);
     
     int code = [self runSql:sqlDelete];
@@ -114,9 +114,9 @@
 {
     NSLog(@"insertGroupIdGrpId was called, groupId:%@", grpId);
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_GROUPS_ID];
-    NSString *key = [NSString stringWithFormat:@"seqnId"];
+    NSString *key = [NSString stringWithFormat:@"'seqnId'"];
     NSString *value = [NSString stringWithFormat:@"%@", grpId];
-    NSString *sqlInsert = [NSString stringWithFormat:@"insert into %@(%@) values(%@)", name, key, value];
+    NSString *sqlInsert = [NSString stringWithFormat:@"insert into %@(%@) values(%@);", name, key, value];
     NSLog(@"InsertGroupIdGrpId was called, sqlInsert:%@", sqlInsert);
     
     int code = [self runSql:sqlInsert];
@@ -129,7 +129,7 @@
     if (!Ids) return false;
     NSLog(@"selectGroupIds was called");
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_GROUPS_ID];
-    NSString *sqlSelect = [NSString stringWithFormat:@"select seqnId from %@", name];
+    NSString *sqlSelect = [NSString stringWithFormat:@"select seqnId from %@;", name];
     NSLog(@"SelectGroupIds was called, sqlSelect:%@", sqlSelect);
     int code = 0;
     *Ids = [self runSqlSelect:sqlSelect dbName:name code:&code];
@@ -140,8 +140,8 @@
 {
     NSLog(@"deleteGroupIdGrpId was called, groupId:%@", grpId);
     NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_GROUPS_ID];
-    NSString *key = [NSString stringWithFormat:@"seqnId=%@", grpId];
-    NSString *sqlDelete = [NSString stringWithFormat:@"delete from %@ where %@", name, key];
+    NSString *key = [NSString stringWithFormat:@"'seqnId'=%@", grpId];
+    NSString *sqlDelete = [NSString stringWithFormat:@"delete from %@ where %@;", name, key];
     NSLog(@"DeleteGroupIdGrpId was called, sqlDelete:%@", sqlDelete);
     
     int code = [self runSql:sqlDelete];
@@ -170,7 +170,7 @@
         }
     }
     NSLog(@"createTable was called, name:%@", name);
-    NSString *sqlCreateTable = [NSString stringWithFormat:@"create table if not exists %@(%@)", name, keys];
+    NSString *sqlCreateTable = [NSString stringWithFormat:@"create table if not exists %@(%@);", name, keys];
     NSLog(@"createTable was called, sqlCreateTable:%@", sqlCreateTable);
     int code = [self runSql:sqlCreateTable];
     NSLog(@"run sqlCreateTable code:%d", code);
@@ -179,7 +179,7 @@
 - (void)dropTableName:(NSString*)name
 {
     NSLog(@"dropTable was called, name:%@", name);
-    NSString *sqlDropTable = [NSString stringWithFormat:@"drop table %@", name];
+    NSString *sqlDropTable = [NSString stringWithFormat:@"drop table %@;", name];
     NSLog(@"dropTable was called, sqlDropTable:%@", sqlDropTable);
     int code = [self runSql:sqlDropTable];
     NSLog(@"run sqldropTable code:%d", code);

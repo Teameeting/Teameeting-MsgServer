@@ -26,7 +26,7 @@
 
 -(void)addUserId:(NSString*)userId
 {
-    [_sqlite3Db insertSeqnId:userId seqn:[NSNumber numberWithLongLong:0]];
+    [_sqlite3Db insertSeqnSeqnId:userId seqn:[NSNumber numberWithLongLong:0]];
 }
 
 -(void)updateUserSeqnUserId:(NSString*)userId seqn:(NSNumber*)seqn
@@ -50,7 +50,7 @@
 -(void)addGroupSeqnGrpId:(NSString*)grpId
                        seqn:(NSNumber*)seqn
 {
-    [_sqlite3Db insertSeqnId:grpId seqn:seqn];
+    [_sqlite3Db insertSeqnSeqnId:grpId seqn:seqn];
 }
 
 -(void)updateGroupSeqnGrpId:(NSString*)grpId
