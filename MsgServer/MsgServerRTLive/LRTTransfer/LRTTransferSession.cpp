@@ -548,13 +548,17 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
             LRTConnManager::Instance().PushNewMsg2Queue(recver.SerializeAsString());
         } else if (e_msg.msg_flag()==pms::EMsgFlag::FMULTI)
         {
-
         } else {
             LI("LRTTransferSession::OnTypeTrans Entity msg flag:%d not handle\n\n", e_msg.msg_flag());
         }
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CCREATESEQN)
     {
-
+        LI("LRTTransferSession::OnTypeTrans CREATESEQN  was called\n");
+        LRTConnManager::Instance().PushNewMsg2Queue(r_msg.content());
+    } else if (r_msg.svr_cmds() == pms::EServerCmd::CDELETESEQN)
+    {
+        LI("LRTTransferSession::OnTypeTrans CDELETESEQN  was called\n");
+        LRTConnManager::Instance().PushNewMsg2Queue(r_msg.content());
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CSYNCSEQN)
     {
         pms::StorageMsg s_msg;
@@ -686,8 +690,16 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
             t_msg.set_content(r_msg.SerializeAsString());
             std::string response = t_msg.SerializeAsString();
             LRTConnManager::Instance().SendTransferData("", "", response);
+        } else if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CCREATESEQN)
+        {
+            LI("LRTTransferSession::OnTypeQueue create seqn store.srv:cmd:%d ok\n", store.msgs(i).rsvrcmd());
+
+        } else if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CDELETESEQN)
+        {
+            LI("LRTTransferSession::OnTypeQueue delete seqn store.srv:cmd:%d ok\n", store.msgs(i).rsvrcmd());
+
         } else {
-            LI("LRTTransferSession::OnTypeQueue srv:cmd:%d not handle\n", r_msg.svr_cmds());
+            LI("LRTTransferSession::OnTypeQueue store.srv:cmd:%d not handle\n", store.msgs(i).rsvrcmd());
         }
     }
 }

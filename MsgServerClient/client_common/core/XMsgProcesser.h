@@ -32,7 +32,9 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
-    
+    int EncodeCreateGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, int module);
+    int EncodeDeleteGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, int module);
+
     int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag);
     int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag);
     int EncodeSyncGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& token, int64 seqn, int module, int tag, int flag);

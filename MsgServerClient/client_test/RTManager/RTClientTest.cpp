@@ -54,6 +54,7 @@ void RTClientTest::RunTest(int flag, const std::string& name)
     mMsgClient->InitSync();
     if (name.compare("xddxdd")==0)
     {
+        //mName = "9a4f3730-f643-422a-a3a1-eae557060a90";
         mMsgClient->TestSetCurSeqn(0);
     } else {
         mMsgClient->TestSetCurSeqn(0);
@@ -144,7 +145,10 @@ void RTClientTest::RunOnce()
     //TestSendLoop();
     //TestSendGroupLoop();
     //TestSendGroup();
-    TestAddGroup();
+    //TestAddGroup();
+    //
+    TestCreateGroup();
+    //TestDeleteGroup();
 }
 
 void RTClientTest::TestSend()
@@ -282,6 +286,17 @@ void RTClientTest::TestSync()
 void RTClientTest::TestAddGroup()
 {
     printf("RTClientTest::TestAddGroup\n");
-     mMsgClient->AddGroup();
+    mMsgClient->AddGroup();
 }
 
+
+void RTClientTest::TestCreateGroup()
+{
+    printf("RTClientTest::TestCreateGroup\n");
+    mMsgClient->CreateGroupSeqn();
+}
+void RTClientTest::TestDeleteGroup()
+{
+    printf("RTClientTest::TestDeleteGroup\n");
+    mMsgClient->DeleteGroupSeqn();
+}

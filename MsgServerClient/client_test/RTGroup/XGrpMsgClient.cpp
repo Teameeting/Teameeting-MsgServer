@@ -36,15 +36,11 @@ XGrpMsgClient::~XGrpMsgClient()
 
 }
 
-int XGrpMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, int module, const std::string& server, int port, bool bAutoConnect)
+int XGrpMsgClient::Init(const std::string& uid, const std::string& token, int module)
 {
-    if (!cb) {
-        return -1;
-    }
     if (!m_pGrpMsgProcesser) {
         m_pGrpMsgProcesser = new XGrpMsgProcesser(*this);
         m_pGrpMsgProcesser->Init();
-        m_pCallback = cb;
     }
     if (!m_pGrpMsgProcesser) {
         return -1;
@@ -63,16 +59,6 @@ int XGrpMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::str
     m_uid = uid;
     m_token = token;
     m_module = (pms::EModuleType)module;
-    if (server.length()>0) {
-        m_server = server;
-    }
-    if (port>2048) {
-        m_port = port;
-    }
-    m_autoConnect = bAutoConnect;
-    m_pClientImpl->Connect(server, port, bAutoConnect);
-    m_msState = MSCONNECTTING;
-    m_pCallback->OnMsgServerState(MSCONNECTTING);
 
     printf("XGrpMsgClient Init ok!!\n");
     return 0;
@@ -80,7 +66,6 @@ int XGrpMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::str
 
 int XGrpMsgClient::Unin()
 {
-    m_pCallback = nullptr;
     if (m_pClientImpl) {
         m_pClientImpl->Disconnect();
         if (m_pGrpMsgProcesser) {
@@ -93,6 +78,41 @@ int XGrpMsgClient::Unin()
 
     return 0;
 }
+
+int XGrpMsgClient::RegisterMsgCb(XMsgCallback* cb)
+{
+    if (!cb) return -1;
+    m_pCallback = cb;
+    return 0;
+}
+
+int XGrpMsgClient::UnRegisterMsgCb(XMsgCallback* cb)
+{
+    if (!cb) return -1;
+    m_pCallback = nullptr;
+    return 0;
+}
+
+int XGrpMsgClient::ConnToServer(const std::string& server, int port, bool bAutoConnect)
+{
+    if (server.length()>0) {
+        m_server = server;
+    }
+    if (port>2048) {
+        m_port = port;
+    }
+    m_autoConnect = bAutoConnect;
+    m_pClientImpl->Connect(server, port, bAutoConnect);
+    m_msState = MSCONNECTTING;
+    if (m_pCallback)
+    {
+        m_pCallback->OnMsgServerConnecting();
+    } else {
+        printf("XGrpMsgClient::OnServerDisconnect m_pCallback is null\n");
+    }
+    return 0;
+}
+
 
 int XGrpMsgClient::GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn)
 {
@@ -272,7 +292,6 @@ void XGrpMsgClient::OnServerDisconnect()
     if (m_pCallback) {
         m_login = false;
         m_msState = MSNOT_CONNECTED;
-        m_pCallback->OnMsgServerState(MSNOT_CONNECTED);
         m_pCallback->OnMsgServerDisconnect();
     }
 }
@@ -283,7 +302,6 @@ void XGrpMsgClient::OnServerConnectionFailure()
     if (m_pCallback) {
         m_login = false;
         m_msState = MSNOT_CONNECTED;
-        m_pCallback->OnMsgServerState(MSNOT_CONNECTED);
         m_pCallback->OnMsgServerConnectionFailure();
     }
 }
@@ -325,7 +343,6 @@ void XGrpMsgClient::OnLogin(int code, const std::string& userid)
     if (code == 0) {
         m_login = true;
         m_msState = MSCONNECTED;
-        m_pCallback->OnMsgServerState(MSCONNECTED);
         m_pCallback->OnMsgServerConnected();
     } else {
         Login();

@@ -124,6 +124,38 @@ int XMsgClient::ConnToServer(const std::string& server, int port, bool bAutoConn
     return 0;
 }
 
+int XMsgClient::CreateGroupSeqn(const std::string& userid, const std::string& groupid)
+{
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeCreateGroupSeqn(outstr, userid, groupid, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    printf("XMsgClient CreateGroupSeqn ok!!\n");
+    return SendEncodeMsg(outstr);
+}
+
+int XMsgClient::DeleteGroupSeqn(const std::string& userid, const std::string& groupid)
+{
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeDeleteGroupSeqn(outstr, userid, groupid, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    printf("XMsgClient GenGrpSyncDataNotify ok!!\n");
+    return SendEncodeMsg(outstr);
+}
+
 int XMsgClient::AddGroup(const std::string& groupid)
 {
     FetchGroupSeqn(groupid);
@@ -614,11 +646,11 @@ void XMsgClient::OnSyncSeqn(int code, const std::string& cont)
                     printf("XMsgClient::OnSyncSeqn m_pCallback is null\n");
                 }
             } else {
-                
+
             }
         }
             break;
-            
+
         case pms::EStorageTag::TFETCHSEQN:
         {
             if (store.mflag()==pms::EMsgFlag::FGROUP)
@@ -646,7 +678,7 @@ void XMsgClient::OnSyncSeqn(int code, const std::string& cont)
                 } else {
                     printf("XMsgClient::OnSyncSeqn GETNEW m_pCallback is null\n");
                 }
-            }    
+            }
         }
             break;
         default:

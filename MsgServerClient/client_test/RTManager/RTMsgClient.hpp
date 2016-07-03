@@ -27,12 +27,18 @@ public:
     typedef void (*DataCallback)(void* pd, int data);
 
     // from XMsgCallback
-    virtual void OnSndMsg(const std::string& msg);
-    virtual void OnGetMsg(const std::string& msg);
+    virtual void OnSndMsg(int code, const std::string& msg);
+    virtual void OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data);
+    virtual void OnRecvMsg(const std::string& msg);
+    virtual void OnRecvGroupMsg(const std::string& msg);
+
+    virtual void OnSyncSeqn(int64 seqn);
+    virtual void OnSyncGroupSeqn(const std::string& groupid, int64 seqn);
+
     virtual void OnMsgServerConnected();
+    virtual void OnMsgServerConnecting();
     virtual void OnMsgServerDisconnect();
     virtual void OnMsgServerConnectionFailure();
-    virtual void OnMsgServerState(MSState state);
 
 public:
     void SetRoomId(const std::string& roomid) { mCurRoomId = roomid; }
@@ -45,8 +51,6 @@ public:
     void Init(int module);
     void Unin();
     bool Connecting();
-    void EnterRoom();
-    void LeaveRoom();
     void SendMsg(const std::string& msg);
 
     void InitSync();
@@ -70,6 +74,8 @@ public:
     bool GrpConnecting();
     void GrpInitSync();
     void GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn);
+    void CreateGroupSeqn();
+    void DeleteGroupSeqn();
 
 public:
     const std::string& GetUserId() { return mUserid; }

@@ -12,6 +12,11 @@
 #include "RTMsgClient.hpp"
 #include "webrtc/base/logging.h"
 
+#include "../../client_common/proto/common_msg.pb.h"
+#include "../../client_common/proto/sys_msg_type.pb.h"
+#include "../../client_common/proto/storage_msg_type.pb.h"
+#include "../../client_common/proto/entity_msg_type.pb.h"
+
 #define DEF_PROTO 1
 
 RTMsgClient::RTMsgClient(const std::string& uid)
@@ -43,7 +48,7 @@ RTMsgClient::~RTMsgClient()
 
 }
 
-void RTMsgClient::OnSndMsg(const std::string& msg)
+void RTMsgClient::OnSndMsg(int code, const std::string& msg)
 {
 #if DEF_PROTO
     pms::Entity entity;
@@ -113,9 +118,35 @@ void RTMsgClient::OnSndMsg(const std::string& msg)
 #endif
 }
 
-void RTMsgClient::OnGetMsg(const std::string& msg)
+
+void RTMsgClient::OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data)
 {
-    //LOG(INFO) << __FUNCTION__ << " msg:" << msg;
+
+    LOG(INFO) << __FUNCTION__ << " was called";
+}
+
+void RTMsgClient::OnRecvMsg(const std::string& msg)
+{
+
+    LOG(INFO) << __FUNCTION__ << " was called";
+}
+
+void RTMsgClient::OnRecvGroupMsg(const std::string& msg)
+{
+
+    LOG(INFO) << __FUNCTION__ << " was called";
+}
+
+void RTMsgClient::OnSyncSeqn(int64 seqn)
+{
+
+    LOG(INFO) << __FUNCTION__ << " was called";
+}
+
+void RTMsgClient::OnSyncGroupSeqn(const std::string& groupid, int64 seqn)
+{
+
+    LOG(INFO) << __FUNCTION__ << " was called";
 }
 
 void RTMsgClient::OnMsgServerConnected()
@@ -123,6 +154,11 @@ void RTMsgClient::OnMsgServerConnected()
     LOG(INFO) << __FUNCTION__ << " was called";
     mConnNum++;
     mIsOnline = true;
+}
+
+void RTMsgClient::OnMsgServerConnecting()
+{
+
 }
 
 void RTMsgClient::OnMsgServerDisconnect()
@@ -139,10 +175,7 @@ void RTMsgClient::OnMsgServerConnectionFailure()
     mIsOnline = false;
 }
 
-void RTMsgClient::OnMsgServerState(MSState state)
-{
-    //LOG(INFO) << __FUNCTION__ << " was called state:" << state;
-}
+
 
 int RTMsgClient::Register()
 {
@@ -178,11 +211,14 @@ int RTMsgClient::ApplyRoom()
 
 void RTMsgClient::Init(int module)
 {
-    mMsgClient.Init(this, mUserid, mAuth, mUname, module, mMsgServer, mMsgPort);
+    mMsgClient.Init(mUserid, mAuth, mUname, module);
+    mMsgClient.RegisterMsgCb(this);
+    mMsgClient.ConnToServer(mMsgServer, mMsgPort);
 }
 
 void RTMsgClient::Unin()
 {
+    mMsgClient.UnRegisterMsgCb(nullptr);
     mMsgClient.Unin();
 }
 
@@ -192,24 +228,10 @@ bool RTMsgClient::Connecting()
     return true;
 }
 
-void RTMsgClient::EnterRoom()
-{
-    if (mIsOnline) {
-        mMsgClient.OptRoom(pms::EMsgTag::TENTER, mCurRoomId, "RoomName", "");
-    }
-}
-
-void RTMsgClient::LeaveRoom()
-{
-    if (mIsOnline) {
-        mMsgClient.OptRoom(pms::EMsgTag::TLEAVE, mCurRoomId, "RoomName", "");
-    }
-}
-
 void RTMsgClient::SendMsg(const std::string& msg)
 {
     if (mIsOnline) {
-        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg);
+        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE);
     }
 }
 
@@ -248,7 +270,7 @@ void RTMsgClient::SendMessage(const std::string& msg)
 {
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
-        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg);
+        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE);
     }
     else
     {
@@ -262,7 +284,7 @@ void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
         printf("RTMsgClient::SyncData was called\n");
         std::vector<std::string> v;
         v.push_back(name);
-        mMsgClient.SndMsgTo(mCurRoomId, "RoomName", msg, v);
+        mMsgClient.SndMsgTo(mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE, v);
     }
     else
     {
@@ -281,13 +303,14 @@ void RTMsgClient::AddGroup()
 
 void RTMsgClient::GrpInit(int module)
 {
-
-    mGrpMsgClient.Init(this, mUserid, mAuth, module, "192.168.7.207", 6690);
+    mGrpMsgClient.Init(mUserid, mAuth, module);
+    mGrpMsgClient.RegisterMsgCb(this);
+    mGrpMsgClient.ConnToServer("192.168.7.207", 6690);
 }
 
 void RTMsgClient::GrpUnin()
 {
-
+    mGrpMsgClient.UnRegisterMsgCb(nullptr);
     mGrpMsgClient.Unin();
 }
 
@@ -310,6 +333,22 @@ void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string 
 {
     if (mIsOnline) {
         mMsgClient.SyncGroupData(groupid);
+    }
+}
+
+void RTMsgClient::CreateGroupSeqn()
+{
+    if (mIsOnline) {
+        printf("RTMsgClient::CreateGroupSeqn was called\n");
+        mMsgClient.CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", "hahaha");
+    }
+}
+
+void RTMsgClient::DeleteGroupSeqn()
+{
+    if (mIsOnline) {
+        printf("RTMsgClient::DeleteGroupSeqn was called\n");
+        mMsgClient.DeleteGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", "hahaha");
     }
 }
 

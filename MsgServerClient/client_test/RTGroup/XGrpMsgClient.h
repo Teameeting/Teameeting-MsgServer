@@ -28,8 +28,13 @@ public:
     XGrpMsgClient();
     ~XGrpMsgClient();
 
-    int Init(XMsgCallback* cb, const std::string& uid, const std::string& token, int module, const std::string& server="", int port=0, bool bAutoConnect=true);
+    int Init(const std::string& uid, const std::string& token, int module);
     int Unin();
+
+    int RegisterMsgCb(XMsgCallback* cb);
+    int UnRegisterMsgCb(XMsgCallback* cb);
+
+    int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
 
     int GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn);
     int GenGrpSyncDataNotifys(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn);

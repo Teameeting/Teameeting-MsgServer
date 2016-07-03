@@ -461,7 +461,7 @@ void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
     pms::RelayMsg rmsg;
     rmsg.ParseFromString(str);
 
-+   if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSG || rmsg.svr_cmds()==pms::EServerCmd::CCREATESEQN)
+    if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSG || rmsg.svr_cmds()==pms::EServerCmd::CCREATESEQN)
     {
         LRTLogicalManager::Instance().RecvRequestCounter();
         pms::PackedStoreMsg store;

@@ -51,7 +51,12 @@ public:
     int UnRegisterMsgCb(XMsgCallback* cb);
 
     int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
-    
+
+    // for test
+    int CreateGroupSeqn(const std::string& userid, const std::string& groupid);
+    int DeleteGroupSeqn(const std::string& userid, const std::string& groupid);
+
+
     int AddGroup(const std::string& groupid);
     int RmvGroup(const std::string& groupid);
 
@@ -59,7 +64,7 @@ public:
     int SndMsgTo(const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec);
 
     int SyncMsg();
-    
+
     int SyncSeqn();
     int SyncData();
     int SyncGroupSeqn();

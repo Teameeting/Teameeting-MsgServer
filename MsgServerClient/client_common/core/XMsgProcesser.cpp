@@ -118,6 +118,46 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
+int XMsgProcesser::EncodeCreateGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, int module)
+{
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CCREATESEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CCREATESEQN);
+    store.set_mtag(pms::EStorageTag::TSEQN);
+    store.set_mflag(pms::EMsgFlag::FGROUP);
+    store.set_storeid(groupid);
+    store.set_ruserid(userid);
+    store.set_groupid(groupid);
+    store.set_sequence(0);
+
+    req.set_svr_cmds(pms::EServerCmd::CCREATESEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
+int XMsgProcesser::EncodeDeleteGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, int module)
+{
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CDELETESEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CDELETESEQN);
+    store.set_mtag(pms::EStorageTag::TSEQN);
+    store.set_mflag(pms::EMsgFlag::FGROUP);
+    store.set_storeid(groupid);
+    store.set_ruserid(userid);
+    store.set_groupid(groupid);
+    store.set_sequence(0);
+
+    req.set_svr_cmds(pms::EServerCmd::CDELETESEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
 int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag)
 {
 #if DEF_PROTO
@@ -220,7 +260,7 @@ int XMsgProcesser::EncodeCreateSeqn(std::string& outstr, const std::string& user
     store.set_storeid(storeid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
-    
+
     req.set_svr_cmds(pms::EServerCmd::CCREATESEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -239,7 +279,7 @@ int XMsgProcesser::EncodeDeleteSeqn(std::string& outstr, const std::string& user
     store.set_storeid(storeid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
-    
+
     req.set_svr_cmds(pms::EServerCmd::CDELETESEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());

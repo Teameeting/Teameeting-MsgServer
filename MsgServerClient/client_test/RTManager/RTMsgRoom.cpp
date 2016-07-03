@@ -39,7 +39,6 @@ void RTMsgRoom::Before()
         c->Init(pms::EModuleType::TMEETING);
         c->Connecting();
         c->SetRoomId(mRoomId);
-        c->EnterRoom();
         mClientList.push_back(c);
         printf("push number %d client userid:%s\n", i, c->GetUserId().c_str());
         rtc::Thread::SleepMs(1000);
@@ -50,7 +49,6 @@ void RTMsgRoom::After()
 {
     for (auto lit=mClientList.begin(); lit!=mClientList.end(); ++lit) {
         RTMsgClient *c = *lit;
-        c->LeaveRoom();
         rtc::Thread::SleepMs(500);
         c->Unin();
         printf("client userid:%s leave room, GetRecvNums:%d\n", c->GetUserId().c_str(), c->GetRecvNums());
@@ -93,13 +91,11 @@ void RTMsgRoom::RunOnce()
     std::string msg = "this is a test msg";
     client.Init(pms::EModuleType::TMEETING);
     client.Connecting();
-    client.EnterRoom();
     while (1) {
         client.SendMsg(msg);
         rtc::Thread::SleepMs(3000);
         break;
     }
-    client.LeaveRoom();
     rtc::Thread::SleepMs(1000);
     client.Unin();
     rtc::Thread::SleepMs(1000);
@@ -163,12 +159,10 @@ void RTMsgRoom::TestMsg(long long flag)
         if (i==0 && m==j) {// flag is jishu
             //if (j==2 || j==4 || j==6) {
             if (j==2 || j==6) {
-                //TempLeaveRoom(lit);
             }
         } else if (i==1 && m==j) {// flag is oushu
             //if (j==2 || j==4 || j==6) {
             if (j==2 || j==6) {
-                //TempEnterRoom(lit);
             }
         }
         oss.str("");
@@ -243,20 +237,4 @@ void RTMsgRoom::TestUnin()
 /////////////////////////////////////////////////////
 //////////////////private////////////////////////////
 /////////////////////////////////////////////////////
-
-void RTMsgRoom::TempEnterRoom(MsgClientListIt it)
-{
-    (*it)->Init(pms::EModuleType::TMEETING);
-    (*it)->Connecting();
-    (*it)->EnterRoom();
-    printf("user %s TempEnterRoom\n", (*it)->GetUserId().c_str());
-}
-
-void RTMsgRoom::TempLeaveRoom(MsgClientListIt it)
-{
-    (*it)->LeaveRoom();
-    rtc::Thread::SleepMs(500);
-    (*it)->Unin();
-    printf("user %s TempLeaveRoom\n", (*it)->GetUserId().c_str());
-}
 

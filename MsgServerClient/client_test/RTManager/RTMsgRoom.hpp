@@ -37,8 +37,6 @@ public:
 private:
     typedef std::list<RTMsgClient*> MsgClientList;
     typedef MsgClientList::iterator MsgClientListIt;
-    void TempEnterRoom(MsgClientListIt it);
-    void TempLeaveRoom(MsgClientListIt it);
 
     MsgClientList       mClientList;
     int                 mRoomNum;
