@@ -1081,6 +1081,7 @@ const int Entity::kNckNameFieldNumber;
 const int Entity::kUsrTokenFieldNumber;
 const int Entity::kCmsgIdFieldNumber;
 const int Entity::kExtraFieldNumber;
+const int Entity::kMsgTimeFieldNumber;
 const int Entity::kUsrTotoFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -1124,6 +1125,7 @@ void Entity::SharedCtor() {
   usr_token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   cmsg_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   extra_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  msg_time_ = 0u;
   usr_toto_ = NULL;
 }
 
@@ -1201,6 +1203,7 @@ void Entity::Clear() {
   usr_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   cmsg_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   extra_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  msg_time_ = 0u;
   if (GetArenaNoVirtual() == NULL && usr_toto_ != NULL) delete usr_toto_;
   usr_toto_ = NULL;
 
@@ -1414,13 +1417,28 @@ bool Entity::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(106)) goto parse_usr_toto;
+        if (input->ExpectTag(104)) goto parse_msg_time;
         break;
       }
 
-      // optional .pms.ToUser usr_toto = 13;
+      // optional uint32 msg_time = 13;
       case 13: {
-        if (tag == 106) {
+        if (tag == 104) {
+         parse_msg_time:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &msg_time_)));
+
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(114)) goto parse_usr_toto;
+        break;
+      }
+
+      // optional .pms.ToUser usr_toto = 14;
+      case 14: {
+        if (tag == 114) {
          parse_usr_toto:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_usr_toto()));
@@ -1559,10 +1577,15 @@ void Entity::SerializeWithCachedSizes(
       12, this->extra(), output);
   }
 
-  // optional .pms.ToUser usr_toto = 13;
+  // optional uint32 msg_time = 13;
+  if (this->msg_time() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(13, this->msg_time(), output);
+  }
+
+  // optional .pms.ToUser usr_toto = 14;
   if (this->has_usr_toto()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      13, *this->usr_toto_, output);
+      14, *this->usr_toto_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:pms.Entity)
@@ -1652,7 +1675,14 @@ int Entity::ByteSize() const {
         this->extra());
   }
 
-  // optional .pms.ToUser usr_toto = 13;
+  // optional uint32 msg_time = 13;
+  if (this->msg_time() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->msg_time());
+  }
+
+  // optional .pms.ToUser usr_toto = 14;
   if (this->has_usr_toto()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1717,6 +1747,9 @@ void Entity::MergeFrom(const Entity& from) {
 
     extra_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.extra_);
   }
+  if (from.msg_time() != 0) {
+    set_msg_time(from.msg_time());
+  }
   if (from.has_usr_toto()) {
     mutable_usr_toto()->::pms::ToUser::MergeFrom(from.usr_toto());
   }
@@ -1751,6 +1784,7 @@ void Entity::InternalSwap(Entity* other) {
   usr_token_.Swap(&other->usr_token_);
   cmsg_id_.Swap(&other->cmsg_id_);
   extra_.Swap(&other->extra_);
+  std::swap(msg_time_, other->msg_time_);
   std::swap(usr_toto_, other->usr_toto_);
   _unknown_fields_.Swap(&other->_unknown_fields_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -2171,7 +2205,21 @@ void Entity::clear_extra() {
   // @@protoc_insertion_point(field_set_allocated:pms.Entity.extra)
 }
 
-// optional .pms.ToUser usr_toto = 13;
+// optional uint32 msg_time = 13;
+void Entity::clear_msg_time() {
+  msg_time_ = 0u;
+}
+ ::google::protobuf::uint32 Entity::msg_time() const {
+  // @@protoc_insertion_point(field_get:pms.Entity.msg_time)
+  return msg_time_;
+}
+ void Entity::set_msg_time(::google::protobuf::uint32 value) {
+  
+  msg_time_ = value;
+  // @@protoc_insertion_point(field_set:pms.Entity.msg_time)
+}
+
+// optional .pms.ToUser usr_toto = 14;
 bool Entity::has_usr_toto() const {
   return !_is_default_instance_ && usr_toto_ != NULL;
 }

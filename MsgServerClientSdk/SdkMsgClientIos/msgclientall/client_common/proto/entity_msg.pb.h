@@ -546,10 +546,16 @@ class Entity : public ::google::protobuf::MessageLite {
   ::std::string* release_extra();
   void set_allocated_extra(::std::string* extra);
 
-  // optional .pms.ToUser usr_toto = 13;
+  // optional uint32 msg_time = 13;
+  void clear_msg_time();
+  static const int kMsgTimeFieldNumber = 13;
+  ::google::protobuf::uint32 msg_time() const;
+  void set_msg_time(::google::protobuf::uint32 value);
+
+  // optional .pms.ToUser usr_toto = 14;
   bool has_usr_toto() const;
   void clear_usr_toto();
-  static const int kUsrTotoFieldNumber = 13;
+  static const int kUsrTotoFieldNumber = 14;
   const ::pms::ToUser& usr_toto() const;
   ::pms::ToUser* mutable_usr_toto();
   ::pms::ToUser* release_usr_toto();
@@ -575,6 +581,7 @@ class Entity : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr cmsg_id_;
   ::google::protobuf::internal::ArenaStringPtr extra_;
   ::pms::ToUser* usr_toto_;
+  ::google::protobuf::uint32 msg_time_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -1279,7 +1286,21 @@ inline void Entity::set_allocated_extra(::std::string* extra) {
   // @@protoc_insertion_point(field_set_allocated:pms.Entity.extra)
 }
 
-// optional .pms.ToUser usr_toto = 13;
+// optional uint32 msg_time = 13;
+inline void Entity::clear_msg_time() {
+  msg_time_ = 0u;
+}
+inline ::google::protobuf::uint32 Entity::msg_time() const {
+  // @@protoc_insertion_point(field_get:pms.Entity.msg_time)
+  return msg_time_;
+}
+inline void Entity::set_msg_time(::google::protobuf::uint32 value) {
+  
+  msg_time_ = value;
+  // @@protoc_insertion_point(field_set:pms.Entity.msg_time)
+}
+
+// optional .pms.ToUser usr_toto = 14;
 inline bool Entity::has_usr_toto() const {
   return !_is_default_instance_ && usr_toto_ != NULL;
 }

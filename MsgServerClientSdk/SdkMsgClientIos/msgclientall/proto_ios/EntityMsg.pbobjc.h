@@ -100,7 +100,8 @@ typedef GPB_ENUM(Entity_FieldNumber) {
   Entity_FieldNumber_UsrToken = 10,
   Entity_FieldNumber_CmsgId = 11,
   Entity_FieldNumber_Extra = 12,
-  Entity_FieldNumber_UsrToto = 13,
+  Entity_FieldNumber_MsgTime = 13,
+  Entity_FieldNumber_UsrToto = 14,
 };
 
 @interface Entity : GPBMessage
@@ -139,6 +140,9 @@ typedef GPB_ENUM(Entity_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *cmsgId;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *extra;
+
+/// msg send time
+@property(nonatomic, readwrite) uint32_t msgTime;
 
 /// user ids sending to, the string from pms::ToUser
 @property(nonatomic, readwrite, strong, null_resettable) ToUser *usrToto;

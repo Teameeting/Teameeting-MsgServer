@@ -26,14 +26,17 @@ public:
     XMsgClientHelper() {}
     ~XMsgClientHelper() {}
 
-    virtual void OnLogin(int code, const std::string& userid) = 0;
-    virtual void OnLogout(int code, const std::string& userid) = 0;
-    virtual void OnSndMsg(int code, const std::string& cont) = 0;
-    virtual void OnKeepLive(int code, const std::string& cont) = 0;
-    virtual void OnSyncSeqn(int code, const std::string& cont) = 0;
-    virtual void OnSyncData(int code, const std::string& cont) = 0;
-    virtual void OnGroupNotify(int code, const std::string& cont) = 0;
-    virtual void OnSyncGroupData(int code, const std::string& cont) = 0;
+    virtual void OnHelpLogin(int code, const std::string& userid) = 0;
+    virtual void OnHelpLogout(int code, const std::string& userid) = 0;
+    virtual void OnHelpSndMsg(int code, const std::string& cont) = 0;
+    virtual void OnHelpKeepLive(int code, const std::string& cont) = 0;
+    virtual void OnHelpSyncSeqn(int code, const std::string& cont) = 0;
+    virtual void OnHelpSyncData(int code, const std::string& cont) = 0;
+    virtual void OnHelpSyncGroupData(int code, const std::string& cont) = 0;
+    
+    virtual void OnHelpGroupNotify(int code, const std::string& cont) = 0;
+    virtual void OnHelpNotifySeqn(int code, const std::string& cont) = 0;
+    virtual void OnHelpNotifyData(int code, const std::string& cont) = 0;
 };
 
 class XMsgClient
@@ -51,31 +54,21 @@ public:
     int UnRegisterMsgCb(XMsgCallback* cb);
 
     int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
-
-    // for test
-    int CreateGroupSeqn(const std::string& userid, const std::string& groupid);
-    int DeleteGroupSeqn(const std::string& userid, const std::string& groupid);
-
-
+    
     int AddGroup(const std::string& groupid);
     int RmvGroup(const std::string& groupid);
 
-    int SndMsg(const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag);
-    int SndMsgTo(const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec);
-
-    int SyncMsg();
-
-    int SyncSeqn();
-    int SyncData();
-    int SyncGroupSeqn();
-    int SyncGroupData();
+    int SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag);
+    int SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec);
+    
+    int SyncSeqn(int64 seqn, int role);
+    int SyncData(int64 seqn);
     int FetchGroupSeqn(const std::string& groupid);
-    int SyncGroupSeqn(const std::string& groupid);
-    int SyncGroupData(const std::string& gropuid);
+    int SyncGroupSeqn(const std::string& groupid, int64 seqn, int role);
+    int SyncGroupData(const std::string& gropuid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
-    void TestSetCurSeqn(int64 seqn) { m_curSeqn = seqn; }
 
 public:
     // For XTcpClientCallback
@@ -88,29 +81,25 @@ public:
     virtual void OnMessageRecv(const char*pData, int nLen);
 
     // For XMsgClientHelper
-    virtual void OnLogin(int code, const std::string& userid);
-    virtual void OnLogout(int code, const std::string& userid);
-    virtual void OnSndMsg(int code, const std::string& cont);
-    virtual void OnKeepLive(int code, const std::string& cont);
-    virtual void OnSyncSeqn(int code, const std::string& cont);
-    virtual void OnSyncData(int code, const std::string& cont);
-    virtual void OnGroupNotify(int code, const std::string& cont);
-    virtual void OnSyncGroupData(int code, const std::string& cont);
+    virtual void OnHelpLogin(int code, const std::string& userid);
+    virtual void OnHelpLogout(int code, const std::string& userid);
+    virtual void OnHelpSndMsg(int code, const std::string& cont);
+    virtual void OnHelpKeepLive(int code, const std::string& cont);
+    virtual void OnHelpSyncSeqn(int code, const std::string& cont);
+    virtual void OnHelpSyncData(int code, const std::string& cont);
+    virtual void OnHelpGroupNotify(int code, const std::string& cont);
+    virtual void OnHelpSyncGroupData(int code, const std::string& cont);
+    virtual void OnHelpNotifySeqn(int code, const std::string& cont);
+    virtual void OnHelpNotifyData(int code, const std::string& cont);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);
 
-public:
-    // <groupid, groupseqn>
-    typedef std::map<std::string, int64>        GroupSeqnMap;
-    typedef GroupSeqnMap::iterator              GroupSeqnMapIt;
 private:
     int Login();
     int Logout();
     bool RefreshTime();
     int KeepAlive();
-    int SyncGroupSeqn(const std::string& groupid, int64 seqn, int type);
-    int SyncGroupData(const std::string& groupid, int64 seqn, int type);
     int SendEncodeMsg(std::string& msg);
     unsigned short readShort(char** pptr);
     void writeShort(char** pptr, unsigned short anInt);
@@ -130,12 +119,8 @@ private:
     bool                     m_autoConnect;
     bool                     m_login;
     MSState                  m_msState;
-    int64                    m_curSeqn;
-    int64                    m_curGroupSeqn;
     pms::EModuleType         m_module;
 
-    GroupSeqnMap             m_mapGroupSeqn;
-	rtc::CriticalSection     m_csGroupSeqn;
 };
 
 

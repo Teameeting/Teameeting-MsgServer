@@ -221,6 +221,7 @@ typedef struct Keep__storage_ {
 @dynamic usrToken;
 @dynamic cmsgId;
 @dynamic extra;
+@dynamic msgTime;
 @dynamic hasUsrToto, usrToto;
 
 typedef struct Entity__storage_ {
@@ -229,6 +230,7 @@ typedef struct Entity__storage_ {
   EMsgTag msgTag;
   EMsgType msgType;
   EMsgFlag msgFlag;
+  uint32_t msgTime;
   NSString *usrFrom;
   NSString *msgCont;
   NSString *romId;
@@ -355,10 +357,19 @@ typedef struct Entity__storage_ {
         .dataType = GPBDataTypeString,
       },
       {
+        .name = "msgTime",
+        .dataTypeSpecific.className = NULL,
+        .number = Entity_FieldNumber_MsgTime,
+        .hasIndex = 12,
+        .offset = (uint32_t)offsetof(Entity__storage_, msgTime),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeUInt32,
+      },
+      {
         .name = "usrToto",
         .dataTypeSpecific.className = GPBStringifySymbol(ToUser),
         .number = Entity_FieldNumber_UsrToto,
-        .hasIndex = 12,
+        .hasIndex = 13,
         .offset = (uint32_t)offsetof(Entity__storage_, usrToto),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeMessage,

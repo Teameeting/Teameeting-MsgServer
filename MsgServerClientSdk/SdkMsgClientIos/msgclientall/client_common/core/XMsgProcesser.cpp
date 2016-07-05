@@ -63,6 +63,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_rom_name(rname);
     entity.set_nck_name(nname);
     entity.set_usr_token(token);
+    entity.set_msg_time(rtc::Time());
     
     entity.set_cmsg_id(GetStrMills());
     outmsgid = entity.cmsg_id();
