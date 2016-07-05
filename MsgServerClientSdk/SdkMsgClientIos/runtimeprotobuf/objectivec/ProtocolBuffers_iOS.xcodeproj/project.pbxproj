@@ -374,6 +374,7 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ProtocolBuffers;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

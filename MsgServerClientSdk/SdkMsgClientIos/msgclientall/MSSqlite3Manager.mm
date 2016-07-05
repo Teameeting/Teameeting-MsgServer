@@ -24,6 +24,11 @@
     [_sqlite3Db closeDb];
 }
 
+-(BOOL)isUserExists:(NSString*)userId
+{
+    return [_sqlite3Db isUserExistsInDb:userId];
+}
+
 -(void)addUserId:(NSString*)userId
 {
     [_sqlite3Db insertSeqnSeqnId:userId seqn:[NSNumber numberWithLongLong:0]];
@@ -67,7 +72,7 @@
     return seqn;
 }
 
--(NSArray*)getGroupIds
+-(NSArray*)getGroupIdSeqns
 {
     NSArray *arr = nil;
     [_sqlite3Db selectGroupIds:&arr];

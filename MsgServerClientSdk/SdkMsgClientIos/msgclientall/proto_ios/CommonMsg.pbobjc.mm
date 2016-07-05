@@ -35,15 +35,20 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
   if (!descriptor) {
     static const char *valueNames =
         "Clogin\000Csndmsg\000Cgetmsg\000Clogout\000Ckeepaliv"
-        "e\000Csyncseqn\000Csseqn4Data\000Csyncdata\000Csyncg"
-        "roupdata\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata"
-        "\000Cgroupnotify\000Ccreateseqn\000Cdeleteseqn\000";
+        "e\000Csync\000Cdata\000Csntfsync\000Csntfdata\000Csyncs"
+        "eqn\000Csseqn4Data\000Csyncdata\000Csyncgroupdata"
+        "\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata\000Cgroupn"
+        "otify\000Ccreateseqn\000Cdeleteseqn\000";
     static const int32_t values[] = {
         EServerCmd_Clogin,
         EServerCmd_Csndmsg,
         EServerCmd_Cgetmsg,
         EServerCmd_Clogout,
         EServerCmd_Ckeepalive,
+        EServerCmd_Csync,
+        EServerCmd_Cdata,
+        EServerCmd_Csntfsync,
+        EServerCmd_Csntfdata,
         EServerCmd_Csyncseqn,
         EServerCmd_Csseqn4Data,
         EServerCmd_Csyncdata,
@@ -55,7 +60,7 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
         EServerCmd_Ccreateseqn,
         EServerCmd_Cdeleteseqn,
     };
-    static const char *extraTextFormatInfo = "\001\006f\002c\000";
+    static const char *extraTextFormatInfo = "\001\nf\002c\000";
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EServerCmd)
                                        valueNames:valueNames
@@ -77,6 +82,10 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cgetmsg:
     case EServerCmd_Clogout:
     case EServerCmd_Ckeepalive:
+    case EServerCmd_Csync:
+    case EServerCmd_Cdata:
+    case EServerCmd_Csntfsync:
+    case EServerCmd_Csntfdata:
     case EServerCmd_Csyncseqn:
     case EServerCmd_Csseqn4Data:
     case EServerCmd_Csyncdata:

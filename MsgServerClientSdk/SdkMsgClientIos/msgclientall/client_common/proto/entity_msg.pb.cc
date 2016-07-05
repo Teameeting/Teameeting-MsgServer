@@ -1079,8 +1079,8 @@ const int Entity::kRomIdFieldNumber;
 const int Entity::kRomNameFieldNumber;
 const int Entity::kNckNameFieldNumber;
 const int Entity::kUsrTokenFieldNumber;
-const int Entity::kMsgSeqsFieldNumber;
-const int Entity::kMemNumFieldNumber;
+const int Entity::kCmsgIdFieldNumber;
+const int Entity::kExtraFieldNumber;
 const int Entity::kUsrTotoFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -1122,8 +1122,8 @@ void Entity::SharedCtor() {
   rom_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   nck_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   usr_token_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  msg_seqs_ = GOOGLE_LONGLONG(0);
-  mem_num_ = 0;
+  cmsg_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extra_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   usr_toto_ = NULL;
 }
 
@@ -1139,6 +1139,8 @@ void Entity::SharedDtor() {
   rom_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   nck_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   usr_token_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  cmsg_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extra_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   if (this != &default_instance()) {
   #else
@@ -1197,8 +1199,8 @@ void Entity::Clear() {
   rom_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   nck_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   usr_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  msg_seqs_ = GOOGLE_LONGLONG(0);
-  mem_num_ = 0;
+  cmsg_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  extra_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && usr_toto_ != NULL) delete usr_toto_;
   usr_toto_ = NULL;
 
@@ -1378,33 +1380,37 @@ bool Entity::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(88)) goto parse_msg_seqs;
+        if (input->ExpectTag(90)) goto parse_cmsg_id;
         break;
       }
 
-      // optional sint64 msg_seqs = 11;
+      // optional string cmsg_id = 11;
       case 11: {
-        if (tag == 88) {
-         parse_msg_seqs:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_SINT64>(
-                 input, &msg_seqs_)));
-
+        if (tag == 90) {
+         parse_cmsg_id:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_cmsg_id()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->cmsg_id().data(), this->cmsg_id().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.Entity.cmsg_id"));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(96)) goto parse_mem_num;
+        if (input->ExpectTag(98)) goto parse_extra;
         break;
       }
 
-      // optional sint32 mem_num = 12;
+      // optional string extra = 12;
       case 12: {
-        if (tag == 96) {
-         parse_mem_num:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
-                 input, &mem_num_)));
-
+        if (tag == 98) {
+         parse_extra:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_extra()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->extra().data(), this->extra().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.Entity.extra"));
         } else {
           goto handle_unusual;
         }
@@ -1533,14 +1539,24 @@ void Entity::SerializeWithCachedSizes(
       10, this->usr_token(), output);
   }
 
-  // optional sint64 msg_seqs = 11;
-  if (this->msg_seqs() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteSInt64(11, this->msg_seqs(), output);
+  // optional string cmsg_id = 11;
+  if (this->cmsg_id().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->cmsg_id().data(), this->cmsg_id().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.Entity.cmsg_id");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      11, this->cmsg_id(), output);
   }
 
-  // optional sint32 mem_num = 12;
-  if (this->mem_num() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteSInt32(12, this->mem_num(), output);
+  // optional string extra = 12;
+  if (this->extra().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->extra().data(), this->extra().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.Entity.extra");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      12, this->extra(), output);
   }
 
   // optional .pms.ToUser usr_toto = 13;
@@ -1622,18 +1638,18 @@ int Entity::ByteSize() const {
         this->usr_token());
   }
 
-  // optional sint64 msg_seqs = 11;
-  if (this->msg_seqs() != 0) {
+  // optional string cmsg_id = 11;
+  if (this->cmsg_id().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::SInt64Size(
-        this->msg_seqs());
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->cmsg_id());
   }
 
-  // optional sint32 mem_num = 12;
-  if (this->mem_num() != 0) {
+  // optional string extra = 12;
+  if (this->extra().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::SInt32Size(
-        this->mem_num());
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->extra());
   }
 
   // optional .pms.ToUser usr_toto = 13;
@@ -1693,11 +1709,13 @@ void Entity::MergeFrom(const Entity& from) {
 
     usr_token_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.usr_token_);
   }
-  if (from.msg_seqs() != 0) {
-    set_msg_seqs(from.msg_seqs());
+  if (from.cmsg_id().size() > 0) {
+
+    cmsg_id_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.cmsg_id_);
   }
-  if (from.mem_num() != 0) {
-    set_mem_num(from.mem_num());
+  if (from.extra().size() > 0) {
+
+    extra_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.extra_);
   }
   if (from.has_usr_toto()) {
     mutable_usr_toto()->::pms::ToUser::MergeFrom(from.usr_toto());
@@ -1731,8 +1749,8 @@ void Entity::InternalSwap(Entity* other) {
   rom_name_.Swap(&other->rom_name_);
   nck_name_.Swap(&other->nck_name_);
   usr_token_.Swap(&other->usr_token_);
-  std::swap(msg_seqs_, other->msg_seqs_);
-  std::swap(mem_num_, other->mem_num_);
+  cmsg_id_.Swap(&other->cmsg_id_);
+  extra_.Swap(&other->extra_);
   std::swap(usr_toto_, other->usr_toto_);
   _unknown_fields_.Swap(&other->_unknown_fields_);
   std::swap(_cached_size_, other->_cached_size_);
@@ -2065,32 +2083,92 @@ void Entity::clear_usr_token() {
   // @@protoc_insertion_point(field_set_allocated:pms.Entity.usr_token)
 }
 
-// optional sint64 msg_seqs = 11;
-void Entity::clear_msg_seqs() {
-  msg_seqs_ = GOOGLE_LONGLONG(0);
+// optional string cmsg_id = 11;
+void Entity::clear_cmsg_id() {
+  cmsg_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::google::protobuf::int64 Entity::msg_seqs() const {
-  // @@protoc_insertion_point(field_get:pms.Entity.msg_seqs)
-  return msg_seqs_;
+ const ::std::string& Entity::cmsg_id() const {
+  // @@protoc_insertion_point(field_get:pms.Entity.cmsg_id)
+  return cmsg_id_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void Entity::set_msg_seqs(::google::protobuf::int64 value) {
+ void Entity::set_cmsg_id(const ::std::string& value) {
   
-  msg_seqs_ = value;
-  // @@protoc_insertion_point(field_set:pms.Entity.msg_seqs)
+  cmsg_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Entity.cmsg_id)
+}
+ void Entity::set_cmsg_id(const char* value) {
+  
+  cmsg_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Entity.cmsg_id)
+}
+ void Entity::set_cmsg_id(const char* value, size_t size) {
+  
+  cmsg_id_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Entity.cmsg_id)
+}
+ ::std::string* Entity::mutable_cmsg_id() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Entity.cmsg_id)
+  return cmsg_id_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Entity::release_cmsg_id() {
+  // @@protoc_insertion_point(field_release:pms.Entity.cmsg_id)
+  
+  return cmsg_id_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Entity::set_allocated_cmsg_id(::std::string* cmsg_id) {
+  if (cmsg_id != NULL) {
+    
+  } else {
+    
+  }
+  cmsg_id_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), cmsg_id);
+  // @@protoc_insertion_point(field_set_allocated:pms.Entity.cmsg_id)
 }
 
-// optional sint32 mem_num = 12;
-void Entity::clear_mem_num() {
-  mem_num_ = 0;
+// optional string extra = 12;
+void Entity::clear_extra() {
+  extra_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- ::google::protobuf::int32 Entity::mem_num() const {
-  // @@protoc_insertion_point(field_get:pms.Entity.mem_num)
-  return mem_num_;
+ const ::std::string& Entity::extra() const {
+  // @@protoc_insertion_point(field_get:pms.Entity.extra)
+  return extra_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
- void Entity::set_mem_num(::google::protobuf::int32 value) {
+ void Entity::set_extra(const ::std::string& value) {
   
-  mem_num_ = value;
-  // @@protoc_insertion_point(field_set:pms.Entity.mem_num)
+  extra_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Entity.extra)
+}
+ void Entity::set_extra(const char* value) {
+  
+  extra_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Entity.extra)
+}
+ void Entity::set_extra(const char* value, size_t size) {
+  
+  extra_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Entity.extra)
+}
+ ::std::string* Entity::mutable_extra() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Entity.extra)
+  return extra_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Entity::release_extra() {
+  // @@protoc_insertion_point(field_release:pms.Entity.extra)
+  
+  return extra_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Entity::set_allocated_extra(::std::string* extra) {
+  if (extra != NULL) {
+    
+  } else {
+    
+  }
+  extra_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), extra);
+  // @@protoc_insertion_point(field_set_allocated:pms.Entity.extra)
 }
 
 // optional .pms.ToUser usr_toto = 13;

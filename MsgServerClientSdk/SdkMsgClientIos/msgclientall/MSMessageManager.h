@@ -23,36 +23,44 @@
 -(void)syncMsg;
 
 // you send content in grpId
--(void)sendTxtMsgGrpId:(NSString*)grpId
-                  cont:(NSString*)content;
+-(int)sendTxtMsgGrpId:(NSString*)grpId
+                 cont:(NSString*)content
+               cmsgid:(NSString**)cmsgid;
 
 // you send content to userId
--(void)sendTxtMsgToUsrId:(NSString*)usrId
-                    cont:(NSString*)content;
+-(int)sendTxtMsgToUsrId:(NSString*)usrId
+                   cont:(NSString*)content
+                 cmsgid:(NSString**)cmsgid;
 
 // you send content to userIds
--(void)sendTxtMsgToUsrIds:(NSArray*)usrIds
-                     cont:(NSString*)content;
+-(int)sendTxtMsgToUsrIds:(NSArray*)usrIds
+                    cont:(NSString*)content
+                  cmsgid:(NSString**)cmsgid;
 
 // hostId begin to live in grpId
--(void)sendNotifyLiveGrpId:(NSString*)grpId
-                    hostId:(NSString*)hostId;
+-(int)sendNotifyLiveGrpId:(NSString*)grpId
+                   hostId:(NSString*)hostId
+                   cmsgid:(NSString**)cmsgid;
 
 // you send red-envelope to hostId in grpId
--(void)sendNotifyRedEnvelopeGrpId:(NSString*)grpId
-                           hostId:(NSString*)hostId;
+-(int)sendNotifyRedEnvelopeGrpId:(NSString*)grpId
+                          hostId:(NSString*)hostId
+                          cmsgid:(NSString**)cmsgid;
 
 // userId was push to blacklist in grpId
--(void)sendNotifyBlacklistGrpId:(NSString*)grpId
-                         userId:(NSString*)userId;
+-(int)sendNotifyBlacklistGrpId:(NSString*)grpId
+                        userId:(NSString*)userId
+                        cmsgid:(NSString**)cmsgid;
 
 // userId was forbidden in grpId
--(void)sendNotifyForbiddenGrpId:(NSString*)grpId
-                         userId:(NSString*)userId;
+-(int)sendNotifyForbiddenGrpId:(NSString*)grpId
+                        userId:(NSString*)userId
+                        cmsgid:(NSString**)cmsgid;
 
 // userId in grpId was setted to be manager
--(void)sendNotifySettedMgrGrpId:(NSString*)grpId
-                         userId:(NSString*)userId;
+-(int)sendNotifySettedMgrGrpId:(NSString*)grpId
+                        userId:(NSString*)userId
+                        cmsgid:(NSString**)cmsgid;
 
 @end
 

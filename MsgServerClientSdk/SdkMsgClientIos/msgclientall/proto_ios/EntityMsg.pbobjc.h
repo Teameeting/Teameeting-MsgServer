@@ -98,8 +98,8 @@ typedef GPB_ENUM(Entity_FieldNumber) {
   Entity_FieldNumber_RomName = 8,
   Entity_FieldNumber_NckName = 9,
   Entity_FieldNumber_UsrToken = 10,
-  Entity_FieldNumber_MsgSeqs = 11,
-  Entity_FieldNumber_MemNum = 12,
+  Entity_FieldNumber_CmsgId = 11,
+  Entity_FieldNumber_Extra = 12,
   Entity_FieldNumber_UsrToto = 13,
 };
 
@@ -135,11 +135,10 @@ typedef GPB_ENUM(Entity_FieldNumber) {
 /// user token
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrToken;
 
-/// msg sequence number
-@property(nonatomic, readwrite) int64_t msgSeqs;
+/// client local msgid
+@property(nonatomic, readwrite, copy, null_resettable) NSString *cmsgId;
 
-/// room member number
-@property(nonatomic, readwrite) int32_t memNum;
+@property(nonatomic, readwrite, copy, null_resettable) NSString *extra;
 
 /// user ids sending to, the string from pms::ToUser
 @property(nonatomic, readwrite, strong, null_resettable) ToUser *usrToto;

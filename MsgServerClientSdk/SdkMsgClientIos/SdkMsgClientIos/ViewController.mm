@@ -6,6 +6,7 @@
 //  Copyright © 2016 Dync. All rights reserved.
 //
 
+#import <AdSupport/ASIdentifierManager.h>
 #import "ViewController.h"
 #import "MSClientManager.h"
 #import "MSGroupManager.h"
@@ -94,7 +95,8 @@
     
     server = @"192.168.7.207";
     port   = 6630;
-    uid = @"9a4f3730-f643-422a-a3a1-eae557060a90";
+    uid = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    NSLog(@"this device uid is:%@", uid);
     token = @"a405f2ad61030c3e354a144137213f819d32516896d7ed883d1dfb05dcd993bd8578d422bbf1e84f5cce15316374a217";
     nname = @"nickname";
     roomid = @"400000000440";
@@ -107,6 +109,7 @@
     [groupMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr connToServer:server port:port];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,18 +121,20 @@
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
     
-    [groupMgr addGroupGrpId:roomid];
+    //[groupMgr addGroupGrpId:roomid];
     
 }
 
 - (IBAction)sndMsgButton:(id)sender {
     NSString *sndMsg = @"sndMsgButton was called";
     NSLog(@"%@", sndMsg);
-    //[msgsender tMSndMsgRoomid:roomid rname:@"roomname" msg:msg];
-    [msgMgr sendTxtMsgGrpId:roomid cont:sndMsg];
+    //[msgMgr sendTxtMsgGrpId:roomid cont:sndMsg];
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *outmsgid = nil;
+    [msgMgr sendTxtMsgToUsrId:touser cont:sndMsg cmsgid:&outmsgid];
 }
 
-- (IBAction)leaveButton:(id)sender {
+- (void)leaveButton:(id)sender {
     NSString *leave = @"leaveButton was called";
     NSLog(@"%@", leave);
     //[msgsender tMOptRoomCmd:EMsgTag_Tleave roomid:roomid rname:@"roomname" remain:@""];

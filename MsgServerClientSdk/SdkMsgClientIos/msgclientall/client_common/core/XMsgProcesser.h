@@ -27,15 +27,15 @@ public:
 public:
 
     int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module);
-    int EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag);
+    int EncodeSndMsg(std::string& outstr, std::string& outmsgid, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag, int module);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
     
-    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag);
+    int EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag, int role);
     int EncodeSyncData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag);
-    int EncodeSyncGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& token, int64 seqn, int module, int tag, int flag);
+    int EncodeSyncGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& token, int64 seqn, int module, int tag, int flag, int role);
     int EncodeSyncGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module, int tag, int flag);
 
     int EncodeCreateSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag);
@@ -52,6 +52,8 @@ protected:
     int DecodeSyncData(int code, const std::string& cont);
     int DecodeGroupNotify(int code, const std::string& cont);
     int DecodeSyncGroupData(int code, const std::string& cont);
+    int DecodeNotifySeqn(int code, const std::string& cont);
+    int DecodeNotifyData(int code, const std::string& cont);
 private:
     XMsgClientHelper    &m_helper;
 };

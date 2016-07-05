@@ -19,6 +19,8 @@
 
 -(void)uninManager;
 
+-(BOOL)isUserExists:(NSString*)userId;
+
 -(void)addUserId:(NSString*)userId;
 
 -(void)updateUserSeqnUserId:(NSString*)userId seqn:(NSNumber*)seqn;
@@ -37,7 +39,7 @@
 
 -(NSNumber*)getGroupSeqnGrpId:(NSString*)grpId;
 
--(NSArray*)getGroupIds;
+-(NSArray*)getGroupIdSeqns;
 
 -(void)delGroupId:(NSString*)groupId;
 

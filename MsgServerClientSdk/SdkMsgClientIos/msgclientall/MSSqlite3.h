@@ -20,7 +20,7 @@
 
 - (BOOL)closeDb;
 
-
+- (BOOL)isUserExistsInDb:(NSString*)userId;
 
 - (BOOL)insertSeqnSeqnId:(NSString*)seqnId
                  seqn:(NSNumber*)seqn;
@@ -36,7 +36,7 @@
 
 - (BOOL)insertGroupIdGrpId:(NSString*)grpId;
 
-- (BOOL)selectGroupIds:(NSArray**)Ids;
+- (BOOL)selectGroupIds:(NSMutableArray**)Ids;
 
 - (BOOL)deleteGroupIdGrpId:(NSString*)grpId;
 
