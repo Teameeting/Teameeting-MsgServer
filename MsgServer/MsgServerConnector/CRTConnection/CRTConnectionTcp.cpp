@@ -11,6 +11,9 @@
 #include "StatusCode.h"
 #include "RTUtils.hpp"
 
+#include "MsgServer/proto/entity_msg.pb.h"
+#include "MsgServer/proto/entity_msg_type.pb.h"
+
 
 CRTConnectionTcp::CRTConnectionTcp()
 : RTJSBuffer()
@@ -34,7 +37,7 @@ int CRTConnectionTcp::SendDispatch(const std::string &id, const std::string &msg
     return 0;
 }
 
-void CRTConnectionTcp::GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& resp)
+void CRTConnectionTcp::GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& result, std::string& resp)
 {
 #if DEF_PROTO
     pms::MsgRep response;
@@ -42,6 +45,7 @@ void CRTConnectionTcp::GenericResponse(pms::EServerCmd cmd, pms::EModuleType mod
     response.set_svr_cmds(cmd);
     response.set_mod_type(module);
     response.set_rsp_code(code);
+    response.set_rsp_cont(result);
     resp = response.SerializeAsString();
 
 #else
@@ -96,14 +100,16 @@ void CRTConnectionTcp::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, con
 
             // send response
             std::string resp;
-            GenericResponse(pms::EServerCmd::CLOGIN, module, 0, resp);
+            std::string result("login ok");
+            GenericResponse(pms::EServerCmd::CLOGIN, module, 0, result, resp);
             SendResponse(0, resp.c_str());
             m_login = true;
             return;
         } else {
             LE("new ConnectionInfo error userid:%s\n", m_userId.c_str());
             std::string resp;
-            GenericResponse(pms::EServerCmd::CLOGIN, module, 101, resp);
+            std::string result("login failed");
+            GenericResponse(pms::EServerCmd::CLOGIN, module, 101, result, resp);
             SendResponse(0, resp.c_str());
             m_login = false;
             return;
@@ -129,7 +135,12 @@ void CRTConnectionTcp::OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, co
     //transfer msg by TransferSession
 
     // enclosing msg in CRTTransferSession::TransferMsg
+    pms::Entity request;
+    request.ParseFromString(msg);
     CRTConnManager::Instance().TransferMsg(cmd, module, m_userId, msg);
+    std::string resp;
+    GenericResponse(pms::EServerCmd::CSNDMSG, module, 0, *request.mutable_cmsg_id(), resp);
+    SendResponse(0, resp.c_str());
 #else
     LE("not define DEF_PROTO\n");
 #endif
@@ -158,7 +169,8 @@ void CRTConnectionTcp::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, co
     m_token = "";
     m_nname = "";
     std::string resp;
-    GenericResponse(pms::EServerCmd::CLOGOUT, module, 0, resp);
+    std::string result("logout ok");
+    GenericResponse(pms::EServerCmd::CLOGOUT, module, 0, result, resp);
     SendResponse(0, resp.c_str());
     m_login = false;
     return;

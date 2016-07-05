@@ -272,8 +272,9 @@ bool LRTLogicalManager::UpdateLocalSeqn(pms::StorageMsg*  storeMsg)
         if (it!=m_localSeqnMap.end())
         {
             printf("UpdateLocalSeqn storeMsg->sequence:%lld, it->second:%lld\n", storeMsg->sequence(), it->second);
-            assert(storeMsg->sequence() >= it->second);
-            it->second = storeMsg->sequence();
+            //assert(storeMsg->sequence() >= it->second);
+            if (storeMsg->sequence()>it->second)
+                it->second = storeMsg->sequence();
         } else {
             m_localSeqnMap.insert(std::make_pair(storeMsg->storeid(), storeMsg->sequence()));
         }
@@ -294,7 +295,8 @@ bool LRTLogicalManager::UpdateLocalMaxSeqn(pms::StorageMsg*  storeMsg)
         {
             printf("UpdateLocalMaxSeqn storeMsg->maxseqn:%lld, it->second:%lld\n", storeMsg->maxseqn(), it->second);
             assert(storeMsg->maxseqn() >= it->second);
-            it->second = storeMsg->maxseqn();
+            if (storeMsg->maxseqn()>it->second)
+                it->second = storeMsg->maxseqn();
         } else {
             m_localSeqnMap.insert(std::make_pair(storeMsg->storeid(), storeMsg->maxseqn()));
         }

@@ -27,7 +27,7 @@ public:
     virtual ~CRTConnectionTcp();
 public:
     int SendDispatch(const std::string& id, const std::string& msg);
-    void GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& resp);
+    void GenericResponse(pms::EServerCmd cmd, pms::EModuleType module, int code, std::string& result, std::string& resp);
 public:
     //* For RCTcp
     virtual void OnRecvData(const char*pData, int nLen);
