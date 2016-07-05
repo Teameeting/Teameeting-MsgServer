@@ -10,10 +10,10 @@ enum EServerCmd{
     CGETMSG                 = 2;
     CLOGOUT                 = 3;
     CKEEPALIVE              = 4;
-CSYNC                       = 5;
-CDATA                       = 6;
-CSNTFSYNC                   = 7;
-CSNTFDATA                   = 8;
+    CSEQN                   = 5;
+    CDATA                   = 6;
+    CSNTFSEQN               = 7; // server notify sync seqn
+    CSNTFDATA               = 8; // server notify sync data
     CSYNCSEQN               = 9;
     CSSEQN4DATA             = 10;
     CSYNCDATA               = 11;
@@ -22,8 +22,8 @@ CSNTFDATA                   = 8;
     CNEWMSGSEQN             = 14;
     CNEWMSGDATA             = 15;
     CGROUPNOTIFY            = 16;
-	CCREATESEQN							= 17;
-	CDELETESEQN							= 18;
+    CCREATESEQN             = 17;
+    CDELETESEQN             = 18;
 }
 
 // different server module

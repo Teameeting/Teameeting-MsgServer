@@ -601,7 +601,13 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
     //assert(store.maxseqn()>=m_curSeqn);// ???????
 
     pms::Entity entity;
-    entity.ParseFromString(store.content());
+    if (entity.ParseFromString(store.content()))
+    {
+        printf("entity.ParseFromString ok\n");
+    } else {
+        printf("entity.ParseFromString error so return\n");
+        return;
+    }
     if (entity.usr_toto().users_size()==0)
     {
         printf("OnHelpSyncData usr_toto.size is 0 so return\n");

@@ -132,6 +132,7 @@
     NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *outmsgid = nil;
     [msgMgr sendTxtMsgToUsrId:touser cont:sndMsg cmsgid:&outmsgid];
+    NSLog(@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid);
 }
 
 - (void)leaveButton:(id)sender {

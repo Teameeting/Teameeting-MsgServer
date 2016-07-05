@@ -29,9 +29,13 @@ typedef GPB_ENUM(EServerCmd) {
   EServerCmd_Cgetmsg = 2,
   EServerCmd_Clogout = 3,
   EServerCmd_Ckeepalive = 4,
-  EServerCmd_Csync = 5,
+  EServerCmd_Cseqn = 5,
   EServerCmd_Cdata = 6,
-  EServerCmd_Csntfsync = 7,
+
+  /// server notify sync seqn
+  EServerCmd_Csntfseqn = 7,
+
+  /// server notify sync data
   EServerCmd_Csntfdata = 8,
   EServerCmd_Csyncseqn = 9,
   EServerCmd_Csseqn4Data = 10,

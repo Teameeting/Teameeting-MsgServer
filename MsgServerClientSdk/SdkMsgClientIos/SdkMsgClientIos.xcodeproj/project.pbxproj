@@ -534,7 +534,6 @@
 		E6ADBD311D24AF5C00A4AA12 /* EntityMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityMsg.pbobjc.h; sourceTree = "<group>"; };
 		E6ADBD321D24AF5C00A4AA12 /* EntityMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityMsgType.pbobjc.h; sourceTree = "<group>"; };
 		E6ADBD331D24AF5C00A4AA12 /* MSClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientType.h; sourceTree = "<group>"; };
-		E6ADBD351D24AF5C00A4AA12 /* MSMsgSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMsgSender.h; sourceTree = "<group>"; };
 		E6ADBD361D24AF5C00A4AA12 /* StorageMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageMsg.pbobjc.h; sourceTree = "<group>"; };
 		E6ADBD371D24AF5C00A4AA12 /* StorageMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageMsgType.pbobjc.h; sourceTree = "<group>"; };
 		E6ADBD381D24AF5C00A4AA12 /* SysMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysMsg.pbobjc.h; sourceTree = "<group>"; };
@@ -1251,7 +1250,6 @@
 				E6ADBD311D24AF5C00A4AA12 /* EntityMsg.pbobjc.h */,
 				E6ADBD321D24AF5C00A4AA12 /* EntityMsgType.pbobjc.h */,
 				E6ADBD331D24AF5C00A4AA12 /* MSClientType.h */,
-				E6ADBD351D24AF5C00A4AA12 /* MSMsgSender.h */,
 				E6ADBD361D24AF5C00A4AA12 /* StorageMsg.pbobjc.h */,
 				E6ADBD371D24AF5C00A4AA12 /* StorageMsgType.pbobjc.h */,
 				E6ADBD381D24AF5C00A4AA12 /* SysMsg.pbobjc.h */,

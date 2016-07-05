@@ -45,7 +45,7 @@ enum EServerCmd {
   CGETMSG = 2,
   CLOGOUT = 3,
   CKEEPALIVE = 4,
-  CSYNC = 5,
+  CSEQN = 5,
   CDATA = 6,
   CSNTFSEQN = 7,
   CSNTFDATA = 8,
