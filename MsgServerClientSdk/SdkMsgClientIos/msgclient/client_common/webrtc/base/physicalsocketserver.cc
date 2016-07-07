@@ -7,6 +7,7 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
+#include "webrtc/base/physicalsocketserver.h"
 
 #if defined(_MSC_VER) && _MSC_VER < 1300
 #pragma warning(disable:4786)
@@ -44,15 +45,10 @@
 #include "webrtc/base/byteorder.h"
 #include "webrtc/base/common.h"
 #include "webrtc/base/logging.h"
-#include "webrtc/base/physicalsocketserver.h"
+#include "webrtc/base/networkmonitor.h"
 #include "webrtc/base/timeutils.h"
 #include "webrtc/base/winping.h"
 #include "webrtc/base/win32socketinit.h"
-
-// stm: this will tell us if we are on OSX
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
 
 #if defined(WEBRTC_POSIX)
 #include <netinet/tcp.h>  // for TCP_NODELAY
@@ -174,6 +170,14 @@ int PhysicalSocket::Bind(const SocketAddress& bind_addr) {
     dbg_addr_.append(GetLocalAddress().ToString());
   }
 #endif
+  if (ss_->network_binder()) {
+    int result =
+        ss_->network_binder()->BindSocketToNetwork(s_, bind_addr.ipaddr());
+    if (result < 0) {
+      LOG(LS_INFO) << "Binding socket to network address "
+                   << bind_addr.ipaddr().ToString() << " result " << result;
+    }
+  }
   return err;
 }
 
@@ -262,7 +266,8 @@ int PhysicalSocket::SetOption(Option opt, int value) {
 }
 
 int PhysicalSocket::Send(const void* pv, size_t cb) {
-  int sent = ::send(s_, reinterpret_cast<const char *>(pv), (int)cb,
+  int sent = DoSend(s_, reinterpret_cast<const char *>(pv),
+      static_cast<int>(cb),
 #if defined(WEBRTC_LINUX) && !defined(WEBRTC_ANDROID)
       // Suppress SIGPIPE. Without this, attempting to send on a socket whose
       // other end is closed will result in a SIGPIPE signal being raised to
@@ -278,7 +283,8 @@ int PhysicalSocket::Send(const void* pv, size_t cb) {
   MaybeRemapSendError();
   // We have seen minidumps where this may be false.
   ASSERT(sent <= static_cast<int>(cb));
-  if ((sent < 0) && IsBlockingError(GetError())) {
+  if ((sent > 0 && sent < static_cast<int>(cb)) ||
+      (sent < 0 && IsBlockingError(GetError()))) {
     enabled_events_ |= DE_WRITE;
   }
   return sent;
@@ -289,7 +295,7 @@ int PhysicalSocket::SendTo(const void* buffer,
                            const SocketAddress& addr) {
   sockaddr_storage saddr;
   size_t len = addr.ToSockAddrStorage(&saddr);
-  int sent = ::sendto(
+  int sent = DoSendTo(
       s_, static_cast<const char *>(buffer), static_cast<int>(length),
 #if defined(WEBRTC_LINUX) && !defined(WEBRTC_ANDROID)
       // Suppress SIGPIPE. See above for explanation.
@@ -302,7 +308,8 @@ int PhysicalSocket::SendTo(const void* buffer,
   MaybeRemapSendError();
   // We have seen minidumps where this may be false.
   ASSERT(sent <= static_cast<int>(length));
-  if ((sent < 0) && IsBlockingError(GetError())) {
+  if ((sent > 0 && sent < static_cast<int>(length)) ||
+      (sent < 0 && IsBlockingError(GetError()))) {
     enabled_events_ |= DE_WRITE;
   }
   return sent;
@@ -465,11 +472,23 @@ int PhysicalSocket::EstimateMTU(uint16_t* mtu) {
 #endif
 }
 
-
 SOCKET PhysicalSocket::DoAccept(SOCKET socket,
                                 sockaddr* addr,
                                 socklen_t* addrlen) {
   return ::accept(socket, addr, addrlen);
+}
+
+int PhysicalSocket::DoSend(SOCKET socket, const char* buf, int len, int flags) {
+  return ::send(socket, buf, len, flags);
+}
+
+int PhysicalSocket::DoSendTo(SOCKET socket,
+                             const char* buf,
+                             int len,
+                             int flags,
+                             const struct sockaddr* dest_addr,
+                             socklen_t addrlen) {
+  return ::sendto(socket, buf, len, flags, dest_addr, addrlen);
 }
 
 void PhysicalSocket::OnResolveResult(AsyncResolverInterface* resolver) {
@@ -1109,7 +1128,7 @@ private:
   PhysicalSocketServer* ss_;
   WSAEVENT hev_;
 };
-#endif  // WEBRTC_WIN 
+#endif  // WEBRTC_WIN
 
 // Sets the value of a boolean value to false when signaled.
 class Signaler : public EventDispatcher {
@@ -1603,6 +1622,6 @@ bool PhysicalSocketServer::Wait(int cmsWait, bool process_io) {
   // Done
   return true;
 }
-#endif  // WEBRTC_WIN 
+#endif  // WEBRTC_WIN
 
 }  // namespace rtc

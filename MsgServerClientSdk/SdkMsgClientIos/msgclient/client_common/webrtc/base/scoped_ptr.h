@@ -88,9 +88,9 @@
 
 #include <algorithm>  // For std::swap().
 #include <cstddef>
+#include <memory>
 
 #include "webrtc/base/constructormagic.h"
-#include "webrtc/base/deprecation.h"
 #include "webrtc/base/template_util.h"
 #include "webrtc/typedefs.h"
 
@@ -374,12 +374,6 @@ class scoped_ptr {
   scoped_ptr(const scoped_ptr& other) = delete;
   scoped_ptr& operator=(const scoped_ptr& other) = delete;
 
-  // Get an rvalue reference. (sp.Pass() does the same thing as std::move(sp).)
-  // Deprecated; remove in March 2016 (bug 5373).
-  RTC_DEPRECATED scoped_ptr&& Pass() {
-    return std::move(*this);
-  }
-
   // Reset.  Deletes the currently owned object, if any.
   // Then takes ownership of a new object, if given.
   void reset(element_type* p = nullptr) { impl_.reset(p); }
@@ -510,12 +504,6 @@ class scoped_ptr<T[], D> {
   scoped_ptr(const scoped_ptr& other) = delete;
   scoped_ptr& operator=(const scoped_ptr& other) = delete;
 
-  // Get an rvalue reference. (sp.Pass() does the same thing as std::move(sp).)
-  // Deprecated; remove in March 2016 (bug 5373).
-  RTC_DEPRECATED scoped_ptr&& Pass() {
-    return std::move(*this);
-  }
-
   // Reset.  Deletes the currently owned array, if any.
   // Then takes ownership of a new object, if given.
   void reset(element_type* array = nullptr) { impl_.reset(array); }
@@ -603,6 +591,16 @@ class scoped_ptr<T[], D> {
 template <class T, class D>
 void swap(rtc::scoped_ptr<T, D>& p1, rtc::scoped_ptr<T, D>& p2) {
   p1.swap(p2);
+}
+
+// Convert between the most common kinds of scoped_ptr and unique_ptr.
+template <typename T>
+std::unique_ptr<T> ScopedToUnique(scoped_ptr<T> sp) {
+  return std::unique_ptr<T>(sp.release());
+}
+template <typename T>
+scoped_ptr<T> UniqueToScoped(std::unique_ptr<T> up) {
+  return scoped_ptr<T>(up.release());
 }
 
 }  // namespace rtc
