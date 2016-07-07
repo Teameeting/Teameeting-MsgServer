@@ -16,16 +16,34 @@
 
 @optional
 
-// when add an group
+/**
+ *  when add an group success
+ *
+ *  params:
+ */
 -(void) OnAddGroupSuccessGrpId:(NSString*)grpId;
 
+/**
+ *  when add an group failed
+ *
+ *  params:
+ */
 -(void) OnAddGroupFailedGrpId:(NSString*)grpId
                        reason:(NSString*)reason
                          code:(NSInteger)code;
 
-// when del an group
+/**
+ *  when remove an group success
+ *
+ *  params:
+ */
 -(void) OnRmvGroupSuccessGrpId:(NSString*)grpId;
 
+/**
+ *  when remove an group failed
+ *
+ *  params:
+ */
 -(void) OnRmvGroupFailedGrpId:(NSString*)grpId
                        reason:(NSString*)reason
                          code:(NSInteger)code;

@@ -13,46 +13,100 @@
 
 @interface MSMessageManager : NSObject
 
+/**
+ *  add message delegate
+ *
+ *  params:
+ */
 -(void)addDelegateId:(id<MSTxtMessageDelegate>)txtDelegate
                      delegateQueue:(dispatch_queue_t)txtQueue;
 
+/**
+ *  remove message delegate
+ *
+ *  params:
+ */
 -(void)delDelegateId:(id<MSTxtMessageDelegate>)txtDelegate;
 
-// sync message when first login or refresh
-// do not call this function in an loooooop
+/**
+ *  sync message when first login or refresh
+ *  do not call this function in an loooooop
+ *
+ *  params:
+ */
 -(void)syncMsg;
 
-// you send content in grpId
--(void)sendTxtMsgGrpId:(NSString*)grpId
-                  cont:(NSString*)content;
+/**
+ *  you send content in grpId
+ *
+ *  params:
+ */
+-(int)sendTxtMsgGrpId:(NSString*)grpId
+                 cont:(NSString*)content
+               cmsgid:(NSString**)cmsgid;
 
-// you send content to userId
--(void)sendTxtMsgToUsrId:(NSString*)usrId
-                    cont:(NSString*)content;
+/**
+ *  you send content to userId
+ *
+ *  params:
+ */
+-(int)sendTxtMsgToUsrId:(NSString*)usrId
+                   cont:(NSString*)content
+                 cmsgid:(NSString**)cmsgid;
 
-// you send content to userIds
--(void)sendTxtMsgToUsrIds:(NSArray*)usrIds
-                     cont:(NSString*)content;
+/**
+ *  you send content to userIds
+ *
+ *  params:
+ */
+-(int)sendTxtMsgToUsrIds:(NSArray*)usrIds
+                    cont:(NSString*)content
+                  cmsgid:(NSString**)cmsgid;
 
-// hostId begin to live in grpId
--(void)sendNotifyLiveGrpId:(NSString*)grpId
-                    hostId:(NSString*)hostId;
+/**
+ *  hostId begin to live in grpId
+ *
+ *  params:
+ */
+-(int)sendNotifyLiveGrpId:(NSString*)grpId
+                   hostId:(NSString*)hostId
+                   cmsgid:(NSString**)cmsgid;
 
-// you send red-envelope to hostId in grpId
--(void)sendNotifyRedEnvelopeGrpId:(NSString*)grpId
-                           hostId:(NSString*)hostId;
+/**
+ *  you send red-envelope to hostId in grpId
+ *
+ *  params:
+ */
+-(int)sendNotifyRedEnvelopeGrpId:(NSString*)grpId
+                          hostId:(NSString*)hostId
+                          cmsgid:(NSString**)cmsgid;
 
-// userId was push to blacklist in grpId
--(void)sendNotifyBlacklistGrpId:(NSString*)grpId
-                         userId:(NSString*)userId;
+/**
+ *  userId was push to blacklist in grpId
+ *
+ *  params:
+ */
+-(int)sendNotifyBlacklistGrpId:(NSString*)grpId
+                        userId:(NSString*)userId
+                        cmsgid:(NSString**)cmsgid;
 
-// userId was forbidden in grpId
--(void)sendNotifyForbiddenGrpId:(NSString*)grpId
-                         userId:(NSString*)userId;
+/**
+ *  userId was forbidden in grpId
+ *
+ *  params:
+ */
+-(int)sendNotifyForbiddenGrpId:(NSString*)grpId
+                        userId:(NSString*)userId
+                        cmsgid:(NSString**)cmsgid;
 
-// userId in grpId was setted to be manager
--(void)sendNotifySettedMgrGrpId:(NSString*)grpId
-                         userId:(NSString*)userId;
+/**
+ *  userId in grpId was setted to be manager
+ *
+ *  params:
+ */
+-(int)sendNotifySettedMgrGrpId:(NSString*)grpId
+                        userId:(NSString*)userId
+                        cmsgid:(NSString**)cmsgid;
 
 @end
 

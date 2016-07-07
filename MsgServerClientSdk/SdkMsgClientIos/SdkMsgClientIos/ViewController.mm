@@ -22,6 +22,7 @@
     UIButton *mLeaveButton;
     UIButton *mNotifyButton;
     UITextView *textViewDisplay;
+    NSString *mGroupId;
 }
 
 @end
@@ -72,7 +73,7 @@
     [mNotifyButton addTarget:self action:@selector(notifyButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:mNotifyButton];
     
-    textViewDisplay = [[UITextView alloc] initWithFrame:CGRectMake(250, 100, 150, 300)];
+    textViewDisplay = [[UITextView alloc] initWithFrame:CGRectMake(250, 100, 300, 900)];
     textViewDisplay.backgroundColor=[UIColor whiteColor];
     textViewDisplay.scrollEnabled = YES;
     textViewDisplay.editable = NO;
@@ -121,35 +122,43 @@
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
     
-    //[groupMgr addGroupGrpId:roomid];
-    
+    //NSString *groupid = @"4008696859";
+    mGroupId = @"wocaowocaowocao";
+    NSLog(@"====>>you enter mGroupId %@", mGroupId);
+    [groupMgr addGroupGrpId:mGroupId];
 }
 
 - (IBAction)sndMsgButton:(id)sender {
     NSString *sndMsg = @"sndMsgButton was called";
     NSLog(@"%@", sndMsg);
-    //[msgMgr sendTxtMsgGrpId:roomid cont:sndMsg];
+    
     NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *outmsgid = nil;
     [msgMgr sendTxtMsgToUsrId:touser cont:sndMsg cmsgid:&outmsgid];
-    NSLog(@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid);
+    NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
 - (void)leaveButton:(id)sender {
     NSString *leave = @"leaveButton was called";
     NSLog(@"%@", leave);
-    //[msgsender tMOptRoomCmd:EMsgTag_Tleave roomid:roomid rname:@"roomname" remain:@""];
-    NSString *groupid = @"4008696859";
-    NSString *outmsgid = nil;
-    //[groupMgr addGroupGrpId:groupid];
-    [msgMgr sendTxtMsgGrpId:groupid cont:leave cmsgid:&outmsgid];
-    NSLog(@"sendTxtMsgGrpId outmsgid is :%@", outmsgid);
+    
+    mGroupId = @"wocaowocaowocao";
+    NSLog(@"====>>you leave mGroupId %@", mGroupId);
+    [groupMgr rmvGroupGrpId:mGroupId];
 }
 
 - (IBAction)notifyButton:(id)sender {
     NSString *notify = @"notifyButton was called";
     NSLog(@"%@", notify);
-    //[msgsender tMNotifyMsgRoomid:roomid rname:@"roomname" tags:EMsgTag_Tnotify msg:msg];
+    
+    NSString *outmsgid = nil;
+    mGroupId = @"wocaowocaowocao";
+    [msgMgr sendTxtMsgGrpId:mGroupId cont:notify cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendTxtMsgGrpId outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
 -(void)updateResult:(NSString*)backInfo

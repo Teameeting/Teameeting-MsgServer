@@ -13,13 +13,33 @@
 
 @interface MSGroupManager : NSObject
 
+/**
+ *  add group delegate
+ *
+ *  params:
+ */
 -(void)addDelegateId:(id<MSGroupDelegate>)grpDelegate
        delegateQueue:(dispatch_queue_t)grpQueue;
 
+/**
+ *  remove group delegate
+ *
+ *  params:
+ */
 -(void)delDelegateId:(id<MSGroupDelegate>)grpDelegate;
 
+/**
+ *  add to group
+ *
+ *  params:
+ */
 -(void)addGroupGrpId:(NSString*)grpId;
 
+/**
+ *  remove from group
+ *
+ *  params:
+ */
 -(void)rmvGroupGrpId:(NSString*)grpId;
 
 @end

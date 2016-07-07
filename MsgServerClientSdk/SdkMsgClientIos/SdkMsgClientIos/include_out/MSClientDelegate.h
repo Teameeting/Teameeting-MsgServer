@@ -13,17 +13,62 @@
 @protocol MSClientDelegate <NSObject>
 
 @required
-// when server was connected
+
+/**
+ *  when server was connected
+ *
+ *  params:
+ */
 -(void)OnMsgServerConnected;
 
-// when server was connecting
+/**
+ *  when server was connecting
+ *
+ *  params:
+ */
 -(void)OnMsgServerConnecting;
 
-// when server was disconnected
+/**
+ *  when server was disconnected
+ *
+ *  params:
+ */
 -(void)OnMsgServerDisconnect;
 
-// when server connect failed
+/**
+ *  when server connect failed
+ *
+ *  params:
+ */
 -(void)OnMsgServerConnectionFailure;
+
+/**
+ * when client initializing
+ *
+ *  params:
+ */
+-(void)OnMsgClientInitializing;
+
+/**
+ *  when client initialize ok
+ *
+ *  params:
+ */
+-(void)OnMsgClientInitialized;
+
+/**
+ *  when client un initialize
+ *
+ *  params:
+ */
+-(void)OnMsgClientUnInitialize;
+
+/**
+ *  when client initialize failed
+ *
+ *  params:
+ */
+-(void)OnMsgClientInitializeFailure;
 
 @end
 #endif /* MSClientDelegate_h */

@@ -191,7 +191,7 @@ void MsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, con
             if (code == 0)
             {
                 NSString *nsGrpId = [NSString stringWithCString:groupid.c_str() encoding:NSUTF8StringEncoding];
-                NSLog(@"OnCmdGroup add group ok, insert groupid and seqn, toggle callback");
+                NSLog(@"OnCmdCallback add group ok, insert groupid and seqn, toggle callback");
                 [m_sqlite3Manager addGroupId:nsGrpId];
                 [m_sqlite3Manager addGroupSeqnGrpId:nsGrpId seqn:[NSNumber numberWithLongLong:data.seqn]];
                 UpdateLocalSeqn(groupid, data.seqn);
@@ -207,7 +207,7 @@ void MsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, con
             if (code == 0)
             {
                 NSString *nsGrpId = [NSString stringWithCString:groupid.c_str() encoding:NSUTF8StringEncoding];
-                NSLog(@"OnCmdGroup del group ok, del groupid and seqn, toggle callback");
+                NSLog(@"OnCmdCallback del group ok, del groupid and seqn, toggle callback");
                 [m_sqlite3Manager delGroupId:nsGrpId];
                 RemoveLocalSeqn(groupid);
                 [m_groupDelegate OnRmvGroupSuccessGrpId:nsGrpId];
@@ -474,6 +474,7 @@ void MsgClient::OnSyncSeqn(int64 maxseqn, int role)
     // if the new seqn is bigger 2 or 3 than cur seqn, this need sync data
     // if it is recver, this means client need sync data
     int64 lseqn = GetLocalSeqnFromId(m_strUserId);
+    assert(lseqn>0);
     int index = maxseqn - lseqn;
     if (role == EMsgRole_Rsender)
     {
@@ -505,7 +506,7 @@ void MsgClient::OnSyncGroupSeqn(const std::string &groupid, int64 maxseqn)
     if (maxseqn > lseqn)
         SyncGroupData(groupid, lseqn);
     else{
-        NSLog(@"MsgClient::OnSyncGroupSeqn lseqn  bigger than seqn, lseqn:%lld, seqn:%lld", lseqn, maxseqn);
+        NSLog(@"MsgClient::OnSyncGroupSeqn lseqn:%lld, seqn:%lld, you are not in this group:%@", lseqn, maxseqn, [NSString stringWithUTF8String:groupid.c_str()]);
     }
 }
 
@@ -520,8 +521,8 @@ void MsgClient::OnGroupNotify(int code, const std::string& seqnid)
             SyncGroupData(seqnid, seqn);
         else
         {
-            NSLog(@"MsgClient::OnGroupNotify seqn is not bigger 0, seqn:%lld", seqn);
-            assert(seqn>0);
+            NSLog(@"MsgClient::OnGroupNotify !!!!!seqn:%lld, not find seqnid:%@, you're not in this group", seqn, [NSString stringWithUTF8String:seqnid.c_str()]);
+            //assert(seqn>0);
         }
     } else {
         NSLog(@"MsgClient::OnGroupNotify error code is :%d!!!", code);
@@ -543,6 +544,7 @@ void MsgClient::OnNotifySeqn(int code, const std::string& seqnid)
         } else if (seqnid.length()==0) // this means userid
         {
             int64 lseqn = GetLocalSeqnFromId(m_strUserId);
+            assert(lseqn>0);
             SyncSeqn(lseqn, (pms::EMsgRole)EMsgRole_Rsender);
         }
     } else {
@@ -562,13 +564,13 @@ void MsgClient::OnNotifyData(int code, const std::string& seqnid)
                 SyncGroupData(seqnid, seqn);
             else
             {
-                NSLog(@"MsgClient::OnNotifyData seqn is not bigger 0 seqn:%lld", seqn);
-                assert(seqn>0);
+                NSLog(@"MsgClient::OnNotifyData seqn:%lld, you're not in this group:%@", seqn, [NSString stringWithUTF8String:seqnid.c_str()]);
             }
         } else if (seqnid.length()==0) // this means userid
         {
             NSLog(@"MsgClient::OnNotifyData notify user to sync data!!!");
             int64 lseqn = GetLocalSeqnFromId(m_strUserId);
+            assert(lseqn>0);
             SyncData(lseqn);
         }
     } else {

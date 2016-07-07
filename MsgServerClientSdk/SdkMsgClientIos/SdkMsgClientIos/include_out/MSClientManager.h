@@ -15,20 +15,50 @@
 
 @interface MSClientManager : NSObject
 
+/**
+ *  init msg client
+ *
+ *  params:
+ */
 -(int)initMsgClientUsrId:(NSString*)usrId
                    token:(NSString*)token
                    nName:(NSString*)nName;
 
--(int)uintMsgClient;
+/**
+ *  uninit msg client
+ *
+ *  params:
+ */
+-(int)uninMsgClient;
 
+/**
+ *  add client delegate
+ *
+ *  params:
+ */
 -(void)addDelegateId:(id<MSClientDelegate>)cltDelegate
        delegateQueue:(dispatch_queue_t)cltQueue;
 
+/**
+ *  remove client delegate
+ *
+ *  params:
+ */
 -(void)delDelegateId:(id<MSClientDelegate>)cltDelegate;
 
+/**
+ *  connect to server
+ *
+ *  params:
+ */
 -(int)connToServer:(NSString*)server
               port:(int)port;
 
+/**
+ *  get connection status
+ *
+ *  params:
+ */
 -(MCConnState)connStatus;
 
 @end
