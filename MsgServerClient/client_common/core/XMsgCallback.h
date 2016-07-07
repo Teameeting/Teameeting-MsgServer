@@ -18,16 +18,24 @@ enum MSState{
     MSCONNECTED
 };
 
+enum MSCommand{
+    MSADD_GROUP,
+    MSRMV_GROUP,
+    MSFETCH_SEQN
+};
+
 typedef struct MSCbData{
     int type;
     std::string data;
     int64       seqn;
+    int         result;
 }MSCbData;
 
 class XMsgCallback {
 public:
     virtual void OnSndMsg(int code, const std::string& msgid) = 0;
-    virtual void OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data) = 0;
+    
+    virtual void OnCmdCallback(int code, int cmd, const std::string& groupid, const MSCbData& data) = 0;
     virtual void OnRecvMsg(int64 seqn, const std::string& msg) = 0;
     virtual void OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std::string& msg) = 0;
     
