@@ -20,10 +20,11 @@ GPBEnumDescriptor *EStorageTag_EnumDescriptor(void) {
   static GPBEnumDescriptor *descriptor = NULL;
   if (!descriptor) {
     static const char *valueNames =
-        "Tcommon\000Tgetnew\000";
+        "Tseqn\000Tdata\000Tfetchseqn\000";
     static const int32_t values[] = {
-        EStorageTag_Tcommon,
-        EStorageTag_Tgetnew,
+        EStorageTag_Tseqn,
+        EStorageTag_Tdata,
+        EStorageTag_Tfetchseqn,
     };
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EStorageTag)
@@ -40,8 +41,9 @@ GPBEnumDescriptor *EStorageTag_EnumDescriptor(void) {
 
 BOOL EStorageTag_IsValidValue(int32_t value__) {
   switch (value__) {
-    case EStorageTag_Tcommon:
-    case EStorageTag_Tgetnew:
+    case EStorageTag_Tseqn:
+    case EStorageTag_Tdata:
+    case EStorageTag_Tfetchseqn:
       return YES;
     default:
       return NO;

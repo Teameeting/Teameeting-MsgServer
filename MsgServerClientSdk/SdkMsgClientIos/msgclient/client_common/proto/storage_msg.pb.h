@@ -197,13 +197,13 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_groupid();
   void set_allocated_groupid(::std::string* groupid);
 
-  // optional string content = 13;
+  // optional bytes content = 13;
   void clear_content();
   static const int kContentFieldNumber = 13;
   const ::std::string& content() const;
   void set_content(const ::std::string& value);
   void set_content(const char* value);
-  void set_content(const char* value, size_t size);
+  void set_content(const void* value, size_t size);
   ::std::string* mutable_content();
   ::std::string* release_content();
   void set_allocated_content(::std::string* content);
@@ -634,7 +634,7 @@ inline void StorageMsg::set_allocated_groupid(::std::string* groupid) {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.groupid)
 }
 
-// optional string content = 13;
+// optional bytes content = 13;
 inline void StorageMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -652,7 +652,7 @@ inline void StorageMsg::set_content(const char* value) {
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.StorageMsg.content)
 }
-inline void StorageMsg::set_content(const char* value, size_t size) {
+inline void StorageMsg::set_content(const void* value, size_t size) {
   
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

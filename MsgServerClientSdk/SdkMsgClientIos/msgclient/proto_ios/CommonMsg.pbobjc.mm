@@ -35,15 +35,20 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
   if (!descriptor) {
     static const char *valueNames =
         "Clogin\000Csndmsg\000Cgetmsg\000Clogout\000Ckeepaliv"
-        "e\000Csyncseqn\000Csseqn4Data\000Csyncdata\000Csyncg"
-        "roupdata\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata"
-        "\000Cgroupnotify\000";
+        "e\000Cseqn\000Cdata\000Csntfseqn\000Csntfdata\000Csyncs"
+        "eqn\000Csseqn4Data\000Csyncdata\000Csyncgroupdata"
+        "\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata\000Cgroupn"
+        "otify\000Ccreateseqn\000Cdeleteseqn\000";
     static const int32_t values[] = {
         EServerCmd_Clogin,
         EServerCmd_Csndmsg,
         EServerCmd_Cgetmsg,
         EServerCmd_Clogout,
         EServerCmd_Ckeepalive,
+        EServerCmd_Cseqn,
+        EServerCmd_Cdata,
+        EServerCmd_Csntfseqn,
+        EServerCmd_Csntfdata,
         EServerCmd_Csyncseqn,
         EServerCmd_Csseqn4Data,
         EServerCmd_Csyncdata,
@@ -52,8 +57,10 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
         EServerCmd_Cnewmsgseqn,
         EServerCmd_Cnewmsgdata,
         EServerCmd_Cgroupnotify,
+        EServerCmd_Ccreateseqn,
+        EServerCmd_Cdeleteseqn,
     };
-    static const char *extraTextFormatInfo = "\001\006f\002c\000";
+    static const char *extraTextFormatInfo = "\001\nf\002c\000";
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EServerCmd)
                                        valueNames:valueNames
@@ -75,6 +82,10 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cgetmsg:
     case EServerCmd_Clogout:
     case EServerCmd_Ckeepalive:
+    case EServerCmd_Cseqn:
+    case EServerCmd_Cdata:
+    case EServerCmd_Csntfseqn:
+    case EServerCmd_Csntfdata:
     case EServerCmd_Csyncseqn:
     case EServerCmd_Csseqn4Data:
     case EServerCmd_Csyncdata:
@@ -83,6 +94,8 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cnewmsgseqn:
     case EServerCmd_Cnewmsgdata:
     case EServerCmd_Cgroupnotify:
+    case EServerCmd_Ccreateseqn:
+    case EServerCmd_Cdeleteseqn:
       return YES;
     default:
       return NO;

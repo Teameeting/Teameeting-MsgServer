@@ -23,8 +23,9 @@
 
 XMsgClient::XMsgClient()
 : XJSBuffer()
-, m_pClientImpl(NULL)
-, m_pMsgProcesser(NULL)
+, m_pCallback(nullptr)
+, m_pClientImpl(nullptr)
+, m_pMsgProcesser(nullptr)
 , m_lastUpdateTime(0)
 , m_uid("")
 , m_grpid("")
@@ -35,8 +36,6 @@ XMsgClient::XMsgClient()
 , m_autoConnect(true)
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
-, m_curSeqn(0)
-, m_curGroupSeqn(0)
 {
     printf("XMsgClient XMsgClient ok!!\n");
 }
@@ -46,14 +45,10 @@ XMsgClient::~XMsgClient()
 
 }
 
-int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string& token, const std::string& nname, int module, const std::string& server, int port, bool bAutoConnect)
+int XMsgClient::Init(const std::string& uid, const std::string& token, const std::string& nname, int module)
 {
-    if (!cb) {
-        return -1;
-    }
     if (!m_pMsgProcesser) {
         m_pMsgProcesser = new XMsgProcesser(*this);
-        //m_pCallback = cb;
     }
     if (!m_pMsgProcesser) {
         return -1;
@@ -73,16 +68,6 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
     m_token = token;
     m_nname = nname;
     m_module = (pms::EModuleType)module;
-    if (server.length()>0) {
-        m_server = server;
-    }
-    if (port>2048) {
-        m_port = port;
-    }
-    m_autoConnect = bAutoConnect;
-    m_pClientImpl->Connect(server, port, bAutoConnect);
-    m_msState = MSCONNECTTING;
-    //m_pCallback->OnMsgServerState(MSCONNECTTING);
 
     printf("XMsgClient Init ok!!\n");
     return 0;
@@ -90,7 +75,6 @@ int XMsgClient::Init(XMsgCallback* cb, const std::string& uid, const std::string
 
 int XMsgClient::Unin()
 {
-    //m_pCallback = nullptr;
     if (m_pClientImpl) {
         m_pClientImpl->Disconnect();
         if (m_pMsgProcesser) {
@@ -107,49 +91,67 @@ int XMsgClient::Unin()
 int XMsgClient::RegisterMsgCb(XMsgCallback* cb)
 {
     if (!cb) return -1;
-    {
-        rtc::CritScope l(&m_csMsgCallback);
-        m_setMsgCallback.insert(cb);
-    }
-
+    m_pCallback = cb;
     return 0;
 }
 
 int XMsgClient::UnRegisterMsgCb(XMsgCallback* cb)
 {
     if (!cb) return -1;
-    {
-        rtc::CritScope l(&m_csMsgCallback);
-        m_setMsgCallback.erase(cb);
-    }
+    m_pCallback = nullptr;
+    return 0;
+}
 
+int XMsgClient::ConnToServer(const std::string& server, int port, bool bAutoConnect)
+{
+    if (server.length()>0) {
+        m_server = server;
+    }
+    if (port>2048) {
+        m_port = port;
+    }
+    m_autoConnect = bAutoConnect;
+    m_pClientImpl->Connect(server, port, bAutoConnect);
+    m_msState = MSCONNECTTING;
+    if (m_pCallback)
+    {
+        m_pCallback->OnMsgServerConnecting();
+    } else {
+        printf("XMsgClient::OnServerDisconnect m_pCallback is null\n");
+    }
     return 0;
 }
 
 int XMsgClient::AddGroup(const std::string& groupid)
 {
-
     FetchGroupSeqn(groupid);
     return 0;
 }
 
-int XMsgClient::DelGroup(const std::string& groupid)
+int XMsgClient::RmvGroup(const std::string& groupid)
 {
+    if (m_pCallback)
+    {
+        MSCbData cbData;
+        cbData.type = 1;
+        cbData.data = "del ok";
+        m_pCallback->OnCmdCallback(0, MSRMV_GROUP, groupid, cbData);
+    }
     return 0;
 }
 
 
-int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, const std::string& msg)
+int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag)
 {
-    if (msg.length()>1024 || rname.length()>128) {
+    if (msg.length()>1024 || grpname.length()>128) {
         return -2;
     }
     std::string outstr;
     if (m_pMsgProcesser) {
         std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
-                , m_nname, roomid, rname, uvec, msg\
-                , pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FGROUP);
+        m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
+                , m_nname, groupid, grpname, uvec, msg\
+                , tag, type, module, flag);
     } else {
         return -1;
     }
@@ -161,45 +163,9 @@ int XMsgClient::SndMsg(const std::string& roomid, const std::string& rname, cons
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::GetMsg(pms::EMsgTag tag)
+int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec)
 {
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeGetMsg(outstr, m_uid, m_token, tag, m_module);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::OptRoom(pms::EMsgTag tag, const std::string& roomid, const std::string& rname, const std::string& remain)
-{
-    if (!pms::EMsgTag_IsValid(tag)) {
-        return -1;
-    }
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
-                , m_nname, roomid, rname, uvec, ""\
-                , tag, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FINVALID);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, const std::string& msg, const std::vector<std::string>& uvec)
-{
-    if (msg.length()>1024 || rname.length()>128) {
+    if (msg.length()>1024 || grpname.length()>128) {
         return -2;
     }
     if (uvec.size()==0) {
@@ -207,15 +173,9 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
     }
     std::string outstr;
     if (m_pMsgProcesser) {
-        if (uvec.size()==1) {
-            m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
-                    , m_nname, roomid, rname, uvec, msg\
-                    , pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FSINGLE);
-        } else {
-            m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
-                    , m_nname, roomid, rname, uvec, msg\
-                    , pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FMULTI);
-        }
+            m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
+                    , m_nname, groupid, grpname, uvec, msg\
+                    , tag, type, module, flag);
     } else {
         return -1;
     }
@@ -226,32 +186,29 @@ int XMsgClient::SndMsgTo(const std::string& roomid, const std::string& rname, co
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::NotifyMsg(const std::string& roomid, const std::string& rname, pms::EMsgTag tag, const std::string& msg)
+int XMsgClient::FetchSeqn()
 {
-    if (msg.length()>1024 || rname.length()>128) {
-        return -2;
-    }
+    printf("XMsgClient::FetchSeqn seqn is wait...\n");
     std::string outstr;
     if (m_pMsgProcesser) {
-        std::vector<std::string> uvec;
-        m_pMsgProcesser->EncodeSndMsg(outstr, m_uid, m_token\
-                , m_nname, roomid, rname, uvec, msg\
-                , tag, pms::EMsgType::TTXT, m_module, pms::EMsgFlag::FGROUP);
+        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, -1, m_module, pms::EStorageTag::TFETCHSEQN, pms::EMsgFlag::FSINGLE, pms::EMsgRole::RSENDER);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
     }
-
+    printf("XMsgClient::FetchSeqn was called\n");
+    
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncSeqn()
+int XMsgClient::SyncSeqn(int64 seqn, int role)
 {
+    printf("XMsgClient::SyncSeqn seqn is:%lld, wait...\n", seqn);
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, m_curSeqn, m_module, pms::EStorageTag::TCOMMON, pms::EMsgFlag::FSINGLE);
+        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, seqn, m_module, pms::EStorageTag::TSEQN, pms::EMsgFlag::FSINGLE, role);
     } else {
         return -1;
     }
@@ -263,77 +220,73 @@ int XMsgClient::SyncSeqn()
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncData()
+int XMsgClient::SyncData(int64 seqn)
 {
-    printf("XMsgClient::SyncData m_curSeqn is:%lld, wait...\n", m_curSeqn);
+    printf("XMsgClient::SyncData seqn is:%lld, wait...\n", seqn);
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, m_curSeqn, m_module, pms::EStorageTag::TCOMMON, pms::EMsgFlag::FSINGLE);
+        m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, seqn, m_module, pms::EStorageTag::TDATA, pms::EMsgFlag::FSINGLE);
     } else {
         return -1;
     }
     if (outstr.length()==0) {
         return -1;
-     printf("XMsgClient::SyncData was called\n");
     }
+    printf("XMsgClient::SyncData was called\n");
 
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncGroupSeqn()
-{
-    int ret = 0;
-    printf("XMsgClient::SyncGroupSeqn ---mapGroupSeqn.size:%lu\n", m_mapGroupSeqn.size());
-    for (GroupSeqnMapIt it=m_mapGroupSeqn.begin(); it!=m_mapGroupSeqn.end();++it)
-    {
-        printf("XMsgClient::SyncGroupSeqn first group:%s, second seqn:%lld\n", it->first.c_str(), it->second);
-        ret = SyncGroupSeqn(it->first, it->second, false);
-    }
-    return ret;
-}
-
-int XMsgClient::SyncGroupData()
-{
-    int ret = 0;
-    for (GroupSeqnMapIt it=m_mapGroupSeqn.begin(); it!=m_mapGroupSeqn.end();++it)
-    {
-        ret = SyncGroupData(it->first, it->second, false);
-    }
-    return ret;
-}
-
 int XMsgClient::FetchGroupSeqn(const std::string& groupid)
 {
-    if (groupid.length()==0) return -10;
-    int ret = 0;
-    {
-        ret = SyncGroupSeqn(groupid, -1, true);
+    printf("XMsgClient::FetchGroupSeqn groupid is:%s, wait...\n", groupid.c_str());
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncGroupSeqn(outstr, m_uid, groupid, m_token, -1, m_module, pms::EStorageTag::TFETCHSEQN, pms::EMsgFlag::FGROUP, pms::EMsgRole::RSENDER);
+    } else {
+        return -1;
     }
-    return ret;
+    if (outstr.length()==0) {
+        return -1;
+    }
+    printf("XMsgClient::FetchGroupSeqn was called\n");
+    
+    return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncGroupSeqn(const std::string& groupid)
+int XMsgClient::SyncGroupSeqn(const std::string& groupid, int64 seqn, int role)
 {
-    if (groupid.length()==0) return -10;
-    int ret = 0;
-    GroupSeqnMapIt it = m_mapGroupSeqn.find(groupid);
-    if (it != m_mapGroupSeqn.end())
-    {
-        ret = SyncGroupSeqn(it->first, it->second, false);
+    printf("XMsgClient::SyncGroupSeqn groupid is:%s, seqn :%lld, wait...\n", groupid.c_str(), seqn);
+    std::string outstr;
+    if (m_pMsgProcesser) {
+            m_pMsgProcesser->EncodeSyncGroupSeqn(outstr, m_uid, groupid, m_token, seqn, m_module, pms::EStorageTag::TSEQN, pms::EMsgFlag::FGROUP, role);
+    } else {
+        return -1;
     }
-    return ret;
+    if (outstr.length()==0) {
+        return -1;
+    }
+    printf("XMsgClient::SyncGroupSeqn was called\n");
+    
+    return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncGroupData(const std::string& groupid)
+int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
 {
-    if (groupid.length()==0) return -10;
-    int ret = 0;
-    GroupSeqnMapIt it = m_mapGroupSeqn.find(groupid);
-    if (it != m_mapGroupSeqn.end())
-    {
-        ret = SyncGroupData(it->first, it->second, false);
+    printf("XMsgClient::SyncGroupData userid:%s, groupid:%s, seqn is:%lld, wait...\n"\
+           , m_uid.c_str(), groupid.c_str(), seqn);
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncGroupData(outstr, m_uid, m_token, groupid, seqn, m_module, pms::EStorageTag::TDATA, pms::EMsgFlag::FGROUP);
+    } else {
+        return -1;
     }
-    return ret;
+    if (outstr.length()==0) {
+        return -1;
+    }
+    printf("XMsgClient::SyncGroupData was called\n");
+    
+    return SendEncodeMsg(outstr);
 }
 
 
@@ -403,46 +356,6 @@ int XMsgClient::KeepAlive()
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SyncGroupSeqn(const std::string& groupid, int64 seqn, bool isGetNew)
-{
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        if (isGetNew)
-            m_pMsgProcesser->EncodeSyncGroupSeqn(outstr, m_uid, groupid, m_token, seqn, m_module, pms::EStorageTag::TGETNEW, pms::EMsgFlag::FGROUP);
-        else
-            m_pMsgProcesser->EncodeSyncGroupSeqn(outstr, m_uid, groupid, m_token, seqn, m_module, pms::EStorageTag::TCOMMON, pms::EMsgFlag::FGROUP);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    printf("XMsgClient::SyncGroupSeqn was called\n");
-
-    return SendEncodeMsg(outstr);
-}
-
-int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn, bool isGetNew)
-{
-    printf("XMsgClient::SyncGroupData userid:%s, groupid:%s, seqn is:%lld, wait...\n"\
-            , m_uid.c_str(), groupid.c_str(), seqn);
-    std::string outstr;
-    if (m_pMsgProcesser) {
-        if (isGetNew)
-        m_pMsgProcesser->EncodeSyncGroupData(outstr, m_uid, m_token, groupid, seqn, m_module, pms::EStorageTag::TGETNEW, pms::EMsgFlag::FGROUP);
-        else
-        m_pMsgProcesser->EncodeSyncGroupData(outstr, m_uid, m_token, groupid, seqn, m_module, pms::EStorageTag::TCOMMON, pms::EMsgFlag::FGROUP);
-    } else {
-        return -1;
-    }
-    if (outstr.length()==0) {
-        return -1;
-    }
-    printf("XMsgClient::SyncGroupData was called\n");
-
-    return SendEncodeMsg(outstr);
-}
-
 int XMsgClient::SendEncodeMsg(std::string& msg)
 {
     if (TcpState::CONNECTED!=m_pClientImpl->Status()) {
@@ -473,7 +386,7 @@ int XMsgClient::SendEncodeMsg(std::string& msg)
 #else
             std::cout << "XMsgClient::SendEncodeMsg m_pClientImpl is NULL" << std::endl;
 #endif
-            delete ptr;
+            delete [] ptr;
             ptr = NULL;
             pptr = NULL;
             LOG(LS_ERROR) << "SendEncodeMsg m_pClientImpl is NULL";
@@ -521,20 +434,12 @@ void XMsgClient::OnServerDisconnect()
     //LOG(INFO) << __FUNCTION__ << " was called";
     m_login = false;
     m_msState = MSNOT_CONNECTED;
-    for(MsgCallbackSetIt it=m_setMsgCallback.begin();it!=m_setMsgCallback.end();++it)
+    if (m_pCallback)
     {
-        if (*it)
-        {
-            (*it)->OnMsgServerState(MSNOT_CONNECTED);
-            (*it)->OnMsgServerDisconnect();
-        } else {
-            printf("XMsgClient::OnServerDisconnect m_pCallback is null\n");
-        }
+        m_pCallback->OnMsgServerDisconnect();
+    } else {
+        printf("XMsgClient::OnServerDisconnect m_pCallback is null\n");
     }
-    //if (m_pCallback) {
-    //    m_pCallback->OnMsgServerState(MSNOT_CONNECTED);
-    //    m_pCallback->OnMsgServerDisconnect();
-    //}
 }
 
 void XMsgClient::OnServerConnectionFailure()
@@ -542,22 +447,12 @@ void XMsgClient::OnServerConnectionFailure()
     //LOG(INFO) << __FUNCTION__ << " was called";
     m_login = false;
     m_msState = MSNOT_CONNECTED;
-    for(MsgCallbackSetIt it=m_setMsgCallback.begin();it!=m_setMsgCallback.end();++it)
+    if (m_pCallback)
     {
-        if (*it)
-        {
-            (*it)->OnMsgServerState(MSNOT_CONNECTED);
-            (*it)->OnMsgServerDisconnect();
-        } else {
-            printf("XMsgClient::OnServerConnectionFailure m_pCallback is null\n");
-        }
+        m_pCallback->OnMsgServerConnectionFailure();
+    } else {
+        printf("XMsgClient::OnServerConnectionFailure m_pCallback is null\n");
     }
-    //if (m_pCallback) {
-    //    m_login = false;
-    //    m_msState = MSNOT_CONNECTED;
-    //    m_pCallback->OnMsgServerState(MSNOT_CONNECTED);
-    //    m_pCallback->OnMsgServerConnectionFailure();
-    //}
 }
 
 void XMsgClient::OnTick()
@@ -587,214 +482,271 @@ void XMsgClient::OnMessageRecv(const char*pData, int nLen)
 //////////////XMsgClientHelper////////////////////
 //////////////////////////////////////////////////
 
-void XMsgClient::OnLogin(int code, const std::string& userid)
+void XMsgClient::OnHelpLogin(int code, const std::string& userid)
 {
 #ifdef WEBRTC_ANDROID
-    //LOGI("XMsgClient::OnLogin code:%d\n", code);
+    //LOGI("XMsgClient::OnHelpLogin code:%d\n", code);
 #else
-    //std::cout << "XMsgClient::OnLogin code:" << code << std::endl;
+    //std::cout << "XMsgClient::OnHelpLogin code:" << code << std::endl;
 #endif
     if (code == 0) {
         m_login = true;
         m_msState = MSCONNECTED;
-        for(MsgCallbackSetIt it=m_setMsgCallback.begin();it!=m_setMsgCallback.end();++it)
+        if (m_pCallback)
         {
-            if (*it)
-            {
-                (*it)->OnMsgServerState(MSCONNECTED);
-                (*it)->OnMsgServerConnected();
-            } else {
-                printf("XMsgClient::OnLogin m_pCallback is null\n");
-            }
+            m_pCallback->OnMsgServerConnected();
+            //printf("after connected to server, call SyncMsg once\n");
+        } else {
+            printf("XMsgClient::OnHelpLogin m_pCallback is null\n");
         }
-        //m_pCallback->OnMsgServerState(MSCONNECTED);
-        //m_pCallback->OnMsgServerConnected();
     } else {
         Login();
     }
 }
 
-void XMsgClient::OnLogout(int code, const std::string& userid)
+void XMsgClient::OnHelpLogout(int code, const std::string& userid)
 {
 #ifdef WEBRTC_ANDROID
-    //LOGI("XMsgClient::OnLogout code:%d\n", code);
+    //LOGI("XMsgClient::OnHelpLogout code:%d\n", code);
 #else
-    //std::cout << "XMsgClient::OnLogout code:" << code << std::endl;
+    //std::cout << "XMsgClient::OnHelpLogout code:" << code << std::endl;
 #endif
     m_login = false;
     m_msState = MSNOT_CONNECTED;
-    for(MsgCallbackSetIt it=m_setMsgCallback.begin();it!=m_setMsgCallback.end();++it)
+    if (m_pCallback)
     {
-        if (*it)
-        {
-            (*it)->OnMsgServerState(MSNOT_CONNECTED);
-            (*it)->OnMsgServerConnected();
-        } else {
-            printf("XMsgClient::OnLogin m_pCallback is null\n");
-        }
-    }
-}
-
-void XMsgClient::OnSndMsg(int code, const std::string& cont)
-{
-    for(MsgCallbackSetIt it=m_setMsgCallback.begin();it!=m_setMsgCallback.end();++it)
-    {
-        if (*it)
-        {
-            (*it)->OnSndMsg(cont);
-        } else {
-            printf("XMsgClient::OnSndMsg m_pCallback is null\n");
-        }
-    }
-    //if (m_pCallback)
-    //    m_pCallback->OnSndMsg(cont);
-    //else
-    //    printf("XMsgClient::OnSndMsg m_pCallback is null\n");
-
-    pms::Entity entity;
-    entity.ParseFromString(cont);
-    pms::StorageMsg store;
-    store.ParseFromString(cont);
-    printf("XMsgClient::OnSndMsg sequence:%lld\n\n"\
-            , entity.msg_seqs());
-
-    return;
-}
-
-void XMsgClient::OnGetMsg(int code, const std::string& cont)
-{
-    for(MsgCallbackSetIt it=m_setMsgCallback.begin();it!=m_setMsgCallback.end();++it)
-    {
-        if (*it)
-        {
-            (*it)->OnGetMsg(cont);
-        } else {
-            printf("XMsgClient::OnGetMsg m_pCallback is null\n");
-        }
-    }
-    //if (m_pCallback)
-    //    m_pCallback->OnGetMsg(cont);
-    //else
-    //    printf("XMsgClient::OnSndMsg m_pCallback is null\n");
-    return;
-}
-
-void XMsgClient::OnKeepLive(int code, const std::string& cont)
-{
-
-}
-
-void XMsgClient::OnSyncSeqn(int code, const std::string& cont)
-{
-    pms::StorageMsg store;
-    store.ParseFromString(cont);
-    printf("XMsgClient::OnSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld, m_curSeqn:%lld\n"\
-            , store.ruserid().c_str(), store.sequence(), store.maxseqn(), m_curSeqn);
-    printf("XMsgClient::OnSyncSeqn should be equal here???\n");
-    //assert(store.maxseqn()>=m_curSeqn);
-    if (store.mtag()==pms::EStorageTag::TCOMMON)
-    {
-
-    } else if (store.mtag()==pms::EStorageTag::TGETNEW)
-    {
-        if (store.mflag()==pms::EMsgFlag::FGROUP)
-        {
-            printf("XMsgClient::OnSyncSeqn group storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
-                    , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
-            rtc::CritScope l(&m_csGroupSeqn);
-            m_mapGroupSeqn.insert(make_pair(store.groupid(), store.maxseqn()));
-            printf("XMsgClient::OnSyncSeqn mapGrouSeqn size:%lu\n", m_mapGroupSeqn.size());
-            SyncGroupSeqn();
-        }
+        m_pCallback->OnMsgServerDisconnect();
     } else {
-
+        printf("XMsgClient::OnHelpLogout m_pCallback is null\n");
     }
-    if (store.maxseqn()>=m_curSeqn)
-    m_curSeqn = store.maxseqn(); // the sender sync seqn
-    else
-    printf("XMsgClient::OnSyncSeqn is smaller here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111111!!!!!!!!!!!!\n");
+}
+
+void XMsgClient::OnHelpSndMsg(int code, const std::string& cont)
+{
+    if (m_pCallback)
+    {
+        m_pCallback->OnSndMsg(code, cont);
+    } else {
+        printf("XMsgClient::OnHelpSndMsg m_pCallback is null\n");
+    }
     return;
 }
 
-void XMsgClient::OnSyncData(int code, const std::string& cont)
+void XMsgClient::OnHelpKeepLive(int code, const std::string& cont)
+{
+
+}
+
+void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XMsgClient::OnSyncData ruserid:%s, storeid:%s, sequence:%lld, maxseqn:%lld, m_curSeqn:%lld\n\n"\
+    printf("XMsgClient::OnHelpSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld\n"\
+            , store.ruserid().c_str(), store.sequence(), store.maxseqn());
+    printf("XMsgClient::OnHelpSyncSeqn should be equal here???\n");
+    //assert(store.maxseqn()>=m_curSeqn);
+    switch (store.mtag())
+    {
+        case pms::EStorageTag::TSEQN:
+        {
+            if (store.mflag()==pms::EMsgFlag::FGROUP)
+            {
+                if (m_pCallback)
+                {
+                    m_pCallback->OnSyncGroupSeqn(store.storeid(), store.maxseqn());
+                } else {
+                    printf("XMsgClient::OnHelpSyncGroupSeqn m_pCallback is null\n");
+                }
+            } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
+            {
+                if (m_pCallback)
+                {
+                    m_pCallback->OnSyncSeqn(store.maxseqn(), store.mrole());
+                } else {
+                    printf("XMsgClient::OnHelpSyncSeqn m_pCallback is null\n");
+                }
+            } else {
+                
+            }
+        }
+            break;
+            
+        case pms::EStorageTag::TFETCHSEQN:
+        {
+            if (store.mflag()==pms::EMsgFlag::FGROUP)
+            {
+                printf("XMsgClient::OnHelpSyncSeqn fetchseqn group storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
+                       , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
+                if (m_pCallback)
+                {
+                    if (store.maxseqn()>=0)
+                    {
+                        MSCbData cbData;
+                        cbData.type = 0;
+                        cbData.data = "add ok";
+                        cbData.seqn = store.maxseqn();
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(0, MSADD_GROUP, store.storeid(), cbData);
+                        m_pCallback->OnCmdCallback(0, MSFETCH_SEQN, store.storeid(), cbData);
+                    } else {
+                        MSCbData cbData;
+                        cbData.type = 0;
+                        cbData.data = "add fail";
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(-1, MSADD_GROUP, store.storeid(), cbData);
+                        m_pCallback->OnCmdCallback(-1, MSFETCH_SEQN, store.storeid(), cbData);
+                    }
+                } else {
+                    printf("XMsgClient::OnHelpSyncSeqn fetchseqn group m_pCallback is null\n");
+                }
+            } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
+            {
+                printf("XMsgClient::OnHelpSyncSeqn fetchseqn single storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
+                       , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
+                if (m_pCallback)
+                {
+                    if (store.maxseqn()>=0)
+                    {
+                        MSCbData cbData;
+                        cbData.type = 0;
+                        cbData.data = "fetch ok";
+                        cbData.seqn = store.maxseqn();
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(0, MSFETCH_SEQN, "", cbData);
+                    } else {
+                        MSCbData cbData;
+                        cbData.type = 0;
+                        cbData.data = "fetch fail";
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(-1, MSFETCH_SEQN, "", cbData);
+                    }
+                } else {
+                    printf("XMsgClient::OnHelpSyncSeqn fetchseqn single m_pCallback is null\n");
+                }
+            }
+        }
+            break;
+        default:
+            printf("XMsgClient::OnHelpSyncSeqn mtag :%d not handle\n", store.mtag());
+            break;
+    }
+    return;
+}
+
+void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XMsgClient::OnHelpSyncData ruserid:%s, storeid:%s, sequence:%lld, maxseqn:%lld\n\n"\
             , store.ruserid().c_str()\
             , store.storeid().c_str()\
             , store.sequence()\
-            , store.maxseqn()\
-            , m_curSeqn);
-    printf("XMsgClient::OnSyncData should be equal here???\n");
+            , store.maxseqn());
+    printf("XMsgClient::OnHelpSyncData should be equal here???\n");
     //assert(store.maxseqn()>=m_curSeqn);// ???????
-    if (store.maxseqn()>=m_curSeqn)
-    m_curSeqn = store.maxseqn(); // the receiver sync data and seqn
-    else
-    printf("XMsgClient::OnSyncData is smaller here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 
     pms::Entity entity;
-    entity.ParseFromString(store.content());
-    if (entity.usr_toto().users_size()==0)
+    if (entity.ParseFromString(store.content()))
     {
-        printf("OnSyncData usr_toto.size is 0 so return\n");
+        printf("entity.ParseFromString ok\n");
+    } else {
+        printf("entity.ParseFromString error so return\n");
         return;
     }
-    printf("OnSyncData entity.usr_from:%s, usr_toto:%s, msg_cont:%s\n"\
+    if (entity.usr_toto().users_size()==0)
+    {
+        printf("OnHelpSyncData usr_toto.size is 0 so return\n");
+        return;
+    }
+    printf("OnHelpSyncData entity.usr_from:%s, usr_toto:%s, msg_cont:%s\n"\
             , entity.usr_from().c_str()\
             , entity.usr_toto().users(0).c_str()\
             , entity.msg_cont().c_str());
+    if (m_pCallback)
+    {
+        m_pCallback->OnRecvMsg(store.sequence(), store.content());
+    } else {
+        printf("XMsgClient::OnHelpSyncData m_pCallback is null\n");
+    }
     return;
 }
 
-void XMsgClient::OnGroupNotify(int code, const std::string& cont)
+void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("XMsgClient::OnGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n\n"\
+    printf("XMsgClient::OnHelpSyncGroupData ruserid:%s, groupid:%s, storeid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
             , store.ruserid().c_str()\
             , store.groupid().c_str()\
-            , store.rsvrcmd()\
-            , store.mflag()\
-            , store.sequence());
-    SyncGroupData(store.groupid());
-    return;
-}
-
-void XMsgClient::OnSyncGroupData(int code, const std::string& cont)
-{
-    pms::StorageMsg store;
-    store.ParseFromString(cont);
-    printf("XMsgClient::OnSyncGroupData ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
-            , store.ruserid().c_str()\
-            , store.groupid().c_str()\
+            , store.storeid().c_str()\
             , store.rsvrcmd()\
             , store.mflag()\
             , store.sequence()\
             , store.maxseqn());
 
-    if (store.maxseqn()>=m_curGroupSeqn)
-    m_curGroupSeqn = store.maxseqn(); // the group sync seqn
     pms::Entity entity;
     entity.ParseFromString(store.content());
-    printf("OnSyncGroupData entity.usr_from:%s, rom_id:%s, msg_cont:%s\n"\
+    printf("OnHelpSyncGroupData entity.usr_from:%s, rom_id:%s, msg_cont.size:%d\n"\
             , entity.usr_from().c_str()\
             , entity.rom_id().c_str()\
-            , entity.msg_cont().c_str());
+            , entity.msg_cont().length());
+    if (m_pCallback)
+    {
+        assert(store.storeid().compare(store.groupid())==0);
+        m_pCallback->OnRecvGroupMsg(store.sequence(), store.storeid(), store.content());
+    } else {
+        printf("XMsgClient::OnHelpSyncGroupData m_pCallback is null\n");
+    }
     return;
 }
 
-void XMsgClient::OnAddGroup(int code, const std::string& groupid)
+void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 {
-
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XMsgClient::OnHelpGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n\n"\
+           , store.ruserid().c_str()\
+           , store.groupid().c_str()\
+           , store.rsvrcmd()\
+           , store.mflag()\
+           , store.sequence());
+    if (m_pCallback)
+    {
+        m_pCallback->OnGroupNotify(code, store.groupid());
+    } else {
+        printf("XMsgClient::OnHelpGroupNotify m_pCallback is null\n");
+    }
+    return;
 }
 
-void XMsgClient::OnDelGroup(int code, const std::string& groupid)
+// this means you are sender, you send msg and server gen new seqn for you
+// you just get new seqn from server
+// after 
+void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 {
-
+    printf("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());
+    if (m_pCallback)
+    {
+        m_pCallback->OnNotifySeqn(code, cont);
+    } else {
+        printf("XMsgClient::OnHelpNotifySeqn m_pCallback is null\n");
+    }
+    printf("XMsgClient::OnHelpNotifySeqn recv sync seqn\n");
+    return;
 }
 
-
+void XMsgClient::OnHelpNotifyData(int code, const std::string& cont)
+{
+    printf("XMsgClient::OnHelpNotifyData code:%d, cont:%s\n", code, cont.c_str());
+    if (m_pCallback)
+    {
+        m_pCallback->OnNotifyData(code, cont);
+    } else {
+        printf("XMsgClient::OnHelpNotifyData m_pCallback is null\n");
+    }
+    printf("XMsgClient::OnHelpNotifyData recv sync data\n");
+    return;
+}
 
 
 //////////////////////////////////////////////////

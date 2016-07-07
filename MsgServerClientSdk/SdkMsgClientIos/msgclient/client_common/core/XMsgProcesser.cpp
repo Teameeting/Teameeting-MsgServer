@@ -9,6 +9,7 @@
 #include "core/XMsgProcesser.h"
 #include "core/XMsgClient.h"
 #include "webrtc/base/logging.h"
+#include "webrtc/base/timeutils.h"
 
 #ifdef WEBRTC_ANDROID
 #include <android/log.h>
@@ -19,6 +20,14 @@
 #include <iostream>
 #include <string>
 #endif
+
+static std::string GetStrMills()
+{
+    // memory problem???
+    char ct[32] = {0};
+    sprintf(ct, "%llu", rtc::TimeMicros());
+    return std::string(ct);
+}
 
 int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module)
 {
@@ -38,7 +47,7 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     return 0;
 }
 
-int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag)
+int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -54,14 +63,22 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, const std::string& userid, 
     entity.set_rom_name(rname);
     entity.set_nck_name(nname);
     entity.set_usr_token(token);
+    entity.set_msg_time(rtc::Time());
+    
+    entity.set_cmsg_id(GetStrMills());
+    outmsgid = entity.cmsg_id();
+    
+    printf("XMsgProcesser::EncodeSndMsg to.size:%d\n", to.size());
     for(int i=0;i<(int)to.size();++i) {
-         touser->add_users(to.at(i));
+        printf("XMsgProcesser::EncodeSndMsg to.name:%s\n", to.at(i).c_str());
+        touser->add_users(to.at(i));
     }
 
     req.set_svr_cmds(pms::EServerCmd::CSNDMSG);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(entity.SerializeAsString());
     outstr = req.SerializeAsString();
+    printf("XMsgProcesser::EncodeSndMsg usr_toto.size:%d\n", entity.usr_toto().users_size());
 #else
 #endif
     return 0;
@@ -118,7 +135,7 @@ int XMsgProcesser::EncodeKeepAlive(std::string& outstr, const std::string& useri
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag)
+int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag, int role)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -127,6 +144,7 @@ int XMsgProcesser::EncodeSyncSeqn(std::string& outstr, const std::string& userid
     store.set_tsvrcmd(pms::EServerCmd::CSYNCSEQN);
     store.set_mtag((pms::EStorageTag)(tag));
     store.set_mflag((pms::EMsgFlag)flag);
+    store.set_mrole((pms::EMsgRole)role);
     store.set_storeid(userid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
@@ -162,7 +180,7 @@ int XMsgProcesser::EncodeSyncData(std::string& outstr, const std::string& userid
     return 0;
 }
 
-int XMsgProcesser::EncodeSyncGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& token, int64 seqn, int module, int tag, int flag)
+int XMsgProcesser::EncodeSyncGroupSeqn(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& token, int64 seqn, int module, int tag, int flag, int role)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -171,6 +189,7 @@ int XMsgProcesser::EncodeSyncGroupSeqn(std::string& outstr, const std::string& u
     store.set_tsvrcmd(pms::EServerCmd::CSYNCSEQN);
     store.set_mtag((pms::EStorageTag)tag);
     store.set_mflag((pms::EMsgFlag)flag);
+    store.set_mrole((pms::EMsgRole)role);
     store.set_storeid(groupid);
     store.set_ruserid(userid);
     store.set_groupid(groupid);
@@ -208,6 +227,45 @@ int XMsgProcesser::EncodeSyncGroupData(std::string& outstr, const std::string& u
     return 0;
 }
 
+
+int XMsgProcesser::EncodeCreateSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag)
+{
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CCREATESEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CCREATESEQN);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(storeid);
+    store.set_ruserid(userid);
+    store.set_sequence(seqn);
+    
+    req.set_svr_cmds(pms::EServerCmd::CCREATESEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
+int XMsgProcesser::EncodeDeleteSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag)
+{
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CDELETESEQN);
+    store.set_tsvrcmd(pms::EServerCmd::CDELETESEQN);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(storeid);
+    store.set_ruserid(userid);
+    store.set_sequence(seqn);
+    
+    req.set_svr_cmds(pms::EServerCmd::CDELETESEQN);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
 /////////////////////////////////////////////////////
 ///////////////////DECODE MEETMSG////////////////////
 /////////////////////////////////////////////////////
@@ -240,17 +298,29 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         case pms::EServerCmd::CKEEPALIVE:
             DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
             break;
+            
         case pms::EServerCmd::CSYNCSEQN:
             DecodeSyncSeqn(resp.rsp_code(), resp.rsp_cont());
             break;
+            
         case pms::EServerCmd::CSYNCDATA:
             DecodeSyncData(resp.rsp_code(), resp.rsp_cont());
             break;
+            
         case pms::EServerCmd::CGROUPNOTIFY:
             DecodeGroupNotify(resp.rsp_code(), resp.rsp_cont());
             break;
+            
         case pms::EServerCmd::CSYNCGROUPDATA:
             DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
+            break;
+            
+        case pms::EServerCmd::CSNTFSEQN:
+            DecodeNotifySeqn(resp.rsp_code(), resp.rsp_cont());
+            break;
+            
+        case pms::EServerCmd::CSNTFDATA:
+            DecodeNotifyData(resp.rsp_code(), resp.rsp_cont());
             break;
 
         default:
@@ -264,54 +334,65 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 
 int XMsgProcesser::DecodeLogin(int code, const std::string& cont)
 {
-    m_helper.OnLogin(code, cont);
+    m_helper.OnHelpLogin(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeSndMsg(int code, const std::string& cont)
 {
-    m_helper.OnSndMsg(code, cont);
+    m_helper.OnHelpSndMsg(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeGetMsg(int code, const std::string& cont)
 {
-    m_helper.OnGetMsg(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeLogout(int code, const std::string& cont)
 {
-    m_helper.OnLogout(code, cont);
+    m_helper.OnHelpLogout(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeKeepAlive(int code, const std::string& cont)
 {
-    m_helper.OnKeepLive(code, cont);
+    m_helper.OnHelpKeepLive(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeSyncSeqn(int code, const std::string& cont)
 {
-    m_helper.OnSyncSeqn(code, cont);
+    m_helper.OnHelpSyncSeqn(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeSyncData(int code, const std::string& cont)
 {
-    m_helper.OnSyncData(code, cont);
+    m_helper.OnHelpSyncData(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeGroupNotify(int code, const std::string& cont)
 {
-    m_helper.OnGroupNotify(code, cont);
+    m_helper.OnHelpGroupNotify(code, cont);
     return 0;
 }
 
 int XMsgProcesser::DecodeSyncGroupData(int code, const std::string& cont)
 {
-    m_helper.OnSyncGroupData(code, cont);
+    m_helper.OnHelpSyncGroupData(code, cont);
+    return 0;
+}
+
+int XMsgProcesser::DecodeNotifySeqn(int code, const std::string& cont)
+{
+    m_helper.OnHelpNotifySeqn(code, cont);
+    return 0;
+}
+
+int XMsgProcesser::DecodeNotifyData(int code, const std::string& cont)
+{
+    m_helper.OnHelpNotifyData(code, cont);
     return 0;
 }

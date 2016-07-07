@@ -29,14 +29,24 @@ typedef GPB_ENUM(EServerCmd) {
   EServerCmd_Cgetmsg = 2,
   EServerCmd_Clogout = 3,
   EServerCmd_Ckeepalive = 4,
-  EServerCmd_Csyncseqn = 5,
-  EServerCmd_Csseqn4Data = 6,
-  EServerCmd_Csyncdata = 7,
-  EServerCmd_Csyncgroupdata = 8,
-  EServerCmd_Cnewmsg = 9,
-  EServerCmd_Cnewmsgseqn = 10,
-  EServerCmd_Cnewmsgdata = 11,
-  EServerCmd_Cgroupnotify = 12,
+  EServerCmd_Cseqn = 5,
+  EServerCmd_Cdata = 6,
+
+  /// server notify sync seqn
+  EServerCmd_Csntfseqn = 7,
+
+  /// server notify sync data
+  EServerCmd_Csntfdata = 8,
+  EServerCmd_Csyncseqn = 9,
+  EServerCmd_Csseqn4Data = 10,
+  EServerCmd_Csyncdata = 11,
+  EServerCmd_Csyncgroupdata = 12,
+  EServerCmd_Cnewmsg = 13,
+  EServerCmd_Cnewmsgseqn = 14,
+  EServerCmd_Cnewmsgdata = 15,
+  EServerCmd_Cgroupnotify = 16,
+  EServerCmd_Ccreateseqn = 17,
+  EServerCmd_Cdeleteseqn = 18,
 };
 
 GPBEnumDescriptor *EServerCmd_EnumDescriptor(void);

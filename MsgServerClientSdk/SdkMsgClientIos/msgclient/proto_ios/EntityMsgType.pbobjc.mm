@@ -20,13 +20,21 @@ GPBEnumDescriptor *EMsgType_EnumDescriptor(void) {
   static GPBEnumDescriptor *descriptor = NULL;
   if (!descriptor) {
     static const char *valueNames =
-        "Ttxt\000Tfil\000Tpic\000Taud\000Tvid\000";
+        "Ttxt\000Tfil\000Tpic\000Taud\000Tvid\000Temj\000Tsdf\000Tliv\000"
+        "Tren\000Tblk\000Tfbd\000Tmgr\000";
     static const int32_t values[] = {
         EMsgType_Ttxt,
         EMsgType_Tfil,
         EMsgType_Tpic,
         EMsgType_Taud,
         EMsgType_Tvid,
+        EMsgType_Temj,
+        EMsgType_Tsdf,
+        EMsgType_Tliv,
+        EMsgType_Tren,
+        EMsgType_Tblk,
+        EMsgType_Tfbd,
+        EMsgType_Tmgr,
     };
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(EMsgType)
@@ -48,6 +56,13 @@ BOOL EMsgType_IsValidValue(int32_t value__) {
     case EMsgType_Tpic:
     case EMsgType_Taud:
     case EMsgType_Tvid:
+    case EMsgType_Temj:
+    case EMsgType_Tsdf:
+    case EMsgType_Tliv:
+    case EMsgType_Tren:
+    case EMsgType_Tblk:
+    case EMsgType_Tfbd:
+    case EMsgType_Tmgr:
       return YES;
     default:
       return NO;

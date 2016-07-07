@@ -29,6 +29,27 @@ typedef GPB_ENUM(EMsgType) {
   EMsgType_Tpic = 2,
   EMsgType_Taud = 3,
   EMsgType_Tvid = 4,
+
+  ///emoj
+  EMsgType_Temj = 5,
+
+  ///self define
+  EMsgType_Tsdf = 6,
+
+  ///notify live
+  EMsgType_Tliv = 20,
+
+  ///notify red envelope
+  EMsgType_Tren = 21,
+
+  ///notify black list
+  EMsgType_Tblk = 22,
+
+  ///notify forbidden
+  EMsgType_Tfbd = 23,
+
+  ///notify setted manager
+  EMsgType_Tmgr = 24,
 };
 
 GPBEnumDescriptor *EMsgType_EnumDescriptor(void);

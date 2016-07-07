@@ -10,6 +10,13 @@ enum EMsgType{
     TPIC    = 2;
     TAUD    = 3;
     TVID    = 4;
+		TEMJ		= 5;//emoj
+		TSDF		= 6;//self define
+		TLIV		= 20;//notify live
+		TREN		= 21;//notify red envelope
+		TBLK		= 22;//notify black list
+		TFBD		= 23;//notify forbidden
+		TMGR		= 24;//notify setted manager
 }
 
 // the msg tag

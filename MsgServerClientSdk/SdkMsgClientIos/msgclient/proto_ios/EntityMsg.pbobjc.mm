@@ -219,8 +219,9 @@ typedef struct Keep__storage_ {
 @dynamic romName;
 @dynamic nckName;
 @dynamic usrToken;
-@dynamic msgSeqs;
-@dynamic memNum;
+@dynamic cmsgId;
+@dynamic extra;
+@dynamic msgTime;
 @dynamic hasUsrToto, usrToto;
 
 typedef struct Entity__storage_ {
@@ -229,15 +230,16 @@ typedef struct Entity__storage_ {
   EMsgTag msgTag;
   EMsgType msgType;
   EMsgFlag msgFlag;
-  int32_t memNum;
+  uint32_t msgTime;
   NSString *usrFrom;
   NSString *msgCont;
   NSString *romId;
   NSString *romName;
   NSString *nckName;
   NSString *usrToken;
+  NSString *cmsgId;
+  NSString *extra;
   ToUser *usrToto;
-  int64_t msgSeqs;
 } Entity__storage_;
 
 // This method is threadsafe because it is initially called
@@ -337,28 +339,37 @@ typedef struct Entity__storage_ {
         .dataType = GPBDataTypeString,
       },
       {
-        .name = "msgSeqs",
+        .name = "cmsgId",
         .dataTypeSpecific.className = NULL,
-        .number = Entity_FieldNumber_MsgSeqs,
+        .number = Entity_FieldNumber_CmsgId,
         .hasIndex = 10,
-        .offset = (uint32_t)offsetof(Entity__storage_, msgSeqs),
+        .offset = (uint32_t)offsetof(Entity__storage_, cmsgId),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeSInt64,
+        .dataType = GPBDataTypeString,
       },
       {
-        .name = "memNum",
+        .name = "extra",
         .dataTypeSpecific.className = NULL,
-        .number = Entity_FieldNumber_MemNum,
+        .number = Entity_FieldNumber_Extra,
         .hasIndex = 11,
-        .offset = (uint32_t)offsetof(Entity__storage_, memNum),
+        .offset = (uint32_t)offsetof(Entity__storage_, extra),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeSInt32,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "msgTime",
+        .dataTypeSpecific.className = NULL,
+        .number = Entity_FieldNumber_MsgTime,
+        .hasIndex = 12,
+        .offset = (uint32_t)offsetof(Entity__storage_, msgTime),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "usrToto",
         .dataTypeSpecific.className = GPBStringifySymbol(ToUser),
         .number = Entity_FieldNumber_UsrToto,
-        .hasIndex = 12,
+        .hasIndex = 13,
         .offset = (uint32_t)offsetof(Entity__storage_, usrToto),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeMessage,
