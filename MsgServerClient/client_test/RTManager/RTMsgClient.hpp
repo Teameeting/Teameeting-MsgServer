@@ -29,11 +29,16 @@ public:
     // from XMsgCallback
     virtual void OnSndMsg(int code, const std::string& msg);
     virtual void OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data);
-    virtual void OnRecvMsg(const std::string& msg);
-    virtual void OnRecvGroupMsg(const std::string& msg);
 
-    virtual void OnSyncSeqn(int64 seqn);
+    virtual void OnRecvMsg(int64 seqn, const std::string& msg);
+    virtual void OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std::string& msg);
+
+    virtual void OnSyncSeqn(int64 seqn, int role);
     virtual void OnSyncGroupSeqn(const std::string& groupid, int64 seqn);
+
+    virtual void OnGroupNotify(int code, const std::string& seqnid);
+    virtual void OnNotifySeqn(int code, const std::string& seqnid);
+    virtual void OnNotifyData(int code, const std::string& seqnid);
 
     virtual void OnMsgServerConnected();
     virtual void OnMsgServerConnecting();
@@ -60,10 +65,6 @@ public:
     void SendMessage(const std::string& msg);
     void SendMessageTo(const std::string& msg, const std::string& name);
 
-    void TestSetCurSeqn(int64 seqn) {
-        printf("!!!!!!!!!!!!!!!TestSetCurSeqn set new sequence for client!!!!!!!!!!!!!!!!!!!!!!!!!!!!!seqn:%lld\n\n", seqn);
-        mMsgClient.TestSetCurSeqn(seqn);
-    }
 
     void AddGroup();
 

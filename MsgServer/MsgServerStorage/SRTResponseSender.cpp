@@ -103,7 +103,7 @@ void SRTResponseSender::OnWakeupEvent(const void*pData, int nSize)
             pms::RelayMsg rmsg;
             // this mean it is about data, not seqn
             // because this is all read
-            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+            rmsg.set_svr_cmds(pms::EServerCmd::CDATA);
             rmsg.set_content(m_SendPostMsg.SerializeAsString());
 
             pms::TransferMsg tmsg;
@@ -154,7 +154,7 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
             pms::RelayMsg rmsg;
             // this mean it is about data, not seqn
             // because this is all write
-            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+            rmsg.set_svr_cmds(pms::EServerCmd::CDATA);
             rmsg.set_content(m_SendPushMsg.SerializeAsString());
 
             pms::TransferMsg tmsg;

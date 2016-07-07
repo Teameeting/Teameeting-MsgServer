@@ -52,13 +52,7 @@ void RTClientTest::RunTest(int flag, const std::string& name)
     mMsgClient->SetPData(this);
     mMsgClient->SetDataCallback(&RTClientTest::ClientDataCallbackStatic);
     mMsgClient->InitSync();
-    if (name.compare("xddxdd")==0)
-    {
-        //mName = "9a4f3730-f643-422a-a3a1-eae557060a90";
-        mMsgClient->TestSetCurSeqn(0);
-    } else {
-        mMsgClient->TestSetCurSeqn(0);
-    }
+
     this->Start();
     mThreadRun = true;
     if (flag == kRunOnce) {

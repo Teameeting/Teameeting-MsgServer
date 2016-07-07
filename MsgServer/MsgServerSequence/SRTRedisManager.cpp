@@ -241,7 +241,7 @@ void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
             pms::RelayMsg rmsg;
             // here the cmd means this is an seqn msg, not data
             // because this is all read
-            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
+            rmsg.set_svr_cmds(pms::EServerCmd::CSEQN);
             rmsg.set_content(m_ReadPackedMsg.SerializeAsString());
 
             pms::TransferMsg tmsg;
@@ -289,7 +289,7 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
             pms::RelayMsg rmsg;
             // here the cmd means this is an seqn msg, not data
             // because this is all write
-            rmsg.set_svr_cmds(pms::EServerCmd::CSYNCSEQN);
+            rmsg.set_svr_cmds(pms::EServerCmd::CSEQN);
             rmsg.set_content(m_WritePackedMsg.SerializeAsString());
 
             pms::TransferMsg tmsg;

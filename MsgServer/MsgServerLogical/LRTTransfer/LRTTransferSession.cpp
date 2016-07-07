@@ -502,7 +502,7 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
 
     //if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGSEQN)
     // this is response from wirte seqn
-    if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCSEQN)
+    if (rmsg.svr_cmds()==pms::EServerCmd::CSEQN)
     {
         pms::PackedStoreMsg store, newmsg_store;
         store.ParseFromString(rmsg.content());
@@ -563,7 +563,7 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
         }
     //} else if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGDATA)
     // this means data write
-    } else if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCDATA)
+    } else if (rmsg.svr_cmds()==pms::EServerCmd::CDATA)
     {
         pms::PackedStoreMsg store;
         store.ParseFromString(rmsg.content());
@@ -721,7 +721,7 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
     pms::RelayMsg rmsg;
     rmsg.ParseFromString(str);
 
-    if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCSEQN)
+    if (rmsg.svr_cmds()==pms::EServerCmd::CSEQN)
     {
         pms::PackedStoreMsg store, d_store;
         store.ParseFromString(rmsg.content());
@@ -782,7 +782,7 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
             tmsg.set_content(d_store.SerializeAsString());
             LRTConnManager::Instance().PushStoreReadMsg(tmsg.SerializeAsString());
         }
-    } else if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCDATA)
+    } else if (rmsg.svr_cmds()==pms::EServerCmd::CDATA)
     {
         pms::PackedStoreMsg store;
         store.ParseFromString(rmsg.content());

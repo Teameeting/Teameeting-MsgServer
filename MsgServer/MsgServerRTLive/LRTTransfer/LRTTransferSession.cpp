@@ -507,6 +507,8 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
                     , e_msg.usr_from().c_str(), e_msg.msg_flag(), e_msg.rom_id().c_str());
             assert(e_msg.rom_id().length()>0);
 
+            printf("the sender move to module sync data notify!!!!!!\n");
+#if 0
             pms::StorageMsg sender;
             sender.set_rsvrcmd(pms::EServerCmd::CNEWMSG);
             sender.set_tsvrcmd(pms::EServerCmd::CNEWMSGSEQN);
@@ -517,6 +519,7 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
             // store the Entity to redis
             sender.set_content(r_msg.content());
             LRTConnManager::Instance().PushNewMsg2Queue(sender.SerializeAsString());
+#endif
 
             // if the msg send to group
             // here change the userid and groupid
@@ -626,6 +629,8 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                 if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
                 {
                     // set response
+                    printf("group msg sender notify move to module notify sync data!!!!!!!!\n");
+#if 0
                     LI("LRTTransferSession::OnTypeQueue notify group sender sync seqn\n");
                     resp.set_svr_cmds(pms::EServerCmd::CSNTFSEQN);
                     resp.set_mod_type(pms::EModuleType::TLIVE);
@@ -641,6 +646,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     LI("LRTTransferSession::OnTypeQueue send response to usr:%s\n", store.msgs(i).ruserid().c_str());
                     pto->add_users()->assign(store.msgs(i).ruserid());
                     r_msg.set_allocated_touser(pto);
+#endif
                 } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
                 {
                     // group to notify members to sync data from this group

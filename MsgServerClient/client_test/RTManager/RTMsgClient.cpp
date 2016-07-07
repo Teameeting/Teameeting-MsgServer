@@ -48,74 +48,10 @@ RTMsgClient::~RTMsgClient()
 
 }
 
+
 void RTMsgClient::OnSndMsg(int code, const std::string& msg)
 {
-#if DEF_PROTO
-    pms::Entity entity;
-    entity.ParseFromString(msg);
-    LOG(INFO) << "RTMsgClient::OnSndMsg--->";
-    switch(entity.msg_tag()) {
-        case pms::EMsgTag::TCHAT:
-            {
-                LOG(INFO) <<  mUserid + " recv num:" << mRecvNum << " EMsgTag::TCHAT: " << entity.msg_cont();
-                mRecvNum++;
-                //mMsgList.push_back(entity.msg_cont());
-            }
-            break;
-        case pms::EMsgTag::TENTER:
-            {
-                LOG(INFO) << "EMsgTag::TENTER " << entity.msg_cont();
-            }
-            break;
-        case pms::EMsgTag::TLEAVE:
-            {
-                LOG(INFO) << "EMsgTag::TLEAVE " << entity.msg_cont();
-            }
-            break;
-        case pms::EMsgTag::TNOTIFY:
-            {
-                LOG(INFO) << "EMsgTag::TNOTIFY " << entity.msg_cont();
-            }
-            break;
-        case pms::EMsgTag::TSSSEQN:
-            {
-                LOG(INFO) << "EMsgTag::TSSSEQN " << entity.msg_cont();
-                printf("server command to sync seqn was called\n");
-                if (mDataCallback && mPData)
-                {
-                     mDataCallback(mPData, 1);
-                }
-                else
-                {
-                    printf("pms::EMsgTag::TSSSEQN mDataCallback or mPData is null\n");
-                }
-                //SyncSeqn();
-            }
-            break;
-        case pms::EMsgTag::TSSDATA:
-            {
-                LOG(INFO) << "EMsgTag::TSSDATA " << entity.msg_cont();
-                printf("server command to sync data was called\n");
-                if (mDataCallback && mPData)
-                {
-                     mDataCallback(mPData, 2);
-                }
-                else
-                {
-                    printf("pms::EMsgTag::TSSDATA mDataCallback or mPData is null\n");
-                }
-                //SyncData();
-            }
-            break;
-        default:
-            {
 
-            }
-            break;
-    }
-#else
-    LOG(INFO) << "not define DEF_PROTO";
-#endif
 }
 
 
@@ -125,28 +61,46 @@ void RTMsgClient::OnCmdGroup(int code, int cmd, const std::string& groupid, cons
     LOG(INFO) << __FUNCTION__ << " was called";
 }
 
-void RTMsgClient::OnRecvMsg(const std::string& msg)
-{
 
+void RTMsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
+{
     LOG(INFO) << __FUNCTION__ << " was called";
 }
 
-void RTMsgClient::OnRecvGroupMsg(const std::string& msg)
+void RTMsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std::string& msg)
 {
-
     LOG(INFO) << __FUNCTION__ << " was called";
+
 }
 
-void RTMsgClient::OnSyncSeqn(int64 seqn)
+void RTMsgClient::OnSyncSeqn(int64 seqn, int role)
 {
-
     LOG(INFO) << __FUNCTION__ << " was called";
+
 }
 
 void RTMsgClient::OnSyncGroupSeqn(const std::string& groupid, int64 seqn)
 {
-
     LOG(INFO) << __FUNCTION__ << " was called";
+
+}
+
+void RTMsgClient::OnGroupNotify(int code, const std::string& seqnid)
+{
+    LOG(INFO) << __FUNCTION__ << " was called";
+
+}
+
+void RTMsgClient::OnNotifySeqn(int code, const std::string& seqnid)
+{
+    LOG(INFO) << __FUNCTION__ << " was called";
+
+}
+
+void RTMsgClient::OnNotifyData(int code, const std::string& seqnid)
+{
+    LOG(INFO) << __FUNCTION__ << " was called";
+
 }
 
 void RTMsgClient::OnMsgServerConnected()
@@ -231,7 +185,8 @@ bool RTMsgClient::Connecting()
 void RTMsgClient::SendMsg(const std::string& msg)
 {
     if (mIsOnline) {
-        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE);
+        std::string msgid;
+        mMsgClient.SndMsg(msgid, mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE);
     }
 }
 
@@ -245,8 +200,8 @@ void RTMsgClient::InitSync()
 void RTMsgClient::SyncSeqn()
 {
     if (mIsOnline) {
-        printf("RTMsgClient::SyncSeqn was called\n");
-        mMsgClient.SyncSeqn();
+        printf("RTMsgClient::SyncSeqn was called not implement\n");
+        //mMsgClient.SyncSeqn();
     }
     else
     {
@@ -257,8 +212,8 @@ void RTMsgClient::SyncSeqn()
 void RTMsgClient::SyncData()
 {
     if (mIsOnline) {
-        printf("RTMsgClient::SyncData was called\n");
-        mMsgClient.SyncData();
+        printf("RTMsgClient::SyncData was called not implement\n");
+        //mMsgClient.SyncData();
     }
     else
     {
@@ -270,7 +225,8 @@ void RTMsgClient::SendMessage(const std::string& msg)
 {
     if (mIsOnline) {
         printf("RTMsgClient::SyncData was called\n");
-        mMsgClient.SndMsg(mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE);
+        std::string msgid;
+        mMsgClient.SndMsg(msgid, mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE);
     }
     else
     {
@@ -284,7 +240,8 @@ void RTMsgClient::SendMessageTo(const std::string& msg, const std::string& name)
         printf("RTMsgClient::SyncData was called\n");
         std::vector<std::string> v;
         v.push_back(name);
-        mMsgClient.SndMsgTo(mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE, v);
+        std::string msgid;
+        mMsgClient.SndMsgTo(msgid, mCurRoomId, "RoomName", msg, pms::EMsgTag::TCHAT, pms::EMsgType::TTXT, pms::EModuleType::TLIVE, pms::EMsgFlag::FSINGLE, v);
     }
     else
     {
@@ -332,23 +289,22 @@ void RTMsgClient::GrpInitSync()
 void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn)
 {
     if (mIsOnline) {
-        mMsgClient.SyncGroupData(groupid);
+        mMsgClient.SyncGroupData(groupid, curseqn);
     }
 }
 
 void RTMsgClient::CreateGroupSeqn()
 {
     if (mIsOnline) {
-        printf("RTMsgClient::CreateGroupSeqn was called\n");
-        mMsgClient.CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", "hahaha");
+        printf("RTMsgClient::CreateGroupSeqn was called not implement\n");
+        //mMsgClient.CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", "hahaha");
     }
 }
 
 void RTMsgClient::DeleteGroupSeqn()
 {
     if (mIsOnline) {
-        printf("RTMsgClient::DeleteGroupSeqn was called\n");
-        mMsgClient.DeleteGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", "hahaha");
+        printf("RTMsgClient::DeleteGroupSeqn was called not implement\n");
     }
 }
 

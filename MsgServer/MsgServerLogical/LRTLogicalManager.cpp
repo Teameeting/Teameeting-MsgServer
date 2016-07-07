@@ -46,9 +46,9 @@ bool LRTLogicalManager::SendResponseCounter()
 
 bool LRTLogicalManager::InsertDataWrite(LRTTransferSession* sess, pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->ruserid().length()==0) return false;
+    if (storeMsg->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->storeid().c_str(), storeMsg->msgid().c_str());
     printf("InsertDataWrite map id is:%s\n", id);
     TransMsgInfo info;
     info.sess = sess;
@@ -63,9 +63,9 @@ bool LRTLogicalManager::InsertDataWrite(LRTTransferSession* sess, pms::StorageMs
 
 bool LRTLogicalManager::UpdateDataWrite(pms::StorageMsg** storeMsg)
 {
-    if ((*storeMsg)->ruserid().length()==0) return false;
+    if ((*storeMsg)->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", (*storeMsg)->ruserid().c_str(), (*storeMsg)->msgid().c_str());
+    sprintf(id, "%s:%s", (*storeMsg)->storeid().c_str(), (*storeMsg)->msgid().c_str());
     printf("UpdateDataWrite map id is:%s\n", id);
 
     {
@@ -92,9 +92,9 @@ bool LRTLogicalManager::UpdateDataWrite(pms::StorageMsg** storeMsg)
 
 bool LRTLogicalManager::DeleteDataWrite(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->ruserid().length()==0) return false;
+    if (storeMsg->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->storeid().c_str(), storeMsg->msgid().c_str());
     printf("DeleteDataWrite map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexDataWrite);
@@ -120,9 +120,9 @@ bool LRTLogicalManager::DeleteDataWrite(pms::StorageMsg*  storeMsg)
 
 bool LRTLogicalManager::InsertDataRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->ruserid().length()==0) return false;
+    if (storeMsg->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->storeid().c_str(), storeMsg->msgid().c_str());
     printf("InsertDataRead map id is:%s\n", id);
     TransMsgInfo info;
     info.sess = sess;
@@ -144,9 +144,9 @@ bool LRTLogicalManager::UpdateDataRead(pms::StorageMsg** storeMsg)
 
 bool LRTLogicalManager::DeleteDataRead(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->ruserid().length()==0) return false;
+    if (storeMsg->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->storeid().c_str(), storeMsg->msgid().c_str());
     printf("DeleteDataRead map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexDataRead);
@@ -172,9 +172,9 @@ bool LRTLogicalManager::DeleteDataRead(pms::StorageMsg*  storeMsg)
 
 bool LRTLogicalManager::InsertSeqnRead(LRTTransferSession* sess, pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->ruserid().length()==0) return false;
+    if (storeMsg->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->storeid().c_str(), storeMsg->msgid().c_str());
     printf("InsertSeqnRead map id is:%s\n", id);
     TransMsgInfo info;
     info.sess = sess;
@@ -196,9 +196,9 @@ bool LRTLogicalManager::UpdateSeqnRead(pms::StorageMsg** storeMsg)
 
 bool LRTLogicalManager::DeleteSeqnRead(pms::StorageMsg*  storeMsg)
 {
-    if (storeMsg->ruserid().length()==0) return false;
+    if (storeMsg->storeid().length()==0) return false;
     char id[1024] = {0};
-    sprintf(id, "%s:%s", storeMsg->ruserid().c_str(), storeMsg->msgid().c_str());
+    sprintf(id, "%s:%s", storeMsg->storeid().c_str(), storeMsg->msgid().c_str());
     printf("DeleteSeqnRead map id is:%s\n", id);
     {
         OSMutexLocker locker(&m_mutexSeqnRead);
@@ -245,12 +245,12 @@ bool LRTLogicalManager::GetSessFromId(const std::string& ruserid, const std::str
 
 bool LRTLogicalManager::ReadLocalSeqn(pms::StorageMsg*  storeMsg, int64* seqn)
 {
-    if (storeMsg->ruserid().length()==0) return false;
-    printf("ReadLocalSeqn ruserid is:%s\n", storeMsg->ruserid().c_str());
+    if (storeMsg->storeid().length()==0) return false;
+    printf("ReadLocalSeqn storeid is:%s\n", storeMsg->storeid().c_str());
     bool found = false;
     {
         OSMutexLocker locker(&m_mutexLocalSeqn);
-        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->ruserid());
+        UserLocalSeqnMapIt it = m_localSeqnMap.find(storeMsg->storeid());
         if (it!=m_localSeqnMap.end())
         {
             *seqn = it->second;
