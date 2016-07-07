@@ -452,6 +452,7 @@ void LRTGroupSession::OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, c
 
 void LRTGroupSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
+    // this request is coming from group module client
     LI("%s was called\n", __FUNCTION__);
     pms::PackedStoreMsg packed;
     packed.ParseFromString(msg);
@@ -490,6 +491,33 @@ void LRTGroupSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module
     }
 }
 
+void LRTGroupSession::OnCreateGroupSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+    // this request is coming from group module client
+    LI("%s was called, cmd:%d, msg.len:%d\n", __FUNCTION__, cmd, msg.length());
+    LRTConnManager::Instance().PushNewMsg2Queue(msg);
+    pms::StorageMsg store;
+    store.ParseFromString(msg);
+    LI("LRTGroupSession::OnCreateGroupSeqn --->create group seqn rsrvcmd:%d from who ruserid:%s,by client:%s to groupid:%s\n\n"\
+            , store.rsvrcmd()\
+            , store.ruserid().c_str()\
+            , store.groupid().c_str()\
+            , store.storeid().c_str());
+}
+
+void LRTGroupSession::OnDeleteGroupSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+    // this request is coming from group module client
+    LI("%s was called, cmd:%d, msg.len:%d\n", __FUNCTION__, cmd, msg.length());
+    LRTConnManager::Instance().PushNewMsg2Queue(msg);
+    pms::StorageMsg store;
+    store.ParseFromString(msg);
+    LI("LRTGroupSession::OnCreateGroupSeqn --->delete group seqn rsrvcmd:%d from who ruserid:%s,by client:%s to groupid:%s\n\n"\
+            , store.rsvrcmd()\
+            , store.ruserid().c_str()\
+            , store.groupid().c_str()\
+            , store.storeid().c_str());
+}
 
 void LRTGroupSession::OnResponse(const char*pData, int nLen)
 {

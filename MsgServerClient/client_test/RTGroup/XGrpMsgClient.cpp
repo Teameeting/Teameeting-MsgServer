@@ -113,6 +113,37 @@ int XGrpMsgClient::ConnToServer(const std::string& server, int port, bool bAutoC
     return 0;
 }
 
+int XGrpMsgClient::CreateGroupSeqn(const std::string& cltUserid, const std::string& groupid)
+{
+    std::string outstr;
+    if (m_pGrpMsgProcesser) {
+        m_pGrpMsgProcesser->EncodeCreateGroupSeqn(outstr, m_uid, cltUserid, groupid, m_module);
+    } else {
+        return -2;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    printf("XGrpMsgClient CreateGroupSeqn ok!!\n");
+    return SendEncodeMsg(outstr);
+}
+
+int XGrpMsgClient::DeleteGroupSeqn(const std::string& cltUserid, const std::string& groupid)
+{
+    std::string outstr;
+    if (m_pGrpMsgProcesser) {
+        m_pGrpMsgProcesser->EncodeDeleteGroupSeqn(outstr, m_uid, cltUserid, groupid, m_module);
+    } else {
+        return -2;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    printf("XGrpMsgClient DeleteGroupSeqn ok!!\n");
+    return SendEncodeMsg(outstr);
+}
 
 int XGrpMsgClient::GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn)
 {
@@ -380,6 +411,24 @@ void XGrpMsgClient::OnGroupNotify(int code, const std::string& cont)
     std::string mem_user2("2C665ED7-3854-4411-9536-947A4340B86E");
     GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
 
+    return;
+}
+
+void XGrpMsgClient::OnCreateGroupSeqn(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XGrpMsgClient::OnCreateGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
+            , code, cont.length(), store.result());
+    return;
+}
+
+void XGrpMsgClient::OnDeleteGroupSeqn(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    store.ParseFromString(cont);
+    printf("XGrpMsgClient::OnDeleteGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
+            , code, cont.length(), store.result());
     return;
 }
 

@@ -26,6 +26,8 @@ public:
     virtual void OnLogout(int code, const std::string& userid) = 0;
     virtual void OnKeepLive(int code, const std::string& cont) = 0;
     virtual void OnGroupNotify(int code, const std::string& cont) = 0;
+    virtual void OnCreateGroupSeqn(int code, const std::string& cont) = 0;
+    virtual void OnDeleteGroupSeqn(int code, const std::string& cont) = 0;
 };
 
 class XGrpMsgProcesser{
@@ -44,6 +46,8 @@ public:
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
     int EncodeKeepAlive(std::string& outstr, const std::string& userid, int module);
 
+    int EncodeCreateGroupSeqn(std::string& outstr, const std::string& userid, const std::string& cltUserid, const std::string& groupid, int module);
+    int EncodeDeleteGroupSeqn(std::string& outstr, const std::string& userid, const std::string& cltUserid, const std::string& groupid, int module);
     int EncodeGrpSyncDataNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
     int EncodeGrpSyncDataNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);
 
@@ -54,6 +58,8 @@ protected:
     int DecodeLogout(int code, const std::string& cont);
     int DecodeKeepAlive(int code, const std::string& cont);
     int DecodeGroupNotify(int code, const std::string& cont);
+    int DecodeCreateGroupSeqn(int code, const std::string& cont);
+    int DecodeDeleteGroupSeqn(int code, const std::string& cont);
 private:
     XGrpMsgClientHelper    &m_helper;
     pms::PackedStoreMsg  m_packed;

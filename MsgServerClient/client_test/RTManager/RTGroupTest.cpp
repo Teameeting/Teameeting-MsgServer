@@ -120,9 +120,25 @@ void RTGroupTest::RunSyncData()
     printf("RTGroupTest::RunSyncData was called\n");
 }
 
+void RTGroupTest::RunCreateGroup()
+{
+    printf("RTGroupTest::RunCreateGroup was called\n");
+    std::string groupid("wocaowocaowocao");
+    mMsgClient->CreateGroupSeqn(groupid);
+}
+
+void RTGroupTest::RunDeleteGroup()
+{
+    printf("RTGroupTest::RunDeleteGroup was called\n");
+    std::string groupid("wocaowocaowocao");
+    mMsgClient->DeleteGroupSeqn(groupid);
+}
+
 
 void RTGroupTest::RunOnce()
 {
     //TODO:
+    RunCreateGroup();
+    //RunDeleteGroup();
 }
 

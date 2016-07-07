@@ -27,6 +27,8 @@ public:
 
     void RunSyncSeqn();
     void RunSyncData();
+    void RunCreateGroup();
+    void RunDeleteGroup();
 
     void ClientDataCallback(int data);
     static void ClientDataCallbackStatic(void* pd, int data);

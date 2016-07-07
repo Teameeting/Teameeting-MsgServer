@@ -36,6 +36,10 @@ int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
         OnLogin(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CGROUPNOTIFY) {
         OnGroupNotify(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CCREATESEQN) {
+        OnCreateGroupSeqn(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CDELETESEQN) {
+        OnDeleteGroupSeqn(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CSNDMSG) {
         OnSndMsg(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CGETMSG) {

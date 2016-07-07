@@ -652,7 +652,6 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     // group to notify members to sync data from this group
                     // the store.msgs(i).groupid should be entity's userid
                     // the store.msgs(i).userid should be entity's rom_id
-                    pms::MsgRep resp;
                     pms::StorageMsg st;
 
                     st.set_rsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
@@ -673,7 +672,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     //TODO:
                     //how to let others server connect to here, find the special group users relayer
                     //send to
-                    const std::string sn("sddsdd");
+                    const std::string sn("sddsddsdd");
                     if (LRTConnManager::Instance().SendToGroupModule(sn, s))
                     {
                          LI("LRTTransferSession::OnTypeQueue dispatch msg ok\n");
@@ -688,7 +687,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                 }
             } else if (store.msgs(i).mflag()==pms::EMsgFlag::FSINGLE)
             {
-                pms::StorageMsg resp_store;
+                //pms::StorageMsg resp_store;
                 if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
                 {
                     // after generate new msg, notify sender sync seqn
@@ -745,12 +744,50 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
             LRTConnManager::Instance().SendTransferData("", "", response);
         } else if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CCREATESEQN)
         {
-            LI("LRTTransferSession::OnTypeQueue create seqn store.srv:cmd:%d ok\n", store.msgs(i).rsvrcmd());
-
+            resp.set_svr_cmds(store.msgs(i).rsvrcmd());
+            resp.set_mod_type(pms::EModuleType::TLIVE);
+            resp.set_rsp_code(0);
+            resp.set_rsp_cont(store.msgs(i).SerializeAsString());
+            std::string s = resp.SerializeAsString();
+            LI("LRTTransferSession::OnTypeQueue --->create group seqn rsrvcmd:%d from who ruserid:%s,by client:%s to groupid:%s\n\n"\
+                    , store.msgs(i).rsvrcmd()\
+                    , store.msgs(i).ruserid().c_str()\
+                    , store.msgs(i).groupid().c_str()\
+                    , store.msgs(i).storeid().c_str());
+            //TODO:
+            //how to let others server connect to here, find the special group users relayer
+            //send to
+            const std::string sn("sddsddsdd");
+            if (LRTConnManager::Instance().SendToGroupModule(sn, s))
+            {
+                LI("LRTTransferSession::OnTypeQueue cmd create dispatch msg ok\n");
+            } else {
+                LI("LRTTransferSession::OnTypeQueue cmd create noooooooooot dispatch msg ok\n");
+            }
         } else if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CDELETESEQN)
         {
-            LI("LRTTransferSession::OnTypeQueue delete seqn store.srv:cmd:%d ok\n", store.msgs(i).rsvrcmd());
-
+            // direct send back to group client
+            // no need to relay by queue
+            resp.set_svr_cmds(store.msgs(i).rsvrcmd());
+            resp.set_mod_type(pms::EModuleType::TLIVE);
+            resp.set_rsp_code(0);
+            resp.set_rsp_cont(store.msgs(i).SerializeAsString());
+            std::string s = resp.SerializeAsString();
+            LI("LRTTransferSession::OnTypeQueue --->delete group seqn rsrvcmd:%d from who ruserid:%s,by client:%s to groupid:%s\n\n"\
+                    , store.msgs(i).rsvrcmd()\
+                    , store.msgs(i).ruserid().c_str()\
+                    , store.msgs(i).groupid().c_str()\
+                    , store.msgs(i).storeid().c_str());
+            //TODO:
+            //how to let others server connect to here, find the special group users relayer
+            //send to
+            const std::string sn("sddsddsdd");
+            if (LRTConnManager::Instance().SendToGroupModule(sn, s))
+            {
+                LI("LRTTransferSession::OnTypeQueue cmd delete dispatch msg ok\n");
+            } else {
+                LI("LRTTransferSession::OnTypeQueue cmd delete noooooooooot dispatch msg ok\n");
+            }
         } else {
             LI("LRTTransferSession::OnTypeQueue store.srv:cmd:%d not handle\n", store.msgs(i).rsvrcmd());
         }

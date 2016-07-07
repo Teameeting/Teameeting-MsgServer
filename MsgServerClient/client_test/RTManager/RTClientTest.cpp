@@ -141,8 +141,6 @@ void RTClientTest::RunOnce()
     //TestSendGroup();
     //TestAddGroup();
     //
-    TestCreateGroup();
-    //TestDeleteGroup();
 }
 
 void RTClientTest::TestSend()
@@ -283,14 +281,3 @@ void RTClientTest::TestAddGroup()
     mMsgClient->AddGroup();
 }
 
-
-void RTClientTest::TestCreateGroup()
-{
-    printf("RTClientTest::TestCreateGroup\n");
-    mMsgClient->CreateGroupSeqn();
-}
-void RTClientTest::TestDeleteGroup()
-{
-    printf("RTClientTest::TestDeleteGroup\n");
-    mMsgClient->DeleteGroupSeqn();
-}

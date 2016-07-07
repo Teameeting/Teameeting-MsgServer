@@ -32,8 +32,6 @@ public:
     void TestSendGroupLoop();
     void TestSyncGroup();
     void TestAddGroup();
-    void TestCreateGroup();
-    void TestDeleteGroup();
 
 
     void RunSyncSeqn();

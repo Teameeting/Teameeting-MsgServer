@@ -178,7 +178,12 @@ void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
 // push for write
 void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
 {
-    if (!pData || nSize<=0) return;
+    printf("SRTSequenceRedis::OnPushEvent was called\n");
+    if (!pData || nSize<=0)
+    {
+        printf("SRTSequenceRedis::OnPushEvent pData is null or nSize:%d", nSize);
+        return;
+    }
     std::string str(pData, nSize);
     pms::StorageMsg request;
     request.ParseFromString(str);
@@ -217,7 +222,7 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
                             request.set_result(0);
                             WriteResponse(request, 0);
                         } else {
-                            printf("SRTSequenceRedis::OnPushEvent group newmsg seqn key is not exists!, error\n");
+                            printf("SRTSequenceRedis::OnPushEvent group create seqn key is already exists!!!\n");
                             request.set_result(-2); // groupid already exists
                             WriteResponse(request, 0);
                         }
@@ -273,6 +278,8 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
                     }
                     break;
             }
+        } else {
+            printf("SRTSequenceRedis::OnPushEvent mflag:%d not handled!!!!\n", request.mflag());
         }
     }
 }

@@ -28,7 +28,7 @@ public:
 
     // from XMsgCallback
     virtual void OnSndMsg(int code, const std::string& msg);
-    virtual void OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data);
+    virtual void OnCmdCallback(int code, int cmd, const std::string& groupid, const MSCbData& data);
 
     virtual void OnRecvMsg(int64 seqn, const std::string& msg);
     virtual void OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std::string& msg);
@@ -75,8 +75,8 @@ public:
     bool GrpConnecting();
     void GrpInitSync();
     void GrpSyncGroupData(const std::string& userid, const std::string groupid, int64 curseqn);
-    void CreateGroupSeqn();
-    void DeleteGroupSeqn();
+    void CreateGroupSeqn(const std::string& groupid);
+    void DeleteGroupSeqn(const std::string& groupid);
 
 public:
     const std::string& GetUserId() { return mUserid; }

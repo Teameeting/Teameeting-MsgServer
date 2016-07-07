@@ -461,36 +461,45 @@ void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
     pms::RelayMsg rmsg;
     rmsg.ParseFromString(str);
 
-    if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSG || rmsg.svr_cmds()==pms::EServerCmd::CCREATESEQN)
+    switch (rmsg.svr_cmds())
     {
-        LRTLogicalManager::Instance().RecvRequestCounter();
-        pms::PackedStoreMsg store;
-        store.ParseFromString(rmsg.content());
-        for(int i=0;i<store.msgs_size();++i)
-        {
-            if (store.msgs(i).ruserid().length()==0)
+        case pms::EServerCmd::CNEWMSG:
+        case pms::EServerCmd::CCREATESEQN:
+        case pms::EServerCmd::CDELETESEQN:
             {
-                LI("%S store.msgs(%d).ruserid length is 0\n", __FUNCTION__, i);
-                break;
+                LRTLogicalManager::Instance().RecvRequestCounter();
+                pms::PackedStoreMsg store;
+                store.ParseFromString(rmsg.content());
+                for(int i=0;i<store.msgs_size();++i)
+                {
+                    if (store.msgs(i).ruserid().length()==0)
+                    {
+                        LI("%S store.msgs(%d).ruserid length is 0\n", __FUNCTION__, i);
+                        break;
+                    }
+                    printf("LRTTransferSession::OnTypeWriteRequest NEWMSG msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
+                    if (store.msgs(i).msgid().length()==0)
+                    {
+                        char msgid[16] = {0};
+                        sprintf(msgid, "wm:%u", m_tmpWMsgId++);
+                        store.mutable_msgs(i)->set_msgid(msgid);
+                    }
+                    assert(store.mutable_msgs(i)->msgid().length()!=0);
+                    LRTLogicalManager::Instance().InsertDataWrite(this, store.mutable_msgs(i));
+                }
+                pms::TransferMsg tmsg;
+                tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
+                tmsg.set_flag(pms::ETransferFlag::FNOACK);
+                tmsg.set_priority(pms::ETransferPriority::PNORMAL);
+                tmsg.set_content(store.SerializeAsString());
+                LRTConnManager::Instance().PushSeqnWriteMsg(tmsg.SerializeAsString());
             }
-            printf("LRTTransferSession::OnTypeWriteRequest NEWMSG msgid:%s, mtag:%d\n", store.msgs(i).msgid().c_str(), store.msgs(i).mtag());
-            if (store.msgs(i).msgid().length()==0)
+            break;
+        default:
             {
-                char msgid[16] = {0};
-                sprintf(msgid, "wm:%u", m_tmpWMsgId++);
-                store.mutable_msgs(i)->set_msgid(msgid);
+                LE("OnTypeWriteRequest not handle svr_cmd:%d\n", rmsg.svr_cmds());
             }
-            assert(store.mutable_msgs(i)->msgid().length()!=0);
-            LRTLogicalManager::Instance().InsertDataWrite(this, store.mutable_msgs(i));
-        }
-        pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TWRITE_REQUEST);
-        tmsg.set_flag(pms::ETransferFlag::FNOACK);
-        tmsg.set_priority(pms::ETransferPriority::PNORMAL);
-        tmsg.set_content(store.SerializeAsString());
-        LRTConnManager::Instance().PushSeqnWriteMsg(tmsg.SerializeAsString());
-    } else {
-        LE("OnTypeWriteRequest not handle svr_cmd:%d\n", rmsg.svr_cmds());
+            break;
     }
 }
 

@@ -36,6 +36,8 @@ public:
 
     int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
 
+    int CreateGroupSeqn(const std::string& cltUserid, const std::string& groupid);
+    int DeleteGroupSeqn(const std::string& cltUserid, const std::string& groupid);
     int GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn);
     int GenGrpSyncDataNotifys(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn);
 
@@ -56,6 +58,8 @@ public:
     virtual void OnLogout(int code, const std::string& userid);
     virtual void OnKeepLive(int code, const std::string& cont);
     virtual void OnGroupNotify(int code, const std::string& cont);
+    virtual void OnCreateGroupSeqn(int code, const std::string& cont);
+    virtual void OnDeleteGroupSeqn(int code, const std::string& cont);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);

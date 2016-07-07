@@ -99,6 +99,8 @@ public:
     virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
     virtual void OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnCreateGroupSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnDeleteGroupSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
 
     virtual void OnResponse(const char*pData, int nLen);
 

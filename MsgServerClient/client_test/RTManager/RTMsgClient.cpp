@@ -55,7 +55,7 @@ void RTMsgClient::OnSndMsg(int code, const std::string& msg)
 }
 
 
-void RTMsgClient::OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data)
+void RTMsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, const MSCbData& data)
 {
 
     LOG(INFO) << __FUNCTION__ << " was called";
@@ -260,6 +260,7 @@ void RTMsgClient::AddGroup()
 
 void RTMsgClient::GrpInit(int module)
 {
+    printf("RTMsgClient::GrpInit was called~~\n");
     mGrpMsgClient.Init(mUserid, mAuth, module);
     mGrpMsgClient.RegisterMsgCb(this);
     mGrpMsgClient.ConnToServer("192.168.7.207", 6690);
@@ -293,18 +294,19 @@ void RTMsgClient::GrpSyncGroupData(const std::string& userid, const std::string 
     }
 }
 
-void RTMsgClient::CreateGroupSeqn()
+void RTMsgClient::CreateGroupSeqn(const std::string& groupid)
 {
     if (mIsOnline) {
         printf("RTMsgClient::CreateGroupSeqn was called not implement\n");
-        //mMsgClient.CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", "hahaha");
+        mGrpMsgClient.CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid);
     }
 }
 
-void RTMsgClient::DeleteGroupSeqn()
+void RTMsgClient::DeleteGroupSeqn(const std::string& groupid)
 {
     if (mIsOnline) {
         printf("RTMsgClient::DeleteGroupSeqn was called not implement\n");
+        mGrpMsgClient.DeleteGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid);
     }
 }
 
