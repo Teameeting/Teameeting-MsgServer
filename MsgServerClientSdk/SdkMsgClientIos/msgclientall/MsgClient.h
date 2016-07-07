@@ -49,6 +49,7 @@ public:
     int MCAddGroup(const std::string& groupid);
     int MCRmvGroup(const std::string& groupid);
     
+    int MCSyncSeqn();
     int MCSyncMsg();
     int MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, const std::string& content);
     int MCSendTxtMsgToUsr(std::string& outmsgid, const std::string& userid, const std::string& content);
@@ -66,7 +67,7 @@ public:
 //for XMsgCallback
 public:
     virtual void OnSndMsg(int code, const std::string& msgid);
-    virtual void OnCmdGroup(int code, int cmd, const std::string& groupid, const MSCbData& data);
+    virtual void OnCmdCallback(int code, int cmd, const std::string& groupid, const MSCbData& data);
     virtual void OnRecvMsg(int64 seqn, const std::string& msg);
     virtual void OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std::string& msg);
     
@@ -83,14 +84,91 @@ public:
     virtual void OnMsgServerConnectionFailure();
     
 protected:
+    
+    void ProcessFetchResult()
+    {
+        if (IsFetchedAll())
+        {
+            // stop timer here
+            m_isFetched = true;
+            [m_clientDelegate OnMsgClientInitialized];
+        } else {
+            FetchAllSeqns();
+        }
+    }
+    
+    bool IsFetchedAll()
+    {
+        bool yes = true;
+        for (NSMutableDictionary *item in m_nsGroupInfo) {
+            NSString *seqnId = [item objectForKey:@"seqnId"];
+            NSNumber *isfetched = [item objectForKey:@"isfetched"];
+            NSLog(@"IsFetchedAll seqnid:%@, isfetched:%d", seqnId, [isfetched intValue]);
+            if ([isfetched intValue]==0)
+            {
+                yes = false;
+                break;
+            } else {
+                continue;
+            }
+        }
+        return yes;
+    }
+    
+    void FetchAllSeqns()
+    {
+        for (NSMutableDictionary *item in m_nsGroupInfo) {
+            NSString *seqnId = [item objectForKey:@"seqnId"];
+            NSNumber *isfetched = [item objectForKey:@"isfetched"];
+            NSLog(@"FetchAllSeqns seqnid:%@, isfetched:%d", seqnId, [isfetched intValue]);
+            if ([isfetched intValue]==0)
+            {
+                if ([seqnId compare:m_nsUserId]==0)
+                {
+                    FetchSeqn();
+                } else {
+                    FetchGroupSeqn([seqnId cStringUsingEncoding:NSASCIIStringEncoding]);
+                }
+            }
+        }
+    }
+    
+    void FetchUserSeqn()
+    {
+        FetchSeqn();
+    }
+    
+    void FetchGroupSeqn(const std::string& groupid)
+    {
+        FetchGroupSeqn(groupid);
+    }
+    
+    void UpdateGroupInfoToDb(NSString* nsSeqnId, NSNumber* nsSeqn, NSNumber* nsIsFetched)
+    {
+        NSLog(@"UpdateGroupInfoToDb nsSeqnId:%@, nsSeqn:%lld, nsIsFetched:%d", nsSeqnId, [nsSeqn longLongValue], [nsIsFetched intValue]);
+        // update NSMutableArray
+        for (int i=0;i < [m_nsGroupInfo count];i++)
+        {
+            NSMutableDictionary *it = [m_nsGroupInfo objectAtIndex:i];
+            if (it && [[it objectForKey:@"seqnId"] compare:nsSeqnId]==0)
+            {
+                [it setObject:nsSeqn forKey:@"seqn"];
+                [it setObject:nsIsFetched forKey:@"isfetched"];
+            }
+        }
+        
+        //GroupSeqnMap
+        UpdateLocalSeqn([nsSeqnId cStringUsingEncoding:NSASCIIStringEncoding], [nsSeqn longLongValue]);
+        
+        // update Database
+        [m_sqlite3Manager updateGroupInfoGrpId:nsSeqnId seqn:nsSeqn isfetched:nsIsFetched];
+    }
+    
     void CheckUserOrInit(NSString* nsUid)
     {
-        if (m_sqlite3Manager)
+        if (![m_sqlite3Manager isUserExists:nsUid])
         {
-            if (![m_sqlite3Manager isUserExists:nsUid])
-            {
-                [m_sqlite3Manager addUserId:nsUid];
-            }
+            [m_sqlite3Manager addUserId:nsUid];
         }
     }
     
@@ -98,16 +176,20 @@ protected:
     {
         if (m_sqlite3Manager)
         {
-            m_userSeqn = [[m_sqlite3Manager getUserSeqnUserId:m_nsUserId] longLongValue];
-            NSArray *arr = [m_sqlite3Manager getGroupIdSeqns];
+            //m_userSeqn = [[m_sqlite3Manager getUserSeqnUserId:m_nsUserId] longLongValue];
+            NSArray *arr = [m_sqlite3Manager getGroupInfo];
             if (!arr) {
                 NSLog(@"m_sqllite3Manager getGroupIds is nil");
                 return;
             }
-            for (NSDictionary *item in arr) {
-                NSString *key = [[item allKeys] firstObject];
-                NSNumber *value = [item objectForKey:key];
-                m_groupSeqn.insert(make_pair([key cStringUsingEncoding:NSUTF8StringEncoding], [value longLongValue]));
+            for (NSMutableDictionary *item in arr) {
+                NSString *seqnId = [item objectForKey:@"seqnId"];
+                NSNumber *seqn = [item objectForKey:@"seqn"];
+                NSNumber *isfetched = [item objectForKey:@"isfetched"];
+                NSLog(@"get group info seqnid:%@, seqn:%lld, isfetch:%d", seqnId, [seqn longLongValue], [isfetched intValue]);
+                //assert([isfetched intValue]);
+                m_groupSeqn.insert(make_pair([seqnId cStringUsingEncoding:NSUTF8StringEncoding], [seqn longLongValue]));
+                [m_nsGroupInfo addObject:item];
             }
         }
     }
@@ -118,7 +200,7 @@ protected:
         if (m_sqlite3Manager)
         {
             NSLog(@"updateUserSeqnUserId will be call...");
-            [m_sqlite3Manager updateUserSeqnUserId:m_nsUserId seqn:[NSNumber numberWithLongLong:m_userSeqn]];
+            //[m_sqlite3Manager updateUserSeqnUserId:m_nsUserId seqn:[NSNumber numberWithLongLong:m_userSeqn]];
             for (auto &item : m_groupSeqn)
             {
                 NSLog(@"updateGroupSeqnGrpId will be call...");
@@ -190,11 +272,14 @@ private:
     NSString*                   m_nsToken;
     NSString*                   m_nsNname;
     
+    NSMutableArray*             m_nsGroupInfo;
+    
     std::string                 m_strUserId;
     std::string                 m_strToken;
     std::string                 m_strNname;;
     
-    int64_t                     m_userSeqn;
+    bool                        m_isFetched;
+    //int64_t                     m_userSeqn;
     GroupSeqnMap                m_groupSeqn;
     NSRecursiveLock*            m_recurLock;
     

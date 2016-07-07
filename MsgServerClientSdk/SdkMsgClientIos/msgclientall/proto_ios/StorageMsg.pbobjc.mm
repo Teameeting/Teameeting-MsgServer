@@ -73,7 +73,7 @@ typedef struct StorageMsg__storage_ {
   NSString *storeid;
   NSString *ruserid;
   NSString *groupid;
-  NSString *content;
+  NSData *content;
   int64_t sequence;
   int64_t maxseqn;
 } StorageMsg__storage_;
@@ -199,7 +199,7 @@ typedef struct StorageMsg__storage_ {
         .hasIndex = 12,
         .offset = (uint32_t)offsetof(StorageMsg__storage_, content),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeString,
+        .dataType = GPBDataTypeBytes,
       },
     };
     GPBDescriptor *localDescriptor =

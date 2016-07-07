@@ -23,13 +23,16 @@
 
 @property (nonatomic, strong) NSString* fromId;
 
-@property (nonatomic, strong) NSString* time;
+@property (nonatomic, strong) NSString* groupId;
 
-@property (nonatomic, strong) NSString* date;
+@property (nonatomic, strong) NSDate* time;
 
-@property (nonatomic) int     flag;//group or single
-@property (nonatomic) int     tag;//txt or pic or self
-@property (nonatomic) int     role;//sender or recver
+@property (nonatomic, strong) NSDate* date;
+
+@property (nonatomic) unsigned int  millSec;//send second
+@property (nonatomic) int           flag;//group or single
+@property (nonatomic) int           tag;//txt or pic or self
+@property (nonatomic) int           role;//sender or recver
 
 @end
 

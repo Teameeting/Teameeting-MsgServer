@@ -20,7 +20,7 @@ message StorageMsg{
     string          storeid     = 10; // storage userid
     string          ruserid     = 11; // real userid
     string          groupid     = 12; // groupid
-    string          content     = 13; // message
+    bytes           content     = 13; // message
 }
 
 message PackedStoreMsg{

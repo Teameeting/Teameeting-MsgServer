@@ -16,8 +16,11 @@
 @synthesize msgId = _msgId;
 @synthesize toId = _toId;
 @synthesize fromId = _fromId;
+@synthesize groupId = _groupId;
 @synthesize time = _time;
 @synthesize date = _date;
+@synthesize millSec = _millSec;
+@synthesize flag = _flag;
 @synthesize tag = _tag;
 @synthesize role = _role;
 

@@ -25,5 +25,17 @@
 // when server connect failed
 -(void)OnMsgServerConnectionFailure;
 
+// when client initializing
+-(void)OnMsgClientInitializing;
+
+// when client initialize ok
+-(void)OnMsgClientInitialized;
+
+// when client un initialize
+-(void)OnMsgClientUnInitialize;
+
+// when client initialize failed
+-(void)OnMsgClientInitializeFailure;
+
 @end
 #endif /* MSClientDelegate_h */

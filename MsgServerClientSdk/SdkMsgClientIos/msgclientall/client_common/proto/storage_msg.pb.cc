@@ -397,16 +397,12 @@ bool StorageMsg::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string content = 13;
+      // optional bytes content = 13;
       case 13: {
         if (tag == 106) {
          parse_content:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_content()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->content().data(), this->content().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pms.StorageMsg.content"));
         } else {
           goto handle_unusual;
         }
@@ -523,13 +519,9 @@ void StorageMsg::SerializeWithCachedSizes(
       12, this->groupid(), output);
   }
 
-  // optional string content = 13;
+  // optional bytes content = 13;
   if (this->content().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->content().data(), this->content().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pms.StorageMsg.content");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       13, this->content(), output);
   }
 
@@ -619,10 +611,10 @@ int StorageMsg::ByteSize() const {
         this->groupid());
   }
 
-  // optional string content = 13;
+  // optional bytes content = 13;
   if (this->content().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->content());
   }
 
@@ -1015,7 +1007,7 @@ void StorageMsg::clear_groupid() {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.groupid)
 }
 
-// optional string content = 13;
+// optional bytes content = 13;
 void StorageMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1033,7 +1025,7 @@ void StorageMsg::clear_content() {
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:pms.StorageMsg.content)
 }
- void StorageMsg::set_content(const char* value, size_t size) {
+ void StorageMsg::set_content(const void* value, size_t size) {
   
   content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));

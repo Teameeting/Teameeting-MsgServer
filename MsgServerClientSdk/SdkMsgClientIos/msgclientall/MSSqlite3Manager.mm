@@ -43,7 +43,6 @@
 {
     NSNumber *seqn = nil;
     [_sqlite3Db selectSeqnSeqnId:userId seqn:&seqn];
-    NSLog(@"getUserSeqnUserId seqn:%lld, for user:%@", [seqn longLongValue], userId);
     return seqn;
 }
 
@@ -64,22 +63,24 @@
     [_sqlite3Db updateSeqnSeqnId:grpId seqn:seqn];
 }
 
+-(void)updateGroupInfoGrpId:(NSString*)grpId
+                       seqn:(NSNumber*)seqn
+                  isfetched:(NSNumber*)isfetched
+{
+    [_sqlite3Db updateSeqnSeqnId:grpId seqn:seqn isfetched:isfetched];
+}
+
 -(NSNumber*)getGroupSeqnGrpId:(NSString*)grpId
 {
     NSNumber *seqn = nil;
     [_sqlite3Db selectSeqnSeqnId:grpId seqn:&seqn];
-    NSLog(@"getGroupSeqnGrpId seqn:%lld, for groupid:%@", [seqn longLongValue], grpId);
     return seqn;
 }
 
--(NSArray*)getGroupIdSeqns
+-(NSArray*)getGroupInfo
 {
     NSArray *arr = nil;
-    [_sqlite3Db selectGroupIds:&arr];
-    for (NSString* s in arr)
-    {
-        NSLog(@"getGroupId id:%@", s);
-    }
+    [_sqlite3Db selectGroupInfo:&arr];
     return arr;
 }
 

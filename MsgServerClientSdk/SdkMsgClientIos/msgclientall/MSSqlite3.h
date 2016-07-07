@@ -28,6 +28,10 @@
 - (BOOL)updateSeqnSeqnId:(NSString*)seqnId
                     seqn:(NSNumber*)seqn;
 
+- (BOOL)updateSeqnSeqnId:(NSString*)seqnId
+                    seqn:(NSNumber*)seqn
+               isfetched:(NSNumber*)isfetched;
+
 - (BOOL)selectSeqnSeqnId:(NSString*)seqnId
                     seqn:(NSNumber**)seqn;
 
@@ -36,7 +40,7 @@
 
 - (BOOL)insertGroupIdGrpId:(NSString*)grpId;
 
-- (BOOL)selectGroupIds:(NSMutableArray**)Ids;
+- (BOOL)selectGroupInfo:(NSMutableArray**)Info;
 
 - (BOOL)deleteGroupIdGrpId:(NSString*)grpId;
 

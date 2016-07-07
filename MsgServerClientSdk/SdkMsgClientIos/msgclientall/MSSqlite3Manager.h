@@ -37,9 +37,13 @@
 -(void)updateGroupSeqnGrpId:(NSString*)grpId
                        seqn:(NSNumber*)seqn;
 
+-(void)updateGroupInfoGrpId:(NSString*)grpId
+                       seqn:(NSNumber*)seqn
+                  isfetched:(NSNumber*)isfetched;
+
 -(NSNumber*)getGroupSeqnGrpId:(NSString*)grpId;
 
--(NSArray*)getGroupIdSeqns;
+-(NSArray*)getGroupInfo;
 
 -(void)delGroupId:(NSString*)groupId;
 

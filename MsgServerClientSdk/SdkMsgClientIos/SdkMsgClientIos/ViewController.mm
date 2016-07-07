@@ -139,6 +139,11 @@
     NSString *leave = @"leaveButton was called";
     NSLog(@"%@", leave);
     //[msgsender tMOptRoomCmd:EMsgTag_Tleave roomid:roomid rname:@"roomname" remain:@""];
+    NSString *groupid = @"4008696859";
+    NSString *outmsgid = nil;
+    //[groupMgr addGroupGrpId:groupid];
+    [msgMgr sendTxtMsgGrpId:groupid cont:leave cmsgid:&outmsgid];
+    NSLog(@"sendTxtMsgGrpId outmsgid is :%@", outmsgid);
 }
 
 - (IBAction)notifyButton:(id)sender {
@@ -151,7 +156,6 @@
                mMsg:(NSString*)mMsg
                nInt:(int)nInt
 {
-    NSLog(@"ViewController::updateResult was called...");
     NSString *s = [[NSString alloc] initWithString:[NSString stringWithFormat:@"result: backInfo:%@,mMsg:%@,code:%i", backInfo, mMsg, nInt]];
     NSLog(@"NSLog:%@", s);
     textViewDisplay.text = s;
@@ -161,9 +165,6 @@
                         mMsg:(NSString*)mMsg
                         nInt:(int)nInt
 {
-    NSLog(@"ViewController::resultDisplayCallback was called...");
-   
-    
     NSMethodSignature *sig = [self methodSignatureForSelector:@selector(updateResult:mMsg:nInt:)];
     if (!sig) {
         return;

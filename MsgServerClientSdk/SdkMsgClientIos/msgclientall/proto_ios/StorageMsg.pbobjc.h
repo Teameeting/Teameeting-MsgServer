@@ -93,7 +93,7 @@ typedef GPB_ENUM(StorageMsg_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *groupid;
 
 /// message
-@property(nonatomic, readwrite, copy, null_resettable) NSString *content;
+@property(nonatomic, readwrite, copy, null_resettable) NSData *content;
 
 @end
 

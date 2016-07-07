@@ -7,3 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MSTxtMessage.h"
+
+@implementation MSTxtMessage
+
+
+
+@end

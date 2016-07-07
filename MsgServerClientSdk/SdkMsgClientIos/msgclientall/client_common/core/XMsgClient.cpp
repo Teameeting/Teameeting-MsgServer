@@ -135,7 +135,7 @@ int XMsgClient::RmvGroup(const std::string& groupid)
         MSCbData cbData;
         cbData.type = 1;
         cbData.data = "del ok";
-        m_pCallback->OnCmdGroup(0, 1, groupid, cbData);
+        m_pCallback->OnCmdCallback(0, MSRMV_GROUP, groupid, cbData);
     }
     return 0;
 }
@@ -183,6 +183,23 @@ int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, cons
         return -1;
     }
 
+    return SendEncodeMsg(outstr);
+}
+
+int XMsgClient::FetchSeqn()
+{
+    printf("XMsgClient::FetchSeqn seqn is wait...\n");
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, -1, m_module, pms::EStorageTag::TFETCHSEQN, pms::EMsgFlag::FSINGLE, pms::EMsgRole::RSENDER);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+    printf("XMsgClient::FetchSeqn was called\n");
+    
     return SendEncodeMsg(outstr);
 }
 
@@ -558,7 +575,7 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
         {
             if (store.mflag()==pms::EMsgFlag::FGROUP)
             {
-                printf("XMsgClient::OnHelpSyncSeqn group storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
+                printf("XMsgClient::OnHelpSyncSeqn fetchseqn group storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
                        , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
                 if (m_pCallback)
                 {
@@ -568,17 +585,45 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                         cbData.type = 0;
                         cbData.data = "add ok";
                         cbData.seqn = store.maxseqn();
-                        m_pCallback->OnCmdGroup(0, 0, store.storeid(), cbData);
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(0, MSADD_GROUP, store.storeid(), cbData);
+                        m_pCallback->OnCmdCallback(0, MSFETCH_SEQN, store.storeid(), cbData);
                     } else {
                         MSCbData cbData;
                         cbData.type = 0;
                         cbData.data = "add fail";
-                        m_pCallback->OnCmdGroup(-1, 0, store.storeid(), cbData);
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(-1, MSADD_GROUP, store.storeid(), cbData);
+                        m_pCallback->OnCmdCallback(-1, MSFETCH_SEQN, store.storeid(), cbData);
                     }
                 } else {
-                    printf("XMsgClient::OnHelpSyncSeqn GETNEW m_pCallback is null\n");
+                    printf("XMsgClient::OnHelpSyncSeqn fetchseqn group m_pCallback is null\n");
                 }
-            }    
+            } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
+            {
+                printf("XMsgClient::OnHelpSyncSeqn fetchseqn single storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
+                       , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
+                if (m_pCallback)
+                {
+                    if (store.maxseqn()>=0)
+                    {
+                        MSCbData cbData;
+                        cbData.type = 0;
+                        cbData.data = "fetch ok";
+                        cbData.seqn = store.maxseqn();
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(0, MSFETCH_SEQN, "", cbData);
+                    } else {
+                        MSCbData cbData;
+                        cbData.type = 0;
+                        cbData.data = "fetch fail";
+                        cbData.result = store.result();
+                        m_pCallback->OnCmdCallback(-1, MSFETCH_SEQN, "", cbData);
+                    }
+                } else {
+                    printf("XMsgClient::OnHelpSyncSeqn fetchseqn single m_pCallback is null\n");
+                }
+            }
         }
             break;
         default:
@@ -641,10 +686,10 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
 
     pms::Entity entity;
     entity.ParseFromString(store.content());
-    printf("OnHelpSyncGroupData entity.usr_from:%s, rom_id:%s, msg_cont:%s\n"\
+    printf("OnHelpSyncGroupData entity.usr_from:%s, rom_id:%s, msg_cont.size:%d\n"\
             , entity.usr_from().c_str()\
             , entity.rom_id().c_str()\
-            , entity.msg_cont().c_str());
+            , entity.msg_cont().length());
     if (m_pCallback)
     {
         assert(store.storeid().compare(store.groupid())==0);
