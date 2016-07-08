@@ -621,7 +621,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
             {
                 // update max seqn
                 printf("LRTTransferSession::OnTypeReadRequest get maxseqn:%lld from server local\n", seqn);
-                assert(seqn>0);
+                assert(seqn>=0);
                 store.mutable_msgs(i)->set_maxseqn(seqn);
                 this->PushReadMsg(store.msgs(i));
             } else {

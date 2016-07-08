@@ -51,6 +51,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     //pmsg.PrintDebugString();
 
     printf("DRTMsgDispatch::OnPushEvent the Push function not implement!!!!!!!!!!\n");
+    return;
     assert(false);
 #if 0
     TOPUSHUSER pushUser;

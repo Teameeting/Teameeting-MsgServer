@@ -326,6 +326,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
                 needDispatch = true;
             } else {
                 ////add all the needed push user;
+                printf("DRTTransferSession::OnTypeQueue user:%s need push\n", auser.users(i).c_str());
                 needPush = true;
             }
         }

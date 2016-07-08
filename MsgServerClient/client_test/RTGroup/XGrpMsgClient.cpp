@@ -410,6 +410,8 @@ void XGrpMsgClient::OnGroupNotify(int code, const std::string& cont)
     GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
     std::string mem_user2("2C665ED7-3854-4411-9536-947A4340B86E");
     GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
+    std::string mem_user3("9297E785-59BD-483A-ABEA-5C9F8D88FEB0");
+    GenGrpSyncDataNotify(mem_user3, store.groupid(), store.sequence());
 
     return;
 }
