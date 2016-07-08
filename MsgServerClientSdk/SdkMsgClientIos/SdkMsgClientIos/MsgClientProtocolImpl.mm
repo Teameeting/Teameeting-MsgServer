@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "MsgClientProtocolImpl.h"
 #import "MSClientType.h"
-#import "EntityMsgType.pbobjc.h"
-#import "EntityMsg.pbobjc.h"
 
 @implementation MsgClientProtocolImpl
 

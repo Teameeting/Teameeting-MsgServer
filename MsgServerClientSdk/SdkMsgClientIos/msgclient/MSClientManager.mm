@@ -16,6 +16,7 @@
                    token:(NSString*)token
                    nName:(NSString*)nName
 {
+    NSLog(@"MsgClient Ios Version:v1.0.0");
     MsgClient::Instance().MCInit([usrId UTF8String], [token UTF8String], [nName UTF8String]);
     MsgClient::Instance().MCRegisterMsgCb(&MsgClient::Instance());
     return 0;

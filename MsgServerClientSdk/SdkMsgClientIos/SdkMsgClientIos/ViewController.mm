@@ -12,9 +12,6 @@
 #import "MSGroupManager.h"
 #import "MSMessageManager.h"
 
-#import "EntityMsgType.pbobjc.h"
-#import "MSSqlite3.h"
-#import "MSSharedSeqnConfig.h"
 
 @interface ViewController () {
     UIButton *mEnterButton;
