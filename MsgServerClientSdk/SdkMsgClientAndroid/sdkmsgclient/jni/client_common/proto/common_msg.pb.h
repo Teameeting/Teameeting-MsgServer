@@ -45,20 +45,26 @@ enum EServerCmd {
   CGETMSG = 2,
   CLOGOUT = 3,
   CKEEPALIVE = 4,
-  CSYNCSEQN = 5,
-  CSSEQN4DATA = 6,
-  CSYNCDATA = 7,
-  CSYNCGROUPDATA = 8,
-  CNEWMSG = 9,
-  CNEWMSGSEQN = 10,
-  CNEWMSGDATA = 11,
-  CGROUPNOTIFY = 12,
+  CSEQN = 5,
+  CDATA = 6,
+  CSNTFSEQN = 7,
+  CSNTFDATA = 8,
+  CSYNCSEQN = 9,
+  CSSEQN4DATA = 10,
+  CSYNCDATA = 11,
+  CSYNCGROUPDATA = 12,
+  CNEWMSG = 13,
+  CNEWMSGSEQN = 14,
+  CNEWMSGDATA = 15,
+  CGROUPNOTIFY = 16,
+  CCREATESEQN = 17,
+  CDELETESEQN = 18,
   EServerCmd_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EServerCmd_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EServerCmd_IsValid(int value);
 const EServerCmd EServerCmd_MIN = CLOGIN;
-const EServerCmd EServerCmd_MAX = CGROUPNOTIFY;
+const EServerCmd EServerCmd_MAX = CDELETESEQN;
 const int EServerCmd_ARRAYSIZE = EServerCmd_MAX + 1;
 
 enum EModuleType {
