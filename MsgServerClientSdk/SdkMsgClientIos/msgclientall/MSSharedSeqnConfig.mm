@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSSharedSeqnConfig.h"
+#import "msgclientall/MSSharedSeqnConfig.h"
 
 @implementation MSSharedSeqnConfig
 

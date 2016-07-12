@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSTxtMessage.h"
+#import "msgclientall/MSTxtMessage.h"
 
 @implementation MSTxtMessage
-
-
 
 @end

@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSGroupManager.h"
-#import "MsgClient.h"
+#import "msgclientall/MSGroupManager.h"
+#import "msgclientall/MsgClient.h"
 
 @implementation MSGroupManager
 

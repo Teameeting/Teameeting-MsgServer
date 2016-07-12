@@ -8,10 +8,9 @@
 
 #import <AdSupport/ASIdentifierManager.h>
 #import "ViewController.h"
-#import "MSClientManager.h"
-#import "MSGroupManager.h"
-#import "MSMessageManager.h"
-
+#import "include_out/MSClientManager.h"
+#import "include_out/MSGroupManager.h"
+#import "include_out/MSMessageManager.h"
 
 @interface ViewController () {
     UIButton *mEnterButton;
@@ -107,7 +106,6 @@
     [groupMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr connToServer:server port:port];
-    
 }
 
 - (void)didReceiveMemoryWarning {

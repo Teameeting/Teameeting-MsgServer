@@ -20,6 +20,20 @@
                ReferencedContainer = "container:SdkMsgClientIos.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E6C0F1FC1C96EBB200C66EC3"
+               BuildableName = "libmsgclient.a"
+               BlueprintName = "msgclient"
+               ReferencedContainer = "container:SdkMsgClientIos.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -29,6 +43,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E674DD871CD9F6A3001C2D6B"
+            BuildableName = "libmsgclientall.a"
+            BlueprintName = "msgclientall"
+            ReferencedContainer = "container:SdkMsgClientIos.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

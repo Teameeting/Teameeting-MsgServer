@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MsgClientProtocolImpl.h"
-#import "MSClientType.h"
+#import "include_out/MSClientType.h"
 
 @implementation MsgClientProtocolImpl
 
@@ -67,38 +67,33 @@
 }
 
 // when hostId begin to live in grpId
--(void)OnNotifyLiveId:(NSString*)grpId
-               hostId:(NSString*)hostId
+-(void)OnNotifyLiveMessage:(MSTxtMessage*)txtMsg
 {
-    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, hostid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], grpId, hostId);
+    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, hostid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], [txtMsg groupId], [txtMsg fromId]);
 }
 
 // when hostId in grpId recv red-envelope
--(void)OnNotifyRedEnvelopeGrpId:(NSString*)grpId
-                         hostId:(NSString*)hostId
+-(void)OnNotifyRedEnvelopeMessage:(MSTxtMessage*)txtMsg
 {
-    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, hostid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], grpId, hostId);
+    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, hostid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], [txtMsg groupId], [txtMsg fromId]);
 }
 
 // when userId was push to blacklist in grpId
--(void)OnNotifyBlacklist:(NSString*)grpId
-                  userId:(NSString*)userId
+-(void)OnNotifyBlacklistMessage:(MSTxtMessage*)txtMsg
 {
-    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], grpId, userId);
+    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], [txtMsg groupId], [txtMsg fromId]);
 }
 
 // when userId was forbidden in grpId
--(void)OnNotifyForbidden:(NSString*)grpId
-                  userId:(NSString*)userId
+-(void)OnNotifyForbiddenMessage:(MSTxtMessage*)txtMsg
 {
-    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], grpId, userId);
+    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], [txtMsg groupId], [txtMsg fromId]);
 }
 
 // when userId in grpId was setted to be manager
--(void)OnNotifySettedMgrGrpId:(NSString*)grpId
-                       userId:(NSString*)userId
+-(void)OnNotifySettedMgrMessage:(MSTxtMessage*)txtMsg
 {
-    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], grpId, userId);
+    NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], [txtMsg groupId], [txtMsg fromId]);
 }
 
 - (void) OnMsgServerConnected

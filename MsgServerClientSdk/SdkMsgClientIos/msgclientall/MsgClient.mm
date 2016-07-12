@@ -7,15 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MsgClient.h"
-#import "MSTxtMessage.h"
-#import "CommonMsg.pbobjc.h"
-#import "EntityMsg.pbobjc.h"
-#import "EntityMsgType.pbobjc.h"
+#import "msgclientall/MsgClient.h"
+#import "msgclientall/MSTxtMessage.h"
+#import "msgclientall/include_out/CommonMsg.pbobjc.h"
+#import "msgclientall/include_out/EntityMsg.pbobjc.h"
+#import "msgclientall/include_out/EntityMsgType.pbobjc.h"
 
-#import "entity_msg.pb.h"
-#import "entity_msg_type.pb.h"
+#import "msgclientall/client_common/proto/entity_msg.pb.h"
+#import "msgclientall/client_common/proto/entity_msg_type.pb.h"
 
+#import "msgclientall/MSMsgUtil.h"
+#import "MJExtension.h"
 int MsgClient::MCInit(const std::string& uid, const std::string& token, const std::string& nname)
 {
     std::cout << "MCInit add module here, please implement it!!!" << std::endl;
@@ -118,21 +120,52 @@ int MsgClient::MCSyncMsg()
     return 0;
 }
 
+/////////////////////////////////////////////////
+//////////////////Send Message///////////////////
+/////////////////////////////////////////////////
+
 int MsgClient::MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, const std::string& content)
 {
-    return SndMsg(outmsgid, groupid, "roomname", content, (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] content:[NSString stringWithUTF8String:content.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsg JSONToNSString error");
+        return -3;
+    }
+    return SndMsg(outmsgid, groupid, "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
 }
 
 int MsgClient::MCSendTxtMsgToUsr(std::string& outmsgid, const std::string& userid, const std::string& content)
 {
     std::vector<std::string> uvec;
     uvec.push_back(userid);
-    return SndMsgTo(outmsgid, "groupid", "grpname", content, (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    
+    MSMessage *txtMsg = (MSMessage*)[MSMsgUtil EncodeMessageWithUserId:[NSString stringWithUTF8String:userid.c_str()] content:[NSString stringWithUTF8String:content.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
+        return -3;
+    }
+    
+    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
 }
 
 int MsgClient::MCSendTxtMsgToUsrs(std::string& outmsgid, const std::vector<std::string>& vusrs, const std::string& content)
 {
-    return SndMsgTo(outmsgid, "groupid", "grpname", content, (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, vusrs);
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithUserIds:nil content:[NSString stringWithUTF8String:content.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsrs JSONToNSString error");
+        return -3;
+    }
+    
+    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, vusrs);
 }
 
 
@@ -140,35 +173,85 @@ int MsgClient::MCNotifyLive(std::string& outmsgid, const std::string& groupid, c
 {
     std::vector<std::string> uvec;
     uvec.push_back(hostid);
-    return SndMsgTo(outmsgid, groupid, "grpname", "", (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tliv, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:hostid.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
+        return -3;
+    }
+
+    return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tliv, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
 }
 
 int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, const std::string& groupid, const std::string& hostid)
 {
     std::vector<std::string> uvec;
     uvec.push_back(hostid);
-    return SndMsgTo(outmsgid, groupid, "grpname", "", (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tren, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:hostid.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
+        return -3;
+    }
+
+    return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tren, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
 }
 
 int MsgClient::MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid)
 {
     std::vector<std::string> uvec;
     uvec.push_back(userid);
-    return SndMsgTo(outmsgid, groupid, "grpname", "", (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
+        return -3;
+    }
+
+    return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
 }
 
 int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid)
 {
     std::vector<std::string> uvec;
     uvec.push_back(userid);
-    return SndMsgTo(outmsgid, groupid, "grpname", "", (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
+        return -3;
+    }
+
+    return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
 }
 
 int MsgClient::MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid)
 {
     std::vector<std::string> uvec;
     uvec.push_back(userid);
-    return SndMsgTo(outmsgid, groupid, "grpname", "", (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tmgr, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
+        return -3;
+    }
+
+    return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tmgr, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
 }
 
 /////////////////////////////////////////////////
@@ -183,7 +266,7 @@ void MsgClient::OnSndMsg(int code, const std::string& msgid)
 
 void MsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, const MSCbData& data)
 {
-    NSLog(@"MsgClient::OnCmdCallback cmd:%d, groupid.length:%d, result:%d, seqn:%lld", cmd, groupid.length(), data.result, data.seqn);
+    NSLog(@"MsgClient::OnCmdCallback cmd:%d, groupid.length:%lu, result:%d, seqn:%lld", cmd, groupid.length(), data.result, data.seqn);
     switch (cmd)
     {
         case MSADD_GROUP:
@@ -263,13 +346,16 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
            , en.msg_cont().c_str()\
            , en.rom_id().c_str()\
            , en.usr_from().c_str());
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setContent:[NSString stringWithUTF8String:en.msg_cont().c_str()]];
-    [txtMsg setFromId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
-    [txtMsg setToId:[NSString stringWithUTF8String:en.usr_toto().users(0).c_str()]];
+    
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
+    
+    //[txtMsg setContent:[NSString stringWithUTF8String:en.msg_cont().c_str()]];
+    //[txtMsg setFromId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
+    //[txtMsg setToId:[NSString stringWithUTF8String:en.usr_toto().users(0).c_str()]];
     
     NSDate *dateNow = [NSDate dateWithTimeIntervalSinceNow:(en.msg_time()/1000)];
-    NSDate *localeDate = [dateNow  dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
+    NSDate *localeDate = [dateNow dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
     [txtMsg setDate:dateNow];
     [txtMsg setTime:localeDate];
     [txtMsg setMillSec:en.msg_time()];
@@ -312,27 +398,27 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
             break;
         case pms::EMsgType::TLIV:
         {
-            [m_txtMsgDelegate OnNotifyLiveId:[NSString stringWithUTF8String:en.rom_id().c_str()] hostId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
+            [m_txtMsgDelegate OnNotifyLiveMessage:txtMsg];
         }
             break;
         case pms::EMsgType::TREN:
         {
-            [m_txtMsgDelegate OnNotifyRedEnvelopeGrpId:[NSString stringWithUTF8String:en.rom_id().c_str()] hostId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
+            [m_txtMsgDelegate OnNotifyRedEnvelopeMessage:txtMsg];
         }
             break;
         case pms::EMsgType::TBLK:
         {
-            [m_txtMsgDelegate OnNotifyBlacklist:[NSString stringWithUTF8String:en.rom_id().c_str()] userId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
+            [m_txtMsgDelegate OnNotifyBlacklistMessage:txtMsg];
         }
             break;
         case pms::EMsgType::TFBD:
         {
-            [m_txtMsgDelegate OnNotifyForbidden:[NSString stringWithUTF8String:en.rom_id().c_str()] userId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
+            [m_txtMsgDelegate OnNotifyForbiddenMessage:txtMsg];
         }
             break;
         case pms::EMsgType::TMGR:
         {
-            [m_txtMsgDelegate OnNotifySettedMgrGrpId:[NSString stringWithUTF8String:en.rom_id().c_str()] userId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
+            [m_txtMsgDelegate OnNotifySettedMgrMessage:txtMsg];
         }
             break;
         default:
@@ -362,7 +448,7 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
     [txtMsg setGroupId:[NSString stringWithUTF8String:seqnid.c_str()]];
     
     NSDate *dateNow = [NSDate dateWithTimeIntervalSinceNow:(en.msg_time()/1000)];
-    NSDate *localeDate = [dateNow  dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
+    NSDate *localeDate = [dateNow dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
     [txtMsg setDate:dateNow];
     [txtMsg setTime:localeDate];
     [txtMsg setMillSec:en.msg_time()];
@@ -463,6 +549,9 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
 #endif
 }
 
+
+//////////////Used in this class//////////////////////////
+
 void MsgClient::OnSyncSeqn(int64 maxseqn, int role)
 {
     std::cout << "MsgClient::OnSyncSeqn was called maxseqn:" << maxseqn << std::endl;
@@ -475,7 +564,7 @@ void MsgClient::OnSyncSeqn(int64 maxseqn, int role)
     // if it is recver, this means client need sync data
     int64 lseqn = GetLocalSeqnFromId(m_strUserId);
     assert(lseqn>=0);
-    int index = maxseqn - lseqn;
+    long index = maxseqn - lseqn;
     if (role == EMsgRole_Rsender)
     {
         if (index == 1)

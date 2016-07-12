@@ -13,7 +13,6 @@
 
 @interface MSTxtMessage : MSMessage;
 
-
 @end
 
 #endif /* MSTextMessage_h */

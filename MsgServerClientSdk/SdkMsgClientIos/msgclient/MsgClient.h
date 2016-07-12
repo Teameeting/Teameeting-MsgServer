@@ -16,8 +16,8 @@
 #import "MSSqlite3Manager.h"
 
 #include <map>
-#include "XMsgClient.h"
-#include "XMsgCallback.h"
+#include "msgclient/client_common/core/XMsgClient.h"
+#include "msgclient/client_common/core/XMsgCallback.h"
 
 #include "RTSingleton.h"
 

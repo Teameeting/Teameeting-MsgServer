@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSClientManager.h"
-#import "MsgClient.h"
+#import "msgclientall/MSClientManager.h"
+#import "msgclientall/MsgClient.h"
 
 @implementation MSClientManager
 
@@ -51,6 +51,16 @@
 {
     MsgClient::Instance().MCConnStatus();
     return MCConnStateNOT_CONNECTED;
+}
+
+-(void)setNickName:(NSString*)nName
+{
+    
+}
+
+-(void)setUIconUrl:(NSString*)url
+{
+    
 }
 
 @end

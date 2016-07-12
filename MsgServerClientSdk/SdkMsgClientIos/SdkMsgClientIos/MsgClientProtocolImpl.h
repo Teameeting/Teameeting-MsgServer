@@ -8,9 +8,9 @@
 
 #ifndef MsgClientIos_MsgClientProtocolImpl_h
 #define MsgClientIos_MsgClientProtocolImpl_h
-#import "MSClientDelegate.h"
-#import "MSGroupDelegate.h"
-#import "MSTxtMessageDelegate.h"
+#import "include_out/MSClientDelegate.h"
+#import "include_out/MSGroupDelegate.h"
+#import "include_out/MSTxtMessageDelegate.h"
 
 @protocol ShowResultProtocol;
 

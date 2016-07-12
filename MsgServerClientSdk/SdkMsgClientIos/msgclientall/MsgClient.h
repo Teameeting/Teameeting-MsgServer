@@ -16,8 +16,8 @@
 #import "MSSqlite3Manager.h"
 
 #include <map>
-#include "XMsgClient.h"
-#include "XMsgCallback.h"
+#include "msgclientall/client_common/core/XMsgClient.h"
+#include "msgclientall/client_common/core/XMsgCallback.h"
 
 #include "RTSingleton.h"
 
@@ -62,7 +62,19 @@ public:
     int MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid);
     
     int MCConnStatus() { return MSStatus(); }
-    void MCSetNickName(const std::string& nickname) { SetNickName(nickname); }
+    void MCSetNickName(const std::string& nickname) {
+        m_nsNname = [NSString stringWithCString:nickname.c_str() encoding:NSUTF8StringEncoding];
+        SetNickName(nickname);
+    }
+    void MCSetUIconUrl(const std::string& uiconurl) {
+        m_nsUIcon = [NSString stringWithCString:uiconurl.c_str() encoding:NSUTF8StringEncoding];
+        SetUIconUrl(uiconurl);
+    }
+    
+    NSString* MCGetNsUserId() { return m_nsUserId; }
+    NSString* MCGetNsToken() { return m_nsToken; }
+    NSString* MCGetNsNickName() { return m_nsNname; }
+    NSString* MCGetNsUIconUrl() { return m_nsUIcon; }
     
 //for XMsgCallback
 public:
@@ -271,6 +283,7 @@ private:
     NSString*                   m_nsUserId;
     NSString*                   m_nsToken;
     NSString*                   m_nsNname;
+    NSString*                   m_nsUIcon;
     
     NSMutableArray*             m_nsGroupInfo;
     

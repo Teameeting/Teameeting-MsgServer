@@ -61,6 +61,20 @@
  */
 -(MCConnState)connStatus;
 
+/**
+ *  set user nick name
+ *
+ *  params:
+ */
+-(void)setNickName:(NSString*)nName;
+
+/**
+ *  set user icon url
+ *
+ *  params:
+ */
+-(void)setUIconUrl:(NSString*)url;
+
 @end
 
 #endif /* MSClientManager_h */

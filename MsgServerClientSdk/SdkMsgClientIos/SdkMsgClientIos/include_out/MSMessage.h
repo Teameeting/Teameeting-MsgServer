@@ -8,10 +8,10 @@
 
 #ifndef MSMessage_h
 #define MSMessage_h
-
+#import "MJExtension.h"
 #import <Foundation/Foundation.h>
 
-@interface MSMessage : NSObject;
+@interface MSMessage : NSObject<MJKeyValue>;
 
 @property (nonatomic, strong) NSString* content;
 
@@ -24,6 +24,10 @@
 @property (nonatomic, strong) NSString* fromId;
 
 @property (nonatomic, strong) NSString* groupId;
+
+@property (nonatomic, strong) NSString* nickname;
+
+@property (nonatomic, strong) NSString* uiconurl;
 
 @property (nonatomic, strong) NSDate* time;
 
