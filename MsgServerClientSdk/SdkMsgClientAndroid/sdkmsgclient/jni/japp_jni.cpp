@@ -31,92 +31,168 @@ JMClientApp* GetJApp(JNIEnv* jni, jobject j_app)
 
 //=================================================================
 //=================================================================
-JOWW(jlong, JMClientApp_Create)(JNIEnv* jni, jclass, jobject j_obj)
+
+JOWW(jlong, JMClientApp_Create)(JNIEnv *jni, jclass j_app, jobject jobj)
 {
 	//JavaString jstrLogPath(jlogPath);
 	//L_Init(jlogLevel, jstrLogPath.ToString8().c_str());
 
-	JMClientApp* jApp = new JMClientApp(j_obj);
+	JMClientApp* jApp = new JMClientApp(jobj);
 	return jlongFromPointer(jApp);
 }
 
-JOWW(void, JMClientApp_Destroy)(JNIEnv* jni, jobject j_app)
-{
-	JMClientApp* jApp = GetJApp(jni, j_app);
-	jApp->Close();
-	delete jApp;
-}
 
-JOWW(jint, JMClientApp_ConnStatus)(JNIEnv* jni, jobject j_app)
-{
-	JMClientApp* jApp = GetJApp(jni, j_app);
-	return jApp->MSStatus();
-}
-
-JOWW(int, JMClientApp_Init)(JNIEnv* jni, jobject j_app, jstring strUid, jstring strToken, jstring strNname, jstring strSvrAddr, jint nSvrPort)
+JOWW(jint, JMClientApp_Init)(JNIEnv *jni, jobject j_app, jstring strUid, jstring strToken, jstring strNname, jint module)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	JavaString jstrUid(strUid);
 	JavaString jstrToken(strToken);
 	JavaString jstrNname(strNname);
-	JavaString jstrSvrAddr(strSvrAddr);
-	jint module = 0;
-	// Init add module here, please implement
-	// Init add module here, please implement
-	// Init add module here, please implement
-	// Init add module here, please implement
-	// Init add module here, please implement
-	// Init add module here, please implement
-	return jApp->Init((jApp), jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), module, jstrSvrAddr.ToString8().c_str(), nSvrPort);
+	return jApp->Init(jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), module);
 }
 
-JOWW(int, JMClientApp_SndMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jstring strMsg)
+
+JOWW(jint, JMClientApp_Unin)(JNIEnv *jni, jobject j_app)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
-	JavaString jstrRoomid(strRoomid);
-	JavaString jstrRname(strRname);
+	return jApp->Unin();
+}
+
+
+JOWW(jint, JMClientApp_RegisterMsgCb)(JNIEnv *jni, jobject j_app)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	return jApp->RegisterMsgCb(jApp);
+}
+
+
+JOWW(jint, JMClientApp_UnRegisterMsgCb)(JNIEnv *jni, jobject j_app)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	return jApp->UnRegisterMsgCb(jApp);
+}
+
+
+JOWW(jint, JMClientApp_ConnToServer)(JNIEnv *jni, jobject j_app, jstring strServer, jint port)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrServer(strServer);
+	return jApp->ConnToServer(jstrServer.ToString8().c_str(), port);
+}
+
+
+JOWW(jint, JMClientApp_AddGroup)(JNIEnv *jni, jobject j_app, jstring strGroupId)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrGroupId(strGroupId);
+	return jApp->AddGroup(jstrGroupId.ToString8().c_str());
+}
+
+
+JOWW(jint, JMClientApp_RmvGroup)(JNIEnv *jni, jobject j_app, jstring strGroupId)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrGroupId(strGroupId);
+	return jApp->RmvGroup(jstrGroupId.ToString8().c_str());
+}
+
+
+JOWW(jstring, JMClientApp_SndMsg)(JNIEnv *jni, jobject j_app, jstring strGroupId, jstring strGroupName, jstring strMsg, jint tag, jint type, jint module, jint flag)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	std::string soutMsgId;
+	JavaString jstrGroupId(strGroupId);
+	JavaString jstrGroupName(strGroupName);
 	JavaString jstrMsg(strMsg);
-	return jApp->SndMsg(jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), jstrMsg.ToString8().c_str());
+	int code = jApp->SndMsg(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag);
+	//jstring joutMsgId(soutMsgId);
+	return jni->NewStringUTF(soutMsgId.c_str());
 }
 
-JOWW(int, JMClientApp_GetMsg)(JNIEnv* jni, jobject j_app, jint itag)
+
+JOWW(jstring, JMClientApp_SndMsgTo)(JNIEnv *jni, jobject j_app, jstring strGroupId, jstring strGroupName, jstring strMsg, jint tag, jint type, jint module, jint flag, jobjectArray users, jint size)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
-	return jApp->GetMsg((pms::EMsgTag)itag);
-}
-
-JOWW(int, JMClientApp_OptRoom)(JNIEnv* jni, jobject j_app, jint itag, jstring strRoomid, jstring strRname, jstring strRemain)
-{
-	JMClientApp* jApp = GetJApp(jni, j_app);
-	JavaString jstrRoomid(strRoomid);
-	JavaString jstrRname(strRname);
-	JavaString jstrRemain(strRemain);
-	return jApp->OptRoom((pms::EMsgTag)itag, jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), jstrRemain.ToString8().c_str());
-}
-
-JOWW(int, JMClientApp_SndMsgTo)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jstring strMsg, jobjectArray arrUser)
-{
-	return 0;
-}
-
-JOWW(int, JMClientApp_NotifyMsg)(JNIEnv* jni, jobject j_app, jstring strRoomid, jstring strRname, jint itag, jstring strMsg)
-{
-	JMClientApp* jApp = GetJApp(jni, j_app);
-	JavaString jstrRoomid(strRoomid);
-	JavaString jstrRname(strRname);
+	std::string soutMsgId;
+	JavaString jstrGroupId(strGroupId);
+	JavaString jstrGroupName(strGroupName);
 	JavaString jstrMsg(strMsg);
-	return jApp->NotifyMsg(jstrRoomid.ToString8().c_str(), jstrRname.ToString8().c_str(), (pms::EMsgTag)itag, jstrMsg.ToString8().c_str());
+	//GetObjectArrayElements(<Type>Array arr , jboolean* isCopide);
+	//ReleaseObjectArrayElements(<Type>Array arr , <Type>* array , jint mode)
+	std::vector<std::string> vusers;
+	for (int i=0;i<size;i++) {
+		jstring js = (jstring)jni->GetObjectArrayElement(users, i);
+		vusers.push_back(jni->GetStringUTFChars(js, nullptr));
+	}
+	jApp->SndMsgTo(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag, vusers);
+	//JavaString joutMsgId(soutMsgId);
+	return jni->NewStringUTF(soutMsgId.c_str());
 }
 
-JOWW(void, JMClientApp_SetNickName)(JNIEnv* jni, jobject j_app, jstring strNname)
+
+JOWW(jint, JMClientApp_FetchSeqn)(JNIEnv *jni, jobject j_app)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	return jApp->FetchSeqn();
+}
+
+
+JOWW(jint, JMClientApp_SyncSeqn)(JNIEnv *jni, jobject j_app, jlong seqn, jint role)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	return jApp->SyncSeqn(seqn, role);
+}
+
+
+JOWW(jint, JMClientApp_SyncData)(JNIEnv *jni, jobject j_app, jlong seqn)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	return jApp->SyncData(seqn);
+}
+
+
+JOWW(jint, JMClientApp_FetchGroupSeqn)(JNIEnv *jni, jobject j_app, jstring strGroupId)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrGroupId(strGroupId);
+	return jApp->FetchGroupSeqn(jstrGroupId.ToString8().c_str());
+}
+
+
+JOWW(jint, JMClientApp_SyncGroupSeqn)(JNIEnv *jni, jobject j_app, jstring strGroupId, jlong seqn, jint role)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrGroupId(strGroupId);
+	return jApp->SyncGroupSeqn(jstrGroupId.ToString8().c_str(), seqn, role);
+}
+
+
+JOWW(jint, JMClientApp_SyncGroupData)(JNIEnv *jni, jobject j_app, jstring strGroupId, jlong seqn)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrGroupId(strGroupId);
+	return jApp->SyncGroupData(jstrGroupId.ToString8().c_str(), seqn);
+}
+
+
+JOWW(jint, JMClientApp_ConnStatus)(JNIEnv * jni, jobject j_app)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	return jApp->MSStatus();
+}
+
+
+JOWW(void, JMClientApp_SetNickName)(JNIEnv *jni, jobject j_app, jstring strNname)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	JavaString jstrNname(strNname);
 	jApp->SetNickName(jstrNname.ToString8().c_str());
 }
 
-JOWW(int, JMClientApp_Unin)(JNIEnv* jni, jobject j_app)
+
+JOWW(void, JMClientApp_Destroy)(JNIEnv *jni, jobject j_app)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
-	return jApp->Unin();
+	jApp->Close();
+	delete jApp;
 }

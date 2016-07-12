@@ -49,6 +49,8 @@ LOCAL_SRC_FILES +=  webrtc/base/asyncfile.cc \
 					webrtc/base/stringencode.cc \
 					webrtc/base/thread.cc \
 					webrtc/base/timeutils.cc \
+					webrtc/base/networkmonitor.cc \
+					webrtc/base/sharedexclusivelock.cc
 
 LOCAL_SRC_FILES += \
 					proto/common_msg.pb.cc \

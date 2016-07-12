@@ -474,7 +474,7 @@ void MsgClient::OnSyncSeqn(int64 maxseqn, int role)
     // if the new seqn is bigger 2 or 3 than cur seqn, this need sync data
     // if it is recver, this means client need sync data
     int64 lseqn = GetLocalSeqnFromId(m_strUserId);
-    assert(lseqn>0);
+    assert(lseqn>=0);
     int index = maxseqn - lseqn;
     if (role == EMsgRole_Rsender)
     {
@@ -544,7 +544,7 @@ void MsgClient::OnNotifySeqn(int code, const std::string& seqnid)
         } else if (seqnid.length()==0) // this means userid
         {
             int64 lseqn = GetLocalSeqnFromId(m_strUserId);
-            assert(lseqn>0);
+            assert(lseqn>=0);
             SyncSeqn(lseqn, (pms::EMsgRole)EMsgRole_Rsender);
         }
     } else {
@@ -570,7 +570,7 @@ void MsgClient::OnNotifyData(int code, const std::string& seqnid)
         {
             NSLog(@"MsgClient::OnNotifyData notify user to sync data!!!");
             int64 lseqn = GetLocalSeqnFromId(m_strUserId);
-            assert(lseqn>0);
+            assert(lseqn>=0);
             SyncData(lseqn);
         }
     } else {

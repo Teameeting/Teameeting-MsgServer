@@ -83,7 +83,7 @@ public:
     virtual void OnMsgServerDisconnect();
     virtual void OnMsgServerConnectionFailure();
     
-protected:
+private:
     
     void ProcessFetchResult()
     {

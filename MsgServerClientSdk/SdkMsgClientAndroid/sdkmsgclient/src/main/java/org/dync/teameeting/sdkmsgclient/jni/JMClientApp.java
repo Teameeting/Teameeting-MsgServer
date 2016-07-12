@@ -17,20 +17,36 @@ public class JMClientApp {
 
     private static native long Create(JMClientHelper helper);
 
-    public native int ConnStatus();
-    public native int Init(String strUid, String strToken, String strNname, String strServer, int port);
+
+    public native int Init(String strUid, String strToken, String strName, int module);
     public native int Unin();
 
-    public native int SndMsg(String strRoomid, String strRname, String strMsg);
-    public native int GetMsg(int tag);
-    public native int OptRoom(int tag, String strRoomid, String strRname, String strRemain);
-    public native int SndMsgTo(String strRoomid, String strRname, String strMsg, String[] arrUser);
+    public native int RegisterMsgCb();
+    public native int UnRegisterMsgCb();
 
-    public native int NotifyMsg(String strRoomid, String strRname, int tag, String strMsg);
+    public native int ConnToServer(String strServer, int port);
+
+    public native int AddGroup(String strGroupId);
+    public native int RmvGroup(String strGroupId);
+
+
+    public native String SndMsg(String strGroupId, String strGroupName, String strMsg, int tag, int type, int module, int flag);
+    public native String SndMsgTo(String strGroupId, String strGroupName, String strMsg, int tag, int type, int module, int flag, String[] arrUser, int arrSize);
+
+    public native int FetchSeqn();
+    public native int SyncSeqn(long seqn, int role);
+    public native int SyncData(long seqn);
+    public native int FetchGroupSeqn(String strGroupId);
+    public native int SyncGroupSeqn(String strGroupId, long seqn, int role);
+    public native int SyncGroupData(String strGroupId, long seqn);
+
+    public native int ConnStatus();
     public native void SetNickName(String strNname);
 
     /**
      * 销毁APP
      */
     public native void Destroy();
+
+
 }

@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		2D3801581C5DA1BA00138CF0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3801571C5DA1BA00138CF0 /* Foundation.framework */; };
 		2D38015A1C5DA1C400138CF0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D3801591C5DA1C400138CF0 /* UIKit.framework */; };
+		E61BD1731D33515F00239B20 /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E61BD1711D33515F00239B20 /* messagehandler.cc */; settings = {COMPILER_FLAGS = "-fvisibility=hidden"; }; };
+		E61BD1741D33515F00239B20 /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E61BD1721D33515F00239B20 /* messagequeue.cc */; settings = {COMPILER_FLAGS = "-fvisibility=hidden"; }; };
+		E61BD1781D3374CD00239B20 /* maccocoathreadhelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3601D2E4B69007C81A6 /* maccocoathreadhelper.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E61BD1791D3374CD00239B20 /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3931D2E4B69007C81A6 /* scoped_autorelease_pool.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E61BD17A1D3374CD00239B20 /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3C11D2E4B69007C81A6 /* thread.cc */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E674DED11CD9FB7E001C2D6B /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0BE561C97A4E300C66EC3 /* AppDelegate.mm */; };
 		E674DED21CD9FB7E001C2D6B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0BF5C1C97A4E300C66EC3 /* main.mm */; };
 		E674DED31CD9FB7E001C2D6B /* MsgClientProtocolImpl.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6C0BF5E1C97A4E300C66EC3 /* MsgClientProtocolImpl.mm */; };
@@ -28,9 +33,6 @@
 		E68DF40B1D2E4B6A007C81A6 /* storage_msg_type.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF2F21D2E4B69007C81A6 /* storage_msg_type.pb.cc */; };
 		E68DF40C1D2E4B6A007C81A6 /* sys_msg.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF2F51D2E4B69007C81A6 /* sys_msg.pb.cc */; };
 		E68DF40D1D2E4B6A007C81A6 /* sys_msg_type.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF2F81D2E4B69007C81A6 /* sys_msg_type.pb.cc */; };
-		E68DF41E1D2E4B6A007C81A6 /* maccocoathreadhelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3601D2E4B69007C81A6 /* maccocoathreadhelper.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		E68DF4251D2E4B6A007C81A6 /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3931D2E4B69007C81A6 /* scoped_autorelease_pool.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		E68DF42B1D2E4B6A007C81A6 /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3C11D2E4B69007C81A6 /* thread.cc */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E68DF42E1D2E4B6A007C81A6 /* MsgClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3E41D2E4B6A007C81A6 /* MsgClient.mm */; settings = {COMPILER_FLAGS = "-fvisibility=hidden"; }; };
 		E68DF4301D2E4B6A007C81A6 /* CommonMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3ED1D2E4B6A007C81A6 /* CommonMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E68DF4311D2E4B6A007C81A6 /* EntityMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68DF3F11D2E4B6A007C81A6 /* EntityMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -179,6 +181,8 @@
 		2D38013C1C5DA07200138CF0 /* SdkMsgClientIos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SdkMsgClientIos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D3801571C5DA1BA00138CF0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2D3801591C5DA1C400138CF0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E61BD1711D33515F00239B20 /* messagehandler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagehandler.cc; sourceTree = "<group>"; };
+		E61BD1721D33515F00239B20 /* messagequeue.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagequeue.cc; sourceTree = "<group>"; };
 		E674DD881CD9F6A3001C2D6B /* libmsgclientall.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmsgclientall.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E674DEDF1CD9FFD7001C2D6B /* libprotobuf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libprotobuf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E68DF2C41D2A013B007C81A6 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -1147,6 +1151,8 @@
 		E68DF30B1D2E4B69007C81A6 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				E61BD1711D33515F00239B20 /* messagehandler.cc */,
+				E61BD1721D33515F00239B20 /* messagequeue.cc */,
 				E68DF30C1D2E4B69007C81A6 /* array_view.h */,
 				E68DF30D1D2E4B69007C81A6 /* arraysize.h */,
 				E68DF30F1D2E4B69007C81A6 /* asyncfile.h */,
@@ -2223,19 +2229,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E61BD1781D3374CD00239B20 /* maccocoathreadhelper.mm in Sources */,
+				E61BD1791D3374CD00239B20 /* scoped_autorelease_pool.mm in Sources */,
+				E61BD17A1D3374CD00239B20 /* thread.cc in Sources */,
 				E68DF4341D2E4B6A007C81A6 /* StorageMsgType.pbobjc.mm in Sources */,
 				E68DF4311D2E4B6A007C81A6 /* EntityMsg.pbobjc.mm in Sources */,
-				E68DF4251D2E4B6A007C81A6 /* scoped_autorelease_pool.mm in Sources */,
 				E68DF4531D2E4CA1007C81A6 /* MSTxtMessage.mm in Sources */,
 				E68DF4031D2E4B6A007C81A6 /* XMsgProcesser.cpp in Sources */,
 				E68DF4301D2E4B6A007C81A6 /* CommonMsg.pbobjc.mm in Sources */,
 				E68DF4011D2E4B6A007C81A6 /* XJSBuffer.cpp in Sources */,
 				E68DF40C1D2E4B6A007C81A6 /* sys_msg.pb.cc in Sources */,
+				E61BD1741D33515F00239B20 /* messagequeue.cc in Sources */,
+				E61BD1731D33515F00239B20 /* messagehandler.cc in Sources */,
 				E68DF4071D2E4B6A007C81A6 /* common_msg.pb.cc in Sources */,
 				E68DF40A1D2E4B6A007C81A6 /* storage_msg.pb.cc in Sources */,
 				E68DF4501D2E4CA1007C81A6 /* MSSharedSeqnConfig.mm in Sources */,
 				E68DF44D1D2E4CA1007C81A6 /* MSGroupManager.mm in Sources */,
-				E68DF42B1D2E4B6A007C81A6 /* thread.cc in Sources */,
 				E68DF42E1D2E4B6A007C81A6 /* MsgClient.mm in Sources */,
 				E68DF4361D2E4B6A007C81A6 /* SysMsgType.pbobjc.mm in Sources */,
 				E68DF4021D2E4B6A007C81A6 /* XMsgClient.cpp in Sources */,
@@ -2245,7 +2254,6 @@
 				E68DF4511D2E4CA1007C81A6 /* MSSqlite3.mm in Sources */,
 				E68DF4041D2E4B6A007C81A6 /* XTcpClientImpl.cpp in Sources */,
 				E68DF40B1D2E4B6A007C81A6 /* storage_msg_type.pb.cc in Sources */,
-				E68DF41E1D2E4B6A007C81A6 /* maccocoathreadhelper.mm in Sources */,
 				E68DF44C1D2E4CA1007C81A6 /* MSClientManager.mm in Sources */,
 				E68DF4091D2E4B6A007C81A6 /* entity_msg_type.pb.cc in Sources */,
 				E68DF40D1D2E4B6A007C81A6 /* sys_msg_type.pb.cc in Sources */,
