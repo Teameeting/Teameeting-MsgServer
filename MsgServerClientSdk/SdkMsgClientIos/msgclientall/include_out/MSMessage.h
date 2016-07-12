@@ -8,10 +8,11 @@
 
 #ifndef MSMessage_h
 #define MSMessage_h
-#import "MJExtension.h"
-#import <Foundation/Foundation.h>
 
-@interface MSMessage : NSObject<MJKeyValue>;
+#import <Foundation/Foundation.h>
+#import "MJExtension.h"
+
+@interface MSMessage : NSObject;
 
 @property (nonatomic, strong) NSString* content;
 

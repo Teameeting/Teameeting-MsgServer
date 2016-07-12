@@ -9,15 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "msgclientall/MsgClient.h"
 #import "msgclientall/MSTxtMessage.h"
-#import "msgclientall/include_out/CommonMsg.pbobjc.h"
-#import "msgclientall/include_out/EntityMsg.pbobjc.h"
-#import "msgclientall/include_out/EntityMsgType.pbobjc.h"
+#import "msgclientall/proto_ios/CommonMsg.pbobjc.h"
+#import "msgclientall/proto_ios/EntityMsg.pbobjc.h"
+#import "msgclientall/proto_ios/EntityMsgType.pbobjc.h"
 
 #import "msgclientall/client_common/proto/entity_msg.pb.h"
 #import "msgclientall/client_common/proto/entity_msg_type.pb.h"
 
 #import "msgclientall/MSMsgUtil.h"
-#import "MJExtension.h"
+
 int MsgClient::MCInit(const std::string& uid, const std::string& token, const std::string& nname)
 {
     std::cout << "MCInit add module here, please implement it!!!" << std::endl;

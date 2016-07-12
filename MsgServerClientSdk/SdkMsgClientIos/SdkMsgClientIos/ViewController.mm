@@ -8,9 +8,9 @@
 
 #import <AdSupport/ASIdentifierManager.h>
 #import "ViewController.h"
-#import "include_out/MSClientManager.h"
-#import "include_out/MSGroupManager.h"
-#import "include_out/MSMessageManager.h"
+#import "msgclientall/MSClientManager.h"
+#import "msgclientall/MSGroupManager.h"
+#import "msgclientall/MSMessageManager.h"
 
 @interface ViewController () {
     UIButton *mEnterButton;

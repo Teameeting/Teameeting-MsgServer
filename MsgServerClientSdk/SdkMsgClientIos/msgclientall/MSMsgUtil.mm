@@ -53,11 +53,11 @@
     return txtMsg;
 }
 
-+ (MSMessage*)EncodeMessageWithUserId:(NSString*)userId
++ (MSTxtMessage*)EncodeMessageWithUserId:(NSString*)userId
                                  content:(NSString*)content
 {
-    MSMessage *txtMsg = nil;
-    txtMsg = [[MSMessage alloc] init];
+    MSTxtMessage *txtMsg = nil;
+    txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setContent:content];
     [txtMsg setToId:userId];
     [txtMsg setNickname:MsgClient::Instance().MCGetNsUserId()];

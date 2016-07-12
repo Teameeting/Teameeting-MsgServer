@@ -9,8 +9,7 @@
 #ifndef MSMsgUtil_h
 #define MSMsgUtil_h
 #import <Foundation/Foundation.h>
-#import "MJExtension.h"
-#import "MSTxtMessage.h"
+#import "msgclientall/MSTxtMessage.h"
 
 @interface MSMsgUtil : NSObject
 
@@ -23,7 +22,7 @@
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
                                   content:(NSString*)content;
 
-+ (MSMessage*)EncodeMessageWithUserId:(NSString*)userId
++ (MSTxtMessage*)EncodeMessageWithUserId:(NSString*)userId
                                  content:(NSString*)content;
 
 + (MSTxtMessage*)EncodeMessageWithUserIds:(NSArray*)array

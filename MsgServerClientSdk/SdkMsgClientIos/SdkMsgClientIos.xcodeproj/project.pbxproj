@@ -219,8 +219,15 @@
 		E68D74141D34BE55000C0413 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
 		E68D74201D34C285000C0413 /* MSMsgUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMsgUtil.h; sourceTree = "<group>"; };
 		E68D74211D34C29F000C0413 /* MSMsgUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSMsgUtil.mm; sourceTree = "<group>"; };
-		E68D74251D34FE7C000C0413 /* MSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessage.h; sourceTree = "<group>"; };
-		E68D74261D34FE7C000C0413 /* MSTxtMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessage.h; sourceTree = "<group>"; };
+		E68D74771D351C1C000C0413 /* MSClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientDelegate.h; sourceTree = "<group>"; };
+		E68D74781D351C1C000C0413 /* MSClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientManager.h; sourceTree = "<group>"; };
+		E68D74791D351C1C000C0413 /* MSClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientType.h; sourceTree = "<group>"; };
+		E68D747A1D351C1C000C0413 /* MSGroupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupDelegate.h; sourceTree = "<group>"; };
+		E68D747B1D351C1C000C0413 /* MSGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupManager.h; sourceTree = "<group>"; };
+		E68D747C1D351C1C000C0413 /* MSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessage.h; sourceTree = "<group>"; };
+		E68D747D1D351C1C000C0413 /* MSMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessageManager.h; sourceTree = "<group>"; };
+		E68D747E1D351C1C000C0413 /* MSTxtMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessage.h; sourceTree = "<group>"; };
+		E68D747F1D351C1C000C0413 /* MSTxtMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessageDelegate.h; sourceTree = "<group>"; };
 		E68DF2C41D2A013B007C81A6 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		E68DF2C61D2E4439007C81A6 /* networkmonitor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = networkmonitor.cc; sourceTree = "<group>"; };
 		E68DF2C71D2E4439007C81A6 /* networkmonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkmonitor.h; sourceTree = "<group>"; };
@@ -637,7 +644,6 @@
 		E699B43E1CDB22A0009A8FD1 /* wire_format_lite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wire_format_lite.h; sourceTree = "<group>"; };
 		E699B43F1CDB22A0009A8FD1 /* wire_format_lite_inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wire_format_lite_inl.h; sourceTree = "<group>"; };
 		E699B4961CDB2C4C009A8FD1 /* ProtocolBuffers_iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers_iOS.xcodeproj; path = runtimeprotobuf/objectivec/ProtocolBuffers_iOS.xcodeproj; sourceTree = "<group>"; };
-		E6ADB8731D24AF3600A4AA12 /* MSClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientType.h; sourceTree = "<group>"; };
 		E6ADBC2E1D24AF5B00A4AA12 /* XJSBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XJSBuffer.cpp; sourceTree = "<group>"; };
 		E6ADBC2F1D24AF5B00A4AA12 /* XJSBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XJSBuffer.h; sourceTree = "<group>"; };
 		E6ADBC301D24AF5B00A4AA12 /* XMsgCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgCallback.h; sourceTree = "<group>"; };
@@ -883,14 +889,6 @@
 		E6ADBD2C1D24AF5C00A4AA12 /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
 		E6ADBD2D1D24AF5C00A4AA12 /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
 		E6ADBD2E1D24AF5C00A4AA12 /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
-		E6ADBD301D24AF5C00A4AA12 /* CommonMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMsg.pbobjc.h; sourceTree = "<group>"; };
-		E6ADBD311D24AF5C00A4AA12 /* EntityMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityMsg.pbobjc.h; sourceTree = "<group>"; };
-		E6ADBD321D24AF5C00A4AA12 /* EntityMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityMsgType.pbobjc.h; sourceTree = "<group>"; };
-		E6ADBD331D24AF5C00A4AA12 /* MSClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientType.h; sourceTree = "<group>"; };
-		E6ADBD361D24AF5C00A4AA12 /* StorageMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageMsg.pbobjc.h; sourceTree = "<group>"; };
-		E6ADBD371D24AF5C00A4AA12 /* StorageMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageMsgType.pbobjc.h; sourceTree = "<group>"; };
-		E6ADBD381D24AF5C00A4AA12 /* SysMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysMsg.pbobjc.h; sourceTree = "<group>"; };
-		E6ADBD391D24AF5C00A4AA12 /* SysMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysMsgType.pbobjc.h; sourceTree = "<group>"; };
 		E6ADBD3A1D24AF5C00A4AA12 /* MSClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientDelegate.h; sourceTree = "<group>"; };
 		E6ADBD3B1D24AF5C00A4AA12 /* MSClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientManager.h; sourceTree = "<group>"; };
 		E6ADBD3C1D24AF5C00A4AA12 /* MSClientManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSClientManager.mm; sourceTree = "<group>"; };
@@ -936,12 +934,6 @@
 		E6ADC24E1D24C03000A4AA12 /* SysMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysMsgType.pbobjc.h; sourceTree = "<group>"; };
 		E6ADC24F1D24C03000A4AA12 /* SysMsgType.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SysMsgType.pbobjc.mm; sourceTree = "<group>"; };
 		E6ADC2771D25125800A4AA12 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		E6ADC2791D25135600A4AA12 /* MSClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientDelegate.h; sourceTree = "<group>"; };
-		E6ADC27A1D25135600A4AA12 /* MSClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientManager.h; sourceTree = "<group>"; };
-		E6ADC27B1D25135600A4AA12 /* MSGroupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupDelegate.h; sourceTree = "<group>"; };
-		E6ADC27C1D25135600A4AA12 /* MSGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupManager.h; sourceTree = "<group>"; };
-		E6ADC27E1D25135600A4AA12 /* MSTxtMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessageDelegate.h; sourceTree = "<group>"; };
-		E6ADC27F1D2516A000A4AA12 /* MSMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessageManager.h; sourceTree = "<group>"; };
 		E6ADC2801D251A6800A4AA12 /* MSSqlite3ClientSql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3ClientSql.h; sourceTree = "<group>"; };
 		E6ADC2811D26044800A4AA12 /* MSSqlite3Manager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSSqlite3Manager.mm; sourceTree = "<group>"; };
 		E6ADC2831D26045F00A4AA12 /* MSSqlite3Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3Manager.h; sourceTree = "<group>"; };
@@ -1078,6 +1070,22 @@
 				E68D74141D34BE55000C0413 /* NSString+MJExtension.m */,
 			);
 			path = MJExtension;
+			sourceTree = "<group>";
+		};
+		E68D74761D351C1C000C0413 /* msgclientall */ = {
+			isa = PBXGroup;
+			children = (
+				E68D74771D351C1C000C0413 /* MSClientDelegate.h */,
+				E68D74781D351C1C000C0413 /* MSClientManager.h */,
+				E68D74791D351C1C000C0413 /* MSClientType.h */,
+				E68D747A1D351C1C000C0413 /* MSGroupDelegate.h */,
+				E68D747B1D351C1C000C0413 /* MSGroupManager.h */,
+				E68D747C1D351C1C000C0413 /* MSMessage.h */,
+				E68D747D1D351C1C000C0413 /* MSMessageManager.h */,
+				E68D747E1D351C1C000C0413 /* MSTxtMessage.h */,
+				E68D747F1D351C1C000C0413 /* MSTxtMessageDelegate.h */,
+			);
+			path = msgclientall;
 			sourceTree = "<group>";
 		};
 		E68DF2CC1D2E4B69007C81A6 /* msgclient */ = {
@@ -1637,15 +1645,7 @@
 		E6ADB86F1D24AF3600A4AA12 /* include_out */ = {
 			isa = PBXGroup;
 			children = (
-				E68D74251D34FE7C000C0413 /* MSMessage.h */,
-				E68D74261D34FE7C000C0413 /* MSTxtMessage.h */,
-				E6ADC27F1D2516A000A4AA12 /* MSMessageManager.h */,
-				E6ADC2791D25135600A4AA12 /* MSClientDelegate.h */,
-				E6ADC27A1D25135600A4AA12 /* MSClientManager.h */,
-				E6ADC27B1D25135600A4AA12 /* MSGroupDelegate.h */,
-				E6ADC27C1D25135600A4AA12 /* MSGroupManager.h */,
-				E6ADC27E1D25135600A4AA12 /* MSTxtMessageDelegate.h */,
-				E6ADB8731D24AF3600A4AA12 /* MSClientType.h */,
+				E68D74761D351C1C000C0413 /* msgclientall */,
 			);
 			path = include_out;
 			sourceTree = "<group>";
@@ -1656,7 +1656,6 @@
 				E68D73FF1D34BE55000C0413 /* MJExtension */,
 				E6ADC2381D24C03000A4AA12 /* proto_ios */,
 				E6ADBC281D24AF5B00A4AA12 /* client_common */,
-				E6ADBD2F1D24AF5C00A4AA12 /* include_out */,
 				E6ADBD3A1D24AF5C00A4AA12 /* MSClientDelegate.h */,
 				E6ADBD3B1D24AF5C00A4AA12 /* MSClientManager.h */,
 				E6ADBD3C1D24AF5C00A4AA12 /* MSClientManager.mm */,
@@ -1989,21 +1988,6 @@
 				E6ADBD2A1D24AF5C00A4AA12 /* worker.h */,
 			);
 			path = base;
-			sourceTree = "<group>";
-		};
-		E6ADBD2F1D24AF5C00A4AA12 /* include_out */ = {
-			isa = PBXGroup;
-			children = (
-				E6ADBD301D24AF5C00A4AA12 /* CommonMsg.pbobjc.h */,
-				E6ADBD311D24AF5C00A4AA12 /* EntityMsg.pbobjc.h */,
-				E6ADBD321D24AF5C00A4AA12 /* EntityMsgType.pbobjc.h */,
-				E6ADBD331D24AF5C00A4AA12 /* MSClientType.h */,
-				E6ADBD361D24AF5C00A4AA12 /* StorageMsg.pbobjc.h */,
-				E6ADBD371D24AF5C00A4AA12 /* StorageMsgType.pbobjc.h */,
-				E6ADBD381D24AF5C00A4AA12 /* SysMsg.pbobjc.h */,
-				E6ADBD391D24AF5C00A4AA12 /* SysMsgType.pbobjc.h */,
-			);
-			path = include_out;
 			sourceTree = "<group>";
 		};
 		E6ADC2381D24C03000A4AA12 /* proto_ios */ = {
@@ -2380,8 +2364,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/msgclientall/MJExtension",
-					"$(PROJECT_DIR)/",
+					"$(PROJECT_DIR)/SdkMsgClientIos/include_out",
 				);
 				INFOPLIST_FILE = SdkMsgClientIos/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -2415,8 +2398,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/msgclientall/MJExtension",
-					"$(PROJECT_DIR)/",
+					"$(PROJECT_DIR)/SdkMsgClientIos/include_out",
 				);
 				INFOPLIST_FILE = SdkMsgClientIos/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -2551,10 +2533,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/msgclientall/client_common",
 					"$(PROJECT_DIR)/protobuf/src",
 					"$(PROJECT_DIR)/runtimeprotobuf/objectivec",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/msgclientall/client_common",
+					"$(PROJECT_DIR)/msgclientall/MJExtension",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2575,10 +2558,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/msgclientall/client_common",
 					"$(PROJECT_DIR)/protobuf/src",
 					"$(PROJECT_DIR)/runtimeprotobuf/objectivec",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/msgclientall/client_common",
+					"$(PROJECT_DIR)/msgclientall/MJExtension",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";

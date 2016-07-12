@@ -10,5 +10,5 @@
 #import "msgclientall/MSTxtMessage.h"
 
 @implementation MSTxtMessage
-
+MJExtensionLogAllProperties
 @end

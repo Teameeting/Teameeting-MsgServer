@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "msgclientall/MSMessage.h"
-#import "MJExtension.h"
+
 @implementation MSMessage
 
 @synthesize content = _content;
@@ -25,6 +25,8 @@
 @synthesize flag = _flag;
 @synthesize tag = _tag;
 @synthesize role = _role;
+
 MJExtensionLogAllProperties
+
 @end
 

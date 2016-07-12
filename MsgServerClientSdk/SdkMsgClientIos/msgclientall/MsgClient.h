@@ -10,16 +10,17 @@
 #define MsgClientIos_MsgClient_h
 
 #import <Foundation/Foundation.h>
-#import "MSTxtMessageDelegate.h"
-#import "MSGroupDelegate.h"
-#import "MSClientDelegate.h"
-#import "MSSqlite3Manager.h"
+#import <map>
 
-#include <map>
+#import "msgclientall/MSTxtMessageDelegate.h"
+#import "msgclientall/MSGroupDelegate.h"
+#import "msgclientall/MSClientDelegate.h"
+#import "msgclientall/MSSqlite3Manager.h"
+
 #include "msgclientall/client_common/core/XMsgClient.h"
 #include "msgclientall/client_common/core/XMsgCallback.h"
 
-#include "RTSingleton.h"
+#include "msgclientall/RTSingleton.h"
 
 class MsgClient : public XMsgClient, public XMsgCallback, public RTSingleton<MsgClient>{
     friend class RTSingleton<MsgClient>;
