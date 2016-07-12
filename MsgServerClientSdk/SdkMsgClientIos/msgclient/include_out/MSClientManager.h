@@ -10,8 +10,8 @@
 #define MSClientManager_h
 
 #import <Foundation/Foundation.h>
-#import "MSClientType.h"
-#import "MSClientDelegate.h"
+#import "msgclient/MSClientType.h"
+#import "msgclient/MSClientDelegate.h"
 
 @interface MSClientManager : NSObject
 
@@ -60,6 +60,20 @@
  *  params:
  */
 -(MCConnState)connStatus;
+
+/**
+ *  set user nick name
+ *
+ *  params:
+ */
+-(void)setNickName:(NSString*)nName;
+
+/**
+ *  set user icon url
+ *
+ *  params:
+ */
+-(void)setUIconUrl:(NSString*)url;
 
 @end
 

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSSqlite3.h"
+#import "msgclient/MSSqlite3.h"
 
 #define MC_MSG_SQL_DB_NAME "msgsequence.sqlite"
 #define MC_MSG_SQL_TABLE_STOREID_SEQN "mc_storeid_seqn"
@@ -85,6 +85,7 @@
     NSLog(@"insertSeqnSeqnId was called, sqlInsert:%@", sqlInsert);
     
     int code = [self runSql:sqlInsert];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -98,6 +99,7 @@
     NSLog(@"updateSeqnSeqnId was called, sqlUpdate:%@", sqlUpdate);
     
     int code = [self runSql:sqlUpdate];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -113,6 +115,7 @@
     NSLog(@"updateSeqnSeqnId with fetched was called, sqlUpdate:%@", sqlUpdate);
     
     int code = [self runSql:sqlUpdate];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -125,7 +128,8 @@
     NSString *sqlSelect = [NSString stringWithFormat:@"select seqn from %@ where %@;", name, key];
     NSLog(@"selectSeqnSeqnId was called, sqlSelect:%@", sqlSelect);
     int code = 0;
-    *seqn = [self runSqlSelect:sqlSelect dbName:name type:1 code:&code];
+    *seqn = (NSNumber*)[self runSqlSelect:sqlSelect dbName:name type:1 code:&code];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -137,6 +141,7 @@
     NSLog(@"deleteSeqnSeqnId was called, sqlInsert:%@", sqlDelete);
     
     int code = [self runSql:sqlDelete];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -150,6 +155,7 @@
     NSLog(@"insertGroupIdGrpId was called, sqlInsert:%@", sqlInsert);
     
     int code = [self runSql:sqlInsert];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -160,7 +166,8 @@
     NSString *sqlSelect = [NSString stringWithFormat:@"select * from %@;", name];
     NSLog(@"selectGroupIds was called, sqlSelect:%@", sqlSelect);
     int code = 0;
-    *Info = [self runSqlSelect:sqlSelect dbName:name type:2 code:&code];
+    *Info = (NSMutableArray*)[self runSqlSelect:sqlSelect dbName:name type:2 code:&code];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -172,6 +179,7 @@
     NSLog(@"deleteGroupIdGrpId was called, sqlDelete:%@", sqlDelete);
     
     int code = [self runSql:sqlDelete];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
     return true;
 }
 
@@ -198,6 +206,7 @@
     NSString *sqlCreateTable = [NSString stringWithFormat:@"create table if not exists %@(%@);", name, keys];
     NSLog(@"createTable was called, sqlCreateTable:%@", sqlCreateTable);
     int code = [self runSql:sqlCreateTable];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
 }
 
 - (void)dropTableName:(NSString*)name
@@ -205,6 +214,7 @@
     NSString *sqlDropTable = [NSString stringWithFormat:@"drop table %@;", name];
     NSLog(@"dropTable was called, sqlDropTable:%@", sqlDropTable);
     int code = [self runSql:sqlDropTable];
+    NSLog(@"func:%@ code:%d", [NSString stringWithCString:__FUNCTION__ encoding:NSASCIIStringEncoding], code);
 }
 
 - (int)runSql:(NSString*)sql

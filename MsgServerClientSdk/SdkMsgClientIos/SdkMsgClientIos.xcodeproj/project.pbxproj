@@ -29,6 +29,7 @@
 		E68D741D1D34BE55000C0413 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E68D74121D34BE55000C0413 /* NSObject+MJProperty.m */; };
 		E68D741E1D34BE55000C0413 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E68D74141D34BE55000C0413 /* NSString+MJExtension.m */; };
 		E68D74221D34C29F000C0413 /* MSMsgUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68D74211D34C29F000C0413 /* MSMsgUtil.mm */; };
+		E68D748C1D3523CA000C0413 /* MSMsgUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E68D748B1D3523CA000C0413 /* MSMsgUtil.mm */; };
 		E68DF2C51D2A013B007C81A6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E68DF2C41D2A013B007C81A6 /* AdSupport.framework */; };
 		E68DF2C81D2E4439007C81A6 /* networkmonitor.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF2C61D2E4439007C81A6 /* networkmonitor.cc */; };
 		E68DF2CB1D2E45C8007C81A6 /* sharedexclusivelock.cc in Sources */ = {isa = PBXBuildFile; fileRef = E68DF2CA1D2E45C8007C81A6 /* sharedexclusivelock.cc */; };
@@ -228,6 +229,8 @@
 		E68D747D1D351C1C000C0413 /* MSMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessageManager.h; sourceTree = "<group>"; };
 		E68D747E1D351C1C000C0413 /* MSTxtMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessage.h; sourceTree = "<group>"; };
 		E68D747F1D351C1C000C0413 /* MSTxtMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessageDelegate.h; sourceTree = "<group>"; };
+		E68D748A1D3523CA000C0413 /* MSMsgUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMsgUtil.h; sourceTree = "<group>"; };
+		E68D748B1D3523CA000C0413 /* MSMsgUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSMsgUtil.mm; sourceTree = "<group>"; };
 		E68DF2C41D2A013B007C81A6 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		E68DF2C61D2E4439007C81A6 /* networkmonitor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = networkmonitor.cc; sourceTree = "<group>"; };
 		E68DF2C71D2E4439007C81A6 /* networkmonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkmonitor.h; sourceTree = "<group>"; };
@@ -1091,6 +1094,8 @@
 		E68DF2CC1D2E4B69007C81A6 /* msgclient */ = {
 			isa = PBXGroup;
 			children = (
+				E68D748A1D3523CA000C0413 /* MSMsgUtil.h */,
+				E68D748B1D3523CA000C0413 /* MSMsgUtil.mm */,
 				E68DF4371D2E4CA1007C81A6 /* MSClientDelegate.h */,
 				E68DF4381D2E4CA1007C81A6 /* MSClientManager.h */,
 				E68DF4391D2E4CA1007C81A6 /* MSClientManager.mm */,
@@ -2320,6 +2325,7 @@
 				E68DF40B1D2E4B6A007C81A6 /* storage_msg_type.pb.cc in Sources */,
 				E68DF44C1D2E4CA1007C81A6 /* MSClientManager.mm in Sources */,
 				E68DF4091D2E4B6A007C81A6 /* entity_msg_type.pb.cc in Sources */,
+				E68D748C1D3523CA000C0413 /* MSMsgUtil.mm in Sources */,
 				E68DF40D1D2E4B6A007C81A6 /* sys_msg_type.pb.cc in Sources */,
 				E68DF4351D2E4B6A007C81A6 /* SysMsg.pbobjc.mm in Sources */,
 				E68DF4081D2E4B6A007C81A6 /* entity_msg.pb.cc in Sources */,
@@ -2634,10 +2640,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/msgclient/client_common",
 					"$(PROJECT_DIR)/protobuf/src",
 					"$(PROJECT_DIR)/runtimeprotobuf/objectivec",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/msgclient/client_common",
+					"$(PROJECT_DIR)/msgclientall/MJExtension",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -2656,10 +2663,11 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/msgclient/client_common",
 					"$(PROJECT_DIR)/protobuf/src",
 					"$(PROJECT_DIR)/runtimeprotobuf/objectivec",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/msgclient/client_common",
+					"$(PROJECT_DIR)/msgclientall/MJExtension",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";

@@ -9,7 +9,7 @@
 #ifndef MSSqlite3Manager_h
 #define MSSqlite3Manager_h
 #import <Foundation/Foundation.h>
-#import "MSSqlite3.h"
+#import "msgclient/MSSqlite3.h"
 
 @interface MSSqlite3Manager : NSObject;
 

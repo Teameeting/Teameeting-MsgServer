@@ -8,7 +8,7 @@
 
 #ifndef MSTxtMessageDelegate_h
 #define MSTxtMessageDelegate_h
-#import "MSTxtMessage.h"
+#import "msgclientall/MSTxtMessage.h"
 
 @protocol MSTxtMessageDelegate <NSObject>
 

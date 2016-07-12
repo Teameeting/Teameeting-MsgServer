@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSSqlite3Manager.h"
+#import "msgclient/MSSqlite3Manager.h"
 
 @implementation MSSqlite3Manager
 

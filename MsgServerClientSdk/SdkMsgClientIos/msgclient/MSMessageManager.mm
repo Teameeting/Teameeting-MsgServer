@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSMessageManager.h"
-#import "MsgClient.h"
+#import "msgclient/MSMessageManager.h"
+#import "msgclient/MsgClient.h"
 
 @implementation MSMessageManager
 

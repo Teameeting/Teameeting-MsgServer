@@ -9,7 +9,7 @@
 #ifndef MSMessageManager_h
 #define MSMessageManager_h
 #import <Foundation/Foundation.h>
-#import "MSTxtMessageDelegate.h"
+#import "msgclient/MSTxtMessageDelegate.h"
 
 @interface MSMessageManager : NSObject
 

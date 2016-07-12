@@ -70,6 +70,7 @@ public:
 
     MSState MSStatus() { return m_msState; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
+    void SetUIconUrl(const std::string& uiconurl) { m_uicon = uiconurl; }
 
 public:
     // For XTcpClientCallback
@@ -114,6 +115,7 @@ private:
     std::string              m_grpid;
     std::string              m_token;
     std::string              m_nname;
+    std::string              m_uicon;
     std::string              m_server;
     std::string              m_version;
     int                      m_port;

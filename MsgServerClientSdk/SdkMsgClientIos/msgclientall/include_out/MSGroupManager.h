@@ -9,7 +9,7 @@
 #ifndef MSGroupManager_h
 #define MSGroupManager_h
 #import <Foundation/Foundation.h>
-#import "MSGroupDelegate.h"
+#import "msgclientall/MSGroupDelegate.h"
 
 @interface MSGroupManager : NSObject
 

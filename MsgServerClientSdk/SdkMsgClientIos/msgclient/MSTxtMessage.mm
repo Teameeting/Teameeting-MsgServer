@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MSTxtMessage.h"
+#import "msgclient/MSTxtMessage.h"
 
 @implementation MSTxtMessage
-
-
-
+MJExtensionLogAllProperties
 @end

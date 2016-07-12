@@ -9,7 +9,7 @@
 #ifndef MSTxtMessage_h
 #define MSTxtMessage_h
 
-#import "MSMessage.h"
+#import "msgclientall/MSMessage.h"
 
 @interface MSTxtMessage : MSMessage;
 

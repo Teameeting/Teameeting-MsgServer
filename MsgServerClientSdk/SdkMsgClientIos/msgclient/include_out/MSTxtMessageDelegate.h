@@ -8,7 +8,7 @@
 
 #ifndef MSTxtMessageDelegate_h
 #define MSTxtMessageDelegate_h
-#import "MSTxtMessage.h"
+#import "msgclient/MSTxtMessage.h"
 
 @protocol MSTxtMessageDelegate <NSObject>
 
@@ -41,40 +41,35 @@
  *
  *  params:
  */
--(void)OnNotifyLiveId:(NSString*)grpId
-               hostId:(NSString*)hostId;
+-(void)OnNotifyLiveMessage:(MSTxtMessage*)livMsg;
 
 /**
  *  when hostId in grpId recv red-envelope
  *
  *  params:
  */
--(void)OnNotifyRedEnvelopeGrpId:(NSString*)grpId
-                         hostId:(NSString*)hostId;
+-(void)OnNotifyRedEnvelopeMessage:(MSTxtMessage*)renMsg;
 
 /**
  *  when userId was push to blacklist in grpId
  *
  *  params:
  */
--(void)OnNotifyBlacklist:(NSString*)grpId
-                  userId:(NSString*)userId;
+-(void)OnNotifyBlacklistMessage:(MSTxtMessage*)blkMsg;
 
 /**
  *  when userId was forbidden in grpId
  *
  *  params:
  */
--(void)OnNotifyForbidden:(NSString*)grpId
-                  userId:(NSString*)userId;
+-(void)OnNotifyForbiddenMessage:(MSTxtMessage*)fbdMsg;
 
 /**
  *  when userId in grpId was setted to be manager
  *
  *  params:
  */
--(void)OnNotifySettedMgrGrpId:(NSString*)grpId
-                       userId:(NSString*)userId;
+-(void)OnNotifySettedMgrMessage:(MSTxtMessage*)mgrMsg;
 
 @end
 
