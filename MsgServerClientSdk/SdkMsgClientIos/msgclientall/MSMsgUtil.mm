@@ -46,7 +46,7 @@
     
     [txtMsg setContent:content];
     [txtMsg setGroupId:groupId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     
@@ -60,7 +60,7 @@
     txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setContent:content];
     [txtMsg setToId:userId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     return txtMsg;
@@ -71,7 +71,7 @@
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setContent:content];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     return txtMsg;
@@ -83,7 +83,7 @@
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setGroupId:groupId];
     [txtMsg setToId:userId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     return txtMsg;

@@ -55,12 +55,12 @@
 
 -(void)setNickName:(NSString*)nName
 {
-    
+    MsgClient::Instance().MCSetNickName([nName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 -(void)setUIconUrl:(NSString*)url
 {
-    
+    MsgClient::Instance().MCSetUIconUrl([url cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 @end

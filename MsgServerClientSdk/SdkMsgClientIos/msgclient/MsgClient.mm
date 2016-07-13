@@ -341,19 +341,17 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
     UpdateLocalSeqn(m_strUserId, seqn);
     pms::Entity en;
     en.ParseFromString(msg);
+    if (en.usr_from().compare(m_strUserId)==0) {
+        printf("MsgClient::OnRecvMsg recv the msg you just send!!!, so return\n");
+        return;
+    }
     printf("MsgClient::OnRecvMsg pms::Entity msg tag:%d, cont:%s, romid:%s, usr_from:%s\n"\
            , en.msg_tag()\
            , en.msg_cont().c_str()\
            , en.rom_id().c_str()\
            , en.usr_from().c_str());
     
-    
     MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
-    
-    //[txtMsg setContent:[NSString stringWithUTF8String:en.msg_cont().c_str()]];
-    //[txtMsg setFromId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
-    //[txtMsg setToId:[NSString stringWithUTF8String:en.usr_toto().users(0).c_str()]];
-    
     NSDate *dateNow = [NSDate dateWithTimeIntervalSinceNow:(en.msg_time()/1000)];
     NSDate *localeDate = [dateNow dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
     [txtMsg setDate:dateNow];
@@ -437,16 +435,17 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
     UpdateLocalSeqn(seqnid, seqn);
     pms::Entity en;
     en.ParseFromString(msg);
+    if (en.usr_from().compare(m_strUserId)==0) {
+        printf("MsgClient::OnRecvGroupMsg recv the msg you just send!!!, so return\n");
+        return;
+    }
     printf("pms::Entity msg tag:%d, cont:%s, romid:%s, usr_from:%s\n"\
            , en.msg_tag()\
            , en.msg_cont().c_str()\
            , en.rom_id().c_str()\
            , en.usr_from().c_str());
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setContent:[NSString stringWithUTF8String:en.msg_cont().c_str()]];
-    [txtMsg setFromId:[NSString stringWithUTF8String:en.usr_from().c_str()]];
-    [txtMsg setGroupId:[NSString stringWithUTF8String:seqnid.c_str()]];
     
+    MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
     NSDate *dateNow = [NSDate dateWithTimeIntervalSinceNow:(en.msg_time()/1000)];
     NSDate *localeDate = [dateNow dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
     [txtMsg setDate:dateNow];
