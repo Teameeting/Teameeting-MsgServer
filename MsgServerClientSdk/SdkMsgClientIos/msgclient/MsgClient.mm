@@ -352,15 +352,12 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
            , en.usr_from().c_str());
     
     MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
-    NSDate *dateNow = [NSDate dateWithTimeIntervalSinceNow:(en.msg_time()/1000)];
-    NSDate *localeDate = [dateNow dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
-    [txtMsg setDate:dateNow];
-    [txtMsg setTime:localeDate];
+    NSDate *dateNow = [NSDate dateWithTimeIntervalSince1970:(en.msg_time())];
     [txtMsg setMillSec:en.msg_time()];
+    [txtMsg setMsgId:[NSString stringWithCString:en.cmsg_id().c_str() encoding:NSUTF8StringEncoding]];
     
-    NSLog(@"MsgClient::OnRecvMsg dateNow:%@, localeDate:%@"\
-          , dateNow\
-          , localeDate);
+    NSLog(@"MsgClient::OnRecvMsg dateNow:%@, msg_time:%u"\
+          , dateNow, en.msg_time());
     
     switch (en.msg_type())
     {
@@ -446,15 +443,11 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
            , en.usr_from().c_str());
     
     MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
-    NSDate *dateNow = [NSDate dateWithTimeIntervalSinceNow:(en.msg_time()/1000)];
-    NSDate *localeDate = [dateNow dateByAddingTimeInterval: [[NSTimeZone systemTimeZone] secondsFromGMTForDate:dateNow]];
-    [txtMsg setDate:dateNow];
-    [txtMsg setTime:localeDate];
+    NSDate *dateNow = [NSDate dateWithTimeIntervalSince1970:(en.msg_time())];
     [txtMsg setMillSec:en.msg_time()];
-    
-    NSLog(@"MsgClient::OnRecvGroupMsg dateNow:%@, localeDate:%@"\
-          , dateNow\
-          , localeDate);
+    [txtMsg setMsgId:[NSString stringWithCString:en.cmsg_id().c_str() encoding:NSUTF8StringEncoding]];
+    NSLog(@"MsgClient::OnRecvGroupMsg dateNow:%@, msg_time:%u"\
+          , dateNow, en.msg_time());
     switch (en.msg_type())
     {
         case pms::EMsgType::TTXT:
@@ -563,7 +556,7 @@ void MsgClient::OnSyncSeqn(int64 maxseqn, int role)
     // if it is recver, this means client need sync data
     int64 lseqn = GetLocalSeqnFromId(m_strUserId);
     assert(lseqn>=0);
-    long index = maxseqn - lseqn;
+    long index = (long)(maxseqn - lseqn);
     if (role == EMsgRole_Rsender)
     {
         if (index == 1)

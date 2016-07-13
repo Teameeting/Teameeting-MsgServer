@@ -1,7 +1,5 @@
 package org.dync.teameeting.sdkmsgclient.msgs;
 
-import org.dync.teameeting.sdkmsgclient.msgs.MSTxtMessage;
-
 /**
  * Created by hp on 7/10/16.
  */
@@ -32,33 +30,33 @@ public interface MSTxtMessageDelegate {
      * <p/>
      * params:
      */
-    public void OnNotifyLive(String grpId, String hostId);
+    public void OnNotifyLive(MSTxtMessage txtMsg);
 
     /**
      * when hostId in grpId recv red-envelope
      * <p/>
      * params:
      */
-    public void OnNotifyRedEnvelope(String grpId, String hostId);
+    public void OnNotifyRedEnvelope(MSTxtMessage txtMsg);
 
     /**
      * when userId was push to blacklist in grpId
      * <p/>
      * params:
      */
-    public void OnNotifyBlacklist(String grpId, String userId);
+    public void OnNotifyBlacklist(MSTxtMessage txtMsg);
 
     /**
      * when userId was forbidden in grpId
      * <p/>
      * params:
      */
-    public void OnNotifyForbidden(String grpId, String userId);
+    public void OnNotifyForbidden(MSTxtMessage txtMsg);
 
     /**
      * when userId in grpId was setted to be manager
      * <p/>
      * params:
      */
-    public void OnNotifySettedMgr(String grpId, String userId);
+    public void OnNotifySettedMgr(MSTxtMessage txtMsg);
 }

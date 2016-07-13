@@ -153,6 +153,14 @@ JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Set
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetUIconUrl
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUIconUrl
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    Destroy
  * Signature: ()V
  */

@@ -12,6 +12,8 @@ public class MSMessage {
     private String toId;
     private String fromId;
     private String groupId;
+    private String nickName;
+    private String uiconUrl;
 
     private int    millSec;//send second
     private int    flag;//group or single
@@ -21,93 +23,96 @@ public class MSMessage {
     public MSMessage() {
     }
 
-    public MSMessage(String content, String extra, String msgId, String toId, String fromId, String groupId, int millSec, int flag, int tag, int role) {
-        this.content = content;
-        this.extra = extra;
-        this.msgId = msgId;
-        this.toId = toId;
-        this.fromId = fromId;
-        this.groupId = groupId;
-        this.millSec = millSec;
-        this.flag = flag;
-        this.tag = tag;
-        this.role = role;
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public String getExtra() {
-        return extra;
-    }
-
-    public String getMsgId() {
-        return msgId;
-    }
-
-    public String getToId() {
-        return toId;
-    }
-
-    public String getFromId() {
-        return fromId;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public int getMillSec() {
-        return millSec;
-    }
-
-    public int getFlag() {
-        return flag;
-    }
-
-    public int getTag() {
-        return tag;
-    }
-
-    public int getRole() {
-        return role;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
+    public String getExtra() {
+        return extra;
+    }
+
     public void setExtra(String extra) {
         this.extra = extra;
+    }
+
+    public String getMsgId() {
+        return msgId;
     }
 
     public void setMsgId(String msgId) {
         this.msgId = msgId;
     }
 
+    public String getToId() {
+        return toId;
+    }
+
     public void setToId(String toId) {
         this.toId = toId;
+    }
+
+    public String getFromId() {
+        return fromId;
     }
 
     public void setFromId(String fromId) {
         this.fromId = fromId;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getUiconUrl() {
+        return uiconUrl;
+    }
+
+    public void setUiconUrl(String uiconUrl) {
+        this.uiconUrl = uiconUrl;
+    }
+
+    public int getMillSec() {
+        return millSec;
     }
 
     public void setMillSec(int millSec) {
         this.millSec = millSec;
     }
 
+    public int getFlag() {
+        return flag;
+    }
+
     public void setFlag(int flag) {
         this.flag = flag;
     }
 
+    public int getTag() {
+        return tag;
+    }
+
     public void setTag(int tag) {
         this.tag = tag;
+    }
+
+    public int getRole() {
+        return role;
     }
 
     public void setRole(int role) {

@@ -190,6 +190,14 @@ JOWW(void, JMClientApp_SetNickName)(JNIEnv *jni, jobject j_app, jstring strNname
 }
 
 
+JOWW(void, JMClientApp_SetUIconUrl)(JNIEnv *jni, jobject j_app, jstring strUIcon)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrUIcon(strUIcon);
+	jApp->SetUIconUrl(jstrUIcon.ToString8().c_str());
+}
+
+
 JOWW(void, JMClientApp_Destroy)(JNIEnv *jni, jobject j_app)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);

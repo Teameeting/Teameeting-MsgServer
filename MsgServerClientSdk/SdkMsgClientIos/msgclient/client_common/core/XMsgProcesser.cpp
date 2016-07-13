@@ -10,6 +10,8 @@
 #include "core/XMsgClient.h"
 #include "webrtc/base/logging.h"
 #include "webrtc/base/timeutils.h"
+#include <sys/time.h>
+#include <time.h>
 
 #ifdef WEBRTC_ANDROID
 #include <android/log.h>
@@ -21,11 +23,22 @@
 #include <string>
 #endif
 
-static std::string GetStrMills()
+static long long GetSecond()
+{
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return (long long)tv.tv_sec;
+}
+
+static std::string GetStrMicroSecond()
 {
     // memory problem???
     char ct[32] = {0};
-    sprintf(ct, "%llu", rtc::TimeMicros());
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    long long micro = (long long)tv.tv_sec + (long long)tv.tv_usec/1000;
+    sprintf(ct, "%lld", micro);
+    printf("gettime ct:%s\n", ct);
     return std::string(ct);
 }
 
@@ -63,9 +76,9 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_rom_name(rname);
     entity.set_nck_name(nname);
     entity.set_usr_token(token);
-    entity.set_msg_time(rtc::Time());
+    entity.set_msg_time(GetSecond());
     
-    entity.set_cmsg_id(GetStrMills());
+    entity.set_cmsg_id(GetStrMicroSecond());
     outmsgid = entity.cmsg_id();
     
     printf("XMsgProcesser::EncodeSndMsg to.size:%d\n", to.size());

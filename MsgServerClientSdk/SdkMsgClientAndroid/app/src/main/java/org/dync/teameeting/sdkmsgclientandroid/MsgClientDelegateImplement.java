@@ -23,9 +23,9 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     private MSClientManager     mMsClientManager    = null;
     private MSGroupManager      mMsGroupManager     = null;
     private MSMessageManager    mMsMessageManager   = null;
-    private String              mStrUserId = null;
-    private String              mStrToken = null;
-    private String              mStrNname = null;
+    private String              mStrUserId = "hello";
+    private String              mStrToken = "hi";
+    private String              mStrNname = "helloto";
     private String              mServer = "192.168.7.207";
     private int                 mPort = 6630;
 
@@ -105,7 +105,8 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
     @Override
     public void OnMsgServerConnecting() {
-
+        String s = "OnMsgServerConnectingd was called";
+        System.out.println(s);
     }
 
     @Override
@@ -130,52 +131,61 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
     @Override
     public void OnMsgClientInitializing() {
-
+        String s = "OnMsgClientInitializing was called";
+        System.out.println(s);
     }
 
     @Override
     public void OnMsgClientInitialized() {
-
+        String s = "OnMsgClientInitialized was called";
+        System.out.println(s);
     }
 
     @Override
     public void OnMsgClientUnInitialize() {
-
+        String s = "OnMsgClientUnInitialize was called";
+        System.out.println(s);
     }
 
     @Override
     public void OnMsgClientInitializeFailure() {
-
+        String s = "OnMsgClientInitializeFailure was called";
+        System.out.println(s);
     }
 
     @Override
     public void OnAddGroupSuccess(String grpId) {
-
+        String s = "OnAddGroupSuccess was called grpId:"+grpId;
+        System.out.println(s);
     }
 
     @Override
     public void OnAddGroupFailed(String grpId, String reason, int code) {
-
+        String s = "OnAddGroupFailed was called, grpId:"+grpId+", reason:"+reason+", code:"+code;
+        System.out.println(s);
     }
 
     @Override
     public void OnRmvGroupSuccess(String grpId) {
-
+        String s = "OnRmvGroupSuccess was called, grpId:"+grpId;
+        System.out.println(s);
     }
 
     @Override
     public void OnRmvGroupFailed(String grpId, String reason, int code) {
-
+        String s = "OnRmvGroupFailed was called, grpId:"+grpId+", reason:"+reason+", code:"+code;
+        System.out.println(s);
     }
 
     @Override
     public void OnSendMessage(String msgId, int code) {
-
+        String s = "OnSendMessage was called, msgId:"+msgId+", code:"+code;
+        System.out.println(s);
     }
 
     @Override
     public void OnRecvTxtMessage(MSTxtMessage txtMsg) {
-        String s = "OnSndMsg msg:" + txtMsg;
+        String s = "OnRecvTxtMessage msg:" + txtMsg;
         System.out.println(s);
         String content = txtMsg.getContent();
         if (content != null) {
@@ -189,31 +199,37 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
     @Override
     public void OnRecvSelfDefMessage(MSTxtMessage sdefMsg) {
-
+        String s = "OnRecvSelfDefMessage msg:" + sdefMsg;
+        System.out.println(s);
     }
 
     @Override
-    public void OnNotifyLive(String grpId, String hostId) {
-
+    public void OnNotifyLive(MSTxtMessage txtMsg) {
+        String s = "OnNotifyLive msg:" + txtMsg;
+        System.out.println(s);
     }
 
     @Override
-    public void OnNotifyRedEnvelope(String grpId, String hostId) {
-
+    public void OnNotifyRedEnvelope(MSTxtMessage txtMsg) {
+        String s = "OnNotifyRedEnvelope msg:" + txtMsg;
+        System.out.println(s);
     }
 
     @Override
-    public void OnNotifyBlacklist(String grpId, String userId) {
-
+    public void OnNotifyBlacklist(MSTxtMessage txtMsg) {
+        String s = "OnNotifyBlacklist msg:" + txtMsg;
+        System.out.println(s);
     }
 
     @Override
-    public void OnNotifyForbidden(String grpId, String userId) {
-
+    public void OnNotifyForbidden(MSTxtMessage txtMsg) {
+        String s = "OnNotifyForbidden msg:" + txtMsg;
+        System.out.println(s);
     }
 
     @Override
-    public void OnNotifySettedMgr(String grpId, String userId) {
-
+    public void OnNotifySettedMgr(MSTxtMessage txtMsg) {
+        String s = "OnNotifySettedMgrg msg:" + txtMsg;
+        System.out.println(s);
     }
 }

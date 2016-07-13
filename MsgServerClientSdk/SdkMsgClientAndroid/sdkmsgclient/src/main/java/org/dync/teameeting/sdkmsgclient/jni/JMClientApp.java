@@ -42,6 +42,7 @@ public class JMClientApp {
 
     public native int ConnStatus();
     public native void SetNickName(String strNname);
+    public native void SetUIconUrl(String strUicon);
 
     /**
      * 销毁APP
