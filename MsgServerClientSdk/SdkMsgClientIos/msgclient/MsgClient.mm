@@ -275,8 +275,14 @@ void MsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, con
             {
                 NSString *nsGrpId = [NSString stringWithCString:groupid.c_str() encoding:NSUTF8StringEncoding];
                 NSLog(@"OnCmdCallback add group ok, insert groupid and seqn, toggle callback");
-                [m_sqlite3Manager addGroupId:nsGrpId];
-                [m_sqlite3Manager addGroupSeqnGrpId:nsGrpId seqn:[NSNumber numberWithLongLong:data.seqn]];
+                if (![m_sqlite3Manager isGroupExists:nsGrpId])
+                {
+                    [m_sqlite3Manager addGroupId:nsGrpId];
+                }
+                if (![m_sqlite3Manager isUserExists:nsGrpId])
+                {
+                    [m_sqlite3Manager addGroupSeqnGrpId:nsGrpId seqn:[NSNumber numberWithLongLong:data.seqn]];
+                }
                 UpdateLocalSeqn(groupid, data.seqn);
                 [m_groupDelegate OnAddGroupSuccessGrpId:nsGrpId];
             } else if (code == -1)

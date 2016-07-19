@@ -21,6 +21,8 @@
 
 -(BOOL)isUserExists:(NSString*)userId;
 
+-(BOOL)isGroupExists:(NSString*)grpId;
+
 -(void)addUserId:(NSString*)userId;
 
 -(void)updateUserSeqnUserId:(NSString*)userId seqn:(NSNumber*)seqn;

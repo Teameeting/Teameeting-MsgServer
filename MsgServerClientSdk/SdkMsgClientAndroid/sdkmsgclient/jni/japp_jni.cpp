@@ -32,12 +32,12 @@ JMClientApp* GetJApp(JNIEnv* jni, jobject j_app)
 //=================================================================
 //=================================================================
 
-JOWW(jlong, JMClientApp_Create)(JNIEnv *jni, jclass j_app, jobject jobj)
+JOWW(jlong, JMClientApp_Create)(JNIEnv *jni, jclass j_app, jobject j_obj)
 {
 	//JavaString jstrLogPath(jlogPath);
 	//L_Init(jlogLevel, jstrLogPath.ToString8().c_str());
 
-	JMClientApp* jApp = new JMClientApp(jobj);
+	JMClientApp* jApp = new JMClientApp(j_obj);
 	return jlongFromPointer(jApp);
 }
 

@@ -3,6 +3,7 @@ package org.dync.teameeting.sdkmsgclientandroid;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 
 import org.dync.teameeting.sdkmsgclient.msgs.MSClientDelegate;
@@ -23,9 +24,9 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     private MSClientManager     mMsClientManager    = null;
     private MSGroupManager      mMsGroupManager     = null;
     private MSMessageManager    mMsMessageManager   = null;
-    private String              mStrUserId = "hello";
-    private String              mStrToken = "hi";
-    private String              mStrNname = "helloto";
+    private String              mStrUserId = null;
+    private String              mStrToken = null;
+    private String              mStrNname = null;
     private String              mServer = "192.168.7.207";
     private int                 mPort = 6630;
 
@@ -36,6 +37,11 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     {
         mContext = context;
         mHandler = handler;
+
+        mStrUserId = Settings.Secure.getString(mContext.getContentResolver(), Settings.Secure.ANDROID_ID);
+        mStrToken = "hihihihi";
+        mStrNname = "dddddddd";
+
         mMsClientManager = new MSClientManager();
         mMsClientManager.initMsgClient(mContext, mStrUserId, mStrToken, mStrNname);
         mMsGroupManager = new MSGroupManager();
@@ -45,7 +51,11 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         mMsGroupManager.addDelegate(this);
         mMsMessageManager.addDelegate(this);
 
-        mMsClientManager.connToServer(mServer, mPort);
+        if (0==mMsClientManager.connToServer(mServer, mPort)) {
+            System.out.println("MsgClientManager connToServer invoke ok");
+        } else {
+            System.err.println("MsgClientManager connToServer invoke failed...!!!!!!!");
+        }
     }
 
     public void MsgClientDestroy() {
@@ -65,7 +75,8 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         System.out.println("SendMsgTo was called...");
 
         String cont = "hahaha";
-        String touser = "";
+        //String touser = "8ca64d158a505876";
+        String touser = "dcd54ddf2ee1df11";
         String outmsgid = mMsMessageManager.sendTxtMsgTo(touser, cont);
         System.out.println("SendMsgTo sendTxtMsgTo get msgid:"+outmsgid);
     }

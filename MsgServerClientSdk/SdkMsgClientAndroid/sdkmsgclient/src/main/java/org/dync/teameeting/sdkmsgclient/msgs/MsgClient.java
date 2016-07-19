@@ -6,6 +6,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import org.dync.teameeting.sdkmsgclient.jni.JMClientApp;
 import org.dync.teameeting.sdkmsgclient.jni.JMClientHelper;
+import org.dync.teameeting.sdkmsgclient.jni.JMSCbData;
 import org.dync.teameeting.sdkmsgclient.jni.NativeContextRegistry;
 
 import java.util.ArrayList;
@@ -87,22 +88,24 @@ public class MsgClient implements JMClientHelper{
     ///////////////////////////////////////////////////////////////////
 
     public int MCInit(Context context, String strUid, String strToken, String strNname) {
-        if (null != mMApp) {
-            mStrUserId = strUid;
-            mStrToken = strToken;
-            mStrNname = strNname;
+        assert(null == mMApp);
+        mContext = context;
+        mNativeContext = new NativeContextRegistry();
+        mNativeContext.register(mContext);
+        mMApp = new JMClientApp(getInstance());
+        assert (null != mMApp);
+        mStrUserId = strUid;
+        mStrToken = strToken;
+        mStrNname = strNname;
 
-            mGroupSeqn = new HashMap<String, Long>();
-            mGroupInfo = new ArrayList<GroupInfo>();
-            mReentrantLock = new ReentrantLock();
-            mSqlite3Manager = new MSSqlite3Manager();
-            mSqlite3Manager.InitManager(context);
-            CheckUserOrInit(mStrUserId);
-            GetLocalSeqnsFromDb();
-            return mMApp.Init(strUid, strToken, strNname, CommonMsg.EModuleType.TLIVE_VALUE);
-        } else {
-            return -10;
-        }
+        mGroupSeqn = new HashMap<String, Long>();
+        mGroupInfo = new ArrayList<GroupInfo>();
+        mReentrantLock = new ReentrantLock();
+        mSqlite3Manager = new MSSqlite3Manager();
+        mSqlite3Manager.InitManager(context);
+        CheckUserOrInit(mStrUserId);
+        GetLocalSeqnsFromDb();
+        return mMApp.Init(strUid, strToken, strNname, CommonMsg.EModuleType.TLIVE_VALUE);
     }
 
     public int MCUnin() {
@@ -459,8 +462,8 @@ public class MsgClient implements JMClientHelper{
     }
 
     @Override
-    public void OnCmdCallback(int code, int cmd, String groupid, String data) {
-        //System.out.println("MsgClient::OnCmdCallback cmd:"+cmd+", groupid.length:"+groupid.length()+", result:"+data.length()+", seqn:"+data.seqn);
+    public void OnCmdCallback(int code, int cmd, String groupid, JMSCbData data) {
+        System.out.println("MsgClient::OnCmdCallback cmd:"+cmd+", groupid.length:"+groupid.length()+", result:"+data.type+", data.result:" + data.result + ", seqn:"+data.seqn+", data.data is:"+data.data);
         EnumMsgClient.EMSCmd ecmd = EnumMsgClient.EMSCmd.forNumber(cmd);
         switch (ecmd)
         {
@@ -470,16 +473,19 @@ public class MsgClient implements JMClientHelper{
                 {
                     System.out.println("OnCmdCallback add group ok, insert groupid and seqn, toggle callback");
                     if (null != mSqlite3Manager && null != mGroupDelegate) {
-                        mSqlite3Manager.AddGroup(groupid);
-                        //mSqlite3Manager.AddGroupSeqn(groupid, data.seqn);
-                        //UpdateLocalSeqn(groupid, data.seqn);
+                        if (false == mSqlite3Manager.IsGroupExistsInDb(groupid)) {
+                            mSqlite3Manager.AddGroup(groupid);
+                        }
+                        if (false == mSqlite3Manager.IsUserExists(groupid)) {
+                            mSqlite3Manager.AddGroupSeqn(groupid, data.seqn);
+                        }
+                        UpdateLocalSeqn(groupid, data.seqn);
                         mGroupDelegate.OnAddGroupSuccess(groupid);
-
                     }
                 } else if (code == -1)
                 {
                     if (null != mGroupDelegate) {
-                        //mGroupDelegate.OnAddGroupFailed(groupid, data.reason, code);
+                        mGroupDelegate.OnAddGroupFailed(groupid, data.data, code);
                     }
                 }
             }
@@ -497,7 +503,7 @@ public class MsgClient implements JMClientHelper{
                 } else if (code == -1)
                 {
                     if (null != mGroupDelegate) {
-                        //mGroupDelegate.OnRmvGroupFailed(groupid, data.data, code);
+                        mGroupDelegate.OnRmvGroupFailed(groupid, data.data, code);
                     }
                 }
             }
@@ -506,26 +512,26 @@ public class MsgClient implements JMClientHelper{
             {
                 if (groupid.length()==0) // for user
                 {
-                    //if (data.result==0)
-                    //{
-                        //UpdateGroupInfoToDb(mStrUserId, data.seqn, 1);
-                    //} else if (data.result==-1)
-                    //{
-                        //UpdateGroupInfoToDb(mStrUserId, data.seqn, -1);
-                    //} else if (data.result==-2)
+                    if (data.result==0)
                     {
-                        //UpdateGroupInfoToDb(mStrUserId, data.seqn, -2);
+                        UpdateGroupInfoToDb(mStrUserId, data.seqn, 1);
+                    } else if (data.result==-1)
+                    {
+                        UpdateGroupInfoToDb(mStrUserId, data.seqn, -1);
+                    } else if (data.result==-2)
+                    {
+                        UpdateGroupInfoToDb(mStrUserId, data.seqn, -2);
                     }
                 } else { // for group
-                    //if (data.result==0)
-                    //{
-                        //UpdateGroupInfoToDb(groupid, data.seqn, 1);
-                    //} else if (data.result==-1)
-                    //{
-                        //UpdateGroupInfoToDb(groupid, data.seqn, -1);
-                    //} else if (data.result==-2)
+                    if (data.result==0)
                     {
-                        //UpdateGroupInfoToDb(groupid, data.seqn, -2);
+                        UpdateGroupInfoToDb(groupid, data.seqn, 1);
+                    } else if (data.result==-1)
+                    {
+                        UpdateGroupInfoToDb(groupid, data.seqn, -1);
+                    } else if (data.result==-2)
+                    {
+                        UpdateGroupInfoToDb(groupid, data.seqn, -2);
                     }
                 }
             }
@@ -536,13 +542,13 @@ public class MsgClient implements JMClientHelper{
     }
 
     @Override
-    public void OnRecvMsg(long seqn, String msg) {
-        System.out.println("MsgClient::OnRecvMsg was called, seqn:" + seqn + "msg.length:" + msg.length());
+    public void OnRecvMsg(long seqn, byte[] msg) {
+        System.out.println("MsgClient::OnRecvMsg was called, seqn:" + seqn + ",msg.length:" + msg.length);
         UpdateLocalSeqn(mStrUserId, seqn);
 
         EntityMsg.Entity ee = null;
         try {
-            ee = EntityMsg.Entity.parseFrom(msg.getBytes());
+            ee = EntityMsg.Entity.parseFrom(msg);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -633,13 +639,13 @@ public class MsgClient implements JMClientHelper{
     }
 
     @Override
-    public void OnRecvGroupMsg(long seqn, String seqnid, String msg) {
-        System.out.println("MsgClient::OnRecvGroupMsg was called seqn:" + seqn + ", seqnid:" + seqnid + ", msg.length:" + msg.length());
+    public void OnRecvGroupMsg(long seqn, String seqnid, byte[] msg) {
+        System.out.println("MsgClient::OnRecvGroupMsg was called seqn:" + seqn + ", seqnid:" + seqnid + ", msg.length:" + msg.length);
         UpdateLocalSeqn(seqnid, seqn);
 
         EntityMsg.Entity ee = null;
         try {
-            ee = EntityMsg.Entity.parseFrom(msg.getBytes());
+            ee = EntityMsg.Entity.parseFrom(msg);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

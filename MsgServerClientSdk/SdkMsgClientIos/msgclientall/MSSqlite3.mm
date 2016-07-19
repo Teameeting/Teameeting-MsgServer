@@ -159,6 +159,16 @@
     return true;
 }
 
+- (BOOL)isGroupExistsInDb:(NSString*)grpId;
+{
+    NSString *name = [NSString stringWithFormat:@MC_MSG_SQL_TABLE_GROUPS_ID];
+    NSString *sqlSelectCount = [NSString stringWithFormat:@"select count(*) from %@ where seqnId='%@';", name, grpId];
+    NSLog(@"isGroupExistsInDb was called, sqlSelectCount:%@", sqlSelectCount);
+    int code = 0;
+    int res = [self runSqlSelectCount:sqlSelectCount dbName:@MC_MSG_SQL_TABLE_GROUPS_ID code:&code];
+    return ((res==0)?false:true);
+}
+
 - (BOOL)selectGroupInfo:(NSMutableArray**)Info
 {
     if (!Info) return false;

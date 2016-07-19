@@ -35,6 +35,12 @@ public:
 private:
 	jobject     m_jJavaObj;
 	jclass		m_jClass;
+
+	jclass 		m_jCbDataCls;
+	jclass 		m_jCbDataClsTmp;
+
+	jclass		m_jStrCls;
+	jclass		m_jStrClsTmp;
 };
 
 

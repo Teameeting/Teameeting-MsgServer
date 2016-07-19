@@ -5,9 +5,9 @@ package org.dync.teameeting.sdkmsgclient.jni;
  */
 public interface JMClientHelper {
     public void OnSndMsg(int code, String msgid);
-    public void OnCmdCallback(int code, int cmd, String groupid, String data);
-    public void OnRecvMsg(long seqn, String msg);
-    public void OnRecvGroupMsg(long seqn, String seqnid, String msg);
+    public void OnCmdCallback(int code, int cmd, String groupid, JMSCbData data);
+    public void OnRecvMsg(long seqn, byte[] bmsg);
+    public void OnRecvGroupMsg(long seqn, String seqnid, byte[] bmsg);
     public void OnSyncSeqn(long seqn, int role);
     public void OnSyncGroupSeqn(String groupid, long seqn);
 

@@ -39,6 +39,8 @@ public class MSSqlite3Manager {
         mSqlite3Db.InsertGroupId(groupId);
     }
 
+    public boolean IsGroupExistsInDb(String groupId) { return mSqlite3Db.IsGroupExistsInDb(groupId); }
+
     public void AddGroupSeqn(String grpId, long seqn) {
         mSqlite3Db.InsertSeqn(grpId, seqn);
     }

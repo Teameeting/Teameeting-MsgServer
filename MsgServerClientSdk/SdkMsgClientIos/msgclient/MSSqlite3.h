@@ -40,6 +40,8 @@
 
 - (BOOL)insertGroupIdGrpId:(NSString*)grpId;
 
+- (BOOL)isGroupExistsInDb:(NSString*)grpId;
+
 - (BOOL)selectGroupInfo:(NSMutableArray**)Info;
 
 - (BOOL)deleteGroupIdGrpId:(NSString*)grpId;

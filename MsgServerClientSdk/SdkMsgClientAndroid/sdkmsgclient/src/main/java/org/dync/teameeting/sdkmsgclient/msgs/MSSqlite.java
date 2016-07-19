@@ -103,6 +103,22 @@ public class MSSqlite {
         return true;
     }
 
+    public boolean IsGroupExistsInDb(String groupId) {
+        SQLiteDatabase db = mSql3Db.getReadableDatabase();
+        String sqlSelect = "select count(*) from " + SqliteDbHelper.MS_TABLE_GROUPS_ID + " where seqnId='" + groupId +"';" ;
+        Cursor cursor = db.rawQuery(sqlSelect, null);
+        int code = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                code = cursor.getInt(0);
+            } while(cursor.moveToNext());
+        }
+        boolean exist = ((code==0)?false:true);
+        cursor.close();
+        db.close();
+        return exist;
+    }
+
     public ArrayList<GroupInfo> SelectGroupInfo() {
         SQLiteDatabase db = mSql3Db.getReadableDatabase();
         String sqlSelect = "select * from " + SqliteDbHelper.MS_TABLE_STOREID_SEQN +";" ;

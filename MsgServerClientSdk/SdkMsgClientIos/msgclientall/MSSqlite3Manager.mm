@@ -29,6 +29,11 @@
     return [_sqlite3Db isUserExistsInDb:userId];
 }
 
+-(BOOL)isGroupExists:(NSString*)grpId;
+{
+    return [_sqlite3Db isGroupExistsInDb:grpId];
+}
+
 -(void)addUserId:(NSString*)userId
 {
     [_sqlite3Db insertSeqnSeqnId:userId seqn:[NSNumber numberWithLongLong:0]];

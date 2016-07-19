@@ -18,10 +18,19 @@ APP_ABI += armeabi-v7a
 ####APP_ABI += arm64-v8a
 
 ####cd java
+#### javac org/dync/teameeting/sdkmsgclient/jni/JMSCbData.java
 #### javac org/dync/teameeting/sdkmsgclient/jni/JMClientHelper.java
 #### javac org/dync/teameeting/sdkmsgclient/jni/JMClientApp.java
+
+#### mv org/dync/teameeting/sdkmsgclient/jni/JMSCbData.class ../../../build/intermediates/classes/debug/org/dync/teameeting/sdkmsgclient/jni/
 #### mv org/dync/teameeting/sdkmsgclient/jni/JMClientHelper.class ../../../build/intermediates/classes/debug/org/dync/teameeting/sdkmsgclient/jni/
 #### mv org/dync/teameeting/sdkmsgclient/jni/JMClientApp.class ../../../build/intermediates/classes/debug/org/dync/teameeting/sdkmsgclient/jni/
+
 #### javah -d jni -classpath /Users/hp/Documents/tools/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMClientApp
+
+
+
+#### javah -d jni -classpath /Users/hp/Documents/tools/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMSCbData
+#### javah -d jni -classpath /Users/hp/Documents/tools/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMClientHelper
 
 #### javah -d jni -classpath /Users/Skyline/Downloads/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMClientApp

@@ -10,18 +10,54 @@ public class MsMsgUtil {
 
     private static MSTxtMessage JSONToMessage(JSONObject jobj) throws JSONException {
         MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setContent(jobj.getString("content"));
-        txtMsg.setExtra(jobj.getString("extra"));
-        txtMsg.setMsgId(jobj.getString("msgId"));
-        txtMsg.setToId(jobj.getString("toId"));
-        txtMsg.setFromId(jobj.getString("fromId"));
-        txtMsg.setGroupId(jobj.getString("groupId"));
-        txtMsg.setNickName(jobj.getString("nickName"));
-        txtMsg.setUiconUrl(jobj.getString("uiconUrl"));
-        txtMsg.setMillSec(jobj.getInt("millSec"));
-        txtMsg.setFlag(jobj.getInt("flag"));
-        txtMsg.setTag(jobj.getInt("tag"));
-        txtMsg.setRole(jobj.getInt("role"));
+        if (jobj.has("content"))
+            txtMsg.setContent(jobj.getString("content"));
+        else
+            txtMsg.setContent("");
+        if (jobj.has("extra"))
+            txtMsg.setExtra(jobj.getString("extra"));
+        else
+            txtMsg.setExtra("");
+        if (jobj.has("msgId"))
+            txtMsg.setMsgId(jobj.getString("msgId"));
+        else
+            txtMsg.setMsgId("");
+        if (jobj.has("toId"))
+            txtMsg.setToId(jobj.getString("toId"));
+        else
+            txtMsg.setToId("");
+        if (jobj.has("fromId"))
+            txtMsg.setFromId(jobj.getString("fromId"));
+        else
+            txtMsg.setFromId("");
+        if (jobj.has("groupId"))
+            txtMsg.setGroupId(jobj.getString("groupId"));
+        else
+            txtMsg.setGroupId("");
+        if (jobj.has("nickName"))
+            txtMsg.setNickName(jobj.getString("nickName"));
+        else
+            txtMsg.setNickName("");
+        if (jobj.has("uiconUrl"))
+            txtMsg.setUiconUrl(jobj.getString("uiconUrl"));
+        else
+            txtMsg.setUiconUrl("");
+        if (jobj.has("millSec"))
+            txtMsg.setMillSec(jobj.getInt("millSec"));
+        else
+            txtMsg.setMillSec(0);
+        if (jobj.has("flag"))
+            txtMsg.setFlag(jobj.getInt("flag"));
+        else
+            txtMsg.setFlag(-1);
+        if (jobj.has("tag"))
+            txtMsg.setTag(jobj.getInt("tag"));
+        else
+            txtMsg.setTag(-1);
+        if (jobj.has("role"))
+            txtMsg.setRole(jobj.getInt("role"));
+        else
+            txtMsg.setRole(-1);
         return txtMsg;
     }
 
