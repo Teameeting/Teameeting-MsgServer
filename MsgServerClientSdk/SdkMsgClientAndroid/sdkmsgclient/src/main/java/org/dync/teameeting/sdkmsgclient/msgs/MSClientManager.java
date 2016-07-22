@@ -12,6 +12,7 @@ public class MSClientManager {
      * params:
      */
     public int initMsgClient(Context context, String usrId, String token, String nName) {
+        System.out.println("MsgClient Android Version:v1.0.0");
         MsgClient.getInstance().MCInit(context, usrId, token, nName);
         MsgClient.getInstance().MCRegisterMsgCb();
         return 0;
@@ -63,4 +64,32 @@ public class MSClientManager {
     public int connStatus() {
         return MsgClient.getInstance().MCConnStatus();
     }
+
+    /**
+     * set userid
+     * <p/>
+     * params:
+     */
+    public void setUserid(String strUserid) { MsgClient.getInstance().setmStrUserId(strUserid); }
+
+    /**
+     * set user token
+     * <p/>
+     * params:
+     */
+    public void setToken(String strToken) { MsgClient.getInstance().setmStrToken(strToken); }
+
+    /**
+     * set user nick name
+     * <p/>
+     * params:
+     */
+    public void setNickName(String strNname) { MsgClient.getInstance().setmStrNname(strNname); }
+
+    /**
+     * set user uicon url
+     * <p/>
+     * params:
+     */
+    public void setUIconUrl(String strUicon) { MsgClient.getInstance().setmStrUicon(strUicon); }
 }

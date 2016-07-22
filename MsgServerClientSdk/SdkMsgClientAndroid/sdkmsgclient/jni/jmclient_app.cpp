@@ -14,11 +14,13 @@ JMClientApp::JMClientApp(jobject javaObj)
 		m_jJavaObj = ats.env()->NewGlobalRef(javaObj);
 		m_jClass = reinterpret_cast<jclass> (ats.env()->NewGlobalRef(ats.env()->GetObjectClass(m_jJavaObj)));
 
-		m_jCbDataClsTmp = ats.env()->FindClass("org/dync/teameeting/sdkmsgclient/jni/JMSCbData");
-		m_jCbDataCls = reinterpret_cast<jclass> (ats.env()->NewGlobalRef(m_jCbDataClsTmp));
+		jclass jcbDataClsTmp = ats.env()->FindClass("org/dync/teameeting/sdkmsgclient/jni/JMSCbData");
+		m_jCbDataCls = reinterpret_cast<jclass> (ats.env()->NewGlobalRef(jcbDataClsTmp));
+		ats.env()->DeleteLocalRef(jcbDataClsTmp);
 
-		m_jStrClsTmp = ats.env()->FindClass("java/lang/String");
-		m_jStrCls = reinterpret_cast<jclass> (ats.env()->NewGlobalRef(m_jStrClsTmp));
+		jclass jstrClsTmp = ats.env()->FindClass("java/lang/String");
+		m_jStrCls = reinterpret_cast<jclass> (ats.env()->NewGlobalRef(jstrClsTmp));
+		ats.env()->DeleteLocalRef(jstrClsTmp);
 	}
 }
 

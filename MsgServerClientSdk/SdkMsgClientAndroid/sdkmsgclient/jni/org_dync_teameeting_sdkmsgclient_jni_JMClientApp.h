@@ -145,6 +145,22 @@ JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Con
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetUserId
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUserId
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetToken
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetToken
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    SetNickName
  * Signature: (Ljava/lang/String;)V
  */

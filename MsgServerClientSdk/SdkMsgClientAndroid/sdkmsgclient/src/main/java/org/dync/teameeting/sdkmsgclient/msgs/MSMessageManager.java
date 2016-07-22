@@ -42,11 +42,20 @@ public class MSMessageManager {
     }
 
     /**
+     * you send content to userIds in grpId
+     * <p/>
+     * params:
+     */
+    public String sendTxtMsgTos(String grpId, String[] userIds, String content) {
+        return MsgClient.getInstance().MCSendTxtMsgTos(grpId, userIds, content);
+    }
+
+    /**
      * you send content to userId
      * <p/>
      * params:
      */
-    public String sendTxtMsgTo(String usrId, String content) {
+    public String sendTxtMsgToUser(String usrId, String content) {
         return MsgClient.getInstance().MCSendTxtMsgToUsr(usrId, content);
     }
 
@@ -55,7 +64,7 @@ public class MSMessageManager {
      * <p/>
      * params:
      */
-    public String sendTxtMsgTos(String[] usrIds, String content) {
+    public String sendTxtMsgToUsers(String[] usrIds, String content) {
         return MsgClient.getInstance().MCSendTxtMsgToUsrs(usrIds, content);
     }
 

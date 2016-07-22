@@ -46,6 +46,16 @@
                cmsgid:(NSString**)cmsgid;
 
 /**
+ *  you send content to usres in grpId
+ *
+ *  params:
+ */
+-(int)sendTxtMsgTosGrpId:(NSString*)grpId
+                   users:(NSArray*)users
+                    cont:(NSString*)content
+                  cmsgid:(NSString**)cmsgid;
+
+/**
  *  you send content to userId
  *
  *  params:

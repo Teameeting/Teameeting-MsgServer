@@ -39,6 +39,22 @@
     return res;
 }
 
+-(int)sendTxtMsgTosGrpId:(NSString*)grpId
+                   users:(NSArray*)users
+                    cont:(NSString*)content
+                  cmsgid:(NSString**)cmsgid
+{
+    if (!cmsgid) return -100;
+    std::string msgid;
+    std::vector<std::string> vusers;
+    for (NSString* name in users) {
+        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+    int res = MsgClient::Instance().MCSendTxtMsgTos(msgid, [grpId UTF8String], vusers, [content UTF8String]);
+    *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
+    return res;
+}
+
 -(int)sendTxtMsgToUsrId:(NSString*)usrId
                    cont:(NSString*)content
                  cmsgid:(NSString *__autoreleasing *)cmsgid
@@ -57,6 +73,9 @@
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
+    for (NSString* name in usrIds) {
+        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
     int res = MsgClient::Instance().MCSendTxtMsgToUsrs(msgid, vusers, [content UTF8String]);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;

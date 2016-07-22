@@ -182,6 +182,21 @@ JOWW(jint, JMClientApp_ConnStatus)(JNIEnv * jni, jobject j_app)
 }
 
 
+JOWW(void, JMClientApp_SetUserid)(JNIEnv *jni, jobject j_app, jstring strUserid)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrUserid(strUserid);
+	jApp->SetUserId(jstrUserid.ToString8().c_str());
+}
+
+
+JOWW(void, JMClientApp_SetToken)(JNIEnv *jni, jobject j_app, jstring strToken)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrToken(strToken);
+	jApp->SetToken(jstrToken.ToString8().c_str());
+}
+
 JOWW(void, JMClientApp_SetNickName)(JNIEnv *jni, jobject j_app, jstring strNname)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);

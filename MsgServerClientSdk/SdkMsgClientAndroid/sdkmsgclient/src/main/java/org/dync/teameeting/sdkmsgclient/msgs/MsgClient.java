@@ -16,8 +16,8 @@ import java.util.TimerTask;
 import java.util.concurrent.locks.ReentrantLock;
 
 import pms.CommonMsg;
-import pms.EntityMsg;
 import pms.EntityMsgType;
+import pms.EntityMsg.Entity;
 
 /**
  * Created by hp on 7/10/16.
@@ -57,6 +57,11 @@ public class MsgClient implements JMClientHelper{
 
     public void setmStrUserId(String mStrUserId) {
         this.mStrUserId = mStrUserId;
+        if (null!=mMApp) {
+            mMApp.SetUserId(mStrUserId);
+        } else {
+            System.err.println("setmStrUserId mMApp is null");
+        }
     }
 
     public String getmStrToken() {
@@ -65,6 +70,11 @@ public class MsgClient implements JMClientHelper{
 
     public void setmStrToken(String mStrToken) {
         this.mStrToken = mStrToken;
+        if (null!=mMApp) {
+            mMApp.SetToken(mStrToken);
+        } else {
+            System.err.println("setmStrToken mMApp is null");
+        }
     }
 
     public String getmStrNname() {
@@ -73,6 +83,11 @@ public class MsgClient implements JMClientHelper{
 
     public void setmStrNname(String mStrNname) {
         this.mStrNname = mStrNname;
+        if (null!=mMApp) {
+            mMApp.SetNickName(mStrNname);
+        } else {
+            System.err.println("setmStrNname mMApp is null");
+        }
     }
 
     public String getmStrUicon() {
@@ -81,6 +96,11 @@ public class MsgClient implements JMClientHelper{
 
     public void setmStrUicon(String mStrUicon) {
         this.mStrUicon = mStrUicon;
+        if (null!=mMApp) {
+            mMApp.SetUIconUrl(mStrUicon);
+        } else {
+            System.err.println("setmStrUicon mMApp is null");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -234,6 +254,15 @@ public class MsgClient implements JMClientHelper{
         return outMsgId;
     }
 
+    public String MCSendTxtMsgTos(String strGroupId, String[] arrUsers, String strContent) {
+        String outMsgId = null;
+        String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndCont(strGroupId, strContent);
+        if (null != mMApp && null != jsonMsg) {
+            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TTXT_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE, arrUsers, arrUsers.length);
+        }
+        return outMsgId;
+    }
+
     public String MCSendTxtMsgToUsr(String strUserId, String strContent) {
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithUidAndCont(strUserId, strContent);
@@ -242,14 +271,13 @@ public class MsgClient implements JMClientHelper{
             outMsgId = mMApp.SndMsgTo("groupid", "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TTXT_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
         }
         return outMsgId;
-
     }
 
     public String MCSendTxtMsgToUsrs(String[] arrUsers, String strContent) {
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithUidsAndCont(arrUsers, strContent);
         if (null != mMApp && null != jsonMsg) {
-            outMsgId =  mMApp.SndMsgTo("groupid", "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TTXT_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUsers, arrUsers.length);
+            outMsgId = mMApp.SndMsgTo("groupid", "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TTXT_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FMULTI_VALUE, arrUsers, arrUsers.length);
         }
         return outMsgId;
     }
@@ -546,9 +574,9 @@ public class MsgClient implements JMClientHelper{
         System.out.println("MsgClient::OnRecvMsg was called, seqn:" + seqn + ",msg.length:" + msg.length);
         UpdateLocalSeqn(mStrUserId, seqn);
 
-        EntityMsg.Entity ee = null;
+        Entity ee = null;
         try {
-            ee = EntityMsg.Entity.parseFrom(msg);
+            ee = Entity.parseFrom(msg);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -573,59 +601,59 @@ public class MsgClient implements JMClientHelper{
             return;
         }
 
-        switch (ee.getMsgType())
+        switch (ee.getMsgType().getNumber())
         {
-            case TTXT:
+            case EntityMsgType.EMsgType.TTXT_VALUE:
             {
                 mTxtMsgDelegate.OnRecvTxtMessage(txtMsg);
             }
                 break;
-            case TFIL:
+            case EntityMsgType.EMsgType.TFIL_VALUE:
             {
             }
                 break;
-            case TPIC:
+            case EntityMsgType.EMsgType.TPIC_VALUE:
             {
             }
                 break;
-            case TAUD:
+            case EntityMsgType.EMsgType.TAUD_VALUE:
             {
             }
                 break;
-            case TVID:
+            case EntityMsgType.EMsgType.TVID_VALUE:
             {
             }
                 break;
-            case TEMJ:
+            case EntityMsgType.EMsgType.TEMJ_VALUE:
             {
             }
                 break;
-            case TSDF:
+            case EntityMsgType.EMsgType.TSDF_VALUE:
             {
                 mTxtMsgDelegate.OnRecvSelfDefMessage(txtMsg);
             }
                 break;
-            case TLIV:
+            case EntityMsgType.EMsgType.TLIV_VALUE:
             {
                 mTxtMsgDelegate.OnNotifyLive(txtMsg);
             }
                 break;
-            case TREN:
+            case EntityMsgType.EMsgType.TREN_VALUE:
             {
                 mTxtMsgDelegate.OnNotifyRedEnvelope(txtMsg);
             }
                 break;
-            case TBLK:
+            case EntityMsgType.EMsgType.TBLK_VALUE:
             {
                 mTxtMsgDelegate.OnNotifyBlacklist(txtMsg);
             }
                 break;
-            case TFBD:
+            case EntityMsgType.EMsgType.TFBD_VALUE:
             {
                 mTxtMsgDelegate.OnNotifyForbidden(txtMsg);
             }
                 break;
-            case TMGR:
+            case EntityMsgType.EMsgType.TMGR_VALUE:
             {
                 mTxtMsgDelegate.OnNotifySettedMgr(txtMsg);
             }
@@ -643,9 +671,9 @@ public class MsgClient implements JMClientHelper{
         System.out.println("MsgClient::OnRecvGroupMsg was called seqn:" + seqn + ", seqnid:" + seqnid + ", msg.length:" + msg.length);
         UpdateLocalSeqn(seqnid, seqn);
 
-        EntityMsg.Entity ee = null;
+        Entity ee = null;
         try {
-            ee = EntityMsg.Entity.parseFrom(msg);
+            ee = Entity.parseFrom(msg);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -669,54 +697,54 @@ public class MsgClient implements JMClientHelper{
             System.out.println("OnRecvGroupMsg mTxtMsgDelegate is null!!!!!!");
             return;
         }
-        switch (ee.getMsgType())
+        switch (ee.getMsgType().getNumber())
         {
-            case TTXT:
+            case EntityMsgType.EMsgType.TTXT_VALUE:
             {
                 mTxtMsgDelegate.OnRecvTxtMessage(txtMsg);
             }
                 break;
-            case TFIL:
+            case EntityMsgType.EMsgType.TFIL_VALUE:
             {
             }
                 break;
-            case TPIC:
+            case EntityMsgType.EMsgType.TPIC_VALUE:
             {
             }
                 break;
-            case TAUD:
+            case EntityMsgType.EMsgType.TAUD_VALUE:
             {
             }
                 break;
-            case TVID:
+            case EntityMsgType.EMsgType.TVID_VALUE:
             {
             }
                 break;
-            case TEMJ:
+            case EntityMsgType.EMsgType.TEMJ_VALUE:
             {
             }
                 break;
-            case TSDF:
+            case EntityMsgType.EMsgType.TSDF_VALUE:
             {
             }
                 break;
-            case TLIV:
+            case EntityMsgType.EMsgType.TLIV_VALUE:
             {
             }
                 break;
-            case TREN:
+            case EntityMsgType.EMsgType.TREN_VALUE:
             {
             }
                 break;
-            case TBLK:
+            case EntityMsgType.EMsgType.TBLK_VALUE:
             {
             }
                 break;
-            case TFBD:
+            case EntityMsgType.EMsgType.TFBD_VALUE:
             {
             }
                 break;
-            case TMGR:
+            case EntityMsgType.EMsgType.TMGR_VALUE:
             {
             }
                 break;

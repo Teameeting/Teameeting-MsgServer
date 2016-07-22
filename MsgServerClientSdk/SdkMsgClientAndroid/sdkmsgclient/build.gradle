@@ -1,15 +1,17 @@
 apply plugin: 'com.android.library'
+def cfg = rootProject.ext.configuration
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
+        versionCode cfg.versionCode
+        versionName cfg.versionName
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -21,14 +23,14 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile files('libs/protobuf-java-3.0.0-beta-2.jar')
 }
 
 task makeJarRel(type: Copy) {
     delete 'build/libs/msgclient_r1.0.1.jar'
+    delete 'build/libs/libs'
     from('build/intermediates/bundles/release/')
     into('build/libs/')
-    include('classes.jar')
+    include('classes.jar', 'libs/protobuf-lite-3.0.0-beta-2.jar')
     rename ('classes.jar', 'msgclient_r1.0.1.jar')
 }
 
@@ -37,9 +39,10 @@ makeJarRel.dependsOn(build)
 
 task makeJarDeb(type: Copy) {
     delete 'build/libs/msgclient_d1.0.1.jar'
+    delete 'build/libs/libs'
     from('build/intermediates/bundles/debug/')
     into('build/libs/')
-    include('classes.jar')
+    include('classes.jar', 'libs/protobuf-lite-3.0.0-beta-2.jar')
     rename ('classes.jar', 'msgclient_d1.0.1.jar')
 }
 

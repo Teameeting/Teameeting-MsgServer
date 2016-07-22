@@ -28,7 +28,6 @@ XMsgClient::XMsgClient()
 , m_pMsgProcesser(nullptr)
 , m_lastUpdateTime(0)
 , m_uid("")
-, m_grpid("")
 , m_token("")
 , m_nname("")
 , m_server("180.150.179.128")
@@ -173,9 +172,9 @@ int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, cons
     }
     std::string outstr;
     if (m_pMsgProcesser) {
-            m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
-                    , m_nname, groupid, grpname, uvec, msg\
-                    , tag, type, module, flag);
+        m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
+                                      , m_nname, groupid, grpname, uvec, msg\
+                                      , tag, type, module, flag);
     } else {
         return -1;
     }

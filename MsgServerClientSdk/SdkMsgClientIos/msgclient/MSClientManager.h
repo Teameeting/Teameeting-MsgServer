@@ -62,6 +62,20 @@
 -(MCConnState)connStatus;
 
 /**
+ *  set userid
+ *
+ *  params:
+ */
+-(void)setUserId:(NSString*)userid;
+
+/**
+ *  set user token
+ *
+ *  params:
+ */
+-(void)setToken:(NSString*)token;
+
+/**
  *  set user nick name
  *
  *  params:

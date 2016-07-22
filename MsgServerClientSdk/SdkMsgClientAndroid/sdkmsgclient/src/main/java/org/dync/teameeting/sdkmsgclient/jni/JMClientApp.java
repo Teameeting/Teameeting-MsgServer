@@ -41,6 +41,8 @@ public class JMClientApp {
     public native int SyncGroupData(String strGroupId, long seqn);
 
     public native int ConnStatus();
+    public native void SetUserId(String strUserid);
+    public native void SetToken(String strToken);
     public native void SetNickName(String strNname);
     public native void SetUIconUrl(String strUicon);
 

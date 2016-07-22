@@ -14,9 +14,16 @@
 
 @interface ViewController () {
     UIButton *mEnterButton;
-    UIButton *mSndMsgButton;
     UIButton *mLeaveButton;
-    UIButton *mNotifyButton;
+    UIButton *mSndMsgButton;
+    UIButton *mSndMsgTosButton;
+    UIButton *mSndMsgToUserButton;
+    UIButton *mSndMsgToUsersButton;
+    UIButton *mNotifyLiveButton;
+    UIButton *mNotifyRedEnvelopeButton;
+    UIButton *mNotifyBlacklistButton;
+    UIButton *mNotifyForbiddenButton;
+    UIButton *mNotifySettedMgrButton;
     UITextView *textViewDisplay;
     NSString *mGroupId;
 }
@@ -25,49 +32,79 @@
 
 @implementation ViewController
 
+- (void)SetButtonParamsButton:(UIButton*)uibutton
+                        title:(NSString*)title
+                        state:(NSString*)state
+{
+    assert(uibutton!=nullptr);
+    [uibutton setTitle:title forState:UIControlStateNormal];
+    [uibutton setTitle:state forState:UIControlStateHighlighted];
+    [uibutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [uibutton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    [uibutton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
+    uibutton.backgroundColor = [UIColor redColor];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
     mEnterButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 100, 200, 30)];
-    [mEnterButton setTitle:@"Enter" forState:UIControlStateNormal];
-    [mEnterButton setTitle:@"Entering..." forState:UIControlStateHighlighted];
-    [mEnterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [mEnterButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    [mEnterButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-    mEnterButton.backgroundColor = [UIColor redColor];
+    [self SetButtonParamsButton:mEnterButton title:@"Enter" state:@"Entering..."];
     [mEnterButton addTarget:self action:@selector(enterButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:mEnterButton];
     
-    mSndMsgButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 150, 200, 30)];
-    [mSndMsgButton setTitle:@"SndMsg" forState:UIControlStateNormal];
-    [mSndMsgButton setTitle:@"SndMsging..." forState:UIControlStateHighlighted];
-    [mSndMsgButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [mSndMsgButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    [mSndMsgButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-    mSndMsgButton.backgroundColor = [UIColor redColor];
-    [mSndMsgButton addTarget:self action:@selector(sndMsgButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:mSndMsgButton];
-    
-    mLeaveButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 250, 200, 30)];
-    [mLeaveButton setTitle:@"Leave" forState:UIControlStateNormal];
-    [mLeaveButton setTitle:@"Leaving..." forState:UIControlStateHighlighted];
-    [mLeaveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [mLeaveButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    [mLeaveButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-    mLeaveButton.backgroundColor = [UIColor redColor];
+    mLeaveButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 150, 200, 30)];
+    [self SetButtonParamsButton:mLeaveButton title:@"Leave" state:@"Leaving..."];
     [mLeaveButton addTarget:self action:@selector(leaveButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:mLeaveButton];
     
-    mNotifyButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 300, 200, 30)];
-    [mNotifyButton setTitle:@"Notify" forState:UIControlStateNormal];
-    [mNotifyButton setTitle:@"Notifying..." forState:UIControlStateHighlighted];
-    [mNotifyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [mNotifyButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    [mNotifyButton.titleLabel setFont:[UIFont boldSystemFontOfSize:20]];
-    mNotifyButton.backgroundColor = [UIColor redColor];
-    [mNotifyButton addTarget:self action:@selector(notifyButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:mNotifyButton];
+    /////////////////////////////////////////////////////
+    
+    mSndMsgButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 200, 200, 30)];
+    [self SetButtonParamsButton:mSndMsgButton title:@"SndMsg" state:@"SndMsging..."];
+    [mSndMsgButton addTarget:self action:@selector(sndMsgButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mSndMsgButton];
+    
+    mSndMsgTosButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 250, 200, 30)];
+    [self SetButtonParamsButton:mSndMsgTosButton title:@"SndMsgTos" state:@"SndMsgTosing..."];
+    [mSndMsgTosButton addTarget:self action:@selector(sndMsgTosButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mSndMsgTosButton];
+    
+    mSndMsgToUserButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 300, 200, 30)];
+    [self SetButtonParamsButton:mSndMsgToUserButton title:@"SndMsgToUser" state:@"SndMsgToUsering..."];
+    [mSndMsgToUserButton addTarget:self action:@selector(sndMsgToUserButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mSndMsgToUserButton];
+    
+    mSndMsgToUsersButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 350, 200, 30)];
+    [self SetButtonParamsButton:mSndMsgToUsersButton title:@"SndMsgToUsers" state:@"SndMsgToUsersing..."];
+    [mSndMsgToUsersButton addTarget:self action:@selector(sndMsgToUsersButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mSndMsgToUsersButton];
+    
+    mNotifyLiveButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 400, 200, 30)];
+    [self SetButtonParamsButton:mNotifyLiveButton title:@"NotifyLive" state:@"NotifyLiving..."];
+    [mNotifyLiveButton addTarget:self action:@selector(notifyLiveButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mNotifyLiveButton];
+    
+    mNotifyRedEnvelopeButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 450, 200, 30)];
+    [self SetButtonParamsButton:mNotifyRedEnvelopeButton title:@"NotifyRedEnvelope" state:@"NotifyRedEnveloping..."];
+    [mNotifyRedEnvelopeButton addTarget:self action:@selector(notifyRedEnvelopeButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mNotifyRedEnvelopeButton];
+    
+    mNotifyBlacklistButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 500, 200, 30)];
+    [self SetButtonParamsButton:mNotifyBlacklistButton title:@"NotifyBlacklist" state:@"NotifyBlacklisting..."];
+    [mNotifyBlacklistButton addTarget:self action:@selector(notifyBlacklistButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mNotifyBlacklistButton];
+    
+    mNotifyForbiddenButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 550, 200, 30)];
+    [self SetButtonParamsButton:mNotifyForbiddenButton title:@"NotifyForbidden" state:@"NotifyForbiddening..."];
+    [mNotifyForbiddenButton addTarget:self action:@selector(notifyForbiddenButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mNotifyForbiddenButton];
+    
+    mNotifySettedMgrButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 600, 200, 30)];
+    [self SetButtonParamsButton:mNotifySettedMgrButton title:@"NotifySettedMgr" state:@"NotifySettedMgring..."];
+    [mNotifySettedMgrButton addTarget:self action:@selector(notifySettedMgrButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mNotifySettedMgrButton];
     
     textViewDisplay = [[UITextView alloc] initWithFrame:CGRectMake(250, 100, 300, 900)];
     textViewDisplay.backgroundColor=[UIColor whiteColor];
@@ -106,6 +143,9 @@
     [groupMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr connToServer:server port:port];
+    [clientMgr setNickName:@"hehe"];
+    [clientMgr setToken:@"hehehe"];
+    [clientMgr setUIconUrl:@"hehehehe"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,25 +157,12 @@
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
     
-    //NSString *groupid = @"4008696859";
     mGroupId = @"wocaowocaowocao";
     NSLog(@"====>>you enter mGroupId %@", mGroupId);
     [groupMgr addGroupGrpId:mGroupId];
 }
 
-- (IBAction)sndMsgButton:(id)sender {
-    NSString *sndMsg = @"sndMsgButton was called";
-    NSLog(@"%@", sndMsg);
-    
-    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    NSString *outmsgid = nil;
-    [msgMgr sendTxtMsgToUsrId:touser cont:sndMsg cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
-    [self resultDisplayCallback:info mMsg:@"" nInt:0];
-}
-
-- (void)leaveButton:(id)sender {
+- (IBAction)leaveButton:(id)sender {
     NSString *leave = @"leaveButton was called";
     NSLog(@"%@", leave);
     
@@ -144,14 +171,120 @@
     [groupMgr rmvGroupGrpId:mGroupId];
 }
 
-- (IBAction)notifyButton:(id)sender {
-    NSString *notify = @"notifyButton was called";
-    NSLog(@"%@", notify);
+- (IBAction)sndMsgButton:(id)sender {
+    NSString *sndMsg = @"sndMsgButton was called";
+    NSLog(@"%@", sndMsg);
     
     NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    [msgMgr sendTxtMsgGrpId:mGroupId cont:notify cmsgid:&outmsgid];
+    [msgMgr sendTxtMsgGrpId:mGroupId cont:sndMsg cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendTxtMsgGrpId outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)sndMsgTosButton:(id)sender {
+    NSString *sndMsgTos = @"sndMsgTosButton was called";
+    NSLog(@"%@", sndMsgTos);
+    
+    NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSArray* arr = [NSArray arrayWithObjects:touser1, touser2, nil];
+    mGroupId = @"wocaowocaowocao";
+    NSString *outmsgid = nil;
+    [msgMgr sendTxtMsgTosGrpId:mGroupId users:arr cont:sndMsgTos cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendTxtMsgTos outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)sndMsgToUserButton:(id)sender {
+    NSString *sndMsgToUser = @"sndMsgToUserButton was called";
+    NSLog(@"%@", sndMsgToUser);
+    
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *outmsgid = nil;
+    [msgMgr sendTxtMsgToUsrId:touser cont:sndMsgToUser cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)sndMsgToUsersButton:(id)sender {
+    NSString *sndMsgToUsers = @"sndMsgToUsersButton was called";
+    NSLog(@"%@", sndMsgToUsers);
+    
+    NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
+    NSString *outmsgid = nil;
+    [msgMgr sendTxtMsgToUsrIds:arr cont:sndMsgToUsers cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrIds outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)notifyLiveButton:(id)sender {
+    NSString *notifyLive = @"notifyLiveButton was called";
+    NSLog(@"%@", notifyLive);
+    
+    NSString *outmsgid = nil;
+    mGroupId = @"wocaowocaowocao";
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    [msgMgr sendNotifyLiveGrpId:mGroupId hostId:touser cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendNotifyLive outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)notifyRedEnvelopeButton:(id)sender {
+    NSString *notifyRedEnvelope = @"notifyRedEnvelopeButton was called";
+    NSLog(@"%@", notifyRedEnvelope);
+    
+    NSString *outmsgid = nil;
+    mGroupId = @"wocaowocaowocao";
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    [msgMgr sendNotifyRedEnvelopeGrpId:mGroupId hostId:touser cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendRedRevelope outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)notifyBlacklistButton:(id)sender {
+    NSString *notifyBlacklist = @"notifyBlacklistButton was called";
+    NSLog(@"%@", notifyBlacklist);
+    
+    NSString *outmsgid = nil;
+    mGroupId = @"wocaowocaowocao";
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    [msgMgr sendNotifyBlacklistGrpId:mGroupId userId:touser cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendNotifyBlacklist outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)notifyForbiddenButton:(id)sender {
+    NSString *notifyForbidden = @"notifyForbiddenButton was called";
+    NSLog(@"%@", notifyForbidden);
+    
+    NSString *outmsgid = nil;
+    mGroupId = @"wocaowocaowocao";
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    [msgMgr sendNotifyForbiddenGrpId:mGroupId userId:touser cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendNotifyForbidden outmsgid is :%@", outmsgid];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)notifySettedMgrButton:(id)sender {
+    NSString *notifySettedMgr = @"notifySettedMgrButton was called";
+    NSLog(@"%@", notifySettedMgr);
+    
+    NSString *outmsgid = nil;
+    mGroupId = @"wocaowocaowocao";
+    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    [msgMgr sendNotifySettedMgrGrpId:mGroupId userId:touser cmsgid:&outmsgid];
+    NSString *info = [NSString stringWithFormat:@"sendNotifySettedMgr outmsgid is :%@", outmsgid];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }

@@ -65,7 +65,6 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
 #if DEF_PROTO
     pms::MsgReq req;
     pms::Entity entity;
-    pms::ToUser *touser = entity.mutable_usr_toto();
     entity.set_msg_head(pms::EMsgHead::HSND);
     entity.set_msg_tag((pms::EMsgTag)tag);
     entity.set_msg_type((pms::EMsgType)type);
@@ -82,16 +81,18 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     outmsgid = entity.cmsg_id();
     
     printf("XMsgProcesser::EncodeSndMsg to.size:%d\n", to.size());
-    for(int i=0;i<(int)to.size();++i) {
-        printf("XMsgProcesser::EncodeSndMsg to.name:%s\n", to.at(i).c_str());
-        touser->add_users(to.at(i));
+    if (to.size()>0) {
+        pms::ToUser *touser = entity.mutable_usr_toto();
+        for(int i=0;i<(int)to.size();++i) {
+            printf("XMsgProcesser::EncodeSndMsg to.name:%s\n", to.at(i).c_str());
+            touser->add_users(to.at(i));
+        }
     }
-
     req.set_svr_cmds(pms::EServerCmd::CSNDMSG);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(entity.SerializeAsString());
     outstr = req.SerializeAsString();
-    printf("XMsgProcesser::EncodeSndMsg usr_toto.size:%d\n", entity.usr_toto().users_size());
+    //printf("XMsgProcesser::EncodeSndMsg usr_toto.size:%d\n", entity.usr_toto().users_size());
 #else
 #endif
     return 0;

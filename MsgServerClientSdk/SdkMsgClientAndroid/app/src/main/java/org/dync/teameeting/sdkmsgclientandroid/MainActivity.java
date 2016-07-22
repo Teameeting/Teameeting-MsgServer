@@ -22,11 +22,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public final String           mMsg = "hello world";
     public final String           mNotifyMsg = "Notify Notify Notify!!";
 
-    public Button mBtnEnter   = null;
-    public Button                 mBtnSndMsg  = null;
+    public Button                 mBtnEnter   = null;
     public Button                 mBtnLeave   = null;
-    public Button                 mBtnNotify  = null;
-    public TextView mTxtView    = null;
+    public Button                 mBtnSndMsg  = null;
+    public Button                 mBtnSndTosMsg  = null;
+    public Button                 mBtnSndToUserMsg  = null;
+    public Button                 mBtnSndToUsersMsg  = null;
+    public Button                 mBtnNotifyLive  = null;
+    public Button                 mBtnNotifyRedEnvelope  = null;
+    public Button                 mBtnNotifyBlacklist  = null;
+    public Button                 mBtnNotifyForbidden  = null;
+    public Button                 mBtnNotifySettedMgr  = null;
+    public TextView               mTxtView    = null;
 
     public MsgClientDelegateImplement       mMsgClient = null;
     public Context mContext    = null;
@@ -49,14 +56,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnEnter = (Button)findViewById(R.id.btnenter);
         mBtnEnter.setOnClickListener(this);
 
-        mBtnSndMsg = (Button)findViewById(R.id.btnsndmsg);
-        mBtnSndMsg.setOnClickListener(this);
-
         mBtnLeave = (Button)findViewById(R.id.btnleave);
         mBtnLeave.setOnClickListener(this);
 
-        mBtnNotify = (Button)findViewById(R.id.btnnotify);
-        mBtnNotify.setOnClickListener(this);
+        mBtnSndMsg = (Button)findViewById(R.id.btnsndmsg);
+        mBtnSndMsg.setOnClickListener(this);
+
+        mBtnSndTosMsg = (Button)findViewById(R.id.btnsndmsgtos);
+        mBtnSndTosMsg.setOnClickListener(this);
+
+        mBtnSndToUserMsg = (Button)findViewById(R.id.btnsndmsgtouser);
+        mBtnSndToUserMsg.setOnClickListener(this);
+
+        mBtnSndToUsersMsg = (Button)findViewById(R.id.btnsndmsgtousers);
+        mBtnSndToUsersMsg.setOnClickListener(this);
+
+        mBtnNotifyLive = (Button)findViewById(R.id.btnnotifylive);
+        mBtnNotifyLive.setOnClickListener(this);
+
+        mBtnNotifyRedEnvelope = (Button)findViewById(R.id.btnnotifyredenvelope);
+        mBtnNotifyRedEnvelope.setOnClickListener(this);
+
+        mBtnNotifyBlacklist = (Button)findViewById(R.id.btnnotifyblacklist);
+        mBtnNotifyBlacklist.setOnClickListener(this);
+
+        mBtnNotifyForbidden = (Button)findViewById(R.id.btnnotifyforbidden);
+        mBtnNotifyForbidden.setOnClickListener(this);
+
+        mBtnNotifySettedMgr = (Button)findViewById(R.id.btnnotifysettedmgr);
+        mBtnNotifySettedMgr.setOnClickListener(this);
 
         mTxtView = (TextView)findViewById(R.id.textViewResult);
 
@@ -94,17 +122,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             break;
-            case R.id.btnsndmsg:
-            {
-                System.out.println("MainActivity call mMsgClient.SndMsg...");
-                mMsgClient.SendMsgTo();
-                try {
-                    Thread.sleep(1);
-                } catch  (Exception e) {
-
-                }
-            }
-            break;
             case R.id.btnleave:
             {
                 System.out.println("MainActivity call mMsgClient.LeaveRoom...");
@@ -116,10 +133,98 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
             break;
-            case R.id.btnnotify:
+            case R.id.btnsndmsg:
             {
-                System.out.println("MainActivity call mMsgClient.NotifyMsg...");
-                mMsgClient.NotifyMsg();
+                System.out.println("MainActivity call mMsgClient.SndMsgTo...");
+                mMsgClient.SendMsgTo();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnsndmsgtos:
+            {
+                System.out.println("MainActivity call mMsgClient.SndMsgTos...");
+                mMsgClient.SendMsgTos();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnsndmsgtouser:
+            {
+                System.out.println("MainActivity call mMsgClient.SndMsgToUser...");
+                mMsgClient.SendMsgToUser();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnsndmsgtousers:
+            {
+                System.out.println("MainActivity call mMsgClient.SndMsgToUsers...");
+                mMsgClient.SendMsgToUsers();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnnotifylive:
+            {
+                System.out.println("MainActivity call mMsgClient.NotifyMsgLive...");
+                mMsgClient.NotifyMsgLive();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnnotifyredenvelope:
+            {
+                System.out.println("MainActivity call mMsgClient.NotifyMsgRedEnvelope...");
+                mMsgClient.NotifyMsgRedEnvelope();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnnotifyblacklist:
+            {
+                System.out.println("MainActivity call mMsgClient.NotifyMsgBlacklist...");
+                mMsgClient.NotifyMsgBlacklist();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnnotifyforbidden:
+            {
+                System.out.println("MainActivity call mMsgClient.NotifyMsgFrobidden...");
+                mMsgClient.NotifyMsgForbidden();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnnotifysettedmgr:
+            {
+                System.out.println("MainActivity call mMsgClient.NotifyMsgSettedMgr...");
+                mMsgClient.NotifyMsgSettedMgr();
                 try {
                     Thread.sleep(1);
                 } catch  (Exception e) {

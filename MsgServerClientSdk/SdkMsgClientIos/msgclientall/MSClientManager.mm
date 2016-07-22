@@ -53,6 +53,16 @@
     return MCConnStateNOT_CONNECTED;
 }
 
+-(void)setUserId:(NSString*)userid
+{
+    MsgClient::Instance().MCSetUserId([userid cStringUsingEncoding:NSUTF8StringEncoding]);
+}
+
+-(void)setToken:(NSString*)token
+{
+    MsgClient::Instance().MCSetToken([token cStringUsingEncoding:NSUTF8StringEncoding]);
+}
+
 -(void)setNickName:(NSString*)nName
 {
     MsgClient::Instance().MCSetNickName([nName cStringUsingEncoding:NSUTF8StringEncoding]);

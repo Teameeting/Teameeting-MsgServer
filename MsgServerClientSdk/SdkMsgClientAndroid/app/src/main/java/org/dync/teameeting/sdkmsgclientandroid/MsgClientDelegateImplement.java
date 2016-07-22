@@ -56,6 +56,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         } else {
             System.err.println("MsgClientManager connToServer invoke failed...!!!!!!!");
         }
+
+        mMsClientManager.setNickName("hehe");
+        mMsClientManager.setToken("heheheh");
+        mMsClientManager.setUIconUrl("hehehehe");
     }
 
     public void MsgClientDestroy() {
@@ -71,29 +75,105 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         mMsGroupManager.addGroup(groupid);
     }
 
-    public void SendMsgTo() {
-        System.out.println("SendMsgTo was called...");
-
-        String cont = "hahaha";
-        //String touser = "8ca64d158a505876";
-        String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendTxtMsgTo(touser, cont);
-        System.out.println("SendMsgTo sendTxtMsgTo get msgid:"+outmsgid);
-    }
-
     public void LeaveRoom() {
         System.out.println("LeaveRoom was called...");
         String groupid = "wocaowocaowocao";
         mMsGroupManager.rmvGroup(groupid);
     }
 
-    public void NotifyMsg() {
-        System.out.println("NotifyMsg was called...");
+    public void SendMsgTo() {
+        System.out.println("SendMsgTo was called...");
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
         String outmsgid = mMsMessageManager.sendTxtMsg(groupid, cont);
-        System.out.println("NotifyMsg sendTxtMsg get msgid:"+outmsgid);
+        System.out.println("SendMsgTo sendTxtMsg get msgid:"+outmsgid);
+    }
+
+    public void SendMsgTos() {
+        System.out.println("SendMsgTos was called...");
+
+        String cont = "hahaha";
+        String groupid = "wocaowocaowocao";
+        //String touser = "8ca64d158a505876";
+        String touser1 = "dcd54ddf2ee1df11";
+        String touser2 = "dcd54ddf2ee1df11";
+        String[] arr = {touser1, touser2};
+        String outmsgid = mMsMessageManager.sendTxtMsgTos(groupid, arr, cont);
+        System.out.println("SendMsgTos sendTxtMsgTos get msgid:" + outmsgid);
+    }
+
+    public void SendMsgToUser() {
+        System.out.println("SendMsgToUser was called...");
+
+        String cont = "hahaha";
+        //String touser = "8ca64d158a505876";
+        String touser = "dcd54ddf2ee1df11";
+        String outmsgid = mMsMessageManager.sendTxtMsgToUser(touser, cont);
+        System.out.println("SendMsgToUser sendTxtMsgToUser get msgid:" + outmsgid);
+    }
+
+    public void SendMsgToUsers() {
+        System.out.println("SendMsgToUsers was called...");
+
+        String cont = "hahaha";
+        //String touser = "8ca64d158a505876";
+        String touser1 = "dcd54ddf2ee1df11";
+        String touser2 = "dcd54ddf2ee1df11";
+        String[] arr = {touser1, touser2};
+        String outmsgid = mMsMessageManager.sendTxtMsgToUsers(arr, cont);
+        System.out.println("SendMsgToUsers sendTxtMsgToUsers get msgid:" + outmsgid);
+    }
+
+
+    public void NotifyMsgLive() {
+        System.out.println("NotifyMsgLive was called...");
+
+        String cont = "hahaha";
+        String groupid = "wocaowocaowocao";
+        String touser = "dcd54ddf2ee1df11";
+        String outmsgid = mMsMessageManager.sendNotifyLive(groupid, touser);
+        System.out.println("NotifyMsgLive sendNotifyLive get msgid:"+outmsgid);
+    }
+
+    public void NotifyMsgRedEnvelope() {
+        System.out.println("NotifyMsgRedEnvelope was called...");
+
+        String cont = "hahaha";
+        String groupid = "wocaowocaowocao";
+        String touser = "dcd54ddf2ee1df11";
+        String outmsgid = mMsMessageManager.sendNotifyRedEnvelope(groupid, touser);
+        System.out.println("NotifyMsgRedEnvelope sendNotifyRedEnvelope get msgid:"+outmsgid);
+    }
+
+    public void NotifyMsgBlacklist() {
+        System.out.println("NotifyMsgBlacklist was called...");
+
+        String cont = "hahaha";
+        String groupid = "wocaowocaowocao";
+        String touser = "dcd54ddf2ee1df11";
+        String outmsgid = mMsMessageManager.sendNotifyBlacklist(groupid, touser);
+        System.out.println("NotifyMsgBlacklist sendNotifyBlacklist get msgid:"+outmsgid);
+    }
+
+    public void NotifyMsgForbidden() {
+        System.out.println("NotifyMsgForbidden was called...");
+
+        String cont = "hahaha";
+        String groupid = "wocaowocaowocao";
+        String touser = "dcd54ddf2ee1df11";
+        String outmsgid = mMsMessageManager.sendNotifyForbidden(groupid, touser);
+        System.out.println("NotifyMsgForbidden sendNotifyForbidden get msgid:"+outmsgid);
+    }
+
+    public void NotifyMsgSettedMgr() {
+        System.out.println("NotifyMsgSettedMgr was called...");
+
+        String cont = "hahaha";
+        String groupid = "wocaowocaowocao";
+        String touser = "dcd54ddf2ee1df11";
+        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser);
+        System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 
 

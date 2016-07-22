@@ -53,6 +53,7 @@ public:
     int MCSyncSeqn();
     int MCSyncMsg();
     int MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, const std::string& content);
+    int MCSendTxtMsgTos(std::string& outmsgid, const std::string& groupid, const std::vector<std::string>& vusrs, const std::string& content);
     int MCSendTxtMsgToUsr(std::string& outmsgid, const std::string& userid, const std::string& content);
     int MCSendTxtMsgToUsrs(std::string& outmsgid, const std::vector<std::string>& vusrs, const std::string& content);
     
@@ -63,6 +64,14 @@ public:
     int MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid);
     
     int MCConnStatus() { return MSStatus(); }
+    void MCSetUserId(const std::string& userid) {
+        m_nsUserId = [NSString stringWithCString:userid.c_str() encoding:NSUTF8StringEncoding];
+        SetUserId(userid);
+    }
+    void MCSetToken(const std::string& token) {
+        m_nsToken = [NSString stringWithCString:token.c_str() encoding:NSUTF8StringEncoding];
+        SetToken(token);
+    }
     void MCSetNickName(const std::string& nickname) {
         m_nsNname = [NSString stringWithCString:nickname.c_str() encoding:NSUTF8StringEncoding];
         SetNickName(nickname);
@@ -293,7 +302,6 @@ private:
     std::string                 m_strNname;;
     
     bool                        m_isFetched;
-    //int64_t                     m_userSeqn;
     GroupSeqnMap                m_groupSeqn;
     NSRecursiveLock*            m_recurLock;
     

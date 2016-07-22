@@ -69,6 +69,8 @@ public:
     int SyncGroupData(const std::string& gropuid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
+    void SetUserId(const std::string& userid) { m_uid = userid; }
+    void SetToken(const std::string& token) { m_token = token; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
     void SetUIconUrl(const std::string& uiconurl) { m_uicon = uiconurl; }
 
@@ -112,7 +114,6 @@ private:
     XMsgProcesser*           m_pMsgProcesser;
     uint32_t                 m_lastUpdateTime;
     std::string              m_uid;
-    std::string              m_grpid;
     std::string              m_token;
     std::string              m_nname;
     std::string              m_uicon;

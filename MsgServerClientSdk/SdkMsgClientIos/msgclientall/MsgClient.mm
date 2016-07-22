@@ -137,6 +137,20 @@ int MsgClient::MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, c
     return SndMsg(outmsgid, groupid, "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
 }
 
+
+int MsgClient::MCSendTxtMsgTos(std::string& outmsgid, const std::string& groupid, const std::vector<std::string>& vusrs, const std::string& content)
+{
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] content:[NSString stringWithUTF8String:content.c_str()]];
+    NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
+    
+    if (!jsonString)
+    {
+        NSLog(@"MCSendTxtMsgTos JSONToNSString error");
+        return -3;
+    }
+    return SndMsgTo(outmsgid, groupid, "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, vusrs);
+}
+
 int MsgClient::MCSendTxtMsgToUsr(std::string& outmsgid, const std::string& userid, const std::string& content)
 {
     std::vector<std::string> uvec;
@@ -165,7 +179,7 @@ int MsgClient::MCSendTxtMsgToUsrs(std::string& outmsgid, const std::vector<std::
         return -3;
     }
     
-    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, vusrs);
+    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, vusrs);
 }
 
 
@@ -345,27 +359,39 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
     std::cout << "MsgClient::OnRecvMsg was called, seqn:" << seqn << ", msg.length:" << msg.length() << std::endl;
     
     UpdateLocalSeqn(m_strUserId, seqn);
-    pms::Entity en;
-    en.ParseFromString(msg);
-    if (en.usr_from().compare(m_strUserId)==0) {
-        printf("MsgClient::OnRecvMsg recv the msg you just send!!!, so return\n");
+    
+    NSError *error = nil;
+    Byte *b = (Byte*)malloc(msg.length());
+    memset(b, 0x00, msg.length());
+    memcpy(b, msg.c_str(), msg.length());
+    NSData *ns_dtbyte = [NSData dataWithBytes:b length:msg.length()];
+    Entity *entityByte = [Entity parseFromData:ns_dtbyte error:&error];
+    if (entityByte == nil || error != nil) {
+        NSLog(@"eeeeeeeeeee-->entityByte is nil");
+        if (error) {
+            NSLog(@"eeeee Entity parseFromData has error:%@", error);
+        }
+        if (b) free(b);
+        b = nil;
         return;
     }
-    printf("MsgClient::OnRecvMsg pms::Entity msg tag:%d, cont:%s, romid:%s, usr_from:%s\n"\
-           , en.msg_tag()\
-           , en.msg_cont().c_str()\
-           , en.rom_id().c_str()\
-           , en.usr_from().c_str());
     
-    MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
-    NSDate *dateNow = [NSDate dateWithTimeIntervalSince1970:(en.msg_time())];
-    [txtMsg setMillSec:en.msg_time()];
-    [txtMsg setMsgId:[NSString stringWithCString:en.cmsg_id().c_str() encoding:NSUTF8StringEncoding]];
+    if ([[entityByte usrFrom] compare:m_nsUserId]==0) {
+        NSLog(@"MsgClient::OnRecvMsg recv the msg you just send!!!, so return");
+        if (b) free(b);
+        b = nil;
+        return;
+    }
+    NSLog(@"MsgClient::OnRecvMsg entityByte tag:%d, cont:%@, romid:%@, usr_from:%@", [entityByte msgTag], [entityByte msgCont], [entityByte romId], [entityByte usrFrom]);
     
+    MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[entityByte msgCont]]];
+    NSDate *dateNow = [NSDate dateWithTimeIntervalSince1970:[entityByte msgTime]];
+    [txtMsg setMillSec:[entityByte msgTime]];
+    [txtMsg setMsgId:[entityByte cmsgId]];
     NSLog(@"MsgClient::OnRecvMsg dateNow:%@, msg_time:%u"\
-          , dateNow, en.msg_time());
+          , dateNow, [entityByte msgTime]);
     
-    switch (en.msg_type())
+    switch ([entityByte msgType])
     {
         case pms::EMsgType::TTXT:
         {
@@ -427,8 +453,8 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
         }
             break;
     }
-    
-    
+    if (b) free(b);
+    b = nil;
 }
 
 void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std::string& msg)
@@ -436,25 +462,40 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
     std::cout << "MsgClient::OnRecvGroupMsg was called, seqn:" << seqn << ", seqnid:" << seqnid << ", msg.length:" << msg.length() << std::endl;
     
     UpdateLocalSeqn(seqnid, seqn);
-    pms::Entity en;
-    en.ParseFromString(msg);
-    if (en.usr_from().compare(m_strUserId)==0) {
-        printf("MsgClient::OnRecvGroupMsg recv the msg you just send!!!, so return\n");
+    
+    NSError *error = nil;
+    Byte *b = (Byte*)malloc(msg.length());
+    memset(b, 0x00, msg.length());
+    memcpy(b, msg.c_str(), msg.length());
+    
+    NSData *ns_dtbyte = [NSData dataWithBytes:b length:msg.length()];
+    Entity *entityByte = [Entity parseFromData:ns_dtbyte error:&error];
+    if (entityByte == nil || error != nil) {
+        NSLog(@"eeeeeeeeeee-->entityByte is nil");
+        if (error) {
+            NSLog(@"eeeee Entity parseFromData has error:%@", error);
+        }
+        if (b) free(b);
+        b = nil;
         return;
     }
-    printf("pms::Entity msg tag:%d, cont:%s, romid:%s, usr_from:%s\n"\
-           , en.msg_tag()\
-           , en.msg_cont().c_str()\
-           , en.rom_id().c_str()\
-           , en.usr_from().c_str());
     
-    MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[NSString stringWithCString:en.msg_cont().c_str() encoding:NSUTF8StringEncoding]]];
-    NSDate *dateNow = [NSDate dateWithTimeIntervalSince1970:(en.msg_time())];
-    [txtMsg setMillSec:en.msg_time()];
-    [txtMsg setMsgId:[NSString stringWithCString:en.cmsg_id().c_str() encoding:NSUTF8StringEncoding]];
+    if ([[entityByte usrFrom] compare:m_nsUserId]==0) {
+        NSLog(@"MsgClient::OnRecvGroupMsg recv the msg you just send!!!, so return");
+        if (b) free(b);
+        b = nil;
+        return;
+    }
+    NSLog(@"MsgClient::OnRecvGroupMsg entityByte tag:%d, cont:%@, romid:%@, usr_from:%@", [entityByte msgTag], [entityByte msgCont], [entityByte romId], [entityByte usrFrom]);
+    
+    MSTxtMessage *txtMsg = [MSMsgUtil DecodeDictToMessageWithDict:[MSMsgUtil NSStringToJSONWithString:[entityByte msgCont]]];
+    NSDate *dateNow = [NSDate dateWithTimeIntervalSince1970:[entityByte msgTime]];
+    [txtMsg setMillSec:[entityByte msgTime]];
+    [txtMsg setMsgId:[entityByte cmsgId]];
     NSLog(@"MsgClient::OnRecvGroupMsg dateNow:%@, msg_time:%u"\
-          , dateNow, en.msg_time());
-    switch (en.msg_type())
+          , dateNow, [entityByte msgTime]);
+    
+    switch ([entityByte msgType])
     {
         case pms::EMsgType::TTXT:
         {
@@ -510,41 +551,9 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
         }
             break;
     }
+    if (b) free(b);
+    b = nil;
     //PutLocalSeqnsToDb();
-    
-#if 0
-    NSError *error = nil;
-    Byte *b = (Byte*)malloc(msg.length());
-    memset(b, 0x00, msg.length());
-    memcpy(b, msg.c_str(), msg.length());
-    NSData *ns_dtbyte = [NSData dataWithBytes:b length:msg.length()];
-    Entity *entityByte = [Entity parseFromData:ns_dtbyte error:&error];
-    if (entityByte == nil)
-        NSLog(@"eeeeeeeeeee-->entityByte is nil");
-    else
-        NSLog(@"eeeeeeeeeee-->entityByte is not nil");
-    
-    NSString *ns_asc = [[NSString alloc] initWithBytes:msg.c_str() length:msg.length() encoding:NSASCIIStringEncoding];
-    NSData *ns_dtt = [ns_asc dataUsingEncoding:NSASCIIStringEncoding];
-    Entity *entityMsg = [Entity parseFromData:ns_dtt error:&error];
-    Entity *entityMsg0t = [[Entity alloc] initWithData:ns_dtt error:&error];
-    if (entityMsg == nil)
-        NSLog(@"eeeeeeeeeee-->entityMsg is nil");
-    else
-        NSLog(@"eeeeeeeeeee-->entityMsg is not nil");
-    if (entityMsg0t == nil)
-        NSLog(@"eeeeeeeeeee-->entityMsg0t is nil");
-    else
-        NSLog(@"eeeeeeeeeee-->entityMsg0t is not nil");
-    
-    NSString *ns_cns = [NSString stringWithCString:msg.c_str() encoding:NSASCIIStringEncoding];
-    NSData *ns_dt2 = [ns_cns dataUsingEncoding:NSASCIIStringEncoding];
-    Entity* entityMsg2 = [Entity parseFromData:ns_dt2 error:&error];
-    if (entityMsg2 == nil)
-        NSLog(@"eeeeeeeeeee-->entityMsg2 is nil");
-    else
-        NSLog(@"eeeeeeeeeee-->entityMsg2 is not nil");
-#endif
 }
 
 
