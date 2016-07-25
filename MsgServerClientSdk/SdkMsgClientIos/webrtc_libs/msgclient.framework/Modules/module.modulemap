@@ -1,0 +1,6 @@
+framework module msgclient {
+  umbrella header "msgclient.h"
+
+  export *
+  module * { export * }
+}

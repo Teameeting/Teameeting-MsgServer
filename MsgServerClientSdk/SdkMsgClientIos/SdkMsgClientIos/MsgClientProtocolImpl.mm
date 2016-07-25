@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MsgClientProtocolImpl.h"
-#import "msgclientall/MSClientType.h"
+#import "msgclient/MSClientType.h"
 
 @implementation MsgClientProtocolImpl
 

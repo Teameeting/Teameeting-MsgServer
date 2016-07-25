@@ -31,6 +31,7 @@ LOCAL_SRC_FILES +=  webrtc/base/asyncfile.cc \
 					webrtc/base/asynctcpsocket.cc \
 					webrtc/base/asyncudpsocket.cc \
 					webrtc/base/base64.cc \
+					webrtc/base/buffer.cc \
 					webrtc/base/checks.cc \
 					webrtc/base/criticalsection.cc \
 					webrtc/base/event.cc \

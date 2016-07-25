@@ -1,4 +1,0 @@
-OPEN libclient_common.a
-ADDLIB libprotobuf-lite.a
-SAVE
-END

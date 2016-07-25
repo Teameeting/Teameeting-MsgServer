@@ -1,0 +1,2120 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E641561E1D43002E00572DB5 /* FrameworkMsgClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E641561D1D43002E00572DB5 /* FrameworkMsgClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E64156251D43002E00572DB5 /* FrameworkMsgClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E641561A1D43002E00572DB5 /* FrameworkMsgClient.framework */; };
+		E641562A1D43002E00572DB5 /* FrameworkMsgClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E64156291D43002E00572DB5 /* FrameworkMsgClientTests.m */; };
+		E64156481D43007A00572DB5 /* MsgClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E64156471D43007A00572DB5 /* MsgClientTests.m */; };
+		E641591D1D43025500572DB5 /* msgclient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E64159131D43025500572DB5 /* msgclient.framework */; };
+		E64159221D43025500572DB5 /* msgclientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E64159211D43025500572DB5 /* msgclientTests.m */; };
+		E6415A8C1D4302A500572DB5 /* XJSBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E64159301D4302A400572DB5 /* XJSBuffer.cpp */; };
+		E6415A8D1D4302A500572DB5 /* XJSBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159311D4302A400572DB5 /* XJSBuffer.h */; };
+		E6415A8E1D4302A500572DB5 /* XMsgCallback.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159321D4302A400572DB5 /* XMsgCallback.h */; };
+		E6415A8F1D4302A500572DB5 /* XMsgClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E64159331D4302A400572DB5 /* XMsgClient.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=hidden"; }; };
+		E6415A901D4302A500572DB5 /* XMsgClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159341D4302A400572DB5 /* XMsgClient.h */; };
+		E6415A911D4302A500572DB5 /* XMsgProcesser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E64159351D4302A400572DB5 /* XMsgProcesser.cpp */; };
+		E6415A921D4302A500572DB5 /* XMsgProcesser.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159361D4302A400572DB5 /* XMsgProcesser.h */; };
+		E6415A931D4302A500572DB5 /* XTcpClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159371D4302A400572DB5 /* XTcpClient.h */; };
+		E6415A941D4302A500572DB5 /* XTcpClientImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E64159381D4302A400572DB5 /* XTcpClientImpl.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=hidden"; }; };
+		E6415A951D4302A500572DB5 /* XTcpClientImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159391D4302A400572DB5 /* XTcpClientImpl.h */; };
+		E6415A961D4302A500572DB5 /* XTcpTick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E641593A1D4302A400572DB5 /* XTcpTick.cpp */; settings = {COMPILER_FLAGS = "-fvisibility=hidden"; }; };
+		E6415A971D4302A500572DB5 /* XTcpTick.h in Headers */ = {isa = PBXBuildFile; fileRef = E641593B1D4302A400572DB5 /* XTcpTick.h */; };
+		E6415A9C1D4302A500572DB5 /* common_msg.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E64159421D4302A400572DB5 /* common_msg.pb.cc */; };
+		E6415A9D1D4302A500572DB5 /* common_msg.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159431D4302A400572DB5 /* common_msg.pb.h */; };
+		E6415A9F1D4302A500572DB5 /* entity_msg.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E64159451D4302A400572DB5 /* entity_msg.pb.cc */; };
+		E6415AA01D4302A500572DB5 /* entity_msg.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159461D4302A400572DB5 /* entity_msg.pb.h */; };
+		E6415AA21D4302A500572DB5 /* entity_msg_type.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E64159481D4302A400572DB5 /* entity_msg_type.pb.cc */; };
+		E6415AA31D4302A500572DB5 /* entity_msg_type.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159491D4302A400572DB5 /* entity_msg_type.pb.h */; };
+		E6415AA51D4302A500572DB5 /* storage_msg.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E641594B1D4302A400572DB5 /* storage_msg.pb.cc */; };
+		E6415AA61D4302A500572DB5 /* storage_msg.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E641594C1D4302A400572DB5 /* storage_msg.pb.h */; };
+		E6415AA81D4302A500572DB5 /* storage_msg_type.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E641594E1D4302A400572DB5 /* storage_msg_type.pb.cc */; };
+		E6415AA91D4302A500572DB5 /* storage_msg_type.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E641594F1D4302A400572DB5 /* storage_msg_type.pb.h */; };
+		E6415AAB1D4302A500572DB5 /* sys_msg.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E64159511D4302A400572DB5 /* sys_msg.pb.cc */; };
+		E6415AAC1D4302A500572DB5 /* sys_msg.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159521D4302A400572DB5 /* sys_msg.pb.h */; };
+		E6415AAE1D4302A500572DB5 /* sys_msg_type.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E64159541D4302A400572DB5 /* sys_msg_type.pb.cc */; };
+		E6415AAF1D4302A500572DB5 /* sys_msg_type.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159551D4302A400572DB5 /* sys_msg_type.pb.h */; };
+		E6415AB11D4302A500572DB5 /* document.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159581D4302A400572DB5 /* document.h */; };
+		E6415AB21D4302A500572DB5 /* filestream.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159591D4302A400572DB5 /* filestream.h */; };
+		E6415AB31D4302A500572DB5 /* pow10.h in Headers */ = {isa = PBXBuildFile; fileRef = E641595B1D4302A400572DB5 /* pow10.h */; };
+		E6415AB41D4302A500572DB5 /* stack.h in Headers */ = {isa = PBXBuildFile; fileRef = E641595C1D4302A400572DB5 /* stack.h */; };
+		E6415AB51D4302A500572DB5 /* strfunc.h in Headers */ = {isa = PBXBuildFile; fileRef = E641595D1D4302A400572DB5 /* strfunc.h */; };
+		E6415AB61D4302A500572DB5 /* prettywriter.h in Headers */ = {isa = PBXBuildFile; fileRef = E641595E1D4302A400572DB5 /* prettywriter.h */; };
+		E6415AB71D4302A500572DB5 /* rapidjson.h in Headers */ = {isa = PBXBuildFile; fileRef = E641595F1D4302A400572DB5 /* rapidjson.h */; };
+		E6415AB81D4302A500572DB5 /* reader.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159601D4302A400572DB5 /* reader.h */; };
+		E6415AB91D4302A500572DB5 /* stringbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159611D4302A400572DB5 /* stringbuffer.h */; };
+		E6415ABA1D4302A500572DB5 /* writer.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159621D4302A400572DB5 /* writer.h */; };
+		E6415ABB1D4302A500572DB5 /* RTC_Export.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159631D4302A400572DB5 /* RTC_Export.h */; };
+		E6415ABC1D4302A500572DB5 /* RTMsgCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = E64159641D4302A400572DB5 /* RTMsgCommon.h */; };
+		E6415B861D4302A500572DB5 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A301D4302A500572DB5 /* common.h */; };
+		E6415B871D4302A500572DB5 /* common_types.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A311D4302A500572DB5 /* common_types.h */; };
+		E6415B881D4302A500572DB5 /* transport.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A321D4302A500572DB5 /* transport.h */; };
+		E6415B891D4302A500572DB5 /* typedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A331D4302A500572DB5 /* typedefs.h */; };
+		E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A541D4302A500572DB5 /* MSClientDelegate.h */; };
+		E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A551D4302A500572DB5 /* MSClientManager.h */; };
+		E6415BAA1D4302A500572DB5 /* MSClientManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A561D4302A500572DB5 /* MSClientManager.mm */; };
+		E6415BAB1D4302A500572DB5 /* MSClientType.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A571D4302A500572DB5 /* MSClientType.h */; };
+		E6415BAC1D4302A500572DB5 /* MsgClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A581D4302A500572DB5 /* MsgClient.h */; };
+		E6415BAD1D4302A500572DB5 /* MsgClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A591D4302A500572DB5 /* MsgClient.mm */; };
+		E6415BAE1D4302A500572DB5 /* MsgClientProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5A1D4302A500572DB5 /* MsgClientProtocol.h */; };
+		E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5B1D4302A500572DB5 /* MSGroupDelegate.h */; };
+		E6415BB01D4302A500572DB5 /* MSGroupManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5C1D4302A500572DB5 /* MSGroupManager.h */; };
+		E6415BB11D4302A500572DB5 /* MSGroupManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A5D1D4302A500572DB5 /* MSGroupManager.mm */; };
+		E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5E1D4302A500572DB5 /* MSMessage.h */; };
+		E6415BB31D4302A500572DB5 /* MSMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A5F1D4302A500572DB5 /* MSMessage.mm */; };
+		E6415BB41D4302A500572DB5 /* MSMessageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A601D4302A500572DB5 /* MSMessageManager.h */; };
+		E6415BB51D4302A500572DB5 /* MSMessageManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A611D4302A500572DB5 /* MSMessageManager.mm */; };
+		E6415BB61D4302A500572DB5 /* MSMsgUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A621D4302A500572DB5 /* MSMsgUtil.h */; };
+		E6415BB71D4302A500572DB5 /* MSMsgUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A631D4302A500572DB5 /* MSMsgUtil.mm */; };
+		E6415BB81D4302A500572DB5 /* MSSharedSeqnConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A641D4302A500572DB5 /* MSSharedSeqnConfig.h */; };
+		E6415BB91D4302A500572DB5 /* MSSharedSeqnConfig.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A651D4302A500572DB5 /* MSSharedSeqnConfig.mm */; };
+		E6415BBA1D4302A500572DB5 /* MSSqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A661D4302A500572DB5 /* MSSqlite3.h */; };
+		E6415BBB1D4302A500572DB5 /* MSSqlite3.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A671D4302A500572DB5 /* MSSqlite3.mm */; };
+		E6415BBC1D4302A500572DB5 /* MSSqlite3ClientSql.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */; };
+		E6415BBD1D4302A500572DB5 /* MSSqlite3Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */; };
+		E6415BBE1D4302A500572DB5 /* MSSqlite3Manager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */; };
+		E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */; };
+		E6415BC01D4302A500572DB5 /* MSTxtMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */; };
+		E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */; };
+		E6415BC51D4302A500572DB5 /* CommonMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A721D4302A500572DB5 /* CommonMsg.pbobjc.h */; };
+		E6415BC61D4302A500572DB5 /* CommonMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A731D4302A500572DB5 /* CommonMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BC91D4302A500572DB5 /* EntityMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A761D4302A500572DB5 /* EntityMsg.pbobjc.h */; };
+		E6415BCA1D4302A500572DB5 /* EntityMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A771D4302A500572DB5 /* EntityMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BCB1D4302A500572DB5 /* EntityMsgType.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A781D4302A500572DB5 /* EntityMsgType.pbobjc.h */; };
+		E6415BCC1D4302A500572DB5 /* EntityMsgType.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A791D4302A500572DB5 /* EntityMsgType.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BCF1D4302A500572DB5 /* StorageMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A7C1D4302A500572DB5 /* StorageMsg.pbobjc.h */; };
+		E6415BD01D4302A500572DB5 /* StorageMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A7D1D4302A500572DB5 /* StorageMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BD11D4302A500572DB5 /* StorageMsgType.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A7E1D4302A500572DB5 /* StorageMsgType.pbobjc.h */; };
+		E6415BD21D4302A500572DB5 /* StorageMsgType.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A7F1D4302A500572DB5 /* StorageMsgType.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BD51D4302A500572DB5 /* SysMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A821D4302A500572DB5 /* SysMsg.pbobjc.h */; };
+		E6415BD61D4302A500572DB5 /* SysMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A831D4302A500572DB5 /* SysMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BD71D4302A500572DB5 /* SysMsgType.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A841D4302A500572DB5 /* SysMsgType.pbobjc.h */; };
+		E6415BD81D4302A500572DB5 /* SysMsgType.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A851D4302A500572DB5 /* SysMsgType.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415BD91D4302A500572DB5 /* RTSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A861D4302A500572DB5 /* RTSingleton.h */; };
+		E6415BDA1D4302A500572DB5 /* TMClientType.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A871D4302A500572DB5 /* TMClientType.h */; };
+		E6415BE71D4304B600572DB5 /* libprotobuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6415BE01D4302DA00572DB5 /* libprotobuf.a */; };
+		E6415BE81D4304B600572DB5 /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6415BE61D4302E300572DB5 /* libProtocolBuffers.a */; };
+		E6415BEC1D43052700572DB5 /* messagehandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BE91D43052700572DB5 /* messagehandler.h */; };
+		E6415BED1D43052700572DB5 /* messagequeue.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BEA1D43052700572DB5 /* messagequeue.h */; };
+		E6415BEE1D43052700572DB5 /* thread.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BEB1D43052700572DB5 /* thread.h */; };
+		E6415BF81D43057600572DB5 /* criticalsection.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BF61D43057600572DB5 /* criticalsection.h */; };
+		E6415C001D4305C700572DB5 /* event.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BFA1D4305C700572DB5 /* event.h */; };
+		E6415C021D4305C700572DB5 /* logging.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BFC1D4305C700572DB5 /* logging.h */; };
+		E6415C031D4305C700572DB5 /* scoped_autorelease_pool.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415BFD1D4305C700572DB5 /* scoped_autorelease_pool.h */; };
+		E6415CC61D43062500572DB5 /* array_view.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C051D43062500572DB5 /* array_view.h */; };
+		E6415CC71D43062500572DB5 /* arraysize.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C061D43062500572DB5 /* arraysize.h */; };
+		E6415CC91D43062500572DB5 /* asyncfile.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C081D43062500572DB5 /* asyncfile.h */; };
+		E6415CCA1D43062500572DB5 /* asynchttprequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C091D43062500572DB5 /* asynchttprequest.h */; };
+		E6415CCB1D43062500572DB5 /* asyncinvoker-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C0A1D43062500572DB5 /* asyncinvoker-inl.h */; };
+		E6415CCC1D43062500572DB5 /* asyncinvoker.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C0B1D43062500572DB5 /* asyncinvoker.h */; };
+		E6415CCE1D43062500572DB5 /* asyncpacketsocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C0D1D43062500572DB5 /* asyncpacketsocket.h */; };
+		E6415CD01D43062500572DB5 /* asyncresolverinterface.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C0F1D43062500572DB5 /* asyncresolverinterface.h */; };
+		E6415CD21D43062500572DB5 /* asyncsocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C111D43062500572DB5 /* asyncsocket.h */; };
+		E6415CD41D43062500572DB5 /* asynctcpsocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C131D43062500572DB5 /* asynctcpsocket.h */; };
+		E6415CD61D43062500572DB5 /* asyncudpsocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C151D43062500572DB5 /* asyncudpsocket.h */; };
+		E6415CD71D43062500572DB5 /* atomicops.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C161D43062500572DB5 /* atomicops.h */; };
+		E6415CD81D43062500572DB5 /* autodetectproxy.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C171D43062500572DB5 /* autodetectproxy.h */; };
+		E6415CD91D43062500572DB5 /* bandwidthsmoother.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C181D43062500572DB5 /* bandwidthsmoother.h */; };
+		E6415CDB1D43062500572DB5 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C1A1D43062500572DB5 /* base64.h */; };
+		E6415CDC1D43062500572DB5 /* basicdefs.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C1B1D43062500572DB5 /* basicdefs.h */; };
+		E6415CDD1D43062500572DB5 /* basictypes.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C1C1D43062500572DB5 /* basictypes.h */; };
+		E6415CDE1D43062500572DB5 /* bind.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C1D1D43062500572DB5 /* bind.h */; };
+		E6415CDF1D43062500572DB5 /* bitbuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C1E1D43062500572DB5 /* bitbuffer.h */; };
+		E6415CE01D43062500572DB5 /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C1F1D43062500572DB5 /* buffer.h */; };
+		E6415CE11D43062500572DB5 /* bufferqueue.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C201D43062500572DB5 /* bufferqueue.h */; };
+		E6415CE21D43062500572DB5 /* bytebuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C211D43062500572DB5 /* bytebuffer.h */; };
+		E6415CE31D43062500572DB5 /* byteorder.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C221D43062500572DB5 /* byteorder.h */; };
+		E6415CE41D43062500572DB5 /* callback.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C231D43062500572DB5 /* callback.h */; };
+		E6415CE61D43062500572DB5 /* checks.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C251D43062500572DB5 /* checks.h */; };
+		E6415CE81D43062500572DB5 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C271D43062500572DB5 /* common.h */; };
+		E6415CE91D43062500572DB5 /* constructormagic.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C281D43062500572DB5 /* constructormagic.h */; };
+		E6415CEA1D43062500572DB5 /* crc32.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C291D43062500572DB5 /* crc32.h */; };
+		E6415CEC1D43062500572DB5 /* cryptstring.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C2B1D43062500572DB5 /* cryptstring.h */; };
+		E6415CED1D43062500572DB5 /* dbus.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C2C1D43062500572DB5 /* dbus.h */; };
+		E6415CEE1D43062500572DB5 /* deprecation.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C2D1D43062500572DB5 /* deprecation.h */; };
+		E6415CEF1D43062500572DB5 /* diskcache_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C2E1D43062500572DB5 /* diskcache_win32.h */; };
+		E6415CF01D43062500572DB5 /* diskcache.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C2F1D43062500572DB5 /* diskcache.h */; };
+		E6415CF11D43062500572DB5 /* dscp.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C301D43062500572DB5 /* dscp.h */; };
+		E6415CF31D43062500572DB5 /* event_tracer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C321D43062500572DB5 /* event_tracer.h */; };
+		E6415CF51D43062500572DB5 /* exp_filter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C341D43062500572DB5 /* exp_filter.h */; };
+		E6415CF61D43062500572DB5 /* fakenetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C351D43062500572DB5 /* fakenetwork.h */; };
+		E6415CF71D43062500572DB5 /* fakesslidentity.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C361D43062500572DB5 /* fakesslidentity.h */; };
+		E6415CF81D43062500572DB5 /* faketaskrunner.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C371D43062500572DB5 /* faketaskrunner.h */; };
+		E6415CF91D43062500572DB5 /* filerotatingstream.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C381D43062500572DB5 /* filerotatingstream.h */; };
+		E6415CFA1D43062500572DB5 /* fileutils_mock.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C391D43062500572DB5 /* fileutils_mock.h */; };
+		E6415CFB1D43062500572DB5 /* fileutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C3A1D43062500572DB5 /* fileutils.h */; };
+		E6415CFC1D43062500572DB5 /* firewallsocketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C3B1D43062500572DB5 /* firewallsocketserver.h */; };
+		E6415CFD1D43062500572DB5 /* flags.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C3C1D43062500572DB5 /* flags.h */; };
+		E6415CFE1D43062500572DB5 /* format_macros.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C3D1D43062500572DB5 /* format_macros.h */; };
+		E6415CFF1D43062500572DB5 /* gunit_prod.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C3E1D43062500572DB5 /* gunit_prod.h */; };
+		E6415D001D43062500572DB5 /* gunit.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C3F1D43062500572DB5 /* gunit.h */; };
+		E6415D011D43062500572DB5 /* helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C401D43062500572DB5 /* helpers.h */; };
+		E6415D021D43062500572DB5 /* httpbase.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C411D43062500572DB5 /* httpbase.h */; };
+		E6415D031D43062500572DB5 /* httpclient.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C421D43062500572DB5 /* httpclient.h */; };
+		E6415D041D43062500572DB5 /* httpcommon-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C431D43062500572DB5 /* httpcommon-inl.h */; };
+		E6415D051D43062500572DB5 /* httpcommon.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C441D43062500572DB5 /* httpcommon.h */; };
+		E6415D061D43062500572DB5 /* httprequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C451D43062500572DB5 /* httprequest.h */; };
+		E6415D071D43062500572DB5 /* httpserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C461D43062500572DB5 /* httpserver.h */; };
+		E6415D091D43062500572DB5 /* ifaddrs-android.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C481D43062500572DB5 /* ifaddrs-android.h */; };
+		E6415D0B1D43062500572DB5 /* ipaddress.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C4A1D43062500572DB5 /* ipaddress.h */; };
+		E6415D0C1D43062500572DB5 /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C4B1D43062500572DB5 /* json.h */; };
+		E6415D0D1D43062500572DB5 /* latebindingsymboltable.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C4C1D43062500572DB5 /* latebindingsymboltable.h */; };
+		E6415D0E1D43062500572DB5 /* libdbusglibsymboltable.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C4D1D43062500572DB5 /* libdbusglibsymboltable.h */; };
+		E6415D0F1D43062500572DB5 /* linked_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C4E1D43062500572DB5 /* linked_ptr.h */; };
+		E6415D101D43062500572DB5 /* linux.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C4F1D43062500572DB5 /* linux.h */; };
+		E6415D111D43062500572DB5 /* linuxfdwalk.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C501D43062500572DB5 /* linuxfdwalk.h */; };
+		E6415D131D43062500572DB5 /* logsinks.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C521D43062500572DB5 /* logsinks.h */; };
+		E6415D141D43062500572DB5 /* macasyncsocket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C531D43062500572DB5 /* macasyncsocket.h */; };
+		E6415D151D43062500572DB5 /* maccocoasocketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C541D43062500572DB5 /* maccocoasocketserver.h */; };
+		E6415D161D43062500572DB5 /* maccocoathreadhelper.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C551D43062500572DB5 /* maccocoathreadhelper.h */; };
+		E6415D181D43062500572DB5 /* macconversion.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C571D43062500572DB5 /* macconversion.h */; };
+		E6415D191D43062500572DB5 /* macsocketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C581D43062500572DB5 /* macsocketserver.h */; };
+		E6415D1A1D43062500572DB5 /* macutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C591D43062500572DB5 /* macutils.h */; };
+		E6415D1B1D43062500572DB5 /* macwindowpicker.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C5A1D43062500572DB5 /* macwindowpicker.h */; };
+		E6415D1C1D43062500572DB5 /* mathutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C5B1D43062500572DB5 /* mathutils.h */; };
+		E6415D1D1D43062500572DB5 /* md5.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C5C1D43062500572DB5 /* md5.h */; };
+		E6415D1E1D43062500572DB5 /* md5digest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C5D1D43062500572DB5 /* md5digest.h */; };
+		E6415D1F1D43062500572DB5 /* messagedigest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C5E1D43062500572DB5 /* messagedigest.h */; };
+		E6415D221D43062500572DB5 /* multipart.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C611D43062500572DB5 /* multipart.h */; };
+		E6415D231D43062500572DB5 /* natserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C621D43062500572DB5 /* natserver.h */; };
+		E6415D241D43062500572DB5 /* natsocketfactory.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C631D43062500572DB5 /* natsocketfactory.h */; };
+		E6415D251D43062500572DB5 /* nattypes.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C641D43062500572DB5 /* nattypes.h */; };
+		E6415D271D43062500572DB5 /* nethelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C661D43062500572DB5 /* nethelpers.h */; };
+		E6415D281D43062500572DB5 /* network.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C671D43062500572DB5 /* network.h */; };
+		E6415D2A1D43062500572DB5 /* networkmonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C691D43062500572DB5 /* networkmonitor.h */; };
+		E6415D2B1D43062500572DB5 /* nullsocketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C6A1D43062500572DB5 /* nullsocketserver.h */; };
+		E6415D2C1D43062500572DB5 /* openssl.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C6B1D43062500572DB5 /* openssl.h */; };
+		E6415D2D1D43062500572DB5 /* openssladapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C6C1D43062500572DB5 /* openssladapter.h */; };
+		E6415D2E1D43062500572DB5 /* openssldigest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C6D1D43062500572DB5 /* openssldigest.h */; };
+		E6415D2F1D43062500572DB5 /* opensslidentity.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C6E1D43062500572DB5 /* opensslidentity.h */; };
+		E6415D301D43062500572DB5 /* opensslstreamadapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C6F1D43062500572DB5 /* opensslstreamadapter.h */; };
+		E6415D311D43062500572DB5 /* optionsfile.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C701D43062500572DB5 /* optionsfile.h */; };
+		E6415D321D43062500572DB5 /* pathutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C711D43062500572DB5 /* pathutils.h */; };
+		E6415D341D43062500572DB5 /* physicalsocketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C731D43062500572DB5 /* physicalsocketserver.h */; };
+		E6415D351D43062500572DB5 /* platform_file.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C741D43062500572DB5 /* platform_file.h */; };
+		E6415D361D43062500572DB5 /* platform_thread_types.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C751D43062500572DB5 /* platform_thread_types.h */; };
+		E6415D381D43062500572DB5 /* platform_thread.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C771D43062500572DB5 /* platform_thread.h */; };
+		E6415D391D43062500572DB5 /* posix.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C781D43062500572DB5 /* posix.h */; };
+		E6415D3A1D43062500572DB5 /* profiler.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C791D43062500572DB5 /* profiler.h */; };
+		E6415D3B1D43062500572DB5 /* proxydetect.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C7A1D43062500572DB5 /* proxydetect.h */; };
+		E6415D3C1D43062500572DB5 /* proxyinfo.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C7B1D43062500572DB5 /* proxyinfo.h */; };
+		E6415D3D1D43062500572DB5 /* proxyserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C7C1D43062500572DB5 /* proxyserver.h */; };
+		E6415D3E1D43062500572DB5 /* ratelimiter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C7D1D43062500572DB5 /* ratelimiter.h */; };
+		E6415D3F1D43062500572DB5 /* ratetracker.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C7E1D43062500572DB5 /* ratetracker.h */; };
+		E6415D401D43062500572DB5 /* refcount.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C7F1D43062500572DB5 /* refcount.h */; };
+		E6415D411D43062500572DB5 /* referencecountedsingletonfactory.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C801D43062500572DB5 /* referencecountedsingletonfactory.h */; };
+		E6415D421D43062500572DB5 /* rollingaccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C811D43062500572DB5 /* rollingaccumulator.h */; };
+		E6415D431D43062500572DB5 /* rtccertificate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C821D43062500572DB5 /* rtccertificate.h */; };
+		E6415D441D43062500572DB5 /* safe_conversions_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C831D43062500572DB5 /* safe_conversions_impl.h */; };
+		E6415D451D43062500572DB5 /* safe_conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C841D43062500572DB5 /* safe_conversions.h */; };
+		E6415D461D43062500572DB5 /* schanneladapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C851D43062500572DB5 /* schanneladapter.h */; };
+		E6415D481D43062500572DB5 /* scoped_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C871D43062500572DB5 /* scoped_ptr.h */; };
+		E6415D491D43062500572DB5 /* scoped_ref_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C881D43062500572DB5 /* scoped_ref_ptr.h */; };
+		E6415D4A1D43062500572DB5 /* scopedptrcollection.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C891D43062500572DB5 /* scopedptrcollection.h */; };
+		E6415D4B1D43062500572DB5 /* sec_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C8A1D43062500572DB5 /* sec_buffer.h */; };
+		E6415D4C1D43062500572DB5 /* sha1.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C8B1D43062500572DB5 /* sha1.h */; };
+		E6415D4D1D43062500572DB5 /* sha1digest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C8C1D43062500572DB5 /* sha1digest.h */; };
+		E6415D4F1D43062500572DB5 /* sharedexclusivelock.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C8E1D43062500572DB5 /* sharedexclusivelock.h */; };
+		E6415D511D43062500572DB5 /* signalthread.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C901D43062500572DB5 /* signalthread.h */; };
+		E6415D531D43062500572DB5 /* sigslot.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C921D43062500572DB5 /* sigslot.h */; };
+		E6415D541D43062500572DB5 /* sigslotrepeater.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C931D43062500572DB5 /* sigslotrepeater.h */; };
+		E6415D551D43062500572DB5 /* sigslottester.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C941D43062500572DB5 /* sigslottester.h */; };
+		E6415D561D43062500572DB5 /* socket_unittest.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C951D43062500572DB5 /* socket_unittest.h */; };
+		E6415D571D43062500572DB5 /* socket.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C961D43062500572DB5 /* socket.h */; };
+		E6415D581D43062500572DB5 /* socketadapters.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C971D43062500572DB5 /* socketadapters.h */; };
+		E6415D5A1D43062500572DB5 /* socketaddress.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C991D43062500572DB5 /* socketaddress.h */; };
+		E6415D5B1D43062500572DB5 /* socketaddresspair.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C9A1D43062500572DB5 /* socketaddresspair.h */; };
+		E6415D5C1D43062500572DB5 /* socketfactory.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C9B1D43062500572DB5 /* socketfactory.h */; };
+		E6415D5D1D43062500572DB5 /* socketpool.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C9C1D43062500572DB5 /* socketpool.h */; };
+		E6415D5E1D43062500572DB5 /* socketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C9D1D43062500572DB5 /* socketserver.h */; };
+		E6415D5F1D43062500572DB5 /* socketstream.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C9E1D43062500572DB5 /* socketstream.h */; };
+		E6415D601D43062500572DB5 /* ssladapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415C9F1D43062500572DB5 /* ssladapter.h */; };
+		E6415D611D43062500572DB5 /* sslconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA01D43062500572DB5 /* sslconfig.h */; };
+		E6415D621D43062500572DB5 /* sslfingerprint.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA11D43062500572DB5 /* sslfingerprint.h */; };
+		E6415D631D43062500572DB5 /* sslidentity.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA21D43062500572DB5 /* sslidentity.h */; };
+		E6415D641D43062500572DB5 /* sslroots.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA31D43062500572DB5 /* sslroots.h */; };
+		E6415D651D43062500572DB5 /* sslsocketfactory.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA41D43062500572DB5 /* sslsocketfactory.h */; };
+		E6415D661D43062500572DB5 /* sslstreamadapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA51D43062500572DB5 /* sslstreamadapter.h */; };
+		E6415D671D43062500572DB5 /* sslstreamadapterhelper.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA61D43062500572DB5 /* sslstreamadapterhelper.h */; };
+		E6415D681D43062500572DB5 /* stream.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA71D43062500572DB5 /* stream.h */; };
+		E6415D6A1D43062500572DB5 /* stringencode.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CA91D43062500572DB5 /* stringencode.h */; };
+		E6415D6B1D43062500572DB5 /* stringutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CAA1D43062500572DB5 /* stringutils.h */; };
+		E6415D6C1D43062500572DB5 /* systeminfo.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CAB1D43062500572DB5 /* systeminfo.h */; };
+		E6415D6D1D43062500572DB5 /* task.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CAC1D43062500572DB5 /* task.h */; };
+		E6415D6E1D43062500572DB5 /* taskparent.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CAD1D43062500572DB5 /* taskparent.h */; };
+		E6415D6F1D43062500572DB5 /* taskrunner.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CAE1D43062500572DB5 /* taskrunner.h */; };
+		E6415D701D43062500572DB5 /* template_util.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CAF1D43062500572DB5 /* template_util.h */; };
+		E6415D711D43062500572DB5 /* testbase64.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB01D43062500572DB5 /* testbase64.h */; };
+		E6415D721D43062500572DB5 /* testclient.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB11D43062500572DB5 /* testclient.h */; };
+		E6415D731D43062500572DB5 /* testechoserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB21D43062500572DB5 /* testechoserver.h */; };
+		E6415D741D43062500572DB5 /* testutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB31D43062500572DB5 /* testutils.h */; };
+		E6415D751D43062500572DB5 /* thread_annotations.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB41D43062500572DB5 /* thread_annotations.h */; };
+		E6415D771D43062500572DB5 /* thread_checker_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB61D43062500572DB5 /* thread_checker_impl.h */; };
+		E6415D781D43062500572DB5 /* thread_checker.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CB71D43062500572DB5 /* thread_checker.h */; };
+		E6415D7B1D43062500572DB5 /* timeutils.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CBA1D43062500572DB5 /* timeutils.h */; };
+		E6415D7C1D43062500572DB5 /* timing.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CBB1D43062500572DB5 /* timing.h */; };
+		E6415D7D1D43062500572DB5 /* trace_event.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CBC1D43062500572DB5 /* trace_event.h */; };
+		E6415D7E1D43062500572DB5 /* transformadapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CBD1D43062500572DB5 /* transformadapter.h */; };
+		E6415D7F1D43062500572DB5 /* unixfilesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CBE1D43062500572DB5 /* unixfilesystem.h */; };
+		E6415D801D43062500572DB5 /* urlencode.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CBF1D43062500572DB5 /* urlencode.h */; };
+		E6415D811D43062500572DB5 /* versionparsing.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CC01D43062500572DB5 /* versionparsing.h */; };
+		E6415D821D43062500572DB5 /* virtualsocketserver.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CC11D43062500572DB5 /* virtualsocketserver.h */; };
+		E6415D831D43062500572DB5 /* win32.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CC21D43062500572DB5 /* win32.h */; };
+		E6415D841D43062500572DB5 /* win32socketinit.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CC31D43062500572DB5 /* win32socketinit.h */; };
+		E6415D851D43062500572DB5 /* winping.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CC41D43062500572DB5 /* winping.h */; };
+		E6415D861D43062500572DB5 /* worker.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415CC51D43062500572DB5 /* worker.h */; };
+		E6415D901D45A80F00572DB5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6415D8F1D45A80F00572DB5 /* libsqlite3.tbd */; };
+		E6415DB81D45E35600572DB5 /* asyncfile.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D991D45E35600572DB5 /* asyncfile.cc */; };
+		E6415DB91D45E35600572DB5 /* asyncpacketsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D9A1D45E35600572DB5 /* asyncpacketsocket.cc */; };
+		E6415DBA1D45E35600572DB5 /* asyncresolverinterface.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D9B1D45E35600572DB5 /* asyncresolverinterface.cc */; };
+		E6415DBB1D45E35600572DB5 /* asyncsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D9C1D45E35600572DB5 /* asyncsocket.cc */; };
+		E6415DBC1D45E35600572DB5 /* asynctcpsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D9D1D45E35600572DB5 /* asynctcpsocket.cc */; };
+		E6415DBD1D45E35600572DB5 /* asyncudpsocket.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D9E1D45E35600572DB5 /* asyncudpsocket.cc */; };
+		E6415DBE1D45E35600572DB5 /* base64.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415D9F1D45E35600572DB5 /* base64.cc */; };
+		E6415DBF1D45E35600572DB5 /* checks.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA01D45E35600572DB5 /* checks.cc */; };
+		E6415DC01D45E35600572DB5 /* common.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA11D45E35600572DB5 /* common.cc */; };
+		E6415DC11D45E35600572DB5 /* criticalsection.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA21D45E35600572DB5 /* criticalsection.cc */; };
+		E6415DC21D45E35600572DB5 /* event_tracer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA31D45E35600572DB5 /* event_tracer.cc */; };
+		E6415DC31D45E35600572DB5 /* event.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA41D45E35600572DB5 /* event.cc */; };
+		E6415DC41D45E35600572DB5 /* ifaddrs-android.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA51D45E35600572DB5 /* ifaddrs-android.cc */; };
+		E6415DC51D45E35700572DB5 /* ipaddress.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA61D45E35600572DB5 /* ipaddress.cc */; };
+		E6415DC61D45E35700572DB5 /* logging.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA71D45E35600572DB5 /* logging.cc */; };
+		E6415DC71D45E35700572DB5 /* maccocoathreadhelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA81D45E35600572DB5 /* maccocoathreadhelper.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415DC81D45E35700572DB5 /* messagehandler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DA91D45E35600572DB5 /* messagehandler.cc */; };
+		E6415DC91D45E35700572DB5 /* messagequeue.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DAA1D45E35600572DB5 /* messagequeue.cc */; };
+		E6415DCA1D45E35700572DB5 /* nethelpers.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DAB1D45E35600572DB5 /* nethelpers.cc */; };
+		E6415DCB1D45E35700572DB5 /* networkmonitor.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DAC1D45E35600572DB5 /* networkmonitor.cc */; };
+		E6415DCC1D45E35700572DB5 /* physicalsocketserver.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DAD1D45E35600572DB5 /* physicalsocketserver.cc */; };
+		E6415DCD1D45E35700572DB5 /* platform_thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DAE1D45E35600572DB5 /* platform_thread.cc */; };
+		E6415DCE1D45E35700572DB5 /* scoped_autorelease_pool.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415DAF1D45E35600572DB5 /* scoped_autorelease_pool.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E6415DCF1D45E35700572DB5 /* sharedexclusivelock.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB01D45E35600572DB5 /* sharedexclusivelock.cc */; };
+		E6415DD01D45E35700572DB5 /* signalthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB11D45E35600572DB5 /* signalthread.cc */; };
+		E6415DD11D45E35700572DB5 /* sigslot.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB21D45E35600572DB5 /* sigslot.cc */; };
+		E6415DD21D45E35700572DB5 /* socketaddress.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB31D45E35600572DB5 /* socketaddress.cc */; };
+		E6415DD31D45E35700572DB5 /* stringencode.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB41D45E35600572DB5 /* stringencode.cc */; };
+		E6415DD41D45E35700572DB5 /* thread_checker_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB51D45E35600572DB5 /* thread_checker_impl.cc */; };
+		E6415DD51D45E35700572DB5 /* thread.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB61D45E35600572DB5 /* thread.cc */; };
+		E6415DD61D45E35700572DB5 /* timeutils.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DB71D45E35600572DB5 /* timeutils.cc */; };
+		E6415DD81D45E4BB00572DB5 /* buffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6415DD71D45E4BB00572DB5 /* buffer.cc */; };
+		E6415DF41D45E82000572DB5 /* MJExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DDF1D45E82000572DB5 /* MJExtension.h */; };
+		E6415DF51D45E82000572DB5 /* MJExtensionConst.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DE01D45E82000572DB5 /* MJExtensionConst.h */; };
+		E6415DF61D45E82000572DB5 /* MJExtensionConst.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DE11D45E82000572DB5 /* MJExtensionConst.m */; };
+		E6415DF71D45E82000572DB5 /* MJFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DE21D45E82000572DB5 /* MJFoundation.h */; };
+		E6415DF81D45E82000572DB5 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DE31D45E82000572DB5 /* MJFoundation.m */; };
+		E6415DF91D45E82000572DB5 /* MJProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DE41D45E82000572DB5 /* MJProperty.h */; };
+		E6415DFA1D45E82000572DB5 /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DE51D45E82000572DB5 /* MJProperty.m */; };
+		E6415DFB1D45E82000572DB5 /* MJPropertyKey.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DE61D45E82000572DB5 /* MJPropertyKey.h */; };
+		E6415DFC1D45E82000572DB5 /* MJPropertyKey.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DE71D45E82000572DB5 /* MJPropertyKey.m */; };
+		E6415DFD1D45E82000572DB5 /* MJPropertyType.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DE81D45E82000572DB5 /* MJPropertyType.h */; };
+		E6415DFE1D45E82000572DB5 /* MJPropertyType.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DE91D45E82000572DB5 /* MJPropertyType.m */; };
+		E6415DFF1D45E82000572DB5 /* NSObject+MJClass.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DEA1D45E82000572DB5 /* NSObject+MJClass.h */; };
+		E6415E001D45E82000572DB5 /* NSObject+MJClass.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DEB1D45E82000572DB5 /* NSObject+MJClass.m */; };
+		E6415E011D45E82000572DB5 /* NSObject+MJCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DEC1D45E82000572DB5 /* NSObject+MJCoding.h */; };
+		E6415E021D45E82000572DB5 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DED1D45E82000572DB5 /* NSObject+MJCoding.m */; };
+		E6415E031D45E82000572DB5 /* NSObject+MJKeyValue.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DEE1D45E82000572DB5 /* NSObject+MJKeyValue.h */; };
+		E6415E041D45E82000572DB5 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DEF1D45E82000572DB5 /* NSObject+MJKeyValue.m */; };
+		E6415E051D45E82000572DB5 /* NSObject+MJProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DF01D45E82000572DB5 /* NSObject+MJProperty.h */; };
+		E6415E061D45E82100572DB5 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DF11D45E82000572DB5 /* NSObject+MJProperty.m */; };
+		E6415E071D45E82100572DB5 /* NSString+MJExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DF21D45E82000572DB5 /* NSString+MJExtension.h */; };
+		E6415E081D45E82100572DB5 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DF31D45E82000572DB5 /* NSString+MJExtension.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E64156261D43002E00572DB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E64156111D43002E00572DB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E64156191D43002E00572DB5;
+			remoteInfo = FrameworkMsgClient;
+		};
+		E641591E1D43025500572DB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E64156111D43002E00572DB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E64159121D43025500572DB5;
+			remoteInfo = msgclient;
+		};
+		E6415BDF1D4302DA00572DB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6415BDB1D4302DA00572DB5 /* protobuf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E641550A1D42331300572DB5;
+			remoteInfo = protobuf;
+		};
+		E6415BE51D4302E300572DB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6415BE11D4302E200572DB5 /* ProtocolBuffers_iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7461B52E0F94FAF800A0C422;
+			remoteInfo = ProtocolBuffers;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E641561A1D43002E00572DB5 /* FrameworkMsgClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FrameworkMsgClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E641561D1D43002E00572DB5 /* FrameworkMsgClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FrameworkMsgClient.h; sourceTree = "<group>"; };
+		E641561F1D43002E00572DB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E64156241D43002E00572DB5 /* FrameworkMsgClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FrameworkMsgClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E64156291D43002E00572DB5 /* FrameworkMsgClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FrameworkMsgClientTests.m; sourceTree = "<group>"; };
+		E641562B1D43002E00572DB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E64156421D43007A00572DB5 /* MsgClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MsgClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E64156471D43007A00572DB5 /* MsgClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MsgClientTests.m; sourceTree = "<group>"; };
+		E64156491D43007A00572DB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E64159131D43025500572DB5 /* msgclient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = msgclient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E64159171D43025500572DB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E641591C1D43025500572DB5 /* msgclientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = msgclientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E64159211D43025500572DB5 /* msgclientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = msgclientTests.m; sourceTree = "<group>"; };
+		E64159231D43025500572DB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E64159301D4302A400572DB5 /* XJSBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XJSBuffer.cpp; sourceTree = "<group>"; };
+		E64159311D4302A400572DB5 /* XJSBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XJSBuffer.h; sourceTree = "<group>"; };
+		E64159321D4302A400572DB5 /* XMsgCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgCallback.h; sourceTree = "<group>"; };
+		E64159331D4302A400572DB5 /* XMsgClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgClient.cpp; sourceTree = "<group>"; };
+		E64159341D4302A400572DB5 /* XMsgClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgClient.h; sourceTree = "<group>"; };
+		E64159351D4302A400572DB5 /* XMsgProcesser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMsgProcesser.cpp; sourceTree = "<group>"; };
+		E64159361D4302A400572DB5 /* XMsgProcesser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMsgProcesser.h; sourceTree = "<group>"; };
+		E64159371D4302A400572DB5 /* XTcpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTcpClient.h; sourceTree = "<group>"; };
+		E64159381D4302A400572DB5 /* XTcpClientImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XTcpClientImpl.cpp; sourceTree = "<group>"; };
+		E64159391D4302A400572DB5 /* XTcpClientImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTcpClientImpl.h; sourceTree = "<group>"; };
+		E641593A1D4302A400572DB5 /* XTcpTick.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XTcpTick.cpp; sourceTree = "<group>"; };
+		E641593B1D4302A400572DB5 /* XTcpTick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTcpTick.h; sourceTree = "<group>"; };
+		E64159421D4302A400572DB5 /* common_msg.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = common_msg.pb.cc; sourceTree = "<group>"; };
+		E64159431D4302A400572DB5 /* common_msg.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_msg.pb.h; sourceTree = "<group>"; };
+		E64159441D4302A400572DB5 /* common_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = common_msg.proto; sourceTree = "<group>"; };
+		E64159451D4302A400572DB5 /* entity_msg.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = entity_msg.pb.cc; sourceTree = "<group>"; };
+		E64159461D4302A400572DB5 /* entity_msg.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entity_msg.pb.h; sourceTree = "<group>"; };
+		E64159471D4302A400572DB5 /* entity_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entity_msg.proto; sourceTree = "<group>"; };
+		E64159481D4302A400572DB5 /* entity_msg_type.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = entity_msg_type.pb.cc; sourceTree = "<group>"; };
+		E64159491D4302A400572DB5 /* entity_msg_type.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = entity_msg_type.pb.h; sourceTree = "<group>"; };
+		E641594A1D4302A400572DB5 /* entity_msg_type.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entity_msg_type.proto; sourceTree = "<group>"; };
+		E641594B1D4302A400572DB5 /* storage_msg.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = storage_msg.pb.cc; sourceTree = "<group>"; };
+		E641594C1D4302A400572DB5 /* storage_msg.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = storage_msg.pb.h; sourceTree = "<group>"; };
+		E641594D1D4302A400572DB5 /* storage_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = storage_msg.proto; sourceTree = "<group>"; };
+		E641594E1D4302A400572DB5 /* storage_msg_type.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = storage_msg_type.pb.cc; sourceTree = "<group>"; };
+		E641594F1D4302A400572DB5 /* storage_msg_type.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = storage_msg_type.pb.h; sourceTree = "<group>"; };
+		E64159501D4302A400572DB5 /* storage_msg_type.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = storage_msg_type.proto; sourceTree = "<group>"; };
+		E64159511D4302A400572DB5 /* sys_msg.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sys_msg.pb.cc; sourceTree = "<group>"; };
+		E64159521D4302A400572DB5 /* sys_msg.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sys_msg.pb.h; sourceTree = "<group>"; };
+		E64159531D4302A400572DB5 /* sys_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sys_msg.proto; sourceTree = "<group>"; };
+		E64159541D4302A400572DB5 /* sys_msg_type.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sys_msg_type.pb.cc; sourceTree = "<group>"; };
+		E64159551D4302A400572DB5 /* sys_msg_type.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sys_msg_type.pb.h; sourceTree = "<group>"; };
+		E64159561D4302A400572DB5 /* sys_msg_type.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sys_msg_type.proto; sourceTree = "<group>"; };
+		E64159581D4302A400572DB5 /* document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = document.h; sourceTree = "<group>"; };
+		E64159591D4302A400572DB5 /* filestream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filestream.h; sourceTree = "<group>"; };
+		E641595B1D4302A400572DB5 /* pow10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pow10.h; sourceTree = "<group>"; };
+		E641595C1D4302A400572DB5 /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
+		E641595D1D4302A400572DB5 /* strfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = strfunc.h; sourceTree = "<group>"; };
+		E641595E1D4302A400572DB5 /* prettywriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prettywriter.h; sourceTree = "<group>"; };
+		E641595F1D4302A400572DB5 /* rapidjson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rapidjson.h; sourceTree = "<group>"; };
+		E64159601D4302A400572DB5 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
+		E64159611D4302A400572DB5 /* stringbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringbuffer.h; sourceTree = "<group>"; };
+		E64159621D4302A400572DB5 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
+		E64159631D4302A400572DB5 /* RTC_Export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTC_Export.h; sourceTree = "<group>"; };
+		E64159641D4302A400572DB5 /* RTMsgCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTMsgCommon.h; sourceTree = "<group>"; };
+		E6415A301D4302A500572DB5 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E6415A311D4302A500572DB5 /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
+		E6415A321D4302A500572DB5 /* transport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transport.h; sourceTree = "<group>"; };
+		E6415A331D4302A500572DB5 /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
+		E6415A541D4302A500572DB5 /* MSClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientDelegate.h; sourceTree = "<group>"; };
+		E6415A551D4302A500572DB5 /* MSClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientManager.h; sourceTree = "<group>"; };
+		E6415A561D4302A500572DB5 /* MSClientManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSClientManager.mm; sourceTree = "<group>"; };
+		E6415A571D4302A500572DB5 /* MSClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientType.h; sourceTree = "<group>"; };
+		E6415A581D4302A500572DB5 /* MsgClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgClient.h; sourceTree = "<group>"; };
+		E6415A591D4302A500572DB5 /* MsgClient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MsgClient.mm; sourceTree = "<group>"; };
+		E6415A5A1D4302A500572DB5 /* MsgClientProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MsgClientProtocol.h; sourceTree = "<group>"; };
+		E6415A5B1D4302A500572DB5 /* MSGroupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupDelegate.h; sourceTree = "<group>"; };
+		E6415A5C1D4302A500572DB5 /* MSGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupManager.h; sourceTree = "<group>"; };
+		E6415A5D1D4302A500572DB5 /* MSGroupManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSGroupManager.mm; sourceTree = "<group>"; };
+		E6415A5E1D4302A500572DB5 /* MSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessage.h; sourceTree = "<group>"; };
+		E6415A5F1D4302A500572DB5 /* MSMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSMessage.mm; sourceTree = "<group>"; };
+		E6415A601D4302A500572DB5 /* MSMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessageManager.h; sourceTree = "<group>"; };
+		E6415A611D4302A500572DB5 /* MSMessageManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSMessageManager.mm; sourceTree = "<group>"; };
+		E6415A621D4302A500572DB5 /* MSMsgUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMsgUtil.h; sourceTree = "<group>"; };
+		E6415A631D4302A500572DB5 /* MSMsgUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSMsgUtil.mm; sourceTree = "<group>"; };
+		E6415A641D4302A500572DB5 /* MSSharedSeqnConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSharedSeqnConfig.h; sourceTree = "<group>"; };
+		E6415A651D4302A500572DB5 /* MSSharedSeqnConfig.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSSharedSeqnConfig.mm; sourceTree = "<group>"; };
+		E6415A661D4302A500572DB5 /* MSSqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3.h; sourceTree = "<group>"; };
+		E6415A671D4302A500572DB5 /* MSSqlite3.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSSqlite3.mm; sourceTree = "<group>"; };
+		E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3ClientSql.h; sourceTree = "<group>"; };
+		E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3Manager.h; sourceTree = "<group>"; };
+		E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSSqlite3Manager.mm; sourceTree = "<group>"; };
+		E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessage.h; sourceTree = "<group>"; };
+		E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSTxtMessage.mm; sourceTree = "<group>"; };
+		E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessageDelegate.h; sourceTree = "<group>"; };
+		E6415A6F1D4302A500572DB5 /* .build_proto.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = .build_proto.sh; sourceTree = "<group>"; };
+		E6415A701D4302A500572DB5 /* build_proto.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_proto.sh; sourceTree = "<group>"; };
+		E6415A711D4302A500572DB5 /* common_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = common_msg.proto; sourceTree = "<group>"; };
+		E6415A721D4302A500572DB5 /* CommonMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMsg.pbobjc.h; sourceTree = "<group>"; };
+		E6415A731D4302A500572DB5 /* CommonMsg.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CommonMsg.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A741D4302A500572DB5 /* entity_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entity_msg.proto; sourceTree = "<group>"; };
+		E6415A751D4302A500572DB5 /* entity_msg_type.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = entity_msg_type.proto; sourceTree = "<group>"; };
+		E6415A761D4302A500572DB5 /* EntityMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityMsg.pbobjc.h; sourceTree = "<group>"; };
+		E6415A771D4302A500572DB5 /* EntityMsg.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EntityMsg.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A781D4302A500572DB5 /* EntityMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityMsgType.pbobjc.h; sourceTree = "<group>"; };
+		E6415A791D4302A500572DB5 /* EntityMsgType.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EntityMsgType.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A7A1D4302A500572DB5 /* storage_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = storage_msg.proto; sourceTree = "<group>"; };
+		E6415A7B1D4302A500572DB5 /* storage_msg_type.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = storage_msg_type.proto; sourceTree = "<group>"; };
+		E6415A7C1D4302A500572DB5 /* StorageMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageMsg.pbobjc.h; sourceTree = "<group>"; };
+		E6415A7D1D4302A500572DB5 /* StorageMsg.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StorageMsg.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A7E1D4302A500572DB5 /* StorageMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageMsgType.pbobjc.h; sourceTree = "<group>"; };
+		E6415A7F1D4302A500572DB5 /* StorageMsgType.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StorageMsgType.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A801D4302A500572DB5 /* sys_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sys_msg.proto; sourceTree = "<group>"; };
+		E6415A811D4302A500572DB5 /* sys_msg_type.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sys_msg_type.proto; sourceTree = "<group>"; };
+		E6415A821D4302A500572DB5 /* SysMsg.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysMsg.pbobjc.h; sourceTree = "<group>"; };
+		E6415A831D4302A500572DB5 /* SysMsg.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SysMsg.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A841D4302A500572DB5 /* SysMsgType.pbobjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysMsgType.pbobjc.h; sourceTree = "<group>"; };
+		E6415A851D4302A500572DB5 /* SysMsgType.pbobjc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SysMsgType.pbobjc.mm; sourceTree = "<group>"; };
+		E6415A861D4302A500572DB5 /* RTSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSingleton.h; sourceTree = "<group>"; };
+		E6415A871D4302A500572DB5 /* TMClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMClientType.h; sourceTree = "<group>"; };
+		E6415BDB1D4302DA00572DB5 /* protobuf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = protobuf.xcodeproj; path = protobuf/protobuf.xcodeproj; sourceTree = "<group>"; };
+		E6415BE11D4302E200572DB5 /* ProtocolBuffers_iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ProtocolBuffers_iOS.xcodeproj; path = runtimeprotobuf/objectivec/ProtocolBuffers_iOS.xcodeproj; sourceTree = "<group>"; };
+		E6415BE91D43052700572DB5 /* messagehandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagehandler.h; sourceTree = "<group>"; };
+		E6415BEA1D43052700572DB5 /* messagequeue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagequeue.h; sourceTree = "<group>"; };
+		E6415BEB1D43052700572DB5 /* thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread.h; sourceTree = "<group>"; };
+		E6415BF61D43057600572DB5 /* criticalsection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = criticalsection.h; sourceTree = "<group>"; };
+		E6415BFA1D4305C700572DB5 /* event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
+		E6415BFC1D4305C700572DB5 /* logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logging.h; sourceTree = "<group>"; };
+		E6415BFD1D4305C700572DB5 /* scoped_autorelease_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_autorelease_pool.h; sourceTree = "<group>"; };
+		E6415C051D43062500572DB5 /* array_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = array_view.h; sourceTree = "<group>"; };
+		E6415C061D43062500572DB5 /* arraysize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arraysize.h; sourceTree = "<group>"; };
+		E6415C081D43062500572DB5 /* asyncfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncfile.h; sourceTree = "<group>"; };
+		E6415C091D43062500572DB5 /* asynchttprequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asynchttprequest.h; sourceTree = "<group>"; };
+		E6415C0A1D43062500572DB5 /* asyncinvoker-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "asyncinvoker-inl.h"; sourceTree = "<group>"; };
+		E6415C0B1D43062500572DB5 /* asyncinvoker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncinvoker.h; sourceTree = "<group>"; };
+		E6415C0D1D43062500572DB5 /* asyncpacketsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncpacketsocket.h; sourceTree = "<group>"; };
+		E6415C0F1D43062500572DB5 /* asyncresolverinterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncresolverinterface.h; sourceTree = "<group>"; };
+		E6415C111D43062500572DB5 /* asyncsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncsocket.h; sourceTree = "<group>"; };
+		E6415C131D43062500572DB5 /* asynctcpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asynctcpsocket.h; sourceTree = "<group>"; };
+		E6415C151D43062500572DB5 /* asyncudpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asyncudpsocket.h; sourceTree = "<group>"; };
+		E6415C161D43062500572DB5 /* atomicops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = atomicops.h; sourceTree = "<group>"; };
+		E6415C171D43062500572DB5 /* autodetectproxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autodetectproxy.h; sourceTree = "<group>"; };
+		E6415C181D43062500572DB5 /* bandwidthsmoother.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bandwidthsmoother.h; sourceTree = "<group>"; };
+		E6415C1A1D43062500572DB5 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		E6415C1B1D43062500572DB5 /* basicdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basicdefs.h; sourceTree = "<group>"; };
+		E6415C1C1D43062500572DB5 /* basictypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = basictypes.h; sourceTree = "<group>"; };
+		E6415C1D1D43062500572DB5 /* bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bind.h; sourceTree = "<group>"; };
+		E6415C1E1D43062500572DB5 /* bitbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitbuffer.h; sourceTree = "<group>"; };
+		E6415C1F1D43062500572DB5 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		E6415C201D43062500572DB5 /* bufferqueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bufferqueue.h; sourceTree = "<group>"; };
+		E6415C211D43062500572DB5 /* bytebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bytebuffer.h; sourceTree = "<group>"; };
+		E6415C221D43062500572DB5 /* byteorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = byteorder.h; sourceTree = "<group>"; };
+		E6415C231D43062500572DB5 /* callback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = callback.h; sourceTree = "<group>"; };
+		E6415C251D43062500572DB5 /* checks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checks.h; sourceTree = "<group>"; };
+		E6415C271D43062500572DB5 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E6415C281D43062500572DB5 /* constructormagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = constructormagic.h; sourceTree = "<group>"; };
+		E6415C291D43062500572DB5 /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32.h; sourceTree = "<group>"; };
+		E6415C2B1D43062500572DB5 /* cryptstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cryptstring.h; sourceTree = "<group>"; };
+		E6415C2C1D43062500572DB5 /* dbus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dbus.h; sourceTree = "<group>"; };
+		E6415C2D1D43062500572DB5 /* deprecation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deprecation.h; sourceTree = "<group>"; };
+		E6415C2E1D43062500572DB5 /* diskcache_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diskcache_win32.h; sourceTree = "<group>"; };
+		E6415C2F1D43062500572DB5 /* diskcache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diskcache.h; sourceTree = "<group>"; };
+		E6415C301D43062500572DB5 /* dscp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dscp.h; sourceTree = "<group>"; };
+		E6415C321D43062500572DB5 /* event_tracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = event_tracer.h; sourceTree = "<group>"; };
+		E6415C341D43062500572DB5 /* exp_filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exp_filter.h; sourceTree = "<group>"; };
+		E6415C351D43062500572DB5 /* fakenetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fakenetwork.h; sourceTree = "<group>"; };
+		E6415C361D43062500572DB5 /* fakesslidentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fakesslidentity.h; sourceTree = "<group>"; };
+		E6415C371D43062500572DB5 /* faketaskrunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = faketaskrunner.h; sourceTree = "<group>"; };
+		E6415C381D43062500572DB5 /* filerotatingstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = filerotatingstream.h; sourceTree = "<group>"; };
+		E6415C391D43062500572DB5 /* fileutils_mock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileutils_mock.h; sourceTree = "<group>"; };
+		E6415C3A1D43062500572DB5 /* fileutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileutils.h; sourceTree = "<group>"; };
+		E6415C3B1D43062500572DB5 /* firewallsocketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = firewallsocketserver.h; sourceTree = "<group>"; };
+		E6415C3C1D43062500572DB5 /* flags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flags.h; sourceTree = "<group>"; };
+		E6415C3D1D43062500572DB5 /* format_macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = format_macros.h; sourceTree = "<group>"; };
+		E6415C3E1D43062500572DB5 /* gunit_prod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gunit_prod.h; sourceTree = "<group>"; };
+		E6415C3F1D43062500572DB5 /* gunit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gunit.h; sourceTree = "<group>"; };
+		E6415C401D43062500572DB5 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helpers.h; sourceTree = "<group>"; };
+		E6415C411D43062500572DB5 /* httpbase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpbase.h; sourceTree = "<group>"; };
+		E6415C421D43062500572DB5 /* httpclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpclient.h; sourceTree = "<group>"; };
+		E6415C431D43062500572DB5 /* httpcommon-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "httpcommon-inl.h"; sourceTree = "<group>"; };
+		E6415C441D43062500572DB5 /* httpcommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpcommon.h; sourceTree = "<group>"; };
+		E6415C451D43062500572DB5 /* httprequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httprequest.h; sourceTree = "<group>"; };
+		E6415C461D43062500572DB5 /* httpserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpserver.h; sourceTree = "<group>"; };
+		E6415C481D43062500572DB5 /* ifaddrs-android.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ifaddrs-android.h"; sourceTree = "<group>"; };
+		E6415C4A1D43062500572DB5 /* ipaddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ipaddress.h; sourceTree = "<group>"; };
+		E6415C4B1D43062500572DB5 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
+		E6415C4C1D43062500572DB5 /* latebindingsymboltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = latebindingsymboltable.h; sourceTree = "<group>"; };
+		E6415C4D1D43062500572DB5 /* libdbusglibsymboltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libdbusglibsymboltable.h; sourceTree = "<group>"; };
+		E6415C4E1D43062500572DB5 /* linked_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linked_ptr.h; sourceTree = "<group>"; };
+		E6415C4F1D43062500572DB5 /* linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linux.h; sourceTree = "<group>"; };
+		E6415C501D43062500572DB5 /* linuxfdwalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = linuxfdwalk.h; sourceTree = "<group>"; };
+		E6415C521D43062500572DB5 /* logsinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logsinks.h; sourceTree = "<group>"; };
+		E6415C531D43062500572DB5 /* macasyncsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macasyncsocket.h; sourceTree = "<group>"; };
+		E6415C541D43062500572DB5 /* maccocoasocketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maccocoasocketserver.h; sourceTree = "<group>"; };
+		E6415C551D43062500572DB5 /* maccocoathreadhelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maccocoathreadhelper.h; sourceTree = "<group>"; };
+		E6415C571D43062500572DB5 /* macconversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macconversion.h; sourceTree = "<group>"; };
+		E6415C581D43062500572DB5 /* macsocketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macsocketserver.h; sourceTree = "<group>"; };
+		E6415C591D43062500572DB5 /* macutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macutils.h; sourceTree = "<group>"; };
+		E6415C5A1D43062500572DB5 /* macwindowpicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macwindowpicker.h; sourceTree = "<group>"; };
+		E6415C5B1D43062500572DB5 /* mathutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mathutils.h; sourceTree = "<group>"; };
+		E6415C5C1D43062500572DB5 /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5.h; sourceTree = "<group>"; };
+		E6415C5D1D43062500572DB5 /* md5digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = md5digest.h; sourceTree = "<group>"; };
+		E6415C5E1D43062500572DB5 /* messagedigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messagedigest.h; sourceTree = "<group>"; };
+		E6415C611D43062500572DB5 /* multipart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multipart.h; sourceTree = "<group>"; };
+		E6415C621D43062500572DB5 /* natserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = natserver.h; sourceTree = "<group>"; };
+		E6415C631D43062500572DB5 /* natsocketfactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = natsocketfactory.h; sourceTree = "<group>"; };
+		E6415C641D43062500572DB5 /* nattypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nattypes.h; sourceTree = "<group>"; };
+		E6415C661D43062500572DB5 /* nethelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nethelpers.h; sourceTree = "<group>"; };
+		E6415C671D43062500572DB5 /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = network.h; sourceTree = "<group>"; };
+		E6415C691D43062500572DB5 /* networkmonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkmonitor.h; sourceTree = "<group>"; };
+		E6415C6A1D43062500572DB5 /* nullsocketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nullsocketserver.h; sourceTree = "<group>"; };
+		E6415C6B1D43062500572DB5 /* openssl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssl.h; sourceTree = "<group>"; };
+		E6415C6C1D43062500572DB5 /* openssladapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssladapter.h; sourceTree = "<group>"; };
+		E6415C6D1D43062500572DB5 /* openssldigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openssldigest.h; sourceTree = "<group>"; };
+		E6415C6E1D43062500572DB5 /* opensslidentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opensslidentity.h; sourceTree = "<group>"; };
+		E6415C6F1D43062500572DB5 /* opensslstreamadapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = opensslstreamadapter.h; sourceTree = "<group>"; };
+		E6415C701D43062500572DB5 /* optionsfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = optionsfile.h; sourceTree = "<group>"; };
+		E6415C711D43062500572DB5 /* pathutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pathutils.h; sourceTree = "<group>"; };
+		E6415C731D43062500572DB5 /* physicalsocketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = physicalsocketserver.h; sourceTree = "<group>"; };
+		E6415C741D43062500572DB5 /* platform_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform_file.h; sourceTree = "<group>"; };
+		E6415C751D43062500572DB5 /* platform_thread_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform_thread_types.h; sourceTree = "<group>"; };
+		E6415C771D43062500572DB5 /* platform_thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform_thread.h; sourceTree = "<group>"; };
+		E6415C781D43062500572DB5 /* posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = posix.h; sourceTree = "<group>"; };
+		E6415C791D43062500572DB5 /* profiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = profiler.h; sourceTree = "<group>"; };
+		E6415C7A1D43062500572DB5 /* proxydetect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proxydetect.h; sourceTree = "<group>"; };
+		E6415C7B1D43062500572DB5 /* proxyinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proxyinfo.h; sourceTree = "<group>"; };
+		E6415C7C1D43062500572DB5 /* proxyserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proxyserver.h; sourceTree = "<group>"; };
+		E6415C7D1D43062500572DB5 /* ratelimiter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratelimiter.h; sourceTree = "<group>"; };
+		E6415C7E1D43062500572DB5 /* ratetracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ratetracker.h; sourceTree = "<group>"; };
+		E6415C7F1D43062500572DB5 /* refcount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = refcount.h; sourceTree = "<group>"; };
+		E6415C801D43062500572DB5 /* referencecountedsingletonfactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = referencecountedsingletonfactory.h; sourceTree = "<group>"; };
+		E6415C811D43062500572DB5 /* rollingaccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rollingaccumulator.h; sourceTree = "<group>"; };
+		E6415C821D43062500572DB5 /* rtccertificate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtccertificate.h; sourceTree = "<group>"; };
+		E6415C831D43062500572DB5 /* safe_conversions_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safe_conversions_impl.h; sourceTree = "<group>"; };
+		E6415C841D43062500572DB5 /* safe_conversions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = safe_conversions.h; sourceTree = "<group>"; };
+		E6415C851D43062500572DB5 /* schanneladapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = schanneladapter.h; sourceTree = "<group>"; };
+		E6415C871D43062500572DB5 /* scoped_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_ptr.h; sourceTree = "<group>"; };
+		E6415C881D43062500572DB5 /* scoped_ref_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scoped_ref_ptr.h; sourceTree = "<group>"; };
+		E6415C891D43062500572DB5 /* scopedptrcollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scopedptrcollection.h; sourceTree = "<group>"; };
+		E6415C8A1D43062500572DB5 /* sec_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sec_buffer.h; sourceTree = "<group>"; };
+		E6415C8B1D43062500572DB5 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1.h; sourceTree = "<group>"; };
+		E6415C8C1D43062500572DB5 /* sha1digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sha1digest.h; sourceTree = "<group>"; };
+		E6415C8E1D43062500572DB5 /* sharedexclusivelock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sharedexclusivelock.h; sourceTree = "<group>"; };
+		E6415C901D43062500572DB5 /* signalthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = signalthread.h; sourceTree = "<group>"; };
+		E6415C921D43062500572DB5 /* sigslot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sigslot.h; sourceTree = "<group>"; };
+		E6415C931D43062500572DB5 /* sigslotrepeater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sigslotrepeater.h; sourceTree = "<group>"; };
+		E6415C941D43062500572DB5 /* sigslottester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sigslottester.h; sourceTree = "<group>"; };
+		E6415C951D43062500572DB5 /* socket_unittest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket_unittest.h; sourceTree = "<group>"; };
+		E6415C961D43062500572DB5 /* socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socket.h; sourceTree = "<group>"; };
+		E6415C971D43062500572DB5 /* socketadapters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketadapters.h; sourceTree = "<group>"; };
+		E6415C991D43062500572DB5 /* socketaddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketaddress.h; sourceTree = "<group>"; };
+		E6415C9A1D43062500572DB5 /* socketaddresspair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketaddresspair.h; sourceTree = "<group>"; };
+		E6415C9B1D43062500572DB5 /* socketfactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketfactory.h; sourceTree = "<group>"; };
+		E6415C9C1D43062500572DB5 /* socketpool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketpool.h; sourceTree = "<group>"; };
+		E6415C9D1D43062500572DB5 /* socketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketserver.h; sourceTree = "<group>"; };
+		E6415C9E1D43062500572DB5 /* socketstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = socketstream.h; sourceTree = "<group>"; };
+		E6415C9F1D43062500572DB5 /* ssladapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ssladapter.h; sourceTree = "<group>"; };
+		E6415CA01D43062500572DB5 /* sslconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslconfig.h; sourceTree = "<group>"; };
+		E6415CA11D43062500572DB5 /* sslfingerprint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslfingerprint.h; sourceTree = "<group>"; };
+		E6415CA21D43062500572DB5 /* sslidentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslidentity.h; sourceTree = "<group>"; };
+		E6415CA31D43062500572DB5 /* sslroots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslroots.h; sourceTree = "<group>"; };
+		E6415CA41D43062500572DB5 /* sslsocketfactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslsocketfactory.h; sourceTree = "<group>"; };
+		E6415CA51D43062500572DB5 /* sslstreamadapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslstreamadapter.h; sourceTree = "<group>"; };
+		E6415CA61D43062500572DB5 /* sslstreamadapterhelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sslstreamadapterhelper.h; sourceTree = "<group>"; };
+		E6415CA71D43062500572DB5 /* stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stream.h; sourceTree = "<group>"; };
+		E6415CA91D43062500572DB5 /* stringencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringencode.h; sourceTree = "<group>"; };
+		E6415CAA1D43062500572DB5 /* stringutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringutils.h; sourceTree = "<group>"; };
+		E6415CAB1D43062500572DB5 /* systeminfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = systeminfo.h; sourceTree = "<group>"; };
+		E6415CAC1D43062500572DB5 /* task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = task.h; sourceTree = "<group>"; };
+		E6415CAD1D43062500572DB5 /* taskparent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = taskparent.h; sourceTree = "<group>"; };
+		E6415CAE1D43062500572DB5 /* taskrunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = taskrunner.h; sourceTree = "<group>"; };
+		E6415CAF1D43062500572DB5 /* template_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = template_util.h; sourceTree = "<group>"; };
+		E6415CB01D43062500572DB5 /* testbase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testbase64.h; sourceTree = "<group>"; };
+		E6415CB11D43062500572DB5 /* testclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testclient.h; sourceTree = "<group>"; };
+		E6415CB21D43062500572DB5 /* testechoserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testechoserver.h; sourceTree = "<group>"; };
+		E6415CB31D43062500572DB5 /* testutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testutils.h; sourceTree = "<group>"; };
+		E6415CB41D43062500572DB5 /* thread_annotations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread_annotations.h; sourceTree = "<group>"; };
+		E6415CB61D43062500572DB5 /* thread_checker_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread_checker_impl.h; sourceTree = "<group>"; };
+		E6415CB71D43062500572DB5 /* thread_checker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = thread_checker.h; sourceTree = "<group>"; };
+		E6415CBA1D43062500572DB5 /* timeutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeutils.h; sourceTree = "<group>"; };
+		E6415CBB1D43062500572DB5 /* timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timing.h; sourceTree = "<group>"; };
+		E6415CBC1D43062500572DB5 /* trace_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trace_event.h; sourceTree = "<group>"; };
+		E6415CBD1D43062500572DB5 /* transformadapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transformadapter.h; sourceTree = "<group>"; };
+		E6415CBE1D43062500572DB5 /* unixfilesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unixfilesystem.h; sourceTree = "<group>"; };
+		E6415CBF1D43062500572DB5 /* urlencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = urlencode.h; sourceTree = "<group>"; };
+		E6415CC01D43062500572DB5 /* versionparsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = versionparsing.h; sourceTree = "<group>"; };
+		E6415CC11D43062500572DB5 /* virtualsocketserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = virtualsocketserver.h; sourceTree = "<group>"; };
+		E6415CC21D43062500572DB5 /* win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
+		E6415CC31D43062500572DB5 /* win32socketinit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32socketinit.h; sourceTree = "<group>"; };
+		E6415CC41D43062500572DB5 /* winping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = winping.h; sourceTree = "<group>"; };
+		E6415CC51D43062500572DB5 /* worker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = worker.h; sourceTree = "<group>"; };
+		E6415D8F1D45A80F00572DB5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		E6415D991D45E35600572DB5 /* asyncfile.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asyncfile.cc; sourceTree = "<group>"; };
+		E6415D9A1D45E35600572DB5 /* asyncpacketsocket.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asyncpacketsocket.cc; sourceTree = "<group>"; };
+		E6415D9B1D45E35600572DB5 /* asyncresolverinterface.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asyncresolverinterface.cc; sourceTree = "<group>"; };
+		E6415D9C1D45E35600572DB5 /* asyncsocket.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asyncsocket.cc; sourceTree = "<group>"; };
+		E6415D9D1D45E35600572DB5 /* asynctcpsocket.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asynctcpsocket.cc; sourceTree = "<group>"; };
+		E6415D9E1D45E35600572DB5 /* asyncudpsocket.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asyncudpsocket.cc; sourceTree = "<group>"; };
+		E6415D9F1D45E35600572DB5 /* base64.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cc; sourceTree = "<group>"; };
+		E6415DA01D45E35600572DB5 /* checks.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = checks.cc; sourceTree = "<group>"; };
+		E6415DA11D45E35600572DB5 /* common.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = common.cc; sourceTree = "<group>"; };
+		E6415DA21D45E35600572DB5 /* criticalsection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = criticalsection.cc; sourceTree = "<group>"; };
+		E6415DA31D45E35600572DB5 /* event_tracer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = event_tracer.cc; sourceTree = "<group>"; };
+		E6415DA41D45E35600572DB5 /* event.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = event.cc; sourceTree = "<group>"; };
+		E6415DA51D45E35600572DB5 /* ifaddrs-android.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "ifaddrs-android.cc"; sourceTree = "<group>"; };
+		E6415DA61D45E35600572DB5 /* ipaddress.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ipaddress.cc; sourceTree = "<group>"; };
+		E6415DA71D45E35600572DB5 /* logging.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logging.cc; sourceTree = "<group>"; };
+		E6415DA81D45E35600572DB5 /* maccocoathreadhelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = maccocoathreadhelper.mm; sourceTree = "<group>"; };
+		E6415DA91D45E35600572DB5 /* messagehandler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagehandler.cc; sourceTree = "<group>"; };
+		E6415DAA1D45E35600572DB5 /* messagequeue.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messagequeue.cc; sourceTree = "<group>"; };
+		E6415DAB1D45E35600572DB5 /* nethelpers.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nethelpers.cc; sourceTree = "<group>"; };
+		E6415DAC1D45E35600572DB5 /* networkmonitor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = networkmonitor.cc; sourceTree = "<group>"; };
+		E6415DAD1D45E35600572DB5 /* physicalsocketserver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = physicalsocketserver.cc; sourceTree = "<group>"; };
+		E6415DAE1D45E35600572DB5 /* platform_thread.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = platform_thread.cc; sourceTree = "<group>"; };
+		E6415DAF1D45E35600572DB5 /* scoped_autorelease_pool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = scoped_autorelease_pool.mm; sourceTree = "<group>"; };
+		E6415DB01D45E35600572DB5 /* sharedexclusivelock.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sharedexclusivelock.cc; sourceTree = "<group>"; };
+		E6415DB11D45E35600572DB5 /* signalthread.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = signalthread.cc; sourceTree = "<group>"; };
+		E6415DB21D45E35600572DB5 /* sigslot.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sigslot.cc; sourceTree = "<group>"; };
+		E6415DB31D45E35600572DB5 /* socketaddress.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = socketaddress.cc; sourceTree = "<group>"; };
+		E6415DB41D45E35600572DB5 /* stringencode.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stringencode.cc; sourceTree = "<group>"; };
+		E6415DB51D45E35600572DB5 /* thread_checker_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread_checker_impl.cc; sourceTree = "<group>"; };
+		E6415DB61D45E35600572DB5 /* thread.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = thread.cc; sourceTree = "<group>"; };
+		E6415DB71D45E35600572DB5 /* timeutils.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = timeutils.cc; sourceTree = "<group>"; };
+		E6415DD71D45E4BB00572DB5 /* buffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = buffer.cc; sourceTree = "<group>"; };
+		E6415DDF1D45E82000572DB5 /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
+		E6415DE01D45E82000572DB5 /* MJExtensionConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtensionConst.h; sourceTree = "<group>"; };
+		E6415DE11D45E82000572DB5 /* MJExtensionConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJExtensionConst.m; sourceTree = "<group>"; };
+		E6415DE21D45E82000572DB5 /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
+		E6415DE31D45E82000572DB5 /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
+		E6415DE41D45E82000572DB5 /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
+		E6415DE51D45E82000572DB5 /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
+		E6415DE61D45E82000572DB5 /* MJPropertyKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyKey.h; sourceTree = "<group>"; };
+		E6415DE71D45E82000572DB5 /* MJPropertyKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyKey.m; sourceTree = "<group>"; };
+		E6415DE81D45E82000572DB5 /* MJPropertyType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPropertyType.h; sourceTree = "<group>"; };
+		E6415DE91D45E82000572DB5 /* MJPropertyType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPropertyType.m; sourceTree = "<group>"; };
+		E6415DEA1D45E82000572DB5 /* NSObject+MJClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJClass.h"; sourceTree = "<group>"; };
+		E6415DEB1D45E82000572DB5 /* NSObject+MJClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJClass.m"; sourceTree = "<group>"; };
+		E6415DEC1D45E82000572DB5 /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
+		E6415DED1D45E82000572DB5 /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
+		E6415DEE1D45E82000572DB5 /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
+		E6415DEF1D45E82000572DB5 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
+		E6415DF01D45E82000572DB5 /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
+		E6415DF11D45E82000572DB5 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
+		E6415DF21D45E82000572DB5 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
+		E6415DF31D45E82000572DB5 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E64156161D43002E00572DB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64156211D43002E00572DB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E64156251D43002E00572DB5 /* FrameworkMsgClient.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E641563F1D43007A00572DB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E641590F1D43025500572DB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6415D901D45A80F00572DB5 /* libsqlite3.tbd in Frameworks */,
+				E6415BE71D4304B600572DB5 /* libprotobuf.a in Frameworks */,
+				E6415BE81D4304B600572DB5 /* libProtocolBuffers.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64159191D43025500572DB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E641591D1D43025500572DB5 /* msgclient.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E64156101D43002E00572DB5 = {
+			isa = PBXGroup;
+			children = (
+				E6415D8F1D45A80F00572DB5 /* libsqlite3.tbd */,
+				E6415BE11D4302E200572DB5 /* ProtocolBuffers_iOS.xcodeproj */,
+				E6415BDB1D4302DA00572DB5 /* protobuf.xcodeproj */,
+				E641561C1D43002E00572DB5 /* FrameworkMsgClient */,
+				E64156281D43002E00572DB5 /* FrameworkMsgClientTests */,
+				E64156461D43007A00572DB5 /* MsgClientTests */,
+				E64159141D43025500572DB5 /* msgclient */,
+				E64159201D43025500572DB5 /* msgclientTests */,
+				E641561B1D43002E00572DB5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E641561B1D43002E00572DB5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E641561A1D43002E00572DB5 /* FrameworkMsgClient.framework */,
+				E64156241D43002E00572DB5 /* FrameworkMsgClientTests.xctest */,
+				E64156421D43007A00572DB5 /* MsgClientTests.xctest */,
+				E64159131D43025500572DB5 /* msgclient.framework */,
+				E641591C1D43025500572DB5 /* msgclientTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E641561C1D43002E00572DB5 /* FrameworkMsgClient */ = {
+			isa = PBXGroup;
+			children = (
+				E641561D1D43002E00572DB5 /* FrameworkMsgClient.h */,
+				E641561F1D43002E00572DB5 /* Info.plist */,
+			);
+			path = FrameworkMsgClient;
+			sourceTree = "<group>";
+		};
+		E64156281D43002E00572DB5 /* FrameworkMsgClientTests */ = {
+			isa = PBXGroup;
+			children = (
+				E64156291D43002E00572DB5 /* FrameworkMsgClientTests.m */,
+				E641562B1D43002E00572DB5 /* Info.plist */,
+			);
+			path = FrameworkMsgClientTests;
+			sourceTree = "<group>";
+		};
+		E64156461D43007A00572DB5 /* MsgClientTests */ = {
+			isa = PBXGroup;
+			children = (
+				E64156471D43007A00572DB5 /* MsgClientTests.m */,
+				E64156491D43007A00572DB5 /* Info.plist */,
+			);
+			path = MsgClientTests;
+			sourceTree = "<group>";
+		};
+		E64159141D43025500572DB5 /* msgclient */ = {
+			isa = PBXGroup;
+			children = (
+				E6415DDE1D45E82000572DB5 /* MJExtension */,
+				E641592A1D4302A400572DB5 /* client_common */,
+				E6415A541D4302A500572DB5 /* MSClientDelegate.h */,
+				E6415A551D4302A500572DB5 /* MSClientManager.h */,
+				E6415A561D4302A500572DB5 /* MSClientManager.mm */,
+				E6415A571D4302A500572DB5 /* MSClientType.h */,
+				E6415A581D4302A500572DB5 /* MsgClient.h */,
+				E6415A591D4302A500572DB5 /* MsgClient.mm */,
+				E6415A5A1D4302A500572DB5 /* MsgClientProtocol.h */,
+				E6415A5B1D4302A500572DB5 /* MSGroupDelegate.h */,
+				E6415A5C1D4302A500572DB5 /* MSGroupManager.h */,
+				E6415A5D1D4302A500572DB5 /* MSGroupManager.mm */,
+				E6415A5E1D4302A500572DB5 /* MSMessage.h */,
+				E6415A5F1D4302A500572DB5 /* MSMessage.mm */,
+				E6415A601D4302A500572DB5 /* MSMessageManager.h */,
+				E6415A611D4302A500572DB5 /* MSMessageManager.mm */,
+				E6415A621D4302A500572DB5 /* MSMsgUtil.h */,
+				E6415A631D4302A500572DB5 /* MSMsgUtil.mm */,
+				E6415A641D4302A500572DB5 /* MSSharedSeqnConfig.h */,
+				E6415A651D4302A500572DB5 /* MSSharedSeqnConfig.mm */,
+				E6415A661D4302A500572DB5 /* MSSqlite3.h */,
+				E6415A671D4302A500572DB5 /* MSSqlite3.mm */,
+				E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */,
+				E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */,
+				E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */,
+				E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */,
+				E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */,
+				E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */,
+				E6415A6E1D4302A500572DB5 /* proto_ios */,
+				E6415A861D4302A500572DB5 /* RTSingleton.h */,
+				E6415A871D4302A500572DB5 /* TMClientType.h */,
+				E64159171D43025500572DB5 /* Info.plist */,
+			);
+			path = msgclient;
+			sourceTree = "<group>";
+		};
+		E64159201D43025500572DB5 /* msgclientTests */ = {
+			isa = PBXGroup;
+			children = (
+				E64159211D43025500572DB5 /* msgclientTests.m */,
+				E64159231D43025500572DB5 /* Info.plist */,
+			);
+			path = msgclientTests;
+			sourceTree = "<group>";
+		};
+		E641592A1D4302A400572DB5 /* client_common */ = {
+			isa = PBXGroup;
+			children = (
+				E641592F1D4302A400572DB5 /* core */,
+				E64159411D4302A400572DB5 /* proto */,
+				E64159571D4302A400572DB5 /* rapidjson */,
+				E64159631D4302A400572DB5 /* RTC_Export.h */,
+				E64159641D4302A400572DB5 /* RTMsgCommon.h */,
+				E64159661D4302A400572DB5 /* webrtc */,
+			);
+			path = client_common;
+			sourceTree = "<group>";
+		};
+		E641592F1D4302A400572DB5 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				E64159301D4302A400572DB5 /* XJSBuffer.cpp */,
+				E64159311D4302A400572DB5 /* XJSBuffer.h */,
+				E64159321D4302A400572DB5 /* XMsgCallback.h */,
+				E64159331D4302A400572DB5 /* XMsgClient.cpp */,
+				E64159341D4302A400572DB5 /* XMsgClient.h */,
+				E64159351D4302A400572DB5 /* XMsgProcesser.cpp */,
+				E64159361D4302A400572DB5 /* XMsgProcesser.h */,
+				E64159371D4302A400572DB5 /* XTcpClient.h */,
+				E64159381D4302A400572DB5 /* XTcpClientImpl.cpp */,
+				E64159391D4302A400572DB5 /* XTcpClientImpl.h */,
+				E641593A1D4302A400572DB5 /* XTcpTick.cpp */,
+				E641593B1D4302A400572DB5 /* XTcpTick.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		E64159411D4302A400572DB5 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				E64159421D4302A400572DB5 /* common_msg.pb.cc */,
+				E64159431D4302A400572DB5 /* common_msg.pb.h */,
+				E64159441D4302A400572DB5 /* common_msg.proto */,
+				E64159451D4302A400572DB5 /* entity_msg.pb.cc */,
+				E64159461D4302A400572DB5 /* entity_msg.pb.h */,
+				E64159471D4302A400572DB5 /* entity_msg.proto */,
+				E64159481D4302A400572DB5 /* entity_msg_type.pb.cc */,
+				E64159491D4302A400572DB5 /* entity_msg_type.pb.h */,
+				E641594A1D4302A400572DB5 /* entity_msg_type.proto */,
+				E641594B1D4302A400572DB5 /* storage_msg.pb.cc */,
+				E641594C1D4302A400572DB5 /* storage_msg.pb.h */,
+				E641594D1D4302A400572DB5 /* storage_msg.proto */,
+				E641594E1D4302A400572DB5 /* storage_msg_type.pb.cc */,
+				E641594F1D4302A400572DB5 /* storage_msg_type.pb.h */,
+				E64159501D4302A400572DB5 /* storage_msg_type.proto */,
+				E64159511D4302A400572DB5 /* sys_msg.pb.cc */,
+				E64159521D4302A400572DB5 /* sys_msg.pb.h */,
+				E64159531D4302A400572DB5 /* sys_msg.proto */,
+				E64159541D4302A400572DB5 /* sys_msg_type.pb.cc */,
+				E64159551D4302A400572DB5 /* sys_msg_type.pb.h */,
+				E64159561D4302A400572DB5 /* sys_msg_type.proto */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
+		E64159571D4302A400572DB5 /* rapidjson */ = {
+			isa = PBXGroup;
+			children = (
+				E64159581D4302A400572DB5 /* document.h */,
+				E64159591D4302A400572DB5 /* filestream.h */,
+				E641595A1D4302A400572DB5 /* internal */,
+				E641595E1D4302A400572DB5 /* prettywriter.h */,
+				E641595F1D4302A400572DB5 /* rapidjson.h */,
+				E64159601D4302A400572DB5 /* reader.h */,
+				E64159611D4302A400572DB5 /* stringbuffer.h */,
+				E64159621D4302A400572DB5 /* writer.h */,
+			);
+			path = rapidjson;
+			sourceTree = "<group>";
+		};
+		E641595A1D4302A400572DB5 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				E641595B1D4302A400572DB5 /* pow10.h */,
+				E641595C1D4302A400572DB5 /* stack.h */,
+				E641595D1D4302A400572DB5 /* strfunc.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		E64159661D4302A400572DB5 /* webrtc */ = {
+			isa = PBXGroup;
+			children = (
+				E64159671D4302A400572DB5 /* base */,
+				E6415A301D4302A500572DB5 /* common.h */,
+				E6415A311D4302A500572DB5 /* common_types.h */,
+				E6415A321D4302A500572DB5 /* transport.h */,
+				E6415A331D4302A500572DB5 /* typedefs.h */,
+			);
+			path = webrtc;
+			sourceTree = "<group>";
+		};
+		E64159671D4302A400572DB5 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				E6415DD71D45E4BB00572DB5 /* buffer.cc */,
+				E6415D991D45E35600572DB5 /* asyncfile.cc */,
+				E6415D9A1D45E35600572DB5 /* asyncpacketsocket.cc */,
+				E6415D9B1D45E35600572DB5 /* asyncresolverinterface.cc */,
+				E6415D9C1D45E35600572DB5 /* asyncsocket.cc */,
+				E6415D9D1D45E35600572DB5 /* asynctcpsocket.cc */,
+				E6415D9E1D45E35600572DB5 /* asyncudpsocket.cc */,
+				E6415D9F1D45E35600572DB5 /* base64.cc */,
+				E6415DA01D45E35600572DB5 /* checks.cc */,
+				E6415DA11D45E35600572DB5 /* common.cc */,
+				E6415DA21D45E35600572DB5 /* criticalsection.cc */,
+				E6415DA31D45E35600572DB5 /* event_tracer.cc */,
+				E6415DA41D45E35600572DB5 /* event.cc */,
+				E6415DA51D45E35600572DB5 /* ifaddrs-android.cc */,
+				E6415DA61D45E35600572DB5 /* ipaddress.cc */,
+				E6415DA71D45E35600572DB5 /* logging.cc */,
+				E6415DA81D45E35600572DB5 /* maccocoathreadhelper.mm */,
+				E6415DA91D45E35600572DB5 /* messagehandler.cc */,
+				E6415DAA1D45E35600572DB5 /* messagequeue.cc */,
+				E6415DAB1D45E35600572DB5 /* nethelpers.cc */,
+				E6415DAC1D45E35600572DB5 /* networkmonitor.cc */,
+				E6415DAD1D45E35600572DB5 /* physicalsocketserver.cc */,
+				E6415DAE1D45E35600572DB5 /* platform_thread.cc */,
+				E6415DAF1D45E35600572DB5 /* scoped_autorelease_pool.mm */,
+				E6415DB01D45E35600572DB5 /* sharedexclusivelock.cc */,
+				E6415DB11D45E35600572DB5 /* signalthread.cc */,
+				E6415DB21D45E35600572DB5 /* sigslot.cc */,
+				E6415DB31D45E35600572DB5 /* socketaddress.cc */,
+				E6415DB41D45E35600572DB5 /* stringencode.cc */,
+				E6415DB51D45E35600572DB5 /* thread_checker_impl.cc */,
+				E6415DB61D45E35600572DB5 /* thread.cc */,
+				E6415DB71D45E35600572DB5 /* timeutils.cc */,
+				E6415C051D43062500572DB5 /* array_view.h */,
+				E6415C061D43062500572DB5 /* arraysize.h */,
+				E6415C081D43062500572DB5 /* asyncfile.h */,
+				E6415C091D43062500572DB5 /* asynchttprequest.h */,
+				E6415C0A1D43062500572DB5 /* asyncinvoker-inl.h */,
+				E6415C0B1D43062500572DB5 /* asyncinvoker.h */,
+				E6415C0D1D43062500572DB5 /* asyncpacketsocket.h */,
+				E6415C0F1D43062500572DB5 /* asyncresolverinterface.h */,
+				E6415C111D43062500572DB5 /* asyncsocket.h */,
+				E6415C131D43062500572DB5 /* asynctcpsocket.h */,
+				E6415C151D43062500572DB5 /* asyncudpsocket.h */,
+				E6415C161D43062500572DB5 /* atomicops.h */,
+				E6415C171D43062500572DB5 /* autodetectproxy.h */,
+				E6415C181D43062500572DB5 /* bandwidthsmoother.h */,
+				E6415C1A1D43062500572DB5 /* base64.h */,
+				E6415C1B1D43062500572DB5 /* basicdefs.h */,
+				E6415C1C1D43062500572DB5 /* basictypes.h */,
+				E6415C1D1D43062500572DB5 /* bind.h */,
+				E6415C1E1D43062500572DB5 /* bitbuffer.h */,
+				E6415C1F1D43062500572DB5 /* buffer.h */,
+				E6415C201D43062500572DB5 /* bufferqueue.h */,
+				E6415C211D43062500572DB5 /* bytebuffer.h */,
+				E6415C221D43062500572DB5 /* byteorder.h */,
+				E6415C231D43062500572DB5 /* callback.h */,
+				E6415C251D43062500572DB5 /* checks.h */,
+				E6415C271D43062500572DB5 /* common.h */,
+				E6415C281D43062500572DB5 /* constructormagic.h */,
+				E6415C291D43062500572DB5 /* crc32.h */,
+				E6415C2B1D43062500572DB5 /* cryptstring.h */,
+				E6415C2C1D43062500572DB5 /* dbus.h */,
+				E6415C2D1D43062500572DB5 /* deprecation.h */,
+				E6415C2E1D43062500572DB5 /* diskcache_win32.h */,
+				E6415C2F1D43062500572DB5 /* diskcache.h */,
+				E6415C301D43062500572DB5 /* dscp.h */,
+				E6415C321D43062500572DB5 /* event_tracer.h */,
+				E6415C341D43062500572DB5 /* exp_filter.h */,
+				E6415C351D43062500572DB5 /* fakenetwork.h */,
+				E6415C361D43062500572DB5 /* fakesslidentity.h */,
+				E6415C371D43062500572DB5 /* faketaskrunner.h */,
+				E6415C381D43062500572DB5 /* filerotatingstream.h */,
+				E6415C391D43062500572DB5 /* fileutils_mock.h */,
+				E6415C3A1D43062500572DB5 /* fileutils.h */,
+				E6415C3B1D43062500572DB5 /* firewallsocketserver.h */,
+				E6415C3C1D43062500572DB5 /* flags.h */,
+				E6415C3D1D43062500572DB5 /* format_macros.h */,
+				E6415C3E1D43062500572DB5 /* gunit_prod.h */,
+				E6415C3F1D43062500572DB5 /* gunit.h */,
+				E6415C401D43062500572DB5 /* helpers.h */,
+				E6415C411D43062500572DB5 /* httpbase.h */,
+				E6415C421D43062500572DB5 /* httpclient.h */,
+				E6415C431D43062500572DB5 /* httpcommon-inl.h */,
+				E6415C441D43062500572DB5 /* httpcommon.h */,
+				E6415C451D43062500572DB5 /* httprequest.h */,
+				E6415C461D43062500572DB5 /* httpserver.h */,
+				E6415C481D43062500572DB5 /* ifaddrs-android.h */,
+				E6415C4A1D43062500572DB5 /* ipaddress.h */,
+				E6415C4B1D43062500572DB5 /* json.h */,
+				E6415C4C1D43062500572DB5 /* latebindingsymboltable.h */,
+				E6415C4D1D43062500572DB5 /* libdbusglibsymboltable.h */,
+				E6415C4E1D43062500572DB5 /* linked_ptr.h */,
+				E6415C4F1D43062500572DB5 /* linux.h */,
+				E6415C501D43062500572DB5 /* linuxfdwalk.h */,
+				E6415C521D43062500572DB5 /* logsinks.h */,
+				E6415C531D43062500572DB5 /* macasyncsocket.h */,
+				E6415C541D43062500572DB5 /* maccocoasocketserver.h */,
+				E6415C551D43062500572DB5 /* maccocoathreadhelper.h */,
+				E6415C571D43062500572DB5 /* macconversion.h */,
+				E6415C581D43062500572DB5 /* macsocketserver.h */,
+				E6415C591D43062500572DB5 /* macutils.h */,
+				E6415C5A1D43062500572DB5 /* macwindowpicker.h */,
+				E6415C5B1D43062500572DB5 /* mathutils.h */,
+				E6415C5C1D43062500572DB5 /* md5.h */,
+				E6415C5D1D43062500572DB5 /* md5digest.h */,
+				E6415C5E1D43062500572DB5 /* messagedigest.h */,
+				E6415C611D43062500572DB5 /* multipart.h */,
+				E6415C621D43062500572DB5 /* natserver.h */,
+				E6415C631D43062500572DB5 /* natsocketfactory.h */,
+				E6415C641D43062500572DB5 /* nattypes.h */,
+				E6415C661D43062500572DB5 /* nethelpers.h */,
+				E6415C671D43062500572DB5 /* network.h */,
+				E6415C691D43062500572DB5 /* networkmonitor.h */,
+				E6415C6A1D43062500572DB5 /* nullsocketserver.h */,
+				E6415C6B1D43062500572DB5 /* openssl.h */,
+				E6415C6C1D43062500572DB5 /* openssladapter.h */,
+				E6415C6D1D43062500572DB5 /* openssldigest.h */,
+				E6415C6E1D43062500572DB5 /* opensslidentity.h */,
+				E6415C6F1D43062500572DB5 /* opensslstreamadapter.h */,
+				E6415C701D43062500572DB5 /* optionsfile.h */,
+				E6415C711D43062500572DB5 /* pathutils.h */,
+				E6415C731D43062500572DB5 /* physicalsocketserver.h */,
+				E6415C741D43062500572DB5 /* platform_file.h */,
+				E6415C751D43062500572DB5 /* platform_thread_types.h */,
+				E6415C771D43062500572DB5 /* platform_thread.h */,
+				E6415C781D43062500572DB5 /* posix.h */,
+				E6415C791D43062500572DB5 /* profiler.h */,
+				E6415C7A1D43062500572DB5 /* proxydetect.h */,
+				E6415C7B1D43062500572DB5 /* proxyinfo.h */,
+				E6415C7C1D43062500572DB5 /* proxyserver.h */,
+				E6415C7D1D43062500572DB5 /* ratelimiter.h */,
+				E6415C7E1D43062500572DB5 /* ratetracker.h */,
+				E6415C7F1D43062500572DB5 /* refcount.h */,
+				E6415C801D43062500572DB5 /* referencecountedsingletonfactory.h */,
+				E6415C811D43062500572DB5 /* rollingaccumulator.h */,
+				E6415C821D43062500572DB5 /* rtccertificate.h */,
+				E6415C831D43062500572DB5 /* safe_conversions_impl.h */,
+				E6415C841D43062500572DB5 /* safe_conversions.h */,
+				E6415C851D43062500572DB5 /* schanneladapter.h */,
+				E6415C871D43062500572DB5 /* scoped_ptr.h */,
+				E6415C881D43062500572DB5 /* scoped_ref_ptr.h */,
+				E6415C891D43062500572DB5 /* scopedptrcollection.h */,
+				E6415C8A1D43062500572DB5 /* sec_buffer.h */,
+				E6415C8B1D43062500572DB5 /* sha1.h */,
+				E6415C8C1D43062500572DB5 /* sha1digest.h */,
+				E6415C8E1D43062500572DB5 /* sharedexclusivelock.h */,
+				E6415C901D43062500572DB5 /* signalthread.h */,
+				E6415C921D43062500572DB5 /* sigslot.h */,
+				E6415C931D43062500572DB5 /* sigslotrepeater.h */,
+				E6415C941D43062500572DB5 /* sigslottester.h */,
+				E6415C951D43062500572DB5 /* socket_unittest.h */,
+				E6415C961D43062500572DB5 /* socket.h */,
+				E6415C971D43062500572DB5 /* socketadapters.h */,
+				E6415C991D43062500572DB5 /* socketaddress.h */,
+				E6415C9A1D43062500572DB5 /* socketaddresspair.h */,
+				E6415C9B1D43062500572DB5 /* socketfactory.h */,
+				E6415C9C1D43062500572DB5 /* socketpool.h */,
+				E6415C9D1D43062500572DB5 /* socketserver.h */,
+				E6415C9E1D43062500572DB5 /* socketstream.h */,
+				E6415C9F1D43062500572DB5 /* ssladapter.h */,
+				E6415CA01D43062500572DB5 /* sslconfig.h */,
+				E6415CA11D43062500572DB5 /* sslfingerprint.h */,
+				E6415CA21D43062500572DB5 /* sslidentity.h */,
+				E6415CA31D43062500572DB5 /* sslroots.h */,
+				E6415CA41D43062500572DB5 /* sslsocketfactory.h */,
+				E6415CA51D43062500572DB5 /* sslstreamadapter.h */,
+				E6415CA61D43062500572DB5 /* sslstreamadapterhelper.h */,
+				E6415CA71D43062500572DB5 /* stream.h */,
+				E6415CA91D43062500572DB5 /* stringencode.h */,
+				E6415CAA1D43062500572DB5 /* stringutils.h */,
+				E6415CAB1D43062500572DB5 /* systeminfo.h */,
+				E6415CAC1D43062500572DB5 /* task.h */,
+				E6415CAD1D43062500572DB5 /* taskparent.h */,
+				E6415CAE1D43062500572DB5 /* taskrunner.h */,
+				E6415CAF1D43062500572DB5 /* template_util.h */,
+				E6415CB01D43062500572DB5 /* testbase64.h */,
+				E6415CB11D43062500572DB5 /* testclient.h */,
+				E6415CB21D43062500572DB5 /* testechoserver.h */,
+				E6415CB31D43062500572DB5 /* testutils.h */,
+				E6415CB41D43062500572DB5 /* thread_annotations.h */,
+				E6415CB61D43062500572DB5 /* thread_checker_impl.h */,
+				E6415CB71D43062500572DB5 /* thread_checker.h */,
+				E6415CBA1D43062500572DB5 /* timeutils.h */,
+				E6415CBB1D43062500572DB5 /* timing.h */,
+				E6415CBC1D43062500572DB5 /* trace_event.h */,
+				E6415CBD1D43062500572DB5 /* transformadapter.h */,
+				E6415CBE1D43062500572DB5 /* unixfilesystem.h */,
+				E6415CBF1D43062500572DB5 /* urlencode.h */,
+				E6415CC01D43062500572DB5 /* versionparsing.h */,
+				E6415CC11D43062500572DB5 /* virtualsocketserver.h */,
+				E6415CC21D43062500572DB5 /* win32.h */,
+				E6415CC31D43062500572DB5 /* win32socketinit.h */,
+				E6415CC41D43062500572DB5 /* winping.h */,
+				E6415CC51D43062500572DB5 /* worker.h */,
+				E6415BFA1D4305C700572DB5 /* event.h */,
+				E6415BFC1D4305C700572DB5 /* logging.h */,
+				E6415BFD1D4305C700572DB5 /* scoped_autorelease_pool.h */,
+				E6415BF61D43057600572DB5 /* criticalsection.h */,
+				E6415BE91D43052700572DB5 /* messagehandler.h */,
+				E6415BEA1D43052700572DB5 /* messagequeue.h */,
+				E6415BEB1D43052700572DB5 /* thread.h */,
+			);
+			path = base;
+			sourceTree = "<group>";
+		};
+		E6415A6E1D4302A500572DB5 /* proto_ios */ = {
+			isa = PBXGroup;
+			children = (
+				E6415A6F1D4302A500572DB5 /* .build_proto.sh */,
+				E6415A701D4302A500572DB5 /* build_proto.sh */,
+				E6415A711D4302A500572DB5 /* common_msg.proto */,
+				E6415A721D4302A500572DB5 /* CommonMsg.pbobjc.h */,
+				E6415A731D4302A500572DB5 /* CommonMsg.pbobjc.mm */,
+				E6415A741D4302A500572DB5 /* entity_msg.proto */,
+				E6415A751D4302A500572DB5 /* entity_msg_type.proto */,
+				E6415A761D4302A500572DB5 /* EntityMsg.pbobjc.h */,
+				E6415A771D4302A500572DB5 /* EntityMsg.pbobjc.mm */,
+				E6415A781D4302A500572DB5 /* EntityMsgType.pbobjc.h */,
+				E6415A791D4302A500572DB5 /* EntityMsgType.pbobjc.mm */,
+				E6415A7A1D4302A500572DB5 /* storage_msg.proto */,
+				E6415A7B1D4302A500572DB5 /* storage_msg_type.proto */,
+				E6415A7C1D4302A500572DB5 /* StorageMsg.pbobjc.h */,
+				E6415A7D1D4302A500572DB5 /* StorageMsg.pbobjc.mm */,
+				E6415A7E1D4302A500572DB5 /* StorageMsgType.pbobjc.h */,
+				E6415A7F1D4302A500572DB5 /* StorageMsgType.pbobjc.mm */,
+				E6415A801D4302A500572DB5 /* sys_msg.proto */,
+				E6415A811D4302A500572DB5 /* sys_msg_type.proto */,
+				E6415A821D4302A500572DB5 /* SysMsg.pbobjc.h */,
+				E6415A831D4302A500572DB5 /* SysMsg.pbobjc.mm */,
+				E6415A841D4302A500572DB5 /* SysMsgType.pbobjc.h */,
+				E6415A851D4302A500572DB5 /* SysMsgType.pbobjc.mm */,
+			);
+			path = proto_ios;
+			sourceTree = "<group>";
+		};
+		E6415BDC1D4302DA00572DB5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6415BE01D4302DA00572DB5 /* libprotobuf.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6415BE21D4302E200572DB5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E6415BE61D4302E300572DB5 /* libProtocolBuffers.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E6415DDE1D45E82000572DB5 /* MJExtension */ = {
+			isa = PBXGroup;
+			children = (
+				E6415DDF1D45E82000572DB5 /* MJExtension.h */,
+				E6415DE01D45E82000572DB5 /* MJExtensionConst.h */,
+				E6415DE11D45E82000572DB5 /* MJExtensionConst.m */,
+				E6415DE21D45E82000572DB5 /* MJFoundation.h */,
+				E6415DE31D45E82000572DB5 /* MJFoundation.m */,
+				E6415DE41D45E82000572DB5 /* MJProperty.h */,
+				E6415DE51D45E82000572DB5 /* MJProperty.m */,
+				E6415DE61D45E82000572DB5 /* MJPropertyKey.h */,
+				E6415DE71D45E82000572DB5 /* MJPropertyKey.m */,
+				E6415DE81D45E82000572DB5 /* MJPropertyType.h */,
+				E6415DE91D45E82000572DB5 /* MJPropertyType.m */,
+				E6415DEA1D45E82000572DB5 /* NSObject+MJClass.h */,
+				E6415DEB1D45E82000572DB5 /* NSObject+MJClass.m */,
+				E6415DEC1D45E82000572DB5 /* NSObject+MJCoding.h */,
+				E6415DED1D45E82000572DB5 /* NSObject+MJCoding.m */,
+				E6415DEE1D45E82000572DB5 /* NSObject+MJKeyValue.h */,
+				E6415DEF1D45E82000572DB5 /* NSObject+MJKeyValue.m */,
+				E6415DF01D45E82000572DB5 /* NSObject+MJProperty.h */,
+				E6415DF11D45E82000572DB5 /* NSObject+MJProperty.m */,
+				E6415DF21D45E82000572DB5 /* NSString+MJExtension.h */,
+				E6415DF31D45E82000572DB5 /* NSString+MJExtension.m */,
+			);
+			path = MJExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E64156171D43002E00572DB5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E641561E1D43002E00572DB5 /* FrameworkMsgClient.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64159101D43025500572DB5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6415A951D4302A500572DB5 /* XTcpClientImpl.h in Headers */,
+				E6415D611D43062500572DB5 /* sslconfig.h in Headers */,
+				E6415D181D43062500572DB5 /* macconversion.h in Headers */,
+				E6415D031D43062500572DB5 /* httpclient.h in Headers */,
+				E6415BBD1D4302A500572DB5 /* MSSqlite3Manager.h in Headers */,
+				E6415CED1D43062500572DB5 /* dbus.h in Headers */,
+				E6415BAB1D4302A500572DB5 /* MSClientType.h in Headers */,
+				E6415D641D43062500572DB5 /* sslroots.h in Headers */,
+				E6415D5F1D43062500572DB5 /* socketstream.h in Headers */,
+				E6415D071D43062500572DB5 /* httpserver.h in Headers */,
+				E6415AAF1D4302A500572DB5 /* sys_msg_type.pb.h in Headers */,
+				E6415D541D43062500572DB5 /* sigslotrepeater.h in Headers */,
+				E6415CF61D43062500572DB5 /* fakenetwork.h in Headers */,
+				E6415A971D4302A500572DB5 /* XTcpTick.h in Headers */,
+				E6415D101D43062500572DB5 /* linux.h in Headers */,
+				E6415D7B1D43062500572DB5 /* timeutils.h in Headers */,
+				E6415BC51D4302A500572DB5 /* CommonMsg.pbobjc.h in Headers */,
+				E6415CE91D43062500572DB5 /* constructormagic.h in Headers */,
+				E6415CCE1D43062500572DB5 /* asyncpacketsocket.h in Headers */,
+				E6415BD11D4302A500572DB5 /* StorageMsgType.pbobjc.h in Headers */,
+				E6415AA31D4302A500572DB5 /* entity_msg_type.pb.h in Headers */,
+				E6415BD91D4302A500572DB5 /* RTSingleton.h in Headers */,
+				E6415D5D1D43062500572DB5 /* socketpool.h in Headers */,
+				E6415E031D45E82000572DB5 /* NSObject+MJKeyValue.h in Headers */,
+				E6415BC91D4302A500572DB5 /* EntityMsg.pbobjc.h in Headers */,
+				E6415D5B1D43062500572DB5 /* socketaddresspair.h in Headers */,
+				E6415D011D43062500572DB5 /* helpers.h in Headers */,
+				E6415D2B1D43062500572DB5 /* nullsocketserver.h in Headers */,
+				E6415CF71D43062500572DB5 /* fakesslidentity.h in Headers */,
+				E6415D6B1D43062500572DB5 /* stringutils.h in Headers */,
+				E6415BED1D43052700572DB5 /* messagequeue.h in Headers */,
+				E6415CE01D43062500572DB5 /* buffer.h in Headers */,
+				E6415BB01D4302A500572DB5 /* MSGroupManager.h in Headers */,
+				E6415D1C1D43062500572DB5 /* mathutils.h in Headers */,
+				E6415CD01D43062500572DB5 /* asyncresolverinterface.h in Headers */,
+				E6415CE41D43062500572DB5 /* callback.h in Headers */,
+				E6415BB41D4302A500572DB5 /* MSMessageManager.h in Headers */,
+				E6415D741D43062500572DB5 /* testutils.h in Headers */,
+				E6415D571D43062500572DB5 /* socket.h in Headers */,
+				E6415D221D43062500572DB5 /* multipart.h in Headers */,
+				E6415CEA1D43062500572DB5 /* crc32.h in Headers */,
+				E6415DFD1D45E82000572DB5 /* MJPropertyType.h in Headers */,
+				E6415CD91D43062500572DB5 /* bandwidthsmoother.h in Headers */,
+				E6415AA91D4302A500572DB5 /* storage_msg_type.pb.h in Headers */,
+				E6415D431D43062500572DB5 /* rtccertificate.h in Headers */,
+				E6415AB91D4302A500572DB5 /* stringbuffer.h in Headers */,
+				E6415D751D43062500572DB5 /* thread_annotations.h in Headers */,
+				E6415D771D43062500572DB5 /* thread_checker_impl.h in Headers */,
+				E6415D601D43062500572DB5 /* ssladapter.h in Headers */,
+				E6415D2F1D43062500572DB5 /* opensslidentity.h in Headers */,
+				E6415AB11D4302A500572DB5 /* document.h in Headers */,
+				E6415D5E1D43062500572DB5 /* socketserver.h in Headers */,
+				E6415CCB1D43062500572DB5 /* asyncinvoker-inl.h in Headers */,
+				E6415AB71D4302A500572DB5 /* rapidjson.h in Headers */,
+				E6415D3E1D43062500572DB5 /* ratelimiter.h in Headers */,
+				E6415D1F1D43062500572DB5 /* messagedigest.h in Headers */,
+				E6415CD61D43062500572DB5 /* asyncudpsocket.h in Headers */,
+				E6415D231D43062500572DB5 /* natserver.h in Headers */,
+				E6415D861D43062500572DB5 /* worker.h in Headers */,
+				E6415D0E1D43062500572DB5 /* libdbusglibsymboltable.h in Headers */,
+				E6415D4C1D43062500572DB5 /* sha1.h in Headers */,
+				E6415CD81D43062500572DB5 /* autodetectproxy.h in Headers */,
+				E6415D1E1D43062500572DB5 /* md5digest.h in Headers */,
+				E6415CE31D43062500572DB5 /* byteorder.h in Headers */,
+				E6415D001D43062500572DB5 /* gunit.h in Headers */,
+				E6415D801D43062500572DB5 /* urlencode.h in Headers */,
+				E6415BDA1D4302A500572DB5 /* TMClientType.h in Headers */,
+				E6415D021D43062500572DB5 /* httpbase.h in Headers */,
+				E6415D411D43062500572DB5 /* referencecountedsingletonfactory.h in Headers */,
+				E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */,
+				E6415CDE1D43062500572DB5 /* bind.h in Headers */,
+				E6415BBC1D4302A500572DB5 /* MSSqlite3ClientSql.h in Headers */,
+				E6415D3F1D43062500572DB5 /* ratetracker.h in Headers */,
+				E6415D7E1D43062500572DB5 /* transformadapter.h in Headers */,
+				E6415BCF1D4302A500572DB5 /* StorageMsg.pbobjc.h in Headers */,
+				E6415AB51D4302A500572DB5 /* strfunc.h in Headers */,
+				E6415AA01D4302A500572DB5 /* entity_msg.pb.h in Headers */,
+				E6415D651D43062500572DB5 /* sslsocketfactory.h in Headers */,
+				E6415CF91D43062500572DB5 /* filerotatingstream.h in Headers */,
+				E6415A901D4302A500572DB5 /* XMsgClient.h in Headers */,
+				E6415D281D43062500572DB5 /* network.h in Headers */,
+				E6415CDD1D43062500572DB5 /* basictypes.h in Headers */,
+				E6415D681D43062500572DB5 /* stream.h in Headers */,
+				E6415D351D43062500572DB5 /* platform_file.h in Headers */,
+				E6415ABA1D4302A500572DB5 /* writer.h in Headers */,
+				E6415D2D1D43062500572DB5 /* openssladapter.h in Headers */,
+				E6415D711D43062500572DB5 /* testbase64.h in Headers */,
+				E6415CDF1D43062500572DB5 /* bitbuffer.h in Headers */,
+				E6415D841D43062500572DB5 /* win32socketinit.h in Headers */,
+				E6415D441D43062500572DB5 /* safe_conversions_impl.h in Headers */,
+				E6415CE11D43062500572DB5 /* bufferqueue.h in Headers */,
+				E6415A8E1D4302A500572DB5 /* XMsgCallback.h in Headers */,
+				E6415D111D43062500572DB5 /* linuxfdwalk.h in Headers */,
+				E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */,
+				E6415D721D43062500572DB5 /* testclient.h in Headers */,
+				E6415CE61D43062500572DB5 /* checks.h in Headers */,
+				E6415D341D43062500572DB5 /* physicalsocketserver.h in Headers */,
+				E6415CEE1D43062500572DB5 /* deprecation.h in Headers */,
+				E6415CDC1D43062500572DB5 /* basicdefs.h in Headers */,
+				E6415D131D43062500572DB5 /* logsinks.h in Headers */,
+				E6415CEF1D43062500572DB5 /* diskcache_win32.h in Headers */,
+				E6415CFB1D43062500572DB5 /* fileutils.h in Headers */,
+				E6415D1A1D43062500572DB5 /* macutils.h in Headers */,
+				E6415D361D43062500572DB5 /* platform_thread_types.h in Headers */,
+				E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */,
+				E6415AB41D4302A500572DB5 /* stack.h in Headers */,
+				E6415BD71D4302A500572DB5 /* SysMsgType.pbobjc.h in Headers */,
+				E6415D511D43062500572DB5 /* signalthread.h in Headers */,
+				E6415DFF1D45E82000572DB5 /* NSObject+MJClass.h in Headers */,
+				E6415DFB1D45E82000572DB5 /* MJPropertyKey.h in Headers */,
+				E6415D4F1D43062500572DB5 /* sharedexclusivelock.h in Headers */,
+				E6415BB81D4302A500572DB5 /* MSSharedSeqnConfig.h in Headers */,
+				E6415BB61D4302A500572DB5 /* MSMsgUtil.h in Headers */,
+				E6415D321D43062500572DB5 /* pathutils.h in Headers */,
+				E6415D491D43062500572DB5 /* scoped_ref_ptr.h in Headers */,
+				E6415D781D43062500572DB5 /* thread_checker.h in Headers */,
+				E6415D2C1D43062500572DB5 /* openssl.h in Headers */,
+				E6415A9D1D4302A500572DB5 /* common_msg.pb.h in Headers */,
+				E6415A931D4302A500572DB5 /* XTcpClient.h in Headers */,
+				E6415D271D43062500572DB5 /* nethelpers.h in Headers */,
+				E6415E011D45E82000572DB5 /* NSObject+MJCoding.h in Headers */,
+				E6415D561D43062500572DB5 /* socket_unittest.h in Headers */,
+				E6415CC61D43062500572DB5 /* array_view.h in Headers */,
+				E6415D811D43062500572DB5 /* versionparsing.h in Headers */,
+				E6415D401D43062500572DB5 /* refcount.h in Headers */,
+				E6415B871D4302A500572DB5 /* common_types.h in Headers */,
+				E6415AAC1D4302A500572DB5 /* sys_msg.pb.h in Headers */,
+				E6415D041D43062500572DB5 /* httpcommon-inl.h in Headers */,
+				E6415D581D43062500572DB5 /* socketadapters.h in Headers */,
+				E6415D821D43062500572DB5 /* virtualsocketserver.h in Headers */,
+				E6415D7D1D43062500572DB5 /* trace_event.h in Headers */,
+				E6415BF81D43057600572DB5 /* criticalsection.h in Headers */,
+				E6415BAE1D4302A500572DB5 /* MsgClientProtocol.h in Headers */,
+				E6415CC91D43062500572DB5 /* asyncfile.h in Headers */,
+				E6415D6C1D43062500572DB5 /* systeminfo.h in Headers */,
+				E6415CE81D43062500572DB5 /* common.h in Headers */,
+				E6415D3D1D43062500572DB5 /* proxyserver.h in Headers */,
+				E6415D0F1D43062500572DB5 /* linked_ptr.h in Headers */,
+				E6415D1B1D43062500572DB5 /* macwindowpicker.h in Headers */,
+				E6415D481D43062500572DB5 /* scoped_ptr.h in Headers */,
+				E6415CFA1D43062500572DB5 /* fileutils_mock.h in Headers */,
+				E6415D0C1D43062500572DB5 /* json.h in Headers */,
+				E6415D241D43062500572DB5 /* natsocketfactory.h in Headers */,
+				E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */,
+				E6415D4A1D43062500572DB5 /* scopedptrcollection.h in Headers */,
+				E6415CCA1D43062500572DB5 /* asynchttprequest.h in Headers */,
+				E6415DF71D45E82000572DB5 /* MJFoundation.h in Headers */,
+				E6415D6F1D43062500572DB5 /* taskrunner.h in Headers */,
+				E6415C001D4305C700572DB5 /* event.h in Headers */,
+				E6415D061D43062500572DB5 /* httprequest.h in Headers */,
+				E6415D631D43062500572DB5 /* sslidentity.h in Headers */,
+				E6415CF51D43062500572DB5 /* exp_filter.h in Headers */,
+				E6415D191D43062500572DB5 /* macsocketserver.h in Headers */,
+				E6415D701D43062500572DB5 /* template_util.h in Headers */,
+				E6415D091D43062500572DB5 /* ifaddrs-android.h in Headers */,
+				E6415DF91D45E82000572DB5 /* MJProperty.h in Headers */,
+				E6415DF41D45E82000572DB5 /* MJExtension.h in Headers */,
+				E6415B881D4302A500572DB5 /* transport.h in Headers */,
+				E6415D3A1D43062500572DB5 /* profiler.h in Headers */,
+				E6415CD71D43062500572DB5 /* atomicops.h in Headers */,
+				E6415AB81D4302A500572DB5 /* reader.h in Headers */,
+				E6415D3B1D43062500572DB5 /* proxydetect.h in Headers */,
+				E6415A921D4302A500572DB5 /* XMsgProcesser.h in Headers */,
+				E6415D851D43062500572DB5 /* winping.h in Headers */,
+				E6415CFC1D43062500572DB5 /* firewallsocketserver.h in Headers */,
+				E6415ABC1D4302A500572DB5 /* RTMsgCommon.h in Headers */,
+				E6415D251D43062500572DB5 /* nattypes.h in Headers */,
+				E6415D161D43062500572DB5 /* maccocoathreadhelper.h in Headers */,
+				E6415CF31D43062500572DB5 /* event_tracer.h in Headers */,
+				E6415D6E1D43062500572DB5 /* taskparent.h in Headers */,
+				E6415BEC1D43052700572DB5 /* messagehandler.h in Headers */,
+				E6415CFD1D43062500572DB5 /* flags.h in Headers */,
+				E6415CF11D43062500572DB5 /* dscp.h in Headers */,
+				E6415ABB1D4302A500572DB5 /* RTC_Export.h in Headers */,
+				E6415B891D4302A500572DB5 /* typedefs.h in Headers */,
+				E6415D6D1D43062500572DB5 /* task.h in Headers */,
+				E6415D461D43062500572DB5 /* schanneladapter.h in Headers */,
+				E6415D731D43062500572DB5 /* testechoserver.h in Headers */,
+				E6415D831D43062500572DB5 /* win32.h in Headers */,
+				E6415D451D43062500572DB5 /* safe_conversions.h in Headers */,
+				E6415AA61D4302A500572DB5 /* storage_msg.pb.h in Headers */,
+				E6415D7C1D43062500572DB5 /* timing.h in Headers */,
+				E6415D5A1D43062500572DB5 /* socketaddress.h in Headers */,
+				E6415D3C1D43062500572DB5 /* proxyinfo.h in Headers */,
+				E6415BCB1D4302A500572DB5 /* EntityMsgType.pbobjc.h in Headers */,
+				E6415D7F1D43062500572DB5 /* unixfilesystem.h in Headers */,
+				E6415D5C1D43062500572DB5 /* socketfactory.h in Headers */,
+				E6415AB31D4302A500572DB5 /* pow10.h in Headers */,
+				E6415CFF1D43062500572DB5 /* gunit_prod.h in Headers */,
+				E6415D051D43062500572DB5 /* httpcommon.h in Headers */,
+				E6415DF51D45E82000572DB5 /* MJExtensionConst.h in Headers */,
+				E6415CF01D43062500572DB5 /* diskcache.h in Headers */,
+				E6415AB61D4302A500572DB5 /* prettywriter.h in Headers */,
+				E6415C031D4305C700572DB5 /* scoped_autorelease_pool.h in Headers */,
+				E6415D0B1D43062500572DB5 /* ipaddress.h in Headers */,
+				E6415CCC1D43062500572DB5 /* asyncinvoker.h in Headers */,
+				E6415CEC1D43062500572DB5 /* cryptstring.h in Headers */,
+				E6415AB21D4302A500572DB5 /* filestream.h in Headers */,
+				E6415D621D43062500572DB5 /* sslfingerprint.h in Headers */,
+				E6415D531D43062500572DB5 /* sigslot.h in Headers */,
+				E6415D6A1D43062500572DB5 /* stringencode.h in Headers */,
+				E6415CF81D43062500572DB5 /* faketaskrunner.h in Headers */,
+				E6415CD41D43062500572DB5 /* asynctcpsocket.h in Headers */,
+				E6415D4D1D43062500572DB5 /* sha1digest.h in Headers */,
+				E6415D4B1D43062500572DB5 /* sec_buffer.h in Headers */,
+				E6415D2E1D43062500572DB5 /* openssldigest.h in Headers */,
+				E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */,
+				E6415B861D4302A500572DB5 /* common.h in Headers */,
+				E6415E051D45E82000572DB5 /* NSObject+MJProperty.h in Headers */,
+				E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */,
+				E6415D1D1D43062500572DB5 /* md5.h in Headers */,
+				E6415A8D1D4302A500572DB5 /* XJSBuffer.h in Headers */,
+				E6415D141D43062500572DB5 /* macasyncsocket.h in Headers */,
+				E6415E071D45E82100572DB5 /* NSString+MJExtension.h in Headers */,
+				E6415D0D1D43062500572DB5 /* latebindingsymboltable.h in Headers */,
+				E6415CFE1D43062500572DB5 /* format_macros.h in Headers */,
+				E6415BAC1D4302A500572DB5 /* MsgClient.h in Headers */,
+				E6415CE21D43062500572DB5 /* bytebuffer.h in Headers */,
+				E6415CC71D43062500572DB5 /* arraysize.h in Headers */,
+				E6415D391D43062500572DB5 /* posix.h in Headers */,
+				E6415D2A1D43062500572DB5 /* networkmonitor.h in Headers */,
+				E6415D661D43062500572DB5 /* sslstreamadapter.h in Headers */,
+				E6415D311D43062500572DB5 /* optionsfile.h in Headers */,
+				E6415D421D43062500572DB5 /* rollingaccumulator.h in Headers */,
+				E6415BBA1D4302A500572DB5 /* MSSqlite3.h in Headers */,
+				E6415C021D4305C700572DB5 /* logging.h in Headers */,
+				E6415CD21D43062500572DB5 /* asyncsocket.h in Headers */,
+				E6415D671D43062500572DB5 /* sslstreamadapterhelper.h in Headers */,
+				E6415BEE1D43052700572DB5 /* thread.h in Headers */,
+				E6415BD51D4302A500572DB5 /* SysMsg.pbobjc.h in Headers */,
+				E6415D381D43062500572DB5 /* platform_thread.h in Headers */,
+				E6415CDB1D43062500572DB5 /* base64.h in Headers */,
+				E6415D551D43062500572DB5 /* sigslottester.h in Headers */,
+				E6415D151D43062500572DB5 /* maccocoasocketserver.h in Headers */,
+				E6415D301D43062500572DB5 /* opensslstreamadapter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E64156191D43002E00572DB5 /* FrameworkMsgClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E641562E1D43002E00572DB5 /* Build configuration list for PBXNativeTarget "FrameworkMsgClient" */;
+			buildPhases = (
+				E64156151D43002E00572DB5 /* Sources */,
+				E64156161D43002E00572DB5 /* Frameworks */,
+				E64156171D43002E00572DB5 /* Headers */,
+				E64156181D43002E00572DB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FrameworkMsgClient;
+			productName = FrameworkMsgClient;
+			productReference = E641561A1D43002E00572DB5 /* FrameworkMsgClient.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E64156231D43002E00572DB5 /* FrameworkMsgClientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E64156311D43002E00572DB5 /* Build configuration list for PBXNativeTarget "FrameworkMsgClientTests" */;
+			buildPhases = (
+				E64156201D43002E00572DB5 /* Sources */,
+				E64156211D43002E00572DB5 /* Frameworks */,
+				E64156221D43002E00572DB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E64156271D43002E00572DB5 /* PBXTargetDependency */,
+			);
+			name = FrameworkMsgClientTests;
+			productName = FrameworkMsgClientTests;
+			productReference = E64156241D43002E00572DB5 /* FrameworkMsgClientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E64156411D43007A00572DB5 /* MsgClientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E641564F1D43007A00572DB5 /* Build configuration list for PBXNativeTarget "MsgClientTests" */;
+			buildPhases = (
+				E641563E1D43007A00572DB5 /* Sources */,
+				E641563F1D43007A00572DB5 /* Frameworks */,
+				E64156401D43007A00572DB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MsgClientTests;
+			productName = MsgClientTests;
+			productReference = E64156421D43007A00572DB5 /* MsgClientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E64159121D43025500572DB5 /* msgclient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E64159241D43025500572DB5 /* Build configuration list for PBXNativeTarget "msgclient" */;
+			buildPhases = (
+				E641590E1D43025500572DB5 /* Sources */,
+				E641590F1D43025500572DB5 /* Frameworks */,
+				E64159101D43025500572DB5 /* Headers */,
+				E64159111D43025500572DB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = msgclient;
+			productName = msgclient;
+			productReference = E64159131D43025500572DB5 /* msgclient.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E641591B1D43025500572DB5 /* msgclientTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E64159271D43025500572DB5 /* Build configuration list for PBXNativeTarget "msgclientTests" */;
+			buildPhases = (
+				E64159181D43025500572DB5 /* Sources */,
+				E64159191D43025500572DB5 /* Frameworks */,
+				E641591A1D43025500572DB5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E641591F1D43025500572DB5 /* PBXTargetDependency */,
+			);
+			name = msgclientTests;
+			productName = msgclientTests;
+			productReference = E641591C1D43025500572DB5 /* msgclientTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E64156111D43002E00572DB5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = DYNC;
+				TargetAttributes = {
+					E64156191D43002E00572DB5 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E64156231D43002E00572DB5 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E64156411D43007A00572DB5 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E64159121D43025500572DB5 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E641591B1D43025500572DB5 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+				};
+			};
+			buildConfigurationList = E64156141D43002E00572DB5 /* Build configuration list for PBXProject "FrameworkMsgClient" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E64156101D43002E00572DB5;
+			productRefGroup = E641561B1D43002E00572DB5 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E6415BDC1D4302DA00572DB5 /* Products */;
+					ProjectRef = E6415BDB1D4302DA00572DB5 /* protobuf.xcodeproj */;
+				},
+				{
+					ProductGroup = E6415BE21D4302E200572DB5 /* Products */;
+					ProjectRef = E6415BE11D4302E200572DB5 /* ProtocolBuffers_iOS.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E64156191D43002E00572DB5 /* FrameworkMsgClient */,
+				E64156231D43002E00572DB5 /* FrameworkMsgClientTests */,
+				E64156411D43007A00572DB5 /* MsgClientTests */,
+				E64159121D43025500572DB5 /* msgclient */,
+				E641591B1D43025500572DB5 /* msgclientTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E6415BE01D4302DA00572DB5 /* libprotobuf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libprotobuf.a;
+			remoteRef = E6415BDF1D4302DA00572DB5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E6415BE61D4302E300572DB5 /* libProtocolBuffers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProtocolBuffers.a;
+			remoteRef = E6415BE51D4302E300572DB5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E64156181D43002E00572DB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64156221D43002E00572DB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64156401D43007A00572DB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64159111D43025500572DB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E641591A1D43025500572DB5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E64156151D43002E00572DB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64156201D43002E00572DB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E641562A1D43002E00572DB5 /* FrameworkMsgClientTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E641563E1D43007A00572DB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E64156481D43007A00572DB5 /* MsgClientTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E641590E1D43025500572DB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6415E021D45E82000572DB5 /* NSObject+MJCoding.m in Sources */,
+				E6415E041D45E82000572DB5 /* NSObject+MJKeyValue.m in Sources */,
+				E6415BB71D4302A500572DB5 /* MSMsgUtil.mm in Sources */,
+				E6415BB11D4302A500572DB5 /* MSGroupManager.mm in Sources */,
+				E6415A911D4302A500572DB5 /* XMsgProcesser.cpp in Sources */,
+				E6415DC41D45E35600572DB5 /* ifaddrs-android.cc in Sources */,
+				E6415DBC1D45E35600572DB5 /* asynctcpsocket.cc in Sources */,
+				E6415A9C1D4302A500572DB5 /* common_msg.pb.cc in Sources */,
+				E6415DBB1D45E35600572DB5 /* asyncsocket.cc in Sources */,
+				E6415DC91D45E35700572DB5 /* messagequeue.cc in Sources */,
+				E6415DB91D45E35600572DB5 /* asyncpacketsocket.cc in Sources */,
+				E6415A8C1D4302A500572DB5 /* XJSBuffer.cpp in Sources */,
+				E6415DCD1D45E35700572DB5 /* platform_thread.cc in Sources */,
+				E6415DD21D45E35700572DB5 /* socketaddress.cc in Sources */,
+				E6415DD81D45E4BB00572DB5 /* buffer.cc in Sources */,
+				E6415BBE1D4302A500572DB5 /* MSSqlite3Manager.mm in Sources */,
+				E6415A8F1D4302A500572DB5 /* XMsgClient.cpp in Sources */,
+				E6415DD01D45E35700572DB5 /* signalthread.cc in Sources */,
+				E6415DC01D45E35600572DB5 /* common.cc in Sources */,
+				E6415A9F1D4302A500572DB5 /* entity_msg.pb.cc in Sources */,
+				E6415BB51D4302A500572DB5 /* MSMessageManager.mm in Sources */,
+				E6415AA21D4302A500572DB5 /* entity_msg_type.pb.cc in Sources */,
+				E6415DD31D45E35700572DB5 /* stringencode.cc in Sources */,
+				E6415E081D45E82100572DB5 /* NSString+MJExtension.m in Sources */,
+				E6415DC11D45E35600572DB5 /* criticalsection.cc in Sources */,
+				E6415DBF1D45E35600572DB5 /* checks.cc in Sources */,
+				E6415BBB1D4302A500572DB5 /* MSSqlite3.mm in Sources */,
+				E6415DCB1D45E35700572DB5 /* networkmonitor.cc in Sources */,
+				E6415BB91D4302A500572DB5 /* MSSharedSeqnConfig.mm in Sources */,
+				E6415BB31D4302A500572DB5 /* MSMessage.mm in Sources */,
+				E6415DFE1D45E82000572DB5 /* MJPropertyType.m in Sources */,
+				E6415DBA1D45E35600572DB5 /* asyncresolverinterface.cc in Sources */,
+				E6415AA81D4302A500572DB5 /* storage_msg_type.pb.cc in Sources */,
+				E6415DC81D45E35700572DB5 /* messagehandler.cc in Sources */,
+				E6415DC21D45E35600572DB5 /* event_tracer.cc in Sources */,
+				E6415DBE1D45E35600572DB5 /* base64.cc in Sources */,
+				E6415BCA1D4302A500572DB5 /* EntityMsg.pbobjc.mm in Sources */,
+				E6415DCC1D45E35700572DB5 /* physicalsocketserver.cc in Sources */,
+				E6415E061D45E82100572DB5 /* NSObject+MJProperty.m in Sources */,
+				E6415DD41D45E35700572DB5 /* thread_checker_impl.cc in Sources */,
+				E6415DFA1D45E82000572DB5 /* MJProperty.m in Sources */,
+				E6415DCA1D45E35700572DB5 /* nethelpers.cc in Sources */,
+				E6415DFC1D45E82000572DB5 /* MJPropertyKey.m in Sources */,
+				E6415E001D45E82000572DB5 /* NSObject+MJClass.m in Sources */,
+				E6415BAD1D4302A500572DB5 /* MsgClient.mm in Sources */,
+				E6415BC61D4302A500572DB5 /* CommonMsg.pbobjc.mm in Sources */,
+				E6415AAB1D4302A500572DB5 /* sys_msg.pb.cc in Sources */,
+				E6415DC51D45E35700572DB5 /* ipaddress.cc in Sources */,
+				E6415DD51D45E35700572DB5 /* thread.cc in Sources */,
+				E6415BCC1D4302A500572DB5 /* EntityMsgType.pbobjc.mm in Sources */,
+				E6415DBD1D45E35600572DB5 /* asyncudpsocket.cc in Sources */,
+				E6415BD61D4302A500572DB5 /* SysMsg.pbobjc.mm in Sources */,
+				E6415DCE1D45E35700572DB5 /* scoped_autorelease_pool.mm in Sources */,
+				E6415AAE1D4302A500572DB5 /* sys_msg_type.pb.cc in Sources */,
+				E6415DC61D45E35700572DB5 /* logging.cc in Sources */,
+				E6415BD01D4302A500572DB5 /* StorageMsg.pbobjc.mm in Sources */,
+				E6415DB81D45E35600572DB5 /* asyncfile.cc in Sources */,
+				E6415DD11D45E35700572DB5 /* sigslot.cc in Sources */,
+				E6415DCF1D45E35700572DB5 /* sharedexclusivelock.cc in Sources */,
+				E6415A961D4302A500572DB5 /* XTcpTick.cpp in Sources */,
+				E6415BAA1D4302A500572DB5 /* MSClientManager.mm in Sources */,
+				E6415DD61D45E35700572DB5 /* timeutils.cc in Sources */,
+				E6415DC71D45E35700572DB5 /* maccocoathreadhelper.mm in Sources */,
+				E6415A941D4302A500572DB5 /* XTcpClientImpl.cpp in Sources */,
+				E6415BD21D4302A500572DB5 /* StorageMsgType.pbobjc.mm in Sources */,
+				E6415DF81D45E82000572DB5 /* MJFoundation.m in Sources */,
+				E6415BD81D4302A500572DB5 /* SysMsgType.pbobjc.mm in Sources */,
+				E6415DC31D45E35600572DB5 /* event.cc in Sources */,
+				E6415BC01D4302A500572DB5 /* MSTxtMessage.mm in Sources */,
+				E6415DF61D45E82000572DB5 /* MJExtensionConst.m in Sources */,
+				E6415AA51D4302A500572DB5 /* storage_msg.pb.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E64159181D43025500572DB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E64159221D43025500572DB5 /* msgclientTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E64156271D43002E00572DB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E64156191D43002E00572DB5 /* FrameworkMsgClient */;
+			targetProxy = E64156261D43002E00572DB5 /* PBXContainerItemProxy */;
+		};
+		E641591F1D43025500572DB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E64159121D43025500572DB5 /* msgclient */;
+			targetProxy = E641591E1D43025500572DB5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E641562C1D43002E00572DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E641562D1D43002E00572DB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		E641562F1D43002E00572DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FrameworkMsgClient/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.FrameworkMsgClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E64156301D43002E00572DB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FrameworkMsgClient/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.FrameworkMsgClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E64156321D43002E00572DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FrameworkMsgClientTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.FrameworkMsgClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E64156331D43002E00572DB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = FrameworkMsgClientTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.FrameworkMsgClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E641564C1D43007A00572DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MsgClientTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.MsgClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E641564D1D43007A00572DB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MsgClientTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.MsgClientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		E64159251D43025500572DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					WEBRTC_POSIX,
+					WEBRTC_MAC,
+					WEBRTC_IOS,
+					"CARBON_DEPRECATED=YES",
+					POSIX,
+					"LOGGING=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/protobuf/src",
+					"$(PROJECT_DIR)/runtimeprotobuf/objectivec",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/msgclient/client_common",
+					"$(PROJECT_DIR)/msgclient/MJExtension",
+				);
+				INFOPLIST_FILE = msgclient/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.msgclient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E64159261D43025500572DB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					WEBRTC_POSIX,
+					WEBRTC_MAC,
+					WEBRTC_IOS,
+					"CARBON_DEPRECATED=YES",
+					POSIX,
+					"LOGGING=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/protobuf/src",
+					"$(PROJECT_DIR)/runtimeprotobuf/objectivec",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/msgclient/client_common",
+					"$(PROJECT_DIR)/msgclient/MJExtension",
+				);
+				INFOPLIST_FILE = msgclient/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.msgclient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E64159281D43025500572DB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = msgclientTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.msgclientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		E64159291D43025500572DB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = msgclientTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = DYNC.msgclientTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E64156141D43002E00572DB5 /* Build configuration list for PBXProject "FrameworkMsgClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E641562C1D43002E00572DB5 /* Debug */,
+				E641562D1D43002E00572DB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E641562E1D43002E00572DB5 /* Build configuration list for PBXNativeTarget "FrameworkMsgClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E641562F1D43002E00572DB5 /* Debug */,
+				E64156301D43002E00572DB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E64156311D43002E00572DB5 /* Build configuration list for PBXNativeTarget "FrameworkMsgClientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E64156321D43002E00572DB5 /* Debug */,
+				E64156331D43002E00572DB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E641564F1D43007A00572DB5 /* Build configuration list for PBXNativeTarget "MsgClientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E641564C1D43007A00572DB5 /* Debug */,
+				E641564D1D43007A00572DB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E64159241D43025500572DB5 /* Build configuration list for PBXNativeTarget "msgclient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E64159251D43025500572DB5 /* Debug */,
+				E64159261D43025500572DB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E64159271D43025500572DB5 /* Build configuration list for PBXNativeTarget "msgclientTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E64159281D43025500572DB5 /* Debug */,
+				E64159291D43025500572DB5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E64156111D43002E00572DB5 /* Project object */;
+}
