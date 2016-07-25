@@ -255,10 +255,11 @@ public class MsgClient implements JMClientHelper{
     }
 
     public String MCSendTxtMsgTos(String strGroupId, String[] arrUsers, String strContent) {
+        if (arrUsers.length==0) return null;
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndCont(strGroupId, strContent);
         if (null != mMApp && null != jsonMsg) {
-            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TTXT_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE, arrUsers, arrUsers.length);
+            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TTXT_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FMULTI_VALUE, arrUsers, arrUsers.length);
         }
         return outMsgId;
     }
@@ -274,6 +275,7 @@ public class MsgClient implements JMClientHelper{
     }
 
     public String MCSendTxtMsgToUsrs(String[] arrUsers, String strContent) {
+        if (arrUsers.length==0) return null;
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithUidsAndCont(arrUsers, strContent);
         if (null != mMApp && null != jsonMsg) {
@@ -286,8 +288,9 @@ public class MsgClient implements JMClientHelper{
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strHostId);
         if (null != mMApp && null != jsonMsg) {
-            String[] arrUser = {strHostId};
-            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TLIV_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            //String[] arrUser = {strHostId};
+            //outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TLIV_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            outMsgId = mMApp.SndMsg(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TLIV_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE);
         }
         return outMsgId;
     }
@@ -296,38 +299,52 @@ public class MsgClient implements JMClientHelper{
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strHostId);
         if (null != mMApp && null != jsonMsg) {
-            String[] arrUser = {strHostId};
-            outMsgId =  mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TREN_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            //String[] arrUser = {strHostId};
+            //outMsgId =  mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TREN_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            outMsgId =  mMApp.SndMsg(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TREN_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE);
         }
         return outMsgId;
     }
 
-    public String MCNotifyBlacklist(String strGroupId, String strUserId) {
+    public String MCNotifyBlacklist(String strGroupId, String strUserId, String[] notifys) {
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strUserId);
         if (null != mMApp && null != jsonMsg) {
-            String[] arrUser = {strUserId};
-            outMsgId =  mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TBLK_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            ArrayList<String> arrUsers = new ArrayList<String>();
+            arrUsers.add(strUserId);
+            for (int i=0;i<notifys.length;++i) {
+                arrUsers.add(notifys[i]);
+            }
+            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TBLK_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FMULTI_VALUE, arrUsers.toArray(new String[]{}), arrUsers.size());
         }
         return outMsgId;
     }
 
-    public String MCNotifyForbidden(String strGroupId, String strUserId) {
+    public String MCNotifyForbidden(String strGroupId, String strUserId, String[] notifys) {
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strUserId);
         if (null != mMApp && null != jsonMsg) {
-            String[] arrUser = {strUserId};
-            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TFBD_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            ArrayList<String> arrUsers = new ArrayList<String>();
+            arrUsers.add(strUserId);
+            for (int i=0;i<notifys.length;++i) {
+                arrUsers.add(notifys[i]);
+            }
+            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TFBD_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FMULTI_VALUE, arrUsers.toArray(new String[]{}), arrUsers.size());
         }
         return outMsgId;
     }
 
-    public String MCNotifySettedMgr(String strGroupId, String strUserId) {
+    public String MCNotifySettedMgr(String strGroupId, String strUserId, String[] notifys) {
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strUserId);
         if (null != mMApp && null != jsonMsg) {
-            String[] arrUser = {strUserId};
-            outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TMGR_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
+            //ArrayList<String> arrUsers = new ArrayList<String>();
+            //arrUsers.add(strUserId);
+            //for (int i=0;i<notifys.length;++i) {
+            //    arrUsers.add(notifys[i]);
+            //}
+            //outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TMGR_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FMULTI_VALUE, arrUsers.toArray(new String[]{}), arrUsers.size());
+            outMsgId = mMApp.SndMsg(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TMGR_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE);
         }
         return outMsgId;
     }
@@ -339,6 +356,21 @@ public class MsgClient implements JMClientHelper{
             return -10;
         }
     }
+
+    public void MCSetUserId(String strUserId) {
+        if (null != mMApp) {
+            setmStrUserId(strUserId);
+            mMApp.SetUserId(strUserId);
+        }
+    }
+
+    public void MCSetToken(String strToken) {
+        if (null != mMApp) {
+            setmStrToken(strToken);
+            mMApp.SetToken(strToken);
+        }
+    }
+
     public void MCSetNickName(String strNickName) {
         if (null != mMApp) {
             setmStrNname(strNickName);
@@ -635,12 +667,10 @@ public class MsgClient implements JMClientHelper{
                 break;
             case EntityMsgType.EMsgType.TLIV_VALUE:
             {
-                mTxtMsgDelegate.OnNotifyLive(txtMsg);
             }
                 break;
             case EntityMsgType.EMsgType.TREN_VALUE:
             {
-                mTxtMsgDelegate.OnNotifyRedEnvelope(txtMsg);
             }
                 break;
             case EntityMsgType.EMsgType.TBLK_VALUE:
@@ -655,7 +685,6 @@ public class MsgClient implements JMClientHelper{
                 break;
             case EntityMsgType.EMsgType.TMGR_VALUE:
             {
-                mTxtMsgDelegate.OnNotifySettedMgr(txtMsg);
             }
                 break;
             default:
@@ -726,14 +755,17 @@ public class MsgClient implements JMClientHelper{
                 break;
             case EntityMsgType.EMsgType.TSDF_VALUE:
             {
+                mTxtMsgDelegate.OnRecvSelfDefMessage(txtMsg);
             }
                 break;
             case EntityMsgType.EMsgType.TLIV_VALUE:
             {
+                mTxtMsgDelegate.OnNotifyLive(txtMsg);
             }
                 break;
             case EntityMsgType.EMsgType.TREN_VALUE:
             {
+                mTxtMsgDelegate.OnNotifyRedEnvelope(txtMsg);
             }
                 break;
             case EntityMsgType.EMsgType.TBLK_VALUE:
@@ -746,6 +778,7 @@ public class MsgClient implements JMClientHelper{
                 break;
             case EntityMsgType.EMsgType.TMGR_VALUE:
             {
+                mTxtMsgDelegate.OnNotifySettedMgr(txtMsg);
             }
                 break;
             default:

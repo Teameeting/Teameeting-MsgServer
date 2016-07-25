@@ -91,8 +91,8 @@ public class MSMessageManager {
      * <p/>
      * params:
      */
-    public String sendNotifyBlacklist(String grpId, String userId) {
-        return MsgClient.getInstance().MCNotifyBlacklist(grpId, userId);
+    public String sendNotifyBlacklist(String grpId, String userId, String[] notifys) {
+        return MsgClient.getInstance().MCNotifyBlacklist(grpId, userId, notifys);
     }
 
     /**
@@ -100,8 +100,8 @@ public class MSMessageManager {
      * <p/>
      * params:
      */
-    public String sendNotifyForbidden(String grpId, String userId) {
-        return MsgClient.getInstance().MCNotifyForbidden(grpId, userId);
+    public String sendNotifyForbidden(String grpId, String userId, String[] notifys) {
+        return MsgClient.getInstance().MCNotifyForbidden(grpId, userId, notifys);
     }
 
     /**
@@ -109,7 +109,7 @@ public class MSMessageManager {
      * <p/>
      * params:
      */
-    public String sendNotifySettedMgr(String grpId, String userId) {
-        return MsgClient.getInstance().MCNotifySettedMgr(grpId, userId);
+    public String sendNotifySettedMgr(String grpId, String userId, String[] notifys) {
+        return MsgClient.getInstance().MCNotifySettedMgr(grpId, userId, notifys);
     }
 }

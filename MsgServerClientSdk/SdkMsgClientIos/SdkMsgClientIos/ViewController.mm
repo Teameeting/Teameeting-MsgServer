@@ -256,8 +256,10 @@
     
     NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    [msgMgr sendNotifyBlacklistGrpId:mGroupId userId:touser cmsgid:&outmsgid];
+    NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
+    [msgMgr sendNotifyBlacklistGrpId:mGroupId userId:touser1 notifys:arr cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendNotifyBlacklist outmsgid is :%@", outmsgid];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
@@ -269,8 +271,10 @@
     
     NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    [msgMgr sendNotifyForbiddenGrpId:mGroupId userId:touser cmsgid:&outmsgid];
+    NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
+    [msgMgr sendNotifyForbiddenGrpId:mGroupId userId:touser1 notifys:arr cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendNotifyForbidden outmsgid is :%@", outmsgid];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
@@ -282,8 +286,10 @@
     
     NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    [msgMgr sendNotifySettedMgrGrpId:mGroupId userId:touser cmsgid:&outmsgid];
+    NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
+    [msgMgr sendNotifySettedMgrGrpId:mGroupId userId:touser1 notifys:arr cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendNotifySettedMgr outmsgid is :%@", outmsgid];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];

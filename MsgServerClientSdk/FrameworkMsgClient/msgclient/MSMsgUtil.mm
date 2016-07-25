@@ -89,6 +89,16 @@
     return txtMsg;
 }
 
++ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
+{
+    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
+    [txtMsg setGroupId:groupId];
+    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    return txtMsg;
+}
+
 /////////////////////////////////////////////////
 
 + (MSTxtMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict

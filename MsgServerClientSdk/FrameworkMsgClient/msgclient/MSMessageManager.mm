@@ -105,33 +105,48 @@
 
 -(int)sendNotifyBlacklistGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                       notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
     if (!cmsgid) return -100;
     std::string msgid;
-    int res = MsgClient::Instance().MCNotifyBlacklist(msgid, [grpId UTF8String], [userId UTF8String]);
+    std::vector<std::string> vusers;
+    for (NSString* name in notifys) {
+        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+    int res = MsgClient::Instance().MCNotifyBlacklist(msgid, [grpId UTF8String], [userId UTF8String], vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }
 
 -(int)sendNotifyForbiddenGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                       notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
     if (!cmsgid) return -100;
     std::string msgid;
-    int res = MsgClient::Instance().MCNotifyForbidden(msgid, [grpId UTF8String], [userId UTF8String]);
+    std::vector<std::string> vusers;
+    for (NSString* name in notifys) {
+        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+    int res = MsgClient::Instance().MCNotifyForbidden(msgid, [grpId UTF8String], [userId UTF8String], vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }
 
 -(int)sendNotifySettedMgrGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                       notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
     if (!cmsgid) return -100;
     std::string msgid;
-    int res = MsgClient::Instance().MCNotifySettedMgr(msgid, [grpId UTF8String], [userId UTF8String]);
+    std::vector<std::string> vusers;
+    for (NSString* name in notifys) {
+        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    }
+    int res = MsgClient::Instance().MCNotifySettedMgr(msgid, [grpId UTF8String], [userId UTF8String], vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }

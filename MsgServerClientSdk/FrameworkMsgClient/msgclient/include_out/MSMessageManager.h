@@ -98,6 +98,7 @@
  */
 -(int)sendNotifyBlacklistGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                       notifys:(NSArray*)notifys
                         cmsgid:(NSString**)cmsgid;
 
 /**
@@ -107,6 +108,7 @@
  */
 -(int)sendNotifyForbiddenGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                       notifys:(NSArray*)notifys
                         cmsgid:(NSString**)cmsgid;
 
 /**
@@ -116,6 +118,7 @@
  */
 -(int)sendNotifySettedMgrGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                       notifys:(NSArray*)notifys
                         cmsgid:(NSString**)cmsgid;
 
 @end

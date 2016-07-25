@@ -151,8 +151,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
-        String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifyBlacklist(groupid, touser);
+        String touser1 = "dcd54ddf2ee1df11";
+        String touser2 = "dcd54ddf2ee1df11";
+        String[] arr = {touser1, touser2};
+        String outmsgid = mMsMessageManager.sendNotifyBlacklist(groupid, touser1, arr);
         System.out.println("NotifyMsgBlacklist sendNotifyBlacklist get msgid:"+outmsgid);
     }
 
@@ -161,8 +163,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
-        String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifyForbidden(groupid, touser);
+        String touser1 = "dcd54ddf2ee1df11";
+        String touser2 = "dcd54ddf2ee1df11";
+        String[] arr = {touser1, touser2};
+        String outmsgid = mMsMessageManager.sendNotifyForbidden(groupid, touser1, arr);
         System.out.println("NotifyMsgForbidden sendNotifyForbidden get msgid:"+outmsgid);
     }
 
@@ -171,8 +175,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
-        String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser);
+        String touser1 = "dcd54ddf2ee1df11";
+        String touser2 = "dcd54ddf2ee1df11";
+        String[] arr = {touser1, touser2};
+        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser1, arr);
         System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 

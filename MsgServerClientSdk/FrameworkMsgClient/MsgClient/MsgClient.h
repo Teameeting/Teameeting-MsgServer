@@ -59,9 +59,9 @@ public:
     
     int MCNotifyLive(std::string& outmsgid, const std::string& groupid, const std::string& hostid);
     int MCNotifyRedEnvelope(std::string& outmsgid, const std::string& groupid, const std::string& hostid);
-    int MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid);
-    int MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid);
-    int MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid);
+    int MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys);
+    int MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys);
+    int MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys);
     
     int MCConnStatus() { return MSStatus(); }
     void MCSetUserId(const std::string& userid) {

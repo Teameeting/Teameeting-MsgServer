@@ -70,26 +70,26 @@ public class MSClientManager {
      * <p/>
      * params:
      */
-    public void setUserid(String strUserid) { MsgClient.getInstance().setmStrUserId(strUserid); }
+    public void setUserid(String strUserid) { MsgClient.getInstance().MCSetUserId(strUserid); }
 
     /**
      * set user token
      * <p/>
      * params:
      */
-    public void setToken(String strToken) { MsgClient.getInstance().setmStrToken(strToken); }
+    public void setToken(String strToken) { MsgClient.getInstance().MCSetToken(strToken); }
 
     /**
      * set user nick name
      * <p/>
      * params:
      */
-    public void setNickName(String strNname) { MsgClient.getInstance().setmStrNname(strNname); }
+    public void setNickName(String strNname) { MsgClient.getInstance().MCSetNickName(strNname); }
 
     /**
      * set user uicon url
      * <p/>
      * params:
      */
-    public void setUIconUrl(String strUicon) { MsgClient.getInstance().setmStrUicon(strUicon); }
+    public void setUIconUrl(String strUicon) { MsgClient.getInstance().MCSetUIconUrl(strUicon); }
 }
