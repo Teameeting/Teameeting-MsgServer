@@ -24,75 +24,83 @@
     [_sqlite3Db closeDb];
 }
 
--(BOOL)isUserExists:(NSString*)userId
+-(BOOL)isUserExistsUserId:(NSString*)userId
+                   seqnId:(NSString*)seqnId
 {
-    return [_sqlite3Db isUserExistsInDb:userId];
+    return [_sqlite3Db isUserExistsInDbUserId:userId SeqnId:seqnId];
 }
 
--(BOOL)isGroupExists:(NSString*)grpId;
+-(BOOL)isGroupExistsUserId:(NSString*)userId
+                     GrpId:(NSString*)grpId
 {
-    return [_sqlite3Db isGroupExistsInDb:grpId];
+    return [_sqlite3Db isGroupExistsUserId:userId GrpId:grpId];
 }
 
 -(void)addUserId:(NSString*)userId
 {
-    [_sqlite3Db insertSeqnSeqnId:userId seqn:[NSNumber numberWithLongLong:0]];
+    [_sqlite3Db insertSeqnUserId:userId SeqnId:userId seqn:[NSNumber numberWithLongLong:0]];
 }
 
 -(void)updateUserSeqnUserId:(NSString*)userId seqn:(NSNumber*)seqn
 {
-    [_sqlite3Db updateSeqnSeqnId:userId seqn:seqn];
+    [_sqlite3Db updateSeqnUserId:userId SeqnId:userId seqn:seqn];
 }
 
 -(NSNumber*)getUserSeqnUserId:(NSString*)userId
 {
     NSNumber *seqn = nil;
-    [_sqlite3Db selectSeqnSeqnId:userId seqn:&seqn];
+    [_sqlite3Db selectSeqnUserId:userId SeqnId:userId seqn:&seqn];
     return seqn;
 }
 
--(void)addGroupId:(NSString*)groupId
+-(void)addGroupIdUserId:(NSString*)userId
+                  GrpId:(NSString*)groupId
 {
-    [_sqlite3Db insertGroupIdGrpId:groupId];
+    [_sqlite3Db insertGroupIdUserId:userId GrpId:groupId];
 }
 
--(void)addGroupSeqnGrpId:(NSString*)grpId
-                       seqn:(NSNumber*)seqn
+-(void)addGroupSeqnUserId:(NSString*)userId
+                    GrpId:(NSString*)grpId
+                     seqn:(NSNumber*)seqn
 {
-    [_sqlite3Db insertSeqnSeqnId:grpId seqn:seqn];
+    [_sqlite3Db insertSeqnUserId:userId SeqnId:grpId seqn:seqn];
 }
 
--(void)updateGroupSeqnGrpId:(NSString*)grpId
-                       seqn:(NSNumber*)seqn
+-(void)updateGroupSeqnUserId:(NSString*)userId
+                       GrpId:(NSString*)grpId
+                        seqn:(NSNumber*)seqn
 {
-    [_sqlite3Db updateSeqnSeqnId:grpId seqn:seqn];
+    [_sqlite3Db updateSeqnUserId:userId SeqnId:grpId seqn:seqn];
 }
 
--(void)updateGroupInfoGrpId:(NSString*)grpId
-                       seqn:(NSNumber*)seqn
-                  isfetched:(NSNumber*)isfetched
+-(void)updateGroupInfoUserId:(NSString*)userId
+                       GrpId:(NSString*)grpId
+                        seqn:(NSNumber*)seqn
+                   isfetched:(NSNumber*)isfetched
 {
-    [_sqlite3Db updateSeqnSeqnId:grpId seqn:seqn isfetched:isfetched];
+    [_sqlite3Db updateSeqnUserId:userId SeqnId:grpId seqn:seqn isfetched:isfetched];
 }
 
--(NSNumber*)getGroupSeqnGrpId:(NSString*)grpId
+-(NSNumber*)getGroupSeqnUserId:(NSString*)userId
+                         GrpId:(NSString*)grpId
 {
     NSNumber *seqn = nil;
-    [_sqlite3Db selectSeqnSeqnId:grpId seqn:&seqn];
+    [_sqlite3Db selectSeqnUserId:userId SeqnId:grpId seqn:&seqn];
     return seqn;
 }
 
--(NSArray*)getGroupInfo
+-(NSArray*)getGroupInfoUserId:(NSString*)userId
 {
     NSArray *arr = nil;
-    [_sqlite3Db selectGroupInfo:&arr];
+    [_sqlite3Db selectGroupInfoUserId:userId GrpInfo:&arr];
     return arr;
 }
 
--(void)delGroupId:(NSString*)groupId
+-(void)delGroupIdUserId:(NSString*)userId
+                  GrpId:(NSString*)groupId
 {
-    [_sqlite3Db deleteSeqnSeqnId:groupId];
-    [_sqlite3Db deleteGroupIdGrpId:groupId];
+    [_sqlite3Db deleteSeqnUserId:userId SeqnId:groupId];
+    [_sqlite3Db deleteGroupIdUserId:userId GrpId:groupId];
 }
 
 @end

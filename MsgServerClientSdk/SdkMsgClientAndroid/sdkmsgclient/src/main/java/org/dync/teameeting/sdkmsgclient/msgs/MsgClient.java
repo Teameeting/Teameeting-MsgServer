@@ -420,18 +420,18 @@ public class MsgClient implements JMClientHelper{
         //GroupSeqnMap
         UpdateLocalSeqn(strSeqnId, seqn);
         // update Database
-        mSqlite3Manager.UpdateGroupInfo(strSeqnId, seqn, isFetched);
+        mSqlite3Manager.UpdateGroupInfo(mStrUserId, strSeqnId, seqn, isFetched);
     }
 
     private void CheckUserOrInit(String strUid) {
-        if (!mSqlite3Manager.IsUserExists(strUid)) {
+        if (!mSqlite3Manager.IsUserExists(strUid, strUid)) {
             mSqlite3Manager.AddUser(strUid);
         }
     }
 
     private void GetLocalSeqnsFromDb() {
         if (mSqlite3Manager!=null) {
-            ArrayList<GroupInfo> arr = mSqlite3Manager.GetGroupInfo();
+            ArrayList<GroupInfo> arr = mSqlite3Manager.GetGroupInfo(mStrUserId);
             for (GroupInfo in : arr) {
                 String seqnId = in.getmSeqnId();
                 long   seqn = in.getmSeqn();
@@ -449,7 +449,7 @@ public class MsgClient implements JMClientHelper{
             System.out.println("UpdateUserSeqn will be called...");
             for (String k  : mGroupSeqn.keySet())
             {
-                mSqlite3Manager.UpdateGroupSeqn(k, mGroupSeqn.get(k));
+                mSqlite3Manager.UpdateGroupSeqn(mStrUserId, k, mGroupSeqn.get(k));
             }
         }
     }
@@ -501,11 +501,11 @@ public class MsgClient implements JMClientHelper{
                 {
                     System.out.println("OnCmdCallback add group ok, insert groupid and seqn, toggle callback");
                     if (null != mSqlite3Manager && null != mGroupDelegate) {
-                        if (false == mSqlite3Manager.IsGroupExistsInDb(groupid)) {
-                            mSqlite3Manager.AddGroup(groupid);
+                        if (false == mSqlite3Manager.IsGroupExistsInDb(mStrUserId, groupid)) {
+                            mSqlite3Manager.AddGroup(mStrUserId, groupid);
                         }
-                        if (false == mSqlite3Manager.IsUserExists(groupid)) {
-                            mSqlite3Manager.AddGroupSeqn(groupid, data.seqn);
+                        if (false == mSqlite3Manager.IsUserExists(mStrUserId, groupid)) {
+                            mSqlite3Manager.AddGroupSeqn(mStrUserId, groupid, data.seqn);
                         }
                         UpdateLocalSeqn(groupid, data.seqn);
                         mGroupDelegate.OnAddGroupSuccess(groupid);
@@ -524,7 +524,7 @@ public class MsgClient implements JMClientHelper{
                 {
                     System.out.println("OnCmdCallback del group ok, del groupid and seqn, toggle callback");
                     if (null != mSqlite3Manager && null != mGroupDelegate) {
-                        mSqlite3Manager.DelGroup(groupid);
+                        mSqlite3Manager.DelGroup(mStrUserId, groupid);
                         RemoveLocalSeqn(groupid);
                         mGroupDelegate.OnRmvGroupSuccess(groupid);
                     }

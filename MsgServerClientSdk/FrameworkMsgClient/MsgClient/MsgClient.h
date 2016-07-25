@@ -183,12 +183,12 @@ private:
         UpdateLocalSeqn([nsSeqnId cStringUsingEncoding:NSASCIIStringEncoding], [nsSeqn longLongValue]);
         
         // update Database
-        [m_sqlite3Manager updateGroupInfoGrpId:nsSeqnId seqn:nsSeqn isfetched:nsIsFetched];
+        [m_sqlite3Manager updateGroupInfoUserId:m_nsUserId GrpId:nsSeqnId seqn:nsSeqn isfetched:nsIsFetched];
     }
     
     void CheckUserOrInit(NSString* nsUid)
     {
-        if (![m_sqlite3Manager isUserExists:nsUid])
+        if (![m_sqlite3Manager isUserExistsUserId:nsUid seqnId:nsUid])
         {
             [m_sqlite3Manager addUserId:nsUid];
         }
@@ -199,7 +199,7 @@ private:
         if (m_sqlite3Manager)
         {
             //m_userSeqn = [[m_sqlite3Manager getUserSeqnUserId:m_nsUserId] longLongValue];
-            NSArray *arr = [m_sqlite3Manager getGroupInfo];
+            NSArray *arr = [m_sqlite3Manager getGroupInfoUserId:m_nsUserId];
             if (!arr) {
                 NSLog(@"m_sqllite3Manager getGroupIds is nil");
                 return;
@@ -226,7 +226,7 @@ private:
             for (auto &item : m_groupSeqn)
             {
                 NSLog(@"updateGroupSeqnGrpId will be call...");
-                [m_sqlite3Manager updateGroupSeqnGrpId:[NSString stringWithUTF8String:item.first.c_str()] seqn:[NSNumber numberWithLongLong:item.second]];
+                [m_sqlite3Manager updateGroupSeqnUserId:m_nsUserId GrpId:[NSString stringWithUTF8String:item.first.c_str()] seqn:[NSNumber numberWithLongLong:item.second]];
             }
         }
     }

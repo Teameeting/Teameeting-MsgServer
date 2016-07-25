@@ -289,13 +289,13 @@ void MsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, con
             {
                 NSString *nsGrpId = [NSString stringWithCString:groupid.c_str() encoding:NSUTF8StringEncoding];
                 NSLog(@"OnCmdCallback add group ok, insert groupid and seqn, toggle callback");
-                if (![m_sqlite3Manager isGroupExists:nsGrpId])
+                if (![m_sqlite3Manager isGroupExistsUserId:m_nsUserId GrpId:nsGrpId])
                 {
-                    [m_sqlite3Manager addGroupId:nsGrpId];
+                    [m_sqlite3Manager addGroupIdUserId:m_nsUserId GrpId:nsGrpId];
                 }
-                if (![m_sqlite3Manager isUserExists:nsGrpId])
+                if (![m_sqlite3Manager isUserExistsUserId:m_nsUserId seqnId:nsGrpId])
                 {
-                    [m_sqlite3Manager addGroupSeqnGrpId:nsGrpId seqn:[NSNumber numberWithLongLong:data.seqn]];
+                    [m_sqlite3Manager addGroupSeqnUserId:m_nsUserId GrpId:nsGrpId seqn:[NSNumber numberWithLongLong:data.seqn]];
                 }
                 UpdateLocalSeqn(groupid, data.seqn);
                 [m_groupDelegate OnAddGroupSuccessGrpId:nsGrpId];
@@ -311,7 +311,7 @@ void MsgClient::OnCmdCallback(int code, int cmd, const std::string& groupid, con
             {
                 NSString *nsGrpId = [NSString stringWithCString:groupid.c_str() encoding:NSUTF8StringEncoding];
                 NSLog(@"OnCmdCallback del group ok, del groupid and seqn, toggle callback");
-                [m_sqlite3Manager delGroupId:nsGrpId];
+                [m_sqlite3Manager delGroupIdUserId:m_nsUserId GrpId:nsGrpId];
                 RemoveLocalSeqn(groupid);
                 [m_groupDelegate OnRmvGroupSuccessGrpId:nsGrpId];
             } else if (code == -1)

@@ -20,31 +20,41 @@
 
 - (BOOL)closeDb;
 
-- (BOOL)isUserExistsInDb:(NSString*)userId;
+- (BOOL)isUserExistsInDbUserId:(NSString*)userId
+                        SeqnId:(NSString*)seqnId;
 
-- (BOOL)insertSeqnSeqnId:(NSString*)seqnId
+- (BOOL)insertSeqnUserId:(NSString*)userId
+                  SeqnId:(NSString*)seqnId
                  seqn:(NSNumber*)seqn;
 
-- (BOOL)updateSeqnSeqnId:(NSString*)seqnId
+- (BOOL)updateSeqnUserId:(NSString*)userId
+                  SeqnId:(NSString*)seqnId
                     seqn:(NSNumber*)seqn;
 
-- (BOOL)updateSeqnSeqnId:(NSString*)seqnId
+- (BOOL)updateSeqnUserId:(NSString*)userId
+                  SeqnId:(NSString*)seqnId
                     seqn:(NSNumber*)seqn
                isfetched:(NSNumber*)isfetched;
 
-- (BOOL)selectSeqnSeqnId:(NSString*)seqnId
+- (BOOL)selectSeqnUserId:(NSString*)userId
+                  SeqnId:(NSString*)seqnId
                     seqn:(NSNumber**)seqn;
 
-- (BOOL) deleteSeqnSeqnId:(NSString*)seqnId;
+- (BOOL)deleteSeqnUserId:(NSString*)userId
+                  SeqnId:(NSString*)seqnId;
 
 
-- (BOOL)insertGroupIdGrpId:(NSString*)grpId;
+- (BOOL)insertGroupIdUserId:(NSString*)userId
+                      GrpId:(NSString*)grpId;
 
-- (BOOL)isGroupExistsInDb:(NSString*)grpId;
+- (BOOL)isGroupExistsUserId:(NSString*)userId
+                      GrpId:(NSString*)grpId;
 
-- (BOOL)selectGroupInfo:(NSMutableArray**)Info;
+- (BOOL)selectGroupInfoUserId:(NSString*)userId
+                      GrpInfo:(NSMutableArray**)Info;
 
-- (BOOL)deleteGroupIdGrpId:(NSString*)grpId;
+- (BOOL)deleteGroupIdUserId:(NSString*)userId
+                      GrpId:(NSString*)grpId;
 
 @end
 

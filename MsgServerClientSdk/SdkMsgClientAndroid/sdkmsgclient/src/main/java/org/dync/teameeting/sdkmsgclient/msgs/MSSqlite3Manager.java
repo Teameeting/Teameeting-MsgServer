@@ -18,50 +18,50 @@ public class MSSqlite3Manager {
 
     }
 
-    public boolean IsUserExists(String userId) {
-        return mSqlite3Db.IsUserExistsInDb(userId);
+    public boolean IsUserExists(String userId, String seqnId) {
+        return mSqlite3Db.IsUserExistsInDb(userId, seqnId);
     }
 
     public void AddUser(String userId) {
-        mSqlite3Db.InsertSeqn(userId, 0);
+        mSqlite3Db.InsertSeqn(userId, userId, 0);
     }
 
     public void UpdateUserSeqn(String userId, long seqn) {
-        mSqlite3Db.UpdateSeqn(userId, seqn);
+        mSqlite3Db.UpdateSeqn(userId, userId, seqn);
     }
 
     public long GetUserSeqn(String userId) {
-        return mSqlite3Db.SelectSeqn(userId);
+        return mSqlite3Db.SelectSeqn(userId, userId);
     }
 
 
-    public void AddGroup(String groupId) {
-        mSqlite3Db.InsertGroupId(groupId);
+    public void AddGroup(String userId, String groupId) {
+        mSqlite3Db.InsertGroupId(userId, groupId);
     }
 
-    public boolean IsGroupExistsInDb(String groupId) { return mSqlite3Db.IsGroupExistsInDb(groupId); }
+    public boolean IsGroupExistsInDb(String userId, String groupId) { return mSqlite3Db.IsGroupExistsInDb(userId, groupId); }
 
-    public void AddGroupSeqn(String grpId, long seqn) {
-        mSqlite3Db.InsertSeqn(grpId, seqn);
+    public void AddGroupSeqn(String userId, String grpId, long seqn) {
+        mSqlite3Db.InsertSeqn(userId, grpId, seqn);
     }
 
-    public void UpdateGroupSeqn(String grpId, long seqn) {
-        mSqlite3Db.UpdateSeqn(grpId, seqn);
+    public void UpdateGroupSeqn(String userId, String grpId, long seqn) {
+        mSqlite3Db.UpdateSeqn(userId, grpId, seqn);
     }
 
-    public void UpdateGroupInfo(String grpId, long seqn, int isFetched) {
-        mSqlite3Db.UpdateSeqn(grpId, seqn, isFetched);
+    public void UpdateGroupInfo(String userId, String grpId, long seqn, int isFetched) {
+        mSqlite3Db.UpdateSeqn(userId, grpId, seqn, isFetched);
     }
 
-    public long GetGroupSeqn(String grpId) {
-        return mSqlite3Db.SelectSeqn(grpId);
+    public long GetGroupSeqn(String userId, String grpId) {
+        return mSqlite3Db.SelectSeqn(userId, grpId);
     }
 
-    public ArrayList<GroupInfo> GetGroupInfo() {
-        return mSqlite3Db.SelectGroupInfo();
+    public ArrayList<GroupInfo> GetGroupInfo(String userId) {
+        return mSqlite3Db.SelectGroupInfo(userId);
     }
 
-    public void DelGroup(String groupId) {
-        mSqlite3Db.DeleteGroupId(groupId);
+    public void DelGroup(String userId, String groupId) {
+        mSqlite3Db.DeleteGroupId(userId, groupId);
     }
 }

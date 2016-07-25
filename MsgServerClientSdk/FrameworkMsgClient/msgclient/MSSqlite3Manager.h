@@ -19,9 +19,11 @@
 
 -(void)uninManager;
 
--(BOOL)isUserExists:(NSString*)userId;
+-(BOOL)isUserExistsUserId:(NSString*)userId
+                   seqnId:(NSString*)seqnId;
 
--(BOOL)isGroupExists:(NSString*)grpId;
+-(BOOL)isGroupExistsUserId:(NSString*)userId
+                     GrpId:(NSString*)grpId;
 
 -(void)addUserId:(NSString*)userId;
 
@@ -31,23 +33,29 @@
 
 
 
--(void)addGroupId:(NSString*)groupId;
+-(void)addGroupIdUserId:(NSString*)userId
+                  GrpId:(NSString*)groupId;
 
--(void)addGroupSeqnGrpId:(NSString*)grpId
-                       seqn:(NSNumber*)seqn;
+-(void)addGroupSeqnUserId:(NSString*)userId
+                    GrpId:(NSString*)grpId
+                     seqn:(NSNumber*)seqn;
 
--(void)updateGroupSeqnGrpId:(NSString*)grpId
-                       seqn:(NSNumber*)seqn;
+-(void)updateGroupSeqnUserId:(NSString*)userId
+                       GrpId:(NSString*)grpId
+                        seqn:(NSNumber*)seqn;
 
--(void)updateGroupInfoGrpId:(NSString*)grpId
+-(void)updateGroupInfoUserId:(NSString*)userId
+                       GrpId:(NSString*)grpId
                        seqn:(NSNumber*)seqn
                   isfetched:(NSNumber*)isfetched;
 
--(NSNumber*)getGroupSeqnGrpId:(NSString*)grpId;
+-(NSNumber*)getGroupSeqnUserId:(NSString*)userId
+                         GrpId:(NSString*)grpId;
 
--(NSArray*)getGroupInfo;
+-(NSArray*)getGroupInfoUserId:(NSString*)userId;
 
--(void)delGroupId:(NSString*)groupId;
+-(void)delGroupIdUserId:(NSString*)userId
+                  GrpId:(NSString*)groupId;
 
 @end
 

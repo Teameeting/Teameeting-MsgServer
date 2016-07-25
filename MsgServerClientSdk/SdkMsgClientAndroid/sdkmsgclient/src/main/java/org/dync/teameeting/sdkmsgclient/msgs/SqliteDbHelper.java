@@ -29,8 +29,8 @@ public class SqliteDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table if not exists " + MS_TABLE_STOREID_SEQN + "(seqnId varchar(512) unique primary key, seqn bigint default 0, isfetched int default 0)");
-        db.execSQL("create table if not exists " + MS_TABLE_GROUPS_ID + "(seqnId varchar(512) unique primary key)");
+        db.execSQL("create table if not exists " + MS_TABLE_STOREID_SEQN + "(userId varchar(512), seqnId varchar(512), seqn bigint default 0, isfetched int default 0, primary key(userId, seqnId))");
+        db.execSQL("create table if not exists " + MS_TABLE_GROUPS_ID + "(userId varchar(512), seqnId varchar(512), primary key(userId, seqnId))");
     }
 
     @Override
