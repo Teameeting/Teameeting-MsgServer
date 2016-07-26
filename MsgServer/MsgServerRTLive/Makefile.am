@@ -27,7 +27,6 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 MsgServerRTLive_SOURCES=$(top_srcdir)/LRTListener/LRTRTLiveListener.cpp \
 						   $(top_srcdir)/LRTListener/LRTGroupListener.cpp \
 						   $(top_srcdir)/LRTTransfer/LRTTransferSession.cpp \
-						   $(top_srcdir)/LRTTransfer/LRTGroupSession.cpp \
 						   $(top_srcdir)/LRTGrpConnTcp.cpp \
 						   $(top_srcdir)/LRTConnManager.cpp \
 						   $(top_srcdir)/LRTConnDispatcher.cpp \

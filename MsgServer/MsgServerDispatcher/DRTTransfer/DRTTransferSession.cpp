@@ -315,20 +315,21 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
     pms::RelayMsg pmsg;
     pms::ToUser *pallduser = pmsg.mutable_touser();
     DRTConnManager::UserConnectorMaps connUserId;
+#if 0
     {
         //check user online or offline
         for (int i=0; i<auser.users_size(); ++i) {
-            if (DRTConnManager::Instance().IsMemberInOnline((auser.users(i)))) {
+            //if (DRTConnManager::Instance().IsMemberInOnline((auser.users(i)))) {
                 std::string cid("");
                 DRTConnManager::Instance().GetUserConnectorId((auser.users(i)), cid);
                 connUserId.insert(make_pair(cid, (auser.users(i))));
                 pallduser->add_users(auser.users(i));
                 needDispatch = true;
-            } else {
+            //} else {
                 ////add all the needed push user;
-                printf("DRTTransferSession::OnTypeQueue user:%s need push\n", auser.users(i).c_str());
-                needPush = true;
-            }
+            //    printf("DRTTransferSession::OnTypeQueue user:%s need push\n", auser.users(i).c_str());
+            //    needPush = true;
+            //}
         }
     }
     {
@@ -358,6 +359,10 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
             }
         }
     }
+#else
+    std::string sd = rmsg.SerializeAsString();
+    m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
+#endif
     {
         //if offline, push to offline msgqueue
         if (needPush) {

@@ -7,7 +7,7 @@
 //
 
 #include "LRTGroupListener.h"
-#include "LRTGroupSession.h"
+#include "LRTTransferSession.h"
 #include "LRTRTLiveManager.h"
 
 Task* LRTGroupListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
@@ -18,7 +18,7 @@ Task* LRTGroupListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
     // when the server is behing a round robin DNS, the client needs to knwo the IP address ot the server
     // so that it can direct the "POST" half of the connection to the same machine when tunnelling RTSP thru HTTP
 
-    LRTGroupSession* theTask = new LRTGroupSession();
+    LRTTransferSession* theTask = new LRTTransferSession();
     if(NULL == theTask)
         return NULL;
     theSocket = theTask->GetSocket();  // out socket is not attached to a unix socket yet.
@@ -37,7 +37,7 @@ Task* LRTGroupListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
     theTask->SetTimer(120*1000);
 
     StrPtrLen* remoteStr = theSocket->GetRemoteAddrStr();
-    //LI("LRTGroupListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
+    LI("LRTGroupListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
 
     this->RunNormal();
 

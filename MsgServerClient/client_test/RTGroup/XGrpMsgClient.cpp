@@ -406,12 +406,30 @@ void XGrpMsgClient::OnGroupNotify(int code, const std::string& cont)
             , store.mflag()\
             , store.rsvrcmd());
     // check userid, groupid, send sync data request
-    std::string mem_user1("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
-    GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
-    std::string mem_user2("2C665ED7-3854-4411-9536-947A4340B86E");
-    GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
-    std::string mem_user3("9297E785-59BD-483A-ABEA-5C9F8D88FEB0");
-    GenGrpSyncDataNotify(mem_user3, store.groupid(), store.sequence());
+    if (store.groupid().compare("9008000036")==0) {
+        std::string mem_user1("338301542");
+        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
+        std::string mem_user2("934763154");
+        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
+    } else if (store.groupid().compare("9008000015")==0) {
+        std::string mem_user1("002888752");
+        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
+        std::string mem_user2("532648793");
+        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
+    } else if (store.groupid().compare("wocaowocaowocao")==0) {
+        std::string mem_user1("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
+        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
+        std::string mem_user2("2C665ED7-3854-4411-9536-947A4340B86E");
+        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
+        std::string mem_user3("9297E785-59BD-483A-ABEA-5C9F8D88FEB0");
+        GenGrpSyncDataNotify(mem_user3, store.groupid(), store.sequence());
+        std::string mem_user4("8ca64d158a505876");
+        GenGrpSyncDataNotify(mem_user4, store.groupid(), store.sequence());
+        std::string mem_user5("dcd54ddf2ee1df11");
+        GenGrpSyncDataNotify(mem_user5, store.groupid(), store.sequence());
+    } else {
+        std::cout << "groupid not handled!!!!!!!!!!!!!!" << std::endl;
+    }
 
     return;
 }

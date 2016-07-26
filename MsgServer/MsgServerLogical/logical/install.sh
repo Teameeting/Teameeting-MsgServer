@@ -20,7 +20,7 @@ mkdir -p $TARGET_LOG_PATH
 mkdir -p $TARGET_LIB_PATH
 mkdir -p $SYS_BIN_PATH
 # exe sh
-cp -f hiredis.sh $SYS_BIN_PATH/logical.sh
+cp -f logical.sh $SYS_BIN_PATH/logical.sh
 chmod 755 $SYS_BIN_PATH/logical.sh
 
 cp -f logical.conf $TARGET_CONF_PATH/

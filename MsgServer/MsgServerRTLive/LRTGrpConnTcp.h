@@ -25,11 +25,6 @@ public:
     void SendResponse(int code, const std::string&strContent);
 
 public:
-    virtual void OnLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
-    virtual void OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
-    virtual void OnGetMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
-    virtual void OnLogout(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
-    virtual void OnKeepAlive(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;

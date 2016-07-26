@@ -18,12 +18,14 @@
 #include "RTJSBuffer.h"
 #include "RTTransfer.h"
 #include "RTObserverConnection.h"
+#include "LRTGrpConnTcp.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
 
 class LRTTransferSession
     : public RTTcpNoTimeout
+    , public LRTGrpConnTcp
     , public RTJSBuffer
     , public RTTransfer
     , public RTObserverConnection{
@@ -98,6 +100,15 @@ public:
     virtual void OnTypeTLogin(const std::string& str);
     virtual void OnTypeTLogout(const std::string& str);
 
+// from LRTGrpConnTcp
+public:
+    virtual void OnSyncSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnSyncData(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnCreateGroupSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+    virtual void OnDeleteGroupSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg);
+
+    virtual void OnResponse(const char*pData, int nLen);
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);
 // from RTObserverConnection
@@ -105,8 +116,8 @@ public:
     virtual void ConnectionDisconnected();
 
 private:
-    std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;
+    std::string     m_transferSessId;
     std::string     m_moduleId;
     std::string     m_addr;
     int             m_port;

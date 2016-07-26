@@ -125,6 +125,10 @@ void RTGroupTest::RunCreateGroup()
     printf("RTGroupTest::RunCreateGroup was called\n");
     std::string groupid("wocaowocaowocao");
     mMsgClient->CreateGroupSeqn(groupid);
+    std::string groupid2("9008000036");
+    mMsgClient->CreateGroupSeqn(groupid2);
+    std::string groupid3("9008000015");
+    mMsgClient->CreateGroupSeqn(groupid3);
 }
 
 void RTGroupTest::RunDeleteGroup()

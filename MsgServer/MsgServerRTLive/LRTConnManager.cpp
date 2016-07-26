@@ -12,7 +12,6 @@
 #include <json/json.h>
 #include "OSMutex.h"
 #include "LRTTransferSession.h"
-#include "LRTGroupSession.h"
 #include "RTZKClient.hpp"
 #include "ProtoCommon.h"
 
@@ -115,6 +114,7 @@ LRTConnManager::ConnectionInfo* LRTConnManager::findConnectionInfoById(const std
 
 bool LRTConnManager::SendToGroupModule(const std::string& userid, const std::string& msg)
 {
+#if 0
     LRTConnManager::ConnectionInfo* pci = findConnectionInfoById(userid);
     if (!pci) {
         LE("LRTConnManager::SendToGroupModule not find user:%s connection\n", userid.c_str());
@@ -122,7 +122,7 @@ bool LRTConnManager::SendToGroupModule(const std::string& userid, const std::str
     } else { //!pci
         if (pci->_pConn && pci->_pConn->IsLiveSession()) {
             if (pci->_connType == pms::EConnType::TTCP) {
-                LRTGroupSession *ct = dynamic_cast<LRTGroupSession*>(pci->_pConn);
+                LRTTransferSession *ct = dynamic_cast<LRTTransferSession*>(pci->_pConn);
                 if (ct) {
                     ct->SendTransferData(msg);
                 }
@@ -135,6 +135,22 @@ bool LRTConnManager::SendToGroupModule(const std::string& userid, const std::str
              return false;
         }
     }
+#else
+    LRTConnManager::ModuleInfo *pmi = findModuleInfo(userid, pms::ETransferModule::MGRPNOTIFY);
+    if (!pmi) {
+        LE("LRTConnManager::SendToGroupModule not find user:%s module MGRPNOTIFY\n", userid.c_str());
+        return false;
+    } else { //!pmi
+        if (pmi->pModule) {
+            LI("LRTConnManager::SendToGroupModule find user:%s module MGRPNOTIFY send ok\n", userid.c_str());
+             pmi->pModule->SendTransferData(msg);
+             return true;
+        } else {
+            LE("LRTConnManager::SendToGroupModule pmi->pModule is null module MGRPNOTIFY, userid:%s\n", userid.c_str());
+             return false;
+        }
+    }
+#endif
 }
 
 void LRTConnManager::InitManager()

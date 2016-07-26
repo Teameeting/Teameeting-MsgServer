@@ -20,7 +20,7 @@ mkdir -p $TARGET_LOG_PATH
 mkdir -p $TARGET_LIB_PATH
 mkdir -p $SYS_BIN_PATH
 # exe sh
-cp -f hiredis.sh $SYS_BIN_PATH/module.sh
+cp -f module.sh $SYS_BIN_PATH/module.sh
 chmod 755 $SYS_BIN_PATH/module.sh
 
 cp -f module.conf $TARGET_CONF_PATH/

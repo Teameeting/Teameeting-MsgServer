@@ -20,7 +20,7 @@ mkdir -p $TARGET_LOG_PATH
 mkdir -p $TARGET_LIB_PATH
 mkdir -p $SYS_BIN_PATH
 # exe sh
-cp -f hiredis.sh $SYS_BIN_PATH/storage.sh
+cp -f storage.sh $SYS_BIN_PATH/storage.sh
 chmod 755 $SYS_BIN_PATH/storage.sh
 
 cp -f storage.conf $TARGET_CONF_PATH/

@@ -101,7 +101,8 @@ void DRTMsgDispatch::OnSendEvent(const char*pData, int nLen)
 
     std::string st = trmsg.SerializeAsString();
 
-    DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance().findConnectorInfoById("notnull", dmsg.connector());
+    //DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance().findConnectorInfoById("notnull", dmsg.connector());
+    DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance().findConnectorInfo("notnull");
     if (pmi && pmi->pModule) {
         pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
     } else {

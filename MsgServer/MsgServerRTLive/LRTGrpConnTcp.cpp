@@ -30,35 +30,25 @@ int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
         return nLen;
     }
 
-    if (request.svr_cmds() == pms::EServerCmd::CKEEPALIVE) {
-        OnKeepAlive(request.svr_cmds(), request.mod_type(), request.content());
-    } else if (request.svr_cmds() == pms::EServerCmd::CLOGIN) {
-        OnLogin(request.svr_cmds(), request.mod_type(), request.content());
-    } else if (request.svr_cmds() == pms::EServerCmd::CGROUPNOTIFY) {
+    LI("LRTGrpConnTcp::DoProcessData request.svr_cmds:%d\n", request.svr_cmds());
+    if (request.svr_cmds() == pms::EServerCmd::CGROUPNOTIFY) {
         OnGroupNotify(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CCREATESEQN) {
         OnCreateGroupSeqn(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CDELETESEQN) {
         OnDeleteGroupSeqn(request.svr_cmds(), request.mod_type(), request.content());
-    } else if (request.svr_cmds() == pms::EServerCmd::CSNDMSG) {
-        OnSndMsg(request.svr_cmds(), request.mod_type(), request.content());
-    } else if (request.svr_cmds() == pms::EServerCmd::CGETMSG) {
-        OnGetMsg(request.svr_cmds(), request.mod_type(), request.content());
-    } else if (request.svr_cmds() == pms::EServerCmd::CLOGOUT) {
-        OnLogout(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CSYNCSEQN) {
         OnSyncSeqn(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CSYNCDATA) {
         OnSyncData(request.svr_cmds(), request.mod_type(), request.content());
     } else {
-        LE("parse MsgReq params error\n");
+        LE("parse MsgReq params svr_cmds not handle:%d\n", request.svr_cmds());
     }
 #else
     LE("not define DEF_PROTO\n");
 #endif
     return nLen;
 }
-
 
 char* LRTGrpConnTcp::GenerateResponse(int code, const std::string&query, const char*pData, int nLen, int&outLen)
 {
