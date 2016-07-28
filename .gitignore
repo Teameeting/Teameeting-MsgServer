@@ -35,3 +35,6 @@ MsgServer/MsgServerSequence/MsgServerSequence
 MsgServer/MsgServerStorage/MsgServerStorage
 MsgServer/MsgServerLogical/MsgServerLogical
 MsgServer/MsgServerRTLive/MsgServerRTLive
+MsgServer/MsgServerGrouper/MsgServerGrouper
+MsgServer/MsgServer/MSCommon/MSThirdParty/xredis/examples/demo
+MsgServer/MsgServer/MSCommon/MSThirdParty/xredis/examples/xredis-example

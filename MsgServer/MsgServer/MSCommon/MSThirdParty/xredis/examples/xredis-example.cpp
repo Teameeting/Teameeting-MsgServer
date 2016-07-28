@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <vector>
+#include <iostream>
 
 #include "xRedisClient.h"
 
@@ -29,8 +31,8 @@ enum {
 RedisNode RedisList1[3]=
 {
     {0,"127.0.0.1", 6379, "", 2, 5, 0},
-    {1,"127.0.0.1", 6379, "", 2, 5, 0},
-    {2,"127.0.0.1", 6379, "", 2, 5, 0}
+    //{1,"127.0.0.1", 6379, "", 2, 5, 0},
+    //{2,"127.0.0.1", 6379, "", 2, 5, 0}
 };
 
 RedisNode RedisList2[5]=
@@ -49,8 +51,9 @@ int main(int argc, char **argv) {
     xRedisClient xRedis;
     xRedis.Init(CACHE_TYPE_MAX);
     xRedis.ConnectRedisCache(RedisList1, 3, CACHE_TYPE_1);
-    xRedis.ConnectRedisCache(RedisList2, 5, CACHE_TYPE_2);
+    //xRedis.ConnectRedisCache(RedisList2, 5, CACHE_TYPE_2);
 
+#if 0
     for (int n = 0; ; n++) {
         char szKey[256] = {0};
         sprintf(szKey, "test_%d", n);
@@ -71,13 +74,43 @@ int main(int argc, char **argv) {
         xRedis.get(dbi, szKey, strValue);
         printf("%s \r\n", strValue.c_str());
     }
-
-
-    int n = 10;
-    while (n--) {
-        xRedis.Keepalive();
-        usleep(1000*1000*10);
+#else
+    std::vector<std::string> keys;
+    const char* szKey = "test_subscribe";
+    printf("xredis-example was called...\n");
+    keys.push_back(szKey);
+    RedisDBIdx dbi(&xRedis);
+    dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
+    xRedisContext* ctx = NULL;
+    RedisConn* conn = NULL;
+    int m = 3;
+    if (xRedis.subscribe(dbi, keys, &ctx, &conn)) {
+        printf("xRedis.subscribe success\r\n");
+        redisReply* reply = NULL;
+        while(0==xRedis.GetReply(ctx, &reply)) {
+            printf("xRedisClient::GetReply was called ok, reply->type:%d\n", reply->type);
+            if (reply->type==REDIS_REPLY_ARRAY) {
+                for (size_t i = 0; i<reply->elements; i++) {
+                    std::string str(reply->element[i]->str, reply->element[i]->len);
+                    printf("element i:%lu str:%s, len:%lu\n", i, str.c_str(), str.length());
+                }
+            }
+            xRedis.FreeReply(reply);
+            reply = NULL;
+            if (m-- == 0) break;
+        }
+        printf("xRedis FreexRedisContext call...\n");
+        xRedis.FreeReply((redisReply*)ctx->reader->reply);
+        ctx->reader->reply = NULL;
+        xRedis.FreexRedisConn(conn);
+    } else {
+         printf("xRedis.subscribe has err:%s\r\n", dbi.GetErrInfo());
     }
+#endif
+
+
+    xRedis.Keepalive();
+    usleep(1000*1000*2);
 
     xRedis.Release();
 

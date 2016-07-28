@@ -17,6 +17,7 @@
 #include <map>
 #include <algorithm>
 #include <sstream>
+#include "hiredis.h"
 
 using namespace std;
 
@@ -63,6 +64,7 @@ typedef unsigned int (*HASHFUN)(const char *);
 
 class RedisPool;
 class xRedisClient;
+class RedisConn;
 
 class RedisDBIdx {
 public:
@@ -143,6 +145,8 @@ typedef enum _REDIS_ROLE_{
 
 #define SETDEFAULTIOTYPE(type) if (!dbi.mIOFlag) {SetIOtype(dbi, type);}
 
+typedef redisContext xRedisContext;
+
 class xRedisClient{
 public:
     xRedisClient();
@@ -154,6 +158,10 @@ public:
     inline RedisPool *GetRedisPool();
     static void FreeReply(const rReply* reply);
     bool ConnectRedisCache( const RedisNode *redisnodelist, unsigned int hashbase, unsigned int cachetype);
+
+    int GetReply(xRedisContext* ctx, redisReply **reply);
+    void FreeReply(redisReply* reply);
+    void FreexRedisConn(RedisConn* conn);
 
 public:
 
@@ -290,12 +298,12 @@ public:
     /* ZSCORE           */  bool zscore(const RedisDBIdx& dbi,  const std::string& key, const std::string &member, std::string& score);
     /* ZUNIONSTORE      */
 
-    /* PSUBSCRIBE   */
-    /* PUBLISH      */
-    /* PUBSUB       */
-    /* PUNSUBSCRIBE */
-    /* SUBSCRIBE    */
-    /* UNSUBSCRIBE  */
+    /* PSUBSCRIBE   */  bool psubscribe(const RedisDBIdx& dbi, const KEYS& vChannels);
+    /* PUBLISH      */  bool publish(const RedisDBIdx& dbi, const std::string& channel, const std::string& value);
+    /* PUBSUB       */  bool pubsub(const RedisDBIdx& dbi, const std::string& cmd, const VALUES& vValues, std::string& value);
+    /* PUNSUBSCRIBE */  bool punsubscribe(const RedisDBIdx& dbi, const std::string& channel);
+    /* SUBSCRIBE    */  bool subscribe(const RedisDBIdx& dbi, const KEYS& vChannels, xRedisContext** ppCtx, RedisConn** ppConn);
+    /* UNSUBSCRIBE  */  bool unsubscribe(const RedisDBIdx& dbi, const KEYS& vChannels);
 
 
     /* DISCARD  */
@@ -324,12 +332,14 @@ public:
     bool command_list(const RedisDBIdx& dbi,    VALUES &vValue,    const char* cmd, ...);
     bool command_array(const RedisDBIdx& dbi,   ArrayReply& array, const char* cmd, ...);
     rReply *command(const RedisDBIdx& dbi, const char* cmd);
+    bool command_nofree(const RedisDBIdx& dbi,  xRedisContext** ppCtx, RedisConn** ppConn, const char* cmd, ...);
 private:
     bool commandargv_bool(const RedisDBIdx& dbi,   const VDATA& vData);
     bool commandargv_status(const RedisDBIdx& dbi, const VDATA& vData);
     bool commandargv_array(const RedisDBIdx& dbi,  const VDATA& vDataIn, ArrayReply& array);
     bool commandargv_array(const RedisDBIdx& dbi,  const VDATA& vDataIn, VALUES& array);
     bool commandargv_integer(const RedisDBIdx& dbi,const VDATA& vDataIn, int64_t& retval);
+    bool commandargv_nofree(const RedisDBIdx& dbi,     const VDATA& vDataIn, xRedisContext** ppCtx, RedisConn** ppConn);
 
 private:
     RedisPool *mRedisPool;

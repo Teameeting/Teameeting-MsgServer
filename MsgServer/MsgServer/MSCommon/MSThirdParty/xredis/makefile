@@ -3,7 +3,7 @@
 # Copyright (C) 2010-2011 Pieter Noordhuis <pcnoordhuis at gmail dot com>
 # This file is released under the BSD license, see the COPYING file
 
-OBJ=src/xRedisClient.o src/xRedisClient_keys.o src/xRedisClient_sets.o src/xRedisClient_strings.o \
+OBJ=src/xRedisClient.o src/xRedisClient_keys.o src/xRedisClient_sets.o src/xRedisClient_strings.o src/xRedisClient_pubsub.o \
 src/xRedisClient_connection.o src/xRedisClient_hashs.o src/xRedisClient_lists.o src/xRedisClient_sortedsets.o src/xRedisPool.o
 EXAMPLES=xredis-example 
 DEMO=demo
@@ -55,6 +55,7 @@ xRedisClient_lists.o:      xRedisClient_lists.cpp
 xRedisClient_sets.o:       xRedisClient_sets.cpp
 xRedisClient_sortedsets.o: xRedisClient_sortedsets.cpp
 xRedisClient_strings.o:    xRedisClient_strings.cpp
+xRedisClient_pubsub.o:     xRedisClient_pubsub.cpp
 xRedisPool.o:              xRedisPool.cpp
 
 $(DYLIBNAME): $(OBJ)

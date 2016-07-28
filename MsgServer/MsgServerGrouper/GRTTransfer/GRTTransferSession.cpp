@@ -436,6 +436,11 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
         GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
         std::string mem_user2("934763154");
         GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
+    } else if (store.groupid().compare("9008000015")==0) {
+        std::string mem_user1("002888752");
+        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
+        std::string mem_user2("532648793");
+        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
     } else if (store.groupid().compare("wocaowocaowocao")==0) {
         std::string mem_user1("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
         GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());

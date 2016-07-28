@@ -9,6 +9,7 @@
 #include "xRedisClient.h"
 #include "xRedisPool.h"
 #include <sstream>
+#include <iostream>
 
 RedisDBIdx::RedisDBIdx() {
     mType = 0;
@@ -148,6 +149,23 @@ bool xRedisClient::ConnectRedisCache( const RedisNode *redisnodelist, unsigned i
     }
 
     return true;
+}
+
+int xRedisClient::GetReply(xRedisContext* ctx, redisReply** reply)
+{
+    //void *reply = static_cast<redisReply*>(ctx->reader->reply);
+    //RedisConn *pRedisConn = static_cast<RedisConn*>(ctx->conn);
+    return redisGetReply(ctx, (void**)reply);
+}
+
+void xRedisClient::FreeReply(redisReply* reply)
+{
+    RedisPool::FreeReply(reply);
+}
+
+void xRedisClient::FreexRedisConn(RedisConn* conn)
+{
+    mRedisPool->FreeConnection(conn);
 }
 
 
@@ -354,6 +372,31 @@ bool xRedisClient::command_array(const RedisDBIdx& dbi,  ArrayReply& array,  con
     return bRet;
 }
 
+bool xRedisClient::command_nofree(const RedisDBIdx& dbi, xRedisContext** ppCtx, RedisConn** ppConn, const char* cmd, ...) {
+     bool bRet = false;
+    RedisConn *pRedisConn = mRedisPool->GetConnection(dbi.mType, dbi.mIndex, dbi.mIOtype);
+    if (NULL == pRedisConn) {
+        SetErrString(dbi, GET_CONNECT_ERROR, ::strlen(GET_CONNECT_ERROR));
+        return false;
+    }
+
+    va_list args;
+    va_start(args, cmd);
+    redisReply *reply = static_cast<redisReply *>(redisvCommand(pRedisConn->getCtx(), cmd, args));
+    va_end(args);
+    if (RedisPool::CheckReply(reply)) {
+        std::cout << "xRedisClient::command_nofree CheckReply ok" << std::endl;
+        *ppCtx = pRedisConn->getCtx();
+        *ppConn = pRedisConn;
+        bRet  = true;
+    } else {
+        SetErrInfo(dbi, reply);
+    }
+    RedisPool::FreeReply(reply);
+    return bRet;
+}
+
+
 bool xRedisClient::commandargv_bool(const RedisDBIdx& dbi, const VDATA& vData) {
     bool bRet = false;
     RedisConn *pRedisConn = mRedisPool->GetConnection(dbi.mType, dbi.mIndex, dbi.mIOtype);
@@ -503,6 +546,33 @@ bool xRedisClient::commandargv_integer(const RedisDBIdx& dbi, const VDATA& vData
 }
 
 
+bool xRedisClient::commandargv_nofree(const RedisDBIdx& dbi,     const VDATA& vDataIn, xRedisContext** ppCtx, RedisConn** ppConn) {
+    bool bRet = false;
+    RedisConn *pRedisConn = mRedisPool->GetConnection(dbi.mType, dbi.mIndex, dbi.mIOtype);
+    if (NULL == pRedisConn) {
+        SetErrString(dbi, GET_CONNECT_ERROR, ::strlen(GET_CONNECT_ERROR));
+        return false;
+    }
+
+    vector<const char*> argv( vDataIn.size() );
+    vector<size_t> argvlen( vDataIn.size() );
+    unsigned int j = 0;
+    for ( VDATA::const_iterator iter = vDataIn.begin(); iter != vDataIn.end(); ++iter, ++j ) {
+        argv[j] = iter->c_str(), argvlen[j] = iter->size();
+    }
+
+    redisReply *reply = static_cast<redisReply *>(redisCommandArgv(pRedisConn->getCtx(), argv.size(), &(argv[0]), &(argvlen[0])));
+    if (RedisPool::CheckReply(reply)) {
+        std::cout << "xRedisClient::command_nofree CheckReply VDATA ok" << std::endl;
+        *ppCtx = pRedisConn->getCtx();
+        *ppConn = pRedisConn;
+        bRet  = true;
+    } else {
+        SetErrInfo(dbi, reply);
+    }
+    RedisPool::FreeReply(reply);
+    return bRet;
+}
 
 
 
