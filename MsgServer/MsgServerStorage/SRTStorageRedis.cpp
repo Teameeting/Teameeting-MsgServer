@@ -240,4 +240,9 @@ void SRTStorageRedis::PostToQueue(pms::StorageMsg request)
     this->Signal(Task::kWakeupEvent);
 }
 
+void SRTStorageRedis::ConnectionDisconnected()
+{
+     LI("%s was called\n", __FUNCTION__);
+}
+
 ///////////////////////////////////////////////////////

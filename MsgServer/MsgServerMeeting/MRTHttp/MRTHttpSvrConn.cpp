@@ -10,12 +10,12 @@ MRTHttpSvrConn::MRTHttpSvrConn(void)
 , m_httpIp("")
 , m_httpPort(0)
 {
-
+    AddObserver(this);
 }
 
 MRTHttpSvrConn::~MRTHttpSvrConn(void)
 {
-
+    DelObserver(this);
 }
 
 ////////////////////////////////////////////////////
@@ -203,6 +203,11 @@ int MRTHttpSvrConn::OnWriteEvent(const char*pData, int nLen, int* nOutLen)
     sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
     sender->SendRequest(pData, nLen);
     return 0;
+}
+
+void MRTHttpSvrConn::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void MRTHttpSvrConn::MSender::OnResponse(const char* pData, int nLen)

@@ -41,10 +41,12 @@ SRTRedisGroup::SRTRedisGroup(SRTTransferSession *sess, const std::string& ip, in
         m_ReadRedises.push_back(redis);
     }
     m_ResponseSender.Init(sess);
+    AddObserver(this);
 }
 
 SRTRedisGroup::~SRTRedisGroup()
 {
+    DelObserver(this);
     m_ResponseSender.Unin();
     for (auto x : m_ReadRedises)
     {
@@ -126,4 +128,10 @@ void SRTRedisGroup::OnTickEvent(const void*pData, int nSize)
 {
 
 }
+
+void SRTRedisGroup::ConnectionDisconnected()
+{
+     LI("%s was called\n", __FUNCTION__);
+}
+
 ///////////////////////////////////////////////////////

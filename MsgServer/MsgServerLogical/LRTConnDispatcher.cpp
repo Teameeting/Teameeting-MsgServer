@@ -20,3 +20,8 @@ void LRTConnDispatcher::OnTickEvent(const char*pData, int nLen)
     LRTConnManager::Instance().ProcessTickEvent(pData, nLen);
 }
 
+void LRTConnDispatcher::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+

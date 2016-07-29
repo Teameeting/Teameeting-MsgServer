@@ -49,23 +49,20 @@ bool xRedisClient::punsubscribe(const RedisDBIdx& dbi, const std::string& channe
     return commandargv_status(dbi, vCmdData);
 }
 
-bool xRedisClient::subscribe(const RedisDBIdx& dbi, const KEYS& vChannels, xRedisContext** ppCtx, RedisConn** ppConn) {
-    if (!ppCtx) {
-        std::cout << "xRedisClient::subscribe pCtx is null" << std::endl;
-        return false;
-    }
+bool xRedisClient::subscribe(const RedisDBIdx& dbi, const RedisConn* conn, const KEY& channel) {
     VDATA vCmdData;
     vCmdData.push_back("SUBSCRIBE");
-    addparam(vCmdData, vChannels);
+    vCmdData.push_back(channel);
     SETDEFAULTIOTYPE(MASTER);
     std::cout << "xRedisClient::subscribe was called" << std::endl;
-    return commandargv_nofree(dbi, vCmdData, ppCtx, ppConn);
+    return commandargv_withconn(conn, vCmdData);
 }
 
-bool xRedisClient::unsubscribe(const RedisDBIdx& dbi, const KEYS& vChannels) {
+bool xRedisClient::unsubscribe(const RedisDBIdx& dbi, const RedisConn* conn, const KEY& channel) {
     VDATA vCmdData;
     vCmdData.push_back("UNSUBSCRIBE");
-    addparam(vCmdData, vChannels);
+    vCmdData.push_back(channel);
     SETDEFAULTIOTYPE(MASTER);
-    return commandargv_status(dbi, vCmdData);
+    std::cout << "xRedisClient::unsubscribe was called" << std::endl;
+    return commandargv_withconn(conn, vCmdData);
 }

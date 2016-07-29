@@ -18,10 +18,12 @@
 SRTRedisManager::SRTRedisManager()
     : m_LastUpdateTime(0)
 {
+    AddObserver(this);
 }
 
 SRTRedisManager::~SRTRedisManager()
 {
+    DelObserver(this);
 }
 
 void SRTRedisManager::Init(SRTTransferSession* sess)
@@ -309,6 +311,11 @@ void SRTRedisManager::OnTickEvent(const void*pData, int nSize)
     {
         this->Signal(kIdleEvent);
     }
+}
+
+void SRTRedisManager::ConnectionDisconnected()
+{
+     LI("%s was called\n", __FUNCTION__);
 }
 
 

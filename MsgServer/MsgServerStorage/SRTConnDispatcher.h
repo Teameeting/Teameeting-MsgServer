@@ -11,11 +11,12 @@
 
 #include <stdio.h>
 #include "RTDispatch.h"
+#include "RTObserverConnection.h"
 
-class SRTConnDispatcher : public RTDispatch{
+class SRTConnDispatcher : public RTDispatch, public RTObserverConnection{
 public:
-    SRTConnDispatcher(): RTDispatch(){}
-    ~SRTConnDispatcher(){}
+    SRTConnDispatcher(): RTDispatch(){ AddObserver(this); }
+    ~SRTConnDispatcher(){ DelObserver(this); }
 
     // for RTDispatch
     virtual void OnRecvEvent(const char*pData, int nLen);
@@ -23,6 +24,10 @@ public:
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen) {}
     virtual void OnTickEvent(const char*pData, int nLen);
+
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 private:
 
 };

@@ -16,12 +16,12 @@ static int g_idle_event_counter = 0;
 
 SRTResponseSender::SRTResponseSender()
 {
-
+    AddObserver(this);
 }
 
 SRTResponseSender::~SRTResponseSender()
 {
-
+    DelObserver(this);
 }
 
 void SRTResponseSender::Init(SRTTransferSession *sess)
@@ -175,6 +175,11 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
         this->Signal(Task::kIdleEvent);
     }
 #endif
+}
+
+void SRTResponseSender::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
 }
 
 ///////////////////////////////////////////////////////

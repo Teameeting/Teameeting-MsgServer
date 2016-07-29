@@ -15,14 +15,15 @@
 #include "OSMutex.h"
 #include <hiredis/hiredis.h>
 #include "xRedisClient.h"
+#include "RTObserverConnection.h"
 
 class SRTRedisGroup;
 
-class SRTStorageRedis : public RTEventLooper{
+class SRTStorageRedis : public RTEventLooper, public RTObserverConnection{
 
 public:
-    SRTStorageRedis(){}
-    virtual ~SRTStorageRedis(){}
+    SRTStorageRedis(){ AddObserver(this); }
+    virtual ~SRTStorageRedis(){ DelObserver(this); }
 
     void Init(SRTRedisGroup* group, const std::string& ip, int port);
     void Unin();
@@ -42,6 +43,10 @@ public:
     virtual void OnWakeupEvent(const void*pData, int nSize);
     virtual void OnPushEvent(const char*pData, int nSize){}
     virtual void OnTickEvent(const void*pData, int nSize);
+
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 private:
     std::string                      m_Ip;
     int                              m_Port;

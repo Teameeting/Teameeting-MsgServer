@@ -20,3 +20,8 @@ void SRTConnDispatcher::OnTickEvent(const char*pData, int nLen)
     SRTConnManager::Instance().ProcessTickEvent(pData, nLen);
 }
 
+
+void SRTConnDispatcher::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
+}

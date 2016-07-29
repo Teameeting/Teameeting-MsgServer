@@ -179,7 +179,6 @@ void MRTRoomManager::EnterRoom(pms::RelayMsg& rmsg, pms::Entity& mmsg)
             //    LI("==>HandleDcommRoom GetGetMembersStatus WAITING...\n");
             //    it->second->AddWaitingMsgToList(1, 1, tmsg, mmsg);
             //} else {
-                mmsg.set_mem_num(online);
                 mmsg.set_msg_cont(mmsg.usr_from());
                 GenericResponse(pms::EServerCmd::CSNDMSG, rmsg, mmsg, users, resp);
                 SendTransferData(resp, (int)resp.length());
@@ -226,7 +225,6 @@ void MRTRoomManager::LeaveRoom(pms::RelayMsg& rmsg, pms::Entity& mmsg)
             //    it->second->AddWaitingMsgToList(1, 1, tmsg, mmsg);
             //} else {
                 mmsg.set_msg_cont(mmsg.usr_from());
-                mmsg.set_mem_num(online);
                 GenericResponse(pms::EServerCmd::CSNDMSG, rmsg, mmsg, users, resp);
                 SendTransferData(resp, (int)resp.length());
             //}
@@ -535,7 +533,6 @@ void MRTRoomManager::GenericConnLostResponse(const std::string& uid
     mmsg.set_usr_from(uid);
     mmsg.set_usr_token(token);
     mmsg.set_rom_id(roomid);
-    mmsg.set_mem_num(nmem);
     mmsg.set_msg_cont(cont);
 
 

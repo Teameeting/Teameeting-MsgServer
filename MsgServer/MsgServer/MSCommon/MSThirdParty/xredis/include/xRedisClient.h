@@ -161,7 +161,10 @@ public:
 
     int GetReply(xRedisContext* ctx, redisReply **reply);
     void FreeReply(redisReply* reply);
-    void FreexRedisConn(RedisConn* conn);
+    void FreexRedisConn(RedisConn *conn);
+    RedisConn* GetRedisConn(const RedisDBIdx& dbi);
+    xRedisContext* GetxRedisContext(const RedisConn* conn);
+
 
 public:
 
@@ -302,8 +305,8 @@ public:
     /* PUBLISH      */  bool publish(const RedisDBIdx& dbi, const std::string& channel, const std::string& value);
     /* PUBSUB       */  bool pubsub(const RedisDBIdx& dbi, const std::string& cmd, const VALUES& vValues, std::string& value);
     /* PUNSUBSCRIBE */  bool punsubscribe(const RedisDBIdx& dbi, const std::string& channel);
-    /* SUBSCRIBE    */  bool subscribe(const RedisDBIdx& dbi, const KEYS& vChannels, xRedisContext** ppCtx, RedisConn** ppConn);
-    /* UNSUBSCRIBE  */  bool unsubscribe(const RedisDBIdx& dbi, const KEYS& vChannels);
+    /* SUBSCRIBE    */  bool subscribe(const RedisDBIdx& dbi, const RedisConn* conn, const KEY& channel);
+    /* UNSUBSCRIBE  */  bool unsubscribe(const RedisDBIdx& dbi, const RedisConn* conn, const KEY& channel);
 
 
     /* DISCARD  */
@@ -332,24 +335,18 @@ public:
     bool command_list(const RedisDBIdx& dbi,    VALUES &vValue,    const char* cmd, ...);
     bool command_array(const RedisDBIdx& dbi,   ArrayReply& array, const char* cmd, ...);
     rReply *command(const RedisDBIdx& dbi, const char* cmd);
-    bool command_nofree(const RedisDBIdx& dbi,  xRedisContext** ppCtx, RedisConn** ppConn, const char* cmd, ...);
+    bool command_withconn(const RedisConn* conn, const char* cmd, ...);
 private:
     bool commandargv_bool(const RedisDBIdx& dbi,   const VDATA& vData);
     bool commandargv_status(const RedisDBIdx& dbi, const VDATA& vData);
     bool commandargv_array(const RedisDBIdx& dbi,  const VDATA& vDataIn, ArrayReply& array);
     bool commandargv_array(const RedisDBIdx& dbi,  const VDATA& vDataIn, VALUES& array);
     bool commandargv_integer(const RedisDBIdx& dbi,const VDATA& vDataIn, int64_t& retval);
-    bool commandargv_nofree(const RedisDBIdx& dbi,     const VDATA& vDataIn, xRedisContext** ppCtx, RedisConn** ppConn);
+    bool commandargv_withconn(const RedisConn* conn,     const VDATA& vDataIn);
 
 private:
     RedisPool *mRedisPool;
 };
 
-
-
 #endif
-
-
-
-
 

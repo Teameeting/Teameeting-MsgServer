@@ -20,3 +20,8 @@ void MRTConnDispatcher::OnTickEvent(const char*pData, int nLen)
     MRTConnManager::Instance().ProcessTickEvent(pData, nLen);
 }
 
+void MRTConnDispatcher::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+

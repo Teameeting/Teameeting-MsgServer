@@ -26,7 +26,9 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 
 MsgServerGrouper_SOURCES=$(top_srcdir)/GRTListener/GRTGrouperListener.cpp \
 						   $(top_srcdir)/GRTTransfer/GRTTransferSession.cpp \
+						   $(top_srcdir)/GRTTransfer/GRTSubChannel.cpp \
 						   $(top_srcdir)/GRTTransfer/XGrpMsgProcesser.cpp \
+						   $(top_srcdir)/GRTChannelManager.cpp \
 						   $(top_srcdir)/GRTConnManager.cpp \
 						   $(top_srcdir)/GRTConnDispatcher.cpp \
 						   $(top_srcdir)/GRTGrouperManager.cpp \

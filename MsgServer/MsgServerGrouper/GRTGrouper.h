@@ -1,5 +1,5 @@
-#ifndef __MsgServerGrouper_GRTLOGICAL_H__
-#define __MsgServerGrouper_GRTLOGICAL_H__
+#ifndef __MsgServerGrouper_GRTGROUPER_H__
+#define __MsgServerGrouper_GRTGROUPER_H__
 #include "TCPListenerSocket.h"
 #include "GRTGrouperListener.h"
 
@@ -39,9 +39,7 @@ public:
 	void	Stop();
 
 private:
-
     GRTGrouperListener    *m_pGrouperListener;
-
 };
 
-#endif	// __MsgServerGrouper_GRTLOGICAL_H__
+#endif	// __MsgServerGrouper_GRTGROUPER_H__

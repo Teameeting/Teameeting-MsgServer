@@ -14,15 +14,16 @@
 #include "ProtoCommon.h"
 #include <hiredis/hiredis.h>
 #include "xRedisClient.h"
+#include "RTObserverConnection.h"
 
 class SRTRedisManager;
 
-class SRTSequenceRedis : public RTEventLooper{
+class SRTSequenceRedis : public RTEventLooper, public RTObserverConnection{
 
 public:
 
-    SRTSequenceRedis(){}
-    virtual ~SRTSequenceRedis(){}
+    SRTSequenceRedis(){ AddObserver(this); }
+    virtual ~SRTSequenceRedis(){ DelObserver(this); }
 
     void Init(SRTRedisManager* manager, const std::string& ip, int port);
     void Unin();
@@ -42,6 +43,10 @@ public:
     virtual void OnWakeupEvent(const void*pData, int nSize){}
     virtual void OnPushEvent(const char*pData, int nSize);
     virtual void OnTickEvent(const void*pData, int nSize) {}
+
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 private:
     std::string                      m_Ip;
     int                              m_Port;

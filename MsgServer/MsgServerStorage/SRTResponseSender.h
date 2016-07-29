@@ -19,13 +19,14 @@
 #include <list>
 #include "OSMutex.h"
 #include "RTEventLooper.h"
+#include "RTObserverConnection.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
 
 class SRTTransferSession;
 
-class SRTResponseSender : public RTEventLooper {
+class SRTResponseSender : public RTEventLooper, public RTObserverConnection {
     public:
         SRTResponseSender();
         virtual ~SRTResponseSender();
@@ -44,6 +45,9 @@ class SRTResponseSender : public RTEventLooper {
         virtual void OnPushEvent(const char*pData, int nSize){}
         virtual void OnTickEvent(const void*pData, int nSize);
 
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
     private:
         int                              m_IsRun;
         SRTTransferSession*              m_TransferSession;

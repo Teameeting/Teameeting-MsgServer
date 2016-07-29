@@ -5,10 +5,11 @@
 #include "scoped_ref_ptr.h"
 #include "RTHttpSender.h"
 #include "RTHttpSvrConn.h"
+#include "RTObserverConnection.h"
 
 #define C_HTTP_CMD_INVALID (0)
 
-class DRTHttpSvrConn : public RTHttpSvrConn
+class DRTHttpSvrConn : public RTHttpSvrConn, public RTObserverConnection
 {
 public:
 	DRTHttpSvrConn(void);
@@ -30,6 +31,9 @@ public:
 	//* For RCHttp
     virtual int  OnWriteEvent(const char*pData, int nLen, int* nOutLen);
 
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 public:
     class DSender : public RTHttpSender{
         //* For RTConnHttp

@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
     xRedisClient xRedis;
     xRedis.Init(CACHE_TYPE_MAX);
-    xRedis.ConnectRedisCache(RedisList1, 3, CACHE_TYPE_1);
+    xRedis.ConnectRedisCache(RedisList1, 1, CACHE_TYPE_1);
     //xRedis.ConnectRedisCache(RedisList2, 5, CACHE_TYPE_2);
 
 #if 0
@@ -75,16 +75,19 @@ int main(int argc, char **argv) {
         printf("%s \r\n", strValue.c_str());
     }
 #else
-    std::vector<std::string> keys;
     const char* szKey = "test_subscribe";
     printf("xredis-example was called...\n");
-    keys.push_back(szKey);
     RedisDBIdx dbi(&xRedis);
     dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
-    xRedisContext* ctx = NULL;
-    RedisConn* conn = NULL;
+    RedisConn* conn = xRedis.GetRedisConn(dbi);
+    if (!conn)
+    {
+        xRedis.Release();
+        return 0;
+    }
+    xRedisContext* ctx = xRedis.GetxRedisContext(conn);
     int m = 3;
-    if (xRedis.subscribe(dbi, keys, &ctx, &conn)) {
+    if (xRedis.subscribe(dbi, conn, szKey)) {
         printf("xRedis.subscribe success\r\n");
         redisReply* reply = NULL;
         while(0==xRedis.GetReply(ctx, &reply)) {
@@ -99,21 +102,35 @@ int main(int argc, char **argv) {
             reply = NULL;
             if (m-- == 0) break;
         }
-        printf("xRedis FreexRedisContext call...\n");
         xRedis.FreeReply((redisReply*)ctx->reader->reply);
         ctx->reader->reply = NULL;
-        xRedis.FreexRedisConn(conn);
     } else {
          printf("xRedis.subscribe has err:%s\r\n", dbi.GetErrInfo());
     }
+
+    RedisConn* conn1 = xRedis.GetRedisConn(dbi);
+    if (!conn1)
+    {
+        xRedis.Release();
+        return 0;
+    }
+    xRedisContext* ctx1 = xRedis.GetxRedisContext(conn1);
+    if (xRedis.unsubscribe(dbi, conn1, szKey)) {
+        printf("xRedis.unsubscribe success\r\n");
+        xRedis.FreeReply((redisReply*)ctx1->reader->reply);
+        ctx1->reader->reply = NULL;
+    } else {
+         printf("xRedis.unsubscribe has err:%s\r\n", dbi.GetErrInfo());
+    }
 #endif
 
-
+    printf("xRedis FreexRedisContext call...\n");
+    xRedis.FreexRedisConn(conn);
+    xRedis.FreexRedisConn(conn1);
     xRedis.Keepalive();
     usleep(1000*1000*2);
 
     xRedis.Release();
-
     return 0;
 }
 

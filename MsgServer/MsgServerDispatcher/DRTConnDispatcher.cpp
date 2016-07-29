@@ -20,3 +20,7 @@ void DRTConnDispatcher::OnTickEvent(const char*pData, int nLen)
     DRTConnManager::Instance().ProcessTickEvent(pData, nLen);
 }
 
+void DRTConnDispatcher::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
+}

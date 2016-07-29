@@ -1,12 +1,15 @@
 #ifndef __RT_EVENT_TIMER_H__
 #define __RT_EVENT_TIMER_H__
 
+#include <unordered_map>
+#include <utility>
 #include "LinkedList.h"
 #include "StrPtrLen.h"
 #include "Task.h"
 #include "TimeoutTask.h"
 #include "OSMutex.h"
 #include "RTType.h"
+#include "RTObserverConnection.h"
 
 #define DATA_MAX_LENGTH (8192)
 #define RETRY_MAX_TIME  (30)
@@ -35,6 +38,9 @@ protected:
 	//* For Task
 	virtual SInt64 Run();
 
+    // Observer
+    void AddObserver(RTObserverConnection* conn);
+    void DelObserver(RTObserverConnection* conn);
 private:
 	TimeoutTask         fTimeoutTask;//allows the session to be timed out
 	UInt32				fTickTime;
@@ -50,6 +56,10 @@ private:
     void*               mExecutor2Param1;
     void*               mExecutor2Param2;
 
+    typedef std::unordered_map<RTEventTimer*, RTObserverConnection*> ObserverConnectionMap;
+    typedef ObserverConnectionMap::iterator ObserverConnectionMapIt;
+    ObserverConnectionMap m_mapConnectObserver;
+    std::pair<ObserverConnectionMapIt, bool> m_OCMItPair;
 };
 
 #endif	// __RT_EVENT_TIMER_H__

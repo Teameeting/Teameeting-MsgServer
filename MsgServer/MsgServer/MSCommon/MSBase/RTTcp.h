@@ -22,7 +22,7 @@ class RTTcp
 public:
 	RTTcp(void);
 	virtual ~RTTcp(void);
-	
+
 	TCPSocket*	GetSocket()	{ return &fSocket; }
 	//Is this session alive? If this returns false, clean up and begone as
 	//fast as possible
@@ -43,7 +43,7 @@ public:
 protected:
 	//* For Task
 	virtual SInt64 Run();
-    
+
     // Observer
     void AddObserver(RTObserverConnection* conn);
     void DelObserver(RTObserverConnection* conn);
@@ -63,7 +63,7 @@ private:
 
 	List				m_listSend;
     OSMutex             mMutexSend;
-    
+
     typedef std::unordered_map<RTTcp*, RTObserverConnection*> ObserverConnectionMap;
     typedef ObserverConnectionMap::iterator ObserverConnectionMapIt;
     ObserverConnectionMap m_mapConnectObserver;

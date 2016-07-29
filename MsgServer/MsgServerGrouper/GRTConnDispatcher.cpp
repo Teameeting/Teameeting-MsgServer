@@ -20,3 +20,8 @@ void GRTConnDispatcher::OnTickEvent(const char*pData, int nLen)
     GRTConnManager::Instance().ProcessTickEvent(pData, nLen);
 }
 
+void GRTConnDispatcher::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
+}
+

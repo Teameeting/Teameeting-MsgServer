@@ -18,6 +18,7 @@
 #include "OSMutex.h"
 #include "RTEventLooper.h"
 #include "SRTResponseSender.h"
+#include "RTObserverConnection.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
@@ -25,7 +26,7 @@
 class SRTStorageRedis;
 class SRTTransferSession;
 
-class SRTRedisGroup : public RTEventLooper {
+class SRTRedisGroup : public RTEventLooper, public RTObserverConnection {
     public:
         SRTRedisGroup(SRTTransferSession *sess, const std::string& ip, int port);
         virtual ~SRTRedisGroup();
@@ -41,6 +42,9 @@ class SRTRedisGroup : public RTEventLooper {
         virtual void OnPushEvent(const char*pData, int nSize);
         virtual void OnTickEvent(const void*pData, int nSize);
 
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
     private:
         int                              m_Port;
         std::string                      m_Ip;

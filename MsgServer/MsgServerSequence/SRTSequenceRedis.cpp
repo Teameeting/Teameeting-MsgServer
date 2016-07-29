@@ -284,4 +284,9 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
     }
 }
 
+void SRTSequenceRedis::ConnectionDisconnected()
+{
+     LI("%s was called\n", __FUNCTION__);
+}
+
 ///////////////////////////////////////////////////////

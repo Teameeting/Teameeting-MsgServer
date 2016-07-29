@@ -16,10 +16,12 @@
 SRTSequenceGenerator::SRTSequenceGenerator()
     : m_LastUpdateTime(0)
 {
+    AddObserver(this);
 }
 
 SRTSequenceGenerator::~SRTSequenceGenerator()
 {
+    DelObserver(this);
 }
 
 void SRTSequenceGenerator::Init(SRTTransferSession* sess)
@@ -111,6 +113,11 @@ void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
             Assert(false);
         }
     }
+}
+
+void SRTSequenceGenerator::ConnectionDisconnected()
+{
+     LI("%s was called\n", __FUNCTION__);
 }
 
 ///////////////////////////////////////////////////////

@@ -21,6 +21,7 @@
 #include "sigslot.h"
 #include "OSMutex.h"
 #include "LinkedList.h"
+#include "RTObserverConnection.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
@@ -29,6 +30,7 @@ class SRTTransferSession;
 class SRTResponseCollection;
 
 class SRTRedisManager : public RTEventLooper
+                      , public RTObserverConnection
                       , public sigslot::has_slots<>{
 public:
     SRTRedisManager();
@@ -66,6 +68,9 @@ public:
     virtual void OnPushEvent(const char*pData, int nSize) {}
     virtual void OnTickEvent(const void*pData, int nSize);
 
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 private:
     int                                 m_RedisNum;
     SRTTransferSession*                 m_Session;

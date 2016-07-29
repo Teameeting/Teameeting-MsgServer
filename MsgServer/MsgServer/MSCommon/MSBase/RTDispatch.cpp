@@ -112,6 +112,13 @@ SInt64 RTDispatch::Run()
     }
 	if(events&Task::kKillEvent)
 	{
+        ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
+        if (it != m_mapConnectObserver.end()) {
+            RTObserverConnection *conn = it->second;
+            if (conn) {
+                conn->ConnectionDisconnected();
+            }
+        }
         return -1;
 	}
 
@@ -188,4 +195,18 @@ SInt64 RTDispatch::Run()
 		}
 	}
     return 0;
+}
+
+void RTDispatch::AddObserver(RTObserverConnection* conn)
+{
+    m_OCMItPair = m_mapConnectObserver.insert(std::make_pair(this, conn));
+    if (!m_OCMItPair.second) {
+        m_mapConnectObserver.erase(this);
+        m_mapConnectObserver.insert(std::make_pair(this, conn));
+    }
+}
+
+void RTDispatch::DelObserver(RTObserverConnection* conn)
+{
+    m_mapConnectObserver.erase(this);
 }

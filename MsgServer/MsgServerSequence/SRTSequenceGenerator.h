@@ -14,6 +14,7 @@
 #include <vector>
 #include "RTEventLooper.h"
 #include "SRTRedisManager.h"
+#include "RTObserverConnection.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
@@ -22,7 +23,7 @@
 
 class SRTTransferSession;
 
-class SRTSequenceGenerator : public RTEventLooper {
+class SRTSequenceGenerator : public RTEventLooper, public RTObserverConnection{
 public:
     SRTSequenceGenerator();
     virtual ~SRTSequenceGenerator();
@@ -41,6 +42,9 @@ public:
     virtual void OnPushEvent(const char*pData, int nSize);
     virtual void OnTickEvent(const void*pData, int nSize) {}
 
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 private:
     long long mSendResponse;
     SRTTransferSession*                 m_Session;

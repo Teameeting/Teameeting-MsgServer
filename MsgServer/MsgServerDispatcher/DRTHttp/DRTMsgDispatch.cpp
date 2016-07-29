@@ -15,12 +15,12 @@
 DRTMsgDispatch::DRTMsgDispatch()
 : RTDispatch()
 {
-
+    AddObserver(this);
 }
 
 DRTMsgDispatch::~DRTMsgDispatch()
 {
-
+    DelObserver(this);
 }
 
 void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
@@ -111,4 +111,10 @@ void DRTMsgDispatch::OnSendEvent(const char*pData, int nLen)
 #else
     LE("not define DEF_PROTO\n");
 #endif
+}
+
+
+void DRTMsgDispatch::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
 }

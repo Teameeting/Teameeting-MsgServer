@@ -13,6 +13,8 @@
 #include "RTUtils.hpp"
 #include "GRTGrouperManager.h"
 #include "GRTConnManager.h"
+#include "GRTChannelManager.h"
+#include "GRTSubChannel.h"
 
 #include "GRTTransferSession.h"
 
@@ -125,9 +127,11 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
 	Assert(g_inited);
 	Assert(pGrouperIp != NULL && strlen(pGrouperIp)>0);
     GRTGrouperManager::Instance().InitManager();
+    GRTChannelManager::Instance().InitManager();
 
     char *ip1 = "192.168.7.213";
     char *ip2 = "192.168.7.225";
+    char *ip3 = "192.168.7.207";
     int port = 6379;
 
     char addr[24] = {0};
@@ -136,6 +140,30 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
     //memset(addr, 0, 24);
     //sprintf(addr, "%s %d", ip2, port);
     //GRTGrouperManager::Instance().PushRedisHosts(addr);
+
+    std::string channel1("test_subscribe");
+    std::string channel2("wensiwensi");
+    GRTSubChannel* ch1 = new GRTSubChannel(ip3, port, channel1);
+    if (!ch1)
+        return -1;
+    if (!ch1->Init())
+    {
+        delete ch1;
+        return -2;
+    }
+    GRTSubChannel* ch2 = new GRTSubChannel(ip3, port, channel2);
+    if (!ch2)
+        return -1;
+    if (!ch2->Init())
+    {
+        delete ch2;
+        return -2;
+    }
+    GRTChannelManager::Instance().AddChannel(channel1, ch1);
+    GRTChannelManager::Instance().AddChannel(channel2, ch2);
+    GRTChannelManager::Instance().SubChannel(channel1);
+    GRTChannelManager::Instance().SubChannel(channel2);
+
 
     std::string ssid;
     if (usGrouperPort > 0) {
@@ -164,42 +192,12 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
         }
 	}
 
-    //sleep(3);
-    //std::string uid("sddsddsdd");
-    //GRTConnManager::ModuleInfo *pmi =  GRTConnManager::Instance().findModuleInfo(uid, pms::ETransferModule::MLIVE);
-    //if (pmi && pmi->pModule) {
-    //     std::string groupid("wocaowocaowocao");
-    //     pmi->pModule->CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid);
-    //     std::string groupid2("9008000036");
-    //     pmi->pModule->CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid2);
-    //     std::string groupid3("9008000015");
-    //     pmi->pModule->CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid3);
-    //} else {
-    //     LE("MsgServerGrouper connect group Manager cget module error\n");
-    //}
-
 	return 0;
 }
 
 void GRTGrouper::DoTick()
 {
 #if 1
-    //GRTGrouperManager::Instance().GenerateGrouper();
-
-    //std::string uid("sddsddsdd");
-    //GRTConnManager::ModuleInfo *pmi =  GRTConnManager::Instance().findModuleInfo(uid, pms::ETransferModule::MLIVE);
-    //if (pmi && pmi->pModule) {
-    //     std::string groupid("wocaowocaowocao");
-    //     pmi->pModule->CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid);
-    //     std::string groupid2("9008000036");
-    //     pmi->pModule->CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid2);
-    //     std::string groupid3("9008000015");
-    //     pmi->pModule->CreateGroupSeqn("9a4f3730-f643-422a-a3a1-eae557060a90", groupid3);
-    //} else {
-    //     LE("MsgServerGrouper connect group Manager cget module error\n");
-    //}
-
-
 #endif
 }
 
@@ -208,4 +206,5 @@ void GRTGrouper::Stop()
     GRTGrouperManager::Instance().SignalKill();
     GRTGrouperManager::Instance().ClearAll();
     GRTGrouperManager::Instance().UninManager();
+    GRTChannelManager::Instance().UninManager();
 }

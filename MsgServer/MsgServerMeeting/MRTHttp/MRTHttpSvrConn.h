@@ -5,6 +5,7 @@
 #include "scoped_ref_ptr.h"
 #include "RTHttpSender.h"
 #include "RTHttpSvrConn.h"
+#include "RTObserverConnection.h"
 
 #define M_HTTP_CMD_INVALID              (0)
 #define M_HTTP_CMD_GET_MEETING_INFO     (1)
@@ -13,7 +14,7 @@
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
 
-class MRTHttpSvrConn : public RTHttpSvrConn
+class MRTHttpSvrConn : public RTHttpSvrConn, public RTObserverConnection
 {
 public:
 	MRTHttpSvrConn(void);
@@ -45,6 +46,9 @@ public:
     //* For RCHttp
     virtual int  OnWriteEvent(const char*pData, int nLen, int* nOutLen);
 
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 public:
     class MSender : public RTHttpSender{
         //* For RTConnHttp

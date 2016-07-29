@@ -10,12 +10,12 @@ DRTHttpSvrConn::DRTHttpSvrConn(void)
 , m_httpIp("")
 , m_httpPort(0)
 {
-
+    AddObserver(this);
 }
 
 DRTHttpSvrConn::~DRTHttpSvrConn(void)
 {
-
+    DelObserver(this);
 }
 
 ////////////////////////////////////////////////////
@@ -70,6 +70,11 @@ int DRTHttpSvrConn::OnWriteEvent(const char*pData, int nLen, int* nOutLen)
     sender->ConnHttpHost(m_httpIp, m_httpPort, m_httpHost);
     sender->SendRequest(pData, nLen);
     return 0;
+}
+
+void DRTHttpSvrConn::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
 }
 
 void DRTHttpSvrConn::DSender::OnResponse(const char* pData, int nLen)

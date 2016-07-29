@@ -1,6 +1,8 @@
 #ifndef __RT_EVENT_LOOPER_H__
 #define __RT_EVENT_LOOPER_H__
 
+#include <unordered_map>
+#include <utility>
 #include "LinkedList.h"
 #include "StrPtrLen.h"
 #include "Task.h"
@@ -8,6 +10,7 @@
 #include "OSMutex.h"
 #include "RTType.h"
 #include <string>
+#include "RTObserverConnection.h"
 
 class RTEventLooper
 	: public Task
@@ -38,6 +41,9 @@ protected:
 	//* For Task
 	virtual SInt64 Run();
 
+    // Observer
+    void AddObserver(RTObserverConnection* conn);
+    void DelObserver(RTObserverConnection* conn);
 private:
 	TimeoutTask         fTimeoutTask;//allows the session to be timed out
 	UInt32				fTickTime;
@@ -51,6 +57,11 @@ private:
     OSMutex             mMutexSend;
     OSMutex             mMutexWakeup;
     OSMutex             mMutexPush;
+
+    typedef std::unordered_map<RTEventLooper*, RTObserverConnection*> ObserverConnectionMap;
+    typedef ObserverConnectionMap::iterator ObserverConnectionMapIt;
+    ObserverConnectionMap m_mapConnectObserver;
+    std::pair<ObserverConnectionMapIt, bool> m_OCMItPair;
 };
 
 #endif	// __RT_EVENT_LOOPER_H__
