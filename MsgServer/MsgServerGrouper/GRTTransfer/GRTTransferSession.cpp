@@ -7,6 +7,7 @@
 //
 
 #include <list>
+#include <unordered_set>
 #include "GRTTransferSession.h"
 #include "RTUtils.hpp"
 #include "GRTConnManager.h"
@@ -253,6 +254,14 @@ void GRTTransferSession::OnRecvData(const char*pData, int nLen)
     RTJSBuffer::RecvData(pData, nLen);
 }
 
+void GRTTransferSession::OnWakeupEvent(const char*pData, int nLen)
+{
+    // here return true means still has groupid to process, so wakeup continue
+    if (GRTGrouperManager::Instance().ProcessTmpGroupMsg(this))
+        this->Signal(kWakeupEvent);
+}
+
+
 void GRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
     RTTransfer::DoProcessData(message, nLen);
@@ -431,25 +440,34 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
             , store.mflag()\
             , store.rsvrcmd());
     // check userid, groupid, send sync data request
-    if (store.groupid().compare("9008000036")==0) {
-        std::string mem_user1("338301542");
-        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
-        std::string mem_user2("934763154");
-        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
-    } else if (store.groupid().compare("9008000015")==0) {
-        std::string mem_user1("002888752");
-        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
-        std::string mem_user2("532648793");
-        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
-    } else if (store.groupid().compare("wocaowocaowocao")==0) {
+    if (store.groupid().compare("wocaowocaowocao")==0) {
         std::string mem_user1("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
         GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
         std::string mem_user2("2C665ED7-3854-4411-9536-947A4340B86E");
         GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
         std::string mem_user3("9297E785-59BD-483A-ABEA-5C9F8D88FEB0");
         GenGrpSyncDataNotify(mem_user3, store.groupid(), store.sequence());
+        return;
     } else {
-        std::cout << "groupid not handled!!!!!!!!!!!!!!" << std::endl;
+        std::cout << "groupid not handled!!!!!!!!!!!!!!:" << store.groupid() << std::endl;
+    }
+
+    std::unordered_set<std::string> *puset = NULL;
+    GRTGrouperManager::Instance().GetGroupMembersLocal(store.groupid(), &puset);
+    if (!puset)
+    {
+         LE("groupid :%s is not find in group manager, so return\n", store.groupid().c_str());
+         if (GRTGrouperManager::Instance().FindTmpGroupId(store.groupid())) {
+             GRTGrouperManager::Instance().TmpStoreGroupMsg(store.groupid(), store.sequence(), true);
+         } else {
+             GRTGrouperManager::Instance().TmpStoreGroupMsg(store.groupid(), store.sequence(), false);
+             this->Signal(kWakeupEvent);
+         }
+         return;
+    }
+    for(auto & l : *puset)
+    {
+        GenGrpSyncDataNotify(l, store.groupid(), store.sequence());
     }
 
     return;
@@ -472,7 +490,6 @@ void GRTTransferSession::OnDeleteGroupSeqn(int code, const std::string& cont)
             , code, cont.length(), store.result());
     return;
 }
-
 
 
 void GRTTransferSession::ConnectionDisconnected()

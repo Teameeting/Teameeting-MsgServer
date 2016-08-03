@@ -96,6 +96,8 @@ public:
     bool    SignalKill();
     bool    ClearAll();
 
+    void GetGroupMembers(const std::string& groupid);
+
     void OnTLogin(const std::string& uid, const std::string& token, const std::string& connector);
     void OnTLogout(const std::string& uid, const std::string& token, const std::string& connector);
 

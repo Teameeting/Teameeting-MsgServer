@@ -281,11 +281,10 @@ void CRTTransferSession::OnTypeDispatch(const std::string& str)
         LE("OnTypeDispatch dmsg.ParseFromString error\n");
     }
     pms::ToUser to = dmsg.touser();
-    LI("OnTypeDispatch dmsg--->:\n");
-    //dmsg.PrintDebugString();
 
     {
         for(int i = 0;i < to.users_size(); ++i) {
+            LI("OnTypeDispatch dmsg--->:to.user:%s\n", to.users(i).c_str());
             m_dispatchConnection.DispatchMsg(to.users(i), dmsg.content());
         }
     }

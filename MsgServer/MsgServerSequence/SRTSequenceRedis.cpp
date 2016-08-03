@@ -99,16 +99,24 @@ void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
                             {
                                 seq = std::stoll(str);
                                 printf("SRTSequenceRedis::OnPostEvent g read seqn:%s, seq:%lld\n", str.c_str(), seq);
-                            request.set_result(0);
+                                request.set_result(0);
                                 ReadResponse(request, seq);
                             } else {
                                 printf("SRTSequenceRedis::OnPostEvent g read seqn: get error, key:%s\n", key);
                                 assert(false);
                             }
                         } else {
+#if 0
                             printf("SRTSequenceRedis::OnPostEvent g read seqn key:%s not exists, do nothing\n", key);
                             request.set_result(-1); // groupid not exists
                             ReadResponse(request, 0);
+#else
+                            m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                            m_xRedisClient.set(*m_RedisDBIdx, key, "0");
+                            request.set_result(0);
+                            printf("SRTSequenceRedis::OnPostEvent g read seqn key not exists, so set 0\n", key);
+                            ReadResponse(request, 0);
+#endif
                         }
                     }
                     break;
@@ -197,6 +205,7 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
             {
                 case pms::EServerCmd::CNEWMSGSEQN:
                     {
+#if 0
                         if (m_xRedisClient.exists(*m_RedisDBIdx, key))
                         {
                             int64_t seq = 0;
@@ -210,6 +219,14 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
                             request.set_result(-1);// group id not exists
                             WriteResponse(request, 0);
                         }
+#else
+                        int64_t seq = 0;
+                        m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
+                        m_xRedisClient.incr(*m_RedisDBIdx, key, seq);
+                        printf("OnPushEvent group newmsg IncrSeq is:%ld\n", seq);
+                        request.set_result(0);
+                        WriteResponse(request, seq);
+#endif
                     }
                     break;
                 case pms::EServerCmd::CCREATESEQN:

@@ -59,7 +59,7 @@ public:
 public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
-    virtual void OnWakeupEvent(const char*pData, int nLen) {}
+    virtual void OnWakeupEvent(const char*pData, int nLen);
     virtual void OnPushEvent(const char*pData, int nLen) {}
     virtual void OnTickEvent(const char*pData, int nLen) {}
 

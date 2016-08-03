@@ -34,7 +34,7 @@ public:
 	static GRTGrouper* Inst();
 
 public:
-	int		Start(const char*pGrouperIp, unsigned short usGrouperPort, const char*pGroupMgrIp, unsigned short usGroupMgrPort);
+	int		Start(const char*pGrouperIp, unsigned short usGrouperPort, const char*pGroupMgrIp, unsigned short usGroupMgrPort, const char* pHttpIp, unsigned short usHttpPort);
 	void	DoTick();
 	void	Stop();
 

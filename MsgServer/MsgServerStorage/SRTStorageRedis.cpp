@@ -153,10 +153,11 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
         sprintf(key, "grp:%s:%lld", store.storeid().c_str(), store.sequence());
         m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
-        printf("SRTStorageRedis::OnTickEvent g result:%d, storeid:%s, msgid:%s\n"\
+        printf("SRTStorageRedis::OnTickEvent g result:%d, storeid:%s, msgid:%s, key:%s\n"\
                 , store.result()\
                 , store.storeid().c_str()\
-                , store.msgid().c_str());
+                , store.msgid().c_str()\
+                , key);
         {
             if (m_xRedisClient.set(*m_RedisDBIdx, key, store.content().c_str()))
             {

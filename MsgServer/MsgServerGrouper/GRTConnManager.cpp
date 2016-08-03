@@ -173,6 +173,11 @@ void GRTConnManager::RefreshConnection()
     }
 }
 
+void GRTConnManager::GetGroupMembers(const std::string& groupid)
+{
+
+}
+
 bool GRTConnManager::SignalKill()
 {
     {

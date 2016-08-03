@@ -12,6 +12,10 @@
 #include "GRTConnManager.h"
 #include "GRTGrouperManager.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+
 #define TIMEOUT_TS (60*1000)
 
 static unsigned int APHash(const char *str) {
@@ -138,8 +142,10 @@ void GRTSubChannel::OnPostEvent(const char*pData, int nSize)
     if (!pData || nSize==0) return;
     if (strcmp(pData, "subscribe")==0) {
         LI("GRTSubChannel::OnPostEvent recv subscribe error\n");
+        Subscribe();
     } else if (strcmp(pData, "unsubscribe")==0) {
         LI("GRTSubChannel::OnPostEvent recv unsubscribe error\n");
+        Unsubscribe();
     }
 }
 
@@ -166,10 +172,46 @@ void GRTSubChannel::OnTickEvent(const void*pData, int nSize)
             std::string cmd(reply->element[0]->str, reply->element[0]->len);
             std::string chl(reply->element[1]->str, reply->element[1]->len);
             std::string msg(reply->element[2]->str, reply->element[2]->len);
+            Assert(m_channel.compare(chl)==0);
             if (cmd.compare("message")==0) {
                 LI("you recv publish msg from channel:%s, msg:%s\n", chl.c_str(), msg.c_str());
                 //TODO:
                 //parse the msg received
+                std::string grpid("");
+                std::string usrid("");
+                rapidjson::Document jsonMsgDoc;
+                if (!jsonMsgDoc.ParseInsitu<0>((char*)msg.c_str()).HasParseError())
+                {
+                    if (jsonMsgDoc.HasMember("groupid"))
+                    {
+                        grpid = jsonMsgDoc["groupid"].GetString();
+                        LI("Channel groupid:%s\n", grpid.c_str());
+                    } else {
+                        LE("in jsonMsgDoc not has member groupid\n");
+                    }
+                    if (jsonMsgDoc.HasMember("userid"))
+                    {
+                        usrid = jsonMsgDoc["userid"].GetString();
+                        LI("Channel usrid:%s\n", usrid.c_str());
+                    } else {
+                        LE("in jsonMsgDoc not has member userid\n");
+                    }
+
+                } else {
+                     LE("parse msg:%s error\n", msg.c_str());
+                }
+                //usreid, flag(add/del)
+                if (m_channel.compare("follow_group")==0)
+                {
+                    GRTGrouperManager::GrpMembersStatusMap users;
+                    users[usrid] = GRTGrouperManager::GrpMemStatus::ADD;
+                    GRTGrouperManager::Instance().UpdateGroupMembers(grpid, users);
+                } else if (m_channel.compare("unfollow_group")==0)
+                {
+                    GRTGrouperManager::GrpMembersStatusMap users;
+                    users[usrid] = GRTGrouperManager::GrpMemStatus::DEL;
+                    GRTGrouperManager::Instance().UpdateGroupMembers(grpid, users);
+                }
             } else {
                 LI("pub/sub cmd not handled:%s\n", cmd.c_str());
             }
