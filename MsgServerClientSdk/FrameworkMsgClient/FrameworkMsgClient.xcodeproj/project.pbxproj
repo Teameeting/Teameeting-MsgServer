@@ -55,19 +55,19 @@
 		E6415B871D4302A500572DB5 /* common_types.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A311D4302A500572DB5 /* common_types.h */; };
 		E6415B881D4302A500572DB5 /* transport.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A321D4302A500572DB5 /* transport.h */; };
 		E6415B891D4302A500572DB5 /* typedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A331D4302A500572DB5 /* typedefs.h */; };
-		E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A541D4302A500572DB5 /* MSClientDelegate.h */; };
-		E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A551D4302A500572DB5 /* MSClientManager.h */; };
+		E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A541D4302A500572DB5 /* MSClientDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A551D4302A500572DB5 /* MSClientManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BAA1D4302A500572DB5 /* MSClientManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A561D4302A500572DB5 /* MSClientManager.mm */; };
-		E6415BAB1D4302A500572DB5 /* MSClientType.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A571D4302A500572DB5 /* MSClientType.h */; };
+		E6415BAB1D4302A500572DB5 /* MSClientType.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A571D4302A500572DB5 /* MSClientType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BAC1D4302A500572DB5 /* MsgClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A581D4302A500572DB5 /* MsgClient.h */; };
 		E6415BAD1D4302A500572DB5 /* MsgClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A591D4302A500572DB5 /* MsgClient.mm */; };
 		E6415BAE1D4302A500572DB5 /* MsgClientProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5A1D4302A500572DB5 /* MsgClientProtocol.h */; };
-		E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5B1D4302A500572DB5 /* MSGroupDelegate.h */; };
-		E6415BB01D4302A500572DB5 /* MSGroupManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5C1D4302A500572DB5 /* MSGroupManager.h */; };
+		E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5B1D4302A500572DB5 /* MSGroupDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6415BB01D4302A500572DB5 /* MSGroupManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5C1D4302A500572DB5 /* MSGroupManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BB11D4302A500572DB5 /* MSGroupManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A5D1D4302A500572DB5 /* MSGroupManager.mm */; };
-		E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5E1D4302A500572DB5 /* MSMessage.h */; };
+		E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A5E1D4302A500572DB5 /* MSMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BB31D4302A500572DB5 /* MSMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A5F1D4302A500572DB5 /* MSMessage.mm */; };
-		E6415BB41D4302A500572DB5 /* MSMessageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A601D4302A500572DB5 /* MSMessageManager.h */; };
+		E6415BB41D4302A500572DB5 /* MSMessageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A601D4302A500572DB5 /* MSMessageManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BB51D4302A500572DB5 /* MSMessageManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A611D4302A500572DB5 /* MSMessageManager.mm */; };
 		E6415BB61D4302A500572DB5 /* MSMsgUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A621D4302A500572DB5 /* MSMsgUtil.h */; };
 		E6415BB71D4302A500572DB5 /* MSMsgUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A631D4302A500572DB5 /* MSMsgUtil.mm */; };
@@ -78,9 +78,9 @@
 		E6415BBC1D4302A500572DB5 /* MSSqlite3ClientSql.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */; };
 		E6415BBD1D4302A500572DB5 /* MSSqlite3Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */; };
 		E6415BBE1D4302A500572DB5 /* MSSqlite3Manager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */; };
-		E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */; };
+		E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BC01D4302A500572DB5 /* MSTxtMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */; };
-		E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */; };
+		E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BC51D4302A500572DB5 /* CommonMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A721D4302A500572DB5 /* CommonMsg.pbobjc.h */; };
 		E6415BC61D4302A500572DB5 /* CommonMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A731D4302A500572DB5 /* CommonMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6415BC91D4302A500572DB5 /* EntityMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A761D4302A500572DB5 /* EntityMsg.pbobjc.h */; };
@@ -1237,13 +1237,21 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6415BAB1D4302A500572DB5 /* MSClientType.h in Headers */,
+				E6415BB01D4302A500572DB5 /* MSGroupManager.h in Headers */,
+				E6415BB41D4302A500572DB5 /* MSMessageManager.h in Headers */,
+				E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */,
+				E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */,
+				E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */,
+				E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */,
+				E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */,
+				E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */,
 				E6415A951D4302A500572DB5 /* XTcpClientImpl.h in Headers */,
 				E6415D611D43062500572DB5 /* sslconfig.h in Headers */,
 				E6415D181D43062500572DB5 /* macconversion.h in Headers */,
 				E6415D031D43062500572DB5 /* httpclient.h in Headers */,
 				E6415BBD1D4302A500572DB5 /* MSSqlite3Manager.h in Headers */,
 				E6415CED1D43062500572DB5 /* dbus.h in Headers */,
-				E6415BAB1D4302A500572DB5 /* MSClientType.h in Headers */,
 				E6415D641D43062500572DB5 /* sslroots.h in Headers */,
 				E6415D5F1D43062500572DB5 /* socketstream.h in Headers */,
 				E6415D071D43062500572DB5 /* httpserver.h in Headers */,
@@ -1269,11 +1277,9 @@
 				E6415D6B1D43062500572DB5 /* stringutils.h in Headers */,
 				E6415BED1D43052700572DB5 /* messagequeue.h in Headers */,
 				E6415CE01D43062500572DB5 /* buffer.h in Headers */,
-				E6415BB01D4302A500572DB5 /* MSGroupManager.h in Headers */,
 				E6415D1C1D43062500572DB5 /* mathutils.h in Headers */,
 				E6415CD01D43062500572DB5 /* asyncresolverinterface.h in Headers */,
 				E6415CE41D43062500572DB5 /* callback.h in Headers */,
-				E6415BB41D4302A500572DB5 /* MSMessageManager.h in Headers */,
 				E6415D741D43062500572DB5 /* testutils.h in Headers */,
 				E6415D571D43062500572DB5 /* socket.h in Headers */,
 				E6415D221D43062500572DB5 /* multipart.h in Headers */,
@@ -1306,7 +1312,6 @@
 				E6415BDA1D4302A500572DB5 /* TMClientType.h in Headers */,
 				E6415D021D43062500572DB5 /* httpbase.h in Headers */,
 				E6415D411D43062500572DB5 /* referencecountedsingletonfactory.h in Headers */,
-				E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */,
 				E6415CDE1D43062500572DB5 /* bind.h in Headers */,
 				E6415BBC1D4302A500572DB5 /* MSSqlite3ClientSql.h in Headers */,
 				E6415D3F1D43062500572DB5 /* ratetracker.h in Headers */,
@@ -1330,7 +1335,6 @@
 				E6415CE11D43062500572DB5 /* bufferqueue.h in Headers */,
 				E6415A8E1D4302A500572DB5 /* XMsgCallback.h in Headers */,
 				E6415D111D43062500572DB5 /* linuxfdwalk.h in Headers */,
-				E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */,
 				E6415D721D43062500572DB5 /* testclient.h in Headers */,
 				E6415CE61D43062500572DB5 /* checks.h in Headers */,
 				E6415D341D43062500572DB5 /* physicalsocketserver.h in Headers */,
@@ -1341,7 +1345,6 @@
 				E6415CFB1D43062500572DB5 /* fileutils.h in Headers */,
 				E6415D1A1D43062500572DB5 /* macutils.h in Headers */,
 				E6415D361D43062500572DB5 /* platform_thread_types.h in Headers */,
-				E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */,
 				E6415AB41D4302A500572DB5 /* stack.h in Headers */,
 				E6415BD71D4302A500572DB5 /* SysMsgType.pbobjc.h in Headers */,
 				E6415D511D43062500572DB5 /* signalthread.h in Headers */,
@@ -1380,7 +1383,6 @@
 				E6415CFA1D43062500572DB5 /* fileutils_mock.h in Headers */,
 				E6415D0C1D43062500572DB5 /* json.h in Headers */,
 				E6415D241D43062500572DB5 /* natsocketfactory.h in Headers */,
-				E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */,
 				E6415D4A1D43062500572DB5 /* scopedptrcollection.h in Headers */,
 				E6415CCA1D43062500572DB5 /* asynchttprequest.h in Headers */,
 				E6415DF71D45E82000572DB5 /* MJFoundation.h in Headers */,
@@ -1443,10 +1445,8 @@
 				E6415D4D1D43062500572DB5 /* sha1digest.h in Headers */,
 				E6415D4B1D43062500572DB5 /* sec_buffer.h in Headers */,
 				E6415D2E1D43062500572DB5 /* openssldigest.h in Headers */,
-				E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */,
 				E6415B861D4302A500572DB5 /* common.h in Headers */,
 				E6415E051D45E82000572DB5 /* NSObject+MJProperty.h in Headers */,
-				E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */,
 				E6415D1D1D43062500572DB5 /* md5.h in Headers */,
 				E6415A8D1D4302A500572DB5 /* XJSBuffer.h in Headers */,
 				E6415D141D43062500572DB5 /* macasyncsocket.h in Headers */,
@@ -1898,6 +1898,8 @@
 		E641562F1D43002E00572DB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1907,6 +1909,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = DYNC.FrameworkMsgClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -1914,6 +1917,8 @@
 		E64156301D43002E00572DB5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1923,6 +1928,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = DYNC.FrameworkMsgClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -1970,6 +1976,8 @@
 		E64159251D43025500572DB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1996,6 +2004,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = DYNC.msgclient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -2003,6 +2012,8 @@
 		E64159261D43025500572DB5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -2029,6 +2040,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = DYNC.msgclient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

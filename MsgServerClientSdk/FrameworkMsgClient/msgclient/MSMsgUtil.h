@@ -31,6 +31,11 @@
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
                                    userId:(NSString*)userId;
 
++ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
+                                   userId:(NSString*)userId
+                                     cash:(NSString*)cash
+                                     cont:(NSString*)cont;
+
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId;
 
 + (MSTxtMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict;

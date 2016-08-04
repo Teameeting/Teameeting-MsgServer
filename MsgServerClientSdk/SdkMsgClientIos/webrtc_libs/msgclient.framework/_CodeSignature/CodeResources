@@ -4,9 +4,45 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/MSClientDelegate.h</key>
+		<data>
+		WwNUgdfoGrOQgVpEaBqT16iOoMg=
+		</data>
+		<key>Headers/MSClientManager.h</key>
+		<data>
+		tKE9JRqEWmNueVdghztdjklqyus=
+		</data>
+		<key>Headers/MSClientType.h</key>
+		<data>
+		mUbG9WXOdHgrxJ6ZyckzadWqbWA=
+		</data>
+		<key>Headers/MSGroupDelegate.h</key>
+		<data>
+		XBqyJy/OiOozHnmjGUzfGDcj56Y=
+		</data>
+		<key>Headers/MSGroupManager.h</key>
+		<data>
+		CtI5T7J3CwxyBCGdsDjYC0dfMGs=
+		</data>
+		<key>Headers/MSMessage.h</key>
+		<data>
+		EPz6/uHssUVceobSZKQnLT3kcsQ=
+		</data>
+		<key>Headers/MSMessageManager.h</key>
+		<data>
+		lu83v6NPIUocpPOXxSwafugrumk=
+		</data>
+		<key>Headers/MSTxtMessage.h</key>
+		<data>
+		xOGjNrjXzyE/VIHkYnNE7zCkvTs=
+		</data>
+		<key>Headers/MSTxtMessageDelegate.h</key>
+		<data>
+		4gGD77xT/Q6RSlMmup1MfLM2A4g=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		RZR7gVTiUJE471D6fiM7rU+rsto=
+		b/U8DRYKl2ONzE8RuSuSlWcUaew=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -15,6 +51,42 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Headers/MSClientDelegate.h</key>
+		<data>
+		WwNUgdfoGrOQgVpEaBqT16iOoMg=
+		</data>
+		<key>Headers/MSClientManager.h</key>
+		<data>
+		tKE9JRqEWmNueVdghztdjklqyus=
+		</data>
+		<key>Headers/MSClientType.h</key>
+		<data>
+		mUbG9WXOdHgrxJ6ZyckzadWqbWA=
+		</data>
+		<key>Headers/MSGroupDelegate.h</key>
+		<data>
+		XBqyJy/OiOozHnmjGUzfGDcj56Y=
+		</data>
+		<key>Headers/MSGroupManager.h</key>
+		<data>
+		CtI5T7J3CwxyBCGdsDjYC0dfMGs=
+		</data>
+		<key>Headers/MSMessage.h</key>
+		<data>
+		EPz6/uHssUVceobSZKQnLT3kcsQ=
+		</data>
+		<key>Headers/MSMessageManager.h</key>
+		<data>
+		lu83v6NPIUocpPOXxSwafugrumk=
+		</data>
+		<key>Headers/MSTxtMessage.h</key>
+		<data>
+		xOGjNrjXzyE/VIHkYnNE7zCkvTs=
+		</data>
+		<key>Headers/MSTxtMessageDelegate.h</key>
+		<data>
+		4gGD77xT/Q6RSlMmup1MfLM2A4g=
+		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
 		NW1VNTpKvz20FGChHzS71lloqug=

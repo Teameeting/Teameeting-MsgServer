@@ -4,8 +4,6 @@ package org.dync.teameeting.sdkmsgclient.msgs;
  * Created by hp on 7/10/16.
  */
 public class MSMessage {
-    //@property (nonatomic, strong) NSDate* time;
-    //@property (nonatomic, strong) NSDate* date;
     private String content;
     private String extra;
     private String msgId;
@@ -14,11 +12,10 @@ public class MSMessage {
     private String groupId;
     private String nickName;
     private String uiconUrl;
+    private String cash;
+    private String wishcont;
 
     private int    millSec;//send second
-    private int    flag;//group or single
-    private int    tag;//txt or pic or self
-    private int    role;//sender or recver
 
     public MSMessage() {
     }
@@ -87,6 +84,22 @@ public class MSMessage {
         this.uiconUrl = uiconUrl;
     }
 
+    public String getCash() {
+        return cash;
+    }
+
+    public void setCash(String cash) {
+        this.cash = cash;
+    }
+
+    public String getWishcont() {
+        return wishcont;
+    }
+
+    public void setWishcont(String wishcont) {
+        this.wishcont = wishcont;
+    }
+
     public int getMillSec() {
         return millSec;
     }
@@ -95,27 +108,4 @@ public class MSMessage {
         this.millSec = millSec;
     }
 
-    public int getFlag() {
-        return flag;
-    }
-
-    public void setFlag(int flag) {
-        this.flag = flag;
-    }
-
-    public int getTag() {
-        return tag;
-    }
-
-    public void setTag(int tag) {
-        this.tag = tag;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
 }

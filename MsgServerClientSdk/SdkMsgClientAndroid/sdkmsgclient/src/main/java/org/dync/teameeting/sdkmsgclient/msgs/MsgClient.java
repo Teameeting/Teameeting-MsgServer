@@ -288,19 +288,15 @@ public class MsgClient implements JMClientHelper{
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strHostId);
         if (null != mMApp && null != jsonMsg) {
-            //String[] arrUser = {strHostId};
-            //outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TLIV_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
             outMsgId = mMApp.SndMsg(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TLIV_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE);
         }
         return outMsgId;
     }
 
-    public String MCNotifyRedEnvelope(String strGroupId, String strHostId) {
+    public String MCNotifyRedEnvelope(String strGroupId, String strHostId, String strCash, String strCont) {
         String outMsgId = null;
-        String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strHostId);
+        String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strHostId, strCash, strCont);
         if (null != mMApp && null != jsonMsg) {
-            //String[] arrUser = {strHostId};
-            //outMsgId =  mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TREN_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FSINGLE_VALUE, arrUser, 1);
             outMsgId =  mMApp.SndMsg(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TREN_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE);
         }
         return outMsgId;
@@ -338,12 +334,6 @@ public class MsgClient implements JMClientHelper{
         String outMsgId = null;
         String jsonMsg = MsMsgUtil.Encode2JsonWithGrpAndUid(strGroupId, strUserId);
         if (null != mMApp && null != jsonMsg) {
-            //ArrayList<String> arrUsers = new ArrayList<String>();
-            //arrUsers.add(strUserId);
-            //for (int i=0;i<notifys.length;++i) {
-            //    arrUsers.add(notifys[i]);
-            //}
-            //outMsgId = mMApp.SndMsgTo(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TMGR_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FMULTI_VALUE, arrUsers.toArray(new String[]{}), arrUsers.size());
             outMsgId = mMApp.SndMsg(strGroupId, "grpname", jsonMsg, EntityMsgType.EMsgTag.TCHAT_VALUE, EntityMsgType.EMsgType.TMGR_VALUE, CommonMsg.EModuleType.TLIVE_VALUE, CommonMsg.EMsgFlag.FGROUP_VALUE);
         }
         return outMsgId;

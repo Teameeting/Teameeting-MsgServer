@@ -142,7 +142,9 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
         String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifyRedEnvelope(groupid, touser);
+        String cash = "123.45";
+        String wishcont = "happy to you";
+        String outmsgid = mMsMessageManager.sendNotifyRedEnvelope(groupid, touser, cash, wishcont);
         System.out.println("NotifyMsgRedEnvelope sendNotifyRedEnvelope get msgid:"+outmsgid);
     }
 
@@ -177,8 +179,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String groupid = "wocaowocaowocao";
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
-        String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser1, arr);
+        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser1);
         System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 
@@ -301,32 +302,32 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     }
 
     @Override
-    public void OnNotifyLive(MSTxtMessage txtMsg) {
-        String s = "OnNotifyLive msg:" + txtMsg;
+    public void OnNotifyLive(MSTxtMessage livMsg) {
+        String s = "OnNotifyLive msg:" + livMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyRedEnvelope(MSTxtMessage txtMsg) {
-        String s = "OnNotifyRedEnvelope msg:" + txtMsg;
+    public void OnNotifyRedEnvelope(MSTxtMessage renMsg) {
+        String s = "OnNotifyRedEnvelope msg:" + renMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyBlacklist(MSTxtMessage txtMsg) {
-        String s = "OnNotifyBlacklist msg:" + txtMsg;
+    public void OnNotifyBlacklist(MSTxtMessage blkMsg) {
+        String s = "OnNotifyBlacklist msg:" + blkMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyForbidden(MSTxtMessage txtMsg) {
-        String s = "OnNotifyForbidden msg:" + txtMsg;
+    public void OnNotifyForbidden(MSTxtMessage fbdMsg) {
+        String s = "OnNotifyForbidden msg:" + fbdMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifySettedMgr(MSTxtMessage txtMsg) {
-        String s = "OnNotifySettedMgrg msg:" + txtMsg;
+    public void OnNotifySettedMgr(MSTxtMessage fbdMsg) {
+        String s = "OnNotifySettedMgrg msg:" + fbdMsg;
         System.out.println(s);
     }
 }

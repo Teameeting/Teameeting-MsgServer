@@ -19,12 +19,9 @@
 @synthesize groupId = _groupId;
 @synthesize nickname = _nickname;
 @synthesize uiconurl = _uiconurl;
-@synthesize time = _time;
-@synthesize date = _date;
+@synthesize cash = _cash;
+@synthesize wishcont = _wishcont;
 @synthesize millSec = _millSec;
-@synthesize flag = _flag;
-@synthesize tag = _tag;
-@synthesize role = _role;
 
 MJExtensionLogAllProperties
 

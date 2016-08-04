@@ -5,36 +5,52 @@ package org.dync.teameeting.sdkmsgclient.msgs;
  */
 public class MSGroupManager {
     /**
-     * add group delegate
-     * <p/>
-     * params:
+     *  add group delegate
+     *
+     *  params:
+     *      grpDelegate: the group delegate for callback to set
+     *
+     *  return:
+     *      void
      */
     public void addDelegate(MSGroupDelegate grpDelegate) {
         MsgClient.getInstance().MCSetGroupDelegate(grpDelegate);
     }
 
     /**
-     * remove group delegate
-     * <p/>
-     * params:
+     *  remove group delegate
+     *
+     *  params:
+     *      grpDelegate: the group delegate to delete
+     *
+     *  return:
+     *      void
      */
     public void delDelegate(MSGroupDelegate grpDelegate) {
         MsgClient.getInstance().MCSetGroupDelegate(null);
     }
 
     /**
-     * add to group
-     * <p/>
-     * params:
+     *  add to group
+     *
+     *  params:
+     *      grpId: the group id to add
+     *
+     *  return:
+     *      void
      */
     public void addGroup(String grpId) {
         MsgClient.getInstance().MCAddGroup(grpId);
     }
 
     /**
-     * remove from group
-     * <p/>
-     * params:
+     *  remove from group
+     *
+     *  params:
+     *      grpId: the group id to remove
+     *
+     *  return:
+     *      void
      */
     public void rmvGroup(String grpId) {
         MsgClient.getInstance().MCRmvGroup(grpId);

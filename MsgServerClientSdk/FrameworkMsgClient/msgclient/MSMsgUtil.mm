@@ -90,6 +90,22 @@
 }
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
+                                   userId:(NSString*)userId
+                                     cash:(NSString *)cash
+                                     cont:(NSString *)cont
+{
+    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
+    [txtMsg setGroupId:groupId];
+    [txtMsg setToId:userId];
+    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setCash:cash];
+    [txtMsg setWishcont:cont];
+    return txtMsg;
+}
+
++ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setGroupId:groupId];

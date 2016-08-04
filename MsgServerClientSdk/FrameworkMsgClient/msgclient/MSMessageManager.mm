@@ -32,6 +32,7 @@
                  cont:(NSString*)content
                cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==grpId)|| (nil==content)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     int res = MsgClient::Instance().MCSendTxtMsg(msgid, [grpId UTF8String], [content UTF8String]);
@@ -44,6 +45,7 @@
                     cont:(NSString*)content
                   cmsgid:(NSString**)cmsgid
 {
+    if ((nil==grpId)||(nil==users)||(nil==content)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
@@ -59,6 +61,7 @@
                    cont:(NSString*)content
                  cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==usrId)||(nil==content)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     int res = MsgClient::Instance().MCSendTxtMsgToUsr(msgid, [usrId UTF8String], [content UTF8String]);
@@ -70,6 +73,7 @@
                     cont:(NSString*)content
                   cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==usrIds)||(nil==content)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
@@ -85,6 +89,7 @@
                    hostId:(NSString*)hostId
                    cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==grpId)||(nil==hostId)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     int res = MsgClient::Instance().MCNotifyLive(msgid, [grpId UTF8String], [hostId UTF8String]);
@@ -94,11 +99,14 @@
 
 -(int)sendNotifyRedEnvelopeGrpId:(NSString*)grpId
                           hostId:(NSString*)hostId
+                            cash:(NSString*)cash
+                            cont:(NSString*)cont
                           cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==grpId)||(nil==hostId)||(nil==cash)||(nil==cont)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
-    int res = MsgClient::Instance().MCNotifyRedEnvelope(msgid, [grpId UTF8String], [hostId UTF8String]);
+    int res = MsgClient::Instance().MCNotifyRedEnvelope(msgid, [grpId UTF8String], [hostId UTF8String], [cash UTF8String], [cont UTF8String]);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }
@@ -108,6 +116,7 @@
                        notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==grpId)||(nil==userId)||(nil==notifys)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
@@ -124,6 +133,7 @@
                        notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==grpId)||(nil==userId)||(nil==notifys)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
@@ -137,15 +147,12 @@
 
 -(int)sendNotifySettedMgrGrpId:(NSString*)grpId
                         userId:(NSString*)userId
-                       notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
+    if ((nil==grpId)||(nil==userId)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
-    for (NSString* name in notifys) {
-        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
-    }
     int res = MsgClient::Instance().MCNotifySettedMgr(msgid, [grpId UTF8String], [userId UTF8String], vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;

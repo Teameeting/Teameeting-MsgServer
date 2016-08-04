@@ -30,14 +30,11 @@
 
 @property (nonatomic, strong) NSString* uiconurl;
 
-@property (nonatomic, strong) NSDate* time;
+@property (nonatomic, strong) NSString* cash;
 
-@property (nonatomic, strong) NSDate* date;
+@property (nonatomic, strong) NSString* wishcont;
 
 @property (nonatomic) unsigned int  millSec;//send second
-@property (nonatomic) int           flag;//group or single
-@property (nonatomic) int           tag;//txt or pic or self
-@property (nonatomic) int           role;//sender or recver
 
 @end
 

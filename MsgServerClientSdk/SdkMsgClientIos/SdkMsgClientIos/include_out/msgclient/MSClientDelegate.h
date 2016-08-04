@@ -15,56 +15,56 @@
 @required
 
 /**
- *  when server was connected
+ *  when server was connected this function will be called
  *
  *  params:
  */
 -(void)OnMsgServerConnected;
 
 /**
- *  when server was connecting
+ *  when server was connecting this function will be called
  *
  *  params:
  */
 -(void)OnMsgServerConnecting;
 
 /**
- *  when server was disconnected
+ *  when server was disconnected this function will be called
  *
  *  params:
  */
 -(void)OnMsgServerDisconnect;
 
 /**
- *  when server connect failed
+ *  when server connect failed this function will be called
  *
  *  params:
  */
 -(void)OnMsgServerConnectionFailure;
 
 /**
- * when client initializing
+ * when client initializing this function will be called
  *
  *  params:
  */
 -(void)OnMsgClientInitializing;
 
 /**
- *  when client initialize ok
+ *  when client initialize ok this function will be called
  *
  *  params:
  */
 -(void)OnMsgClientInitialized;
 
 /**
- *  when client un initialize
+ *  when client un initialize ok this function will be called
  *
  *  params:
  */
 -(void)OnMsgClientUnInitialize;
 
 /**
- *  when client initialize failed
+ *  when client initialize failed this function will be called
  *
  *  params:
  */

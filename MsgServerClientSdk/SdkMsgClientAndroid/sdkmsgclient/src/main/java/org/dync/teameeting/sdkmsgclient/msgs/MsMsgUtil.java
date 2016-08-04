@@ -42,22 +42,18 @@ public class MsMsgUtil {
             txtMsg.setUiconUrl(jobj.getString("uiconUrl"));
         else
             txtMsg.setUiconUrl("");
+        if (jobj.has("cash"))
+            txtMsg.setCash(jobj.getString("cash"));
+        else
+            txtMsg.setCash("");
+        if (jobj.has("wishcont"))
+            txtMsg.setWishcont(jobj.getString("wishcont"));
+        else
+            txtMsg.setWishcont("");
         if (jobj.has("millSec"))
             txtMsg.setMillSec(jobj.getInt("millSec"));
         else
             txtMsg.setMillSec(0);
-        if (jobj.has("flag"))
-            txtMsg.setFlag(jobj.getInt("flag"));
-        else
-            txtMsg.setFlag(-1);
-        if (jobj.has("tag"))
-            txtMsg.setTag(jobj.getInt("tag"));
-        else
-            txtMsg.setTag(-1);
-        if (jobj.has("role"))
-            txtMsg.setRole(jobj.getInt("role"));
-        else
-            txtMsg.setRole(-1);
         return txtMsg;
     }
 
@@ -71,10 +67,9 @@ public class MsMsgUtil {
         jsonObj.put("groupId", mobj.getGroupId());
         jsonObj.put("nickName", mobj.getNickName());
         jsonObj.put("uiconUrl", mobj.getUiconUrl());
+        jsonObj.put("cash", mobj.getCash());
+        jsonObj.put("wishcont", mobj.getWishcont());
         jsonObj.put("millSec", mobj.getMillSec());
-        jsonObj.put("flag", mobj.getFlag());
-        jsonObj.put("tag", mobj.getTag());
-        jsonObj.put("role", mobj.getRole());
         return jsonObj;
     }
 
@@ -149,6 +144,29 @@ public class MsMsgUtil {
         txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
         txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+
+        JSONObject jobj = null;
+        try {
+            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (null != jobj) {
+            return jobj.toString();
+        } else {
+            return "";
+        }
+    }
+
+    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, String cash, String cont) {
+        MSTxtMessage txtMsg = new MSTxtMessage();
+        txtMsg.setGroupId(grpId);
+        txtMsg.setToId(userId);
+        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        txtMsg.setCash(cash);
+        txtMsg.setWishcont(cont);
 
         JSONObject jobj = null;
         try {

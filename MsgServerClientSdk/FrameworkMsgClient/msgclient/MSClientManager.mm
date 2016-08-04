@@ -17,6 +17,7 @@
                    nName:(NSString*)nName
 {
     NSLog(@"MsgClient Ios Version:v1.0.0");
+    if ((nil==usrId)||(nil==token)||(nil==nName)) return -101;
     MsgClient::Instance().MCInit([usrId UTF8String], [token UTF8String], [nName UTF8String]);
     MsgClient::Instance().MCRegisterMsgCb(&MsgClient::Instance());
     return 0;
@@ -43,6 +44,7 @@
 -(int)connToServer:(NSString*)server
               port:(int)port
 {
+    if (nil==server) return -101;
     MsgClient::Instance().MCConnToServer([server UTF8String], port);
     return 0;
 }
@@ -55,21 +57,24 @@
 
 -(void)setUserId:(NSString*)userid
 {
-    MsgClient::Instance().MCSetUserId([userid cStringUsingEncoding:NSUTF8StringEncoding]);
+   //DO NOT IMPLEMENT
 }
 
 -(void)setToken:(NSString*)token
 {
+    if (nil==token) return;
     MsgClient::Instance().MCSetToken([token cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 -(void)setNickName:(NSString*)nName
 {
+    if (nil==nName) return;
     MsgClient::Instance().MCSetNickName([nName cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 -(void)setUIconUrl:(NSString*)url
 {
+    if (nil==url) return;
     MsgClient::Instance().MCSetUIconUrl([url cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 

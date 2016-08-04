@@ -187,9 +187,6 @@ int MsgClient::MCSendTxtMsgToUsrs(std::string& outmsgid, const std::vector<std::
 
 int MsgClient::MCNotifyLive(std::string& outmsgid, const std::string& groupid, const std::string& hostid)
 {
-    //std::vector<std::string> uvec;
-    //uvec.push_back(hostid);
-    
     MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()]];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     
@@ -202,12 +199,9 @@ int MsgClient::MCNotifyLive(std::string& outmsgid, const std::string& groupid, c
     return SndMsg(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tliv, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
 }
 
-int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, const std::string& groupid, const std::string& hostid)
+int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, const std::string& groupid, const std::string& hostid, const std::string& cash, const std::string& cont)
 {
-    //std::vector<std::string> uvec;
-    //uvec.push_back(hostid);
-    
-    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:hostid.c_str()]];
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:hostid.c_str()] cash:[NSString stringWithUTF8String:cash.c_str()] cont:[NSString stringWithUTF8String:cont.c_str()]];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     
     if (!jsonString)
@@ -261,12 +255,6 @@ int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& group
 
 int MsgClient::MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys)
 {
-    //std::vector<std::string> uvec;
-    //uvec.push_back(userid);
-    //for (auto &it : notifys) {
-    //    uvec.push_back(it);
-    //}
-    
     MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()]];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     

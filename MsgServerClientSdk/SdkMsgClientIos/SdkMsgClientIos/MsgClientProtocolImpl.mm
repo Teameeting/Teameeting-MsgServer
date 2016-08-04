@@ -55,7 +55,7 @@
 -(void)OnRecvTxtMessage:(MSTxtMessage*)txtMsg
 {
     NSLog(@"MsgClientProtocolImpl function:%@\n", [NSString stringWithUTF8String:__FUNCTION__]);
-    NSString *message = [NSString stringWithFormat:@"fromId:%@, toId:%@, content:%@, time:%@", [txtMsg fromId], [txtMsg toId], [txtMsg content], [txtMsg time]];
+    NSString *message = [NSString stringWithFormat:@"fromId:%@, toId:%@, content:%@", [txtMsg fromId], [txtMsg toId], [txtMsg content]];
     [self.delegate resultDisplayCallback:message mMsg:@"" nInt:0];
 }
 

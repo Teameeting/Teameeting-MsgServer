@@ -244,7 +244,9 @@
     NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
     NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    [msgMgr sendNotifyRedEnvelopeGrpId:mGroupId hostId:touser cmsgid:&outmsgid];
+    NSString *cash = @"123.45";
+    NSString *wishcont = @"happy to you";
+    [msgMgr sendNotifyRedEnvelopeGrpId:mGroupId hostId:touser cash:cash cont:wishcont cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendRedRevelope outmsgid is :%@", outmsgid];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
@@ -288,8 +290,7 @@
     mGroupId = @"wocaowocaowocao";
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
-    [msgMgr sendNotifySettedMgrGrpId:mGroupId userId:touser1 notifys:arr cmsgid:&outmsgid];
+    [msgMgr sendNotifySettedMgrGrpId:mGroupId userId:touser1 cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendNotifySettedMgr outmsgid is :%@", outmsgid];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
