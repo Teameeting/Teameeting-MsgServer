@@ -107,7 +107,7 @@ bool MRTConnManager::ConnectSequence()
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectSequence(ip, port);
         }
@@ -128,7 +128,7 @@ bool MRTConnManager::ConnectStorage()
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectSequence(ip, port);
         }

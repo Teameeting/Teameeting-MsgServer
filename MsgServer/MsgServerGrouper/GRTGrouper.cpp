@@ -122,33 +122,16 @@ GRTGrouper::~GRTGrouper(void)
     }
 }
 
-int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const char*pGroupMgrIp, unsigned short usGroupMgrPort, const char* pHttpIp, unsigned short usHttpPort)
+int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const char*pGroupMgrIp, unsigned short usGroupMgrPort, const char* pRedisIp, unsigned short usRedisPort)
 {
 	Assert(g_inited);
 	Assert(pGrouperIp != NULL && strlen(pGrouperIp)>0);
-    GRTGrouperManager::Instance().InitManager("192.168.7.218", 6379);
+    GRTGrouperManager::Instance().InitManager(pRedisIp, usRedisPort);
     GRTChannelManager::Instance().InitManager();
-    //GRTGrouperManager::Instance().GetGroupMembersRedis("9008000036");
-    //GRTGrouperManager::Instance().GetGroupMembersRedis("9008000015");
-    //GRTGrouperManager::Instance().GetGroupMembersRedis("9008000001");
-    //GRTGrouperManager::Instance().GetGroupMembersRedis("9008000005");
-    //GRTGrouperManager::Instance().GetGroupMembersRedis("9008000024");
 
-    char hh[24] = {0};
-    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
-
-    GRTConnManager::s_cohttpHost = hh;
-    GRTConnManager::s_cohttpIp = pHttpIp;
-    GRTConnManager::s_cohttpPort = usHttpPort;
-
-    char *ip1 = (char*)"192.168.7.213";
-    char *ip2 = (char*)"192.168.7.225";
-    char *ip3 = (char*)"192.168.7.207";
-    int port = 6379;
-
-    std::string channel1("test_subscribe");
-    std::string channel2("wensiwensi");
-    GRTSubChannel* ch1 = new GRTSubChannel(ip3, port, channel1);
+    std::string channel1("follow_group");
+    std::string channel2("unfollow_group");
+    GRTSubChannel* ch1 = new GRTSubChannel(pRedisIp, usRedisPort, channel1);
     if (!ch1)
         return -1;
     if (!ch1->Init())
@@ -156,7 +139,7 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
         delete ch1;
         return -2;
     }
-    GRTSubChannel* ch2 = new GRTSubChannel(ip3, port, channel2);
+    GRTSubChannel* ch2 = new GRTSubChannel(pRedisIp, usRedisPort, channel2);
     if (!ch2)
         return -1;
     if (!ch2->Init())
@@ -168,33 +151,6 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
     GRTChannelManager::Instance().AddChannel(channel2, ch2);
     GRTChannelManager::Instance().SubChannel(channel1);
     GRTChannelManager::Instance().SubChannel(channel2);
-
-    char *ip4 = (char*)"192.168.7.218";
-    std::string channel3("follow_group");
-    std::string channel4("unfollow_group");
-    GRTSubChannel* ch3 = new GRTSubChannel(ip4, port, channel3);
-    if (!ch3)
-        return -1;
-    if (!ch3->Init())
-    {
-        delete ch3;
-        return -2;
-    }
-    GRTSubChannel* ch4 = new GRTSubChannel(ip4, port, channel4);
-    if (!ch4)
-        return -1;
-    if (!ch4->Init())
-    {
-        delete ch4;
-        return -2;
-    }
-    GRTChannelManager::Instance().AddChannel(channel3, ch3);
-    GRTChannelManager::Instance().AddChannel(channel4, ch4);
-    GRTChannelManager::Instance().SubChannel(channel3);
-    GRTChannelManager::Instance().SubChannel(channel4);
-
-
-
 
     std::string ssid;
     if (usGrouperPort > 0) {

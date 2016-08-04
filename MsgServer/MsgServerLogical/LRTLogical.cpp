@@ -136,7 +136,7 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
             return -1;
         }
 	}
-    printf("SequenceServer should already be connected!!!\n\n");
+    LI("SequenceServer should already be connected!!!\n\n");
 
     if(usStoragePort > 0)
 	{
@@ -149,7 +149,7 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
             return -1;
         }
 	}
-    printf("StorageServer should already be connected!!!\n\n");
+    LI("StorageServer should already be connected!!!\n\n");
 
     std::string ssid;
     if (usLogicalPort > 0) {

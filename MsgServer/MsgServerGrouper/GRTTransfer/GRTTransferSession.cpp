@@ -186,7 +186,7 @@ int GRTTransferSession::CreateGroupSeqn(const std::string& cltUserid, const std:
         return -1;
     }
 
-    printf("GRTTransferSession CreateGroupSeqn ok!!\n");
+    LI("GRTTransferSession CreateGroupSeqn ok!!\n");
     SendTransferData(outstr);
     return 0;
 }
@@ -203,7 +203,7 @@ int GRTTransferSession::DeleteGroupSeqn(const std::string& cltUserid, const std:
         return -1;
     }
 
-    printf("GRTTransferSession DeleteGroupSeqn ok!!\n");
+    LI("GRTTransferSession DeleteGroupSeqn ok!!\n");
     SendTransferData(outstr);
     return 0;
 }
@@ -220,7 +220,7 @@ int GRTTransferSession::GenGrpSyncDataNotify(const std::string& userid, const st
         return -1;
     }
 
-    printf("GRTTransferSession GenGrpSyncDataNotify ok!!\n");
+    LI("GRTTransferSession GenGrpSyncDataNotify ok!!\n");
     SendTransferData(outstr);
     return 0;
 }
@@ -238,7 +238,7 @@ int GRTTransferSession::GenGrpSyncDataNotifys(const std::vector<std::string>& us
         return -1;
     }
 
-    printf("GRTTransferSession GenGrpSyncDataNotifys ok!!\n");
+    LI("GRTTransferSession GenGrpSyncDataNotifys ok!!\n");
     SendTransferData(outstr);
     return 0;
 }
@@ -433,25 +433,12 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("GRTTransferSession::OnGroupNotify ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
+    LI("GRTTransferSession::OnGroupNotify ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
             , store.ruserid().c_str()\
             , store.sequence()\
             , store.groupid().c_str()\
             , store.mflag()\
             , store.rsvrcmd());
-    // check userid, groupid, send sync data request
-    if (store.groupid().compare("wocaowocaowocao")==0) {
-        std::string mem_user1("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
-        GenGrpSyncDataNotify(mem_user1, store.groupid(), store.sequence());
-        std::string mem_user2("2C665ED7-3854-4411-9536-947A4340B86E");
-        GenGrpSyncDataNotify(mem_user2, store.groupid(), store.sequence());
-        std::string mem_user3("9297E785-59BD-483A-ABEA-5C9F8D88FEB0");
-        GenGrpSyncDataNotify(mem_user3, store.groupid(), store.sequence());
-        return;
-    } else {
-        std::cout << "groupid not handled!!!!!!!!!!!!!!:" << store.groupid() << std::endl;
-    }
-
     std::unordered_set<std::string> *puset = NULL;
     GRTGrouperManager::Instance().GetGroupMembersLocal(store.groupid(), &puset);
     if (!puset)
@@ -477,7 +464,7 @@ void GRTTransferSession::OnCreateGroupSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("GRTTransferSession::OnCreateGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
+    LI("GRTTransferSession::OnCreateGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
             , code, cont.length(), store.result());
     return;
 }
@@ -486,7 +473,7 @@ void GRTTransferSession::OnDeleteGroupSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    printf("GRTTransferSession::OnDeleteGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
+    LI("GRTTransferSession::OnDeleteGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
             , code, cont.length(), store.result());
     return;
 }

@@ -130,7 +130,7 @@ int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char
 	{
         char addr[24] = {0};
         sprintf(addr, "%s %u", pLogicalIp, usLogicalPort);
-        printf("logical addr:%s\n", addr);
+        LI("logical addr:%s\n", addr);
         LRTConnManager::Instance().GetLogicalAddrList()->push_front(addr);
 
         if (!(LRTConnManager::Instance().ConnectLogical())) {
@@ -143,7 +143,7 @@ int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char
 	{
         char addr[24] = {0};
         sprintf(addr, "%s %u", pConnectorIp, usConnectorPort);
-        printf("connector addr:%s\n", addr);
+        LI("connector addr:%s\n", addr);
         LRTConnManager::Instance().GetConnectorAddrList()->push_front(addr);
 
         if (!(LRTConnManager::Instance().ConnectConnector())) {
@@ -156,7 +156,7 @@ int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char
 	{
         char addr[24] = {0};
         sprintf(addr, "%s %u", pDispatcherIp, usDispatcherPort);
-        printf("dispatcher addr:%s\n", addr);
+        LI("dispatcher addr:%s\n", addr);
         LRTConnManager::Instance().GetDispatcherAddrList()->push_front(addr);
 
         if (!(LRTConnManager::Instance().ConnectDispatcher())) {

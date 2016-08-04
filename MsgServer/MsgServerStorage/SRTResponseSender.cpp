@@ -36,7 +36,7 @@ void SRTResponseSender::Init(SRTTransferSession *sess)
     {
         m_SendPostMsg.add_msgs();
     }
-    printf("SRTResponseSender::Init was called...\n");
+    LI("SRTResponseSender::Init was called...\n");
 }
 
 void SRTResponseSender::Unin()
@@ -55,7 +55,7 @@ void SRTResponseSender::Unin()
 
 void SRTResponseSender::PushResponseData(const char*pData, int nSize)
 {
-    //printf("SRTResponseSender::PushResponseData g_push_response_counter:%d, QPushMsg.size:%d\n",  ++g_push_response_counter, m_QPushMsg.size());
+    //LI("SRTResponseSender::PushResponseData g_push_response_counter:%d, QPushMsg.size:%d\n",  ++g_push_response_counter, m_QPushMsg.size());
     {
         OSMutexLocker locker(&m_MutexPush);
         std::string str(pData, nSize);
@@ -66,7 +66,7 @@ void SRTResponseSender::PushResponseData(const char*pData, int nSize)
 
 void SRTResponseSender::PostResponseData(const char*pData, int nSize)
 {
-    //printf("SRTResponseSender::PostResponseData g_post_response_counter:%d, QPostMsg.size:%d\n",  ++g_post_response_counter, m_QPostMsg.size());
+    //LI("SRTResponseSender::PostResponseData g_post_response_counter:%d, QPostMsg.size:%d\n",  ++g_post_response_counter, m_QPostMsg.size());
     {
         OSMutexLocker locker(&m_MutexPost);
         std::string str(pData, nSize);
@@ -81,7 +81,7 @@ void SRTResponseSender::OnWakeupEvent(const void*pData, int nSize)
     if (!m_IsRun) return;
     if(m_QPostMsg.size()==0) return;
     bool hasData = false;
-    //printf("SRTResponseSender::OnWakeupEvent g_wakeup_event_counter:%d, m_QPostMsg.size:%d\n",  ++g_wakeup_event_counter, m_QPostMsg.size());
+    //LI("SRTResponseSender::OnWakeupEvent g_wakeup_event_counter:%d, m_QPostMsg.size:%d\n",  ++g_wakeup_event_counter, m_QPostMsg.size());
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
         if(m_QPostMsg.size()>0)
@@ -132,7 +132,7 @@ void SRTResponseSender::OnTickEvent(const void*pData, int nSize)
     if (!m_IsRun) return;
     if(m_QPushMsg.size()==0) return;
     bool hasData = false;
-    //printf("SRTResponseSender::OnTickEvent g_idle_event_counter:%d, m_QSendMsg.size:%d\n",  ++g_idle_event_counter, m_QPushMsg.size());
+    //LI("SRTResponseSender::OnTickEvent g_idle_event_counter:%d, m_QSendMsg.size:%d\n",  ++g_idle_event_counter, m_QPushMsg.size());
     for (int i=0;i<PACKED_MSG_ONCE_NUM;++i)
     {
         if(m_QPushMsg.size()>0)

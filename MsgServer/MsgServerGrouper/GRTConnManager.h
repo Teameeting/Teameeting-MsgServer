@@ -67,10 +67,6 @@ public:
 
     typedef std::list< GRTTransferSession* > ConnectingSessList;
 
-    static std::string      s_cohttpIp;
-    static unsigned short   s_cohttpPort;
-    static std::string      s_cohttpHost;
-
     ModuleInfo*       findConnectorInfo(const std::string& userid);
     ModuleInfo*       findModuleInfo(const std::string& userid, pms::ETransferModule module);
     ModuleInfo*       findModuleInfoBySid(const std::string& sid);

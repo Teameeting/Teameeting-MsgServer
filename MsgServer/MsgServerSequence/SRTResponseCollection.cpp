@@ -27,20 +27,20 @@ SRTResponseCollection::~SRTResponseCollection()
 
 void SRTResponseCollection::AddResponse(const pms::StorageMsg& request, int64 seqn)
 {
-    printf("SRTResponseCollection::AddResponse new m_ReqType:%d, ruserid:%s, msgid:%s, seqn:%lld\n", m_ReqType, request.ruserid().c_str(), request.msgid().c_str(), seqn);
+    LI("SRTResponseCollection::AddResponse new m_ReqType:%d, ruserid:%s, msgid:%s, seqn:%lld\n", m_ReqType, request.ruserid().c_str(), request.msgid().c_str(), seqn);
     if (m_ReqType==REQUEST_TYPE_READ)
     {
         SeqnResponseMapCIt cit = m_ReadSeqnResponse.find(request.msgid());
         if (cit != m_ReadSeqnResponse.end())
         {
-            printf("SRTResponseCollection::AddResponse find msgid:%s\n", request.msgid().c_str());
+            LI("SRTResponseCollection::AddResponse find msgid:%s\n", request.msgid().c_str());
             if (cit->second->AddAndCheckRead(seqn))
             {
                 delete cit->second;
                 m_ReadSeqnResponse.erase(cit);
             }
         } else {
-            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", request.msgid().c_str());
+            LI("SRTResponseCollection::AddResponse not find msgid:%s\n", request.msgid().c_str());
             m_ReadSeqnResponse.insert(make_pair(request.msgid(), new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, m_pRedisManager, request)));
         }
     } else if (m_ReqType==REQUEST_TYPE_WRITE)
@@ -48,14 +48,14 @@ void SRTResponseCollection::AddResponse(const pms::StorageMsg& request, int64 se
         SeqnResponseMapCIt cit = m_WriteSeqnResponse.find(request.msgid());
         if (cit != m_WriteSeqnResponse.end())
         {
-            printf("SRTResponseCollection::AddResponse find msgid:%s\n", request.msgid().c_str());
+            LI("SRTResponseCollection::AddResponse find msgid:%s\n", request.msgid().c_str());
             if (cit->second->AddAndCheckWrite(seqn))
             {
                 delete cit->second;
                 m_WriteSeqnResponse.erase(cit);
             }
         } else {
-            printf("SRTResponseCollection::AddResponse not find msgid:%s\n", request.msgid().c_str());
+            LI("SRTResponseCollection::AddResponse not find msgid:%s\n", request.msgid().c_str());
             m_WriteSeqnResponse.insert(make_pair(request.msgid(), new SRTResponseCollection::MsgSeqn(m_ClientNum, seqn, m_pRedisManager, request)));
         }
     }

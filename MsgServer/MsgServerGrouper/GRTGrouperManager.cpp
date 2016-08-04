@@ -76,7 +76,6 @@ bool GRTGrouperManager::InitManager(const std::string& ip, int port)
     m_xRedisClient.ConnectRedisCache(m_RedisList, 1, CACHE_TYPE_1);
     m_RedisDBIdx = new RedisDBIdx(&m_xRedisClient);
 
-
     return true;
 }
 

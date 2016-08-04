@@ -18,7 +18,7 @@
 
 static void sighandler(int sig_no)
 {
-    printf("catch sighandler:%d\n", sig_no);
+    LI("catch sighandler:%d\n", sig_no);
      exit(0);
 }
 

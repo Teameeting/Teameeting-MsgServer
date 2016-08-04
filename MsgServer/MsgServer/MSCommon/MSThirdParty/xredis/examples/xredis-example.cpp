@@ -7,6 +7,8 @@
 
 #include "xRedisClient.h"
 
+#define TEST_SET_GET (1)
+
 // AP Hash Function
 unsigned int APHash(const char *str) {
     unsigned int hash = 0;
@@ -53,26 +55,29 @@ int main(int argc, char **argv) {
     xRedis.ConnectRedisCache(RedisList1, 1, CACHE_TYPE_1);
     //xRedis.ConnectRedisCache(RedisList2, 5, CACHE_TYPE_2);
 
-#if 0
-    for (int n = 0; ; n++) {
+#if TEST_SET_GET
+    //for (int n = 0; ; n++) {
         char szKey[256] = {0};
-        sprintf(szKey, "test_%d", n);
+        sprintf(szKey, "test_%d", 0);
         RedisDBIdx dbi(&xRedis);
         dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
-        bool bRet = xRedis.set(dbi, szKey, "hello redis!");
+        bool bRet = xRedis.setex(dbi, szKey, 10, "hello redis!");
         if (!bRet){
-            printf(" %s %s \n", szKey, dbi.GetErrInfo());
+            printf("error:key: %s, err: %s \n", szKey, dbi.GetErrInfo());
         }
-    }
+    //}
 
     for (int n = 0; ; n++) {
         char szKey[256] = {0};
-        sprintf(szKey, "test_%d", n);
+        sprintf(szKey, "test_%d", 0);
         RedisDBIdx dbi(&xRedis);
         dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
         string strValue;
         xRedis.get(dbi, szKey, strValue);
-        printf("%s \r\n", strValue.c_str());
+        int64_t t = 0;
+        bool ttl = xRedis.ttl(dbi, szKey, t);
+        printf("%s , ttl:%d, left time:%ld\r\n", strValue.c_str(), ttl, t);
+        sleep(1);
     }
 #else
     const char* szKey = "test_subscribe";
@@ -122,11 +127,11 @@ int main(int argc, char **argv) {
     } else {
          printf("xRedis.unsubscribe has err:%s\r\n", dbi.GetErrInfo());
     }
-#endif
-
     printf("xRedis FreexRedisContext call...\n");
     xRedis.FreexRedisConn(conn);
     xRedis.FreexRedisConn(conn1);
+#endif
+
     xRedis.Keepalive();
     usleep(1000*1000*2);
 

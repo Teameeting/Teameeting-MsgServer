@@ -29,7 +29,7 @@ void SRTRedisManager::Init(SRTTransferSession* sess)
     char ip[16] = {0};
     int port = 0;
     sscanf(m_RedisHosts[0].c_str(), "%s %d", ip, &port);
-    printf("Generator Init ip:%s, port:%d\n", ip, port);
+    LI("Generator Init ip:%s, port:%d\n", ip, port);
     m_RedisGroup = new SRTRedisGroup(sess, ip, port);
 }
 

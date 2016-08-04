@@ -66,7 +66,7 @@ SRTRedisGroup::~SRTRedisGroup()
 
 void SRTRedisGroup::DispatchPushData(const std::string& data)
 {
-    //printf("SRTRedisGroup::DispatchPushData g_push_request_counter:%d\n", ++g_push_request_counter);
+    //LI("SRTRedisGroup::DispatchPushData g_push_request_counter:%d\n", ++g_push_request_counter);
     m_RecvPushMsg.ParseFromString(data);
     {
         for (int i=0;i<m_RecvPushMsg.msgs_size();++i)
@@ -86,7 +86,7 @@ void SRTRedisGroup::DispatchPushData(const std::string& data)
 
 void SRTRedisGroup::DispatchPostData(const std::string& data)
 {
-    //printf("SRTRedisGroup::DispatchPostData g_post_request_counter:%d\n", ++g_post_request_counter);
+    //LI("SRTRedisGroup::DispatchPostData g_post_request_counter:%d\n", ++g_post_request_counter);
     m_RecvPostMsg.ParseFromString(data);
     {
         for (int i=0;i<m_RecvPostMsg.msgs_size();++i)

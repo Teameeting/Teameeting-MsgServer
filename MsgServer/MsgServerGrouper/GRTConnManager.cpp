@@ -15,10 +15,6 @@
 #include "RTZKClient.hpp"
 #include "ProtoCommon.h"
 
-std::string     GRTConnManager::s_cohttpIp;
-unsigned short  GRTConnManager::s_cohttpPort;
-std::string     GRTConnManager::s_cohttpHost;
-
 static OSMutex       s_mutex;
 static OSMutex       s_mutexModule;
 static OSMutex       s_mutexTypeModule;
@@ -108,7 +104,7 @@ bool GRTConnManager::ConnectGroupMgr()
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectGroupMgr(ip, port);
         }

@@ -323,7 +323,7 @@ void LRTTransferSession::OnTickEvent(const char*pData, int nLen)
                  OSMutexLocker locker(&m_mutexQueueData);
                  m_queueDataMsg.pop();
             }
-            printf("OnTickEvent read request sequence:%lld, ruserid:%s, m_queue.size:%d\n"\
+            LI("OnTickEvent read request sequence:%lld, ruserid:%s, m_queue.size:%d\n"\
                     , m_packedDataMsg.msgs(i).sequence()\
                     , m_packedDataMsg.msgs(i).ruserid().c_str()\
                     , m_queueDataMsg.size());
@@ -507,7 +507,7 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
                     , e_msg.usr_from().c_str(), e_msg.msg_flag(), e_msg.rom_id().c_str());
             assert(e_msg.rom_id().length()>0);
 
-            printf("the sender move to module sync data notify!!!!!!\n");
+            LI("the sender move to module sync data notify!!!!!!\n");
 #if 0
             pms::StorageMsg sender;
             sender.set_rsvrcmd(pms::EServerCmd::CNEWMSG);
@@ -656,7 +656,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                 if (store.msgs(i).mrole()==pms::EMsgRole::RSENDER)
                 {
                     // set response
-                    printf("group msg sender notify move to module notify sync data!!!!!!!!\n");
+                    LI("group msg sender notify move to module notify sync data!!!!!!!!\n");
 #if 0
                     LI("LRTTransferSession::OnTypeQueue notify group sender sync seqn\n");
                     resp.set_svr_cmds(pms::EServerCmd::CSNTFSEQN);
@@ -983,7 +983,7 @@ void LRTTransferSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType mod
     for(int i=0;i<packed.msgs_size();++i)
     {
         if (packed.msgs(i).ruserid().length()==0)break;
-        printf("LRTTransferSession::OnGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n"\
+        LI("LRTTransferSession::OnGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n"\
                 , packed.msgs(i).ruserid().c_str()\
                 , packed.msgs(i).groupid().c_str()\
                 , packed.msgs(i).rsvrcmd()\

@@ -178,11 +178,11 @@ bool LRTConnManager::ConnectLogical()
     std::list<std::string>::iterator it;
     for (it=m_logicalAddrList.begin(); it!=m_logicalAddrList.end(); it++) {
         std::string s = *it;
-        printf("ConnectLogical logical addr:%s\n", s.c_str());
+        LI("ConnectLogical logical addr:%s\n", s.c_str());
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectLogical(ip, port);
         }
@@ -226,11 +226,11 @@ bool LRTConnManager::ConnectConnector()
     std::list<std::string>::iterator it;
     for (it=m_connectorAddrList.begin(); it!=m_connectorAddrList.end(); it++) {
         std::string s = *it;
-        printf("ConnectConnector connector addr:%s\n", s.c_str());
+        LI("ConnectConnector connector addr:%s\n", s.c_str());
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectConnector(ip, port);
         }
@@ -274,11 +274,11 @@ bool LRTConnManager::ConnectDispatcher()
     std::list<std::string>::iterator it;
     for (it=m_dispatcherAddrList.begin(); it!=m_dispatcherAddrList.end(); it++) {
         std::string s = *it;
-        printf("ConnectDispatcher dispatcher addr:%s\n", s.c_str());
+        LI("ConnectDispatcher dispatcher addr:%s\n", s.c_str());
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectDispatcher(ip, port);
         }
@@ -360,7 +360,7 @@ void LRTConnManager::PushDataReq2Queue(const std::string& str)
 {
      if (m_logicalSession && m_logicalSession->IsLiveSession())
      {
-         printf("LRTConnManager::PushDataReq2Queue ticket_time:%d\n", ++ticket_time);
+         LI("LRTConnManager::PushDataReq2Queue ticket_time:%d\n", ++ticket_time);
          m_logicalSession->PushDataReq2Queue(str);
      }
 }

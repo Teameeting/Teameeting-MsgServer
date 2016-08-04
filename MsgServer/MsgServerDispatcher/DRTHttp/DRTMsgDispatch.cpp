@@ -50,7 +50,7 @@ void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
     LI("DRTMsgDispatch::OnPushEvent RelayMsg--->:\n");
     //pmsg.PrintDebugString();
 
-    printf("DRTMsgDispatch::OnPushEvent the Push function not implement!!!!!!!!!!\n");
+    LI("DRTMsgDispatch::OnPushEvent the Push function not implement!!!!!!!!!!\n");
     return;
     assert(false);
 #if 0

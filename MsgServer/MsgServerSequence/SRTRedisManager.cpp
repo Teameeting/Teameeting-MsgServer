@@ -45,7 +45,7 @@ void SRTRedisManager::Init(SRTTransferSession* sess)
         char ip[16] = {0};
         int port = 0;
         sscanf(s.c_str(), "%s %d", ip, &port);
-        printf("SequenceGenerator Redis Init ip:%s, port:%d\n", ip, port);
+        LI("SequenceGenerator Redis Init ip:%s, port:%d\n", ip, port);
         RedisGroup* redisGroup = new RedisGroup;
         redisGroup->ip = ip;
         redisGroup->port = port;
@@ -238,7 +238,7 @@ void SRTRedisManager::OnWakeupEvent(const void*pData, int nSize)
     {
         if (m_Session && m_Session->IsLiveSession())
         {
-            printf("SRTRedisManager::OnWakeupEvent TREQUEST\n");
+            LI("SRTRedisManager::OnWakeupEvent TREQUEST\n");
 
             pms::RelayMsg rmsg;
             // here the cmd means this is an seqn msg, not data

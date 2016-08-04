@@ -50,16 +50,10 @@ public:
         bool AddAndCheckWrite(int64 seq)
         {
             seqns.insert(seq);
-            //printf("AddAndCheckWrite counter is:%d, cnumber is:%d\n", counter, cnumber);
             if ((++counter) == cnumber)
             {
-                printf("write recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
                 storage.set_sequence(*seqns.rbegin());
                 WriteResponse(storage.SerializeAsString());
-                //for(auto x : seqns)
-                //{
-                //     printf("seqn is:%lld\n", x);
-                //}
                 return true;
             } else {
                 return false;
@@ -68,16 +62,10 @@ public:
         bool AddAndCheckRead(int64 seq)
         {
             seqns.insert(seq);
-            printf("AddAndCheckRead counter is:%d, cnumber is:%d\n", counter, cnumber);
             if ((++counter) == cnumber)
             {
-                printf("read recv counter:%d, seqns.rbegin:%lld\n", counter, *seqns.rbegin());
                 storage.set_maxseqn(*seqns.rbegin());
                 ReadResponse(storage.SerializeAsString());
-                //for(auto x : seqns)
-                //{
-                //     printf("seqn is:%lld\n", x);
-                //}
                 return true;
             } else {
                 return false;

@@ -473,7 +473,7 @@ void MRTRoomManager::OnGetMemberList(pms::RelayMsg& rmsg, pms::Entity& mmsg, std
     //* 3, Check msgs list, and send to notify other members(not in room)
     MeetingRoomMapIt it = m_meetingRoomMap.find(mmsg.rom_id());
     if (it != m_meetingRoomMap.end()) {
-        printf("MRTRoomManager::OnGetMemberList not handle here, please implement!!!!!!!!!!!!\n");
+        LI("MRTRoomManager::OnGetMemberList not handle here, please implement!!!!!!!!!!!!\n");
         assert(false);
         ////MEETINGMEMBERLIST memList;
         ////std::string err;

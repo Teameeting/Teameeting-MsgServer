@@ -69,7 +69,6 @@ int XGrpMsgProcesser::EncodeGrpSyncDataNotify(std::string& outstr, const std::st
 {
     std::vector<std::string> v;
     v.push_back(userid);
-    printf("EncodeGrpSyncDataNotify userid:%s, groupid:%s, curseqn:%lld, module:%d\n", userid.c_str(), groupid.c_str(), curseqn, module);
     EncodeGrpSyncDataNotifys(outstr, v, groupid, curseqn, module);
     return 0;
 }
@@ -78,7 +77,6 @@ int XGrpMsgProcesser::EncodeGrpSyncDataNotifys(std::string& outstr, const std::v
 {
     pms::MsgReq req;
     pms::TransferMsg tmsg;
-    printf("EncodeGrpSyncDataNotifys userids.size:%lu\n", userids.size());
     for(int i=0,j=(userids.size()<=PACKED_MSG_NUM_ONCE)?userids.size():PACKED_MSG_NUM_ONCE; i<j;++i)
     {
         if (userids.at(i).length()==0)break;
