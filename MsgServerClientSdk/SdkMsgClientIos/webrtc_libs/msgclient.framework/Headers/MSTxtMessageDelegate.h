@@ -8,7 +8,7 @@
 
 #ifndef MSTxtMessageDelegate_h
 #define MSTxtMessageDelegate_h
-#import "msgclient/MSTxtMessage.h"
+#import "MSTxtMessage.h"
 
 @protocol MSTxtMessageDelegate <NSObject>
 
@@ -18,7 +18,7 @@
  *  when the msg you send reached server this function will be called
  *
  *  params:
- *      msgId: the message you just send, this 'msgId' is got by invoke method in MSMessageManager.h
+ *      msgId: the message you just send, this 'msgId' is got by invoke methods in MSMessageManager.h
  *      code: the code, usually it is 0
  */
 -(void)OnSendMessageId:(NSString*)msgId
@@ -26,7 +26,7 @@
 
 /**
  *  when recv text msg this function will be called
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:
@@ -40,7 +40,7 @@
 
 /**
  *  when recv self define msg this function will be called, not used now
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:
@@ -50,7 +50,7 @@
 
 /**
  *  when hostId begin to live in grpId this function will be called
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:
@@ -63,7 +63,7 @@
 
 /**
  *  when hostId in grpId recv red-envelope this function will be called
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:
@@ -79,7 +79,7 @@
 
 /**
  *  when userId was push to blacklist in grpId this function will be called
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:
@@ -94,7 +94,7 @@
 
 /**
  *  when userId was forbidden in grpId this function will be called
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:
@@ -109,7 +109,7 @@
 
 /**
  *  when userId in grpId was setted to be manager this function will be called
- *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+ *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
  *  besides, different msg will has different valid field
  *
  *  params:

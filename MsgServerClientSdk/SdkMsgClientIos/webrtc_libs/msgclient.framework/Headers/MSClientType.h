@@ -15,4 +15,19 @@ typedef NS_ENUM(NSInteger, MCConnState){
     MCConnStateCONNECTED = 2
 };
 
+typedef NS_ENUM(NSInteger, MCMsgType){
+    MCMsgTypeTtxt = 0,
+    MCMsgTypeTfil = 1,
+    MCMsgTypeTpic = 2,
+    MCMsgTypeTaud = 3,
+    MCMsgTypeTvid = 4,
+    MCMsgTypeTemj = 5,
+    MCMsgTypeTsdf = 6,
+    MCMsgTypeTliv = 20,
+    MCMsgTypeTren = 21,
+    MCMsgTypeTblk = 22,
+    MCMsgTypeTfbd = 23,
+    MCMsgTypeTmgr = 24
+};
+
 #endif

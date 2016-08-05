@@ -22,7 +22,7 @@
 @synthesize cash = _cash;
 @synthesize wishcont = _wishcont;
 @synthesize millSec = _millSec;
-
+@synthesize msgType = _msgType;
 MJExtensionLogAllProperties
 
 @end

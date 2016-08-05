@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MJExtension.h"
+#import "MSClientType.h"
 
 @interface MSMessage : NSObject;
 
@@ -35,6 +36,8 @@
 @property (nonatomic, strong) NSString* wishcont;
 
 @property (nonatomic) unsigned int  millSec;//send second
+
+@property (nonatomic) MCMsgType   msgType;
 
 @end
 

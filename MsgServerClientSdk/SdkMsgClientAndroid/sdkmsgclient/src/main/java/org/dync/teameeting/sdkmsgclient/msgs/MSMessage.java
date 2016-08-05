@@ -16,6 +16,7 @@ public class MSMessage {
     private String wishcont;
 
     private int    millSec;//send second
+    private int    msgType;
 
     public MSMessage() {
     }
@@ -108,4 +109,9 @@ public class MSMessage {
         this.millSec = millSec;
     }
 
+    public int getMsgType() { return msgType; }
+
+    public void setMsgType(int msgType) {
+        this.msgType = msgType;
+    }
 }

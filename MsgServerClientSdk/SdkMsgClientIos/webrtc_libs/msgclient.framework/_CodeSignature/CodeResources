@@ -10,11 +10,11 @@
 		</data>
 		<key>Headers/MSClientManager.h</key>
 		<data>
-		tKE9JRqEWmNueVdghztdjklqyus=
+		6UaojkvMfKR8r8dgOR0l+BCZC3g=
 		</data>
 		<key>Headers/MSClientType.h</key>
 		<data>
-		mUbG9WXOdHgrxJ6ZyckzadWqbWA=
+		r1EJtv4A/5Uk81Na1zk1XWKqneE=
 		</data>
 		<key>Headers/MSGroupDelegate.h</key>
 		<data>
@@ -22,23 +22,23 @@
 		</data>
 		<key>Headers/MSGroupManager.h</key>
 		<data>
-		CtI5T7J3CwxyBCGdsDjYC0dfMGs=
+		cM8RUvBzT7eMFsZN8aTaAm5MgBM=
 		</data>
 		<key>Headers/MSMessage.h</key>
 		<data>
-		EPz6/uHssUVceobSZKQnLT3kcsQ=
+		ewMw+DknDNNZhUHc2WTsSsGY5lo=
 		</data>
 		<key>Headers/MSMessageManager.h</key>
 		<data>
-		lu83v6NPIUocpPOXxSwafugrumk=
+		IcdUaNScTWA/5QMPbTQoMiSCRMk=
 		</data>
 		<key>Headers/MSTxtMessage.h</key>
 		<data>
-		xOGjNrjXzyE/VIHkYnNE7zCkvTs=
+		O1aEmoObPgA25dSe5EzBsr0pTdM=
 		</data>
 		<key>Headers/MSTxtMessageDelegate.h</key>
 		<data>
-		4gGD77xT/Q6RSlMmup1MfLM2A4g=
+		a9Bs8GCcHsGJ9hqQ7u66ovEq9SE=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -57,11 +57,11 @@
 		</data>
 		<key>Headers/MSClientManager.h</key>
 		<data>
-		tKE9JRqEWmNueVdghztdjklqyus=
+		6UaojkvMfKR8r8dgOR0l+BCZC3g=
 		</data>
 		<key>Headers/MSClientType.h</key>
 		<data>
-		mUbG9WXOdHgrxJ6ZyckzadWqbWA=
+		r1EJtv4A/5Uk81Na1zk1XWKqneE=
 		</data>
 		<key>Headers/MSGroupDelegate.h</key>
 		<data>
@@ -69,23 +69,23 @@
 		</data>
 		<key>Headers/MSGroupManager.h</key>
 		<data>
-		CtI5T7J3CwxyBCGdsDjYC0dfMGs=
+		cM8RUvBzT7eMFsZN8aTaAm5MgBM=
 		</data>
 		<key>Headers/MSMessage.h</key>
 		<data>
-		EPz6/uHssUVceobSZKQnLT3kcsQ=
+		ewMw+DknDNNZhUHc2WTsSsGY5lo=
 		</data>
 		<key>Headers/MSMessageManager.h</key>
 		<data>
-		lu83v6NPIUocpPOXxSwafugrumk=
+		IcdUaNScTWA/5QMPbTQoMiSCRMk=
 		</data>
 		<key>Headers/MSTxtMessage.h</key>
 		<data>
-		xOGjNrjXzyE/VIHkYnNE7zCkvTs=
+		O1aEmoObPgA25dSe5EzBsr0pTdM=
 		</data>
 		<key>Headers/MSTxtMessageDelegate.h</key>
 		<data>
-		4gGD77xT/Q6RSlMmup1MfLM2A4g=
+		a9Bs8GCcHsGJ9hqQ7u66ovEq9SE=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>

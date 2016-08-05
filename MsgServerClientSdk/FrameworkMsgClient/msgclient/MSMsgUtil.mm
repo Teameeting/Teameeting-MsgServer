@@ -41,6 +41,7 @@
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
                                   content:(NSString*)content
+                                  msgType:(MCMsgType)msgType
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     
@@ -49,12 +50,14 @@
     [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setMsgType:msgType];
     
     return txtMsg;
 }
 
 + (MSTxtMessage*)EncodeMessageWithUserId:(NSString*)userId
                                  content:(NSString*)content
+                                 msgType:(MCMsgType)msgType
 {
     MSTxtMessage *txtMsg = nil;
     txtMsg = [[MSTxtMessage alloc] init];
@@ -63,22 +66,26 @@
     [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setMsgType:msgType];
     return txtMsg;
 }
 
 + (MSTxtMessage*)EncodeMessageWithUserIds:(NSArray*)array
                                   content:(NSString*)content
+                                  msgType:(MCMsgType)msgType
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setContent:content];
     [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setMsgType:msgType];
     return txtMsg;
 }
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
                                    userId:(NSString*)userId
+                                  msgType:(MCMsgType)msgType
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setGroupId:groupId];
@@ -86,6 +93,7 @@
     [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setMsgType:msgType];
     return txtMsg;
 }
 
@@ -93,6 +101,7 @@
                                    userId:(NSString*)userId
                                      cash:(NSString *)cash
                                      cont:(NSString *)cont
+                                  msgType:(MCMsgType)msgType
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setGroupId:groupId];
@@ -102,16 +111,19 @@
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [txtMsg setCash:cash];
     [txtMsg setWishcont:cont];
+    [txtMsg setMsgType:msgType];
     return txtMsg;
 }
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
+                                  msgType:(MCMsgType)msgType
 {
     MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
     [txtMsg setGroupId:groupId];
     [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
     [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
     [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [txtMsg setMsgType:msgType];
     return txtMsg;
 }
 

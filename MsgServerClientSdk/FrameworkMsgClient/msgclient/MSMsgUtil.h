@@ -20,23 +20,29 @@
 /////////////////////////////////////////////////
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                  content:(NSString*)content;
+                                  content:(NSString*)content
+                                  msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)EncodeMessageWithUserId:(NSString*)userId
-                                 content:(NSString*)content;
+                                 content:(NSString*)content
+                                 msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)EncodeMessageWithUserIds:(NSArray*)array
-                                  content:(NSString*)content;
+                                  content:(NSString*)content
+                                  msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId;
+                                   userId:(NSString*)userId
+                                  msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
                                    userId:(NSString*)userId
                                      cash:(NSString*)cash
-                                     cont:(NSString*)cont;
+                                     cont:(NSString*)cont
+                                  msgType:(MCMsgType)msgType;
 
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId;
++ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
+                                  msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict;
 

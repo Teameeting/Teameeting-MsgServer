@@ -10,8 +10,8 @@
 #define MSClientManager_h
 
 #import <Foundation/Foundation.h>
-#import "msgclient/MSClientType.h"
-#import "msgclient/MSClientDelegate.h"
+#import "MSClientType.h"
+#import "MSClientDelegate.h"
 
 @interface MSClientManager : NSObject
 

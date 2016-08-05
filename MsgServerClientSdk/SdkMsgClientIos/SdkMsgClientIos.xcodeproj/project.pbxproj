@@ -52,15 +52,6 @@
 		2D38013C1C5DA07200138CF0 /* SdkMsgClientIos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SdkMsgClientIos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D3801571C5DA1BA00138CF0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2D3801591C5DA1C400138CF0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		E64155DB1D42370700572DB5 /* MSClientDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientDelegate.h; sourceTree = "<group>"; };
-		E64155DC1D42370700572DB5 /* MSClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientManager.h; sourceTree = "<group>"; };
-		E64155DD1D42370700572DB5 /* MSClientType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSClientType.h; sourceTree = "<group>"; };
-		E64155DE1D42370700572DB5 /* MSGroupDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupDelegate.h; sourceTree = "<group>"; };
-		E64155DF1D42370700572DB5 /* MSGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSGroupManager.h; sourceTree = "<group>"; };
-		E64155E01D42370700572DB5 /* MSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessage.h; sourceTree = "<group>"; };
-		E64155E11D42370700572DB5 /* MSMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSMessageManager.h; sourceTree = "<group>"; };
-		E64155E21D42370700572DB5 /* MSTxtMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessage.h; sourceTree = "<group>"; };
-		E64155E31D42370700572DB5 /* MSTxtMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessageDelegate.h; sourceTree = "<group>"; };
 		E64155E81D42379F00572DB5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		E64155EA1D4237A400572DB5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E64155EC1D4237A900572DB5 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -121,22 +112,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E64155DA1D42370700572DB5 /* msgclient */ = {
-			isa = PBXGroup;
-			children = (
-				E64155DB1D42370700572DB5 /* MSClientDelegate.h */,
-				E64155DC1D42370700572DB5 /* MSClientManager.h */,
-				E64155DD1D42370700572DB5 /* MSClientType.h */,
-				E64155DE1D42370700572DB5 /* MSGroupDelegate.h */,
-				E64155DF1D42370700572DB5 /* MSGroupManager.h */,
-				E64155E01D42370700572DB5 /* MSMessage.h */,
-				E64155E11D42370700572DB5 /* MSMessageManager.h */,
-				E64155E21D42370700572DB5 /* MSTxtMessage.h */,
-				E64155E31D42370700572DB5 /* MSTxtMessageDelegate.h */,
-			);
-			path = msgclient;
-			sourceTree = "<group>";
-		};
 		E65B51A31C30095B00A5DE53 = {
 			isa = PBXGroup;
 			children = (
@@ -175,7 +150,6 @@
 		E65B51AE1C30095B00A5DE53 /* SdkMsgClientIos */ = {
 			isa = PBXGroup;
 			children = (
-				E6ADB86F1D24AF3600A4AA12 /* include_out */,
 				E6C0BE551C97A4E300C66EC3 /* AppDelegate.h */,
 				E6C0BE561C97A4E300C66EC3 /* AppDelegate.mm */,
 				E6C0BE571C97A4E300C66EC3 /* Assets.xcassets */,
@@ -188,14 +162,6 @@
 				E6C0BF601C97A4E300C66EC3 /* ViewController.mm */,
 			);
 			path = SdkMsgClientIos;
-			sourceTree = "<group>";
-		};
-		E6ADB86F1D24AF3600A4AA12 /* include_out */ = {
-			isa = PBXGroup;
-			children = (
-				E64155DA1D42370700572DB5 /* msgclient */,
-			);
-			path = include_out;
 			sourceTree = "<group>";
 		};
 		E6C0BE581C97A4E300C66EC3 /* Base.lproj */ = {
@@ -319,7 +285,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/SdkMsgClientIos/include_out",
 					"$(PROJECT_DIR)/MJExtension",
 					"$(PROJECT_DIR)/",
 				);
@@ -360,7 +325,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/SdkMsgClientIos/include_out",
 					"$(PROJECT_DIR)/MJExtension",
 					"$(PROJECT_DIR)/",
 				);

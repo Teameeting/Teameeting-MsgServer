@@ -54,6 +54,10 @@ public class MsMsgUtil {
             txtMsg.setMillSec(jobj.getInt("millSec"));
         else
             txtMsg.setMillSec(0);
+        if (jobj.has("msgType"))
+            txtMsg.setMsgType(jobj.getInt("msgType"));
+        else
+            txtMsg.setMsgType(0);
         return txtMsg;
     }
 
@@ -70,18 +74,20 @@ public class MsMsgUtil {
         jsonObj.put("cash", mobj.getCash());
         jsonObj.put("wishcont", mobj.getWishcont());
         jsonObj.put("millSec", mobj.getMillSec());
+        jsonObj.put("msgType", mobj.getMsgType());
         return jsonObj;
     }
 
 /////////////////////////////////////////////////
 
-    public static String Encode2JsonWithGrpAndCont(String grpId, String cont) {
+    public static String Encode2JsonWithGrpAndCont(String grpId, String cont, int msgType) {
         MSTxtMessage txtMsg = new MSTxtMessage();
         txtMsg.setContent(cont);
         txtMsg.setGroupId(grpId);
         txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
         txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        txtMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
@@ -96,13 +102,14 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithUidAndCont(String userId, String cont) {
+    public static String Encode2JsonWithUidAndCont(String userId, String cont, int msgType) {
         MSTxtMessage txtMsg = new MSTxtMessage();
         txtMsg.setContent(cont);
         txtMsg.setToId(userId);
         txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
         txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        txtMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
@@ -117,12 +124,13 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithUidsAndCont(String[] userIds, String cont) {
+    public static String Encode2JsonWithUidsAndCont(String[] userIds, String cont, int msgType) {
         MSTxtMessage txtMsg = new MSTxtMessage();
         txtMsg.setContent(cont);
         txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
         txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        txtMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
@@ -137,13 +145,14 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithGrpAndUid(String grpId, String userId) {
+    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, int msgType) {
         MSTxtMessage txtMsg = new MSTxtMessage();
         txtMsg.setGroupId(grpId);
         txtMsg.setToId(userId);
         txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
         txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        txtMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
@@ -158,7 +167,7 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, String cash, String cont) {
+    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, String cash, String cont, int msgType) {
         MSTxtMessage txtMsg = new MSTxtMessage();
         txtMsg.setGroupId(grpId);
         txtMsg.setToId(userId);
@@ -167,6 +176,7 @@ public class MsMsgUtil {
         txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
         txtMsg.setCash(cash);
         txtMsg.setWishcont(cont);
+        txtMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {

@@ -15,7 +15,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when recv text msg this function will be called
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
@@ -29,7 +29,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when recv self define msg this function will be called, not used now
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
@@ -39,7 +39,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when hostId begin to live in grpId this function will be called
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
@@ -52,7 +52,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when hostId in grpId recv red-envelope this function will be called
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
@@ -68,7 +68,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when userId was push to blacklist in grpId this function will be called
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
@@ -83,7 +83,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when userId was forbidden in grpId this function will be called
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
@@ -98,7 +98,7 @@ public interface MSTxtMessageDelegate {
 
     /**
      *  when userId in grpId was setted to be manager this function will be called
-     *  in each received msg, 'nickname', 'uiconurl', 'fromid' will be all setted
+     *  in each received msg, 'nickname', 'uiconurl', 'fromid', 'msgType' will be all setted
      *  besides, different msg will has different valid field
      *
      *  params:
