@@ -17,7 +17,6 @@
 #include <set>
 #include <vector>
 #include <algorithm>
-#include "RTType.h"
 #include "RTSingleton.h"
 
 #include "GRTSubChannel.h"
@@ -34,45 +33,66 @@ public:
 
     bool UninManager()
     {
+        CleanupChannel();
         return true;
     }
 
-    void AddChannel(const std::string& channel, GRTSubChannel* pCh)
+    GRTSubChannel* GenSubChannel(const std::string& ip, int port, const std::string& channel, std::string& chKey)
     {
-        OSMutexLocker locker(&m_mutexChannel);
-        m_SubChannelMap.insert(make_pair(channel, pCh));
-    }
-
-    bool SubChannel(const std::string& channel)
-    {
-        OSMutexLocker locker(&m_mutexChannel);
-        SubChannelMapIt it = m_SubChannelMap.find(channel);
-        if (it == m_SubChannelMap.end()) {
-            LE("SubChannel not find channel:%s\n", channel.c_str());
-            return false;
-        } else {
-            it->second->Subscribe();
-            return true;
+        GRTSubChannel* ch = new GRTSubChannel(ip, port, channel);
+        if (!ch)
+            return nullptr;
+        if (!ch->Init())
+        {
+            delete ch;
+            return nullptr;
         }
+        char ck[256] = {0};
+        sprintf(ck, "sub:ip:%s:port:%d:chl:%s", ip.c_str(), port, channel.c_str());
+        chKey.assign(ck);
+        return ch;
     }
 
-    bool UnsubChannel(const std::string& channel)
+    void AddChannel(const std::string& chKey, GRTSubChannel* pCh)
     {
         OSMutexLocker locker(&m_mutexChannel);
-        SubChannelMapIt it = m_SubChannelMap.find(channel);
-        if (it == m_SubChannelMap.end()) {
-            LE("UnsubChannel not find channel:%s\n", channel.c_str());
-            return false;
-        } else {
-            it->second->Unsubscribe();
-            return true;
+        m_SubChannelMap.insert(make_pair(chKey, pCh));
+    }
+
+    void DelChannel(const std::string& chKey)
+    {
+        OSMutexLocker locker(&m_mutexChannel);
+        SubChannelMapIt it = m_SubChannelMap.find(chKey);
+        if (it != m_SubChannelMap.end())
+        {
+            GRTSubChannel *pCh = (*it).second;
+            if (pCh)
+            {
+                pCh->Stop();
+                pCh->Unit();
+                delete pCh;
+                pCh = nullptr;
+            }
         }
+        m_SubChannelMap.erase(chKey);
     }
 
-    void DelChannel(const std::string& channel)
+    void CleanupChannel()
     {
+        LI("GRTChannelManager::CleanupChannel was called\n");
         OSMutexLocker locker(&m_mutexChannel);
-        m_SubChannelMap.erase(channel);
+        for(SubChannelMapIt it=m_SubChannelMap.begin();it != m_SubChannelMap.end();++it)
+        {
+            GRTSubChannel *pCh = (*it).second;
+            if (pCh)
+            {
+                pCh->Stop();
+                pCh->Unit();
+                delete pCh;
+                pCh = nullptr;
+            }
+            m_SubChannelMap.erase((*it).first);
+        }
     }
 
 
@@ -87,6 +107,8 @@ protected:
 
     }
 private:
+    // <channelKey, GRTSubChannel*>
+    // channekKey--->"sub:ip:%s:port:%d:chl:%s"
     typedef std::unordered_map<std::string, GRTSubChannel*>     SubChannelMap;
     typedef SubChannelMap::iterator                             SubChannelMapIt;
 private:

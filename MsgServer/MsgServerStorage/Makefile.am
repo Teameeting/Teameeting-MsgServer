@@ -17,7 +17,7 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/include \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/src \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/common/include \

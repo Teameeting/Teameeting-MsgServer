@@ -93,6 +93,7 @@ private:
 
     std::string                      m_Ip;
     int                              m_Port;
+    int                              m_RedisNodeNum;
     xRedisClient                     m_xRedisClient;
     RedisDBIdx*                      m_RedisDBIdx;
     RedisNode*                       m_RedisList;

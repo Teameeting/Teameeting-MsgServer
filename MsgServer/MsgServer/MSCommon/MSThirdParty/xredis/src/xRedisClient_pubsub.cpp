@@ -7,62 +7,119 @@
  */
 
 #include "xRedisClient.h"
+#include "xRedisPool.h"
 #include <sstream>
-#include <iostream>
 
-
-bool xRedisClient::psubscribe(const RedisDBIdx& dbi, const KEYS& vChannels) {
+bool xRedisClient::psubscribe(const RedisDBIdx& dbi, const KEYS& patterns, xRedisContext& ctx) {
+    SETDEFAULTIOTYPE(MASTER);
     VDATA vCmdData;
     vCmdData.push_back("PSUBSCRIBE");
-    addparam(vCmdData, vChannels);
-    SETDEFAULTIOTYPE(MASTER);
-    return commandargv_status(dbi, vCmdData);
+    addparam(vCmdData, patterns);
+    return commandargv_array_ex(dbi, vCmdData, ctx);
 }
 
-bool xRedisClient::publish(const RedisDBIdx& dbi, const std::string& channel, const std::string& value) {
-    if (0==channel.length()) {
-        return false;
-    }
-    int64_t count;
+bool xRedisClient::publish(const RedisDBIdx& dbi,  const KEY& channel, const std::string& message, int64_t& count) {
     SETDEFAULTIOTYPE(MASTER);
-    return command_integer(dbi, count, "PUBLISH %s %s", channel.c_str(), value.c_str());
+    return command_integer(dbi, count, "PUBLISH %s %s", channel.c_str(), message.c_str(), count);
 }
 
-bool xRedisClient::pubsub(const RedisDBIdx& dbi, const std::string& cmd, const VALUES& vValues, std::string& value) {
-    if (0==cmd.length()) {
-        return false;
-    }
+bool xRedisClient::pubsub_channels(const RedisDBIdx& dbi, const std::string &pattern, ArrayReply &reply) {
+    SETDEFAULTIOTYPE(MASTER);
+    return command_array(dbi, reply, "pubsub channels %s", pattern.c_str());
+}
+
+bool xRedisClient::pubsub_numsub(const RedisDBIdx& dbi, const KEYS &keys, ArrayReply &reply) {
+    SETDEFAULTIOTYPE(MASTER);
     VDATA vCmdData;
-    ArrayReply array;
-    vCmdData.push_back("PUBSUB");
-    vCmdData.push_back(cmd);
-    addparam(vCmdData, vValues);
-    SETDEFAULTIOTYPE(MASTER);
-    return commandargv_array(dbi, vCmdData, array);
+    vCmdData.push_back("pubsub");
+    vCmdData.push_back("numsub");
+    addparam(vCmdData, keys);
+    return commandargv_array(dbi, vCmdData, reply);
 }
 
-bool xRedisClient::punsubscribe(const RedisDBIdx& dbi, const std::string& channel) {
+bool xRedisClient::pubsub_numpat(const RedisDBIdx& dbi, int64_t& count) {
+    SETDEFAULTIOTYPE(MASTER);
+    return command_integer(dbi, count, "pubsub numpat");
+}
+
+bool xRedisClient::punsubscribe(const RedisDBIdx& dbi, const KEYS& patterns, xRedisContext& ctx) {
+    SETDEFAULTIOTYPE(MASTER);
     VDATA vCmdData;
     vCmdData.push_back("PUNSUBSCRIBE");
-    vCmdData.push_back(channel);
-    SETDEFAULTIOTYPE(MASTER);
-    return commandargv_status(dbi, vCmdData);
+    addparam(vCmdData, patterns);
+
+    bool bRet = false;
+    RedisConn *pRedisConn = static_cast<RedisConn *>(ctx.conn);
+    if (NULL == pRedisConn) {
+        SetErrString(dbi, GET_CONNECT_ERROR, ::strlen(GET_CONNECT_ERROR));
+        return false;
+    }
+
+    vector<const char*> argv(vCmdData.size());
+    vector<size_t> argvlen(vCmdData.size());
+    unsigned int j = 0;
+    for (VDATA::const_iterator i = vCmdData.begin(); i != vCmdData.end(); ++i, ++j) {
+        argv[j] = i->c_str(), argvlen[j] = i->size();
+    }
+
+    redisReply *reply = static_cast<redisReply *>(redisCommandArgv(pRedisConn->getCtx(), argv.size(), &(argv[0]), &(argvlen[0])));
+    if (RedisPool::CheckReply(reply)) {
+        bRet = true;
+    }
+    else {
+        SetErrInfo(dbi, reply);
+    }
+    RedisPool::FreeReply(reply);
+    return bRet;
 }
 
-bool xRedisClient::subscribe(const RedisDBIdx& dbi, const RedisConn* conn, const KEY& channel) {
+bool xRedisClient::subscribe(const RedisDBIdx& dbi, const KEYS& channels, xRedisContext& ctx) {
+    SETDEFAULTIOTYPE(MASTER);
     VDATA vCmdData;
     vCmdData.push_back("SUBSCRIBE");
-    vCmdData.push_back(channel);
-    SETDEFAULTIOTYPE(MASTER);
-    std::cout << "xRedisClient::subscribe was called" << std::endl;
-    return commandargv_withconn(conn, vCmdData);
+    addparam(vCmdData, channels);
+    return commandargv_array_ex(dbi, vCmdData, ctx);
 }
 
-bool xRedisClient::unsubscribe(const RedisDBIdx& dbi, const RedisConn* conn, const KEY& channel) {
+bool xRedisClient::unsubscribe(const RedisDBIdx& dbi, const KEYS& channels, xRedisContext& ctx) {
+    SETDEFAULTIOTYPE(MASTER);
     VDATA vCmdData;
     vCmdData.push_back("UNSUBSCRIBE");
-    vCmdData.push_back(channel);
-    SETDEFAULTIOTYPE(MASTER);
-    std::cout << "xRedisClient::unsubscribe was called" << std::endl;
-    return commandargv_withconn(conn, vCmdData);
+    addparam(vCmdData, channels);
+
+    bool bRet = false;
+    RedisConn *pRedisConn = static_cast<RedisConn *>(ctx.conn);
+    if (NULL == pRedisConn) {
+        SetErrString(dbi, GET_CONNECT_ERROR, ::strlen(GET_CONNECT_ERROR));
+        return false;
+    }
+
+    vector<const char*> argv(vCmdData.size());
+    vector<size_t> argvlen(vCmdData.size());
+    unsigned int j = 0;
+    for (VDATA::const_iterator i = vCmdData.begin(); i != vCmdData.end(); ++i, ++j) {
+        argv[j] = i->c_str(), argvlen[j] = i->size();
+    }
+
+    redisReply *reply = static_cast<redisReply *>(redisCommandArgv(pRedisConn->getCtx(), argv.size(), &(argv[0]), &(argvlen[0])));
+    if (RedisPool::CheckReply(reply)) {
+        bRet = true;
+    } else {
+        SetErrInfo(dbi, reply);
+    }
+    RedisPool::FreeReply(reply);
+    return bRet;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

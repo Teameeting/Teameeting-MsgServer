@@ -8,7 +8,8 @@ AM_CPPFLAGS=$(AM_CFLAGS)
 
 AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/GRTListener/ \
-			 -I$(top_srcdir)/GRTTransfer/
+			 -I$(top_srcdir)/GRTTransfer/ \
+			 -I$(top_srcdir)/GRTXRedis/
 
 AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
@@ -17,7 +18,7 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/include \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/src \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/common/include \
@@ -26,8 +27,9 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 
 MsgServerGrouper_SOURCES=$(top_srcdir)/GRTListener/GRTGrouperListener.cpp \
 						   $(top_srcdir)/GRTTransfer/GRTTransferSession.cpp \
-						   $(top_srcdir)/GRTTransfer/GRTSubChannel.cpp \
 						   $(top_srcdir)/GRTTransfer/XGrpMsgProcesser.cpp \
+						   $(top_srcdir)/GRTXRedis/GRTSubChannel.cpp \
+						   $(top_srcdir)/GRTXRedis/RCPthread.cpp \
 						   $(top_srcdir)/GRTChannelManager.cpp \
 						   $(top_srcdir)/GRTConnManager.cpp \
 						   $(top_srcdir)/GRTConnDispatcher.cpp \

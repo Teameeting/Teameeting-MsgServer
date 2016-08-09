@@ -120,7 +120,7 @@ bool xRedisClient::setex(const RedisDBIdx& dbi,    const string& key,  int secon
     vCmdData.push_back(toString(seconds));
     vCmdData.push_back(value);
     SETDEFAULTIOTYPE(MASTER);
-    return commandargv_bool(dbi, vCmdData);
+    return commandargv_status(dbi, vCmdData);
 }
 
 bool xRedisClient::setnx(const RedisDBIdx& dbi,  const string& key,  const string& value) {

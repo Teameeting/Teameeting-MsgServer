@@ -27,7 +27,7 @@ bool xRedisClient::hdel(const RedisDBIdx& dbi,    const string& key, const KEYS&
 
 bool xRedisClient::hexist(const RedisDBIdx& dbi,   const string& key, const string& field){
     SETDEFAULTIOTYPE(SLAVE);
-    return command_bool(dbi,"HEXIST %s %s", key.c_str(), field.c_str());
+    return command_bool(dbi,"HEXISTS %s %s", key.c_str(), field.c_str());
 }
 
 bool xRedisClient::hget(const RedisDBIdx& dbi,    const string& key, const string& field, string& value) {
@@ -94,7 +94,13 @@ bool xRedisClient::hmset(const RedisDBIdx& dbi,    const string& key, const VDAT
 
 bool xRedisClient::hset(const RedisDBIdx& dbi,    const string& key, const string& field, const string& value, int64_t& retval){
     SETDEFAULTIOTYPE(MASTER);
-    return command_integer(dbi, retval, "HSET %s %s %s", key.c_str(), field.c_str(), value.c_str());
+    VDATA vCmdData;
+    vCmdData.push_back("HSET");
+    vCmdData.push_back(key);
+    vCmdData.push_back(field);
+    vCmdData.push_back(value);
+    return commandargv_integer(dbi, vCmdData, retval);
+    //return command_integer(dbi, retval, "HSET %s %s %s", key.c_str(), field.c_str(), value.c_str());
 }
 
 bool xRedisClient::hsetnx(const RedisDBIdx& dbi,    const string& key, const string& field, const string& value){

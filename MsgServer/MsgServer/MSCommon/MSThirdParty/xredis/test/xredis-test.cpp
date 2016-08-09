@@ -349,7 +349,7 @@ void test_lrange()
     RedisDBIdx dbi(&xClient);
 
     VALUES vVal;
-    
+
     bool bRet = dbi.CreateDBIndex(szHKey, APHash, CACHE_TYPE_1);
     if (bRet) {
         ArrayReply Reply;
@@ -402,20 +402,75 @@ void test_rpop()
     }
 }
 
+
+void test_publish()
+{
+    char szHKey[256] = { 0 };
+    strcpy(szHKey, "pubsub_test");
+    RedisDBIdx dbi(&xClient);
+
+    bool bRet = dbi.CreateDBIndex(szHKey, APHash, CACHE_TYPE_1);
+    if (bRet) {
+        int64_t count;
+        if (xClient.publish(dbi, szHKey, "test message", count)) {
+            printf("%s success \r\n", __PRETTY_FUNCTION__);
+        } else {
+            printf("%s error [%s] \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
+        }
+    }
+}
+
+void test_subscribe()
+{
+    char szHKey[256] = { 0 };
+    //strcpy(szHKey, "pubsub_test");
+    strcpy(szHKey, "follow_group");
+    RedisDBIdx dbi(&xClient);
+    bool bRet = dbi.CreateDBIndex(szHKey, APHash, CACHE_TYPE_1);
+    if (!bRet) {
+        return;
+    }
+
+    VDATA channels;
+    channels.push_back(szHKey);
+    xRedisContext ctx;
+    if (xClient.subscribe(dbi, channels, ctx)) {
+        printf("%s success \r\n", __PRETTY_FUNCTION__);
+        ReplyData vReply;
+        while (0 == xRedisClient::GetReply(&ctx, vReply)) {
+            ReplyData::iterator iter = vReply.begin();
+            for (; iter != vReply.end(); iter++) {
+                printf("%d\t%s\r\n", (*iter).type, (*iter).str.c_str());
+            }
+        }
+
+    } else {
+        printf("%s error [%s] \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
+    }
+    xClient.unsubscribe(dbi, channels, ctx);
+    xClient.FreexRedisContext(&ctx);
+}
+
 int main(int argc, char **argv)
 {
     printf("%d %s\r\n", argc, argv[0]);
 
     xClient.Init(3);
 
+    //RedisNode RedisList1[3] = {
+    //    {0, "127.0.0.1", 6379, "", 2, 5, 0},
+    //    {1, "127.0.0.1", 6379, "", 2, 5, 0},
+    //    {2, "127.0.0.1", 6379, "", 2, 5, 0}
+    //};
     RedisNode RedisList1[3] = {
-        {0, "127.0.0.1", 6379, "", 2, 5, 0},
-        {1, "127.0.0.1", 6379, "", 2, 5, 0},
-        {2, "127.0.0.1", 6379, "", 2, 5, 0}
+        {0, "192.168.7.218", 6379, "", 2, 5, 0},
+        {1, "192.168.7.218", 6379, "", 2, 5, 0},
+        {2, "192.168.7.218", 6379, "", 2, 5, 0}
     };
 
     xClient.ConnectRedisCache(RedisList1, 3, CACHE_TYPE_1);
 
+#if 0
     test_zadd("test:sorted:key", "sorted value hello xredis");
     test_set("test", "wwww");
     test_get();
@@ -437,7 +492,9 @@ int main(int argc, char **argv)
     test_lrange();
     test_lpop();
     test_rpop();
+#endif
 
+    test_subscribe();
 
     //int n = 10;
     //while (n--) {

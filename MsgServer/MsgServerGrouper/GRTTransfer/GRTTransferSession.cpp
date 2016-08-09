@@ -454,6 +454,7 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
     }
     for(auto & l : *puset)
     {
+        LI("GRTTransferSession::OnGroupNotify userid:%s, groupid:%s, seqn:%lld\n", l.c_str(), store.groupid().c_str(), store.sequence());
         GenGrpSyncDataNotify(l, store.groupid(), store.sequence());
     }
 

@@ -168,16 +168,21 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
         sprintf(key, "grp:%s:%lld", store.storeid().c_str(), store.sequence());
         m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
-        LI("SRTStorageRedis::OnTickEvent g result:%d, storeid:%s, msgid:%s, key:%s\n"\
+        LI("SRTStorageRedis::OnTickEvent g result:%d, storeid:%s, msgid:%s, key:%s, content.len:%d\n"\
                 , store.result()\
                 , store.storeid().c_str()\
                 , store.msgid().c_str()\
-                , key);
+                , key\
+                , store.content().length());
         {
             if (m_xRedisClient.setex(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME, store.content().c_str()))
             {
                 store.set_result(Err_Redis_Ok);
             } else {
+                char* err = m_RedisDBIdx->GetErrInfo();
+                if (err) {
+                    LE("m_xRedisClient.setex err:%s\n", err);
+                }
                 LI("SRTStorageRedis::OnTickEvent g write group msg error\n");
                 assert(false);
             }

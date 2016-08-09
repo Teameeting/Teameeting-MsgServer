@@ -62,15 +62,19 @@ bool GRTGrouperManager::InitManager(const std::string& ip, int port)
 {
     m_Ip = ip;
     m_Port = port;
+    m_RedisNodeNum = 3;
 
-    m_RedisList = new RedisNode;
-    m_RedisList->dbindex = 0;
-    m_RedisList->host = m_Ip.c_str();
-    m_RedisList->port = m_Port;
-    m_RedisList->passwd = "";
-    m_RedisList->poolsize = 8;
-    m_RedisList->timeout = 5;
-    m_RedisList->role = 0;
+    m_RedisList = new RedisNode[m_RedisNodeNum];
+    for (int i=0;i<m_RedisNodeNum;++i) {
+        RedisNode* redisNode = new RedisNode;
+        m_RedisList[i].dbindex = i;
+        m_RedisList[i].host = m_Ip.c_str();
+        m_RedisList[i].port = m_Port;
+        m_RedisList[i].passwd = "";
+        m_RedisList[i].poolsize = 8;
+        m_RedisList[i].timeout = 5;
+        m_RedisList[i].role = 0;
+    }
 
     m_xRedisClient.Init(CACHE_TYPE_MAX);
     m_xRedisClient.ConnectRedisCache(m_RedisList, 1, CACHE_TYPE_1);
@@ -208,7 +212,8 @@ bool GRTGrouperManager::ProcessTmpGroupMsg(GRTTransferSession* pSess)
         std::unordered_set<std::string>* users = m_MapGroupMembers[grpid];
         for(auto & l : *users)
         {
-            pSess->GenGrpSyncDataNotify(l, grpid, seqn);
+           LI("GRTGrouperManager::ProcessTmpGroupMsg  notify userid:%s, groupid:%s, seqn:%lld\n", l.c_str(), grpid.c_str(), seqn);
+           pSess->GenGrpSyncDataNotify(l, grpid, seqn);
         }
     }
     RemoveGroupMsg(grpid);

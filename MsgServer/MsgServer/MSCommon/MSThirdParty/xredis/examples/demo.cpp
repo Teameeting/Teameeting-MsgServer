@@ -24,14 +24,14 @@ unsigned int APHash(const char *str) {
 }
 
 enum {
- CACHE_TYPE_1,
+ CACHE_TYPE_1, 
  CACHE_TYPE_2,
  CACHE_TYPE_MAX,
 };
 
 RedisNode RedisList1[1]=
 {
-    {0,"192.168.7.213", 6379, "", 8, 5, 0}
+    {0,"127.0.0.1", 7000, "", 8, 5, 0}
 };
 
 
@@ -40,27 +40,19 @@ int main(int argc, char **argv) {
     xRedisClient xRedis;
     xRedis.Init(CACHE_TYPE_MAX);
     xRedis.ConnectRedisCache(RedisList1, 1, CACHE_TYPE_1);
-
-    //const char *key = "test";
+        
+    const char *key = "test";
     const char *value = "test value";
     RedisDBIdx dbi(&xRedis);
+    dbi.CreateDBIndex(key, APHash, CACHE_TYPE_1);
 
-    bool bRet = false;
-    int i = 0;
-    while(1)
-    {
-        char key[64] = {0};
-        sprintf(key, "xredis_%d", ++i);
-        dbi.CreateDBIndex(key, APHash, CACHE_TYPE_1);
-        bRet = xRedis.set(dbi, key, value);
-        if(bRet){
-            printf("success \r\n");
-        } else {
-            printf("error [%s] \r\n", dbi.GetErrInfo());
-        }
+    bool bRet = xRedis.set(dbi, key, value); 
+    if(bRet){
+        printf("success \r\n");
+    } else {
+        printf("error [%s] \r\n", dbi.GetErrInfo());
     }
 
-#if 0
     string strValue;
     bRet = xRedis.get(dbi, key, strValue);
     if (bRet) {
@@ -68,7 +60,6 @@ int main(int argc, char **argv) {
     } else {
         printf("error [%s] \r\n", dbi.GetErrInfo());
     }
-#endif
 
     return 0;
 }

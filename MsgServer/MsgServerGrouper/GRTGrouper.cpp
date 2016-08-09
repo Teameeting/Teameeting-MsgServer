@@ -131,26 +131,23 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
 
     std::string channel1("follow_group");
     std::string channel2("unfollow_group");
-    GRTSubChannel* ch1 = new GRTSubChannel(pRedisIp, usRedisPort, channel1);
-    if (!ch1)
-        return -1;
-    if (!ch1->Init())
-    {
-        delete ch1;
-        return -2;
+    std::string chKey1;
+    std::string chKey2;
+    GRTSubChannel* ch1 = GRTChannelManager::Instance().GenSubChannel(pRedisIp, usRedisPort, channel1, chKey1);
+    GRTSubChannel* ch2 = GRTChannelManager::Instance().GenSubChannel(pRedisIp, usRedisPort, channel2, chKey2);
+
+    if (ch1) {
+        GRTChannelManager::Instance().AddChannel(chKey1, ch1);
+    } else {
+        LE("GRTChannelManager GenSubChannel ch1 return null\n");
+        Assert(false);
     }
-    GRTSubChannel* ch2 = new GRTSubChannel(pRedisIp, usRedisPort, channel2);
-    if (!ch2)
-        return -1;
-    if (!ch2->Init())
-    {
-        delete ch2;
-        return -2;
+    if (ch2) {
+        GRTChannelManager::Instance().AddChannel(chKey2, ch2);
+    } else {
+        LE("GRTChannelManager GenSubChannel ch2 return null\n");
+        Assert(false);
     }
-    GRTChannelManager::Instance().AddChannel(channel1, ch1);
-    GRTChannelManager::Instance().AddChannel(channel2, ch2);
-    GRTChannelManager::Instance().SubChannel(channel1);
-    GRTChannelManager::Instance().SubChannel(channel2);
 
     std::string ssid;
     if (usGrouperPort > 0) {
@@ -179,12 +176,14 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
         }
 	}
 
+    LI("Start Grouper Service success...\n");
 	return 0;
 }
 
 void GRTGrouper::DoTick()
 {
-#if 1
+#if 0
+
 #endif
 }
 
