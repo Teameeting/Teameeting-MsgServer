@@ -28,7 +28,6 @@ XMsgClient::XMsgClient()
 , m_pMsgProcesser(nullptr)
 , m_lastUpdateTime(0)
 , m_uid("")
-, m_grpid("")
 , m_token("")
 , m_nname("")
 , m_server("180.150.179.128")
@@ -174,9 +173,9 @@ int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, cons
     }
     std::string outstr;
     if (m_pMsgProcesser) {
-            m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
-                    , m_nname, groupid, grpname, uvec, msg\
-                    , tag, type, module, flag);
+        m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
+                                      , m_nname, groupid, grpname, uvec, msg\
+                                      , tag, type, module, flag);
     } else {
         return -1;
     }
@@ -202,7 +201,7 @@ int XMsgClient::FetchSeqn()
         return -1;
     }
     printf("XMsgClient::FetchSeqn was called\n");
-
+    
     return SendEncodeMsg(outstr);
 }
 
@@ -253,7 +252,7 @@ int XMsgClient::FetchGroupSeqn(const std::string& groupid)
         return -1;
     }
     printf("XMsgClient::FetchGroupSeqn was called\n");
-
+    
     return SendEncodeMsg(outstr);
 }
 
@@ -270,7 +269,7 @@ int XMsgClient::SyncGroupSeqn(const std::string& groupid, int64 seqn, int role)
         return -1;
     }
     printf("XMsgClient::SyncGroupSeqn was called\n");
-
+    
     return SendEncodeMsg(outstr);
 }
 
@@ -288,7 +287,7 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
         return -1;
     }
     printf("XMsgClient::SyncGroupData was called\n");
-
+    
     return SendEncodeMsg(outstr);
 }
 
@@ -569,11 +568,11 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                     printf("XMsgClient::OnHelpSyncSeqn m_pCallback is null\n");
                 }
             } else {
-
+                
             }
         }
             break;
-
+            
         case pms::EStorageTag::TFETCHSEQN:
         {
             if (store.mflag()==pms::EMsgFlag::FGROUP)
@@ -739,7 +738,7 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 
 // this means you are sender, you send msg and server gen new seqn for you
 // you just get new seqn from server
-// after
+// after 
 void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 {
     printf("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());

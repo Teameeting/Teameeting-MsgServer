@@ -80,7 +80,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_cmsg_id(GetStrMicroSecond());
     outmsgid = entity.cmsg_id();
     
-    printf("XMsgProcesser::EncodeSndMsg to.size:%d\n", to.size());
+    printf("XMsgProcesser::EncodeSndMsg to.size:%lu\n", to.size());
     if (to.size()>0) {
         pms::ToUser *touser = entity.mutable_usr_toto();
         for(int i=0;i<(int)to.size();++i) {

@@ -35,7 +35,7 @@ public:
     virtual void OnHelpSyncSeqn(int code, const std::string& cont) = 0;
     virtual void OnHelpSyncData(int code, const std::string& cont) = 0;
     virtual void OnHelpSyncGroupData(int code, const std::string& cont) = 0;
-
+    
     virtual void OnHelpGroupNotify(int code, const std::string& cont) = 0;
     virtual void OnHelpNotifySeqn(int code, const std::string& cont) = 0;
     virtual void OnHelpNotifyData(int code, const std::string& cont) = 0;
@@ -56,13 +56,13 @@ public:
     int UnRegisterMsgCb(XMsgCallback* cb);
 
     int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
-
+    
     int AddGroup(const std::string& groupid);
     int RmvGroup(const std::string& groupid);
 
     int SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag);
     int SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec);
-
+    
     int FetchSeqn();
     int SyncSeqn(int64 seqn, int role);
     int SyncData(int64 seqn);
@@ -71,7 +71,11 @@ public:
     int SyncGroupData(const std::string& gropuid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
+    void SetUserId(const std::string& userid) { m_uid = userid; }
+    void SetToken(const std::string& token) { m_token = token; }
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
+
+    void SetUIconUrl(const std::string& uiconurl) { m_uicon = uiconurl; }
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
     {
@@ -274,9 +278,9 @@ private:
     XMsgProcesser*           m_pMsgProcesser;
     uint32_t                 m_lastUpdateTime;
     std::string              m_uid;
-    std::string              m_grpid;
     std::string              m_token;
     std::string              m_nname;
+    std::string              m_uicon;
     std::string              m_server;
     std::string              m_version;
     int                      m_port;
