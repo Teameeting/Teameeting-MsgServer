@@ -208,6 +208,42 @@ int GRTTransferSession::DeleteGroupSeqn(const std::string& cltUserid, const std:
     return 0;
 }
 
+int GRTTransferSession::GenGrpSyncSeqnNotify(const std::string& userid, const std::string& groupid)
+{
+    std::string outstr;
+    if (m_pGrpMsgProcesser) {
+        m_pGrpMsgProcesser->EncodeGrpSyncSeqnNotify(outstr, userid, groupid, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    LI("GRTTransferSession GenGrpSyncSeqnNotify ok!!\n");
+    SendTransferData(outstr);
+    return 0;
+}
+
+
+int GRTTransferSession::GenGrpSyncSeqnNotifys(const std::vector<std::string>& userids, const std::string& groupid)
+{
+    std::string outstr;
+    if (m_pGrpMsgProcesser) {
+        m_pGrpMsgProcesser->EncodeGrpSyncSeqnNotifys(outstr, userids, groupid, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+
+    LI("GRTTransferSession GenGrpSyncSeqnNotifys ok!!\n");
+    SendTransferData(outstr);
+    return 0;
+}
+
+
 int GRTTransferSession::GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn)
 {
     std::string outstr;
@@ -433,9 +469,8 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    LI("GRTTransferSession::OnGroupNotify ruserid:%s, sequence:%lld, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
+    LI("GRTTransferSession::OnGroupNotify ruserid:%s, groupid:%s, mflag:%d, rsvrcmd:%d\n\n"\
             , store.ruserid().c_str()\
-            , store.sequence()\
             , store.groupid().c_str()\
             , store.mflag()\
             , store.rsvrcmd());
@@ -455,7 +490,7 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
     for(auto & l : *puset)
     {
         LI("GRTTransferSession::OnGroupNotify userid:%s, groupid:%s, seqn:%lld\n", l.c_str(), store.groupid().c_str(), store.sequence());
-        GenGrpSyncDataNotify(l, store.groupid(), store.sequence());
+        GenGrpSyncSeqnNotify(l, store.groupid());
     }
 
     return;

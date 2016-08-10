@@ -25,7 +25,7 @@ static std::string GetStrMills()
 {
     // memory problem???
     char ct[32] = {0};
-    sprintf(ct, "%llu", rtc::TimeMicros());
+    sprintf(ct, "%lu", rtc::TimeMicros());
     return std::string(ct);
 }
 
@@ -64,11 +64,11 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_nck_name(nname);
     entity.set_usr_token(token);
     entity.set_msg_time(rtc::Time());
-    
+
     entity.set_cmsg_id(GetStrMills());
     outmsgid = entity.cmsg_id();
-    
-    printf("XMsgProcesser::EncodeSndMsg to.size:%d\n", to.size());
+
+    printf("XMsgProcesser::EncodeSndMsg to.size:%lu\n", to.size());
     for(int i=0;i<(int)to.size();++i) {
         printf("XMsgProcesser::EncodeSndMsg to.name:%s\n", to.at(i).c_str());
         touser->add_users(to.at(i));
@@ -239,7 +239,7 @@ int XMsgProcesser::EncodeCreateSeqn(std::string& outstr, const std::string& user
     store.set_storeid(storeid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
-    
+
     req.set_svr_cmds(pms::EServerCmd::CCREATESEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -258,7 +258,7 @@ int XMsgProcesser::EncodeDeleteSeqn(std::string& outstr, const std::string& user
     store.set_storeid(storeid);
     store.set_ruserid(userid);
     store.set_sequence(seqn);
-    
+
     req.set_svr_cmds(pms::EServerCmd::CDELETESEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -298,27 +298,27 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         case pms::EServerCmd::CKEEPALIVE:
             DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSYNCSEQN:
             DecodeSyncSeqn(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSYNCDATA:
             DecodeSyncData(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CGROUPNOTIFY:
             DecodeGroupNotify(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSYNCGROUPDATA:
             DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSNTFSEQN:
             DecodeNotifySeqn(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSNTFDATA:
             DecodeNotifyData(resp.rsp_code(), resp.rsp_cont());
             break;

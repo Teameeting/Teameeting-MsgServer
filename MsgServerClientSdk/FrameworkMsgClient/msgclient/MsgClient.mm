@@ -670,7 +670,7 @@ void MsgClient::OnNotifyData(int code, const std::string& seqnid)
             SyncData(lseqn);
         }
     } else {
-        NSLog(@"MsgClient::OnGroupNotify error code is :%d!!!", code);
+        NSLog(@"MsgClient::OnNotifyData error code is :%d!!!", code);
     }
 }
 

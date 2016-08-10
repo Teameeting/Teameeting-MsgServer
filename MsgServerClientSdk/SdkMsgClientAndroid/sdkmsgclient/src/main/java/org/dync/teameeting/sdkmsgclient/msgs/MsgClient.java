@@ -903,7 +903,7 @@ public class MsgClient implements JMClientHelper{
                     mMApp.SyncData(lseqn);
             }
         } else {
-            System.out.println("MsgClient::OnGroupNotify error code is :" + code);
+            System.out.println("MsgClient::OnNotifyData error code is :" + code);
         }
     }
 

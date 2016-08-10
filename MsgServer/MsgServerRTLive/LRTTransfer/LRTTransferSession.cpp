@@ -676,16 +676,17 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
 #endif
                 } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
                 {
-                    // group to notify members to sync data from this group
+                    // group to notify members to sync seqn from this group
                     // the store.msgs(i).groupid should be entity's userid
                     // the store.msgs(i).userid should be entity's rom_id
+                    // no long sync data directly
                     pms::StorageMsg st;
                     pms::TransferMsg tmsg;
 
                     st.set_rsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
                     st.set_tsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
                     st.set_mflag(pms::EMsgFlag::FGROUP);
-                    st.set_sequence(store.msgs(i).sequence());
+                    //st.set_sequence(store.msgs(i).sequence());
                     st.set_groupid(store.msgs(i).groupid());
                     st.set_storeid(store.msgs(i).storeid());
                     st.set_ruserid(store.msgs(i).ruserid());
@@ -704,7 +705,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     //TODO:
                     //how to let others server connect to here, find the special group users relayer
                     //send to
-                    const std::string sn("sddsddsdd");
+                    const std::string sn("wensiwensi");
                     if (LRTConnManager::Instance().SendToGroupModule(sn, s))
                     {
                          LI("LRTTransferSession::OnTypeQueue dispatch msg ok\n");
@@ -742,11 +743,11 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     r_msg.set_allocated_touser(pto);
                 } else if (store.msgs(i).mrole()==pms::EMsgRole::RRECVER)
                 {
-                    // after generate new msg, notify recver sync data
+                    // after generate new msg, notify recver sync seqn, no long sync data directly
 
                     // set response
                     LI("LRTTransferSession::OnTypeQueue notify single recver sync data\n");
-                    resp.set_svr_cmds(pms::EServerCmd::CSNTFDATA);
+                    resp.set_svr_cmds(pms::EServerCmd::CSNTFSEQN);
                     resp.set_mod_type(pms::EModuleType::TLIVE);
                     resp.set_rsp_code(0);
                     resp.set_rsp_cont("");
@@ -793,7 +794,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
             //TODO:
             //how to let others server connect to here, find the special group users relayer
             //send to
-            const std::string sn("sddsddsdd");
+            const std::string sn("wensiwensi");
             if (LRTConnManager::Instance().SendToGroupModule(sn, s))
             {
                 LI("LRTTransferSession::OnTypeQueue cmd create dispatch msg ok\n");
@@ -821,7 +822,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
             //TODO:
             //how to let others server connect to here, find the special group users relayer
             //send to
-            const std::string sn("sddsddsdd");
+            const std::string sn("wensiwensi");
             if (LRTConnManager::Instance().SendToGroupModule(sn, s))
             {
                 LI("LRTTransferSession::OnTypeQueue cmd delete dispatch msg ok\n");
