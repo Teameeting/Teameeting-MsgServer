@@ -35,7 +35,7 @@ public:
     virtual void OnHelpSyncSeqn(int code, const std::string& cont) = 0;
     virtual void OnHelpSyncData(int code, const std::string& cont) = 0;
     virtual void OnHelpSyncGroupData(int code, const std::string& cont) = 0;
-    
+
     virtual void OnHelpGroupNotify(int code, const std::string& cont) = 0;
     virtual void OnHelpNotifySeqn(int code, const std::string& cont) = 0;
     virtual void OnHelpNotifyData(int code, const std::string& cont) = 0;
@@ -56,13 +56,13 @@ public:
     int UnRegisterMsgCb(XMsgCallback* cb);
 
     int ConnToServer(const std::string& server="", int port=0, bool bAutoConnect=true);
-    
+
     int AddGroup(const std::string& groupid);
     int RmvGroup(const std::string& groupid);
 
     int SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag);
     int SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec);
-    
+
     int FetchSeqn();
     int SyncSeqn(int64 seqn, int role);
     int SyncData(int64 seqn);
