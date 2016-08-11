@@ -44,6 +44,20 @@ public class MSMessageManager {
     }
 
     /**
+     * this will sync msg to db
+     * when app will exit or crash ot leave view
+     * MUST invoke this to save data
+     * <p/>
+     * params:
+     * <p/>
+     * return:
+     * void
+     */
+    public void sync2Db() {
+        MsgClient.getInstance().MCSync2Db();
+    }
+
+    /**
      *  you send message in grpId
      *
      *  params:

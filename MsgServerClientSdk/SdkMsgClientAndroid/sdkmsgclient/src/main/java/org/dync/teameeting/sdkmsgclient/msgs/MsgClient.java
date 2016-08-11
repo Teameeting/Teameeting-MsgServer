@@ -126,6 +126,7 @@ public class MsgClient implements JMClientHelper{
         mSqlite3Manager.InitManager(context);
         CheckUserOrInit(mStrUserId);
         GetLocalSeqnsFromDb();
+        SyncSeqnFromDb2Core();
         return mMApp.Init(strUid, strToken, strNname, CommonMsg.EModuleType.TLIVE_VALUE);
     }
 
@@ -198,52 +199,20 @@ public class MsgClient implements JMClientHelper{
 
     }
 
-    public int MCSyncSeqn() {
-        if (null != mMApp) {
-            if (mIsFetched)
-            {
-
-                for (String k  : mGroupSeqn.keySet())
-                {
-                    if (mStrUserId.compareTo(k)==0)
-                    {
-                        mMApp.SyncGroupSeqn(k, mGroupSeqn.get(k), CommonMsg.EMsgRole.RSENDER_VALUE);
-                    } else {
-                        mMApp.SyncSeqn(mGroupSeqn.get(k), CommonMsg.EMsgRole.RSENDER_VALUE);
-                    }
-                }
-            } else {
-                System.out.println("MCSyncSeqn should be fetched before called");
-                this.FetchAllSeqns();
-            }
-            return 0;
+    public int MCSyncMsg() {
+        if (mIsFetched) {
+            System.out.println("MCSyncMsg sync all seqn");
+            this.SyncAllSeqns();
         } else {
-            return -10;
+            System.out.println("MCSyncMsg should be fetched before called");
+            this.FetchAllSeqns();
         }
-
+        return 0;
     }
 
-    public int MCSyncMsg() {
-        if (null != mMApp) {
-            if (mIsFetched)
-            {
-                for (String k : mGroupSeqn.keySet()) {
-                    if (mStrUserId.compareTo(k)==0)
-                    {
-                        mMApp.SyncGroupData(k, mGroupSeqn.get(k));
-                    } else {
-                        mMApp.SyncData(mGroupSeqn.get(k));
-                    }
-                }
-            } else {
-                System.out.println("MCSyncMsg should be fetched before called");
-                this.FetchAllSeqns();
-            }
-            return 0;
-        } else {
-            return -10;
-        }
-
+    public int MCSync2Db() {
+        this.PutLocalSeqnsToDb();
+        return 0;
     }
 
     public String MCSendTxtMsg(String strGroupId, String strContent) {
@@ -414,10 +383,25 @@ public class MsgClient implements JMClientHelper{
             if (isfetched==0) {
                 if (seqnId.compareTo(mStrUserId)==0) {
                     mMApp.FetchSeqn();
+                } else {
+                    FetchGroupSeqn(seqnId);
                 }
-            } else {
-                FetchGroupSeqn(seqnId);
             }
+        }
+    }
+
+    private void SyncAllSeqns() {
+        for (GroupInfo it : mGroupInfo) {
+            String seqnId = it.getmSeqnId();
+            long seqn = it.getmSeqn();
+            System.out.println("IsFetchedAll seqnid:" + seqnId + ", seqn:" + seqn);
+                if (seqnId.compareTo(mStrUserId)==0) {
+                    if (null != mMApp)
+                        mMApp.SyncSeqn(seqn, CommonMsg.EMsgRole.RSENDER_VALUE);
+                } else {
+                    if (null != mMApp)
+                        mMApp.SyncGroupSeqn(seqnId, seqn, CommonMsg.EMsgRole.RSENDER_VALUE);
+                }
         }
     }
 
@@ -497,6 +481,24 @@ public class MsgClient implements JMClientHelper{
         }
         mReentrantLock.unlock();
         return lseqn;
+    }
+
+    private void SyncSeqnFromDb2Core()
+    {
+        for (String k  : mGroupSeqn.keySet())
+        {
+            System.out.println("SyncSeqnFromDb2Core will call InitUserSeqns...");
+            mMApp.InitUserSeqns(k, mGroupSeqn.get(k));
+        }
+    }
+
+    private void UpdateSeqnFromDb2Core()
+    {
+        for (String k  : mGroupSeqn.keySet())
+        {
+            System.out.println("UpdateSeqnFromDb2Core will call UpdateUserSeqns...");
+            mMApp.UpdateUserSeqns(k, mGroupSeqn.get(k));
+        }
     }
 
 
@@ -781,131 +783,39 @@ public class MsgClient implements JMClientHelper{
         //PutLocalSeqnsToDb();
     }
 
+    //////////////Below Used in this class//////////////////////////
+    //////////////Later it will be removed//////////////////////////
+
     @Override
     public void OnSyncSeqn(long maxseqn, int role) {
-        System.out.println("MsgClient::OnSyncSeqn was caled maxseqn:"+maxseqn);
-//        if (null != mSqlite3Manager) {
-//            mSqlite3Manager.AddUser(mStrUserId);
-//            mSqlite3Manager.UpdateUserSeqn(mStrUserId, maxseqn);
-//        }
-
         // if it is sender, this means client send msg, and just get the newmsg's seqn
         // if the new seqn is bigger 1 than cur seqn, it is ok, just update seqn.
         // if the new seqn is bigger 2 or 3 than cur seqn, this need sync data
         // if it is recver, this means client need sync data
-        long lseqn = GetLocalSeqnFromId(mStrUserId);
-        assert(lseqn>=0);
-        long index = maxseqn - lseqn;
-        if (role == CommonMsg.EMsgRole.RSENDER_VALUE)
-        {
-            if (index == 1)
-            {
-                UpdateLocalSeqn(mStrUserId, maxseqn);
-            } else if (index > 1)
-            {
-                if (null != mMApp)
-                    mMApp.SyncData(lseqn);
-            }
-        }  else if (role == CommonMsg.EMsgRole.RRECVER_VALUE)
-        {
-            if (index >0)
-            {
-                if (null != mMApp)
-                    mMApp.SyncData(lseqn);
-            }
-        }
+        System.out.println("MsgClient::OnSyncSeqn NOT IMPLEMENT!!!");
     }
 
     @Override
     public void OnSyncGroupSeqn(String groupid, long maxseqn) {
-        System.out.println("MsgClient::OnSyncGroupSeqn was called groupid:"+groupid+", maxseqn:"+maxseqn);
-//        if (null != mSqlite3Manager) {
-//            mSqlite3Manager.UpdateGroupSeqn(groupid, maxseqn);
-//        }
-        // this need sync data
-        long lseqn = GetLocalSeqnFromId(groupid);
-        System.out.println("MsgClient::OnSyncGroupSeqn ===>seqn seqn:"+lseqn);
-        assert(lseqn>=0);
-        if (maxseqn > lseqn) {
-            if (null != mMApp) {
-                mMApp.SyncGroupData(groupid, lseqn);
-            }
-        } else {
-            System.out.println("MsgClient::OnSyncGroupSeqn lseqn:"+lseqn+", maxseqn:"+maxseqn+", you are not in this group:"+groupid);
-        }
+        System.out.println("MsgClient::OnSyncGroupSeqn NOT IMPLEMENT!!!");
     }
 
     @Override
     public void OnGroupNotify(int code, String seqnid) {
-        if (code==0)
-        {
-            long seqn = GetLocalSeqnFromId(seqnid);
-            System.out.println("MsgClient::OnGroupNotify ===>seqn seqn:" + seqn);
-            if (seqn>0) {
-                if (null != mMApp) {
-                    mMApp.SyncGroupData(seqnid, seqn);
-                }
-            } else {
-                System.out.println("MsgClient::OnGroupNotify !!!!!seqn:"+seqn+", not find seqnid:"+seqnid+", you're not in this group");
-                //assert(seqn>0);
-            }
-        } else {
-            System.out.println("MsgClient::OnGroupNotify error code is :"+code);
-        }
+        System.out.println("MsgClient::OnGroupNotify NOT IMPLEMENT!!!");
     }
 
     @Override
     public void OnNotifySeqn(int code, String seqnid) {
-        if (code==0)
-        {
-            if (seqnid.length()>0)
-            {
-                System.out.println("THIS SHOULD NOT BE HAPPEND HERE, seqnid:" + seqnid);
-//                long seqn = GetLocalSeqnFromId(seqnid);
-//                if (seqn>0) {
-//                    if (null != mMApp)
-//                        mMApp.SyncGroupSeqn(seqnid, seqn, CommonMsg.EMsgRole.RSENDER_VALUE);
-//                } else {
-//                    assert(seqn>0);
-//                }
-            } else if (seqnid.length()==0) // this means userid
-            {
-                long lseqn = GetLocalSeqnFromId(mStrUserId);
-                assert(lseqn>=0);
-                if (null != mMApp)
-                    mMApp.SyncSeqn(lseqn, CommonMsg.EMsgRole.RSENDER_VALUE);
-            }
-        } else {
-            System.out.println("MsgClient::OnGroupSeqn error code is :"+code);
-        }
+        System.out.println("MsgClient::OnNotifySeqn NOT IMPLEMENT!!!");
     }
 
     @Override
     public void OnNotifyData(int code, String seqnid) {
-        if (code==0)
-        {
-            if (seqnid.length()>0)
-            {
-                long seqn = GetLocalSeqnFromId(seqnid);
-                System.out.println("MsgClient::OnNotifyData ===>seqn seqn:"+seqn);
-                if (seqn>0) {
-                    if (null != mMApp)
-                        mMApp.SyncGroupData(seqnid, seqn);
-                } else {
-                    System.out.println("MsgClient::OnNotifyData seqn:"+seqn+", you're not in this group:"+seqnid);
-                }
-            } else if (seqnid.length()==0) // this means userid
-            {
-                System.out.println("MsgClient::OnNotifyData notify user to sync data!!!");
-                long lseqn = GetLocalSeqnFromId(mStrUserId);
-                assert(lseqn>=0);
-                if (null != mMApp)
-                    mMApp.SyncData(lseqn);
-            }
-        } else {
-            System.out.println("MsgClient::OnNotifyData error code is :" + code);
-        }
+        System.out.println("MsgClient::OnNotifyData NOT IMPLEMENT!!!");
     }
+
+    //////////////Above Used in this class//////////////////////////
 
     @Override
     public void OnMsgServerConnected() {
@@ -924,6 +834,8 @@ public class MsgClient implements JMClientHelper{
                 if (IsFetchedAll()) {
                     // stop timer here
                     mIsFetched = true;
+                    UpdateSeqnFromDb2Core();
+                    SyncAllSeqns();
                     if (null != mClientDelegate) {
                         mClientDelegate.OnMsgClientInitialized();
                     }

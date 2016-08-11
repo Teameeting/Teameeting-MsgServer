@@ -133,6 +133,12 @@ private:
     unsigned short readShort(char** pptr);
     void writeShort(char** pptr, unsigned short anInt);
 
+    typedef struct _CachedMsgInfo {
+        int64 seqn;
+        std::string seqnid;
+        std::string msgcont;
+    }CachedMsgInfo;
+    
     //<msgid, str_msg>
     typedef std::unordered_map<std::string, std::string>        Wait4AckMsgMap;
     typedef Wait4AckMsgMap::iterator                            Wait4AckMsgMapIt;
@@ -143,10 +149,10 @@ private:
 
     //<seqnid, seqn>
     typedef std::unordered_map<std::string, int64>              UserSeqnMap;
-    typedef UserSeqnMap::iterator                          UserSeqnMapIt;
+    typedef UserSeqnMap::iterator                               UserSeqnMapIt;
 
     //<StorageMsg>
-    typedef std::list<pms::StorageMsg>                          RecvMsgList;
+    typedef std::list<CachedMsgInfo>                            RecvMsgList;
     typedef RecvMsgList::iterator                               RecvMsgListIt;
 
     // for user
@@ -186,21 +192,27 @@ private:
             SyncedMsgMapIt it = m_uSyncedMsgMap.find(sk);
             if (it != m_uSyncedMsgMap.end())
             {
+                pms::Entity en;// = it->second.content();
+                en.ParseFromString(it->second.content());
                 // find curSeqn+1 msg, update curSeqn, and callback this msg, and continue
                 itCurSeqn->second += 1;
                 printf("UUpdateUserSeqn update here, itCurSeqn is:%lld\n", itCurSeqn->second);
-                if (m_uid.compare(it->second.ruserid())==0)
+                if (m_uid.compare(en.usr_from())==0)
                 {
                     // recv the msg you send to other
-                    // erase the msg in Wait4AckMsgMap by msgid
-                    m_uWait4AckMsgMap.erase(it->second.msgid());
-                    printf("UUpdateUserSeqn update the msg you send to other, msgid is:%s\n", it->second.msgid().c_str());
+                    // erase the msg in Wait4AckMsgMap by entity.cmsg_id
+                    m_uWait4AckMsgMap.erase(en.cmsg_id());
+                    printf("UUpdateUserSeqn update the msg you send to other, msgid is:%s\n", en.cmsg_id().c_str());
                 } else {
                     // recv the msg other send to you
-                    m_uRecvMsgList.push_back(it->second);
-                    m_uSyncedMsgMap.erase(sk);
                     printf("UUpdateUserSeqn update the msg other send to you, seqnkey is:%s\n", sk);
                 }
+                CachedMsgInfo cmi;
+                cmi.seqn = itCurSeqn->second;
+                cmi.seqnid = m_uid;
+                cmi.msgcont = en.SerializeAsString();
+                m_uRecvMsgList.push_back(cmi);
+                m_uSyncedMsgMap.erase(sk);
                 continue;
             } else {
                 printf("UUpdateUserSeqn break here, itCurSeqn is:%lld\n", itCurSeqn->second);
@@ -225,9 +237,11 @@ private:
     bool GAddSyncedMsg(const std::string& seqnKey, pms::StorageMsg pmsMsg)
     {
 	    rtc::CritScope cs(&m_csgSyncedMsg);
+        printf("GAddSyncedMsg seqnKey:%s\n", seqnKey.c_str());
         SyncedMsgMapIt it = m_gSyncedMsgMap.find(seqnKey);
         if (it == m_gSyncedMsgMap.end())
         {
+            printf("GAddSyncedMsg seqnKey:%s insert into map\n", seqnKey.c_str());
             m_gSyncedMsgMap.insert(make_pair(seqnKey, pmsMsg));
         }
         return true;
@@ -243,26 +257,38 @@ private:
         {
             printf("GUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
             if (m_gSyncedMsgMap.size()==0) break;
+            for (auto &it : m_gSyncedMsgMap)
+            {
+                printf("GUpdateUserSeqn SyncedMsgMap key:%s\n", it.first.c_str());
+            }
             char sk[256] = {0};
             sprintf(sk, "%s:%lld", storeid.c_str(), itCurSeqn->second +1);
             SyncedMsgMapIt it = m_gSyncedMsgMap.find(sk);
             if (it != m_gSyncedMsgMap.end())
             {
+                pms::Entity en;// = it->second.content();
+                en.ParseFromString(it->second.content());
                 // find curSeqn+1 msg, update curSeqn, and callback this msg, and continue
                 itCurSeqn->second += 1;
-                printf("GUpdateUserSeqn update here, itCurSeqn is:%lld\n", itCurSeqn->second);
-                if (m_uid.compare(it->second.ruserid())==0)
+                printf("GUpdateUserSeqn update here, itCurSeqn is:%lld, ruserid:%s, fromid:%s, it.groupid:%s, en.romid:%s\n", itCurSeqn->second, it->second.ruserid().c_str(), en.usr_from().c_str(), it->second.groupid().c_str(), en.rom_id().c_str());
+                assert(it->second.groupid().compare(en.rom_id())==0);
+                if (m_uid.compare(en.usr_from())==0)
                 {
                     // recv the msg you send to other
-                    // erase the msg in Wait4AckMsgMap by msgid
-                    m_gWait4AckMsgMap.erase(it->second.msgid());
-                    printf("GUpdateUserSeqn update the msg you send to other, msgid is:%s\n", it->second.msgid().c_str());
+                    // erase the msg in Wait4AckMsgMap by entity.cmsg_id
+                    m_gWait4AckMsgMap.erase(en.cmsg_id());
+                    printf("GUpdateUserSeqn update the msg you send to other, msgid is:%s\n", en.cmsg_id().c_str());
                 } else {
                     // recv the msg other send to you
-                    m_gRecvMsgList.push_back(it->second);
-                    m_gSyncedMsgMap.erase(sk);
                     printf("GUpdateUserSeqn update the msg other send to you, seqnkey is:%s\n", sk);
                 }
+                CachedMsgInfo cmi;
+                cmi.seqn = itCurSeqn->second;
+                cmi.seqnid = it->second.groupid();
+                cmi.msgcont = en.SerializeAsString();
+                m_gRecvMsgList.push_back(cmi);
+                m_gSyncedMsgMap.erase(sk);
+                
                 continue;
             } else {
                 printf("GUpdateUserSeqn break here, itCurSeqn is:%lld\n", itCurSeqn->second);

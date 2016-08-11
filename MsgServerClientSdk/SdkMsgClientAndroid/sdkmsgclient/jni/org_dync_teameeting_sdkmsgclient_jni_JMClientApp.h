@@ -177,6 +177,22 @@ JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Set
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    InitUserSeqns
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_InitUserSeqns
+  (JNIEnv *, jobject, jstring, jlong);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    UpdateUserSeqns
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_UpdateUserSeqns
+  (JNIEnv *, jobject, jstring, jlong);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    Destroy
  * Signature: ()V
  */

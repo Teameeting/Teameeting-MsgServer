@@ -46,6 +46,9 @@ public class JMClientApp {
     public native void SetNickName(String strNname);
     public native void SetUIconUrl(String strUicon);
 
+    public native void InitUserSeqns(String strSeqnid, long seqn);
+    public native void UpdateUserSeqns(String strSeqnid, long seqn);
+
     /**
      * 销毁APP
      */

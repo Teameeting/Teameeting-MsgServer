@@ -156,10 +156,11 @@
 - (IBAction)enterButton:(id)sender {
     NSString *enter = @"enterButton was called";
     NSLog(@"%@", enter);
+    [msgMgr sync2Db];
     
     mGroupId = @"wocaowocaowocao";
     NSLog(@"====>>you enter mGroupId %@", mGroupId);
-    [groupMgr addGroupGrpId:mGroupId];
+    //[groupMgr addGroupGrpId:mGroupId];
 }
 
 - (IBAction)leaveButton:(id)sender {
@@ -202,7 +203,7 @@
     NSString *sndMsgToUser = @"sndMsgToUserButton was called";
     NSLog(@"%@", sndMsgToUser);
     
-    NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser = [NSString stringWithCString:"8ca64d158a505876" encoding:NSUTF8StringEncoding];
     NSString *outmsgid = nil;
     [msgMgr sendTxtMsgToUsrId:touser cont:sndMsgToUser cmsgid:&outmsgid];
     NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid];

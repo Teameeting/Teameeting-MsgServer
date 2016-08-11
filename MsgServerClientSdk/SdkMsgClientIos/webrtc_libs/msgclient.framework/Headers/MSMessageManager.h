@@ -49,6 +49,18 @@
 -(void)syncMsg;
 
 /**
+ *  this will sync msg to db
+ *  when app will exit or crash ot leave view
+ *  MUST invoke this to save data
+ *
+ *  params:
+ *
+ *  return:
+ *      void
+ */
+-(void)sync2Db;
+
+/**
  *  you send message in grpId
  *
  *  params:

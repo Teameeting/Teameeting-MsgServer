@@ -20,6 +20,9 @@
 #include "msgclient/client_common/core/XMsgClient.h"
 #include "msgclient/client_common/core/XMsgCallback.h"
 
+#include "msgclient/client_common/proto/entity_msg.pb.h"
+#include "msgclient/client_common/proto/entity_msg_type.pb.h"
+
 #include "msgclient/RTSingleton.h"
 
 class MsgClient : public XMsgClient, public XMsgCallback, public RTSingleton<MsgClient>{
@@ -50,8 +53,8 @@ public:
     int MCAddGroup(const std::string& groupid);
     int MCRmvGroup(const std::string& groupid);
     
-    int MCSyncSeqn();
     int MCSyncMsg();
+    int MCSync2Db();
     int MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, const std::string& content);
     int MCSendTxtMsgTos(std::string& outmsgid, const std::string& groupid, const std::vector<std::string>& vusrs, const std::string& content);
     int MCSendTxtMsgToUsr(std::string& outmsgid, const std::string& userid, const std::string& content);
@@ -151,6 +154,21 @@ private:
                 } else {
                     FetchGroupSeqn([seqnId cStringUsingEncoding:NSASCIIStringEncoding]);
                 }
+            }
+        }
+    }
+    
+    void SyncAllSeqns()
+    {
+        for (NSMutableDictionary *item in m_nsGroupInfo) {
+            NSString *seqnId = [item objectForKey:@"seqnId"];
+            NSNumber *seqn = [item objectForKey:@"seqn"];
+            NSLog(@"SyncAllSeqns seqnid:%@, isfetched:%lld", seqnId, [seqn longLongValue]);
+            if ([seqnId compare:m_nsUserId]==0)
+            {
+                SyncSeqn([seqn longLongValue], pms::EMsgRole::RSENDER);
+            } else {
+                SyncGroupSeqn([seqnId cStringUsingEncoding:NSASCIIStringEncoding], [seqn longLongValue], pms::EMsgRole::RSENDER);
             }
         }
     }
@@ -270,6 +288,24 @@ private:
             [m_recurLock unlock];    
         }
         return lseqn;
+    }
+    
+    void SyncSeqnFromDb2Core()
+    {
+        for (auto &item : m_groupSeqn)
+        {
+            NSLog(@"SyncSeqnFromDb2Core will call InitUserSeqns...");
+            InitUserSeqns(item.first, item.second);
+        }
+    }
+    
+    void UpdateSeqnFromDb2Core()
+    {
+        for (auto &item : m_groupSeqn)
+        {
+            NSLog(@"UpdateSeqnFromDb2Core will call UpdateUserSeqns...");
+            UpdateUserSeqns(item.first, item.second);
+        }
     }
     
 protected:

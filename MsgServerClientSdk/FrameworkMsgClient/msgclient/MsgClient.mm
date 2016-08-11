@@ -13,8 +13,7 @@
 #import "msgclient/proto_ios/EntityMsg.pbobjc.h"
 #import "msgclient/proto_ios/EntityMsgType.pbobjc.h"
 
-#import "msgclient/client_common/proto/entity_msg.pb.h"
-#import "msgclient/client_common/proto/entity_msg_type.pb.h"
+
 
 #import "msgclient/MSMsgUtil.h"
 
@@ -35,6 +34,7 @@ int MsgClient::MCInit(const std::string& uid, const std::string& token, const st
     [m_sqlite3Manager initManager];
     CheckUserOrInit(m_nsUserId);
     GetLocalSeqnsFromDb();
+    SyncSeqnFromDb2Core();
     return Init(uid, token, nname, pms::EModuleType(EModuleType_Tlive));
 }
 
@@ -78,45 +78,22 @@ int MsgClient::MCRmvGroup(const std::string& groupid)
     return 0;
 }
 
-
-int MsgClient::MCSyncSeqn()
+int MsgClient::MCSyncMsg()
 {
     if (m_isFetched)
     {
-        for (auto &it : m_groupSeqn)
-        {
-            if (m_strUserId.compare(it.first))
-            {
-                SyncGroupSeqn(it.first, it.second, EMsgRole_Rsender);
-            } else {
-                SyncSeqn(it.second, EMsgRole_Rsender);
-            }
-        }
+        NSLog(@"MCSyncMsg sync all seqns");
+        SyncAllSeqns();
     } else {
-        NSLog(@"MCSyncSeqn should be fetched before called");
+        NSLog(@"MCSyncMsg should be fetched before called");
         FetchAllSeqns();
     }
     return 0;
 }
 
-
-int MsgClient::MCSyncMsg()
+int MsgClient::MCSync2Db()
 {
-    if (m_isFetched)
-    {
-        for (auto &it : m_groupSeqn)
-        {
-            if (m_strUserId.compare(it.first))
-            {
-                SyncGroupData(it.first, it.second);
-            } else {
-                SyncData(it.second);
-            }
-        }
-    } else {
-        NSLog(@"MCSyncMsg should be fetched before called");
-        FetchAllSeqns();
-    }
+    PutLocalSeqnsToDb();
     return 0;
 }
 
@@ -557,124 +534,41 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
 }
 
 
-//////////////Used in this class//////////////////////////
+//////////////Below Used in this class//////////////////////////
+//////////////Later it will be removed//////////////////////////
 
 void MsgClient::OnSyncSeqn(int64 maxseqn, int role)
 {
-    std::cout << "MsgClient::OnSyncSeqn was called maxseqn:" << maxseqn << std::endl;
-    //[m_sqlite3Manager addUserId:m_userId];
-    //[m_sqlite3Manager updateUserSeqnUserId:m_userId seqn:[NSNumber numberWithLongLong:seqn]];
-    
     // if it is sender, this means client send msg, and just get the newmsg's seqn
     // if the new seqn is bigger 1 than cur seqn, it is ok, just update seqn.
     // if the new seqn is bigger 2 or 3 than cur seqn, this need sync data
     // if it is recver, this means client need sync data
-    int64 lseqn = GetLocalSeqnFromId(m_strUserId);
-    assert(lseqn>=0);
-    long index = (long)(maxseqn - lseqn);
-    if (role == EMsgRole_Rsender)
-    {
-        if (index == 1)
-        {
-            UpdateLocalSeqn(m_strUserId, maxseqn);
-        } else if (index > 1)
-        {
-            SyncData(lseqn);
-        }
-    }  else if (role == EMsgRole_Rrecver)
-    {
-        if (index >0)
-        {
-            SyncData(lseqn);
-        }
-    }
+    NSLog(@"MsgClient::OnSyncSeqn NOT IMPLEMENT!!!");
 }
 
 // get group max seqn
 void MsgClient::OnSyncGroupSeqn(const std::string &groupid, int64 maxseqn)
 {
-    std::cout << "MsgClient::OnSyncGroupSeqn was called groupid:" << groupid << ", maxseqn: " << maxseqn << std::endl;
-    //[m_sqlite3Manager updateGroupSeqnGrpId:[NSString stringWithUTF8String:groupid.c_str()] seqn:[NSNumber numberWithLongLong:seqn]];
-    // this need sync data
-    int64 lseqn = GetLocalSeqnFromId(groupid);
-    NSLog(@"MsgClient::OnSyncGroupSeqn ===>seqn seqn:%lld", lseqn);
-    assert(lseqn>=0);
-    if (maxseqn > lseqn)
-        SyncGroupData(groupid, lseqn);
-    else{
-        NSLog(@"MsgClient::OnSyncGroupSeqn lseqn:%lld, seqn:%lld, you are not in this group:%@", lseqn, maxseqn, [NSString stringWithUTF8String:groupid.c_str()]);
-    }
+    NSLog(@"MsgClient::OnSyncGroupSeqn NOT IMPLEMENT!!!");
 }
 
-// there are new group msg to sync
+// not implement
 void MsgClient::OnGroupNotify(int code, const std::string& seqnid)
 {
-    if (code==0)
-    {
-        int64 seqn = GetLocalSeqnFromId(seqnid);
-        NSLog(@"MsgClient::OnGroupNotify ===>seqn seqn:%lld", seqn);
-        if (seqn>0)
-            SyncGroupData(seqnid, seqn);
-        else
-        {
-            NSLog(@"MsgClient::OnGroupNotify !!!!!seqn:%lld, not find seqnid:%@, you're not in this group", seqn, [NSString stringWithUTF8String:seqnid.c_str()]);
-            //assert(seqn>0);
-        }
-    } else {
-        NSLog(@"MsgClient::OnGroupNotify error code is :%d!!!", code);
-    }
+    NSLog(@"MsgClient::OnGroupNotify NOT IMPLEMENT!!!");
 }
 
 void MsgClient::OnNotifySeqn(int code, const std::string& seqnid)
 {
-    if (code==0)
-    {
-        if (seqnid.length()>0)
-        {
-            NSLog(@"THIS SHOULD NOT BE HAPPEND HERE, seqnid:%@", [NSString stringWithUTF8String:seqnid.c_str()]);
-            //int64 seqn = GetLocalSeqnFromId(seqnid);
-            //if (seqn>0)
-            //    SyncGroupSeqn(seqnid, seqn, (pms::EMsgRole)EMsgRole_Rsender);
-            //else
-            //    assert(seqn>0);
-        } else if (seqnid.length()==0) // this means userid
-        {
-            int64 lseqn = GetLocalSeqnFromId(m_strUserId);
-            assert(lseqn>=0);
-            SyncSeqn(lseqn, (pms::EMsgRole)EMsgRole_Rsender);
-        }
-    } else {
-        NSLog(@"MsgClient::OnGroupSeqn error code is :%d!!!", code);
-    }
+    NSLog(@"MsgClient::OnNotifySeqn NOT IMPLEMENT!!!");
 }
 
 void MsgClient::OnNotifyData(int code, const std::string& seqnid)
 {
-    if (code==0)
-    {
-        if (seqnid.length()>0)
-        {
-            int64 seqn = GetLocalSeqnFromId(seqnid);
-            NSLog(@"MsgClient::OnNotifyData ===>seqn seqn:%lld", seqn);
-            if (seqn>0)
-                SyncGroupData(seqnid, seqn);
-            else
-            {
-                NSLog(@"MsgClient::OnNotifyData seqn:%lld, you're not in this group:%@", seqn, [NSString stringWithUTF8String:seqnid.c_str()]);
-            }
-        } else if (seqnid.length()==0) // this means userid
-        {
-            NSLog(@"MsgClient::OnNotifyData notify user to sync data!!!");
-            int64 lseqn = GetLocalSeqnFromId(m_strUserId);
-            assert(lseqn>=0);
-            SyncData(lseqn);
-        }
-    } else {
-        NSLog(@"MsgClient::OnNotifyData error code is :%d!!!", code);
-    }
+    NSLog(@"MsgClient::OnNotifyData NOT IMPLEMENT!!!");
 }
 
-
+//////////////Above Used in this class//////////////////////////
 
 void MsgClient::OnMsgServerConnected()
 {
@@ -695,6 +589,8 @@ void MsgClient::OnMsgServerConnected()
         {
             // stop timer here
             m_isFetched = true;
+            UpdateSeqnFromDb2Core();
+            SyncAllSeqns();
             [m_clientDelegate OnMsgClientInitialized];
             dispatch_source_set_cancel_handler(_timer, ^{
                

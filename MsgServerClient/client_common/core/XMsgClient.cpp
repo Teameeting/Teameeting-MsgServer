@@ -560,7 +560,7 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                 //    printf("XMsgClient::OnHelpSyncSeqn m_pCallback is null\n");
                 //}
 
-                UserSeqnMapIt it = m_gUserSeqnMap.find(store.storeid())
+                UserSeqnMapIt it = m_gUserSeqnMap.find(store.storeid());
                 if (it != m_gUserSeqnMap.end() && it->second < store.maxseqn())
                 {
                     printf("XMsgClient::OnHelpSyncSeqn group SyncGruopSeqn storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
@@ -579,7 +579,7 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                 if (it != m_uUserSeqnMap.end() && it->second < store.maxseqn())
                 {
                     printf("XMsgClient::OnHelpSyncSeqn single SyncSeqn storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
-                    SyncSeqn(store.storeid(), it->second, pms::EMsgRole::RSENDER);
+                    SyncSeqn(it->second, pms::EMsgRole::RSENDER);
                 }
             } else {
 

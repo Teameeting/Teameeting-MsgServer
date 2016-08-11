@@ -201,7 +201,7 @@ int XMsgClient::FetchSeqn()
         return -1;
     }
     printf("XMsgClient::FetchSeqn was called\n");
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -252,7 +252,7 @@ int XMsgClient::FetchGroupSeqn(const std::string& groupid)
         return -1;
     }
     printf("XMsgClient::FetchGroupSeqn was called\n");
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -269,7 +269,7 @@ int XMsgClient::SyncGroupSeqn(const std::string& groupid, int64 seqn, int role)
         return -1;
     }
     printf("XMsgClient::SyncGroupSeqn was called\n");
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -287,7 +287,7 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
         return -1;
     }
     printf("XMsgClient::SyncGroupData was called\n");
-    
+
     return SendEncodeMsg(outstr);
 }
 
@@ -553,26 +553,30 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
         {
             if (store.mflag()==pms::EMsgFlag::FGROUP)
             {
-                if (m_pCallback)
+                UserSeqnMapIt it = m_gUserSeqnMap.find(store.storeid());
+                // if cur seqn is smaller then maxseqn just synced
+                // then sync data with the smaller seqn
+                if (it != m_gUserSeqnMap.end() && it->second < store.maxseqn())
                 {
-                    m_pCallback->OnSyncGroupSeqn(store.storeid(), store.maxseqn());
-                } else {
-                    printf("XMsgClient::OnHelpSyncGroupSeqn m_pCallback is null\n");
+                    printf("XMsgClient::OnHelpSyncSeqn group SyncGruopData storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
+                    SyncGroupData(store.storeid(), it->second);
                 }
             } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
             {
-                if (m_pCallback)
+                UserSeqnMapIt it = m_uUserSeqnMap.find(store.storeid());
+                // if cur seqn is smaller then maxseqn just synced
+                // then sync data with the smaller seqn
+                if (it != m_uUserSeqnMap.end() && it->second < store.maxseqn())
                 {
-                    m_pCallback->OnSyncSeqn(store.maxseqn(), store.mrole());
-                } else {
-                    printf("XMsgClient::OnHelpSyncSeqn m_pCallback is null\n");
+                    printf("XMsgClient::OnHelpSyncSeqn single SyncData storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
+                    SyncData(it->second);
                 }
             } else {
-                
+                printf("XMsgClient::OnHelpSyncSeqn store.mflag:%d is not handled\n", store.mflag());
             }
         }
             break;
-            
+
         case pms::EStorageTag::TFETCHSEQN:
         {
             if (store.mflag()==pms::EMsgFlag::FGROUP)
@@ -651,32 +655,19 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
     UAddSyncedMsg(seqnKey, store);
     UUpdateUserSeqn();
+    
+    printf("XMsgClient::OnHelpSyncData m_gRecvMsgList.size:%lu\n", m_gRecvMsgList.size());
     for (RecvMsgListIt it = m_uRecvMsgList.begin();it!=m_uRecvMsgList.end();++it)
     {
-        pms::Entity entity;
-        if (entity.ParseFromString((*it).content()))
-        {
-            printf("entity.ParseFromString ok\n");
-        } else {
-            printf("entity.ParseFromString error so return\n");
-            continue;
-        }
-        if (entity.usr_toto().users_size()==0)
-        {
-            printf("OnHelpSyncData usr_toto.size is 0 so return\n");
-            continue;
-        }
-        printf("OnHelpSyncData entity.usr_from:%s, usr_toto:%s, msg_cont:%s\n"\
-                , entity.usr_from().c_str()\
-                , entity.usr_toto().users(0).c_str()\
-                , entity.msg_cont().c_str());
         if (m_pCallback)
         {
-            m_pCallback->OnRecvMsg((*it).sequence(), (*it).content());
+            printf("XMsgClient::OnHelpSyncData call OnRecvGroupMsg seqn:%lld, seqnid:%s\n", it->seqn, it->seqnid.c_str());
+            m_pCallback->OnRecvMsg(it->seqn, it->msgcont);
         } else {
             printf("XMsgClient::OnHelpSyncData m_pCallback is null\n");
         }
     }
+    m_uRecvMsgList.clear();
     return;
 }
 
@@ -698,22 +689,18 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
     GAddSyncedMsg(seqnKey, store);
     GUpdateUserSeqn(store.storeid());
 
+    printf("XMsgClient::OnHelpSyncGroupData m_gRecvMsgList.size:%lu\n", m_gRecvMsgList.size());
     for (RecvMsgListIt it = m_gRecvMsgList.begin();it!=m_gRecvMsgList.end();++it)
     {
-        pms::Entity entity;
-        entity.ParseFromString((*it).content());
-        printf("OnHelpSyncGroupData entity.usr_from:%s, rom_id:%s, msg_cont.size:%lu\n"\
-                , entity.usr_from().c_str()\
-                , entity.rom_id().c_str()\
-                , entity.msg_cont().length());
         if (m_pCallback)
         {
-            assert((*it).storeid().compare((*it).groupid())==0);
-            m_pCallback->OnRecvGroupMsg((*it).sequence(), (*it).storeid(), (*it).content());
+            printf("XMsgClient::OnHelpSyncGroupData call OnRecvGroupMsg seqn:%lld, seqnid:%s\n", it->seqn, it->seqnid.c_str());
+            m_pCallback->OnRecvGroupMsg(it->seqn, it->seqnid, it->msgcont);
         } else {
             printf("XMsgClient::OnHelpSyncGroupData m_pCallback is null\n");
         }
     }
+    m_gRecvMsgList.clear();
     return;
 }
 
@@ -729,40 +716,46 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
            , store.sequence());
     if (m_pCallback)
     {
-        m_pCallback->OnGroupNotify(code, store.groupid());
+        UserSeqnMapIt it = m_gUserSeqnMap.find(store.groupid());
+        if (it != m_gUserSeqnMap.end())
+        {
+            printf("XMsgClient::OnHelpGroupNotify SyncGroupSeqn was called, grouid:%s, seqn:%lld\n", it->first.c_str(), it->second);
+            SyncGroupSeqn(it->first, it->second, pms::EMsgRole::RSENDER);
+        }
     } else {
         printf("XMsgClient::OnHelpGroupNotify m_pCallback is null\n");
     }
     return;
 }
 
-// this means you are sender, you send msg and server gen new seqn for you
+// this means you need to sync seqn, get new seqn
 // you just get new seqn from server
-// after 
 void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 {
     printf("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());
-    if (m_pCallback)
+    if ((code==0) && (cont.length()==0))
     {
-        m_pCallback->OnNotifySeqn(code, cont);
-    } else {
-        printf("XMsgClient::OnHelpNotifySeqn m_pCallback is null\n");
+        UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
+        printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is:%lld\n", itCurSeqn->second);
+        assert(itCurSeqn->second>0);
+        this->SyncSeqn(itCurSeqn->second, pms::EMsgRole::RSENDER);
     }
-    printf("XMsgClient::OnHelpNotifySeqn recv sync seqn\n");
+    //if (m_pCallback)
+    //{
+    //    m_pCallback->OnNotifySeqn(code, cont);
+    //}
     return;
 }
 
+// this may not be useful, because the server will not notify to sync data directly
+// instead server will notify to sync seqn
 void XMsgClient::OnHelpNotifyData(int code, const std::string& cont)
 {
-    printf("XMsgClient::OnHelpNotifyData code:%d, cont:%s\n", code, cont.c_str());
-    if (m_pCallback)
-    {
-        m_pCallback->OnNotifyData(code, cont);
-    } else {
-        printf("XMsgClient::OnHelpNotifyData m_pCallback is null\n");
-    }
-    printf("XMsgClient::OnHelpNotifyData recv sync data\n");
-    return;
+    //if (m_pCallback)
+    //{
+    //    m_pCallback->OnNotifyData(code, cont);
+    //}
+    //return;
 }
 
 

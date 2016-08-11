@@ -108,7 +108,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         //String touser = "8ca64d158a505876";
-        String touser = "dcd54ddf2ee1df11";
+        String touser = "BCD9D958-985A-4454-B2C8-1551DB9C1A8A";
         String outmsgid = mMsMessageManager.sendTxtMsgToUser(touser, cont);
         System.out.println("SendMsgToUser sendTxtMsgToUser get msgid:" + outmsgid);
     }

@@ -28,6 +28,11 @@
     MsgClient::Instance().MCSyncMsg();
 }
 
+-(void)sync2Db
+{
+    MsgClient::Instance().MCSync2Db();
+}
+
 -(int)sendTxtMsgGrpId:(NSString*)grpId
                  cont:(NSString*)content
                cmsgid:(NSString *__autoreleasing *)cmsgid

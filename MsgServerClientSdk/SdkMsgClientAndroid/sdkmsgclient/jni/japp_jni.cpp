@@ -212,6 +212,19 @@ JOWW(void, JMClientApp_SetUIconUrl)(JNIEnv *jni, jobject j_app, jstring strUIcon
 	jApp->SetUIconUrl(jstrUIcon.ToString8().c_str());
 }
 
+JOWW(void, JMClientApp_InitUserSeqns)(JNIEnv *jni, jobject j_app, jstring strSeqnid, jlong seqn)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrSeqnid(strSeqnid);
+	jApp->InitUserSeqns(jstrSeqnid.ToString8().c_str(), seqn);
+}
+
+JOWW(void, JMClientApp_UpdateUserSeqns)(JNIEnv *jni, jobject j_app, jstring strSeqnid, jlong seqn)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrSeqnid(strSeqnid);
+	jApp->UpdateUserSeqns(jstrSeqnid.ToString8().c_str(), seqn);
+}
 
 JOWW(void, JMClientApp_Destroy)(JNIEnv *jni, jobject j_app)
 {
