@@ -69,7 +69,7 @@ int XGrpMsgProcesser::EncodeGrpSyncSeqnNotify(std::string& outstr, const std::st
 {
     std::vector<std::string> v;
     v.push_back(userid);
-    EncodeGrpSyncDataNotifys(outstr, v, groupid, module);
+    EncodeGrpSyncSeqnNotifys(outstr, v, groupid, module);
     return 0;
 }
 

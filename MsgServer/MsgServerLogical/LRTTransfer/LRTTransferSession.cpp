@@ -623,7 +623,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
                 LI("LRTTransferSession::OnTypeReadRequest get maxseqn:%lld from server local\n", seqn);
                 assert(seqn>=0);
                 store.mutable_msgs(i)->set_maxseqn(seqn);
-                this->PushReadMsg(store.msgs(i));
+                this->PushReadMsg(store.msgs(i));// has got max seqn, so send response directly
             } else {
                 char msgid[16] = {0};
                 sprintf(msgid, "rs:%u", m_tmpRSeqnId++);

@@ -474,6 +474,14 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
             , store.groupid().c_str()\
             , store.mflag()\
             , store.rsvrcmd());
+    if (store.groupid().compare("wocaowocaowocao")==0)
+    {
+        std::string u1("8ca64d158a505876");
+        std::string u2("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
+        GenGrpSyncSeqnNotify(u1, store.groupid());
+        GenGrpSyncSeqnNotify(u2, store.groupid());
+        return;
+    }
     std::unordered_set<std::string> *puset = NULL;
     GRTGrouperManager::Instance().GetGroupMembersLocal(store.groupid(), &puset);
     if (!puset)
