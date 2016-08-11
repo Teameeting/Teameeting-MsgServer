@@ -154,12 +154,14 @@ class SSLStreamAdapter : public StreamAdapterInterface {
 
   // Retrieves the peer's X.509 certificate, if a connection has been
   // established. It returns the transmitted over SSL, including the entire
-  // chain. The returned certificate is owned by the caller.
-  virtual bool GetPeerCertificate(SSLCertificate** cert) const = 0;
+  // chain.
+  virtual rtc::scoped_ptr<SSLCertificate> GetPeerCertificate() const = 0;
 
   // Retrieves the IANA registration id of the cipher suite used for the
   // connection (e.g. 0x2F for "TLS_RSA_WITH_AES_128_CBC_SHA").
   virtual bool GetSslCipherSuite(int* cipher_suite);
+
+  virtual int GetSslVersion() const = 0;
 
   // Key Exporter interface from RFC 5705
   // Arguments are:
@@ -189,11 +191,10 @@ class SSLStreamAdapter : public StreamAdapterInterface {
   static bool HaveDtlsSrtp();
   static bool HaveExporter();
 
-  // Returns the default Ssl cipher used between streams of this class
-  // for the given protocol version. This is used by the unit tests.
-  // TODO(guoweis): Move this away from a static class method.
-  static int GetDefaultSslCipherForTest(SSLProtocolVersion version,
-                                        KeyType key_type);
+  // Returns true iff the supplied cipher is deemed to be strong.
+  // TODO(torbjorng): Consider removing the KeyType argument.
+  static bool IsAcceptableCipher(int cipher, KeyType key_type);
+  static bool IsAcceptableCipher(const std::string& cipher, KeyType key_type);
 
   // TODO(guoweis): Move this away from a static class method. Currently this is
   // introduced such that any caller could depend on sslstreamadapter.h without

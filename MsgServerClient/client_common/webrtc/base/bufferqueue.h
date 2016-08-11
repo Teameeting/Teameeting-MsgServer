@@ -28,6 +28,9 @@ class BufferQueue {
   // Return number of queued buffers.
   size_t size() const;
 
+  // Clear the BufferQueue by moving all Buffers from |queue_| to |free_list_|.
+  void Clear();
+
   // ReadFront will only read one buffer at a time and will truncate buffers
   // that don't fit in the passed memory.
   // Returns true unless no data could be returned.
@@ -45,7 +48,7 @@ class BufferQueue {
  private:
   size_t capacity_;
   size_t default_size_;
-  mutable CriticalSection crit_;
+  CriticalSection crit_;
   std::deque<Buffer*> queue_ GUARDED_BY(crit_);
   std::vector<Buffer*> free_list_ GUARDED_BY(crit_);
 
