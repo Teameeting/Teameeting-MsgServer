@@ -716,11 +716,14 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
            , store.sequence());
     if (m_pCallback)
     {
+        printf("XMsgClient::OnHelpGroupNotify finding...store.groupid:%s\n", store.groupid().c_str());
         UserSeqnMapIt it = m_gUserSeqnMap.find(store.groupid());
         if (it != m_gUserSeqnMap.end())
         {
             printf("XMsgClient::OnHelpGroupNotify SyncGroupSeqn was called, grouid:%s, seqn:%lld\n", it->first.c_str(), it->second);
             SyncGroupSeqn(it->first, it->second, pms::EMsgRole::RSENDER);
+        } else {
+            printf("XMsgClient::OnHelpGroupNotify not find store.groupid:%s\n", store.groupid().c_str());
         }
     } else {
         printf("XMsgClient::OnHelpGroupNotify m_pCallback is null\n");

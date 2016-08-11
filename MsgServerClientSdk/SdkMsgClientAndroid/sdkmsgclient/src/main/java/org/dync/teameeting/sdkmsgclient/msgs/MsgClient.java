@@ -533,6 +533,7 @@ public class MsgClient implements JMClientHelper{
                             mSqlite3Manager.AddGroupSeqn(mStrUserId, groupid, data.seqn);
                         }
                         UpdateLocalSeqn(groupid, data.seqn);
+                        UpdateSeqnFromDb2Core();
                         mGroupDelegate.OnAddGroupSuccess(groupid);
                     }
                 } else if (code == -1)
@@ -551,6 +552,7 @@ public class MsgClient implements JMClientHelper{
                     if (null != mSqlite3Manager && null != mGroupDelegate) {
                         mSqlite3Manager.DelGroup(mStrUserId, groupid);
                         RemoveLocalSeqn(groupid);
+                        // update seqn from db 2 core
                         mGroupDelegate.OnRmvGroupSuccess(groupid);
                     }
                 } else if (code == -1)
@@ -579,6 +581,7 @@ public class MsgClient implements JMClientHelper{
                     if (data.result==0)
                     {
                         UpdateGroupInfoToDb(groupid, data.seqn, 1);
+                        UpdateSeqnFromDb2Core();
                     } else if (data.result==-1)
                     {
                         UpdateGroupInfoToDb(groupid, data.seqn, -1);
