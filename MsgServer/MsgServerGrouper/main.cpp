@@ -16,14 +16,8 @@
 #define _TEST_ 1
 #endif
 
-static void sighandler(int sig_no)
-{
-    LI("catch sighandler:%d\n", sig_no);
-     exit(0);
-}
-
 int main(int argc, const char * argv[]) {
-    LI("Hello, Grouper!!!\n");
+    printf("Hello, Grouper!!!\n");
     GRTGrouper::PrintVersion();
 
     if (argc <= 1) {
@@ -55,27 +49,21 @@ int main(int argc, const char * argv[]) {
 #if 0
     L_Init(0, NULL);
 #else
-    L_Init(0, "./grouper.log");
+    L_Init(0, "./loggrouper.log");
 #endif
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     GRTGrouper::Initialize(1024);
     GRTGrouper* pGrouper = GRTGrouper::Inst();
-    //////LI("server listen port:%u\n", RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon);
-    //int res = pGrouper->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-    //                  RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon
-    //                  );
-    //signal(SIGUSR1, sighandler);
-    //signal(SIGUSR2, sighandler);
-    int res = pGrouper->Start("192.168.7.207", 6692, "192.168.7.207", 6690, "192.168.7.218", 6379);
-    int test = 0;
+    int res = pGrouper->Start(conf);
     if (res != 0) {
         LI("GRTGrouper start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-#if 0
-    while (test++ < 60) {
-#else
+    //int test = 0;
+    //while (test++ < 60) {
     while (1) {
-#endif
         pGrouper->DoTick();
         sleep(1);
         //break;

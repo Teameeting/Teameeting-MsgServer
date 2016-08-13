@@ -17,7 +17,7 @@
 #endif
 
 int main(int argc, const char * argv[]) {
-    //////LI("Hello, Sequence!!!\n");
+    printf("Hello, Sequence!!!\n");
     SRTSequence::PrintVersion();
 
     if (argc <= 1) {
@@ -46,19 +46,18 @@ int main(int argc, const char * argv[]) {
         L_Init(level, logpath.c_str());
 #endif
 
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     L_Init(0, NULL);
     SRTSequence::Initialize(1024);
     SRTSequence* pSequence = SRTSequence::Inst();
-    //////LI("server listen port:%u\n", RTZKClient::Instance().GetServerConfig().portConfig.sequence.ListenClicon);
-    //int res = pSequence->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-    //                  RTZKClient::Instance().GetServerConfig().portConfig.sequence.ListenClicon
-    //                  );
-    int res = pSequence->Start("192.168.7.207", 6650);
-    int test = 0;
+    int res = pSequence->Start(conf);
     if (res != 0) {
         //////LI("SRTSequence start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
+    //int test = 0;
     //while (test++ < 25) {
     while (1) {
         pSequence->DoTick();

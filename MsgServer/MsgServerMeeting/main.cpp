@@ -20,7 +20,7 @@ int main(int argc, const char * argv[]) {
     printf("Hello, Meeting!!!");
     MRTMeeting::PrintVersion();
 
-    if (argc <= 1) {
+    if (argc <= 2) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -44,28 +44,23 @@ int main(int argc, const char * argv[]) {
     else
         L_Init(level, logpath.c_str());
 
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     MRTMeeting::Initialize(1024);
     MRTMeeting* pMeeting = MRTMeeting::Inst();
-#if 1
-    int res = pMeeting->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                    RTZKClient::Instance().GetServerConfig().portConfig.meeting.AcceptConn,
-                    RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                    RTZKClient::Instance().GetServerConfig().portConfig.meeting.AcceptDisp,
-                    RTZKClient::Instance().GetServerConfig().HttpIp.c_str(),
-                    RTZKClient::Instance().GetServerConfig().portConfig.meeting.AcceptHttp
-                    );
-    int test = 0;
+    int res = pMeeting->Start(conf);
     if (res != 0) {
         LI("MRTMeeting start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
+    //int test = 0;
     //while (test++ < 80) {
     while (1) {
         pMeeting->DoTick();
         sleep(1);
         //break;
     }
-#endif
         sleep(1);
 EXIT:
     pMeeting->Stop();

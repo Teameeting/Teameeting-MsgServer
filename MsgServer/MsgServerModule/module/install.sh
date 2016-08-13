@@ -24,6 +24,7 @@ cp -f module.sh $SYS_BIN_PATH/module.sh
 chmod 755 $SYS_BIN_PATH/module.sh
 
 cp -f module.conf $TARGET_CONF_PATH/
+cp -f params.conf $TARGET_CONF_PATH/
 cp -f bin/MsgServerModule $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
@@ -31,6 +32,7 @@ printf "UnInstall program....\r\n"
 module.sh stop
 rm -f $SYS_BIN_PATH/module.sh
 rm -f $TARGET_CONF_PATH/module.conf
+rm -f $TARGET_CONF_PATH/params.conf
 rm -f $TARGET_BIN_PATH/MsgServerModule
 rm -rf $TARGET_PREFIX
 printf "UnInstall program ok!\r\n"

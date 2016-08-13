@@ -25,7 +25,7 @@ echo 1024 65000 > /proc/sys/net/ipv4/ip_local_port_range
 #---------------------------------------------------------------------------
 
 RT_HOME=/usr/local/dync/msgserver/rtlive/bin
-RT_CONF=/usr/local/dync/msgserver/rtlive.conf
+RT_CONF=/usr/local/dync/msgserver/rtlive/conf
 RT_LIB=/usr/local/dync/msgserver/rtlive/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${RT_LIB}
 retval=0
@@ -50,7 +50,7 @@ Start()
 	fi
 		
 	echo -n "Starting RTLive Server(MsgServerRTLive): "
-	${RT_HOME}/MsgServerRTLive ${RT_CONF}/rtlive.conf & 2> /dev/null
+	${RT_HOME}/MsgServerRTLive ${RT_CONF}/rtlive.conf ${RT_CONF}/params.conf & 2> /dev/null
 	retval=$?
 	if [ ${retval} == 0 ]; then
 		echo_success

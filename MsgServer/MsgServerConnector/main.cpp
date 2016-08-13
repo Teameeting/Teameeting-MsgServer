@@ -17,10 +17,10 @@
 #endif
 
 int main(int argc, const char * argv[]) {
-    LI("Hello, Connector!!!");
+    printf("Hello, Connector!!!");
     CRTConnector::PrintVersion();
 
-    if (argc <= 1) {
+    if (argc <= 2) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -44,20 +44,17 @@ int main(int argc, const char * argv[]) {
     else
         L_Init(level, logpath.c_str());
 
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     CRTConnector::Initialize(1024);
     CRTConnector* pConnector = CRTConnector::Inst();
-    int res = pConnector->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                      RTZKClient::Instance().GetServerConfig().portConfig.connector.ListenWebcon,
-                      RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                      RTZKClient::Instance().GetServerConfig().portConfig.connector.ListenModule,
-                      RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                      RTZKClient::Instance().GetServerConfig().portConfig.connector.ListenClicon
-                      );
-    int test = 0;
+    int res = pConnector->Start(conf);
     if (res != 0) {
         LI("CRTConnector start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
+    //int test = 0;
     //while (test++ < 120) {
     while (1) {
         pConnector->DoTick();

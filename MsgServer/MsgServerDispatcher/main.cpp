@@ -17,11 +17,10 @@
 #endif
 
 int main(int argc, const char * argv[]) {
-    std::cout << "Hello, World!\n";
-    LI("Hello, MsgQueue!!!");
+    printf("Hello, Dispatcher!!!");
     DRTMsgQueue::PrintVersion();
 
-    if (argc <= 1) {
+    if (argc <= 2) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -45,20 +44,17 @@ int main(int argc, const char * argv[]) {
     else
         L_Init(level, logpath.c_str());
 
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
-    int res = pMsgQueue->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                     RTZKClient::Instance().RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.AcceptConn,
-                     RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                     RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.ListenDisp,
-                     RTZKClient::Instance().GetServerConfig().HttpIp.c_str(),
-                     RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.ListenHttp
-                     );
-    int test = 0;
+    int res = pMsgQueue->Start(conf);
     if (res != 0) {
         LI("DRTMsgQueue start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
+    //int test = 0;
     //while (test++ < 100) {
     while (1) {
         pMsgQueue->DoTick();

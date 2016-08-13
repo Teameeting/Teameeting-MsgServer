@@ -16,12 +16,10 @@ class CRTDispatchConnection{
 public:
     CRTDispatchConnection(){}
     virtual ~CRTDispatchConnection(){}
-    
+
     void DispatchMsg(const std::string& uid, const std::string& msg);
-    static std::string     m_connIp;
-    static std::string     m_connPort;
 private:
-    
+
 };
 
 #endif /* defined(__MsgServerConnector__CRTDispatchConnection__) */

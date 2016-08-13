@@ -8,8 +8,6 @@
 #define DEF_PTORO 1
 #include "ProtoCommon.h"
 
-std::string		CRTConnection::gStrAddr;
-unsigned short	CRTConnection::gUsPort = 0;
 CRTConnection::CRTConnection(void)
 : m_pBuffer(NULL)
 , m_nBufLen(0)

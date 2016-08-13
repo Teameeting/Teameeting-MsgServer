@@ -24,6 +24,7 @@ cp -f storage.sh $SYS_BIN_PATH/storage.sh
 chmod 755 $SYS_BIN_PATH/storage.sh
 
 cp -f storage.conf $TARGET_CONF_PATH/
+cp -f params.conf $TARGET_CONF_PATH/
 cp -f bin/MsgServerStorage $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
@@ -31,6 +32,7 @@ printf "UnInstall program....\r\n"
 storage.sh stop
 rm -f $SYS_BIN_PATH/storage.sh
 rm -f $TARGET_CONF_PATH/storage.conf
+rm -f $TARGET_CONF_PATH/params.conf
 rm -f $TARGET_BIN_PATH/MsgServerStorage
 rm -rf $TARGET_PREFIX
 printf "UnInstall program ok!\r\n"

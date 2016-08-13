@@ -119,35 +119,70 @@ SRTSequence::~SRTSequence(void)
     }
 }
 
-int	SRTSequence::Start(const char*pSequenceIp, unsigned short usSequencePort)
+int	SRTSequence::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pSequenceIp != NULL && strlen(pSequenceIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    std::string strRedisIp1("");
+    std::string strRedisIp2("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "sequence_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_int_ip1", "127.0.0.1");
+        strRedisIp2 = conf.GetValue("redis", "redis_int_ip2", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "sequence_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
+        strRedisIp2 = conf.GetValue("redis", "redis_ext_ip2", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0 || strRedisIp1.length()==0 || strRedisIp2.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nSequencePort = conf.GetIntVal("global", "listen_sequence_port", 6650);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+    int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
+    int nRedisPort2 = conf.GetIntVal("redis", "redis_port2", 6379);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
     SRTSequenceManager::Instance().InitManager();
 
-    char *ip1 = "192.168.7.213";
-    char *ip2 = "192.168.7.225";
-    int port = 6379;
-
     char addr[24] = {0};
-    sprintf(addr, "%s %d", ip1, port);
+    sprintf(addr, "%s %d", strRedisIp1.c_str(), nRedisPort1);
     SRTSequenceManager::Instance().PushRedisHosts(addr);
     memset(addr, 0, 24);
-    sprintf(addr, "%s %d", ip2, port);
+    sprintf(addr, "%s %d", strRedisIp2.c_str(), nRedisPort2);
     SRTSequenceManager::Instance().PushRedisHosts(addr);
 
     std::string ssid;
-    LI("SRTSequence ip:%s, port:%u\n", pSequenceIp, usSequencePort);
-    if (usSequencePort > 0) {
+    LI("SRTSequence ip:%s, port:%u\n", strLocalIp.c_str(), nSequencePort);
+    if (nSequencePort > 0) {
         m_pSequenceListener = new SRTSequenceListener();
-        OS_Error err = m_pSequenceListener->Initialize(INADDR_ANY, usSequencePort);
+        OS_Error err = m_pSequenceListener->Initialize(INADDR_ANY, nSequencePort);
         if (err!=OS_NoErr) {
-            LE("CreateSequenceListener error port:%d\n", usSequencePort);
+            LE("CreateSequenceListener error port:%d\n", nSequencePort);
             delete m_pSequenceListener;
             m_pSequenceListener = NULL;
             return -1;
         }
-        LI("Start Sequence service:(%d) ok...,socketFD:%d\n", usSequencePort, m_pSequenceListener->GetSocketFD());
+        LI("Start Sequence service:(%d) ok...,socketFD:%d\n", nSequencePort, m_pSequenceListener->GetSocketFD());
         m_pSequenceListener->RequestEvent(EV_RE);
     }
 	return 0;

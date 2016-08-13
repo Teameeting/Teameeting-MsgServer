@@ -119,17 +119,51 @@ LRTRTLive::~LRTRTLive(void)
     }
 }
 
-int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char*pRTLiveIp, unsigned short usRTLivePort, const char*pConnectorIp, unsigned short usConnectorPort, const char*pLogicalIp, unsigned short usLogicalPort, const char*pDispatcherIp, unsigned short usDispatcherPort)
+int	LRTRTLive::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pRTLiveIp != NULL && strlen(pRTLiveIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "rtlive_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "rtlive_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nGrouperPort = conf.GetIntVal("global", "listen_grouper_port", 6690);
+    int nRtlivePort = conf.GetIntVal("global", "listen_rtlive_port", 6680);
+    int nConnectorPort = conf.GetIntVal("global", "listen_connector_port", 6620);
+    int nLogicalPort = conf.GetIntVal("global", "listen_logical_port", 6670);
+    int nDispatcherPort = conf.GetIntVal("global", "listen_dispatcher_port", 6640);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
     LRTRTLiveManager::Instance().InitManager();
     LRTConnManager::Instance().InitManager();
 
-	if(usLogicalPort > 0)
+	if(nLogicalPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pLogicalIp, usLogicalPort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nLogicalPort);
         LI("logical addr:%s\n", addr);
         LRTConnManager::Instance().GetLogicalAddrList()->push_front(addr);
 
@@ -139,10 +173,10 @@ int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char
         }
 	}
 
-    if(usConnectorPort > 0)
+    if(nConnectorPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pConnectorIp, usConnectorPort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nConnectorPort);
         LI("connector addr:%s\n", addr);
         LRTConnManager::Instance().GetConnectorAddrList()->push_front(addr);
 
@@ -152,10 +186,10 @@ int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char
         }
 	}
 
-    if(usDispatcherPort > 0)
+    if(nDispatcherPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pDispatcherIp, usDispatcherPort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nDispatcherPort);
         LI("dispatcher addr:%s\n", addr);
         LRTConnManager::Instance().GetDispatcherAddrList()->push_front(addr);
 
@@ -165,29 +199,29 @@ int	LRTRTLive::Start(const char*pGroupIp, unsigned short usGroupPort, const char
         }
 	}
 
-    if (usRTLivePort > 0) {
+    if (nRtlivePort > 0) {
         m_pRTLiveListener = new LRTRTLiveListener();
-        OS_Error err = m_pRTLiveListener->Initialize(INADDR_ANY, usRTLivePort);
+        OS_Error err = m_pRTLiveListener->Initialize(INADDR_ANY, nRtlivePort);
         if (err!=OS_NoErr) {
-            LE("CreateRTLiveListener error port:%d\n", usRTLivePort);
+            LE("CreateRTLiveListener error port:%d\n", nRtlivePort);
             delete m_pRTLiveListener;
             m_pRTLiveListener = NULL;
             return -1;
         }
-        LI("Start RTLive service:(%d) ok...,socketFD:%d\n", usRTLivePort, m_pRTLiveListener->GetSocketFD());
+        LI("Start RTLive service:(%d) ok...,socketFD:%d\n", nRtlivePort, m_pRTLiveListener->GetSocketFD());
         m_pRTLiveListener->RequestEvent(EV_RE);
     }
 
-    if (usGroupPort > 0) {
+    if (nGrouperPort > 0) {
         m_pGroupListener = new LRTGroupListener();
-        OS_Error err = m_pGroupListener->Initialize(INADDR_ANY, usGroupPort);
+        OS_Error err = m_pGroupListener->Initialize(INADDR_ANY, nGrouperPort);
         if (err!=OS_NoErr) {
-            LE("CreateGroupListener error port:%d\n", usGroupPort);
+            LE("CreateGroupListener error port:%d\n", nGrouperPort);
             delete m_pGroupListener;
             m_pGroupListener = NULL;
             return -1;
         }
-        LI("Start RTLive group service:(%d) ok...,socketFD:%d\n", usGroupPort, m_pGroupListener->GetSocketFD());
+        LI("Start RTLive group service:(%d) ok...,socketFD:%d\n", nGrouperPort, m_pGroupListener->GetSocketFD());
         m_pGroupListener->RequestEvent(EV_RE);
     }
 	return 0;

@@ -124,29 +124,58 @@ DRTMsgQueue::~DRTMsgQueue(void)
     }
 }
 
-int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort, const char*pHttpIp, unsigned short usHttpPort)
+int	DRTMsgQueue::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pConnIp != NULL && strlen(pConnIp)>0);
-	Assert(pDispIp != NULL && strlen(pDispIp)>0);
-    Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "dispatcher_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "dispatcher_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nConnPort = conf.GetIntVal("global", "listen_conn_port", 6620);
+    int nDispPort = conf.GetIntVal("global", "listen_disp_port", 6640);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
 
     char hh[24] = {0};
-    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
+    sprintf(hh, "%s:%d", strHttpIp.c_str(), nHttpPort);
 
     DRTConnManager::s_cohttpHost = hh;
-    DRTConnManager::s_cohttpIp = pHttpIp;
-    DRTConnManager::s_cohttpPort = usHttpPort;
+    DRTConnManager::s_cohttpIp = strHttpIp.c_str();
+    DRTConnManager::s_cohttpPort = nHttpPort;
 
     std::string mid;
     GenericSessionId(mid);
     DRTConnManager::Instance().SetMsgQueueId(mid);
     LI("[][]MsgQueueId:%s\n", mid.c_str());
 
-	if(usConnPort > 0)
+	if(nConnPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pConnIp, usConnPort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nConnPort);
         DRTConnManager::Instance().GetAddrsList()->push_front(addr);
 
         if (!(DRTConnManager::Instance().ConnectConnector())) {
@@ -155,29 +184,20 @@ int	DRTMsgQueue::Start(const char*pConnIp, unsigned short usConnPort, const char
         }
 	}
 
-	if(usDispPort > 0)
+	if(nDispPort > 0)
 	{
         m_pModuleListener = new DRTModuleListener();
-        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usDispPort);
+        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, nDispPort);
         if (err!=OS_NoErr)
         {
-            LE("CreateMeetingListener error port=%d \n", usDispPort);
+            LE("CreateMeetingListener error port=%d \n", nDispPort);
             delete m_pModuleListener;
             m_pModuleListener=NULL;
             return -1;
         }
-        LI("Start MsgQueue service meet:(%d) ok...,socketFD:%d\n", usDispPort, m_pModuleListener->GetSocketFD());
+        LI("Start MsgQueue service meet:(%d) ok...,socketFD:%d\n", nDispPort, m_pModuleListener->GetSocketFD());
         m_pModuleListener->RequestEvent(EV_RE);
 	}
-
-    if (usHttpPort > 0) {
-        LI("Starting Dispatcher Http service:(%d) ok...\n", usHttpPort);
-    }
-
-    //if (!(DRTConnManager::Instance().ConnectHttpSvrConn())) {
-    //    LE("ConnectHttpSvrConn failed\n");
-    //    return -1;
-    //}
 
    return 0;
 }

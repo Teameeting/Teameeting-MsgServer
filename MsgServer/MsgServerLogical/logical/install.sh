@@ -24,6 +24,7 @@ cp -f logical.sh $SYS_BIN_PATH/logical.sh
 chmod 755 $SYS_BIN_PATH/logical.sh
 
 cp -f logical.conf $TARGET_CONF_PATH/
+cp -f params.conf $TARGET_CONF_PATH/
 cp -f bin/MsgServerLogical $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
@@ -31,6 +32,7 @@ printf "UnInstall program....\r\n"
 logical.sh stop
 rm -f $SYS_BIN_PATH/logical.sh
 rm -f $TARGET_CONF_PATH/logical.conf
+rm -f $TARGET_CONF_PATH/params.conf
 rm -f $TARGET_BIN_PATH/MsgServerLogical
 rm -rf $TARGET_PREFIX
 printf "UnInstall program ok!\r\n"

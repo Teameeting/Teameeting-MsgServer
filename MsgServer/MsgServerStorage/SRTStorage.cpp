@@ -119,31 +119,62 @@ SRTStorage::~SRTStorage(void)
     }
 }
 
-int	SRTStorage::Start(const char*pStorageIp, unsigned short usStoragePort)
+int	SRTStorage::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pStorageIp != NULL && strlen(pStorageIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    std::string strRedisIp1("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "storage_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_int_ip1", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "storage_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0 || strRedisIp1.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nStoragePort = conf.GetIntVal("global", "listen_storage_port", 6660);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+    int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
     SRTStorageManager::Instance().InitManager();
 
-    char *ip1 = "192.168.7.213";
-    char *ip2 = "192.168.7.225";
-    int port = 6379;
-
     char addr[24] = {0};
-    sprintf(addr, "%s %d", ip1, port);
+    sprintf(addr, "%s %d", strRedisIp1.c_str(), nRedisPort1);
     SRTStorageManager::Instance().PushRedisHosts(addr);
 
     std::string ssid;
-    if (usStoragePort > 0) {
+    if (nStoragePort > 0) {
         m_pStorageListener = new SRTStorageListener();
-        OS_Error err = m_pStorageListener->Initialize(INADDR_ANY, usStoragePort);
+        OS_Error err = m_pStorageListener->Initialize(INADDR_ANY, nStoragePort);
         if (err!=OS_NoErr) {
-            LE("CreateStorageListener error port:%d\n", usStoragePort);
+            LE("CreateStorageListener error port:%d\n", nStoragePort);
             delete m_pStorageListener;
             m_pStorageListener = NULL;
             return -1;
         }
-        LI("Start Storage service:(%d) ok...,socketFD:%d\n", usStoragePort, m_pStorageListener->GetSocketFD());
+        LI("Start Storage service:(%d) ok...,socketFD:%d\n", nStoragePort, m_pStorageListener->GetSocketFD());
         m_pStorageListener->RequestEvent(EV_RE);
     }
 	return 0;

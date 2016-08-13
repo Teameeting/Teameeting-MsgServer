@@ -3,6 +3,8 @@
 #include "TCPListenerSocket.h"
 #include "DRTModuleListener.h"
 #include "DRTTransferSession.h"
+#include "MsConfigParser.h"
+
 #include <iostream>
 
 class DRTMsgQueue
@@ -32,9 +34,7 @@ public:
 
 
 public:
-	int		Start(const char*pConnIp, unsigned short usConnPort
-                  , const char*pDispIp, unsigned short usDispPort
-                  , const char*pHttpIp, unsigned short usHttpPort);
+	int		Start(const MsConfigParser& conf);
 	void	DoTick();
 	void	Stop();
 

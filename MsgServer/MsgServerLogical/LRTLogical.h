@@ -2,6 +2,7 @@
 #define __MsgServerLogical_LRTLOGICAL_H__
 #include "TCPListenerSocket.h"
 #include "LRTLogicalListener.h"
+#include "MsConfigParser.h"
 
 #include <iostream>
 #include <map>
@@ -34,7 +35,7 @@ public:
 	static LRTLogical* Inst();
 
 public:
-	int		Start(const char*pSequenceIp, unsigned short usSequencePort, const char*pStorageIp, unsigned short usStoragePort, const char*pLogicalIp, unsigned short usLogicalPort);
+	int		Start(const MsConfigParser& conf);
 	void	DoTick();
 	void	Stop();
 

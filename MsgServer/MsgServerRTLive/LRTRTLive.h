@@ -3,6 +3,7 @@
 #include "TCPListenerSocket.h"
 #include "LRTRTLiveListener.h"
 #include "LRTGroupListener.h"
+#include "MsConfigParser.h"
 
 #include <iostream>
 #include <map>
@@ -35,7 +36,7 @@ public:
 	static LRTRTLive* Inst();
 
 public:
-	int		Start(const char*pGroupIp, unsigned short usGroupPort, const char*pRTLiveIp, unsigned short usRTLivePort, const char*pConnectorIp, unsigned short usConnectorPort, const char*pLogicalIp, unsigned short usLogicalPort, const char*pDispatcherIp, unsigned short usDispatcherPort);
+	int		Start(const MsConfigParser& conf);
 
 	void	DoTick();
 	void	Stop();

@@ -114,7 +114,7 @@ public:
     typedef UserSessionInfoMaps::iterator                                   UserSessionInfoMapsIt;
 
 
-    void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
+    void    SetConnectorInfo(const std::string& Ip, unsigned short port, const std::string& Id) { m_connectorIp = Ip;
         m_connectorPort = port;
         m_connectorId = Id;
     }

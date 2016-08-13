@@ -14,8 +14,6 @@ public:
 	CRTConnection(void);
 	virtual ~CRTConnection(void);
 
-	static std::string		gStrAddr;
-	static unsigned short	gUsPort;
 public:
     int SendDispatch(const std::string& id, const std::string& msg);
 public:

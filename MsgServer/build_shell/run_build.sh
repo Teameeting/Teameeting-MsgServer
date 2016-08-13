@@ -421,7 +421,6 @@ else
     logerr "building mscommonlib not running..."
 fi
 
-exit
 
 ####################    building msgserverconnector    ###########################
 if [ "yes"x = "yes"x ]
@@ -476,6 +475,97 @@ then
 else
     logerr "building msgservermeeting not running..."
 fi
+
+####################    building msgserverrtlive    ###########################
+if [ "yes"x = "yes"x ]
+then
+    SRC_PATH=$BASE_PATH/MsgServerRTLive
+    BUILD_NAME=MsgServerRTLive
+    PREFIX_PATH=$SRC_PATH/rtlive
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_gz rtlive
+else
+    logerr "building msgserverrtlive not running..."
+fi
+
+####################    building msgserverlogical    ###########################
+if [ "yes"x = "yes"x ]
+then
+    SRC_PATH=$BASE_PATH/MsgServerLogical
+    BUILD_NAME=MsgServerLogical
+    PREFIX_PATH=$SRC_PATH/logical
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_gz logical
+else
+    logerr "building msgserverlogical not running..."
+fi
+
+####################    building msgserversequence    ###########################
+if [ "yes"x = "yes"x ]
+then
+    SRC_PATH=$BASE_PATH/MsgServerSequence
+    BUILD_NAME=MsgServerSequence
+    PREFIX_PATH=$SRC_PATH/sequence
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_gz sequence
+else
+    logerr "building msgserversequence not running..."
+fi
+
+####################    building msgserverstorage    ###########################
+if [ "yes"x = "yes"x ]
+then
+    SRC_PATH=$BASE_PATH/MsgServerStorage
+    BUILD_NAME=MsgServerStorage
+    PREFIX_PATH=$SRC_PATH/storage
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_gz storage
+else
+    logerr "building msgserverstorage not running..."
+fi
+
+####################    building msgservergrouper    ###########################
+if [ "yes"x = "yes"x ]
+then
+    SRC_PATH=$BASE_PATH/MsgServerGrouper
+    BUILD_NAME=MsgServerGrouper
+    PREFIX_PATH=$SRC_PATH/grouper
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_gz grouper
+else
+    logerr "building msgservergrouper not running..."
+fi
+
 
 ####################    taring all.tar.gz to msgserver    ###########################
 if [ "yes"x = "yes"x ]

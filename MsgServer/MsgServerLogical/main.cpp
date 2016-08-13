@@ -16,14 +16,8 @@
 #define _TEST_ 1
 #endif
 
-static void sighandler(int sig_no)
-{
-    printf("catch sighandler:%d\n", sig_no);
-     exit(0);
-}
-
 int main(int argc, const char * argv[]) {
-    LI("Hello, Logical!!!\n");
+    printf("Hello, Logical!!!\n");
     LRTLogical::PrintVersion();
 
     if (argc <= 1) {
@@ -55,27 +49,22 @@ int main(int argc, const char * argv[]) {
 #if 0
     L_Init(0, NULL);
 #else
-    L_Init(0, "./logical.log");
+    L_Init(0, "./loglogical.log");
 #endif
+
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     LRTLogical::Initialize(1024);
     LRTLogical* pLogical = LRTLogical::Inst();
-    //////LI("server listen port:%u\n", RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon);
-    //int res = pLogical->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-    //                  RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon
-    //                  );
-    //signal(SIGUSR1, sighandler);
-    //signal(SIGUSR2, sighandler);
-    int res = pLogical->Start("192.168.7.207", 6650, "192.168.7.207", 6660, "192.168.7.207", 6670);
-    int test = 0;
+    int res = pLogical->Start(conf);
     if (res != 0) {
         LI("LRTLogical start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-#if 0
-    while (test++ < 60) {
-#else
+    //int test = 0;
+    //while (test++ < 60) {
     while (1) {
-#endif
         pLogical->DoTick();
         sleep(1);
         //break;

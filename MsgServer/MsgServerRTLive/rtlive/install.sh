@@ -24,6 +24,7 @@ cp -f rtlive.sh $SYS_BIN_PATH/rtlive.sh
 chmod 755 $SYS_BIN_PATH/rtlive.sh
 
 cp -f rtlive.conf $TARGET_CONF_PATH/
+cp -f params.conf $TARGET_CONF_PATH/
 cp -f bin/MsgServerRTLive $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
@@ -31,6 +32,7 @@ printf "UnInstall program....\r\n"
 rtlive.sh stop
 rm -f $SYS_BIN_PATH/rtlive.sh
 rm -f $TARGET_CONF_PATH/rtlive.conf
+rm -f $TARGET_CONF_PATH/params.conf
 rm -f $TARGET_BIN_PATH/MsgServerRTLive
 rm -rf $TARGET_PREFIX
 printf "UnInstall program ok!\r\n"

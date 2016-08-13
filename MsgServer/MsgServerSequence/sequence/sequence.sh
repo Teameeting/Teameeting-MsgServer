@@ -50,7 +50,7 @@ Start()
 	fi
 		
 	echo -n "Starting Sequence Server(MsgServerSequence): "
-	${RT_HOME}/MsgServerSequence ${RT_CONF}/sequence.conf & 2> /dev/null
+	${RT_HOME}/MsgServerSequence ${RT_CONF}/sequence.conf ${RT_CONF}/params.conf & 2> /dev/null
 	retval=$?
 	if [ ${retval} == 0 ]; then
 		echo_success

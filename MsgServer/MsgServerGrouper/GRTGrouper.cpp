@@ -122,19 +122,55 @@ GRTGrouper::~GRTGrouper(void)
     }
 }
 
-int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const char*pGroupMgrIp, unsigned short usGroupMgrPort, const char* pRedisIp, unsigned short usRedisPort)
+int	GRTGrouper::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pGrouperIp != NULL && strlen(pGrouperIp)>0);
-    GRTGrouperManager::Instance().InitManager(pRedisIp, usRedisPort);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    std::string strRedisIp1("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "grouper_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_int_ip1", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "grouper_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0 || strRedisIp1.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nGrouperPort = conf.GetIntVal("global", "listen_grouper_port", 6692);
+    int nGroupmgrPort = conf.GetIntVal("global", "listen_groupmgr_port", 6690);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+    int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    GRTGrouperManager::Instance().InitManager(strRedisIp1, nRedisPort1);
     GRTChannelManager::Instance().InitManager();
 
     std::string channel1("follow_group");
     std::string channel2("unfollow_group");
     std::string chKey1;
     std::string chKey2;
-    GRTSubChannel* ch1 = GRTChannelManager::Instance().GenSubChannel(pRedisIp, usRedisPort, channel1, chKey1);
-    GRTSubChannel* ch2 = GRTChannelManager::Instance().GenSubChannel(pRedisIp, usRedisPort, channel2, chKey2);
+    GRTSubChannel* ch1 = GRTChannelManager::Instance().GenSubChannel(strRedisIp1, nRedisPort1, channel1, chKey1);
+    GRTSubChannel* ch2 = GRTChannelManager::Instance().GenSubChannel(strRedisIp1, nRedisPort1, channel2, chKey2);
 
     if (ch1) {
         GRTChannelManager::Instance().AddChannel(chKey1, ch1);
@@ -150,23 +186,23 @@ int	GRTGrouper::Start(const char*pGrouperIp, unsigned short usGrouperPort, const
     }
 
     std::string ssid;
-    if (usGrouperPort > 0) {
+    if (nGrouperPort > 0) {
         m_pGrouperListener = new GRTGrouperListener();
-        OS_Error err = m_pGrouperListener->Initialize(INADDR_ANY, usGrouperPort);
+        OS_Error err = m_pGrouperListener->Initialize(INADDR_ANY, nGrouperPort);
         if (err!=OS_NoErr) {
-            LE("CreateGrouperListener error port:%d\n", usGrouperPort);
+            LE("CreateGrouperListener error port:%d\n", nGrouperPort);
             delete m_pGrouperListener;
             m_pGrouperListener = NULL;
             return -1;
         }
-        LI("Start Grouper service:(%d) ok...,socketFD:%d\n", usGrouperPort, m_pGrouperListener->GetSocketFD());
+        LI("Start Grouper service:(%d) ok...,socketFD:%d\n", nGrouperPort, m_pGrouperListener->GetSocketFD());
         m_pGrouperListener->RequestEvent(EV_RE);
     }
 
-    if(usGroupMgrPort > 0)
+    if(nGroupmgrPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pGroupMgrIp, usGroupMgrPort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nGroupmgrPort);
         GRTConnManager::Instance().GetGroupMgrAddrList()->push_front(addr);
 
         LI("ConnectGroupMgr was called...\n");

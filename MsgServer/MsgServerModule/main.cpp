@@ -16,17 +16,11 @@
 #define _TEST_ 1
 #endif
 
-static void sighandler(int sig_no)
-{
-    LI("catch sighandler:%d\n", sig_no);
-     exit(0);
-}
-
 int main(int argc, const char * argv[]) {
-    LI("Hello, Module!!!\n");
+    printf("Hello, Module!!!\n");
     MRTModule::PrintVersion();
 
-    if (argc <= 1) {
+    if (argc <= 2) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -55,27 +49,21 @@ int main(int argc, const char * argv[]) {
 #if 0
     L_Init(0, NULL);
 #else
-    L_Init(0, "./logical.log");
+    L_Init(0, "./logmodule.log");
 #endif
+
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
     MRTModule::Initialize(1024);
     MRTModule* pModule = MRTModule::Inst();
-    //////LI("server listen port:%u\n", RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon);
-    //int res = pModule->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-    //                  RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon
-    //                  );
-    //signal(SIGUSR1, sighandler);
-    //signal(SIGUSR2, sighandler);
-    int res = pModule->Start("192.168.7.207", 6650, "192.168.7.207", 6660, "192.168.7.207", 6670);
-    int test = 0;
+    int res = pModule->Start(conf);
     if (res != 0) {
         LI("MRTModule start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-#if 0
-    while (test++ < 60) {
-#else
+    //int test = 0;
+    //while (test++ < 60) {
     while (1) {
-#endif
         pModule->DoTick();
         sleep(1);
         //break;

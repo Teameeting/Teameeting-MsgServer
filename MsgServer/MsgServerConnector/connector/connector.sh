@@ -50,7 +50,7 @@ Start()
 	fi
 		
 	echo -n "Starting Connector Server(MsgServerConnector): "
-	${RT_HOME}/MsgServerConnector ${RT_CONF}/connector.conf & 2> /dev/null
+	${RT_HOME}/MsgServerConnector ${RT_CONF}/connector.conf ${RT_CONF}/params.conf & 2> /dev/null
 	retval=$?
 	if [ ${retval} == 0 ]; then
 		echo_success

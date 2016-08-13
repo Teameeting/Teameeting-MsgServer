@@ -119,27 +119,55 @@ MRTModule::~MRTModule(void)
     }
 }
 
-int	MRTModule::Start(const char*pSequenceIp, unsigned short usSequencePort, const char*pStorageIp, unsigned short usStoragePort, const char*pModuleIp, unsigned short usModulePort)
+int	MRTModule::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    std::string strRedisIp1("");
+    if (debug)
+    {
+        strLocalIp = conf.GetValue("global", "module_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_int_ip1", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "module_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nModulePort = conf.GetIntVal("global", "listen_module_port", 8888);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 9999);
+    int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
     MRTModuleManager::Instance().InitManager();
 
-    char *ip1 = "192.168.7.213";
-    char *ip2 = "192.168.7.225";
-    int port = 6379;
-
     char addr[24] = {0};
-    sprintf(addr, "%s %d", ip1, port);
+    sprintf(addr, "%s %d", strLocalIp.c_str(), nRedisPort1);
     MRTModuleManager::Instance().PushRedisHosts(addr);
-    //memset(addr, 0, 24);
-    //sprintf(addr, "%s %d", ip2, port);
-    //MRTModuleManager::Instance().PushRedisHosts(addr);
 
-	if(usSequencePort > 0)
+	if(nModulePort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pSequenceIp, usSequencePort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nModulePort);
         MRTConnManager::Instance().GetSequenceAddrList()->push_front(addr);
 
         if (!(MRTConnManager::Instance().ConnectSequence())) {
@@ -148,10 +176,10 @@ int	MRTModule::Start(const char*pSequenceIp, unsigned short usSequencePort, cons
         }
 	}
 
-    if(usStoragePort > 0)
+    if(nModulePort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pStorageIp, usStoragePort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nModulePort);
         MRTConnManager::Instance().GetStorageAddrList()->push_front(addr);
 
         if (!(MRTConnManager::Instance().ConnectStorage())) {
@@ -161,16 +189,16 @@ int	MRTModule::Start(const char*pSequenceIp, unsigned short usSequencePort, cons
 	}
 
     std::string ssid;
-    if (usModulePort > 0) {
+    if (nModulePort > 0) {
         m_pModuleListener = new MRTModuleListener();
-        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
+        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, nModulePort);
         if (err!=OS_NoErr) {
-            LE("CreateModuleListener error port:%d\n", usModulePort);
+            LE("CreateModuleListener error port:%d\n", nModulePort);
             delete m_pModuleListener;
             m_pModuleListener = NULL;
             return -1;
         }
-        LI("Start Module service:(%d) ok...,socketFD:%d\n", usModulePort, m_pModuleListener->GetSocketFD());
+        LI("Start Module service:(%d) ok...,socketFD:%d\n", nModulePort, m_pModuleListener->GetSocketFD());
         m_pModuleListener->RequestEvent(EV_RE);
     }
 	return 0;

@@ -119,16 +119,48 @@ LRTLogical::~LRTLogical(void)
     }
 }
 
-int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, const char*pStorageIp, unsigned short usStoragePort, const char*pLogicalIp, unsigned short usLogicalPort)
+int	LRTLogical::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pLogicalIp != NULL && strlen(pLogicalIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "logical_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "logical_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nSequencePort = conf.GetIntVal("global", "listen_sequence_port", 6650);
+    int nStoragePort = conf.GetIntVal("global", "listen_storage_port", 6660);
+    int nLogicalPort = conf.GetIntVal("global", "listen_logical_port", 6670);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
     LRTLogicalManager::Instance().InitManager();
 
-	if(usSequencePort > 0)
+	if(nSequencePort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pSequenceIp, usSequencePort);
+        sprintf(addr, "%s %d", strLocalIp.c_str(), nSequencePort);
         LRTConnManager::Instance().GetSequenceAddrList()->push_front(addr);
 
         if (!(LRTConnManager::Instance().ConnectSequence())) {
@@ -138,10 +170,10 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
 	}
     LI("SequenceServer should already be connected!!!\n\n");
 
-    if(usStoragePort > 0)
+    if(nStoragePort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", pStorageIp, usStoragePort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nStoragePort);
         LRTConnManager::Instance().GetStorageAddrList()->push_front(addr);
 
         if (!(LRTConnManager::Instance().ConnectStorage())) {
@@ -152,16 +184,16 @@ int	LRTLogical::Start(const char*pSequenceIp, unsigned short usSequencePort, con
     LI("StorageServer should already be connected!!!\n\n");
 
     std::string ssid;
-    if (usLogicalPort > 0) {
+    if (nLogicalPort > 0) {
         m_pLogicalListener = new LRTLogicalListener();
-        OS_Error err = m_pLogicalListener->Initialize(INADDR_ANY, usLogicalPort);
+        OS_Error err = m_pLogicalListener->Initialize(INADDR_ANY, nLogicalPort);
         if (err!=OS_NoErr) {
-            LE("CreateLogicalListener error port:%d\n", usLogicalPort);
+            LE("CreateLogicalListener error port:%d\n", nLogicalPort);
             delete m_pLogicalListener;
             m_pLogicalListener = NULL;
             return -1;
         }
-        LI("Start Logical service:(%d) ok...,socketFD:%d\n", usLogicalPort, m_pLogicalListener->GetSocketFD());
+        LI("Start Logical service:(%d) ok...,socketFD:%d\n", nLogicalPort, m_pLogicalListener->GetSocketFD());
         m_pLogicalListener->RequestEvent(EV_RE);
     }
 	return 0;

@@ -32,9 +32,16 @@ MsgServer/MsgServerDispatcher/dispatcher/bin
 MsgServer/MsgServerMeeting/MsgServerMeeting
 MsgServer/MsgServerMeeting/meeting/bin
 MsgServer/MsgServerSequence/MsgServerSequence
+MsgServer/MsgServerSequence/sequence/bin
 MsgServer/MsgServerStorage/MsgServerStorage
+MsgServer/MsgServerStorage/storage/bin
 MsgServer/MsgServerLogical/MsgServerLogical
+MsgServer/MsgServerLogical/logical/bin
 MsgServer/MsgServerRTLive/MsgServerRTLive
+MsgServer/MsgServerRTLive/rtlive/bin
 MsgServer/MsgServerGrouper/MsgServerGrouper
+MsgServer/MsgServerGrouper/grouper/bin
+MsgServer/MsgServerModule/MsgServerModule
+MsgServer/MsgServerModule/module/bin
 MsgServer/MsgServer/MSCommon/MSThirdParty/xredis/examples/demo
 MsgServer/MsgServer/MSCommon/MSThirdParty/xredis/examples/xredis-example

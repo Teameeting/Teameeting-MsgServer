@@ -2,6 +2,7 @@
 #define __MsgServerStorage_SRTSTORAGE_H__
 #include "TCPListenerSocket.h"
 #include "SRTStorageListener.h"
+#include "MsConfigParser.h"
 
 #include <iostream>
 #include <map>
@@ -34,7 +35,7 @@ public:
 	static SRTStorage* Inst();
 
 public:
-	int		Start(const char*pStorageIp, unsigned short usStoragePort);
+	int		Start(const MsConfigParser& conf);
 	void	DoTick();
 	void	Stop();
 

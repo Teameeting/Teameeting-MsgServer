@@ -12,8 +12,6 @@
 #include "CRTConnectionTcp.h"
 #include "rtklog.h"
 
-std::string CRTDispatchConnection::m_connIp;
-std::string CRTDispatchConnection::m_connPort;
 
 void CRTDispatchConnection::DispatchMsg(const std::string& uid, const std::string& msg)
 {

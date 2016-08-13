@@ -16,17 +16,11 @@
 #define _TEST_ 1
 #endif
 
-static void sighandler(int sig_no)
-{
-    LI("catch sighandler:%d\n", sig_no);
-     exit(0);
-}
-
 int main(int argc, const char * argv[]) {
     LI("Hello, RTLive!!!\n");
     LRTRTLive::PrintVersion();
 
-    if (argc <= 1) {
+    if (argc <= 2) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -55,28 +49,22 @@ int main(int argc, const char * argv[]) {
 #if 0
     L_Init(0, NULL);
 #else
-    L_Init(0, "./ms_rtlive.log");
+    L_Init(0, "./logrtlive.log");
 #endif
+
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     LRTRTLive::Initialize(1024);
     LRTRTLive* pRTLive = LRTRTLive::Inst();
-    //////LI("server listen port:%u\n", RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon);
-    //int res = pRTLive->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-    //                  RTZKClient::Instance().GetServerConfig().portConfig.storage.ListenClicon
-    //                  );
-    //signal(SIGUSR1, sighandler);
-    //signal(SIGUSR2, sighandler);
-    //6690 for group client module
-    int res = pRTLive->Start("192.168.7.207", 6690, "192.168.7.207", 6680, "192.168.7.207", 6620, "192.168.7.207", 6670, "192.168.7.207", 6640);
+    int res = pRTLive->Start(conf);
     int test = 0;
     if (res != 0) {
         LI("LRTRTLive start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-#if 0
-    while (test++ < 60) {
-#else
+    //while (test++ < 60) {
     while (1) {
-#endif
         pRTLive->DoTick();
         sleep(1);
         //break;

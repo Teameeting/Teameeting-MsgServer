@@ -2,6 +2,7 @@
 #define __MsgServerGrouper_GRTGROUPER_H__
 #include "TCPListenerSocket.h"
 #include "GRTGrouperListener.h"
+#include "MsConfigParser.h"
 
 #include <iostream>
 #include <map>
@@ -34,7 +35,7 @@ public:
 	static GRTGrouper* Inst();
 
 public:
-	int		Start(const char*pGrouperIp, unsigned short usGrouperPort, const char*pGroupMgrIp, unsigned short usGroupMgrPort, const char* pRedisIp, unsigned short usRedisPort);
+	int		Start(const MsConfigParser& conf);
 	void	DoTick();
 	void	Stop();
 

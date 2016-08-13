@@ -2,6 +2,7 @@
 #define __MsgServerSequence_SRTSEQUENCE_H__
 #include "TCPListenerSocket.h"
 #include "SRTSequenceListener.h"
+#include "MsConfigParser.h"
 
 #include <iostream>
 #include <map>
@@ -34,7 +35,7 @@ public:
 	static SRTSequence* Inst();
 
 public:
-	int		Start(const char*pSequenceIp, unsigned short usSequencePort);
+	int		Start(const MsConfigParser& conf);
 	void	DoTick();
 	void	Stop();
 

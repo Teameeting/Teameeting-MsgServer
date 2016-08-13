@@ -43,6 +43,7 @@ libMSCommon_a_SOURCES= \
 				$(top_srcdir)/MSCommon/MSBase/RTTransfer.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTLstorage.cpp \
 				$(top_srcdir)/MSCommon/MSBase/RTZKClient.cpp \
+				$(top_srcdir)/MSCommon/MSBase/MsConfigParser.cpp \
 				$(top_srcdir)/MSCommon/MSHttp/RTHttp.cpp \
 				$(top_srcdir)/MSCommon/MSHttp/RTConnHttp.cpp \
 				$(top_srcdir)/MSCommon/MSHttp/RTHttpSender.cpp \

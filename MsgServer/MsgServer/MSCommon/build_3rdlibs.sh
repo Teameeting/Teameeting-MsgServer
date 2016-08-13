@@ -134,6 +134,7 @@ then
     sh build.sh
 fi
 build_lib $LIB_SRC_PATH $LIB_NAME
+cd $LIB_SRC_PATH
 rm -rf CMakeCache.txt  CMakeFiles  cmake_install.cmake
 if [ $? -ne 0 ]
 then
