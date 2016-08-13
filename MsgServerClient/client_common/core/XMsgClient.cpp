@@ -142,7 +142,7 @@ int XMsgClient::RmvGroup(const std::string& groupid)
 
 int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag)
 {
-    if (msg.length()>1024 || grpname.length()>128) {
+    if (groupid.length()==0 || msg.length()==0 || msg.length()>1024 || grpname.length()>128) {
         return -2;
     }
     std::string outstr;
@@ -165,7 +165,7 @@ int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const 
 
 int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec)
 {
-    if (msg.length()>1024 || grpname.length()>128) {
+    if (groupid.length()==0 || msg.length()==0 || msg.length()>1024 || grpname.length()>128) {
         return -2;
     }
     if (uvec.size()==0) {
@@ -542,7 +542,16 @@ void XMsgClient::OnHelpKeepLive(int code, const std::string& cont)
 void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont))
+    {
+        printf("OnHelpSyncSeqn store.ParseFromString error\n");
+        return;
+    }
+    if (store.result()!=0)
+    {
+        printf("OnHelpSyncSeqn store.result is not 0, get msg error\n");
+        return;
+    }
     printf("XMsgClient::OnHelpSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld\n"\
             , store.ruserid().c_str(), store.sequence(), store.maxseqn());
     printf("XMsgClient::OnHelpSyncSeqn should be equal here???\n");
@@ -642,14 +651,21 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
 void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont))
+    {
+        printf("OnHelpSyncData store.ParseFromString error\n");
+        return;
+    }
+    if (store.result()!=0)
+    {
+        printf("OnHelpSyncData store.result is not 0, get msg error\n");
+        return;
+    }
     printf("XMsgClient::OnHelpSyncData ruserid:%s, storeid:%s, sequence:%lld, maxseqn:%lld\n\n"\
             , store.ruserid().c_str()\
             , store.storeid().c_str()\
             , store.sequence()\
             , store.maxseqn());
-    printf("XMsgClient::OnHelpSyncData should be equal here???\n");
-    //assert(store.maxseqn()>=m_curSeqn);// ???????
 
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
@@ -674,7 +690,16 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
 void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont))
+    {
+        printf("OnHelpSyncGroupData store.ParseFromString error\n");
+        return;
+    }
+    if (store.result()!=0)
+    {
+        printf("OnHelpSyncGroupData store.result is not 0, get msg error\n");
+        return;
+    }
     printf("XMsgClient::OnHelpSyncGroupData ruserid:%s, groupid:%s, storeid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
             , store.ruserid().c_str()\
             , store.groupid().c_str()\
@@ -707,7 +732,16 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
 void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont))
+    {
+        printf("OnHelpGroupNotify store.ParseFromString error\n");
+        return;
+    }
+    if (store.result()!=0)
+    {
+        printf("OnHelpGroupNotify store.result is not 0, get msg error\n");
+        return;
+    }
     printf("XMsgClient::OnHelpGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n\n"\
            , store.ruserid().c_str()\
            , store.groupid().c_str()\
@@ -716,11 +750,14 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
            , store.sequence());
     if (m_pCallback)
     {
+        printf("XMsgClient::OnHelpGroupNotify finding...store.groupid:%s\n", store.groupid().c_str());
         UserSeqnMapIt it = m_gUserSeqnMap.find(store.groupid());
         if (it != m_gUserSeqnMap.end())
         {
             printf("XMsgClient::OnHelpGroupNotify SyncGroupSeqn was called, grouid:%s, seqn:%lld\n", it->first.c_str(), it->second);
             SyncGroupSeqn(it->first, it->second, pms::EMsgRole::RSENDER);
+        } else {
+            printf("XMsgClient::OnHelpGroupNotify not find store.groupid:%s\n", store.groupid().c_str());
         }
     } else {
         printf("XMsgClient::OnHelpGroupNotify m_pCallback is null\n");

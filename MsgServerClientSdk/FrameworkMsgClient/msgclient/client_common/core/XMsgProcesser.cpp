@@ -291,6 +291,7 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
     pms::MsgRep resp;
     if (!resp.ParseFromString(strmsg)) {
         LOG(LS_ERROR) << "RecvData resp.ParseFromString error!";
+        return -1;
     }
     switch (resp.svr_cmds()) {
         case pms::EServerCmd::CLOGIN:

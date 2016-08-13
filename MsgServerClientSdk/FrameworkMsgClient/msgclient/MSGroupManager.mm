@@ -25,13 +25,13 @@
 
 -(void)addGroupGrpId:(NSString*)grpId
 {
-    if (nil==grpId) return;
+    if (nil==grpId || [grpId length]==0) return;
     MsgClient::Instance().MCAddGroup([grpId UTF8String]);
 }
 
 -(void)rmvGroupGrpId:(NSString*)grpId
 {
-    if (nil==grpId) return;
+    if (nil==grpId || [grpId length]==0) return;
     MsgClient::Instance().MCRmvGroup([grpId UTF8String]);
 }
 

@@ -192,8 +192,13 @@ private:
             SyncedMsgMapIt it = m_uSyncedMsgMap.find(sk);
             if (it != m_uSyncedMsgMap.end())
             {
-                pms::Entity en;// = it->second.content();
-                en.ParseFromString(it->second.content());
+                pms::Entity en;
+                if (!en.ParseFromString(it->second.content()))
+                {
+                    printf("UUpdateUserSeqn en.ParseFromString error\n");
+                    m_uSyncedMsgMap.erase(sk);
+                    continue;
+                }
                 // find curSeqn+1 msg, update curSeqn, and callback this msg, and continue
                 itCurSeqn->second += 1;
                 printf("UUpdateUserSeqn update here, itCurSeqn is:%lld\n", itCurSeqn->second);
@@ -266,10 +271,24 @@ private:
             SyncedMsgMapIt it = m_gSyncedMsgMap.find(sk);
             if (it != m_gSyncedMsgMap.end())
             {
-                pms::Entity en;// = it->second.content();
-                en.ParseFromString(it->second.content());
+                pms::Entity en;
+                if (!en.ParseFromString(it->second.content()))
+                {
+                    printf("GUpdateUserSeqn en.ParseFromString error\n");
+                    m_gSyncedMsgMap.erase(sk);
+                    continue;
+                }
                 // find curSeqn+1 msg, update curSeqn, and callback this msg, and continue
                 itCurSeqn->second += 1;
+                // in case of groupid or rom_id length is 0
+                // and the groupid and rom_id MUST be equal
+                // theoretically, this should not be happened
+                if (it->second.groupid().length()==0 || en.rom_id().length()==0)
+                {
+                    printf("GUpdateUserSeqn groupid or rom_id is 0, error\n");
+                    m_gSyncedMsgMap.erase(sk);
+                    continue;
+                }
                 printf("GUpdateUserSeqn update here, itCurSeqn is:%lld, ruserid:%s, fromid:%s, it.groupid:%s, en.romid:%s\n", itCurSeqn->second, it->second.ruserid().c_str(), en.usr_from().c_str(), it->second.groupid().c_str(), en.rom_id().c_str());
                 assert(it->second.groupid().compare(en.rom_id())==0);
                 if (m_uid.compare(en.usr_from())==0)

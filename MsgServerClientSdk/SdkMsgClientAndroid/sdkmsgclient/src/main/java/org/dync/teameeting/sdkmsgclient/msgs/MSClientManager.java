@@ -20,6 +20,7 @@ public class MSClientManager {
      */
     public int initMsgClient(Context context, String usrId, String token, String nName) {
         System.out.println("MsgClient Android Version:v1.0.0");
+        if (usrId.length()==0 || token.length()==0 || nName.length()==0) return -101;
         MsgClient.getInstance().MCInit(context, usrId, token, nName);
         MsgClient.getInstance().MCRegisterMsgCb();
         return 0;
@@ -77,6 +78,7 @@ public class MSClientManager {
      *      -101: params is null
      */
     public int connToServer(String server, int port) {
+        if (server.length()==0 || port <0) return -101;
         return MsgClient.getInstance().MCConnToServer(server, port);
     }
 
@@ -117,7 +119,8 @@ public class MSClientManager {
      *  return:
      *      void
      */
-    public void setToken(String strToken) { MsgClient.getInstance().MCSetToken(strToken); }
+    public void setToken(String strToken) { if (strToken.length()==0) return;
+        MsgClient.getInstance().MCSetToken(strToken); }
 
     /**
      *  set user nick name
@@ -128,7 +131,8 @@ public class MSClientManager {
      *  return:
      *      void
      */
-    public void setNickName(String strNname) { MsgClient.getInstance().MCSetNickName(strNname); }
+    public void setNickName(String strNname) { if (strNname.length()==0) return;
+        MsgClient.getInstance().MCSetNickName(strNname); }
 
     /**
      *  set user icon url
@@ -139,5 +143,6 @@ public class MSClientManager {
      *  return:
      *      void
      */
-    public void setUIconUrl(String strUicon) { MsgClient.getInstance().MCSetUIconUrl(strUicon); }
+    public void setUIconUrl(String strUicon) { if (strUicon.length()==0) return;
+        MsgClient.getInstance().MCSetUIconUrl(strUicon); }
 }

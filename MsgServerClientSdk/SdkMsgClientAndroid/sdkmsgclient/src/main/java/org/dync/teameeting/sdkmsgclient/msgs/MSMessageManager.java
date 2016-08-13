@@ -72,6 +72,7 @@ public class MSMessageManager {
      *      -101: grpId or content is null
      */
     public String sendTxtMsg(String grpId, String content) {
+        if (grpId.length()==0 || content.length()==0) return "";
         return MsgClient.getInstance().MCSendTxtMsg(grpId, content);
     }
 
@@ -91,6 +92,7 @@ public class MSMessageManager {
      *      -101: grpId or users or content is null
      */
     public String sendTxtMsgTos(String grpId, String[] userIds, String content) {
+        if (grpId.length()==0 || userIds.length==0 || content.length()==0) return "";
         return MsgClient.getInstance().MCSendTxtMsgTos(grpId, userIds, content);
     }
 
@@ -109,6 +111,7 @@ public class MSMessageManager {
      *      -101: usrId or content is null
      */
     public String sendTxtMsgToUser(String usrId, String content) {
+        if (usrId.length()==0 || content.length()==0) return "";
         return MsgClient.getInstance().MCSendTxtMsgToUsr(usrId, content);
     }
 
@@ -127,6 +130,7 @@ public class MSMessageManager {
      *      -101: usrIds or content is null
      */
     public String sendTxtMsgToUsers(String[] usrIds, String content) {
+        if (usrIds.length==0 || content.length()==0) return "";
         return MsgClient.getInstance().MCSendTxtMsgToUsrs(usrIds, content);
     }
 
@@ -145,6 +149,7 @@ public class MSMessageManager {
      *      -101: grpId or hostId is null
      */
     public String sendNotifyLive(String grpId, String hostId) {
+        if (grpId.length()==0 || hostId.length()==0) return "";
         return MsgClient.getInstance().MCNotifyLive(grpId, hostId);
     }
 
@@ -165,6 +170,7 @@ public class MSMessageManager {
      *      -101: grpId or hostId or cash or cont is null
      */
     public String sendNotifyRedEnvelope(String grpId, String hostId, String cash, String cont) {
+        if (grpId.length()==0 || hostId.length()==0 || cash.length()==0 || cont.length()==0) return "";
         return MsgClient.getInstance().MCNotifyRedEnvelope(grpId, hostId, cash, cont);
     }
 
@@ -184,6 +190,7 @@ public class MSMessageManager {
      *      -101: grpId or userId or notifys is null
      */
     public String sendNotifyBlacklist(String grpId, String userId, String[] notifys) {
+        if (grpId.length()==0 || userId.length()==0 || notifys.length==0) return "";
         return MsgClient.getInstance().MCNotifyBlacklist(grpId, userId, notifys);
     }
 
@@ -203,6 +210,7 @@ public class MSMessageManager {
      *      -101: grpId or userId or notifys is null
      */
     public String sendNotifyForbidden(String grpId, String userId, String[] notifys) {
+        if (grpId.length()==0 || userId.length()==0 || notifys.length==0) return "";
         return MsgClient.getInstance().MCNotifyForbidden(grpId, userId, notifys);
     }
 
@@ -221,6 +229,7 @@ public class MSMessageManager {
      *      -101: grpId or userId or notifys is null
      */
     public String sendNotifySettedMgr(String grpId, String userId) {
+        if (grpId.length()==0 || userId.length()==0) return "";
         String[] notifys = {};
         return MsgClient.getInstance().MCNotifySettedMgr(grpId, userId, notifys);
     }

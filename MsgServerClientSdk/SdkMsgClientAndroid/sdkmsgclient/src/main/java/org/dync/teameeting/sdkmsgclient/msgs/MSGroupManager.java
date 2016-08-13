@@ -40,6 +40,7 @@ public class MSGroupManager {
      *      void
      */
     public void addGroup(String grpId) {
+        if (grpId.length()==0) return;
         MsgClient.getInstance().MCAddGroup(grpId);
     }
 
@@ -53,6 +54,7 @@ public class MSGroupManager {
      *      void
      */
     public void rmvGroup(String grpId) {
+        if (grpId.length()==0) return;
         MsgClient.getInstance().MCRmvGroup(grpId);
     }
 }
