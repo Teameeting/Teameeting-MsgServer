@@ -162,9 +162,9 @@ int MsgClient::MCSendTxtMsgToUsrs(std::string& outmsgid, const std::vector<std::
 }
 
 
-int MsgClient::MCNotifyLive(std::string& outmsgid, const std::string& groupid, const std::string& hostid)
+int MsgClient::MCNotifyLive(std::string& outmsgid, const std::string& groupid, const std::string& hostid, int flag)
 {
-    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] msgType:MCMsgTypeTliv];
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:hostid.c_str()] flag:flag msgType:MCMsgTypeTliv];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     
     if (!jsonString)
@@ -190,7 +190,7 @@ int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, const std::string& gro
     return SndMsg(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tren, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
 }
 
-int MsgClient::MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys)
+int MsgClient::MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys)
 {
     std::vector<std::string> uvec;
     uvec.push_back(userid);
@@ -198,7 +198,7 @@ int MsgClient::MCNotifyBlacklist(std::string& outmsgid, const std::string& group
         uvec.push_back(it);
     }
     
-    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()] msgType:MCMsgTypeTblk];
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()] flag:flag msgType:MCMsgTypeTblk];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     
     if (!jsonString)
@@ -210,7 +210,7 @@ int MsgClient::MCNotifyBlacklist(std::string& outmsgid, const std::string& group
     return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, uvec);
 }
 
-int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys)
+int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys)
 {
     std::vector<std::string> uvec;
     uvec.push_back(userid);
@@ -218,7 +218,7 @@ int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& group
         uvec.push_back(it);
     }
     
-    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()] msgType:MCMsgTypeTfbd];
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()] flag:flag msgType:MCMsgTypeTfbd];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     
     if (!jsonString)
@@ -230,9 +230,9 @@ int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& group
     return SndMsgTo(outmsgid, groupid, "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, uvec);
 }
 
-int MsgClient::MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid, const std::vector<std::string>& notifys)
+int MsgClient::MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys)
 {
-    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()] msgType:MCMsgTypeTmgr];
+    MSTxtMessage *txtMsg = [MSMsgUtil EncodeMessageWithGroupId:[NSString stringWithUTF8String:groupid.c_str()] userId:[NSString stringWithUTF8String:userid.c_str()] flag:flag msgType:MCMsgTypeTmgr];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[txtMsg mj_keyValues]];
     
     if (!jsonString)

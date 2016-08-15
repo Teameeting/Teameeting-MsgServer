@@ -131,8 +131,9 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
+        int flag = 1;
         String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifyLive(groupid, touser);
+        String outmsgid = mMsMessageManager.sendNotifyLive(groupid, touser, 1);
         System.out.println("NotifyMsgLive sendNotifyLive get msgid:"+outmsgid);
     }
 
@@ -153,10 +154,11 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
+        int flag = 1;
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendNotifyBlacklist(groupid, touser1, arr);
+        String outmsgid = mMsMessageManager.sendNotifyBlacklist(groupid, touser1, flag, arr);
         System.out.println("NotifyMsgBlacklist sendNotifyBlacklist get msgid:"+outmsgid);
     }
 
@@ -165,10 +167,11 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
+        int flag = 1;
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendNotifyForbidden(groupid, touser1, arr);
+        String outmsgid = mMsMessageManager.sendNotifyForbidden(groupid, touser1, flag, arr);
         System.out.println("NotifyMsgForbidden sendNotifyForbidden get msgid:"+outmsgid);
     }
 
@@ -177,9 +180,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
 
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
+        int flag = 1;
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser1);
+        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser1, flag);
         System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 

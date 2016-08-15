@@ -23,6 +23,7 @@
 @synthesize wishcont = _wishcont;
 @synthesize millSec = _millSec;
 @synthesize msgType = _msgType;
+@synthesize flag = _flag;
 MJExtensionLogAllProperties
 
 @end

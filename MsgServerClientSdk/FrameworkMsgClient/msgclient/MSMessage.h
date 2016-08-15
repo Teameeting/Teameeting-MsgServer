@@ -39,6 +39,8 @@
 
 @property (nonatomic) MCMsgType   msgType;
 
+@property (nonatomic) int         flag;
+
 @end
 
 #endif /* MSMessage_h */

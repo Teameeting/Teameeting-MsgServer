@@ -37,11 +37,13 @@
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
                                    userId:(NSString*)userId
-                                     cash:(NSString*)cash
-                                     cont:(NSString*)cont
+                                     flag:(int)flag
                                   msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
+                                   userId:(NSString*)userId
+                                     cash:(NSString*)cash
+                                     cont:(NSString*)cont
                                   msgType:(MCMsgType)msgType;
 
 + (MSTxtMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict;

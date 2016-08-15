@@ -140,6 +140,7 @@
  *  params:
  *      grpId: the group id you are in
  *      hostId: the id of the host who is living, here means yourself id
+ *      flag: 1, the host begin live, 0, the host end live
  *      cmsgid: the msgid of the message you send
  *      after invoke, you will get the id of this message
  *
@@ -150,6 +151,7 @@
  */
 -(int)sendNotifyLiveGrpId:(NSString*)grpId
                    hostId:(NSString*)hostId
+                     flag:(int)flag
                    cmsgid:(NSString**)cmsgid;
 
 /**
@@ -180,6 +182,7 @@
  *  params:
  *      grpId: the group id you are in
  *      userId: the user you want to pull blacklist
+ *      flag: 1, set to blacklist, 0, cancel blacklist 
  *      notifys: the users you want to notify, want them to know, usually group managers or group owner
  *      cmsgid: the msgid of the message you send
  *      after invoke, you will get the id of this message
@@ -191,6 +194,7 @@
  */
 -(int)sendNotifyBlacklistGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                          flag:(int)flag
                        notifys:(NSArray*)notifys
                         cmsgid:(NSString**)cmsgid;
 
@@ -200,6 +204,7 @@
  *  params:
  *      grpId: the group id you are in
  *      userId: the user you want to forbidden talk in this group
+ *      flag: 1, forbidden user, 0, cancel forbidden
  *      notifys: the users you want to notify, want them to know, usually group managers or group owner
  *      cmsgid: the msgid of the message you send
  *      after invoke, you will get the id of this message
@@ -211,6 +216,7 @@
  */
 -(int)sendNotifyForbiddenGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                          flag:(int)flag
                        notifys:(NSArray*)notifys
                         cmsgid:(NSString**)cmsgid;
 
@@ -220,6 +226,7 @@
  *  params:
  *      grpId: the group id you are in
  *      userId: the user you want to set to be manager
+ *      flag: 1, set user mgr, 0, set user not mgr
  *      cmsgid: the msgid of the message you send
  *      after invoke, you will get the id of this message
  *
@@ -230,6 +237,7 @@
  */
 -(int)sendNotifySettedMgrGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                          flag:(int)flag
                         cmsgid:(NSString**)cmsgid;
 
 @end

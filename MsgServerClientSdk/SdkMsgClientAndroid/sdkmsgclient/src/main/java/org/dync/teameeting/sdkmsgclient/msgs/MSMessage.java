@@ -17,6 +17,7 @@ public class MSMessage {
 
     private int    millSec;//send second
     private int    msgType;
+    private int    flag;
 
     public MSMessage() {
     }
@@ -114,4 +115,8 @@ public class MSMessage {
     public void setMsgType(int msgType) {
         this.msgType = msgType;
     }
+
+    public int getFlag() { return flag; }
+
+    public void setFlag(int flag) { this.flag = flag; }
 }

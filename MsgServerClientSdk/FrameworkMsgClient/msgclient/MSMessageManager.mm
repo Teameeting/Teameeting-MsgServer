@@ -92,12 +92,13 @@
 
 -(int)sendNotifyLiveGrpId:(NSString*)grpId
                    hostId:(NSString*)hostId
+                     flag:(int)flag
                    cmsgid:(NSString *__autoreleasing *)cmsgid
 {
     if ((nil==grpId || [grpId length]==0)||(nil==hostId || [hostId length]==0)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
-    int res = MsgClient::Instance().MCNotifyLive(msgid, [grpId UTF8String], [hostId UTF8String]);
+    int res = MsgClient::Instance().MCNotifyLive(msgid, [grpId UTF8String], [hostId UTF8String], flag);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }
@@ -118,6 +119,7 @@
 
 -(int)sendNotifyBlacklistGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                          flag:(int)flag
                        notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
@@ -128,13 +130,14 @@
     for (NSString* name in notifys) {
         vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
     }
-    int res = MsgClient::Instance().MCNotifyBlacklist(msgid, [grpId UTF8String], [userId UTF8String], vusers);
+    int res = MsgClient::Instance().MCNotifyBlacklist(msgid, [grpId UTF8String], [userId UTF8String], flag, vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }
 
 -(int)sendNotifyForbiddenGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                          flag:(int)flag
                        notifys:(NSArray*)notifys
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
@@ -145,20 +148,21 @@
     for (NSString* name in notifys) {
         vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
     }
-    int res = MsgClient::Instance().MCNotifyForbidden(msgid, [grpId UTF8String], [userId UTF8String], vusers);
+    int res = MsgClient::Instance().MCNotifyForbidden(msgid, [grpId UTF8String], [userId UTF8String], flag, vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }
 
 -(int)sendNotifySettedMgrGrpId:(NSString*)grpId
                         userId:(NSString*)userId
+                          flag:(int)flag
                         cmsgid:(NSString *__autoreleasing *)cmsgid
 {
     if ((nil==grpId || [grpId length]==0)||(nil==userId || [userId length]==0)) return -101;
     if (!cmsgid) return -100;
     std::string msgid;
     std::vector<std::string> vusers;
-    int res = MsgClient::Instance().MCNotifySettedMgr(msgid, [grpId UTF8String], [userId UTF8String], vusers);
+    int res = MsgClient::Instance().MCNotifySettedMgr(msgid, [grpId UTF8String], [userId UTF8String], flag, vusers);
     *cmsgid = [NSString stringWithUTF8String:msgid.c_str()];
     return res;
 }

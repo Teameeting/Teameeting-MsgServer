@@ -140,6 +140,7 @@ public class MSMessageManager {
      *  params:
      *      grpId: the group id you are in
      *      hostId: the id of the host who is living, here means yourself id
+     *      flag: 1, the host begin live, 0, the host end live
      *      cmsgid: the msgid of the message you send
      *      after invoke, you will get the id of this message
      *
@@ -148,9 +149,9 @@ public class MSMessageManager {
      *      -100: cmsgid is null
      *      -101: grpId or hostId is null
      */
-    public String sendNotifyLive(String grpId, String hostId) {
+    public String sendNotifyLive(String grpId, String hostId, int flag) {
         if (grpId.length()==0 || hostId.length()==0) return "";
-        return MsgClient.getInstance().MCNotifyLive(grpId, hostId);
+        return MsgClient.getInstance().MCNotifyLive(grpId, hostId, flag);
     }
 
     /**
@@ -180,6 +181,7 @@ public class MSMessageManager {
      *  params:
      *      grpId: the group id you are in
      *      userId: the user you want to pull blacklist
+     *      flag: 1, set to blacklist, 0, cancel blacklist
      *      notifys: the users you want to notify, want them to know, usually group managers or group owner
      *      cmsgid: the msgid of the message you send
      *      after invoke, you will get the id of this message
@@ -189,9 +191,9 @@ public class MSMessageManager {
      *      -100: cmsgid is null
      *      -101: grpId or userId or notifys is null
      */
-    public String sendNotifyBlacklist(String grpId, String userId, String[] notifys) {
+    public String sendNotifyBlacklist(String grpId, String userId, int flag, String[] notifys) {
         if (grpId.length()==0 || userId.length()==0 || notifys.length==0) return "";
-        return MsgClient.getInstance().MCNotifyBlacklist(grpId, userId, notifys);
+        return MsgClient.getInstance().MCNotifyBlacklist(grpId, userId, flag, notifys);
     }
 
     /**
@@ -200,6 +202,7 @@ public class MSMessageManager {
      *  params:
      *      grpId: the group id you are in
      *      userId: the user you want to forbidden talk in this group
+     *      flag: 1, forbidden user, 0, cancel forbidden
      *      notifys: the users you want to notify, want them to know, usually group managers or group owner
      *      cmsgid: the msgid of the message you send
      *      after invoke, you will get the id of this message
@@ -209,9 +212,9 @@ public class MSMessageManager {
      *      -100: cmsgid is null
      *      -101: grpId or userId or notifys is null
      */
-    public String sendNotifyForbidden(String grpId, String userId, String[] notifys) {
+    public String sendNotifyForbidden(String grpId, String userId, int flag, String[] notifys) {
         if (grpId.length()==0 || userId.length()==0 || notifys.length==0) return "";
-        return MsgClient.getInstance().MCNotifyForbidden(grpId, userId, notifys);
+        return MsgClient.getInstance().MCNotifyForbidden(grpId, userId, flag, notifys);
     }
 
     /**
@@ -220,6 +223,7 @@ public class MSMessageManager {
      *  params:
      *      grpId: the group id you are in
      *      userId: the user you want to set to be manager
+     *      flag: 1, set user mgr, 0, set user not mgr
      *      cmsgid: the msgid of the message you send
      *      after invoke, you will get the id of this message
      *
@@ -228,9 +232,9 @@ public class MSMessageManager {
      *      -100: cmsgid is null
      *      -101: grpId or userId or notifys is null
      */
-    public String sendNotifySettedMgr(String grpId, String userId) {
+    public String sendNotifySettedMgr(String grpId, String userId, int flag) {
         if (grpId.length()==0 || userId.length()==0) return "";
         String[] notifys = {};
-        return MsgClient.getInstance().MCNotifySettedMgr(grpId, userId, notifys);
+        return MsgClient.getInstance().MCNotifySettedMgr(grpId, userId, flag, notifys);
     }
 }
