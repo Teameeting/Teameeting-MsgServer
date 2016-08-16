@@ -554,8 +554,6 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
     }
     printf("XMsgClient::OnHelpSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld\n"\
             , store.ruserid().c_str(), store.sequence(), store.maxseqn());
-    printf("XMsgClient::OnHelpSyncSeqn should be equal here???\n");
-    //assert(store.maxseqn()>=m_curSeqn);
     switch (store.mtag())
     {
         case pms::EStorageTag::TSEQN:
@@ -711,6 +709,7 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
 
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
+    printf("===>storeid.len:%lu, storeid:%s, seqn:%lld\n", store.storeid().length(), store.storeid().c_str(), store.sequence());
     GAddSyncedMsg(seqnKey, store);
     GUpdateUserSeqn(store.storeid());
 
@@ -774,7 +773,7 @@ void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
         printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is:%lld\n", itCurSeqn->second);
-        assert(itCurSeqn->second>0);
+        assert(itCurSeqn->second>=0);
         this->SyncSeqn(itCurSeqn->second, pms::EMsgRole::RSENDER);
     }
     //if (m_pCallback)

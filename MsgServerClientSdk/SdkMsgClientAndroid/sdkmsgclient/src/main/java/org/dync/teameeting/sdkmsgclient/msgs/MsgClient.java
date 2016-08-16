@@ -467,6 +467,12 @@ public class MsgClient implements JMClientHelper{
         mReentrantLock.unlock();
     }
 
+    private void UpdateSeqnToDb(String strSeqnId, long seqn) {
+        if (mSqlite3Manager!=null) {
+            mSqlite3Manager.UpdateGroupSeqn(mStrUserId, strSeqnId, seqn);
+        }
+    }
+
     private void RemoveLocalSeqn(String strSeqnId) {
         mReentrantLock.lock();
         mGroupSeqn.remove(strSeqnId);
@@ -601,6 +607,7 @@ public class MsgClient implements JMClientHelper{
     public void OnRecvMsg(long seqn, byte[] msg) {
         System.out.println("MsgClient::OnRecvMsg was called, seqn:" + seqn + ",msg.length:" + msg.length);
         UpdateLocalSeqn(mStrUserId, seqn);
+        UpdateSeqnToDb(mStrUserId, seqn);
 
         Entity ee = null;
         try {
@@ -695,6 +702,7 @@ public class MsgClient implements JMClientHelper{
     public void OnRecvGroupMsg(long seqn, String seqnid, byte[] msg) {
         System.out.println("MsgClient::OnRecvGroupMsg was called seqn:" + seqn + ", seqnid:" + seqnid + ", msg.length:" + msg.length);
         UpdateLocalSeqn(seqnid, seqn);
+        UpdateSeqnToDb(seqnid, seqn);
 
         Entity ee = null;
         try {
@@ -783,7 +791,6 @@ public class MsgClient implements JMClientHelper{
             }
             break;
         }
-        //PutLocalSeqnsToDb();
     }
 
     //////////////Below Used in this class//////////////////////////

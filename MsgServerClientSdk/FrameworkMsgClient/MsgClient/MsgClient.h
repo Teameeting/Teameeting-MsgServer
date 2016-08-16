@@ -240,7 +240,6 @@ private:
         if (m_sqlite3Manager)
         {
             NSLog(@"updateUserSeqnUserId will be call...");
-            //[m_sqlite3Manager updateUserSeqnUserId:m_nsUserId seqn:[NSNumber numberWithLongLong:m_userSeqn]];
             for (auto &item : m_groupSeqn)
             {
                 NSLog(@"updateGroupSeqnGrpId will be call...");
@@ -263,6 +262,14 @@ private:
             m_groupSeqn.insert(make_pair(seqnId, seqn));
         }
         [m_recurLock unlock];
+    }
+    
+    void UpdateSeqnToDb(const std::string& seqnid, int64_t seqn)
+    {
+        if (m_sqlite3Manager)
+        {
+            [m_sqlite3Manager updateGroupSeqnUserId:m_nsUserId GrpId:[NSString stringWithUTF8String:seqnid.c_str()] seqn:[NSNumber numberWithLongLong:seqn]];
+        }
     }
     
     void RemoveLocalSeqn(const std::string& seqnId)

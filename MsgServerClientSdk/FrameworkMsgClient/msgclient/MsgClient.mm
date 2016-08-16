@@ -340,6 +340,7 @@ void MsgClient::OnRecvMsg(int64 seqn, const std::string& msg)
     std::cout << "MsgClient::OnRecvMsg was called, seqn:" << seqn << ", msg.length:" << msg.length() << std::endl;
     
     UpdateLocalSeqn(m_strUserId, seqn);
+    UpdateSeqnToDb(m_strUserId, seqn);
     
     NSError *error = nil;
     Byte *b = (Byte*)malloc(msg.length());
@@ -440,6 +441,7 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
     std::cout << "MsgClient::OnRecvGroupMsg was called, seqn:" << seqn << ", seqnid:" << seqnid << ", msg.length:" << msg.length() << std::endl;
     
     UpdateLocalSeqn(seqnid, seqn);
+    UpdateSeqnToDb(seqnid, seqn);
     
     NSError *error = nil;
     Byte *b = (Byte*)malloc(msg.length());
@@ -535,7 +537,6 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
     }
     if (b) free(b);
     b = nil;
-    //PutLocalSeqnsToDb();
 }
 
 

@@ -182,7 +182,7 @@ private:
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
         printf("UUpdateUserSeqn get here, itCurSeqn is:%lld\n", itCurSeqn->second);
-        assert(itCurSeqn->second>0);
+        assert(itCurSeqn->second>=0);
         while(1)
         {
             printf("UUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
@@ -256,8 +256,8 @@ private:
     {
         // storeid here should be one groupid
         UserSeqnMapIt  itCurSeqn = m_gUserSeqnMap.find(storeid);
-        printf("GUpdateUserSeqn get here, itCurSeqn is:%lld\n", itCurSeqn->second);
-        assert(itCurSeqn->second >0);
+        printf("GUpdateUserSeqn get here, itCurSeqn is:%lld, storeid:%s, storeid.len:%lu\n", itCurSeqn->second, storeid.c_str(), storeid.length());
+        assert(itCurSeqn->second>=0);
         while(1)
         {
             printf("GUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
