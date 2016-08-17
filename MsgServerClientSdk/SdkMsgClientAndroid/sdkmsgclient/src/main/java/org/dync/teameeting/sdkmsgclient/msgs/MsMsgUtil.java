@@ -8,64 +8,68 @@ import org.json.JSONObject;
  */
 public class MsMsgUtil {
 
-    private static MSTxtMessage JSONToMessage(JSONObject jobj) throws JSONException {
-        MSTxtMessage txtMsg = new MSTxtMessage();
+    private static MSMessage JSONToMessage(JSONObject jobj) throws JSONException {
+        MSMessage mMsg = new MSMessage();
         if (jobj.has("content"))
-            txtMsg.setContent(jobj.getString("content"));
+            mMsg.setContent(jobj.getString("content"));
         else
-            txtMsg.setContent("");
+            mMsg.setContent("");
         if (jobj.has("extra"))
-            txtMsg.setExtra(jobj.getString("extra"));
+            mMsg.setExtra(jobj.getString("extra"));
         else
-            txtMsg.setExtra("");
+            mMsg.setExtra("");
         if (jobj.has("msgId"))
-            txtMsg.setMsgId(jobj.getString("msgId"));
+            mMsg.setMsgId(jobj.getString("msgId"));
         else
-            txtMsg.setMsgId("");
+            mMsg.setMsgId("");
         if (jobj.has("toId"))
-            txtMsg.setToId(jobj.getString("toId"));
+            mMsg.setToId(jobj.getString("toId"));
         else
-            txtMsg.setToId("");
+            mMsg.setToId("");
         if (jobj.has("fromId"))
-            txtMsg.setFromId(jobj.getString("fromId"));
+            mMsg.setFromId(jobj.getString("fromId"));
         else
-            txtMsg.setFromId("");
+            mMsg.setFromId("");
         if (jobj.has("groupId"))
-            txtMsg.setGroupId(jobj.getString("groupId"));
+            mMsg.setGroupId(jobj.getString("groupId"));
         else
-            txtMsg.setGroupId("");
+            mMsg.setGroupId("");
         if (jobj.has("nickName"))
-            txtMsg.setNickName(jobj.getString("nickName"));
+            mMsg.setNickName(jobj.getString("nickName"));
         else
-            txtMsg.setNickName("");
+            mMsg.setNickName("");
         if (jobj.has("uiconUrl"))
-            txtMsg.setUiconUrl(jobj.getString("uiconUrl"));
+            mMsg.setUiconUrl(jobj.getString("uiconUrl"));
         else
-            txtMsg.setUiconUrl("");
+            mMsg.setUiconUrl("");
         if (jobj.has("cash"))
-            txtMsg.setCash(jobj.getString("cash"));
+            mMsg.setCash(jobj.getString("cash"));
         else
-            txtMsg.setCash("");
+            mMsg.setCash("");
         if (jobj.has("wishcont"))
-            txtMsg.setWishcont(jobj.getString("wishcont"));
+            mMsg.setWishcont(jobj.getString("wishcont"));
         else
-            txtMsg.setWishcont("");
+            mMsg.setWishcont("");
         if (jobj.has("millSec"))
-            txtMsg.setMillSec(jobj.getInt("millSec"));
+            mMsg.setMillSec(jobj.getInt("millSec"));
         else
-            txtMsg.setMillSec(0);
+            mMsg.setMillSec(0);
         if (jobj.has("msgType"))
-            txtMsg.setMsgType(jobj.getInt("msgType"));
+            mMsg.setMsgType(jobj.getInt("msgType"));
         else
-            txtMsg.setMsgType(0);
+            mMsg.setMsgType(0);
         if (jobj.has("flag"))
-            txtMsg.setFlag(jobj.getInt("flag"));
+            mMsg.setFlag(jobj.getInt("flag"));
         else
-            txtMsg.setFlag(0);
-        return txtMsg;
+            mMsg.setFlag(0);
+        if (jobj.has("push"))
+            mMsg.setPush(jobj.getInt("push"));
+        else
+            mMsg.setFlag(0);
+        return mMsg;
     }
 
-    private static JSONObject MessageToJSON(MSTxtMessage mobj) throws JSONException {
+    private static JSONObject MessageToJSON(MSMessage mobj) throws JSONException {
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("content", mobj.getContent());
         jsonObj.put("extra", mobj.getExtra());
@@ -80,23 +84,26 @@ public class MsMsgUtil {
         jsonObj.put("millSec", mobj.getMillSec());
         jsonObj.put("msgType", mobj.getMsgType());
         jsonObj.put("flag", mobj.getFlag());
+        jsonObj.put("push", mobj.getPush());
         return jsonObj;
     }
 
 /////////////////////////////////////////////////
 
-    public static String Encode2JsonWithGrpAndCont(String grpId, String cont, int msgType) {
-        MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setContent(cont);
-        txtMsg.setGroupId(grpId);
-        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
-        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
-        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
-        txtMsg.setMsgType(msgType);
+    public static String Encode2JsonWithTxtMsg(MSSubMessage.MSTxtMessage txtMsg, int msgType) {
+        MSMessage mMsg = new MSMessage();
+        mMsg.setContent(txtMsg.getContent());
+        mMsg.setGroupId(txtMsg.getGroupId());
+        mMsg.setPush(txtMsg.getPush());
+        mMsg.setToId(txtMsg.getToId());
+        mMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+            jobj = MsMsgUtil.MessageToJSON(mMsg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -107,18 +114,20 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithUidAndCont(String userId, String cont, int msgType) {
-        MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setContent(cont);
-        txtMsg.setToId(userId);
-        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
-        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
-        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
-        txtMsg.setMsgType(msgType);
+    public static String Encode2JsonWithLivMsg(MSSubMessage.MSLivMessage livMsg, int msgType) {
+        MSMessage mMsg = new MSMessage();
+        mMsg.setGroupId(livMsg.getGroupId());
+        mMsg.setToId(livMsg.getToId());
+        mMsg.setPush(livMsg.getPush());
+        mMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setFlag(livMsg.getFlag());
+        mMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+            jobj = MsMsgUtil.MessageToJSON(mMsg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -129,17 +138,21 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithUidsAndCont(String[] userIds, String cont, int msgType) {
-        MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setContent(cont);
-        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
-        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
-        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
-        txtMsg.setMsgType(msgType);
+    public static String Encode2JsonWithRenMsg(MSSubMessage.MSRenMessage renMsg, int msgType) {
+        MSMessage mMsg = new MSMessage();
+        mMsg.setGroupId(renMsg.getGroupId());
+        mMsg.setToId(renMsg.getToId());
+        mMsg.setPush(renMsg.getPush());
+        mMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setCash(renMsg.getCash());
+        mMsg.setWishcont(renMsg.getWishcont());
+        mMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+            jobj = MsMsgUtil.MessageToJSON(mMsg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -150,18 +163,20 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, int msgType) {
-        MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setGroupId(grpId);
-        txtMsg.setToId(userId);
-        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
-        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
-        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
-        txtMsg.setMsgType(msgType);
+    public static String Encode2JsonWithBlkMsg(MSSubMessage.MSBlkMessage blkMsg, int msgType) {
+        MSMessage mMsg = new MSMessage();
+        mMsg.setGroupId(blkMsg.getGroupId());
+        mMsg.setToId(blkMsg.getToId());
+        mMsg.setPush(blkMsg.getPush());
+        mMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setFlag(blkMsg.getFlag());
+        mMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+            jobj = MsMsgUtil.MessageToJSON(mMsg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -172,19 +187,20 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, int flag, int msgType) {
-        MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setGroupId(grpId);
-        txtMsg.setToId(userId);
-        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
-        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
-        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
-        txtMsg.setFlag(flag);
-        txtMsg.setMsgType(msgType);
+    public static String Encode2JsonWithFbdMsg(MSSubMessage.MSFbdMessage fbdMsg, int msgType) {
+        MSMessage mMsg = new MSMessage();
+        mMsg.setGroupId(fbdMsg.getGroupId());
+        mMsg.setToId(fbdMsg.getToId());
+        mMsg.setPush(fbdMsg.getPush());
+        mMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setFlag(fbdMsg.getFlag());
+        mMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+            jobj = MsMsgUtil.MessageToJSON(mMsg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -195,20 +211,20 @@ public class MsMsgUtil {
         }
     }
 
-    public static String Encode2JsonWithGrpAndUid(String grpId, String userId, String cash, String cont, int msgType) {
-        MSTxtMessage txtMsg = new MSTxtMessage();
-        txtMsg.setGroupId(grpId);
-        txtMsg.setToId(userId);
-        txtMsg.setNickName(MsgClient.getInstance().getmStrNname());
-        txtMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
-        txtMsg.setFromId(MsgClient.getInstance().getmStrUserId());
-        txtMsg.setCash(cash);
-        txtMsg.setWishcont(cont);
-        txtMsg.setMsgType(msgType);
+    public static String Encode2JsonWithMgrMsg(MSSubMessage.MSMgrMessage mgrMsg, int msgType) {
+        MSMessage mMsg = new MSMessage();
+        mMsg.setGroupId(mgrMsg.getGroupId());
+        mMsg.setToId(mgrMsg.getToId());
+        mMsg.setPush(mgrMsg.getPush());
+        mMsg.setNickName(MsgClient.getInstance().getmStrNname());
+        mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
+        mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setFlag(mgrMsg.getFlag());
+        mMsg.setMsgType(msgType);
 
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(txtMsg);
+            jobj = MsMsgUtil.MessageToJSON(mMsg);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -219,7 +235,7 @@ public class MsMsgUtil {
         }
     }
 
-    public static MSTxtMessage DecodeJsonToMessage(String jsonStr) {
+    public static MSMessage DecodeJsonToMessage(String jsonStr) {
 
         JSONObject obj = null;
         try {
@@ -231,12 +247,12 @@ public class MsMsgUtil {
             System.err.println("MsMsgUtil DecodeJsonToMessage error, obj is null");
             return null;
         }
-        MSTxtMessage txtMsg = null;
+        MSMessage mMsg = null;
         try {
-            txtMsg = MsMsgUtil.JSONToMessage(obj);
+            mMsg = MsMsgUtil.JSONToMessage(obj);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return txtMsg;
+        return mMsg;
     }
 }

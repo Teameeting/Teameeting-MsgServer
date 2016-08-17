@@ -39,104 +39,103 @@
 
 /////////////////////////////////////////////////
 
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                  content:(NSString*)content
++ (MSMessage*)EncodeMessageWithTxtMsg:(MSTxtMessage*)txtMsg
                                   msgType:(MCMsgType)msgType
 {
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    
-    [txtMsg setContent:content];
-    [txtMsg setGroupId:groupId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
-    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
-    [txtMsg setMsgType:msgType];
-    
-    return txtMsg;
+    MSMessage *mMsg = [[MSMessage alloc] init];
+    [mMsg setContent:[txtMsg getContent]];
+    [mMsg setGroupId:[txtMsg getGroupId]];
+    [mMsg setPush:[txtMsg getPush]];
+    [mMsg setToId:[txtMsg getToId]];
+    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setMsgType:msgType];
+    return mMsg;
 }
 
-+ (MSTxtMessage*)EncodeMessageWithUserId:(NSString*)userId
-                                 content:(NSString*)content
-                                 msgType:(MCMsgType)msgType
++ (MSMessage*)EncodeMessageWithLivMsg:(MSLivMessage*)livMsg
+                              msgType:(MCMsgType)msgType
 {
-    MSTxtMessage *txtMsg = nil;
-    txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setContent:content];
-    [txtMsg setToId:userId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
-    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
-    [txtMsg setMsgType:msgType];
-    return txtMsg;
+    MSMessage *mMsg = [[MSMessage alloc] init];
+    [mMsg setGroupId:[livMsg getGroupId]];
+    [mMsg setToId:[livMsg getToId]];
+    [mMsg setPush:[livMsg getPush]];
+    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setFlag:[livMsg getFlag]];
+    [mMsg setMsgType:msgType];
+    return mMsg;
 }
 
-+ (MSTxtMessage*)EncodeMessageWithUserIds:(NSArray*)array
-                                  content:(NSString*)content
++ (MSMessage*)EncodeMessageWithRenMsg:(MSRenMessage*)renMsg
+                              msgType:(MCMsgType)msgType
+{
+    MSMessage *mMsg = [[MSMessage alloc] init];
+    [mMsg setGroupId:[renMsg getGroupId]];
+    [mMsg setToId:[renMsg getToId]];
+    [mMsg setPush:[renMsg getPush]];
+    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setCash:[renMsg getCash]];
+    [mMsg setWishcont:[renMsg getWishcont]];
+    [mMsg setMsgType:msgType];
+    return mMsg;
+}
+
++ (MSMessage*)EncodeMessageWithBlkMsg:(MSBlkMessage*)blkMsg
+                              msgType:(MCMsgType)msgType
+{
+    MSMessage *mMsg = [[MSMessage alloc] init];
+    [mMsg setGroupId:[blkMsg getGroupId]];
+    [mMsg setToId:[blkMsg getToId]];
+    [mMsg setPush:[blkMsg getPush]];
+    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setFlag:[blkMsg getFlag]];
+    [mMsg setMsgType:msgType];
+    return mMsg;
+}
+
++ (MSMessage*)EncodeMessageWithFbdMsg:(MSFbdMessage*)fbdMsg
+                              msgType:(MCMsgType)msgType
+{
+    MSMessage *mMsg = [[MSMessage alloc] init];
+    [mMsg setGroupId:[fbdMsg getGroupId]];
+    [mMsg setToId:[fbdMsg getToId]];
+    [mMsg setPush:[fbdMsg getPush]];
+    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setFlag:[fbdMsg getFlag]];
+    [mMsg setMsgType:msgType];
+    return mMsg;
+}
+
++ (MSMessage*)EncodeMessageWithMgrMsg:(MSMgrMessage*)mgrMsg
                                   msgType:(MCMsgType)msgType
 {
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setContent:content];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
-    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
-    [txtMsg setMsgType:msgType];
-    return txtMsg;
-}
-
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId
-                                  msgType:(MCMsgType)msgType
-{
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setGroupId:groupId];
-    [txtMsg setToId:userId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
-    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
-    [txtMsg setMsgType:msgType];
-    return txtMsg;
-}
-
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId
-                                     flag:(int)flag
-                                  msgType:(MCMsgType)msgType
-{
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setGroupId:groupId];
-    [txtMsg setToId:userId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
-    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
-    [txtMsg setFlag:flag];
-    [txtMsg setMsgType:msgType];
-    return txtMsg;
-}
-
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId
-                                     cash:(NSString *)cash
-                                     cont:(NSString *)cont
-                                  msgType:(MCMsgType)msgType
-{
-    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
-    [txtMsg setGroupId:groupId];
-    [txtMsg setToId:userId];
-    [txtMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [txtMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
-    [txtMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
-    [txtMsg setCash:cash];
-    [txtMsg setWishcont:cont];
-    [txtMsg setMsgType:msgType];
-    return txtMsg;
+    MSMessage *mMsg = [[MSMessage alloc] init];
+    [mMsg setGroupId:[mgrMsg getGroupId]];
+    [mMsg setToId:[mgrMsg getToId]];
+    [mMsg setPush:[mgrMsg getPush]];
+    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setFlag:[mgrMsg getFlag]];
+    [mMsg setMsgType:msgType];
+    return mMsg;
 }
 
 /////////////////////////////////////////////////
 
-+ (MSTxtMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict
++ (MSMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict
 {
-    MSTxtMessage *txtMsg = [MSTxtMessage mj_objectWithKeyValues:dict];
-    return txtMsg;
+    MSMessage *mMsg = [MSMessage mj_objectWithKeyValues:dict];
+    return mMsg;
 }
 
 @end

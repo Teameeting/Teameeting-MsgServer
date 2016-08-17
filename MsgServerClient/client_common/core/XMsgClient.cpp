@@ -773,7 +773,11 @@ void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
         printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is:%lld\n", itCurSeqn->second);
-        assert(itCurSeqn->second>=0);
+        if (itCurSeqn->second<0)
+        {
+            printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is <0, so return\n");
+            return;
+        }
         this->SyncSeqn(itCurSeqn->second, pms::EMsgRole::RSENDER);
     }
     //if (m_pCallback)

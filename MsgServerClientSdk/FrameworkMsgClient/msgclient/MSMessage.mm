@@ -24,6 +24,7 @@
 @synthesize millSec = _millSec;
 @synthesize msgType = _msgType;
 @synthesize flag = _flag;
+@synthesize push = _push;
 MJExtensionLogAllProperties
 
 @end

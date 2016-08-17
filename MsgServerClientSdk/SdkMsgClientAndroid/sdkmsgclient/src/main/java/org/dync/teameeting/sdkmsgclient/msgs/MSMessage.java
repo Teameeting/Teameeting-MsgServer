@@ -3,31 +3,40 @@ package org.dync.teameeting.sdkmsgclient.msgs;
 /**
  * Created by hp on 7/10/16.
  */
-public class MSMessage {
-    private String content;
-    private String extra;
-    private String msgId;
-    private String toId;
-    private String fromId;
-    private String groupId;
-    private String nickName;
-    private String uiconUrl;
-    private String cash;
-    private String wishcont;
+public final class MSMessage {
+    private String content = null;
+    private String extra = null;
+    private String msgId = null;
+    private String toId = null;
+    private String fromId = null;
+    private String groupId = null;
+    private String nickName = null;
+    private String uiconUrl = null;
+    private String cash = null;
+    private String wishcont = null;
 
-    private int    millSec;//send second
-    private int    msgType;
-    private int    flag;
+    private int    millSec = 0;//send second
+    private int    msgType = 0;
+    private int    flag = 0;
+    private int    push = 0;
 
     public MSMessage() {
     }
 
-    public String getContent() {
-        return content;
+    public int getPush() {
+        return push;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setPush(int push) {
+        this.push = push;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 
     public String getExtra() {
@@ -110,13 +119,19 @@ public class MSMessage {
         this.millSec = millSec;
     }
 
-    public int getMsgType() { return msgType; }
+    public int getMsgType() {
+        return msgType;
+    }
 
     public void setMsgType(int msgType) {
         this.msgType = msgType;
     }
 
-    public int getFlag() { return flag; }
+    public String getContent() {
+        return content;
+    }
 
-    public void setFlag(int flag) { this.flag = flag; }
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

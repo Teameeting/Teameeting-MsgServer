@@ -10,15 +10,16 @@ import org.dync.teameeting.sdkmsgclient.msgs.MSClientDelegate;
 import org.dync.teameeting.sdkmsgclient.msgs.MSClientManager;
 import org.dync.teameeting.sdkmsgclient.msgs.MSGroupDelegate;
 import org.dync.teameeting.sdkmsgclient.msgs.MSGroupManager;
+import org.dync.teameeting.sdkmsgclient.msgs.MSMessage;
 import org.dync.teameeting.sdkmsgclient.msgs.MSMessageManager;
-import org.dync.teameeting.sdkmsgclient.msgs.MSTxtMessage;
-import org.dync.teameeting.sdkmsgclient.msgs.MSTxtMessageDelegate;
+import org.dync.teameeting.sdkmsgclient.msgs.MSSubMessage;
+import org.dync.teameeting.sdkmsgclient.msgs.MSSubMessageDelegate;
 
 
 /**
  * Created by hp on 7/12/16.
  */
-public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDelegate, MSTxtMessageDelegate{
+public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDelegate, MSSubMessageDelegate {
 
     private final String        MSG_CLIENT_TAG = "MsgClientTag";
     private MSClientManager     mMsClientManager    = null;
@@ -84,44 +85,55 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     public void SendMsgTo() {
         System.out.println("SendMsgTo was called...");
 
+        MSSubMessage.MSTxtMessage txtMsg = new MSSubMessage.MSTxtMessage();
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
-        String outmsgid = mMsMessageManager.sendTxtMsg(groupid, cont);
+        txtMsg.setContent(cont);
+        txtMsg.setGroupId(groupid);
+        txtMsg.setPush(0);
+        String outmsgid = mMsMessageManager.sendTxtMsg(txtMsg);
         System.out.println("SendMsgTo sendTxtMsg get msgid:"+outmsgid);
     }
 
     public void SendMsgTos() {
         System.out.println("SendMsgTos was called...");
 
+        MSSubMessage.MSTxtMessage txtMsg = new MSSubMessage.MSTxtMessage();
         String cont = "hahaha";
         String groupid = "wocaowocaowocao";
-        //String touser = "8ca64d158a505876";
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendTxtMsgTos(groupid, arr, cont);
+        txtMsg.setContent(cont);
+        txtMsg.setGroupId(groupid);
+        txtMsg.setPush(0);
+        String outmsgid = mMsMessageManager.sendTxtMsgTos(txtMsg, arr);
         System.out.println("SendMsgTos sendTxtMsgTos get msgid:" + outmsgid);
     }
 
     public void SendMsgToUser() {
         System.out.println("SendMsgToUser was called...");
 
+        MSSubMessage.MSTxtMessage txtMsg = new MSSubMessage.MSTxtMessage();
         String cont = "hahaha";
-        //String touser = "8ca64d158a505876";
         String touser = "BCD9D958-985A-4454-B2C8-1551DB9C1A8A";
-        String outmsgid = mMsMessageManager.sendTxtMsgToUser(touser, cont);
+        txtMsg.setContent(cont);
+        txtMsg.setToId(touser);
+        txtMsg.setPush(0);
+        String outmsgid = mMsMessageManager.sendTxtMsgToUser(txtMsg);
         System.out.println("SendMsgToUser sendTxtMsgToUser get msgid:" + outmsgid);
     }
 
     public void SendMsgToUsers() {
         System.out.println("SendMsgToUsers was called...");
 
+        MSSubMessage.MSTxtMessage txtMsg = new MSSubMessage.MSTxtMessage();
         String cont = "hahaha";
-        //String touser = "8ca64d158a505876";
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendTxtMsgToUsers(arr, cont);
+        txtMsg.setContent(cont);
+        String outmsgid = mMsMessageManager.sendTxtMsgToUsers(txtMsg, arr);
         System.out.println("SendMsgToUsers sendTxtMsgToUsers get msgid:" + outmsgid);
     }
 
@@ -129,61 +141,77 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     public void NotifyMsgLive() {
         System.out.println("NotifyMsgLive was called...");
 
-        String cont = "hahaha";
+        MSSubMessage.MSLivMessage livMsg = new MSSubMessage.MSLivMessage();
         String groupid = "wocaowocaowocao";
-        int flag = 1;
         String touser = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifyLive(groupid, touser, 1);
+        livMsg.setGroupId(groupid);
+        livMsg.setToId(touser);
+        livMsg.setFlag(1);
+        livMsg.setPush(1);
+        String outmsgid = mMsMessageManager.sendNotifyLive(livMsg);
         System.out.println("NotifyMsgLive sendNotifyLive get msgid:"+outmsgid);
     }
 
     public void NotifyMsgRedEnvelope() {
         System.out.println("NotifyMsgRedEnvelope was called...");
 
-        String cont = "hahaha";
+        MSSubMessage.MSRenMessage renMsg = new MSSubMessage.MSRenMessage();
         String groupid = "wocaowocaowocao";
         String touser = "dcd54ddf2ee1df11";
         String cash = "123.45";
         String wishcont = "happy to you";
-        String outmsgid = mMsMessageManager.sendNotifyRedEnvelope(groupid, touser, cash, wishcont);
+        renMsg.setGroupId(groupid);
+        renMsg.setToId(touser);
+        renMsg.setCash(cash);
+        renMsg.setWishcont(wishcont);
+        renMsg.setPush(1);
+        String outmsgid = mMsMessageManager.sendNotifyRedEnvelope(renMsg);
         System.out.println("NotifyMsgRedEnvelope sendNotifyRedEnvelope get msgid:"+outmsgid);
     }
 
     public void NotifyMsgBlacklist() {
         System.out.println("NotifyMsgBlacklist was called...");
 
-        String cont = "hahaha";
+        MSSubMessage.MSBlkMessage blkMsg = new MSSubMessage.MSBlkMessage();
         String groupid = "wocaowocaowocao";
-        int flag = 1;
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendNotifyBlacklist(groupid, touser1, flag, arr);
+        blkMsg.setGroupId(groupid);
+        blkMsg.setToId(touser1);
+        blkMsg.setFlag(1);
+        blkMsg.setPush(1);
+        String outmsgid = mMsMessageManager.sendNotifyBlacklist(blkMsg, arr);
         System.out.println("NotifyMsgBlacklist sendNotifyBlacklist get msgid:"+outmsgid);
     }
 
     public void NotifyMsgForbidden() {
         System.out.println("NotifyMsgForbidden was called...");
 
-        String cont = "hahaha";
+        MSSubMessage.MSFbdMessage fbdMsg = new MSSubMessage.MSFbdMessage();
         String groupid = "wocaowocaowocao";
-        int flag = 1;
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
-        String outmsgid = mMsMessageManager.sendNotifyForbidden(groupid, touser1, flag, arr);
+        fbdMsg.setGroupId(groupid);
+        fbdMsg.setToId(touser1);
+        fbdMsg.setFlag(1);
+        fbdMsg.setPush(1);
+        String outmsgid = mMsMessageManager.sendNotifyForbidden(fbdMsg, arr);
         System.out.println("NotifyMsgForbidden sendNotifyForbidden get msgid:"+outmsgid);
     }
 
     public void NotifyMsgSettedMgr() {
         System.out.println("NotifyMsgSettedMgr was called...");
 
-        String cont = "hahaha";
+        MSSubMessage.MSMgrMessage mgrMsg = new MSSubMessage.MSMgrMessage();
         String groupid = "wocaowocaowocao";
-        int flag = 1;
         String touser1 = "dcd54ddf2ee1df11";
-        String touser2 = "dcd54ddf2ee1df11";
-        String outmsgid = mMsMessageManager.sendNotifySettedMgr(groupid, touser1, flag);
+        mgrMsg.setGroupId(groupid);
+        mgrMsg.setToId(touser1);
+        mgrMsg.setFlag(1);
+        mgrMsg.setPush(1);
+        String outmsgid = mMsMessageManager.sendNotifySettedMgr(mgrMsg);
         System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 
@@ -286,10 +314,11 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     }
 
     @Override
-    public void OnRecvTxtMessage(MSTxtMessage txtMsg) {
+    public void OnRecvTxtMessage(MSMessage txtMsg) {
         String s = "OnRecvTxtMessage msg:" + txtMsg;
         System.out.println(s);
         String content = txtMsg.getContent();
+
         if (content != null) {
             Log.i(MSG_CLIENT_TAG, content);
             Message tMsg = Message.obtain();
@@ -300,37 +329,38 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     }
 
     @Override
-    public void OnRecvSelfDefMessage(MSTxtMessage sdefMsg) {
+    public void OnRecvSelfDefMessage(MSMessage sdefMsg) {
         String s = "OnRecvSelfDefMessage msg:" + sdefMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyLive(MSTxtMessage livMsg) {
+    public void OnNotifyLive(MSMessage livMsg) {
         String s = "OnNotifyLive msg:" + livMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyRedEnvelope(MSTxtMessage renMsg) {
+    public void OnNotifyRedEnvelope(MSMessage renMsg) {
         String s = "OnNotifyRedEnvelope msg:" + renMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyBlacklist(MSTxtMessage blkMsg) {
+    public void OnNotifyBlacklist(MSMessage blkMsg) {
         String s = "OnNotifyBlacklist msg:" + blkMsg;
+
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifyForbidden(MSTxtMessage fbdMsg) {
+    public void OnNotifyForbidden(MSMessage fbdMsg) {
         String s = "OnNotifyForbidden msg:" + fbdMsg;
         System.out.println(s);
     }
 
     @Override
-    public void OnNotifySettedMgr(MSTxtMessage fbdMsg) {
+    public void OnNotifySettedMgr(MSMessage fbdMsg) {
         String s = "OnNotifySettedMgrg msg:" + fbdMsg;
         System.out.println(s);
     }

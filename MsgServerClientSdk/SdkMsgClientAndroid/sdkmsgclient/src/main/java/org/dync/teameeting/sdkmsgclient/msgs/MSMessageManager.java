@@ -13,7 +13,7 @@ public class MSMessageManager {
      *  return:
      *      void
      */
-    public void addDelegate(MSTxtMessageDelegate txtDelegate) {
+    public void addDelegate(MSSubMessageDelegate txtDelegate) {
         MsgClient.getInstance().MCSetTxtMsgDelegate(txtDelegate);
     }
 
@@ -26,7 +26,7 @@ public class MSMessageManager {
      *  return:
      *      void
      */
-    public void delDelegate(MSTxtMessageDelegate txtDelegate) {
+    public void delDelegate(MSSubMessageDelegate txtDelegate) {
         MsgClient.getInstance().MCSetTxtMsgDelegate(null);
     }
 
@@ -61,180 +61,179 @@ public class MSMessageManager {
      *  you send message in grpId
      *
      *  params:
-     *      grpId: the group id you are in
-     *      content: the message you send
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      GroupId and Content and Push need to be setted
+     *      GroupId: the group id you are in
+     *      Content: the content you send
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or content is null
+     *      msgid: the id of this msg
      */
-    public String sendTxtMsg(String grpId, String content) {
-        if (grpId.length()==0 || content.length()==0) return "";
-        return MsgClient.getInstance().MCSendTxtMsg(grpId, content);
+    public String sendTxtMsg(MSSubMessage.MSTxtMessage txtMsg) {
+            if (null==txtMsg) return null;
+        if (txtMsg.getGroupId().length()==0 || txtMsg.getContent().length()==0) return null;
+        return MsgClient.getInstance().MCSendTxtMsg(txtMsg);
     }
 
     /**
      *  you send content to usres in grpId
      *
      *  params:
-     *      grpId: the group id you are in
-     *      users: the users you will send to in grpId
-     *      content: the message you send
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      GroupId and Content and Push need to be setted
+     *      GroupId: the group id you are in
+     *      Content: the message you send
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or users or content is null
+     *      msgid: the id of this msg
      */
-    public String sendTxtMsgTos(String grpId, String[] userIds, String content) {
-        if (grpId.length()==0 || userIds.length==0 || content.length()==0) return "";
-        return MsgClient.getInstance().MCSendTxtMsgTos(grpId, userIds, content);
+    public String sendTxtMsgTos(MSSubMessage.MSTxtMessage txtMsg, String[] userIds) {
+            if (null==txtMsg) return null;
+        if (txtMsg.getGroupId().length()==0 || txtMsg.getContent().length()==0 || userIds.length==0) return null;
+        return MsgClient.getInstance().MCSendTxtMsgTos(txtMsg, userIds);
     }
 
     /**
      *  you send content to userId
      *
      *  params:
-     *      usrId: the user id you will send to
-     *      content: the message you send
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      Content and ToId and Push need to be setted
+     *      Content: the message you send
+     *      ToId: the user id you will send to
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: usrId or content is null
+     *      msgid: the id of this msg
      */
-    public String sendTxtMsgToUser(String usrId, String content) {
-        if (usrId.length()==0 || content.length()==0) return "";
-        return MsgClient.getInstance().MCSendTxtMsgToUsr(usrId, content);
+    public String sendTxtMsgToUser(MSSubMessage.MSTxtMessage txtMsg) {
+            if (null==txtMsg) return null;
+        if (txtMsg.getToId().length()==0 || txtMsg.getContent().length()==0) return null;
+        return MsgClient.getInstance().MCSendTxtMsgToUsr(txtMsg);
     }
 
     /**
      *  you send content to userIds
      *
      *  params:
-     *      usrIds: the users ids you will send to
-     *      content: the message you send
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      Content and Push need to be setted
+     *      Content: the message you send
+     *      Push: 1, the msg will be pushed if offline, 0, not push
+     *      users: the users ids you will send to
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: usrIds or content is null
+     *      msgid: the id of this msg
      */
-    public String sendTxtMsgToUsers(String[] usrIds, String content) {
-        if (usrIds.length==0 || content.length()==0) return "";
-        return MsgClient.getInstance().MCSendTxtMsgToUsrs(usrIds, content);
+    public String sendTxtMsgToUsers(MSSubMessage.MSTxtMessage txtMsg, String[] usrIds) {
+            if (null==txtMsg) return null;
+        if (txtMsg.getContent().length()==0 || usrIds.length==0) return null;
+        return MsgClient.getInstance().MCSendTxtMsgToUsrs(txtMsg, usrIds);
     }
 
     /**
      *  hostId begin to live in grpId
      *
      *  params:
-     *      grpId: the group id you are in
-     *      hostId: the id of the host who is living, here means yourself id
-     *      flag: 1, the host begin live, 0, the host end live
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      GroupId and ToId and Flag and Push need to be setted
+     *      GroupId: the group id you are in
+     *      ToId: the user you want to forbidden talk in this group
+     *      Flag: 1, forbidden user, 0, cancel forbidden
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or hostId is null
+     *      msgid: the id of this msg
      */
-    public String sendNotifyLive(String grpId, String hostId, int flag) {
-        if (grpId.length()==0 || hostId.length()==0) return "";
-        return MsgClient.getInstance().MCNotifyLive(grpId, hostId, flag);
+    public String sendNotifyLive(MSSubMessage.MSLivMessage livMsg) {
+            if (null==livMsg) return null;
+        if (livMsg.getGroupId().length()==0 || livMsg.getToId().length()==0) return null;
+        return MsgClient.getInstance().MCNotifyLive(livMsg);
     }
 
     /**
      *  you send red-envelope to hostId in grpId
      *
      *  params:
-     *      grpId: the group id you are in
-     *      hostId: the id of the host you will send to
-     *      cash: the cash mount you will send to host
-     *      cont: the wish message you want say to host
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      GroupId and ToId and and Push and Cash and Wishcont need to be setted
+     *      GroupId: the group id you are in
+     *      ToId: the user you want to forbidden talk in this group
+     *      Push: 1, the msg will be pushed if offline, 0, not push
+     *      Cash: the cash mount you will send to host
+     *      Wishcont: the wish message you want say to host
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or hostId or cash or cont is null
+     *      msgid: the id of this msg
      */
-    public String sendNotifyRedEnvelope(String grpId, String hostId, String cash, String cont) {
-        if (grpId.length()==0 || hostId.length()==0 || cash.length()==0 || cont.length()==0) return "";
-        return MsgClient.getInstance().MCNotifyRedEnvelope(grpId, hostId, cash, cont);
+    public String sendNotifyRedEnvelope(MSSubMessage.MSRenMessage renMsg) {
+            if (null==renMsg) return null;
+        if (renMsg.getGroupId().length()==0 || renMsg.getToId().length()==0 || renMsg.getCash().length()==0 || renMsg.getWishcont().length()==0) return null;
+        return MsgClient.getInstance().MCNotifyRedEnvelope(renMsg);
     }
 
     /**
      *  userId was push to blacklist in grpId
      *
      *  params:
-     *      grpId: the group id you are in
-     *      userId: the user you want to pull blacklist
-     *      flag: 1, set to blacklist, 0, cancel blacklist
+     *      txtMsg: the message you will send
+     *      GroupId and ToId and Flag and Push need to be setted
+     *      GroupId: the group id you are in
+     *      ToId: the user you want to forbidden talk in this group
+     *      Flag: 1, forbidden user, 0, cancel forbidden
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *      notifys: the users you want to notify, want them to know, usually group managers or group owner
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or userId or notifys is null
+     *      msgid: the id of this msg
      */
-    public String sendNotifyBlacklist(String grpId, String userId, int flag, String[] notifys) {
-        if (grpId.length()==0 || userId.length()==0 || notifys.length==0) return "";
-        return MsgClient.getInstance().MCNotifyBlacklist(grpId, userId, flag, notifys);
+    public String sendNotifyBlacklist(MSSubMessage.MSBlkMessage blkMsg, String[] notifys) {
+            if (null==blkMsg) return null;
+        if (blkMsg.getGroupId().length()==0 || blkMsg.getToId().length()==0 || notifys.length==0) return null;
+        return MsgClient.getInstance().MCNotifyBlacklist(blkMsg, notifys);
     }
 
     /**
      *  userId was forbidden in grpId
      *
      *  params:
-     *      grpId: the group id you are in
-     *      userId: the user you want to forbidden talk in this group
-     *      flag: 1, forbidden user, 0, cancel forbidden
+     *      txtMsg: the message you will send
+     *      GroupId and ToId and Flag and Push need to be setted
+     *      GroupId: the group id you are in
+     *      ToId: the user you want to forbidden talk in this group
+     *      Flag: 1, forbidden user, 0, cancel forbidden
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *      notifys: the users you want to notify, want them to know, usually group managers or group owner
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or userId or notifys is null
+     *      msgid: the id of this msg
      */
-    public String sendNotifyForbidden(String grpId, String userId, int flag, String[] notifys) {
-        if (grpId.length()==0 || userId.length()==0 || notifys.length==0) return "";
-        return MsgClient.getInstance().MCNotifyForbidden(grpId, userId, flag, notifys);
+    public String sendNotifyForbidden(MSSubMessage.MSFbdMessage fbdMsg, String[] notifys) {
+            if (null==fbdMsg) return null;
+        if (fbdMsg.getGroupId().length()==0 || fbdMsg.getToId().length()==0 || notifys.length==0) return null;
+        return MsgClient.getInstance().MCNotifyForbidden(fbdMsg, notifys);
     }
 
     /**
      *  userId in grpId was setted to be manager, this message will notify all members
      *
      *  params:
-     *      grpId: the group id you are in
-     *      userId: the user you want to set to be manager
-     *      flag: 1, set user mgr, 0, set user not mgr
-     *      cmsgid: the msgid of the message you send
-     *      after invoke, you will get the id of this message
+     *      txtMsg: the message you will send
+     *      GroupId and ToId and Flag and Push need to be setted
+     *      GroupId: the group id you are in
+     *      ToId: the user you want to set to be manager
+     *      Flag: 1, set user mgr, 0, set user not mgr
+     *      Push: 1, the msg will be pushed if offline, 0, not push
      *
      *  return:
-     *      >0: the whole msg length
-     *      -100: cmsgid is null
-     *      -101: grpId or userId or notifys is null
+     *      msgid: the id of this msg
      */
-    public String sendNotifySettedMgr(String grpId, String userId, int flag) {
-        if (grpId.length()==0 || userId.length()==0) return "";
+    public String sendNotifySettedMgr(MSSubMessage.MSMgrMessage mgrMsg) {
+            if (null==mgrMsg) return null;
+        if (mgrMsg.getGroupId().length()==0 || mgrMsg.getToId().length()==0) return null;
         String[] notifys = {};
-        return MsgClient.getInstance().MCNotifySettedMgr(grpId, userId, flag, notifys);
+        return MsgClient.getInstance().MCNotifySettedMgr(mgrMsg, notifys);
     }
 }

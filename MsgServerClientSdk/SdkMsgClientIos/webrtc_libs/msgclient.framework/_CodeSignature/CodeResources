@@ -26,19 +26,19 @@
 		</data>
 		<key>Headers/MSMessage.h</key>
 		<data>
-		OkRV2YrE5AHUPgQhErN5bxlHvqQ=
+		k56WoK4rws+QDzA4VAVP9UBFY5Q=
 		</data>
 		<key>Headers/MSMessageManager.h</key>
 		<data>
-		2x7cJg3brlCs5lIfyOANzOE0Hwo=
+		KqlR1PR67Nhm1MQQYmX69dI67hs=
 		</data>
-		<key>Headers/MSTxtMessage.h</key>
+		<key>Headers/MSSubMessage.h</key>
 		<data>
-		O1aEmoObPgA25dSe5EzBsr0pTdM=
+		fxpmhXaZBZZdk9PPvOZqPG/U/zs=
 		</data>
-		<key>Headers/MSTxtMessageDelegate.h</key>
+		<key>Headers/MSSubMessageDelegate.h</key>
 		<data>
-		a9Bs8GCcHsGJ9hqQ7u66ovEq9SE=
+		m5RPiyNoPpKcEfr1FGaTLfyj0e4=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -73,19 +73,19 @@
 		</data>
 		<key>Headers/MSMessage.h</key>
 		<data>
-		OkRV2YrE5AHUPgQhErN5bxlHvqQ=
+		k56WoK4rws+QDzA4VAVP9UBFY5Q=
 		</data>
 		<key>Headers/MSMessageManager.h</key>
 		<data>
-		2x7cJg3brlCs5lIfyOANzOE0Hwo=
+		KqlR1PR67Nhm1MQQYmX69dI67hs=
 		</data>
-		<key>Headers/MSTxtMessage.h</key>
+		<key>Headers/MSSubMessage.h</key>
 		<data>
-		O1aEmoObPgA25dSe5EzBsr0pTdM=
+		fxpmhXaZBZZdk9PPvOZqPG/U/zs=
 		</data>
-		<key>Headers/MSTxtMessageDelegate.h</key>
+		<key>Headers/MSSubMessageDelegate.h</key>
 		<data>
-		a9Bs8GCcHsGJ9hqQ7u66ovEq9SE=
+		m5RPiyNoPpKcEfr1FGaTLfyj0e4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>

@@ -9,7 +9,7 @@
 #ifndef MSMsgUtil_h
 #define MSMsgUtil_h
 #import <Foundation/Foundation.h>
-#import "msgclient/MSTxtMessage.h"
+#import "msgclient/MSSubMessage.h"
 
 @interface MSMsgUtil : NSObject
 
@@ -19,34 +19,26 @@
 
 /////////////////////////////////////////////////
 
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                  content:(NSString*)content
++ (MSMessage*)EncodeMessageWithTxtMsg:(MSTxtMessage*)txtMsg
                                   msgType:(MCMsgType)msgType;
 
-+ (MSTxtMessage*)EncodeMessageWithUserId:(NSString*)userId
-                                 content:(NSString*)content
-                                 msgType:(MCMsgType)msgType;
-
-+ (MSTxtMessage*)EncodeMessageWithUserIds:(NSArray*)array
-                                  content:(NSString*)content
++ (MSMessage*)EncodeMessageWithLivMsg:(MSLivMessage*)livMsg
                                   msgType:(MCMsgType)msgType;
 
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId
++ (MSMessage*)EncodeMessageWithRenMsg:(MSRenMessage*)renMsg
                                   msgType:(MCMsgType)msgType;
 
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId
-                                     flag:(int)flag
++ (MSMessage*)EncodeMessageWithBlkMsg:(MSBlkMessage*)blkMsg
                                   msgType:(MCMsgType)msgType;
 
-+ (MSTxtMessage*)EncodeMessageWithGroupId:(NSString*)groupId
-                                   userId:(NSString*)userId
-                                     cash:(NSString*)cash
-                                     cont:(NSString*)cont
++ (MSMessage*)EncodeMessageWithFbdMsg:(MSFbdMessage*)fbdMsg
                                   msgType:(MCMsgType)msgType;
 
-+ (MSTxtMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict;
++ (MSMessage*)EncodeMessageWithMgrMsg:(MSMgrMessage*)mgrMsg
+                                  msgType:(MCMsgType)msgType;
+
+
++ (MSMessage*)DecodeDictToMessageWithDict:(NSDictionary*)dict;
 
 @end
 

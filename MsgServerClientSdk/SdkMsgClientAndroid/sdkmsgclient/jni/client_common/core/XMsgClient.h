@@ -182,7 +182,11 @@ private:
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
         printf("UUpdateUserSeqn get here, itCurSeqn is:%lld\n", itCurSeqn->second);
-        assert(itCurSeqn->second>=0);
+        if (itCurSeqn->second<0)
+        {
+            printf("XMsgClient::UUpdateUserSeqn itCurSeqn is <0, so return\n");
+            return false;
+        }
         while(1)
         {
             printf("UUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
@@ -257,7 +261,11 @@ private:
         // storeid here should be one groupid
         UserSeqnMapIt  itCurSeqn = m_gUserSeqnMap.find(storeid);
         printf("GUpdateUserSeqn get here, itCurSeqn is:%lld, storeid:%s, storeid.len:%lu\n", itCurSeqn->second, storeid.c_str(), storeid.length());
-        assert(itCurSeqn->second>=0);
+        if (itCurSeqn->second<0)
+        {
+            printf("XMsgClient::GUpdateUserSeqn itCurSeqn is <0, so return\n");
+            return false;
+        }
         while(1)
         {
             printf("GUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
@@ -290,7 +298,12 @@ private:
                     continue;
                 }
                 printf("GUpdateUserSeqn update here, itCurSeqn is:%lld, ruserid:%s, fromid:%s, it.groupid:%s, en.romid:%s\n", itCurSeqn->second, it->second.ruserid().c_str(), en.usr_from().c_str(), it->second.groupid().c_str(), en.rom_id().c_str());
-                assert(it->second.groupid().compare(en.rom_id())==0);
+                if(it->second.groupid().compare(en.rom_id())!=0)
+                {
+                    printf("XMsgClient::GUpdateUserSeqn groupid and rom_id is not equal, so continue\n");
+                    m_gSyncedMsgMap.erase(sk);
+                    continue;
+                }
                 if (m_uid.compare(en.usr_from())==0)
                 {
                     // recv the msg you send to other

@@ -78,9 +78,9 @@
 		E6415BBC1D4302A500572DB5 /* MSSqlite3ClientSql.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */; };
 		E6415BBD1D4302A500572DB5 /* MSSqlite3Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */; };
 		E6415BBE1D4302A500572DB5 /* MSSqlite3Manager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */; };
-		E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E6415BC01D4302A500572DB5 /* MSTxtMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */; };
-		E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6415BBF1D4302A500572DB5 /* MSSubMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6B1D4302A500572DB5 /* MSSubMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E6415BC01D4302A500572DB5 /* MSSubMessage.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A6C1D4302A500572DB5 /* MSSubMessage.mm */; };
+		E6415BC11D4302A500572DB5 /* MSSubMessageDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A6D1D4302A500572DB5 /* MSSubMessageDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6415BC51D4302A500572DB5 /* CommonMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A721D4302A500572DB5 /* CommonMsg.pbobjc.h */; };
 		E6415BC61D4302A500572DB5 /* CommonMsg.pbobjc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E6415A731D4302A500572DB5 /* CommonMsg.pbobjc.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E6415BC91D4302A500572DB5 /* EntityMsg.pbobjc.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415A761D4302A500572DB5 /* EntityMsg.pbobjc.h */; };
@@ -442,9 +442,9 @@
 		E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3ClientSql.h; sourceTree = "<group>"; };
 		E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSqlite3Manager.h; sourceTree = "<group>"; };
 		E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSSqlite3Manager.mm; sourceTree = "<group>"; };
-		E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessage.h; sourceTree = "<group>"; };
-		E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSTxtMessage.mm; sourceTree = "<group>"; };
-		E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSTxtMessageDelegate.h; sourceTree = "<group>"; };
+		E6415A6B1D4302A500572DB5 /* MSSubMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSubMessage.h; sourceTree = "<group>"; };
+		E6415A6C1D4302A500572DB5 /* MSSubMessage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MSSubMessage.mm; sourceTree = "<group>"; };
+		E6415A6D1D4302A500572DB5 /* MSSubMessageDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSSubMessageDelegate.h; sourceTree = "<group>"; };
 		E6415A6F1D4302A500572DB5 /* .build_proto.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = .build_proto.sh; sourceTree = "<group>"; };
 		E6415A701D4302A500572DB5 /* build_proto.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_proto.sh; sourceTree = "<group>"; };
 		E6415A711D4302A500572DB5 /* common_msg.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = common_msg.proto; sourceTree = "<group>"; };
@@ -823,9 +823,9 @@
 				E6415A681D4302A500572DB5 /* MSSqlite3ClientSql.h */,
 				E6415A691D4302A500572DB5 /* MSSqlite3Manager.h */,
 				E6415A6A1D4302A500572DB5 /* MSSqlite3Manager.mm */,
-				E6415A6B1D4302A500572DB5 /* MSTxtMessage.h */,
-				E6415A6C1D4302A500572DB5 /* MSTxtMessage.mm */,
-				E6415A6D1D4302A500572DB5 /* MSTxtMessageDelegate.h */,
+				E6415A6B1D4302A500572DB5 /* MSSubMessage.h */,
+				E6415A6C1D4302A500572DB5 /* MSSubMessage.mm */,
+				E6415A6D1D4302A500572DB5 /* MSSubMessageDelegate.h */,
 				E6415A6E1D4302A500572DB5 /* proto_ios */,
 				E6415A861D4302A500572DB5 /* RTSingleton.h */,
 				E6415A871D4302A500572DB5 /* TMClientType.h */,
@@ -1243,8 +1243,8 @@
 				E6415BA81D4302A500572DB5 /* MSClientDelegate.h in Headers */,
 				E6415BA91D4302A500572DB5 /* MSClientManager.h in Headers */,
 				E6415BAF1D4302A500572DB5 /* MSGroupDelegate.h in Headers */,
-				E6415BBF1D4302A500572DB5 /* MSTxtMessage.h in Headers */,
-				E6415BC11D4302A500572DB5 /* MSTxtMessageDelegate.h in Headers */,
+				E6415BBF1D4302A500572DB5 /* MSSubMessage.h in Headers */,
+				E6415BC11D4302A500572DB5 /* MSSubMessageDelegate.h in Headers */,
 				E6415BB21D4302A500572DB5 /* MSMessage.h in Headers */,
 				E6415A951D4302A500572DB5 /* XTcpClientImpl.h in Headers */,
 				E6415D611D43062500572DB5 /* sslconfig.h in Headers */,
@@ -1775,7 +1775,7 @@
 				E6415DF81D45E82000572DB5 /* MJFoundation.m in Sources */,
 				E6415BD81D4302A500572DB5 /* SysMsgType.pbobjc.mm in Sources */,
 				E6415DC31D45E35600572DB5 /* event.cc in Sources */,
-				E6415BC01D4302A500572DB5 /* MSTxtMessage.mm in Sources */,
+				E6415BC01D4302A500572DB5 /* MSSubMessage.mm in Sources */,
 				E6415DF61D45E82000572DB5 /* MJExtensionConst.m in Sources */,
 				E6415AA51D4302A500572DB5 /* storage_msg.pb.cc in Sources */,
 			);

@@ -160,7 +160,7 @@
     
     mGroupId = @"wocaowocaowocao";
     NSLog(@"====>>you enter mGroupId %@", mGroupId);
-    //[groupMgr addGroupGrpId:mGroupId];
+    [groupMgr addGroupGrpId:mGroupId];
 }
 
 - (IBAction)leaveButton:(id)sender {
@@ -176,11 +176,21 @@
     NSString *sndMsg = @"sndMsgButton was called";
     NSLog(@"%@", sndMsg);
     
-    NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    [msgMgr sendTxtMsgGrpId:mGroupId cont:sndMsg cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendTxtMsgGrpId outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSTxtMessage* txtMsg = [[MSTxtMessage alloc] init];
+    [txtMsg setGroupId:mGroupId];
+    [txtMsg setContent:sndMsg];
+    [txtMsg setPush:0];
+    NSLog(@"111 send grpid:%@, content:%@", [txtMsg getGroupId], [txtMsg getContent]);
+    NSString *outmsgid = [msgMgr sendTxtMsg:txtMsg];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendTxtMsg outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendTxtMsg outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -192,10 +202,19 @@
     NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSArray* arr = [NSArray arrayWithObjects:touser1, touser2, nil];
     mGroupId = @"wocaowocaowocao";
-    NSString *outmsgid = nil;
-    [msgMgr sendTxtMsgTosGrpId:mGroupId users:arr cont:sndMsgTos cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendTxtMsgTos outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
+    [txtMsg setContent:sndMsgTos];
+    [txtMsg setGroupId:mGroupId];
+    [txtMsg setPush:0];
+    NSString *outmsgid = [msgMgr sendTxtMsgTos:txtMsg users:arr];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendTxtMsgTos outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendTxtMsgTos outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -204,10 +223,19 @@
     NSLog(@"%@", sndMsgToUser);
     
     NSString *touser = [NSString stringWithCString:"8ca64d158a505876" encoding:NSUTF8StringEncoding];
-    NSString *outmsgid = nil;
-    [msgMgr sendTxtMsgToUsrId:touser cont:sndMsgToUser cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrId outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
+    [txtMsg setContent:sndMsgToUser];
+    [txtMsg setToId:touser];
+    [txtMsg setPush:0];
+    NSString *outmsgid = [msgMgr sendTxtMsgToUser:txtMsg];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendTxtMsgToUser outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendTxtMsgToUser outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -218,10 +246,18 @@
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
-    NSString *outmsgid = nil;
-    [msgMgr sendTxtMsgToUsrIds:arr cont:sndMsgToUsers cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendTxtMsgToUsrIds outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSTxtMessage *txtMsg = [[MSTxtMessage alloc] init];
+    [txtMsg setContent:sndMsgToUsers];
+    [txtMsg setPush:0];
+    NSString *outmsgid = [msgMgr sendTxtMsgToUsers:txtMsg users:arr];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendTxtMsgToUsers outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendTxtMsgToUsers outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -229,13 +265,22 @@
     NSString *notifyLive = @"notifyLiveButton was called";
     NSLog(@"%@", notifyLive);
     
-    NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    int flag = 1;
     NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    [msgMgr sendNotifyLiveGrpId:mGroupId hostId:touser flag:flag cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendNotifyLive outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSLivMessage *livMsg = [[MSLivMessage alloc] init];
+    [livMsg setGroupId:mGroupId];
+    [livMsg setToId:touser];
+    [livMsg setFlag:1];
+    [livMsg setPush:1];
+    NSString *outmsgid = [msgMgr sendNotifyLive:livMsg];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendLivMsg outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendLivMsg outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -243,14 +288,25 @@
     NSString *notifyRedEnvelope = @"notifyRedEnvelopeButton was called";
     NSLog(@"%@", notifyRedEnvelope);
     
-    NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
     NSString *touser = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *cash = @"123.45";
     NSString *wishcont = @"happy to you";
-    [msgMgr sendNotifyRedEnvelopeGrpId:mGroupId hostId:touser cash:cash cont:wishcont cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendRedRevelope outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSRenMessage *renMsg = [[MSRenMessage alloc] init];
+    [renMsg setGroupId:mGroupId];
+    [renMsg setToId:touser];
+    [renMsg setCash:cash];
+    [renMsg setWishcont:wishcont];
+    [renMsg setPush:1];
+    NSString *outmsgid = [msgMgr sendNotifyRedEnvelope:renMsg];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendRenMsg outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendRenMsg outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -258,15 +314,24 @@
     NSString *notifyBlacklist = @"notifyBlacklistButton was called";
     NSLog(@"%@", notifyBlacklist);
     
-    NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    int flag = 1;
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
-    [msgMgr sendNotifyBlacklistGrpId:mGroupId userId:touser1 flag:flag notifys:arr cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendNotifyBlacklist outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    MSBlkMessage *blkMsg = [[MSBlkMessage alloc] init];
+    [blkMsg setGroupId:mGroupId];
+    [blkMsg setToId:touser1];
+    [blkMsg setFlag:1];
+    [blkMsg setPush:1];
+    NSString *outmsgid = [msgMgr sendNotifyBlacklist:blkMsg notifys:arr];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendBlkMsg outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendBlkMsg outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -274,15 +339,25 @@
     NSString *notifyForbidden = @"notifyForbiddenButton was called";
     NSLog(@"%@", notifyForbidden);
     
-    NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    int flag = 1;
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
     NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
-    [msgMgr sendNotifyForbiddenGrpId:mGroupId userId:touser1 flag:flag notifys:arr cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendNotifyForbidden outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    
+    MSFbdMessage *fbdMsg = [[MSFbdMessage alloc] init];
+    [fbdMsg setGroupId:mGroupId];
+    [fbdMsg setToId:touser1];
+    [fbdMsg setFlag:1];
+    [fbdMsg setPush:1];
+    NSString *outmsgid = [msgMgr sendNotifyForbidden:fbdMsg notifys:arr];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendFbdMsg outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendFbdMsg outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 
@@ -290,14 +365,23 @@
     NSString *notifySettedMgr = @"notifySettedMgrButton was called";
     NSLog(@"%@", notifySettedMgr);
     
-    NSString *outmsgid = nil;
     mGroupId = @"wocaowocaowocao";
-    int flag = 1;
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    [msgMgr sendNotifySettedMgrGrpId:mGroupId userId:touser1 flag:flag cmsgid:&outmsgid];
-    NSString *info = [NSString stringWithFormat:@"sendNotifySettedMgr outmsgid is :%@", outmsgid];
-    NSLog(@"%@", info);
+    
+    MSMgrMessage *mgrMsg = [[MSMgrMessage alloc] init];
+    [mgrMsg setGroupId:mGroupId];
+    [mgrMsg setToId:touser1];
+    [mgrMsg setFlag:1];
+    [mgrMsg setPush:1];
+    NSString *outmsgid = [msgMgr sendNotifySettedMgr:mgrMsg];
+    NSString* info = nil;
+    if (outmsgid) {
+        info = [NSString stringWithFormat:@"sendMgrMsg outmsgid is :%@", outmsgid];
+        NSLog(@"%@", info);
+    } else {
+        info = [NSString stringWithFormat:@"sendMgrMsg outmsgid is :null"];
+        NSLog(@"%@", info);
+    }
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 

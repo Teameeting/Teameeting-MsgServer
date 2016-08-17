@@ -10,11 +10,11 @@
 #define MsgClientIos_MsgClientProtocolImpl_h
 #import <msgclient/MSClientDelegate.h>
 #import <msgclient/MSGroupDelegate.h>
-#import <msgclient/MSTxtMessageDelegate.h>
+#import <msgclient/MSSubMessageDelegate.h>
 
 @protocol ShowResultProtocol;
 
-@interface MsgClientProtocolImpl : NSObject<MSClientDelegate, MSGroupDelegate, MSTxtMessageDelegate>
+@interface MsgClientProtocolImpl : NSObject<MSClientDelegate, MSGroupDelegate, MSSubMessageDelegate>
 
 
 @property (nonatomic, assign) id<ShowResultProtocol> delegate;

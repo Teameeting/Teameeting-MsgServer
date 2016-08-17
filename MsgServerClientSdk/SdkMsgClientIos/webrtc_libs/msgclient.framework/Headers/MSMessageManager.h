@@ -9,7 +9,8 @@
 #ifndef MSMessageManager_h
 #define MSMessageManager_h
 #import <Foundation/Foundation.h>
-#import "MSTxtMessageDelegate.h"
+#import "MSSubMessageDelegate.h"
+#import "MSSubMessage.h"
 
 @interface MSMessageManager : NSObject
 
@@ -17,25 +18,25 @@
  *  add message delegate
  *
  *  params:
- *      txtDelegate: the message delegate for callback to set
- *      txtQueue: the dispatch queue
+ *      subDelegate: the message delegate for callback to set
+ *      subQueue: the dispatch queue
  *
  *  return:
  *      void
  */
--(void)addDelegateId:(id<MSTxtMessageDelegate>)txtDelegate
-                     delegateQueue:(dispatch_queue_t)txtQueue;
+-(void)addDelegateId:(id<MSSubMessageDelegate>)subDelegate
+                     delegateQueue:(dispatch_queue_t)subQueue;
 
 /**
  *  remove message delegate
  *
  *  params:
- *      txtDelegate: the message delegate to delete
+ *      subDelegate: the message delegate to delete
  *
  *  return:
  *      void
  */
--(void)delDelegateId:(id<MSTxtMessageDelegate>)txtDelegate;
+-(void)delDelegateId:(id<MSSubMessageDelegate>)subDelegate;
 
 /**
  *  sync message when first login or refresh
@@ -64,181 +65,148 @@
  *  you send message in grpId
  *
  *  params:
- *      grpId: the group id you are in
- *      content: the message you send
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      GroupId and Content and Push need to be setted
+ *      GroupId: the group id you are in
+ *      Content: the content you send
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or content is null
+ *      msgid: the id of this msg
  */
--(int)sendTxtMsgGrpId:(NSString*)grpId
-                 cont:(NSString*)content
-               cmsgid:(NSString**)cmsgid;
+-(NSString*)sendTxtMsg:(MSTxtMessage*)txtMsg;
 
 /**
  *  you send content to usres in grpId
  *
  *  params:
- *      grpId: the group id you are in
- *      users: the users you will send to in grpId
- *      content: the message you send
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      GroupId and Content and Push need to be setted
+ *      GroupId: the group id you are in
+ *      Content: the message you send
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or users or content is null
+ *      msgid: the id of this msg
  */
--(int)sendTxtMsgTosGrpId:(NSString*)grpId
-                   users:(NSArray*)users
-                    cont:(NSString*)content
-                  cmsgid:(NSString**)cmsgid;
+-(NSString*)sendTxtMsgTos:(MSTxtMessage*)txtMsg
+                    users:(NSArray*)users;
 
 /**
  *  you send content to userId
  *
  *  params:
- *      usrId: the user id you will send to
- *      content: the message you send
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      Content and ToId and Push need to be setted
+ *      Content: the message you send
+ *      ToId: the user id you will send to
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: usrId or content is null
+ *      msgid: the id of this msg
  */
--(int)sendTxtMsgToUsrId:(NSString*)usrId
-                   cont:(NSString*)content
-                 cmsgid:(NSString**)cmsgid;
+-(NSString*)sendTxtMsgToUser:(MSTxtMessage*)txtMsg;
 
 /**
  *  you send content to userIds
  *
  *  params:
- *      usrIds: the users ids you will send to
- *      content: the message you send
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      Content and Push need to be setted
+ *      Content: the message you send
+ *      Push: 1, the msg will be pushed if offline, 0, not push
+ *      users: the users ids you will send to
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: usrIds or content is null
+ *      msgid: the id of this msg
  */
--(int)sendTxtMsgToUsrIds:(NSArray*)usrIds
-                    cont:(NSString*)content
-                  cmsgid:(NSString**)cmsgid;
 
+-(NSString*)sendTxtMsgToUsers:(MSTxtMessage*)txtMsg
+                        users:(NSArray*)users;
 /**
  *  hostId begin to live in grpId
  *
  *  params:
- *      grpId: the group id you are in
- *      hostId: the id of the host who is living, here means yourself id
- *      flag: 1, the host begin live, 0, the host end live
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      GroupId and ToId and Flag and Push need to be setted
+ *      GroupId: the group id you are in
+ *      ToId: the user you want to forbidden talk in this group
+ *      Flag: 1, forbidden user, 0, cancel forbidden
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or hostId is null
+ *      msgid: the id of this msg
  */
--(int)sendNotifyLiveGrpId:(NSString*)grpId
-                   hostId:(NSString*)hostId
-                     flag:(int)flag
-                   cmsgid:(NSString**)cmsgid;
+-(NSString*)sendNotifyLive:(MSLivMessage*)livMsg;
 
 /**
  *  you send red-envelope to hostId in grpId
  *
  *  params:
- *      grpId: the group id you are in
- *      hostId: the id of the host you will send to
- *      cash: the cash mount you will send to host
- *      cont: the wish message you want say to host
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      GroupId and ToId and and Push and Cash and Wishcont need to be setted
+ *      GroupId: the group id you are in
+ *      ToId: the user you want to forbidden talk in this group
+ *      Push: 1, the msg will be pushed if offline, 0, not push
+ *      Cash: the cash mount you will send to host
+ *      Wishcont: the wish message you want say to host
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or hostId or cash or cont is null
+ *      msgid: the id of this msg
  */
--(int)sendNotifyRedEnvelopeGrpId:(NSString*)grpId
-                          hostId:(NSString*)hostId
-                            cash:(NSString*)cash
-                            cont:(NSString*)cont
-                          cmsgid:(NSString**)cmsgid;
+-(NSString*)sendNotifyRedEnvelope:(MSRenMessage*)renMsg;
 
 /**
  *  userId was push to blacklist in grpId
  *
  *  params:
- *      grpId: the group id you are in
- *      userId: the user you want to pull blacklist
- *      flag: 1, set to blacklist, 0, cancel blacklist 
+ *      txtMsg: the message you will send
+ *      GroupId and ToId and Flag and Push need to be setted
+ *      GroupId: the group id you are in
+ *      ToId: the user you want to forbidden talk in this group
+ *      Flag: 1, forbidden user, 0, cancel forbidden
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *      notifys: the users you want to notify, want them to know, usually group managers or group owner
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or userId or notifys is null
+ *      msgid: the id of this msg
  */
--(int)sendNotifyBlacklistGrpId:(NSString*)grpId
-                        userId:(NSString*)userId
-                          flag:(int)flag
-                       notifys:(NSArray*)notifys
-                        cmsgid:(NSString**)cmsgid;
+-(NSString*)sendNotifyBlacklist:(MSBlkMessage*)blkMsg
+                        notifys:(NSArray*)notifys;
 
 /**
  *  userId was forbidden in grpId
  *
  *  params:
- *      grpId: the group id you are in
- *      userId: the user you want to forbidden talk in this group
- *      flag: 1, forbidden user, 0, cancel forbidden
+ *      txtMsg: the message you will send
+ *      GroupId and ToId and Flag and Push need to be setted
+ *      GroupId: the group id you are in
+ *      ToId: the user you want to forbidden talk in this group
+ *      Flag: 1, forbidden user, 0, cancel forbidden
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *      notifys: the users you want to notify, want them to know, usually group managers or group owner
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or userId or notifys is null
+ *      msgid: the id of this msg
  */
--(int)sendNotifyForbiddenGrpId:(NSString*)grpId
-                        userId:(NSString*)userId
-                          flag:(int)flag
-                       notifys:(NSArray*)notifys
-                        cmsgid:(NSString**)cmsgid;
+-(NSString*)sendNotifyForbidden:(MSFbdMessage*)fbdMsg
+                        notifys:(NSArray*)notifys;
 
 /**
  *  userId in grpId was setted to be manager, this message will notify all members
  *
  *  params:
- *      grpId: the group id you are in
- *      userId: the user you want to set to be manager
- *      flag: 1, set user mgr, 0, set user not mgr
- *      cmsgid: the msgid of the message you send
- *      after invoke, you will get the id of this message
+ *      txtMsg: the message you will send
+ *      GroupId and ToId and Flag and Push need to be setted
+ *      GroupId: the group id you are in
+ *      ToId: the user you want to set to be manager
+ *      Flag: 1, set user mgr, 0, set user not mgr
+ *      Push: 1, the msg will be pushed if offline, 0, not push
  *
  *  return:
- *      >0: the whole msg length
- *      -100: cmsgid is null
- *      -101: grpId or userId or notifys is null
+ *      msgid: the id of this msg
  */
--(int)sendNotifySettedMgrGrpId:(NSString*)grpId
-                        userId:(NSString*)userId
-                          flag:(int)flag
-                        cmsgid:(NSString**)cmsgid;
+-(NSString*)sendNotifySettedMgr:(MSMgrMessage*)mgrMsg;
 
 @end
 

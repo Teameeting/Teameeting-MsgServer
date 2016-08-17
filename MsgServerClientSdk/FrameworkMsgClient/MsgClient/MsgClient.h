@@ -12,7 +12,8 @@
 #import <Foundation/Foundation.h>
 #import <map>
 
-#import "msgclient/MSTxtMessageDelegate.h"
+#import "msgclient/MSSubMessage.h"
+#import "msgclient/MSSubMessageDelegate.h"
 #import "msgclient/MSGroupDelegate.h"
 #import "msgclient/MSClientDelegate.h"
 #import "msgclient/MSSqlite3Manager.h"
@@ -31,9 +32,9 @@ public:
     int MCInit(const std::string& uid, const std::string& token, const std::string& nname);
     int MCUnin();
     
-    void MCSetTxtMsgDelegate(id<MSTxtMessageDelegate> txtMsgDelegate)
+    void MCSetTxtMsgDelegate(id<MSSubMessageDelegate> subMsgDelegate)
     {
-        m_txtMsgDelegate = txtMsgDelegate;
+        m_subMsgDelegate = subMsgDelegate;
     }
     
     void MCSetGroupDelegate(id<MSGroupDelegate> groupDelegate)
@@ -55,16 +56,16 @@ public:
     
     int MCSyncMsg();
     int MCSync2Db();
-    int MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, const std::string& content);
-    int MCSendTxtMsgTos(std::string& outmsgid, const std::string& groupid, const std::vector<std::string>& vusrs, const std::string& content);
-    int MCSendTxtMsgToUsr(std::string& outmsgid, const std::string& userid, const std::string& content);
-    int MCSendTxtMsgToUsrs(std::string& outmsgid, const std::vector<std::string>& vusrs, const std::string& content);
+    int MCSendTxtMsg(std::string& outmsgid, MSTxtMessage* txtMsg);
+    int MCSendTxtMsgTos(std::string& outmsgid, MSTxtMessage* txtMsg, const std::vector<std::string>& vusrs);
+    int MCSendTxtMsgToUsr(std::string& outmsgid, MSTxtMessage *txtMsg);
+    int MCSendTxtMsgToUsrs(std::string& outmsgid, MSTxtMessage *txtMsg, const std::vector<std::string>& vusrs);
     
-    int MCNotifyLive(std::string& outmsgid, const std::string& groupid, const std::string& hostid, int flag);
-    int MCNotifyRedEnvelope(std::string& outmsgid, const std::string& groupid, const std::string& hostid, const std::string& cash, const std::string& cont);
-    int MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys);
-    int MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys);
-    int MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys);
+    int MCNotifyLive(std::string& outmsgid, MSLivMessage *livMsg);
+    int MCNotifyRedEnvelope(std::string& outmsgid, MSRenMessage *renMsg);
+    int MCNotifyBlacklist(std::string& outmsgid, MSBlkMessage *blkMsg, const std::vector<std::string>& notifys);
+    int MCNotifyForbidden(std::string& outmsgid, MSFbdMessage *fbdMsg, const std::vector<std::string>& notifys);
+    int MCNotifySettedMgr(std::string& outmsgid, MSMgrMessage *mgrMsg, const std::vector<std::string>& notifys);
     
     int MCConnStatus() { return MSStatus(); }
     void MCSetUserId(const std::string& userid) {
@@ -239,7 +240,7 @@ private:
         NSLog(@"PutLocalSeqnsToDb was called");
         if (m_sqlite3Manager)
         {
-            NSLog(@"updateUserSeqnUserId will be call...");
+            NSLog(@"updateGroupSeqnUserId will be call...");
             for (auto &item : m_groupSeqn)
             {
                 NSLog(@"updateGroupSeqnGrpId will be call...");
@@ -316,7 +317,7 @@ private:
     }
     
 protected:
-    MsgClient():m_txtMsgDelegate(nullptr)
+    MsgClient():m_subMsgDelegate(nullptr)
     , m_groupDelegate(nullptr)
     , m_clientDelegate(nullptr)
     , m_sqlite3Manager(nullptr){}
@@ -327,7 +328,7 @@ protected:
     typedef GroupSeqnMap::iterator          GroupSeqnMapIt;
     
 private:
-    id<MSTxtMessageDelegate>    m_txtMsgDelegate;
+    id<MSSubMessageDelegate>    m_subMsgDelegate;
     id<MSGroupDelegate>         m_groupDelegate;
     id<MSClientDelegate>        m_clientDelegate;
     

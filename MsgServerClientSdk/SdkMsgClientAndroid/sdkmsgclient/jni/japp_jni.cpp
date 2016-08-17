@@ -104,8 +104,7 @@ JOWW(jstring, JMClientApp_SndMsg)(JNIEnv *jni, jobject j_app, jstring strGroupId
 	JavaString jstrGroupId(strGroupId);
 	JavaString jstrGroupName(strGroupName);
 	JavaString jstrMsg(strMsg);
-	int code = jApp->SndMsg(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag);
-	//jstring joutMsgId(soutMsgId);
+	jApp->SndMsg(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag);
 	return jni->NewStringUTF(soutMsgId.c_str());
 }
 
@@ -117,15 +116,12 @@ JOWW(jstring, JMClientApp_SndMsgTo)(JNIEnv *jni, jobject j_app, jstring strGroup
 	JavaString jstrGroupId(strGroupId);
 	JavaString jstrGroupName(strGroupName);
 	JavaString jstrMsg(strMsg);
-	//GetObjectArrayElements(<Type>Array arr , jboolean* isCopide);
-	//ReleaseObjectArrayElements(<Type>Array arr , <Type>* array , jint mode)
 	std::vector<std::string> vusers;
 	for (int i=0;i<size;i++) {
 		jstring js = (jstring)jni->GetObjectArrayElement(users, i);
 		vusers.push_back(jni->GetStringUTFChars(js, nullptr));
 	}
 	jApp->SndMsgTo(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag, vusers);
-	//JavaString joutMsgId(soutMsgId);
 	return jni->NewStringUTF(soutMsgId.c_str());
 }
 

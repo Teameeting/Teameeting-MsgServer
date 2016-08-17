@@ -41,6 +41,8 @@
 
 @property (nonatomic) int         flag;
 
+@property (nonatomic) int         push;
+
 @end
 
 #endif /* MSMessage_h */
