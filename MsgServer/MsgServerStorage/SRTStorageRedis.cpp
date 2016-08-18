@@ -17,6 +17,9 @@
 #define Err_Redis_Exist                  (-2)
 #define Err_Redis_Expire                 (-3)
 #define Err_Redis_Expire_Or_Not_Exist    (-4)
+#define Err_Vsersion_Not_Support         (-5)
+#define Err_Redis_Setex                  (-6)
+#define Err_Redis_Hmset                  (-7)
 
 static int g_push_event_counter = 0;
 static OSMutex      g_push_event_mutex;
@@ -88,16 +91,51 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
         std::string str("");
         char key[512] = {'\0'};
         sprintf(key, "grp:%s:%lld", store.storeid().c_str(), store.sequence());
+        // grp:storeid:mtype:push:sequence
         m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
         if (m_xRedisClient.exists(*m_RedisDBIdx, key))
         {
-            m_xRedisClient.get(*m_RedisDBIdx, key, str);
-            if (str.length()==0) {
-                store.set_result(Err_Redis_Expire_Or_Not_Exist);
+            if (store.version().compare("1.0.1")==0) {
+                LI("group read store.version is:%s\n", store.version().c_str());
+                VDATA vdata;
+                vdata.push_back("ispush");
+                vdata.push_back("mtype");
+                vdata.push_back("cont");
+
+                ArrayReply reply;
+                if (m_xRedisClient.hmget(*m_RedisDBIdx, key, vdata, reply))
+                {
+                    store.set_result(Err_Redis_Ok);
+                    *store.mutable_ispush() = reply.at(0).str;
+                    *store.mutable_mtype() = reply.at(1).str;
+                    *store.mutable_content() = reply.at(2).str;
+                } else {
+                    char* err = m_RedisDBIdx->GetErrInfo();
+                    if (err) {
+                        LE("m_xRedisClient.hmset err:%s\n", err);
+                    }
+                    LI("SRTStorageRedis::OnTickEvent g write group msg error\n");
+                    store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                    //assert(false);
+                }
+                for (ArrayReply::iterator it=reply.begin();it!=reply.end();++it) {
+                     LI("hmget reply it.type:%u, it.str:%s\n", it->type, it->str.c_str());
+                }
+
+            } else if (store.version().compare("")==0) {
+                LI("group read store.version is:nullllllllllllll\n");
+                m_xRedisClient.get(*m_RedisDBIdx, key, str);
+                if (str.length()==0) {
+                    store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                } else {
+                    store.set_result(Err_Redis_Ok);
+                }
+                *store.mutable_content() = str;
             } else {
-                store.set_result(Err_Redis_Ok);
+                LI("group read store.version is:not support\n");
+                store.set_result(Err_Vsersion_Not_Support);
             }
-            *store.mutable_content() = str;
+
         } else {
             store.set_result(Err_Redis_Not_Exist);// key is not exists
             *store.mutable_content() = str;
@@ -118,13 +156,46 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
         m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);
         if (m_xRedisClient.exists(*m_RedisDBIdx, key))
         {
-            m_xRedisClient.get(*m_RedisDBIdx, key, str);
-            if (str.length()==0) {
-                store.set_result(Err_Redis_Expire_Or_Not_Exist);
+            if (store.version().compare("1.0.1")==0) {
+                LI("single read store.version is:%s\n", store.version().c_str());
+                VDATA vdata;
+                vdata.push_back("ispush");
+                vdata.push_back("mtype");
+                vdata.push_back("cont");
+
+                ArrayReply reply;
+                if (m_xRedisClient.hmget(*m_RedisDBIdx, key, vdata, reply))
+                {
+                    store.set_result(Err_Redis_Ok);
+                    *store.mutable_ispush() = reply.at(0).str;
+                    *store.mutable_mtype() = reply.at(1).str;
+                    *store.mutable_content() = reply.at(2).str;
+                } else {
+                    char* err = m_RedisDBIdx->GetErrInfo();
+                    if (err) {
+                        LE("m_xRedisClient.hmset err:%s\n", err);
+                    }
+                    LI("SRTStorageRedis::OnTickEvent s write single msg error\n");
+                    store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                    //assert(false);
+                }
+                for (ArrayReply::iterator it=reply.begin();it!=reply.end();++it) {
+                     LI("hmget reply it.type:%u, it.str:%s\n", it->type, it->str.c_str());
+                }
+            } else if (store.version().compare("")==0) {
+                LI("single read store.version is:null\n");
+                m_xRedisClient.get(*m_RedisDBIdx, key, str);
+                if (str.length()==0) {
+                    store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                } else {
+                    store.set_result(Err_Redis_Ok);
+                }
+                *store.mutable_content() = str;
             } else {
-                store.set_result(Err_Redis_Ok);
+                LI("single read store.version is not supporttttt\n");
+                store.set_result(Err_Vsersion_Not_Support);
             }
-            *store.mutable_content() = str;
+
         } else {
             store.set_result(Err_Redis_Not_Exist);// key is not exists
             *store.mutable_content() = str;
@@ -174,17 +245,53 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
                 , store.msgid().c_str()\
                 , key\
                 , store.content().length());
+
+        if (store.version().c_str()) {
+             LI("version is:%s, store.version().length:%d\n", store.version().c_str(), store.version().length());
+        } else {
+            LI("version is null\n");
+        }
         {
-            if (m_xRedisClient.setex(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME, store.content().c_str()))
-            {
-                store.set_result(Err_Redis_Ok);
-            } else {
-                char* err = m_RedisDBIdx->GetErrInfo();
-                if (err) {
-                    LE("m_xRedisClient.setex err:%s\n", err);
+            if (store.version().compare("1.0.1")==0) {
+                LI("group write store.version is:%s\n", store.version().c_str());
+                VDATA vdata;
+                vdata.push_back("ispush");
+                vdata.push_back(store.ispush());
+                vdata.push_back("mtype");
+                vdata.push_back(store.mtype());
+                vdata.push_back("cont");
+                vdata.push_back(store.content());
+
+                if (m_xRedisClient.hmset(*m_RedisDBIdx, key, vdata))
+                {
+                    store.set_result(Err_Redis_Ok);
+                    m_xRedisClient.expire(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME);
+                } else {
+                    char* err = m_RedisDBIdx->GetErrInfo();
+                    if (err) {
+                        LE("m_xRedisClient.hmset err:%s\n", err);
+                    }
+                    LE("SRTStorageRedis::OnTickEvent g write group msg error\n");
+                    store.set_result(Err_Redis_Hmset);
+                    //assert(false);
                 }
-                LI("SRTStorageRedis::OnTickEvent g write group msg error\n");
-                assert(false);
+            } else if (store.version().compare("")==0) { // else if store.version.compare
+                LI("group write store.version is: nulllllllll\n");
+                if (m_xRedisClient.setex(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME, store.content().c_str()))
+                {
+                    store.set_result(Err_Redis_Ok);
+                } else {
+                    char* err = m_RedisDBIdx->GetErrInfo();
+                    if (err) {
+                        LE("m_xRedisClient.setex err:%s\n", err);
+                    }
+                    LE("SRTStorageRedis::OnTickEvent g write group msg error\n");
+                    store.set_result(Err_Redis_Setex);
+                    //assert(false);
+                }
+            } else {
+                LI("group write store.version not suppoort\n");
+                store.set_result(Err_Vsersion_Not_Support);
             }
         }
         LI("SRTStorageRedis::OnTickEvent g write key:%s, msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\
@@ -205,12 +312,47 @@ void SRTStorageRedis::OnTickEvent(const void*pData, int nSize)
                 , store.storeid().c_str()\
                 , store.msgid().c_str());
         {
-            if (m_xRedisClient.setex(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME, store.content().c_str()))
-            {
-                store.set_result(Err_Redis_Ok);
+
+            if (store.version().compare("1.0.1")==0) {
+                LI("single write store.version is:%s\n", store.version().c_str());
+                VDATA vdata;
+                vdata.push_back("ispush");
+                vdata.push_back(store.ispush());
+                vdata.push_back("mtype");
+                vdata.push_back(store.mtype());
+                vdata.push_back("cont");
+                vdata.push_back(store.content());
+
+                if (m_xRedisClient.hmset(*m_RedisDBIdx, key, vdata))
+                {
+                    store.set_result(Err_Redis_Ok);
+                    m_xRedisClient.expire(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME);
+                } else {
+                    char* err = m_RedisDBIdx->GetErrInfo();
+                    if (err) {
+                        LE("m_xRedisClient.hmset err:%s\n", err);
+                    }
+                    LE("SRTStorageRedis::OnTickEvent s write group msg error\n");
+                    store.set_result(Err_Redis_Hmset);
+                    //assert(false);
+                }
+            } else if (store.version().compare("")==0) {
+                LI("single write store.version nullllllll\n");
+                if (m_xRedisClient.setex(*m_RedisDBIdx, key, MAX_MESSAGE_EXPIRE_TIME, store.content().c_str()))
+                {
+                    store.set_result(Err_Redis_Ok);
+                } else {
+                    char* err = m_RedisDBIdx->GetErrInfo();
+                    if (err) {
+                        LE("m_xRedisClient.setex err:%s\n", err);
+                    }
+                    LE("SRTStorageRedis::OnTickEvent s write group msg error\n");
+                    store.set_result(Err_Redis_Setex);
+                    //assert(false);
+                }
             } else {
-                LI("SRTStorageRedis::OnTickEvent s write group msg error\n");
-                assert(false);
+                LI("single write store.version not suppoort\n");
+                store.set_result(Err_Vsersion_Not_Support);
             }
         }
         LI("SRTStorageRedis::OnTickEvent s write key:%s, msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\

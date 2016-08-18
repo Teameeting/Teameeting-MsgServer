@@ -108,7 +108,8 @@ void MRTTransferSession::KeepAlive()
     pms::TransferMsg t_msg;
     pms::ConnMsg c_msg;
 
-    c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+    // when meet compile error here, please comment this line or add TransferModule to replace MMODULE
+    c_msg.set_tr_module(pms::ETransferModule::MMODULE);
     c_msg.set_conn_tag(pms::EConnTag::TKEEPALIVE);
 
     t_msg.set_type(pms::ETransferType::TCONN);
@@ -134,7 +135,8 @@ void MRTTransferSession::EstablishConnection()
     pms::TransferMsg t_msg;
     pms::ConnMsg c_msg;
 
-    c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+    // when meet compile error here, please comment this line or add TransferModule to replace MMODULE
+    c_msg.set_tr_module(pms::ETransferModule::MMODULE);
     c_msg.set_conn_tag(pms::EConnTag::THI);
 
     t_msg.set_type(pms::ETransferType::TCONN);
@@ -215,7 +217,8 @@ void MRTTransferSession::OnTypeConn(const std::string& str)
         GenericSessionId(trid);
         m_transferSessId = trid;
 
-        c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+        // when meet compile error here, please comment this line or add TransferModule to replace MMODULE
+        c_msg.set_tr_module(pms::ETransferModule::MMODULE);
         c_msg.set_conn_tag(pms::EConnTag::THELLO);
         c_msg.set_transferid(m_transferSessId);
         //send self Module id to other
@@ -254,7 +257,8 @@ void MRTTransferSession::OnTypeConn(const std::string& str)
 
             pms::TransferMsg t_msg;
 
-            c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+            // when meet compile error here, please comment this line or add TransferModule to replace MMODULE
+            c_msg.set_tr_module(pms::ETransferModule::MMODULE);
             c_msg.set_conn_tag(pms::EConnTag::THELLOHI);
             c_msg.set_transferid(m_transferSessId);
             //send self Module id to other

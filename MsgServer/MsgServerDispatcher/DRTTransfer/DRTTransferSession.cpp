@@ -11,6 +11,14 @@
 #include "DRTConnManager.h"
 #include "RTUtils.hpp"
 
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/entity_msg.pb.h"
+#include "MsgServer/proto/entity_msg_type.pb.h"
+
 #define TIMEOUT_TS (60*1000)
 
 
@@ -315,6 +323,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
     pms::RelayMsg pmsg;
     pms::ToUser *pallduser = pmsg.mutable_touser();
     DRTConnManager::UserConnectorMaps connUserId;
+    LI("DRTTransferSession::OnTypeQueue handle_cmd:%s, handle_mtype:%s, handle_data:%s\n", rmsg.handle_cmd().c_str(), rmsg.handle_mtype().c_str(), rmsg.handle_data().c_str());
 #if 0
     {
         //check user online or offline

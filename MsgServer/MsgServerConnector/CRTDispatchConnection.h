@@ -11,13 +11,15 @@
 
 #include <stdio.h>
 #include <iostream>
+#include "ProtoCommon.h"
 
 class CRTDispatchConnection{
 public:
     CRTDispatchConnection(){}
     virtual ~CRTDispatchConnection(){}
 
-    void DispatchMsg(const std::string& uid, const std::string& msg);
+    //void DispatchMsg(const std::string& uid, const std::string& msg, const std::string& handle_cmd, const std::string& handle_mtype, const std::string& handle_data);
+    void DispatchMsg(const std::string& uid, pms::RelayMsg& r_msg);
 private:
 
 };

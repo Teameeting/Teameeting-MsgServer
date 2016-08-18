@@ -52,8 +52,8 @@ public:
     void EstablishConnection();
     int CreateGroupSeqn(const std::string& cltUserid, const std::string& groupid);
     int DeleteGroupSeqn(const std::string& cltUserid, const std::string& groupid);
-    int GenGrpSyncSeqnNotify(const std::string& userid, const std::string& groupid);
-    int GenGrpSyncSeqnNotifys(const std::vector<std::string>& userids, const std::string& groupid);
+    int GenGrpSyncSeqnNotify(const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush);
+    int GenGrpSyncSeqnNotifys(const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush);
 
     int GenGrpSyncDataNotify(const std::string& userid, const std::string& groupid, int64 seqn);
     int GenGrpSyncDataNotifys(const std::vector<std::string>& userids, const std::string& groupid, int64 seqn);

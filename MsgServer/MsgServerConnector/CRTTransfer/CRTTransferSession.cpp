@@ -279,13 +279,16 @@ void CRTTransferSession::OnTypeDispatch(const std::string& str)
     pms::RelayMsg dmsg;
     if (!dmsg.ParseFromString(str)) {
         LE("OnTypeDispatch dmsg.ParseFromString error\n");
+        return;
     }
     pms::ToUser to = dmsg.touser();
 
     {
         for(int i = 0;i < to.users_size(); ++i) {
             LI("OnTypeDispatch dmsg--->:to.user:%s\n", to.users(i).c_str());
-            m_dispatchConnection.DispatchMsg(to.users(i), dmsg.content());
+            LI("CRTTransferSession::OnTypeDispatch handle_cmd:%s, handle_mtype:%s, handle_data:%s\n", dmsg.handle_cmd().c_str(), dmsg.handle_mtype().c_str(), dmsg.handle_data().c_str());
+            //m_dispatchConnection.DispatchMsg(to.users(i), dmsg.content());
+            m_dispatchConnection.DispatchMsg(to.users(i), dmsg);
         }
     }
 #else

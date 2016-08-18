@@ -140,7 +140,7 @@ void LRTTransferSession::KeepAlive()
     pms::TransferMsg t_msg;
     pms::ConnMsg c_msg;
 
-    c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+    c_msg.set_tr_module(pms::ETransferModule::MLOGICAL);
     c_msg.set_conn_tag(pms::EConnTag::TKEEPALIVE);
 
     t_msg.set_type(pms::ETransferType::TCONN);
@@ -166,7 +166,7 @@ void LRTTransferSession::EstablishConnection()
     pms::TransferMsg t_msg;
     pms::ConnMsg c_msg;
 
-    c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+    c_msg.set_tr_module(pms::ETransferModule::MLOGICAL);
     c_msg.set_conn_tag(pms::EConnTag::THI);
 
     t_msg.set_type(pms::ETransferType::TCONN);
@@ -351,7 +351,7 @@ void LRTTransferSession::OnTypeConn(const std::string& str)
         GenericSessionId(trid);
         m_transferSessId = trid;
 
-        c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+        c_msg.set_tr_module(pms::ETransferModule::MLOGICAL);
         c_msg.set_conn_tag(pms::EConnTag::THELLO);
         c_msg.set_transferid(m_transferSessId);
         //send self Logical id to other
@@ -390,7 +390,7 @@ void LRTTransferSession::OnTypeConn(const std::string& str)
 
             pms::TransferMsg t_msg;
 
-            c_msg.set_tr_module(pms::ETransferModule::MSEQUENCE);
+            c_msg.set_tr_module(pms::ETransferModule::MLOGICAL);
             c_msg.set_conn_tag(pms::EConnTag::THELLOHI);
             c_msg.set_transferid(m_transferSessId);
             //send self Logical id to other

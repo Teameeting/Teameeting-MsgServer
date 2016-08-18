@@ -36,7 +36,8 @@ public:
         MRTTransferSession*     pModule;
         _ModuleInfo() {
             flag = 0;
-            othModuleType = pms::ETransferModule::MLOGICAL;
+            // when meet compile error here, please comment this line or add TransferModule to replace MMODULE
+            othModuleType = pms::ETransferModule::MMODULE;
             othModuleId = "";
             pModule = NULL;
         }
@@ -50,7 +51,8 @@ public:
         std::string moduleId;
         std::set<std::string> sessionIds;
         _TypeModuleSessionInfo() {
-            moduleType = pms::ETransferModule::MLOGICAL;
+            // when meet compile error here, please comment this line or add TransferModule to replace MMODULE
+            moduleType = pms::ETransferModule::MMODULE;
             moduleId = "";
             sessionIds.clear();
         }

@@ -11,11 +11,12 @@
 
 #include <queue>
 #include "RTEventLooper.h"
-#include "ProtoCommon.h"
 #include "OSMutex.h"
 #include <hiredis/hiredis.h>
 #include "xRedisClient.h"
 #include "RTObserverConnection.h"
+
+#include "ProtoCommon.h"
 
 class SRTRedisGroup;
 
