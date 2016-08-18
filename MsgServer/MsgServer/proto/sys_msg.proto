@@ -20,8 +20,11 @@ message RelayMsg{
     EServerCmd         svr_cmds = 1;
     ETransferModule    tr_module = 2; // the server module
     string             connector = 3;
-    bytes              content = 4; // this is the application or module msg
-    ToUser             touser = 5;
+    string             handle_cmd = 4;
+    string             handle_mtype = 5;
+    string             handle_data = 6;
+    bytes              content = 7; // this is the application or module msg
+    ToUser             touser = 8;
 }
 
 // this is for msg relaying between server
