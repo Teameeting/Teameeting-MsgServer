@@ -34,6 +34,8 @@ message Entity{
     string         usr_token = 10; // user token
     string         cmsg_id   = 11; // client local msgid
     string         extra     = 12;
-    uint32         msg_time  = 13; // msg send time
-    ToUser         usr_toto  = 14; // user ids sending to, the string from pms::ToUser
+    string         version   = 13; // message version
+    string         ispush    = 14; // if this msg need push when offline
+    uint32         msg_time  = 15; // msg send time
+    ToUser         usr_toto  = 16; // user ids sending to, the string from pms::ToUser
 }

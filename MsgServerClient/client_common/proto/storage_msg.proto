@@ -20,7 +20,10 @@ message StorageMsg{
     string          storeid     = 10; // storage userid
     string          ruserid     = 11; // real userid
     string          groupid     = 12; // groupid
-    bytes           content     = 13; // message
+    string          version     = 13; // message version
+    string          mtype       = 14; // the msg content type
+    string          ispush      = 15; // if this message need push
+    bytes           content     = 16; // message
 }
 
 message PackedStoreMsg{

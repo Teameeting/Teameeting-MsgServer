@@ -41,6 +41,7 @@ enum EModuleType{
     TSEQUENCE   = 7;
     TSTORAGE    = 8;
     TGRPNOTIFY  = 9;
+    TPUSHER     = 10;
 }
 
 // the msg flag

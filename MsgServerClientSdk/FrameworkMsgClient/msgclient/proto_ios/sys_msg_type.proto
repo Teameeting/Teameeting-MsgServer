@@ -16,6 +16,7 @@ enum ETransferModule{
     MSEQUENCE   = 7;
     MSTORAGE    = 8;
     MGRPNOTIFY  = 9;
+    MPUSHER     = 10;
 }
 
 // the type of server transfering msg
