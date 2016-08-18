@@ -156,7 +156,7 @@ typedef GPB_ENUM(Entity_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *version;
 
 /// if this msg need push when offline
-@property(nonatomic, readwrite, copy, null_resettable) NSString *ispush;
+@property(nonatomic, readwrite) int32_t ispush;
 
 /// msg send time
 @property(nonatomic, readwrite) uint32_t msgTime;

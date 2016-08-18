@@ -27,8 +27,6 @@ APP_ABI += armeabi-v7a
 #### mv org/dync/teameeting/sdkmsgclient/jni/JMClientApp.class ../../../build/intermediates/classes/debug/org/dync/teameeting/sdkmsgclient/jni/
 
 #### javah -d jni -classpath /Users/hp/Documents/tools/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMClientApp
-
-
 #### javah -d jni -classpath /Users/hp/Documents/tools/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMSCbData
 #### javah -d jni -classpath /Users/hp/Documents/tools/android-sdk-macosx/platforms/android-23/android.jar:../../../build/intermediates/classes/debug/ org.dync.teameeting.sdkmsgclient.jni.JMClientHelper
 

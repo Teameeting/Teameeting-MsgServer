@@ -252,9 +252,42 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_connector();
   void set_allocated_connector(::std::string* connector);
 
-  // optional bytes content = 4;
+  // optional string handle_cmd = 4;
+  void clear_handle_cmd();
+  static const int kHandleCmdFieldNumber = 4;
+  const ::std::string& handle_cmd() const;
+  void set_handle_cmd(const ::std::string& value);
+  void set_handle_cmd(const char* value);
+  void set_handle_cmd(const char* value, size_t size);
+  ::std::string* mutable_handle_cmd();
+  ::std::string* release_handle_cmd();
+  void set_allocated_handle_cmd(::std::string* handle_cmd);
+
+  // optional string handle_mtype = 5;
+  void clear_handle_mtype();
+  static const int kHandleMtypeFieldNumber = 5;
+  const ::std::string& handle_mtype() const;
+  void set_handle_mtype(const ::std::string& value);
+  void set_handle_mtype(const char* value);
+  void set_handle_mtype(const char* value, size_t size);
+  ::std::string* mutable_handle_mtype();
+  ::std::string* release_handle_mtype();
+  void set_allocated_handle_mtype(::std::string* handle_mtype);
+
+  // optional string handle_data = 6;
+  void clear_handle_data();
+  static const int kHandleDataFieldNumber = 6;
+  const ::std::string& handle_data() const;
+  void set_handle_data(const ::std::string& value);
+  void set_handle_data(const char* value);
+  void set_handle_data(const char* value, size_t size);
+  ::std::string* mutable_handle_data();
+  ::std::string* release_handle_data();
+  void set_allocated_handle_data(::std::string* handle_data);
+
+  // optional bytes content = 7;
   void clear_content();
-  static const int kContentFieldNumber = 4;
+  static const int kContentFieldNumber = 7;
   const ::std::string& content() const;
   void set_content(const ::std::string& value);
   void set_content(const char* value);
@@ -263,10 +296,10 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_content();
   void set_allocated_content(::std::string* content);
 
-  // optional .pms.ToUser touser = 5;
+  // optional .pms.ToUser touser = 8;
   bool has_touser() const;
   void clear_touser();
-  static const int kTouserFieldNumber = 5;
+  static const int kTouserFieldNumber = 8;
   const ::pms::ToUser& touser() const;
   ::pms::ToUser* mutable_touser();
   ::pms::ToUser* release_touser();
@@ -282,6 +315,9 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   int svr_cmds_;
   int tr_module_;
   ::google::protobuf::internal::ArenaStringPtr connector_;
+  ::google::protobuf::internal::ArenaStringPtr handle_cmd_;
+  ::google::protobuf::internal::ArenaStringPtr handle_mtype_;
+  ::google::protobuf::internal::ArenaStringPtr handle_data_;
   ::google::protobuf::internal::ArenaStringPtr content_;
   ::pms::ToUser* touser_;
   mutable int _cached_size_;
@@ -614,7 +650,139 @@ inline void RelayMsg::set_allocated_connector(::std::string* connector) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.connector)
 }
 
-// optional bytes content = 4;
+// optional string handle_cmd = 4;
+inline void RelayMsg::clear_handle_cmd() {
+  handle_cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RelayMsg::handle_cmd() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.handle_cmd)
+  return handle_cmd_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelayMsg::set_handle_cmd(const ::std::string& value) {
+  
+  handle_cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.handle_cmd)
+}
+inline void RelayMsg::set_handle_cmd(const char* value) {
+  
+  handle_cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.RelayMsg.handle_cmd)
+}
+inline void RelayMsg::set_handle_cmd(const char* value, size_t size) {
+  
+  handle_cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.RelayMsg.handle_cmd)
+}
+inline ::std::string* RelayMsg::mutable_handle_cmd() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.RelayMsg.handle_cmd)
+  return handle_cmd_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RelayMsg::release_handle_cmd() {
+  // @@protoc_insertion_point(field_release:pms.RelayMsg.handle_cmd)
+  
+  return handle_cmd_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelayMsg::set_allocated_handle_cmd(::std::string* handle_cmd) {
+  if (handle_cmd != NULL) {
+    
+  } else {
+    
+  }
+  handle_cmd_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle_cmd);
+  // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_cmd)
+}
+
+// optional string handle_mtype = 5;
+inline void RelayMsg::clear_handle_mtype() {
+  handle_mtype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RelayMsg::handle_mtype() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.handle_mtype)
+  return handle_mtype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelayMsg::set_handle_mtype(const ::std::string& value) {
+  
+  handle_mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.handle_mtype)
+}
+inline void RelayMsg::set_handle_mtype(const char* value) {
+  
+  handle_mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.RelayMsg.handle_mtype)
+}
+inline void RelayMsg::set_handle_mtype(const char* value, size_t size) {
+  
+  handle_mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.RelayMsg.handle_mtype)
+}
+inline ::std::string* RelayMsg::mutable_handle_mtype() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.RelayMsg.handle_mtype)
+  return handle_mtype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RelayMsg::release_handle_mtype() {
+  // @@protoc_insertion_point(field_release:pms.RelayMsg.handle_mtype)
+  
+  return handle_mtype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelayMsg::set_allocated_handle_mtype(::std::string* handle_mtype) {
+  if (handle_mtype != NULL) {
+    
+  } else {
+    
+  }
+  handle_mtype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle_mtype);
+  // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_mtype)
+}
+
+// optional string handle_data = 6;
+inline void RelayMsg::clear_handle_data() {
+  handle_data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& RelayMsg::handle_data() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.handle_data)
+  return handle_data_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelayMsg::set_handle_data(const ::std::string& value) {
+  
+  handle_data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.handle_data)
+}
+inline void RelayMsg::set_handle_data(const char* value) {
+  
+  handle_data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.RelayMsg.handle_data)
+}
+inline void RelayMsg::set_handle_data(const char* value, size_t size) {
+  
+  handle_data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.RelayMsg.handle_data)
+}
+inline ::std::string* RelayMsg::mutable_handle_data() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.RelayMsg.handle_data)
+  return handle_data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* RelayMsg::release_handle_data() {
+  // @@protoc_insertion_point(field_release:pms.RelayMsg.handle_data)
+  
+  return handle_data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void RelayMsg::set_allocated_handle_data(::std::string* handle_data) {
+  if (handle_data != NULL) {
+    
+  } else {
+    
+  }
+  handle_data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle_data);
+  // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_data)
+}
+
+// optional bytes content = 7;
 inline void RelayMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -658,7 +826,7 @@ inline void RelayMsg::set_allocated_content(::std::string* content) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.content)
 }
 
-// optional .pms.ToUser touser = 5;
+// optional .pms.ToUser touser = 8;
 inline bool RelayMsg::has_touser() const {
   return !_is_default_instance_ && touser_ != NULL;
 }

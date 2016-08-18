@@ -61,7 +61,7 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     return 0;
 }
 
-int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag)
+int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag, int push)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -78,6 +78,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_usr_token(token);
     entity.set_msg_time(GetSecond());
     entity.set_version(MSG_VERSION);
+    entity.set_ispush(push);
     
     entity.set_cmsg_id(GetStrMicroSecond());
     outmsgid = entity.cmsg_id();

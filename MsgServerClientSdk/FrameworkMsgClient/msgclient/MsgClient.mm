@@ -101,7 +101,6 @@ int MsgClient::MCSync2Db()
 //////////////////Send Message///////////////////
 /////////////////////////////////////////////////
 
-//int MsgClient::MCSendTxtMsg(std::string& outmsgid, const std::string& groupid, const std::string& content)
 int MsgClient::MCSendTxtMsg(std::string& outmsgid, MSTxtMessage *txtMsg)
 {
     MSMessage *mMsg = [MSMsgUtil EncodeMessageWithTxtMsg:txtMsg msgType:MCMsgTypeTtxt];
@@ -112,11 +111,10 @@ int MsgClient::MCSendTxtMsg(std::string& outmsgid, MSTxtMessage *txtMsg)
         NSLog(@"MCSendTxtMsg JSONToNSString error");
         return -3;
     }
-    return SndMsg(outmsgid, [[txtMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
+    return SndMsg(outmsgid, [[txtMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, [mMsg push]);
 }
 
 
-//int MsgClient::MCSendTxtMsgTos(std::string& outmsgid, const std::string& groupid, const std::vector<std::string>& vusrs, const std::string& content)
 int MsgClient::MCSendTxtMsgTos(std::string& outmsgid, MSTxtMessage *txtMsg, const std::vector<std::string>& vusrs)
 {
     if (vusrs.size()==0) return -4;
@@ -128,7 +126,7 @@ int MsgClient::MCSendTxtMsgTos(std::string& outmsgid, MSTxtMessage *txtMsg, cons
         NSLog(@"MCSendTxtMsgTos JSONToNSString error");
         return -3;
     }
-    return SndMsgTo(outmsgid, [[txtMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, vusrs);
+    return SndMsgTo(outmsgid, [[txtMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "roomname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], vusrs);
 }
 
 int MsgClient::MCSendTxtMsgToUsr(std::string& outmsgid, MSTxtMessage *txtMsg)
@@ -144,7 +142,7 @@ int MsgClient::MCSendTxtMsgToUsr(std::string& outmsgid, MSTxtMessage *txtMsg)
         return -3;
     }
     
-    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, uvec);
+    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fsingle, [mMsg push], uvec);
 }
 
 int MsgClient::MCSendTxtMsgToUsrs(std::string& outmsgid, MSTxtMessage *txtMsg, const std::vector<std::string>& vusrs)
@@ -159,7 +157,7 @@ int MsgClient::MCSendTxtMsgToUsrs(std::string& outmsgid, MSTxtMessage *txtMsg, c
         return -3;
     }
     
-    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, vusrs);
+    return SndMsgTo(outmsgid, "groupid", "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Ttxt, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], vusrs);
 }
 
 
@@ -174,7 +172,7 @@ int MsgClient::MCNotifyLive(std::string& outmsgid, MSLivMessage *livMsg)
         return -3;
     }
 
-    return SndMsg(outmsgid, [[livMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tliv, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
+    return SndMsg(outmsgid, [[livMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tliv, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, [mMsg push]);
 }
 
 int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, MSRenMessage *renMsg)
@@ -188,10 +186,9 @@ int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, MSRenMessage *renMsg)
         return -3;
     }
 
-    return SndMsg(outmsgid, [[renMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tren, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
+    return SndMsg(outmsgid, [[renMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tren, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, [mMsg push]);
 }
 
-//int MsgClient::MCNotifyBlacklist(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys)
 int MsgClient::MCNotifyBlacklist(std::string& outmsgid, MSBlkMessage *blkMsg, const std::vector<std::string>& notifys)
 {
     std::vector<std::string> uvec;
@@ -209,10 +206,9 @@ int MsgClient::MCNotifyBlacklist(std::string& outmsgid, MSBlkMessage *blkMsg, co
         return -3;
     }
 
-    return SndMsgTo(outmsgid, [[blkMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, uvec);
+    return SndMsgTo(outmsgid, [[blkMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], uvec);
 }
 
-//int MsgClient::MCNotifyForbidden(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys)
 int MsgClient::MCNotifyForbidden(std::string& outmsgid, MSFbdMessage *fbdMsg, const std::vector<std::string>& notifys)
 {
     std::vector<std::string> uvec;
@@ -230,10 +226,9 @@ int MsgClient::MCNotifyForbidden(std::string& outmsgid, MSFbdMessage *fbdMsg, co
         return -3;
     }
 
-    return SndMsgTo(outmsgid, [[fbdMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, uvec);
+    return SndMsgTo(outmsgid, [[fbdMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], uvec);
 }
 
-//int MsgClient::MCNotifySettedMgr(std::string& outmsgid, const std::string& groupid, const std::string& userid, int flag, const std::vector<std::string>& notifys)
 int MsgClient::MCNotifySettedMgr(std::string& outmsgid, MSMgrMessage *mgrMsg, const std::vector<std::string>& notifys)
 {
     MSMessage *mMsg = [MSMsgUtil EncodeMessageWithMgrMsg:mgrMsg msgType:MCMsgTypeTmgr];
@@ -245,7 +240,7 @@ int MsgClient::MCNotifySettedMgr(std::string& outmsgid, MSMgrMessage *mgrMsg, co
         return -3;
     }
 
-    return SndMsg(outmsgid, [[mgrMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tmgr, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup);
+    return SndMsg(outmsgid, [[mgrMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tmgr, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, [mMsg push]);
 }
 
 /////////////////////////////////////////////////

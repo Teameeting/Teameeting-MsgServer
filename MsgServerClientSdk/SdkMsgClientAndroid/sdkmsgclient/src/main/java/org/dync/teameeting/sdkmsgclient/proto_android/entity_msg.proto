@@ -38,7 +38,7 @@ message Entity{
     string         cmsg_id   = 11; // client local msgid
     string         extra     = 12;
     string         version   = 13; // message version
-    string         ispush    = 14; // if this msg need push when offline
+    sint32         ispush    = 14; // if this msg need push when offline
     uint32         msg_time  = 15; // msg send time
     ToUser         usr_toto  = 16; // user ids sending to, the string from pms::ToUser
 }

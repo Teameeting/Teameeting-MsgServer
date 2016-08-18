@@ -265,6 +265,7 @@ typedef struct Entity__storage_ {
   EMsgTag msgTag;
   EMsgType msgType;
   EMsgFlag msgFlag;
+  int32_t ispush;
   uint32_t msgTime;
   NSString *usrFrom;
   NSString *msgCont;
@@ -275,7 +276,6 @@ typedef struct Entity__storage_ {
   NSString *cmsgId;
   NSString *extra;
   NSString *version;
-  NSString *ispush;
   ToUser *usrToto;
 } Entity__storage_;
 
@@ -409,7 +409,7 @@ typedef struct Entity__storage_ {
         .hasIndex = 13,
         .offset = (uint32_t)offsetof(Entity__storage_, ispush),
         .flags = GPBFieldOptional,
-        .dataType = GPBDataTypeString,
+        .dataType = GPBDataTypeSInt32,
       },
       {
         .name = "msgTime",

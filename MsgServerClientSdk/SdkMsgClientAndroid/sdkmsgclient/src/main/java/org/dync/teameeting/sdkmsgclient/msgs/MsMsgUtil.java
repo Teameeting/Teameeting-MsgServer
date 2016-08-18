@@ -90,7 +90,7 @@ public class MsMsgUtil {
 
 /////////////////////////////////////////////////
 
-    public static String Encode2JsonWithTxtMsg(MSSubMessage.MSTxtMessage txtMsg, int msgType) {
+    public static MSMessage Encode2JsonWithTxtMsg(MSSubMessage.MSTxtMessage txtMsg, int msgType) {
         MSMessage mMsg = new MSMessage();
         mMsg.setContent(txtMsg.getContent());
         mMsg.setGroupId(txtMsg.getGroupId());
@@ -101,20 +101,10 @@ public class MsMsgUtil {
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
         mMsg.setMsgType(msgType);
 
-        JSONObject jobj = null;
-        try {
-            jobj = MsMsgUtil.MessageToJSON(mMsg);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (null != jobj) {
-            return jobj.toString();
-        } else {
-            return "";
-        }
+        return mMsg;
     }
 
-    public static String Encode2JsonWithLivMsg(MSSubMessage.MSLivMessage livMsg, int msgType) {
+    public static MSMessage Encode2JsonWithLivMsg(MSSubMessage.MSLivMessage livMsg, int msgType) {
         MSMessage mMsg = new MSMessage();
         mMsg.setGroupId(livMsg.getGroupId());
         mMsg.setToId(livMsg.getToId());
@@ -125,20 +115,10 @@ public class MsMsgUtil {
         mMsg.setFlag(livMsg.getFlag());
         mMsg.setMsgType(msgType);
 
-        JSONObject jobj = null;
-        try {
-            jobj = MsMsgUtil.MessageToJSON(mMsg);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (null != jobj) {
-            return jobj.toString();
-        } else {
-            return "";
-        }
+        return mMsg;
     }
 
-    public static String Encode2JsonWithRenMsg(MSSubMessage.MSRenMessage renMsg, int msgType) {
+    public static MSMessage Encode2JsonWithRenMsg(MSSubMessage.MSRenMessage renMsg, int msgType) {
         MSMessage mMsg = new MSMessage();
         mMsg.setGroupId(renMsg.getGroupId());
         mMsg.setToId(renMsg.getToId());
@@ -150,20 +130,10 @@ public class MsMsgUtil {
         mMsg.setWishcont(renMsg.getWishcont());
         mMsg.setMsgType(msgType);
 
-        JSONObject jobj = null;
-        try {
-            jobj = MsMsgUtil.MessageToJSON(mMsg);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (null != jobj) {
-            return jobj.toString();
-        } else {
-            return "";
-        }
+        return mMsg;
     }
 
-    public static String Encode2JsonWithBlkMsg(MSSubMessage.MSBlkMessage blkMsg, int msgType) {
+    public static MSMessage Encode2JsonWithBlkMsg(MSSubMessage.MSBlkMessage blkMsg, int msgType) {
         MSMessage mMsg = new MSMessage();
         mMsg.setGroupId(blkMsg.getGroupId());
         mMsg.setToId(blkMsg.getToId());
@@ -174,20 +144,10 @@ public class MsMsgUtil {
         mMsg.setFlag(blkMsg.getFlag());
         mMsg.setMsgType(msgType);
 
-        JSONObject jobj = null;
-        try {
-            jobj = MsMsgUtil.MessageToJSON(mMsg);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (null != jobj) {
-            return jobj.toString();
-        } else {
-            return "";
-        }
+        return mMsg;
     }
 
-    public static String Encode2JsonWithFbdMsg(MSSubMessage.MSFbdMessage fbdMsg, int msgType) {
+    public static MSMessage Encode2JsonWithFbdMsg(MSSubMessage.MSFbdMessage fbdMsg, int msgType) {
         MSMessage mMsg = new MSMessage();
         mMsg.setGroupId(fbdMsg.getGroupId());
         mMsg.setToId(fbdMsg.getToId());
@@ -198,20 +158,10 @@ public class MsMsgUtil {
         mMsg.setFlag(fbdMsg.getFlag());
         mMsg.setMsgType(msgType);
 
-        JSONObject jobj = null;
-        try {
-            jobj = MsMsgUtil.MessageToJSON(mMsg);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (null != jobj) {
-            return jobj.toString();
-        } else {
-            return "";
-        }
+        return mMsg;
     }
 
-    public static String Encode2JsonWithMgrMsg(MSSubMessage.MSMgrMessage mgrMsg, int msgType) {
+    public static MSMessage Encode2JsonWithMgrMsg(MSSubMessage.MSMgrMessage mgrMsg, int msgType) {
         MSMessage mMsg = new MSMessage();
         mMsg.setGroupId(mgrMsg.getGroupId());
         mMsg.setToId(mgrMsg.getToId());
@@ -222,9 +172,13 @@ public class MsMsgUtil {
         mMsg.setFlag(mgrMsg.getFlag());
         mMsg.setMsgType(msgType);
 
+        return mMsg;
+    }
+
+    public static String JsonToString(MSMessage msg) {
         JSONObject jobj = null;
         try {
-            jobj = MsMsgUtil.MessageToJSON(mMsg);
+            jobj = MsMsgUtil.MessageToJSON(msg);
         } catch (JSONException e) {
             e.printStackTrace();
         }

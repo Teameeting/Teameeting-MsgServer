@@ -30,8 +30,8 @@ public class JMClientApp {
     public native int RmvGroup(String strGroupId);
 
 
-    public native String SndMsg(String strGroupId, String strGroupName, String strMsg, int tag, int type, int module, int flag);
-    public native String SndMsgTo(String strGroupId, String strGroupName, String strMsg, int tag, int type, int module, int flag, String[] arrUser, int arrSize);
+    public native String SndMsg(String strGroupId, String strGroupName, String strMsg, int tag, int type, int module, int flag, int push);
+    public native String SndMsgTo(String strGroupId, String strGroupName, String strMsg, int tag, int type, int module, int flag, int push, String[] arrUser, int arrSize);
 
     public native int FetchSeqn();
     public native int SyncSeqn(long seqn, int role);

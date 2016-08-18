@@ -2087,18 +2087,9 @@ public final class EntityMsg {
      * if this msg need push when offline
      * </pre>
      *
-     * <code>optional string ispush = 14;</code>
+     * <code>optional sint32 ispush = 14;</code>
      */
-    java.lang.String getIspush();
-    /**
-     * <pre>
-     * if this msg need push when offline
-     * </pre>
-     *
-     * <code>optional string ispush = 14;</code>
-     */
-    com.google.protobuf.ByteString
-        getIspushBytes();
+    int getIspush();
 
     /**
      * <pre>
@@ -2148,7 +2139,7 @@ public final class EntityMsg {
       cmsgId_ = "";
       extra_ = "";
       version_ = "";
-      ispush_ = "";
+      ispush_ = 0;
       msgTime_ = 0;
     }
     public static final int MSG_HEAD_FIELD_NUMBER = 1;
@@ -2962,15 +2953,15 @@ public final class EntityMsg {
     }
 
     public static final int ISPUSH_FIELD_NUMBER = 14;
-    private java.lang.String ispush_;
+    private int ispush_;
     /**
      * <pre>
      * if this msg need push when offline
      * </pre>
      *
-     * <code>optional string ispush = 14;</code>
+     * <code>optional sint32 ispush = 14;</code>
      */
-    public java.lang.String getIspush() {
+    public int getIspush() {
       return ispush_;
     }
     /**
@@ -2978,25 +2969,10 @@ public final class EntityMsg {
      * if this msg need push when offline
      * </pre>
      *
-     * <code>optional string ispush = 14;</code>
+     * <code>optional sint32 ispush = 14;</code>
      */
-    public com.google.protobuf.ByteString
-        getIspushBytes() {
-      return com.google.protobuf.ByteString.copyFromUtf8(ispush_);
-    }
-    /**
-     * <pre>
-     * if this msg need push when offline
-     * </pre>
-     *
-     * <code>optional string ispush = 14;</code>
-     */
-    private void setIspush(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+    private void setIspush(int value) {
+      
       ispush_ = value;
     }
     /**
@@ -3004,27 +2980,11 @@ public final class EntityMsg {
      * if this msg need push when offline
      * </pre>
      *
-     * <code>optional string ispush = 14;</code>
+     * <code>optional sint32 ispush = 14;</code>
      */
     private void clearIspush() {
       
-      ispush_ = getDefaultInstance().getIspush();
-    }
-    /**
-     * <pre>
-     * if this msg need push when offline
-     * </pre>
-     *
-     * <code>optional string ispush = 14;</code>
-     */
-    private void setIspushBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      ispush_ = value.toStringUtf8();
+      ispush_ = 0;
     }
 
     public static final int MSG_TIME_FIELD_NUMBER = 15;
@@ -3179,8 +3139,8 @@ public final class EntityMsg {
       if (!version_.isEmpty()) {
         output.writeString(13, getVersion());
       }
-      if (!ispush_.isEmpty()) {
-        output.writeString(14, getIspush());
+      if (ispush_ != 0) {
+        output.writeSInt32(14, ispush_);
       }
       if (msgTime_ != 0) {
         output.writeUInt32(15, msgTime_);
@@ -3247,9 +3207,9 @@ public final class EntityMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(13, getVersion());
       }
-      if (!ispush_.isEmpty()) {
+      if (ispush_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeStringSize(14, getIspush());
+          .computeSInt32Size(14, ispush_);
       }
       if (msgTime_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -4098,9 +4058,9 @@ public final class EntityMsg {
        * if this msg need push when offline
        * </pre>
        *
-       * <code>optional string ispush = 14;</code>
+       * <code>optional sint32 ispush = 14;</code>
        */
-      public java.lang.String getIspush() {
+      public int getIspush() {
         return instance.getIspush();
       }
       /**
@@ -4108,21 +4068,9 @@ public final class EntityMsg {
        * if this msg need push when offline
        * </pre>
        *
-       * <code>optional string ispush = 14;</code>
+       * <code>optional sint32 ispush = 14;</code>
        */
-      public com.google.protobuf.ByteString
-          getIspushBytes() {
-        return instance.getIspushBytes();
-      }
-      /**
-       * <pre>
-       * if this msg need push when offline
-       * </pre>
-       *
-       * <code>optional string ispush = 14;</code>
-       */
-      public Builder setIspush(
-          java.lang.String value) {
+      public Builder setIspush(int value) {
         copyOnWrite();
         instance.setIspush(value);
         return this;
@@ -4132,24 +4080,11 @@ public final class EntityMsg {
        * if this msg need push when offline
        * </pre>
        *
-       * <code>optional string ispush = 14;</code>
+       * <code>optional sint32 ispush = 14;</code>
        */
       public Builder clearIspush() {
         copyOnWrite();
         instance.clearIspush();
-        return this;
-      }
-      /**
-       * <pre>
-       * if this msg need push when offline
-       * </pre>
-       *
-       * <code>optional string ispush = 14;</code>
-       */
-      public Builder setIspushBytes(
-          com.google.protobuf.ByteString value) {
-        copyOnWrite();
-        instance.setIspushBytes(value);
         return this;
       }
 
@@ -4300,8 +4235,8 @@ public final class EntityMsg {
               !other.extra_.isEmpty(), other.extra_);
           version_ = visitor.visitString(!version_.isEmpty(), version_,
               !other.version_.isEmpty(), other.version_);
-          ispush_ = visitor.visitString(!ispush_.isEmpty(), ispush_,
-              !other.ispush_.isEmpty(), other.ispush_);
+          ispush_ = visitor.visitInt(ispush_ != 0, ispush_,
+              other.ispush_ != 0, other.ispush_);
           msgTime_ = visitor.visitInt(msgTime_ != 0, msgTime_,
               other.msgTime_ != 0, other.msgTime_);
           usrToto_ = visitor.visitMessage(usrToto_, other.usrToto_);
@@ -4407,10 +4342,9 @@ public final class EntityMsg {
                   version_ = s;
                   break;
                 }
-                case 114: {
-                  String s = input.readStringRequireUtf8();
+                case 112: {
 
-                  ispush_ = s;
+                  ispush_ = input.readSInt32();
                   break;
                 }
                 case 120: {

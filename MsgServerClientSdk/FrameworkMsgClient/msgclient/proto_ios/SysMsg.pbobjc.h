@@ -82,8 +82,11 @@ typedef GPB_ENUM(RelayMsg_FieldNumber) {
   RelayMsg_FieldNumber_SvrCmds = 1,
   RelayMsg_FieldNumber_TrModule = 2,
   RelayMsg_FieldNumber_Connector = 3,
-  RelayMsg_FieldNumber_Content = 4,
-  RelayMsg_FieldNumber_Touser = 5,
+  RelayMsg_FieldNumber_HandleCmd = 4,
+  RelayMsg_FieldNumber_HandleMtype = 5,
+  RelayMsg_FieldNumber_HandleData = 6,
+  RelayMsg_FieldNumber_Content = 7,
+  RelayMsg_FieldNumber_Touser = 8,
 };
 
 /// this is for msg relaying between server
@@ -96,6 +99,12 @@ typedef GPB_ENUM(RelayMsg_FieldNumber) {
 @property(nonatomic, readwrite) enum ETransferModule trModule;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *connector;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *handleCmd;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *handleMtype;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *handleData;
 
 /// this is the application or module msg
 @property(nonatomic, readwrite, copy, null_resettable) NSData *content;

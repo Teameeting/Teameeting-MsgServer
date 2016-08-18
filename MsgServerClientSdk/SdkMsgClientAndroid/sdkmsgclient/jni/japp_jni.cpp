@@ -97,19 +97,19 @@ JOWW(jint, JMClientApp_RmvGroup)(JNIEnv *jni, jobject j_app, jstring strGroupId)
 }
 
 
-JOWW(jstring, JMClientApp_SndMsg)(JNIEnv *jni, jobject j_app, jstring strGroupId, jstring strGroupName, jstring strMsg, jint tag, jint type, jint module, jint flag)
+JOWW(jstring, JMClientApp_SndMsg)(JNIEnv *jni, jobject j_app, jstring strGroupId, jstring strGroupName, jstring strMsg, jint tag, jint type, jint module, jint flag, jint push)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	std::string soutMsgId;
 	JavaString jstrGroupId(strGroupId);
 	JavaString jstrGroupName(strGroupName);
 	JavaString jstrMsg(strMsg);
-	jApp->SndMsg(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag);
+	jApp->SndMsg(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag, push);
 	return jni->NewStringUTF(soutMsgId.c_str());
 }
 
 
-JOWW(jstring, JMClientApp_SndMsgTo)(JNIEnv *jni, jobject j_app, jstring strGroupId, jstring strGroupName, jstring strMsg, jint tag, jint type, jint module, jint flag, jobjectArray users, jint size)
+JOWW(jstring, JMClientApp_SndMsgTo)(JNIEnv *jni, jobject j_app, jstring strGroupId, jstring strGroupName, jstring strMsg, jint tag, jint type, jint module, jint flag, jint push, jobjectArray users, jint size)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	std::string soutMsgId;
@@ -121,7 +121,7 @@ JOWW(jstring, JMClientApp_SndMsgTo)(JNIEnv *jni, jobject j_app, jstring strGroup
 		jstring js = (jstring)jni->GetObjectArrayElement(users, i);
 		vusers.push_back(jni->GetStringUTFChars(js, nullptr));
 	}
-	jApp->SndMsgTo(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag, vusers);
+	jApp->SndMsgTo(soutMsgId, jstrGroupId.ToString8().c_str(), jstrGroupName.ToString8().c_str(), jstrMsg.ToString8().c_str(), tag, type, module, flag, push, vusers);
 	return jni->NewStringUTF(soutMsgId.c_str());
 }
 

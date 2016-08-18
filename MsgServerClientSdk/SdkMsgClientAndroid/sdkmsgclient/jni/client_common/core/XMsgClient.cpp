@@ -140,7 +140,7 @@ int XMsgClient::RmvGroup(const std::string& groupid)
 }
 
 
-int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag)
+int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, int push)
 {
     if (groupid.length()==0 || msg.length()==0 || msg.length()>1024 || grpname.length()>128) {
         return -2;
@@ -150,7 +150,7 @@ int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const 
         std::vector<std::string> uvec;
         m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
                 , m_nname, groupid, grpname, uvec, msg\
-                , tag, type, module, flag);
+                , tag, type, module, flag, push);
     } else {
         return -1;
     }
@@ -163,7 +163,7 @@ int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const 
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, const std::vector<std::string>& uvec)
+int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, int push, const std::vector<std::string>& uvec)
 {
     if (groupid.length()==0 || msg.length()==0 || msg.length()>1024 || grpname.length()>128) {
         return -2;
@@ -175,7 +175,7 @@ int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, cons
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSndMsg(outstr, outmsgid, m_uid, m_token\
                                       , m_nname, groupid, grpname, uvec, msg\
-                                      , tag, type, module, flag);
+                                      , tag, type, module, flag, push);
     } else {
         return -1;
     }

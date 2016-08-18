@@ -524,6 +524,9 @@ void ConnMsg::clear_transferid() {
 const int RelayMsg::kSvrCmdsFieldNumber;
 const int RelayMsg::kTrModuleFieldNumber;
 const int RelayMsg::kConnectorFieldNumber;
+const int RelayMsg::kHandleCmdFieldNumber;
+const int RelayMsg::kHandleMtypeFieldNumber;
+const int RelayMsg::kHandleDataFieldNumber;
 const int RelayMsg::kContentFieldNumber;
 const int RelayMsg::kTouserFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -559,6 +562,9 @@ void RelayMsg::SharedCtor() {
   svr_cmds_ = 0;
   tr_module_ = 0;
   connector_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_cmd_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_mtype_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   touser_ = NULL;
 }
@@ -570,6 +576,9 @@ RelayMsg::~RelayMsg() {
 
 void RelayMsg::SharedDtor() {
   connector_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_cmd_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_mtype_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_data_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   if (this != &default_instance()) {
@@ -624,6 +633,9 @@ void RelayMsg::Clear() {
 
   ZR_(svr_cmds_, tr_module_);
   connector_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_mtype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  handle_data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   if (GetArenaNoVirtual() == NULL && touser_ != NULL) delete touser_;
   touser_ = NULL;
@@ -687,26 +699,77 @@ bool RelayMsg::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(34)) goto parse_content;
+        if (input->ExpectTag(34)) goto parse_handle_cmd;
         break;
       }
 
-      // optional bytes content = 4;
+      // optional string handle_cmd = 4;
       case 4: {
         if (tag == 34) {
+         parse_handle_cmd:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle_cmd()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle_cmd().data(), this->handle_cmd().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.RelayMsg.handle_cmd"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_handle_mtype;
+        break;
+      }
+
+      // optional string handle_mtype = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_handle_mtype:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle_mtype()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle_mtype().data(), this->handle_mtype().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.RelayMsg.handle_mtype"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(50)) goto parse_handle_data;
+        break;
+      }
+
+      // optional string handle_data = 6;
+      case 6: {
+        if (tag == 50) {
+         parse_handle_data:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_handle_data()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->handle_data().data(), this->handle_data().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.RelayMsg.handle_data"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(58)) goto parse_content;
+        break;
+      }
+
+      // optional bytes content = 7;
+      case 7: {
+        if (tag == 58) {
          parse_content:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_content()));
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(42)) goto parse_touser;
+        if (input->ExpectTag(66)) goto parse_touser;
         break;
       }
 
-      // optional .pms.ToUser touser = 5;
-      case 5: {
-        if (tag == 42) {
+      // optional .pms.ToUser touser = 8;
+      case 8: {
+        if (tag == 66) {
          parse_touser:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
                input, mutable_touser()));
@@ -763,16 +826,46 @@ void RelayMsg::SerializeWithCachedSizes(
       3, this->connector(), output);
   }
 
-  // optional bytes content = 4;
-  if (this->content().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      4, this->content(), output);
+  // optional string handle_cmd = 4;
+  if (this->handle_cmd().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle_cmd().data(), this->handle_cmd().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.RelayMsg.handle_cmd");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->handle_cmd(), output);
   }
 
-  // optional .pms.ToUser touser = 5;
+  // optional string handle_mtype = 5;
+  if (this->handle_mtype().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle_mtype().data(), this->handle_mtype().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.RelayMsg.handle_mtype");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->handle_mtype(), output);
+  }
+
+  // optional string handle_data = 6;
+  if (this->handle_data().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->handle_data().data(), this->handle_data().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.RelayMsg.handle_data");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->handle_data(), output);
+  }
+
+  // optional bytes content = 7;
+  if (this->content().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      7, this->content(), output);
+  }
+
+  // optional .pms.ToUser touser = 8;
   if (this->has_touser()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessage(
-      5, *this->touser_, output);
+      8, *this->touser_, output);
   }
 
   // @@protoc_insertion_point(serialize_end:pms.RelayMsg)
@@ -801,14 +894,35 @@ int RelayMsg::ByteSize() const {
         this->connector());
   }
 
-  // optional bytes content = 4;
+  // optional string handle_cmd = 4;
+  if (this->handle_cmd().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle_cmd());
+  }
+
+  // optional string handle_mtype = 5;
+  if (this->handle_mtype().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle_mtype());
+  }
+
+  // optional string handle_data = 6;
+  if (this->handle_data().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->handle_data());
+  }
+
+  // optional bytes content = 7;
   if (this->content().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->content());
   }
 
-  // optional .pms.ToUser touser = 5;
+  // optional .pms.ToUser touser = 8;
   if (this->has_touser()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -839,6 +953,18 @@ void RelayMsg::MergeFrom(const RelayMsg& from) {
 
     connector_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.connector_);
   }
+  if (from.handle_cmd().size() > 0) {
+
+    handle_cmd_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_cmd_);
+  }
+  if (from.handle_mtype().size() > 0) {
+
+    handle_mtype_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_mtype_);
+  }
+  if (from.handle_data().size() > 0) {
+
+    handle_data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.handle_data_);
+  }
   if (from.content().size() > 0) {
 
     content_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.content_);
@@ -868,6 +994,9 @@ void RelayMsg::InternalSwap(RelayMsg* other) {
   std::swap(svr_cmds_, other->svr_cmds_);
   std::swap(tr_module_, other->tr_module_);
   connector_.Swap(&other->connector_);
+  handle_cmd_.Swap(&other->handle_cmd_);
+  handle_mtype_.Swap(&other->handle_mtype_);
+  handle_data_.Swap(&other->handle_data_);
   content_.Swap(&other->content_);
   std::swap(touser_, other->touser_);
   _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -953,7 +1082,139 @@ void RelayMsg::clear_connector() {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.connector)
 }
 
-// optional bytes content = 4;
+// optional string handle_cmd = 4;
+void RelayMsg::clear_handle_cmd() {
+  handle_cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& RelayMsg::handle_cmd() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.handle_cmd)
+  return handle_cmd_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void RelayMsg::set_handle_cmd(const ::std::string& value) {
+  
+  handle_cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.handle_cmd)
+}
+ void RelayMsg::set_handle_cmd(const char* value) {
+  
+  handle_cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.RelayMsg.handle_cmd)
+}
+ void RelayMsg::set_handle_cmd(const char* value, size_t size) {
+  
+  handle_cmd_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.RelayMsg.handle_cmd)
+}
+ ::std::string* RelayMsg::mutable_handle_cmd() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.RelayMsg.handle_cmd)
+  return handle_cmd_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* RelayMsg::release_handle_cmd() {
+  // @@protoc_insertion_point(field_release:pms.RelayMsg.handle_cmd)
+  
+  return handle_cmd_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void RelayMsg::set_allocated_handle_cmd(::std::string* handle_cmd) {
+  if (handle_cmd != NULL) {
+    
+  } else {
+    
+  }
+  handle_cmd_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle_cmd);
+  // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_cmd)
+}
+
+// optional string handle_mtype = 5;
+void RelayMsg::clear_handle_mtype() {
+  handle_mtype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& RelayMsg::handle_mtype() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.handle_mtype)
+  return handle_mtype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void RelayMsg::set_handle_mtype(const ::std::string& value) {
+  
+  handle_mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.handle_mtype)
+}
+ void RelayMsg::set_handle_mtype(const char* value) {
+  
+  handle_mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.RelayMsg.handle_mtype)
+}
+ void RelayMsg::set_handle_mtype(const char* value, size_t size) {
+  
+  handle_mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.RelayMsg.handle_mtype)
+}
+ ::std::string* RelayMsg::mutable_handle_mtype() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.RelayMsg.handle_mtype)
+  return handle_mtype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* RelayMsg::release_handle_mtype() {
+  // @@protoc_insertion_point(field_release:pms.RelayMsg.handle_mtype)
+  
+  return handle_mtype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void RelayMsg::set_allocated_handle_mtype(::std::string* handle_mtype) {
+  if (handle_mtype != NULL) {
+    
+  } else {
+    
+  }
+  handle_mtype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle_mtype);
+  // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_mtype)
+}
+
+// optional string handle_data = 6;
+void RelayMsg::clear_handle_data() {
+  handle_data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& RelayMsg::handle_data() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.handle_data)
+  return handle_data_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void RelayMsg::set_handle_data(const ::std::string& value) {
+  
+  handle_data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.handle_data)
+}
+ void RelayMsg::set_handle_data(const char* value) {
+  
+  handle_data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.RelayMsg.handle_data)
+}
+ void RelayMsg::set_handle_data(const char* value, size_t size) {
+  
+  handle_data_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.RelayMsg.handle_data)
+}
+ ::std::string* RelayMsg::mutable_handle_data() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.RelayMsg.handle_data)
+  return handle_data_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* RelayMsg::release_handle_data() {
+  // @@protoc_insertion_point(field_release:pms.RelayMsg.handle_data)
+  
+  return handle_data_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void RelayMsg::set_allocated_handle_data(::std::string* handle_data) {
+  if (handle_data != NULL) {
+    
+  } else {
+    
+  }
+  handle_data_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), handle_data);
+  // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_data)
+}
+
+// optional bytes content = 7;
 void RelayMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -997,7 +1258,7 @@ void RelayMsg::clear_content() {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.content)
 }
 
-// optional .pms.ToUser touser = 5;
+// optional .pms.ToUser touser = 8;
 bool RelayMsg::has_touser() const {
   return !_is_default_instance_ && touser_ != NULL;
 }

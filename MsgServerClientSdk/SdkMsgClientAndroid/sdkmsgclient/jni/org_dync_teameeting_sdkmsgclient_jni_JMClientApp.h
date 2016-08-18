@@ -74,18 +74,18 @@ JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Rmv
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    SndMsg
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIII)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIIII)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SndMsg
-  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint, jint, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    SndMsgTo
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIII[Ljava/lang/String;I)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIIII[Ljava/lang/String;I)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SndMsgTo
-  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint, jint, jobjectArray, jint);
+  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint, jint, jint, jobjectArray, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp

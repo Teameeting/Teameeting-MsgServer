@@ -1389,7 +1389,7 @@ void Entity::SharedCtor() {
   cmsg_id_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   extra_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   version_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ispush_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ispush_ = 0;
   msg_time_ = 0u;
   usr_toto_ = NULL;
 }
@@ -1409,7 +1409,6 @@ void Entity::SharedDtor() {
   cmsg_id_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   extra_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   version_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ispush_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   if (this != &default_instance()) {
   #else
@@ -1466,13 +1465,12 @@ void Entity::Clear() {
   msg_cont_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   rom_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   rom_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ZR_(ispush_, msg_time_);
   nck_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   usr_token_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   cmsg_id_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   extra_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ispush_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  msg_time_ = 0u;
   if (GetArenaNoVirtual() == NULL && usr_toto_ != NULL) delete usr_toto_;
   usr_toto_ = NULL;
 
@@ -1703,20 +1701,18 @@ bool Entity::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(114)) goto parse_ispush;
+        if (input->ExpectTag(112)) goto parse_ispush;
         break;
       }
 
-      // optional string ispush = 14;
+      // optional sint32 ispush = 14;
       case 14: {
-        if (tag == 114) {
+        if (tag == 112) {
          parse_ispush:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_ispush()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->ispush().data(), this->ispush().length(),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "pms.Entity.ispush"));
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                 input, &ispush_)));
+
         } else {
           goto handle_unusual;
         }
@@ -1890,14 +1886,9 @@ void Entity::SerializeWithCachedSizes(
       13, this->version(), output);
   }
 
-  // optional string ispush = 14;
-  if (this->ispush().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ispush().data(), this->ispush().length(),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "pms.Entity.ispush");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      14, this->ispush(), output);
+  // optional sint32 ispush = 14;
+  if (this->ispush() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt32(14, this->ispush(), output);
   }
 
   // optional uint32 msg_time = 15;
@@ -2005,10 +1996,10 @@ int Entity::ByteSize() const {
         this->version());
   }
 
-  // optional string ispush = 14;
-  if (this->ispush().size() > 0) {
+  // optional sint32 ispush = 14;
+  if (this->ispush() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
+      ::google::protobuf::internal::WireFormatLite::SInt32Size(
         this->ispush());
   }
 
@@ -2088,9 +2079,8 @@ void Entity::MergeFrom(const Entity& from) {
 
     version_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.version_);
   }
-  if (from.ispush().size() > 0) {
-
-    ispush_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ispush_);
+  if (from.ispush() != 0) {
+    set_ispush(from.ispush());
   }
   if (from.msg_time() != 0) {
     set_msg_time(from.msg_time());
@@ -2130,7 +2120,7 @@ void Entity::InternalSwap(Entity* other) {
   cmsg_id_.Swap(&other->cmsg_id_);
   extra_.Swap(&other->extra_);
   version_.Swap(&other->version_);
-  ispush_.Swap(&other->ispush_);
+  std::swap(ispush_, other->ispush_);
   std::swap(msg_time_, other->msg_time_);
   std::swap(usr_toto_, other->usr_toto_);
   _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -2596,48 +2586,18 @@ void Entity::clear_version() {
   // @@protoc_insertion_point(field_set_allocated:pms.Entity.version)
 }
 
-// optional string ispush = 14;
+// optional sint32 ispush = 14;
 void Entity::clear_ispush() {
-  ispush_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ispush_ = 0;
 }
- const ::std::string& Entity::ispush() const {
+ ::google::protobuf::int32 Entity::ispush() const {
   // @@protoc_insertion_point(field_get:pms.Entity.ispush)
-  return ispush_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return ispush_;
 }
- void Entity::set_ispush(const ::std::string& value) {
+ void Entity::set_ispush(::google::protobuf::int32 value) {
   
-  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  ispush_ = value;
   // @@protoc_insertion_point(field_set:pms.Entity.ispush)
-}
- void Entity::set_ispush(const char* value) {
-  
-  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pms.Entity.ispush)
-}
- void Entity::set_ispush(const char* value, size_t size) {
-  
-  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pms.Entity.ispush)
-}
- ::std::string* Entity::mutable_ispush() {
-  
-  // @@protoc_insertion_point(field_mutable:pms.Entity.ispush)
-  return ispush_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- ::std::string* Entity::release_ispush() {
-  // @@protoc_insertion_point(field_release:pms.Entity.ispush)
-  
-  return ispush_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
- void Entity::set_allocated_ispush(::std::string* ispush) {
-  if (ispush != NULL) {
-    
-  } else {
-    
-  }
-  ispush_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ispush);
-  // @@protoc_insertion_point(field_set_allocated:pms.Entity.ispush)
 }
 
 // optional uint32 msg_time = 15;

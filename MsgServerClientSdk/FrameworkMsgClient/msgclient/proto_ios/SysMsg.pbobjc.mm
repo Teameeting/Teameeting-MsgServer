@@ -150,6 +150,9 @@ void SetConnMsg_TrModule_RawValue(ConnMsg *message, int32_t value) {
 @dynamic svrCmds;
 @dynamic trModule;
 @dynamic connector;
+@dynamic handleCmd;
+@dynamic handleMtype;
+@dynamic handleData;
 @dynamic content;
 @dynamic hasTouser, touser;
 
@@ -158,6 +161,9 @@ typedef struct RelayMsg__storage_ {
   EServerCmd svrCmds;
   ETransferModule trModule;
   NSString *connector;
+  NSString *handleCmd;
+  NSString *handleMtype;
+  NSString *handleData;
   NSData *content;
   ToUser *touser;
 } RelayMsg__storage_;
@@ -196,10 +202,37 @@ typedef struct RelayMsg__storage_ {
         .dataType = GPBDataTypeString,
       },
       {
+        .name = "handleCmd",
+        .dataTypeSpecific.className = NULL,
+        .number = RelayMsg_FieldNumber_HandleCmd,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(RelayMsg__storage_, handleCmd),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "handleMtype",
+        .dataTypeSpecific.className = NULL,
+        .number = RelayMsg_FieldNumber_HandleMtype,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(RelayMsg__storage_, handleMtype),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "handleData",
+        .dataTypeSpecific.className = NULL,
+        .number = RelayMsg_FieldNumber_HandleData,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(RelayMsg__storage_, handleData),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
         .name = "content",
         .dataTypeSpecific.className = NULL,
         .number = RelayMsg_FieldNumber_Content,
-        .hasIndex = 3,
+        .hasIndex = 6,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, content),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeBytes,
@@ -208,7 +241,7 @@ typedef struct RelayMsg__storage_ {
         .name = "touser",
         .dataTypeSpecific.className = GPBStringifySymbol(ToUser),
         .number = RelayMsg_FieldNumber_Touser,
-        .hasIndex = 4,
+        .hasIndex = 7,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, touser),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeMessage,

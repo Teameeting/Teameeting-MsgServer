@@ -593,16 +593,11 @@ class Entity : public ::google::protobuf::MessageLite {
   ::std::string* release_version();
   void set_allocated_version(::std::string* version);
 
-  // optional string ispush = 14;
+  // optional sint32 ispush = 14;
   void clear_ispush();
   static const int kIspushFieldNumber = 14;
-  const ::std::string& ispush() const;
-  void set_ispush(const ::std::string& value);
-  void set_ispush(const char* value);
-  void set_ispush(const char* value, size_t size);
-  ::std::string* mutable_ispush();
-  ::std::string* release_ispush();
-  void set_allocated_ispush(::std::string* ispush);
+  ::google::protobuf::int32 ispush() const;
+  void set_ispush(::google::protobuf::int32 value);
 
   // optional uint32 msg_time = 15;
   void clear_msg_time();
@@ -639,9 +634,9 @@ class Entity : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr cmsg_id_;
   ::google::protobuf::internal::ArenaStringPtr extra_;
   ::google::protobuf::internal::ArenaStringPtr version_;
-  ::google::protobuf::internal::ArenaStringPtr ispush_;
-  ::pms::ToUser* usr_toto_;
+  ::google::protobuf::int32 ispush_;
   ::google::protobuf::uint32 msg_time_;
+  ::pms::ToUser* usr_toto_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -1522,48 +1517,18 @@ inline void Entity::set_allocated_version(::std::string* version) {
   // @@protoc_insertion_point(field_set_allocated:pms.Entity.version)
 }
 
-// optional string ispush = 14;
+// optional sint32 ispush = 14;
 inline void Entity::clear_ispush() {
-  ispush_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ispush_ = 0;
 }
-inline const ::std::string& Entity::ispush() const {
+inline ::google::protobuf::int32 Entity::ispush() const {
   // @@protoc_insertion_point(field_get:pms.Entity.ispush)
-  return ispush_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return ispush_;
 }
-inline void Entity::set_ispush(const ::std::string& value) {
+inline void Entity::set_ispush(::google::protobuf::int32 value) {
   
-  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  ispush_ = value;
   // @@protoc_insertion_point(field_set:pms.Entity.ispush)
-}
-inline void Entity::set_ispush(const char* value) {
-  
-  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:pms.Entity.ispush)
-}
-inline void Entity::set_ispush(const char* value, size_t size) {
-  
-  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:pms.Entity.ispush)
-}
-inline ::std::string* Entity::mutable_ispush() {
-  
-  // @@protoc_insertion_point(field_mutable:pms.Entity.ispush)
-  return ispush_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* Entity::release_ispush() {
-  // @@protoc_insertion_point(field_release:pms.Entity.ispush)
-  
-  return ispush_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void Entity::set_allocated_ispush(::std::string* ispush) {
-  if (ispush != NULL) {
-    
-  } else {
-    
-  }
-  ispush_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ispush);
-  // @@protoc_insertion_point(field_set_allocated:pms.Entity.ispush)
 }
 
 // optional uint32 msg_time = 15;

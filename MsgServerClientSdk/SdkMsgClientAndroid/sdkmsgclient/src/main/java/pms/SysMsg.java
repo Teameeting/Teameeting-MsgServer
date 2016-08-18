@@ -729,20 +729,50 @@ public final class SysMsg {
         getConnectorBytes();
 
     /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    java.lang.String getHandleCmd();
+    /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleCmdBytes();
+
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    java.lang.String getHandleMtype();
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleMtypeBytes();
+
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    java.lang.String getHandleData();
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getHandleDataBytes();
+
+    /**
      * <pre>
      * this is the application or module msg
      * </pre>
      *
-     * <code>optional bytes content = 4;</code>
+     * <code>optional bytes content = 7;</code>
      */
     com.google.protobuf.ByteString getContent();
 
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     boolean hasTouser();
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     pms.CommonMsg.ToUser getTouser();
   }
@@ -763,6 +793,9 @@ public final class SysMsg {
       svrCmds_ = 0;
       trModule_ = 0;
       connector_ = "";
+      handleCmd_ = "";
+      handleMtype_ = "";
+      handleData_ = "";
       content_ = com.google.protobuf.ByteString.EMPTY;
     }
     public static final int SVR_CMDS_FIELD_NUMBER = 1;
@@ -909,14 +942,152 @@ public final class SysMsg {
       connector_ = value.toStringUtf8();
     }
 
-    public static final int CONTENT_FIELD_NUMBER = 4;
+    public static final int HANDLE_CMD_FIELD_NUMBER = 4;
+    private java.lang.String handleCmd_;
+    /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    public java.lang.String getHandleCmd() {
+      return handleCmd_;
+    }
+    /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleCmdBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(handleCmd_);
+    }
+    /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    private void setHandleCmd(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      handleCmd_ = value;
+    }
+    /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    private void clearHandleCmd() {
+      
+      handleCmd_ = getDefaultInstance().getHandleCmd();
+    }
+    /**
+     * <code>optional string handle_cmd = 4;</code>
+     */
+    private void setHandleCmdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      handleCmd_ = value.toStringUtf8();
+    }
+
+    public static final int HANDLE_MTYPE_FIELD_NUMBER = 5;
+    private java.lang.String handleMtype_;
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    public java.lang.String getHandleMtype() {
+      return handleMtype_;
+    }
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleMtypeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(handleMtype_);
+    }
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    private void setHandleMtype(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      handleMtype_ = value;
+    }
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    private void clearHandleMtype() {
+      
+      handleMtype_ = getDefaultInstance().getHandleMtype();
+    }
+    /**
+     * <code>optional string handle_mtype = 5;</code>
+     */
+    private void setHandleMtypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      handleMtype_ = value.toStringUtf8();
+    }
+
+    public static final int HANDLE_DATA_FIELD_NUMBER = 6;
+    private java.lang.String handleData_;
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    public java.lang.String getHandleData() {
+      return handleData_;
+    }
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHandleDataBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(handleData_);
+    }
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    private void setHandleData(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      handleData_ = value;
+    }
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    private void clearHandleData() {
+      
+      handleData_ = getDefaultInstance().getHandleData();
+    }
+    /**
+     * <code>optional string handle_data = 6;</code>
+     */
+    private void setHandleDataBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      handleData_ = value.toStringUtf8();
+    }
+
+    public static final int CONTENT_FIELD_NUMBER = 7;
     private com.google.protobuf.ByteString content_;
     /**
      * <pre>
      * this is the application or module msg
      * </pre>
      *
-     * <code>optional bytes content = 4;</code>
+     * <code>optional bytes content = 7;</code>
      */
     public com.google.protobuf.ByteString getContent() {
       return content_;
@@ -926,7 +1097,7 @@ public final class SysMsg {
      * this is the application or module msg
      * </pre>
      *
-     * <code>optional bytes content = 4;</code>
+     * <code>optional bytes content = 7;</code>
      */
     private void setContent(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -940,29 +1111,29 @@ public final class SysMsg {
      * this is the application or module msg
      * </pre>
      *
-     * <code>optional bytes content = 4;</code>
+     * <code>optional bytes content = 7;</code>
      */
     private void clearContent() {
       
       content_ = getDefaultInstance().getContent();
     }
 
-    public static final int TOUSER_FIELD_NUMBER = 5;
+    public static final int TOUSER_FIELD_NUMBER = 8;
     private pms.CommonMsg.ToUser touser_;
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     public boolean hasTouser() {
       return touser_ != null;
     }
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     public pms.CommonMsg.ToUser getTouser() {
       return touser_ == null ? pms.CommonMsg.ToUser.getDefaultInstance() : touser_;
     }
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     private void setTouser(pms.CommonMsg.ToUser value) {
       if (value == null) {
@@ -972,7 +1143,7 @@ public final class SysMsg {
       
       }
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     private void setTouser(
         pms.CommonMsg.ToUser.Builder builderForValue) {
@@ -980,7 +1151,7 @@ public final class SysMsg {
       
     }
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     private void mergeTouser(pms.CommonMsg.ToUser value) {
       if (touser_ != null &&
@@ -993,7 +1164,7 @@ public final class SysMsg {
       
     }
     /**
-     * <code>optional .pms.ToUser touser = 5;</code>
+     * <code>optional .pms.ToUser touser = 8;</code>
      */
     private void clearTouser() {  touser_ = null;
       
@@ -1010,11 +1181,20 @@ public final class SysMsg {
       if (!connector_.isEmpty()) {
         output.writeString(3, getConnector());
       }
+      if (!handleCmd_.isEmpty()) {
+        output.writeString(4, getHandleCmd());
+      }
+      if (!handleMtype_.isEmpty()) {
+        output.writeString(5, getHandleMtype());
+      }
+      if (!handleData_.isEmpty()) {
+        output.writeString(6, getHandleData());
+      }
       if (!content_.isEmpty()) {
-        output.writeBytes(4, content_);
+        output.writeBytes(7, content_);
       }
       if (touser_ != null) {
-        output.writeMessage(5, getTouser());
+        output.writeMessage(8, getTouser());
       }
     }
 
@@ -1035,13 +1215,25 @@ public final class SysMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(3, getConnector());
       }
+      if (!handleCmd_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getHandleCmd());
+      }
+      if (!handleMtype_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(5, getHandleMtype());
+      }
+      if (!handleData_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(6, getHandleData());
+      }
       if (!content_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, content_);
+          .computeBytesSize(7, content_);
       }
       if (touser_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, getTouser());
+          .computeMessageSize(8, getTouser());
       }
       memoizedSerializedSize = size;
       return size;
@@ -1269,11 +1461,131 @@ public final class SysMsg {
       }
 
       /**
+       * <code>optional string handle_cmd = 4;</code>
+       */
+      public java.lang.String getHandleCmd() {
+        return instance.getHandleCmd();
+      }
+      /**
+       * <code>optional string handle_cmd = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleCmdBytes() {
+        return instance.getHandleCmdBytes();
+      }
+      /**
+       * <code>optional string handle_cmd = 4;</code>
+       */
+      public Builder setHandleCmd(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setHandleCmd(value);
+        return this;
+      }
+      /**
+       * <code>optional string handle_cmd = 4;</code>
+       */
+      public Builder clearHandleCmd() {
+        copyOnWrite();
+        instance.clearHandleCmd();
+        return this;
+      }
+      /**
+       * <code>optional string handle_cmd = 4;</code>
+       */
+      public Builder setHandleCmdBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setHandleCmdBytes(value);
+        return this;
+      }
+
+      /**
+       * <code>optional string handle_mtype = 5;</code>
+       */
+      public java.lang.String getHandleMtype() {
+        return instance.getHandleMtype();
+      }
+      /**
+       * <code>optional string handle_mtype = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleMtypeBytes() {
+        return instance.getHandleMtypeBytes();
+      }
+      /**
+       * <code>optional string handle_mtype = 5;</code>
+       */
+      public Builder setHandleMtype(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setHandleMtype(value);
+        return this;
+      }
+      /**
+       * <code>optional string handle_mtype = 5;</code>
+       */
+      public Builder clearHandleMtype() {
+        copyOnWrite();
+        instance.clearHandleMtype();
+        return this;
+      }
+      /**
+       * <code>optional string handle_mtype = 5;</code>
+       */
+      public Builder setHandleMtypeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setHandleMtypeBytes(value);
+        return this;
+      }
+
+      /**
+       * <code>optional string handle_data = 6;</code>
+       */
+      public java.lang.String getHandleData() {
+        return instance.getHandleData();
+      }
+      /**
+       * <code>optional string handle_data = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHandleDataBytes() {
+        return instance.getHandleDataBytes();
+      }
+      /**
+       * <code>optional string handle_data = 6;</code>
+       */
+      public Builder setHandleData(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setHandleData(value);
+        return this;
+      }
+      /**
+       * <code>optional string handle_data = 6;</code>
+       */
+      public Builder clearHandleData() {
+        copyOnWrite();
+        instance.clearHandleData();
+        return this;
+      }
+      /**
+       * <code>optional string handle_data = 6;</code>
+       */
+      public Builder setHandleDataBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setHandleDataBytes(value);
+        return this;
+      }
+
+      /**
        * <pre>
        * this is the application or module msg
        * </pre>
        *
-       * <code>optional bytes content = 4;</code>
+       * <code>optional bytes content = 7;</code>
        */
       public com.google.protobuf.ByteString getContent() {
         return instance.getContent();
@@ -1283,7 +1595,7 @@ public final class SysMsg {
        * this is the application or module msg
        * </pre>
        *
-       * <code>optional bytes content = 4;</code>
+       * <code>optional bytes content = 7;</code>
        */
       public Builder setContent(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1295,7 +1607,7 @@ public final class SysMsg {
        * this is the application or module msg
        * </pre>
        *
-       * <code>optional bytes content = 4;</code>
+       * <code>optional bytes content = 7;</code>
        */
       public Builder clearContent() {
         copyOnWrite();
@@ -1304,19 +1616,19 @@ public final class SysMsg {
       }
 
       /**
-       * <code>optional .pms.ToUser touser = 5;</code>
+       * <code>optional .pms.ToUser touser = 8;</code>
        */
       public boolean hasTouser() {
         return instance.hasTouser();
       }
       /**
-       * <code>optional .pms.ToUser touser = 5;</code>
+       * <code>optional .pms.ToUser touser = 8;</code>
        */
       public pms.CommonMsg.ToUser getTouser() {
         return instance.getTouser();
       }
       /**
-       * <code>optional .pms.ToUser touser = 5;</code>
+       * <code>optional .pms.ToUser touser = 8;</code>
        */
       public Builder setTouser(pms.CommonMsg.ToUser value) {
         copyOnWrite();
@@ -1324,7 +1636,7 @@ public final class SysMsg {
         return this;
         }
       /**
-       * <code>optional .pms.ToUser touser = 5;</code>
+       * <code>optional .pms.ToUser touser = 8;</code>
        */
       public Builder setTouser(
           pms.CommonMsg.ToUser.Builder builderForValue) {
@@ -1333,7 +1645,7 @@ public final class SysMsg {
         return this;
       }
       /**
-       * <code>optional .pms.ToUser touser = 5;</code>
+       * <code>optional .pms.ToUser touser = 8;</code>
        */
       public Builder mergeTouser(pms.CommonMsg.ToUser value) {
         copyOnWrite();
@@ -1341,7 +1653,7 @@ public final class SysMsg {
         return this;
       }
       /**
-       * <code>optional .pms.ToUser touser = 5;</code>
+       * <code>optional .pms.ToUser touser = 8;</code>
        */
       public Builder clearTouser() {  copyOnWrite();
         instance.clearTouser();
@@ -1373,6 +1685,12 @@ public final class SysMsg {
           trModule_ = visitor.visitInt(trModule_ != 0, trModule_,    other.trModule_ != 0, other.trModule_);
           connector_ = visitor.visitString(!connector_.isEmpty(), connector_,
               !other.connector_.isEmpty(), other.connector_);
+          handleCmd_ = visitor.visitString(!handleCmd_.isEmpty(), handleCmd_,
+              !other.handleCmd_.isEmpty(), other.handleCmd_);
+          handleMtype_ = visitor.visitString(!handleMtype_.isEmpty(), handleMtype_,
+              !other.handleMtype_.isEmpty(), other.handleMtype_);
+          handleData_ = visitor.visitString(!handleData_.isEmpty(), handleData_,
+              !other.handleData_.isEmpty(), other.handleData_);
           content_ = visitor.visitByteString(content_ != com.google.protobuf.ByteString.EMPTY, content_,
               other.content_ != com.google.protobuf.ByteString.EMPTY, other.content_);
           touser_ = visitor.visitMessage(touser_, other.touser_);
@@ -1419,11 +1737,29 @@ public final class SysMsg {
                   break;
                 }
                 case 34: {
+                  String s = input.readStringRequireUtf8();
+
+                  handleCmd_ = s;
+                  break;
+                }
+                case 42: {
+                  String s = input.readStringRequireUtf8();
+
+                  handleMtype_ = s;
+                  break;
+                }
+                case 50: {
+                  String s = input.readStringRequireUtf8();
+
+                  handleData_ = s;
+                  break;
+                }
+                case 58: {
 
                   content_ = input.readBytes();
                   break;
                 }
-                case 42: {
+                case 66: {
                   pms.CommonMsg.ToUser.Builder subBuilder = null;
                   if (touser_ != null) {
                     subBuilder = touser_.toBuilder();
