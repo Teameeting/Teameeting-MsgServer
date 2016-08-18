@@ -35,6 +35,7 @@ typedef GPB_ENUM(ETransferModule) {
   ETransferModule_Msequence = 7,
   ETransferModule_Mstorage = 8,
   ETransferModule_Mgrpnotify = 9,
+  ETransferModule_Mpusher = 10,
 };
 
 GPBEnumDescriptor *ETransferModule_EnumDescriptor(void);

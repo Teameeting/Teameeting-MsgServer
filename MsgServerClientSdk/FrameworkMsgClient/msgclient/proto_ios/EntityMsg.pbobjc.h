@@ -41,6 +41,7 @@ typedef GPB_ENUM(Login_FieldNumber) {
   Login_FieldNumber_UsrFrom = 1,
   Login_FieldNumber_UsrToken = 2,
   Login_FieldNumber_UsrNname = 3,
+  Login_FieldNumber_Version = 4,
 };
 
 @interface Login : GPBMessage
@@ -53,6 +54,8 @@ typedef GPB_ENUM(Login_FieldNumber) {
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrNname;
 
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
 @end
 
 #pragma mark - Logout
@@ -60,6 +63,7 @@ typedef GPB_ENUM(Login_FieldNumber) {
 typedef GPB_ENUM(Logout_FieldNumber) {
   Logout_FieldNumber_UsrFrom = 1,
   Logout_FieldNumber_UsrToken = 2,
+  Logout_FieldNumber_Version = 3,
 };
 
 @interface Logout : GPBMessage
@@ -70,18 +74,23 @@ typedef GPB_ENUM(Logout_FieldNumber) {
 /// user token
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrToken;
 
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
 @end
 
 #pragma mark - Keep
 
 typedef GPB_ENUM(Keep_FieldNumber) {
   Keep_FieldNumber_UsrFrom = 1,
+  Keep_FieldNumber_Version = 2,
 };
 
 @interface Keep : GPBMessage
 
 /// user id sending from
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
 
 @end
 
@@ -100,8 +109,10 @@ typedef GPB_ENUM(Entity_FieldNumber) {
   Entity_FieldNumber_UsrToken = 10,
   Entity_FieldNumber_CmsgId = 11,
   Entity_FieldNumber_Extra = 12,
-  Entity_FieldNumber_MsgTime = 13,
-  Entity_FieldNumber_UsrToto = 14,
+  Entity_FieldNumber_Version = 13,
+  Entity_FieldNumber_Ispush = 14,
+  Entity_FieldNumber_MsgTime = 15,
+  Entity_FieldNumber_UsrToto = 16,
 };
 
 @interface Entity : GPBMessage
@@ -140,6 +151,12 @@ typedef GPB_ENUM(Entity_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *cmsgId;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *extra;
+
+/// message version
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
+/// if this msg need push when offline
+@property(nonatomic, readwrite, copy, null_resettable) NSString *ispush;
 
 /// msg send time
 @property(nonatomic, readwrite) uint32_t msgTime;

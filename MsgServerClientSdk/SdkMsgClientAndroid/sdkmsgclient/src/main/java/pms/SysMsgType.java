@@ -58,6 +58,10 @@ public final class SysMsgType {
      * <code>MGRPNOTIFY = 9;</code>
      */
     MGRPNOTIFY(9),
+    /**
+     * <code>MPUSHER = 10;</code>
+     */
+    MPUSHER(10),
     UNRECOGNIZED(-1),
     ;
 
@@ -101,6 +105,10 @@ public final class SysMsgType {
      * <code>MGRPNOTIFY = 9;</code>
      */
     public static final int MGRPNOTIFY_VALUE = 9;
+    /**
+     * <code>MPUSHER = 10;</code>
+     */
+    public static final int MPUSHER_VALUE = 10;
 
 
     public final int getNumber() {
@@ -127,6 +135,7 @@ public final class SysMsgType {
         case 7: return MSEQUENCE;
         case 8: return MSTORAGE;
         case 9: return MGRPNOTIFY;
+        case 10: return MPUSHER;
         default: return null;
       }
     }

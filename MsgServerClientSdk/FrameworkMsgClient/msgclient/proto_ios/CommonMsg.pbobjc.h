@@ -76,6 +76,7 @@ typedef GPB_ENUM(EModuleType) {
   EModuleType_Tsequence = 7,
   EModuleType_Tstorage = 8,
   EModuleType_Tgrpnotify = 9,
+  EModuleType_Tpusher = 10,
 };
 
 GPBEnumDescriptor *EModuleType_EnumDescriptor(void);

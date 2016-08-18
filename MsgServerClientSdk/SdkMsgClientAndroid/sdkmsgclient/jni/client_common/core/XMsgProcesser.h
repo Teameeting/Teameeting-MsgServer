@@ -16,6 +16,7 @@
 
 #include "RTMsgCommon.h"
 
+#define MSG_VERSION "1.0.1"
 #define DEF_PROTO 1
 
 class XMsgClientHelper;

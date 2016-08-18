@@ -46,12 +46,13 @@ enum ETransferModule {
   MSEQUENCE = 7,
   MSTORAGE = 8,
   MGRPNOTIFY = 9,
+  MPUSHER = 10,
   ETransferModule_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ETransferModule_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ETransferModule_IsValid(int value);
 const ETransferModule ETransferModule_MIN = MCONNECTOR;
-const ETransferModule ETransferModule_MAX = MGRPNOTIFY;
+const ETransferModule ETransferModule_MAX = MPUSHER;
 const int ETransferModule_ARRAYSIZE = ETransferModule_MAX + 1;
 
 enum ETransferType {

@@ -57,6 +57,16 @@ public final class EntityMsg {
      */
     com.google.protobuf.ByteString
         getUsrNnameBytes();
+
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
   }
   /**
    * Protobuf type {@code pms.Login}
@@ -70,6 +80,7 @@ public final class EntityMsg {
       usrFrom_ = "";
       usrToken_ = "";
       usrNname_ = "";
+      version_ = "";
     }
     public static final int USR_FROM_FIELD_NUMBER = 1;
     private java.lang.String usrFrom_;
@@ -249,6 +260,52 @@ public final class EntityMsg {
       usrNname_ = value.toStringUtf8();
     }
 
+    public static final int VERSION_FIELD_NUMBER = 4;
+    private java.lang.String version_;
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    public java.lang.String getVersion() {
+      return version_;
+    }
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      version_ = value;
+    }
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    private void clearVersion() {
+      
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <code>optional string version = 4;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!usrFrom_.isEmpty()) {
@@ -259,6 +316,9 @@ public final class EntityMsg {
       }
       if (!usrNname_.isEmpty()) {
         output.writeString(3, getUsrNname());
+      }
+      if (!version_.isEmpty()) {
+        output.writeString(4, getVersion());
       }
     }
 
@@ -278,6 +338,10 @@ public final class EntityMsg {
       if (!usrNname_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(3, getUsrNname());
+      }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getVersion());
       }
       memoizedSerializedSize = size;
       return size;
@@ -525,6 +589,46 @@ public final class EntityMsg {
         return this;
       }
 
+      /**
+       * <code>optional string version = 4;</code>
+       */
+      public java.lang.String getVersion() {
+        return instance.getVersion();
+      }
+      /**
+       * <code>optional string version = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <code>optional string version = 4;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setVersion(value);
+        return this;
+      }
+      /**
+       * <code>optional string version = 4;</code>
+       */
+      public Builder clearVersion() {
+        copyOnWrite();
+        instance.clearVersion();
+        return this;
+      }
+      /**
+       * <code>optional string version = 4;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:pms.Login)
     }
     protected final Object dynamicMethod(
@@ -552,6 +656,8 @@ public final class EntityMsg {
               !other.usrToken_.isEmpty(), other.usrToken_);
           usrNname_ = visitor.visitString(!usrNname_.isEmpty(), usrNname_,
               !other.usrNname_.isEmpty(), other.usrNname_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
           }
@@ -592,6 +698,12 @@ public final class EntityMsg {
                   String s = input.readStringRequireUtf8();
 
                   usrNname_ = s;
+                  break;
+                }
+                case 34: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
                   break;
                 }
               }
@@ -679,6 +791,16 @@ public final class EntityMsg {
      */
     com.google.protobuf.ByteString
         getUsrTokenBytes();
+
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
   }
   /**
    * Protobuf type {@code pms.Logout}
@@ -691,6 +813,7 @@ public final class EntityMsg {
     private Logout() {
       usrFrom_ = "";
       usrToken_ = "";
+      version_ = "";
     }
     public static final int USR_FROM_FIELD_NUMBER = 1;
     private java.lang.String usrFrom_;
@@ -824,6 +947,52 @@ public final class EntityMsg {
       usrToken_ = value.toStringUtf8();
     }
 
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private java.lang.String version_;
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    public java.lang.String getVersion() {
+      return version_;
+    }
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      version_ = value;
+    }
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    private void clearVersion() {
+      
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <code>optional string version = 3;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!usrFrom_.isEmpty()) {
@@ -831,6 +1000,9 @@ public final class EntityMsg {
       }
       if (!usrToken_.isEmpty()) {
         output.writeString(2, getUsrToken());
+      }
+      if (!version_.isEmpty()) {
+        output.writeString(3, getVersion());
       }
     }
 
@@ -846,6 +1018,10 @@ public final class EntityMsg {
       if (!usrToken_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(2, getUsrToken());
+      }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(3, getVersion());
       }
       memoizedSerializedSize = size;
       return size;
@@ -1053,6 +1229,46 @@ public final class EntityMsg {
         return this;
       }
 
+      /**
+       * <code>optional string version = 3;</code>
+       */
+      public java.lang.String getVersion() {
+        return instance.getVersion();
+      }
+      /**
+       * <code>optional string version = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <code>optional string version = 3;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setVersion(value);
+        return this;
+      }
+      /**
+       * <code>optional string version = 3;</code>
+       */
+      public Builder clearVersion() {
+        copyOnWrite();
+        instance.clearVersion();
+        return this;
+      }
+      /**
+       * <code>optional string version = 3;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:pms.Logout)
     }
     protected final Object dynamicMethod(
@@ -1078,6 +1294,8 @@ public final class EntityMsg {
               !other.usrFrom_.isEmpty(), other.usrFrom_);
           usrToken_ = visitor.visitString(!usrToken_.isEmpty(), usrToken_,
               !other.usrToken_.isEmpty(), other.usrToken_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
           }
@@ -1112,6 +1330,12 @@ public final class EntityMsg {
                   String s = input.readStringRequireUtf8();
 
                   usrToken_ = s;
+                  break;
+                }
+                case 26: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
                   break;
                 }
               }
@@ -1181,6 +1405,16 @@ public final class EntityMsg {
      */
     com.google.protobuf.ByteString
         getUsrFromBytes();
+
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
   }
   /**
    * Protobuf type {@code pms.Keep}
@@ -1192,6 +1426,7 @@ public final class EntityMsg {
       KeepOrBuilder {
     private Keep() {
       usrFrom_ = "";
+      version_ = "";
     }
     public static final int USR_FROM_FIELD_NUMBER = 1;
     private java.lang.String usrFrom_;
@@ -1259,10 +1494,59 @@ public final class EntityMsg {
       usrFrom_ = value.toStringUtf8();
     }
 
+    public static final int VERSION_FIELD_NUMBER = 2;
+    private java.lang.String version_;
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    public java.lang.String getVersion() {
+      return version_;
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      version_ = value;
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    private void clearVersion() {
+      
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!usrFrom_.isEmpty()) {
         output.writeString(1, getUsrFrom());
+      }
+      if (!version_.isEmpty()) {
+        output.writeString(2, getVersion());
       }
     }
 
@@ -1274,6 +1558,10 @@ public final class EntityMsg {
       if (!usrFrom_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(1, getUsrFrom());
+      }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getVersion());
       }
       memoizedSerializedSize = size;
       return size;
@@ -1421,6 +1709,46 @@ public final class EntityMsg {
         return this;
       }
 
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public java.lang.String getVersion() {
+        return instance.getVersion();
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setVersion(value);
+        return this;
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public Builder clearVersion() {
+        copyOnWrite();
+        instance.clearVersion();
+        return this;
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:pms.Keep)
     }
     protected final Object dynamicMethod(
@@ -1444,6 +1772,8 @@ public final class EntityMsg {
           pms.EntityMsg.Keep other = (pms.EntityMsg.Keep) arg1;
           usrFrom_ = visitor.visitString(!usrFrom_.isEmpty(), usrFrom_,
               !other.usrFrom_.isEmpty(), other.usrFrom_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
           }
@@ -1472,6 +1802,12 @@ public final class EntityMsg {
                   String s = input.readStringRequireUtf8();
 
                   usrFrom_ = s;
+                  break;
+                }
+                case 18: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
                   break;
                 }
               }
@@ -1730,10 +2066,46 @@ public final class EntityMsg {
 
     /**
      * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    java.lang.String getIspush();
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    com.google.protobuf.ByteString
+        getIspushBytes();
+
+    /**
+     * <pre>
      * msg send time
      * </pre>
      *
-     * <code>optional uint32 msg_time = 13;</code>
+     * <code>optional uint32 msg_time = 15;</code>
      */
     int getMsgTime();
 
@@ -1742,7 +2114,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     boolean hasUsrToto();
     /**
@@ -1750,7 +2122,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     pms.CommonMsg.ToUser getUsrToto();
   }
@@ -1775,6 +2147,8 @@ public final class EntityMsg {
       usrToken_ = "";
       cmsgId_ = "";
       extra_ = "";
+      version_ = "";
+      ispush_ = "";
       msgTime_ = 0;
     }
     public static final int MSG_HEAD_FIELD_NUMBER = 1;
@@ -2521,14 +2895,146 @@ public final class EntityMsg {
       extra_ = value.toStringUtf8();
     }
 
-    public static final int MSG_TIME_FIELD_NUMBER = 13;
+    public static final int VERSION_FIELD_NUMBER = 13;
+    private java.lang.String version_;
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    public java.lang.String getVersion() {
+      return version_;
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      version_ = value;
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    private void clearVersion() {
+      
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
+    public static final int ISPUSH_FIELD_NUMBER = 14;
+    private java.lang.String ispush_;
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    public java.lang.String getIspush() {
+      return ispush_;
+    }
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIspushBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(ispush_);
+    }
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    private void setIspush(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      ispush_ = value;
+    }
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    private void clearIspush() {
+      
+      ispush_ = getDefaultInstance().getIspush();
+    }
+    /**
+     * <pre>
+     * if this msg need push when offline
+     * </pre>
+     *
+     * <code>optional string ispush = 14;</code>
+     */
+    private void setIspushBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      ispush_ = value.toStringUtf8();
+    }
+
+    public static final int MSG_TIME_FIELD_NUMBER = 15;
     private int msgTime_;
     /**
      * <pre>
      * msg send time
      * </pre>
      *
-     * <code>optional uint32 msg_time = 13;</code>
+     * <code>optional uint32 msg_time = 15;</code>
      */
     public int getMsgTime() {
       return msgTime_;
@@ -2538,7 +3044,7 @@ public final class EntityMsg {
      * msg send time
      * </pre>
      *
-     * <code>optional uint32 msg_time = 13;</code>
+     * <code>optional uint32 msg_time = 15;</code>
      */
     private void setMsgTime(int value) {
       
@@ -2549,21 +3055,21 @@ public final class EntityMsg {
      * msg send time
      * </pre>
      *
-     * <code>optional uint32 msg_time = 13;</code>
+     * <code>optional uint32 msg_time = 15;</code>
      */
     private void clearMsgTime() {
       
       msgTime_ = 0;
     }
 
-    public static final int USR_TOTO_FIELD_NUMBER = 14;
+    public static final int USR_TOTO_FIELD_NUMBER = 16;
     private pms.CommonMsg.ToUser usrToto_;
     /**
      * <pre>
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     public boolean hasUsrToto() {
       return usrToto_ != null;
@@ -2573,7 +3079,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     public pms.CommonMsg.ToUser getUsrToto() {
       return usrToto_ == null ? pms.CommonMsg.ToUser.getDefaultInstance() : usrToto_;
@@ -2583,7 +3089,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     private void setUsrToto(pms.CommonMsg.ToUser value) {
       if (value == null) {
@@ -2597,7 +3103,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     private void setUsrToto(
         pms.CommonMsg.ToUser.Builder builderForValue) {
@@ -2609,7 +3115,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     private void mergeUsrToto(pms.CommonMsg.ToUser value) {
       if (usrToto_ != null &&
@@ -2626,7 +3132,7 @@ public final class EntityMsg {
      * user ids sending to, the string from pms::ToUser
      * </pre>
      *
-     * <code>optional .pms.ToUser usr_toto = 14;</code>
+     * <code>optional .pms.ToUser usr_toto = 16;</code>
      */
     private void clearUsrToto() {  usrToto_ = null;
       
@@ -2670,11 +3176,17 @@ public final class EntityMsg {
       if (!extra_.isEmpty()) {
         output.writeString(12, getExtra());
       }
+      if (!version_.isEmpty()) {
+        output.writeString(13, getVersion());
+      }
+      if (!ispush_.isEmpty()) {
+        output.writeString(14, getIspush());
+      }
       if (msgTime_ != 0) {
-        output.writeUInt32(13, msgTime_);
+        output.writeUInt32(15, msgTime_);
       }
       if (usrToto_ != null) {
-        output.writeMessage(14, getUsrToto());
+        output.writeMessage(16, getUsrToto());
       }
     }
 
@@ -2731,13 +3243,21 @@ public final class EntityMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(12, getExtra());
       }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(13, getVersion());
+      }
+      if (!ispush_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(14, getIspush());
+      }
       if (msgTime_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeUInt32Size(13, msgTime_);
+          .computeUInt32Size(15, msgTime_);
       }
       if (usrToto_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(14, getUsrToto());
+          .computeMessageSize(16, getUsrToto());
       }
       memoizedSerializedSize = size;
       return size;
@@ -3515,10 +4035,130 @@ public final class EntityMsg {
 
       /**
        * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public java.lang.String getVersion() {
+        return instance.getVersion();
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setVersion(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public Builder clearVersion() {
+        copyOnWrite();
+        instance.clearVersion();
+        return this;
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * if this msg need push when offline
+       * </pre>
+       *
+       * <code>optional string ispush = 14;</code>
+       */
+      public java.lang.String getIspush() {
+        return instance.getIspush();
+      }
+      /**
+       * <pre>
+       * if this msg need push when offline
+       * </pre>
+       *
+       * <code>optional string ispush = 14;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIspushBytes() {
+        return instance.getIspushBytes();
+      }
+      /**
+       * <pre>
+       * if this msg need push when offline
+       * </pre>
+       *
+       * <code>optional string ispush = 14;</code>
+       */
+      public Builder setIspush(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setIspush(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * if this msg need push when offline
+       * </pre>
+       *
+       * <code>optional string ispush = 14;</code>
+       */
+      public Builder clearIspush() {
+        copyOnWrite();
+        instance.clearIspush();
+        return this;
+      }
+      /**
+       * <pre>
+       * if this msg need push when offline
+       * </pre>
+       *
+       * <code>optional string ispush = 14;</code>
+       */
+      public Builder setIspushBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIspushBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
        * msg send time
        * </pre>
        *
-       * <code>optional uint32 msg_time = 13;</code>
+       * <code>optional uint32 msg_time = 15;</code>
        */
       public int getMsgTime() {
         return instance.getMsgTime();
@@ -3528,7 +4168,7 @@ public final class EntityMsg {
        * msg send time
        * </pre>
        *
-       * <code>optional uint32 msg_time = 13;</code>
+       * <code>optional uint32 msg_time = 15;</code>
        */
       public Builder setMsgTime(int value) {
         copyOnWrite();
@@ -3540,7 +4180,7 @@ public final class EntityMsg {
        * msg send time
        * </pre>
        *
-       * <code>optional uint32 msg_time = 13;</code>
+       * <code>optional uint32 msg_time = 15;</code>
        */
       public Builder clearMsgTime() {
         copyOnWrite();
@@ -3553,7 +4193,7 @@ public final class EntityMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 14;</code>
+       * <code>optional .pms.ToUser usr_toto = 16;</code>
        */
       public boolean hasUsrToto() {
         return instance.hasUsrToto();
@@ -3563,7 +4203,7 @@ public final class EntityMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 14;</code>
+       * <code>optional .pms.ToUser usr_toto = 16;</code>
        */
       public pms.CommonMsg.ToUser getUsrToto() {
         return instance.getUsrToto();
@@ -3573,7 +4213,7 @@ public final class EntityMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 14;</code>
+       * <code>optional .pms.ToUser usr_toto = 16;</code>
        */
       public Builder setUsrToto(pms.CommonMsg.ToUser value) {
         copyOnWrite();
@@ -3585,7 +4225,7 @@ public final class EntityMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 14;</code>
+       * <code>optional .pms.ToUser usr_toto = 16;</code>
        */
       public Builder setUsrToto(
           pms.CommonMsg.ToUser.Builder builderForValue) {
@@ -3598,7 +4238,7 @@ public final class EntityMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 14;</code>
+       * <code>optional .pms.ToUser usr_toto = 16;</code>
        */
       public Builder mergeUsrToto(pms.CommonMsg.ToUser value) {
         copyOnWrite();
@@ -3610,7 +4250,7 @@ public final class EntityMsg {
        * user ids sending to, the string from pms::ToUser
        * </pre>
        *
-       * <code>optional .pms.ToUser usr_toto = 14;</code>
+       * <code>optional .pms.ToUser usr_toto = 16;</code>
        */
       public Builder clearUsrToto() {  copyOnWrite();
         instance.clearUsrToto();
@@ -3658,6 +4298,10 @@ public final class EntityMsg {
               !other.cmsgId_.isEmpty(), other.cmsgId_);
           extra_ = visitor.visitString(!extra_.isEmpty(), extra_,
               !other.extra_.isEmpty(), other.extra_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
+          ispush_ = visitor.visitString(!ispush_.isEmpty(), ispush_,
+              !other.ispush_.isEmpty(), other.ispush_);
           msgTime_ = visitor.visitInt(msgTime_ != 0, msgTime_,
               other.msgTime_ != 0, other.msgTime_);
           usrToto_ = visitor.visitMessage(usrToto_, other.usrToto_);
@@ -3757,12 +4401,24 @@ public final class EntityMsg {
                   extra_ = s;
                   break;
                 }
-                case 104: {
+                case 106: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
+                  break;
+                }
+                case 114: {
+                  String s = input.readStringRequireUtf8();
+
+                  ispush_ = s;
+                  break;
+                }
+                case 120: {
 
                   msgTime_ = input.readUInt32();
                   break;
                 }
-                case 114: {
+                case 130: {
                   pms.CommonMsg.ToUser.Builder subBuilder = null;
                   if (usrToto_ != null) {
                     subBuilder = usrToto_.toBuilder();

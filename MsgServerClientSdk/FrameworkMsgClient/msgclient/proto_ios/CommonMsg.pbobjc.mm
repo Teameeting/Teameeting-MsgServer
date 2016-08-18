@@ -110,7 +110,7 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void) {
     static const char *valueNames =
         "Tinvalid0\000Tinvalid1\000Tmeeting\000Tp2P\000Tlive\000"
         "Tcallcenter\000Tlogical\000Tsequence\000Tstorage\000"
-        "Tgrpnotify\000";
+        "Tgrpnotify\000Tpusher\000";
     static const int32_t values[] = {
         EModuleType_Tinvalid0,
         EModuleType_Tinvalid1,
@@ -122,6 +122,7 @@ GPBEnumDescriptor *EModuleType_EnumDescriptor(void) {
         EModuleType_Tsequence,
         EModuleType_Tstorage,
         EModuleType_Tgrpnotify,
+        EModuleType_Tpusher,
     };
     static const char *extraTextFormatInfo = "\001\003b\002\000";
     GPBEnumDescriptor *worker =
@@ -150,6 +151,7 @@ BOOL EModuleType_IsValidValue(int32_t value__) {
     case EModuleType_Tsequence:
     case EModuleType_Tstorage:
     case EModuleType_Tgrpnotify:
+    case EModuleType_Tpusher:
       return YES;
     default:
       return NO;

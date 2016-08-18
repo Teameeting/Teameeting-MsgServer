@@ -50,12 +50,14 @@ static GPBFileDescriptor *EntityMsgRoot_FileDescriptor(void) {
 @dynamic usrFrom;
 @dynamic usrToken;
 @dynamic usrNname;
+@dynamic version;
 
 typedef struct Login__storage_ {
   uint32_t _has_storage_[1];
   NSString *usrFrom;
   NSString *usrToken;
   NSString *usrNname;
+  NSString *version;
 } Login__storage_;
 
 // This method is threadsafe because it is initially called
@@ -91,6 +93,15 @@ typedef struct Login__storage_ {
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
       },
+      {
+        .name = "version",
+        .dataTypeSpecific.className = NULL,
+        .number = Login_FieldNumber_Version,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(Login__storage_, version),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
     };
     GPBDescriptor *localDescriptor =
         [GPBDescriptor allocDescriptorForClass:[Login class]
@@ -114,11 +125,13 @@ typedef struct Login__storage_ {
 
 @dynamic usrFrom;
 @dynamic usrToken;
+@dynamic version;
 
 typedef struct Logout__storage_ {
   uint32_t _has_storage_[1];
   NSString *usrFrom;
   NSString *usrToken;
+  NSString *version;
 } Logout__storage_;
 
 // This method is threadsafe because it is initially called
@@ -145,6 +158,15 @@ typedef struct Logout__storage_ {
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
       },
+      {
+        .name = "version",
+        .dataTypeSpecific.className = NULL,
+        .number = Logout_FieldNumber_Version,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(Logout__storage_, version),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
     };
     GPBDescriptor *localDescriptor =
         [GPBDescriptor allocDescriptorForClass:[Logout class]
@@ -167,10 +189,12 @@ typedef struct Logout__storage_ {
 @implementation Keep
 
 @dynamic usrFrom;
+@dynamic version;
 
 typedef struct Keep__storage_ {
   uint32_t _has_storage_[1];
   NSString *usrFrom;
+  NSString *version;
 } Keep__storage_;
 
 // This method is threadsafe because it is initially called
@@ -185,6 +209,15 @@ typedef struct Keep__storage_ {
         .number = Keep_FieldNumber_UsrFrom,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(Keep__storage_, usrFrom),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "version",
+        .dataTypeSpecific.className = NULL,
+        .number = Keep_FieldNumber_Version,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(Keep__storage_, version),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
       },
@@ -221,6 +254,8 @@ typedef struct Keep__storage_ {
 @dynamic usrToken;
 @dynamic cmsgId;
 @dynamic extra;
+@dynamic version;
+@dynamic ispush;
 @dynamic msgTime;
 @dynamic hasUsrToto, usrToto;
 
@@ -239,6 +274,8 @@ typedef struct Entity__storage_ {
   NSString *usrToken;
   NSString *cmsgId;
   NSString *extra;
+  NSString *version;
+  NSString *ispush;
   ToUser *usrToto;
 } Entity__storage_;
 
@@ -357,10 +394,28 @@ typedef struct Entity__storage_ {
         .dataType = GPBDataTypeString,
       },
       {
+        .name = "version",
+        .dataTypeSpecific.className = NULL,
+        .number = Entity_FieldNumber_Version,
+        .hasIndex = 12,
+        .offset = (uint32_t)offsetof(Entity__storage_, version),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "ispush",
+        .dataTypeSpecific.className = NULL,
+        .number = Entity_FieldNumber_Ispush,
+        .hasIndex = 13,
+        .offset = (uint32_t)offsetof(Entity__storage_, ispush),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
         .name = "msgTime",
         .dataTypeSpecific.className = NULL,
         .number = Entity_FieldNumber_MsgTime,
-        .hasIndex = 12,
+        .hasIndex = 14,
         .offset = (uint32_t)offsetof(Entity__storage_, msgTime),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeUInt32,
@@ -369,7 +424,7 @@ typedef struct Entity__storage_ {
         .name = "usrToto",
         .dataTypeSpecific.className = GPBStringifySymbol(ToUser),
         .number = Entity_FieldNumber_UsrToto,
-        .hasIndex = 13,
+        .hasIndex = 15,
         .offset = (uint32_t)offsetof(Entity__storage_, usrToto),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeMessage,

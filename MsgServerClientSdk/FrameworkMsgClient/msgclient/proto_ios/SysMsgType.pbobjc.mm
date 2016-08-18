@@ -22,7 +22,7 @@ GPBEnumDescriptor *ETransferModule_EnumDescriptor(void) {
     static const char *valueNames =
         "Mconnector\000Mmsgqueue\000Mmeeting\000Mp2P\000Mlive"
         "\000Mcallcenter\000Mlogical\000Msequence\000Mstorage"
-        "\000Mgrpnotify\000";
+        "\000Mgrpnotify\000Mpusher\000";
     static const int32_t values[] = {
         ETransferModule_Mconnector,
         ETransferModule_Mmsgqueue,
@@ -34,6 +34,7 @@ GPBEnumDescriptor *ETransferModule_EnumDescriptor(void) {
         ETransferModule_Msequence,
         ETransferModule_Mstorage,
         ETransferModule_Mgrpnotify,
+        ETransferModule_Mpusher,
     };
     static const char *extraTextFormatInfo = "\001\003b\002\000";
     GPBEnumDescriptor *worker =
@@ -62,6 +63,7 @@ BOOL ETransferModule_IsValidValue(int32_t value__) {
     case ETransferModule_Msequence:
     case ETransferModule_Mstorage:
     case ETransferModule_Mgrpnotify:
+    case ETransferModule_Mpusher:
       return YES;
     default:
       return NO;

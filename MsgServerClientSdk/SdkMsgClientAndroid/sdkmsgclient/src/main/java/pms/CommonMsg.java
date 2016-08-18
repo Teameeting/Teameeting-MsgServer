@@ -300,6 +300,10 @@ public final class CommonMsg {
      * <code>TGRPNOTIFY = 9;</code>
      */
     TGRPNOTIFY(9),
+    /**
+     * <code>TPUSHER = 10;</code>
+     */
+    TPUSHER(10),
     UNRECOGNIZED(-1),
     ;
 
@@ -343,6 +347,10 @@ public final class CommonMsg {
      * <code>TGRPNOTIFY = 9;</code>
      */
     public static final int TGRPNOTIFY_VALUE = 9;
+    /**
+     * <code>TPUSHER = 10;</code>
+     */
+    public static final int TPUSHER_VALUE = 10;
 
 
     public final int getNumber() {
@@ -369,6 +377,7 @@ public final class CommonMsg {
         case 7: return TSEQUENCE;
         case 8: return TSTORAGE;
         case 9: return TGRPNOTIFY;
+        case 10: return TPUSHER;
         default: return null;
       }
     }

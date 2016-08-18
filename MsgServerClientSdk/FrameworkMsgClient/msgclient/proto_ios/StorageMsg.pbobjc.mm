@@ -59,6 +59,9 @@ static GPBFileDescriptor *StorageMsgRoot_FileDescriptor(void) {
 @dynamic storeid;
 @dynamic ruserid;
 @dynamic groupid;
+@dynamic version;
+@dynamic mtype;
+@dynamic ispush;
 @dynamic content;
 
 typedef struct StorageMsg__storage_ {
@@ -73,6 +76,9 @@ typedef struct StorageMsg__storage_ {
   NSString *storeid;
   NSString *ruserid;
   NSString *groupid;
+  NSString *version;
+  NSString *mtype;
+  NSString *ispush;
   NSData *content;
   int64_t sequence;
   int64_t maxseqn;
@@ -193,10 +199,37 @@ typedef struct StorageMsg__storage_ {
         .dataType = GPBDataTypeString,
       },
       {
+        .name = "version",
+        .dataTypeSpecific.className = NULL,
+        .number = StorageMsg_FieldNumber_Version,
+        .hasIndex = 12,
+        .offset = (uint32_t)offsetof(StorageMsg__storage_, version),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "mtype",
+        .dataTypeSpecific.className = NULL,
+        .number = StorageMsg_FieldNumber_Mtype,
+        .hasIndex = 13,
+        .offset = (uint32_t)offsetof(StorageMsg__storage_, mtype),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "ispush",
+        .dataTypeSpecific.className = NULL,
+        .number = StorageMsg_FieldNumber_Ispush,
+        .hasIndex = 14,
+        .offset = (uint32_t)offsetof(StorageMsg__storage_, ispush),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
         .name = "content",
         .dataTypeSpecific.className = NULL,
         .number = StorageMsg_FieldNumber_Content,
-        .hasIndex = 12,
+        .hasIndex = 15,
         .offset = (uint32_t)offsetof(StorageMsg__storage_, content),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeBytes,

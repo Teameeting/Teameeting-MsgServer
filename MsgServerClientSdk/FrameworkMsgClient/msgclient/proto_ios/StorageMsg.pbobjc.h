@@ -50,7 +50,10 @@ typedef GPB_ENUM(StorageMsg_FieldNumber) {
   StorageMsg_FieldNumber_Storeid = 10,
   StorageMsg_FieldNumber_Ruserid = 11,
   StorageMsg_FieldNumber_Groupid = 12,
-  StorageMsg_FieldNumber_Content = 13,
+  StorageMsg_FieldNumber_Version = 13,
+  StorageMsg_FieldNumber_Mtype = 14,
+  StorageMsg_FieldNumber_Ispush = 15,
+  StorageMsg_FieldNumber_Content = 16,
 };
 
 /// this is the msg for store msg to redis
@@ -91,6 +94,15 @@ typedef GPB_ENUM(StorageMsg_FieldNumber) {
 
 /// groupid
 @property(nonatomic, readwrite, copy, null_resettable) NSString *groupid;
+
+/// message version
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
+/// the msg content type
+@property(nonatomic, readwrite, copy, null_resettable) NSString *mtype;
+
+/// if this message need push
+@property(nonatomic, readwrite, copy, null_resettable) NSString *ispush;
 
 /// message
 @property(nonatomic, readwrite, copy, null_resettable) NSData *content;

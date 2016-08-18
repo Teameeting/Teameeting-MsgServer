@@ -10,15 +10,18 @@ message Login{
     string         usr_from  = 1; // user id sending from
     string         usr_token = 2; // user token
     string         usr_nname = 3;
+    string         version   = 4;
 }
 
 message Logout{
     string         usr_from  = 1; // user id sending from
     string         usr_token = 2; // user token
+    string         version   = 3;
 }
 
 message Keep{
     string         usr_from = 1; // user id sending from
+    string         version  = 2;
 }
 
 message Entity{

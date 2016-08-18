@@ -140,6 +140,17 @@ class Login : public ::google::protobuf::MessageLite {
   ::std::string* release_usr_nname();
   void set_allocated_usr_nname(::std::string* usr_nname);
 
+  // optional string version = 4;
+  void clear_version();
+  static const int kVersionFieldNumber = 4;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
   // @@protoc_insertion_point(class_scope:pms.Login)
  private:
 
@@ -150,6 +161,7 @@ class Login : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
   ::google::protobuf::internal::ArenaStringPtr usr_nname_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -250,6 +262,17 @@ class Logout : public ::google::protobuf::MessageLite {
   ::std::string* release_usr_token();
   void set_allocated_usr_token(::std::string* usr_token);
 
+  // optional string version = 3;
+  void clear_version();
+  static const int kVersionFieldNumber = 3;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
   // @@protoc_insertion_point(class_scope:pms.Logout)
  private:
 
@@ -259,6 +282,7 @@ class Logout : public ::google::protobuf::MessageLite {
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -348,6 +372,17 @@ class Keep : public ::google::protobuf::MessageLite {
   ::std::string* release_usr_from();
   void set_allocated_usr_from(::std::string* usr_from);
 
+  // optional string version = 2;
+  void clear_version();
+  static const int kVersionFieldNumber = 2;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
   // @@protoc_insertion_point(class_scope:pms.Keep)
  private:
 
@@ -356,6 +391,7 @@ class Keep : public ::google::protobuf::MessageLite {
 
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr usr_from_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -546,16 +582,38 @@ class Entity : public ::google::protobuf::MessageLite {
   ::std::string* release_extra();
   void set_allocated_extra(::std::string* extra);
 
-  // optional uint32 msg_time = 13;
+  // optional string version = 13;
+  void clear_version();
+  static const int kVersionFieldNumber = 13;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
+  // optional string ispush = 14;
+  void clear_ispush();
+  static const int kIspushFieldNumber = 14;
+  const ::std::string& ispush() const;
+  void set_ispush(const ::std::string& value);
+  void set_ispush(const char* value);
+  void set_ispush(const char* value, size_t size);
+  ::std::string* mutable_ispush();
+  ::std::string* release_ispush();
+  void set_allocated_ispush(::std::string* ispush);
+
+  // optional uint32 msg_time = 15;
   void clear_msg_time();
-  static const int kMsgTimeFieldNumber = 13;
+  static const int kMsgTimeFieldNumber = 15;
   ::google::protobuf::uint32 msg_time() const;
   void set_msg_time(::google::protobuf::uint32 value);
 
-  // optional .pms.ToUser usr_toto = 14;
+  // optional .pms.ToUser usr_toto = 16;
   bool has_usr_toto() const;
   void clear_usr_toto();
-  static const int kUsrTotoFieldNumber = 14;
+  static const int kUsrTotoFieldNumber = 16;
   const ::pms::ToUser& usr_toto() const;
   ::pms::ToUser* mutable_usr_toto();
   ::pms::ToUser* release_usr_toto();
@@ -580,6 +638,8 @@ class Entity : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
   ::google::protobuf::internal::ArenaStringPtr cmsg_id_;
   ::google::protobuf::internal::ArenaStringPtr extra_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
+  ::google::protobuf::internal::ArenaStringPtr ispush_;
   ::pms::ToUser* usr_toto_;
   ::google::protobuf::uint32 msg_time_;
   mutable int _cached_size_;
@@ -734,6 +794,50 @@ inline void Login::set_allocated_usr_nname(::std::string* usr_nname) {
   // @@protoc_insertion_point(field_set_allocated:pms.Login.usr_nname)
 }
 
+// optional string version = 4;
+inline void Login::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Login::version() const {
+  // @@protoc_insertion_point(field_get:pms.Login.version)
+  return version_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Login::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Login.version)
+}
+inline void Login::set_version(const char* value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Login.version)
+}
+inline void Login::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Login.version)
+}
+inline ::std::string* Login::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Login.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Login::release_version() {
+  // @@protoc_insertion_point(field_release:pms.Login.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Login::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pms.Login.version)
+}
+
 // -------------------------------------------------------------------
 
 // Logout
@@ -826,6 +930,50 @@ inline void Logout::set_allocated_usr_token(::std::string* usr_token) {
   // @@protoc_insertion_point(field_set_allocated:pms.Logout.usr_token)
 }
 
+// optional string version = 3;
+inline void Logout::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Logout::version() const {
+  // @@protoc_insertion_point(field_get:pms.Logout.version)
+  return version_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Logout::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Logout.version)
+}
+inline void Logout::set_version(const char* value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Logout.version)
+}
+inline void Logout::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Logout.version)
+}
+inline ::std::string* Logout::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Logout.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Logout::release_version() {
+  // @@protoc_insertion_point(field_release:pms.Logout.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Logout::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pms.Logout.version)
+}
+
 // -------------------------------------------------------------------
 
 // Keep
@@ -872,6 +1020,50 @@ inline void Keep::set_allocated_usr_from(::std::string* usr_from) {
   }
   usr_from_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_from);
   // @@protoc_insertion_point(field_set_allocated:pms.Keep.usr_from)
+}
+
+// optional string version = 2;
+inline void Keep::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Keep::version() const {
+  // @@protoc_insertion_point(field_get:pms.Keep.version)
+  return version_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Keep::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Keep.version)
+}
+inline void Keep::set_version(const char* value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Keep.version)
+}
+inline void Keep::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Keep.version)
+}
+inline ::std::string* Keep::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Keep.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Keep::release_version() {
+  // @@protoc_insertion_point(field_release:pms.Keep.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Keep::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pms.Keep.version)
 }
 
 // -------------------------------------------------------------------
@@ -1286,7 +1478,95 @@ inline void Entity::set_allocated_extra(::std::string* extra) {
   // @@protoc_insertion_point(field_set_allocated:pms.Entity.extra)
 }
 
-// optional uint32 msg_time = 13;
+// optional string version = 13;
+inline void Entity::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Entity::version() const {
+  // @@protoc_insertion_point(field_get:pms.Entity.version)
+  return version_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Entity::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Entity.version)
+}
+inline void Entity::set_version(const char* value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Entity.version)
+}
+inline void Entity::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Entity.version)
+}
+inline ::std::string* Entity::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Entity.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Entity::release_version() {
+  // @@protoc_insertion_point(field_release:pms.Entity.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Entity::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pms.Entity.version)
+}
+
+// optional string ispush = 14;
+inline void Entity::clear_ispush() {
+  ispush_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Entity::ispush() const {
+  // @@protoc_insertion_point(field_get:pms.Entity.ispush)
+  return ispush_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Entity::set_ispush(const ::std::string& value) {
+  
+  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Entity.ispush)
+}
+inline void Entity::set_ispush(const char* value) {
+  
+  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Entity.ispush)
+}
+inline void Entity::set_ispush(const char* value, size_t size) {
+  
+  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Entity.ispush)
+}
+inline ::std::string* Entity::mutable_ispush() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Entity.ispush)
+  return ispush_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Entity::release_ispush() {
+  // @@protoc_insertion_point(field_release:pms.Entity.ispush)
+  
+  return ispush_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Entity::set_allocated_ispush(::std::string* ispush) {
+  if (ispush != NULL) {
+    
+  } else {
+    
+  }
+  ispush_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ispush);
+  // @@protoc_insertion_point(field_set_allocated:pms.Entity.ispush)
+}
+
+// optional uint32 msg_time = 15;
 inline void Entity::clear_msg_time() {
   msg_time_ = 0u;
 }
@@ -1300,7 +1580,7 @@ inline void Entity::set_msg_time(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:pms.Entity.msg_time)
 }
 
-// optional .pms.ToUser usr_toto = 14;
+// optional .pms.ToUser usr_toto = 16;
 inline bool Entity::has_usr_toto() const {
   return !_is_default_instance_ && usr_toto_ != NULL;
 }

@@ -198,10 +198,64 @@ public final class StorageMsgOuterClass {
 
     /**
      * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    java.lang.String getMtype();
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    com.google.protobuf.ByteString
+        getMtypeBytes();
+
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    java.lang.String getIspush();
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    com.google.protobuf.ByteString
+        getIspushBytes();
+
+    /**
+     * <pre>
      * message
      * </pre>
      *
-     * <code>optional bytes content = 13;</code>
+     * <code>optional bytes content = 16;</code>
      */
     com.google.protobuf.ByteString getContent();
   }
@@ -230,6 +284,9 @@ public final class StorageMsgOuterClass {
       storeid_ = "";
       ruserid_ = "";
       groupid_ = "";
+      version_ = "";
+      mtype_ = "";
+      ispush_ = "";
       content_ = com.google.protobuf.ByteString.EMPTY;
     }
     public static final int RSVRCMD_FIELD_NUMBER = 1;
@@ -896,14 +953,212 @@ public final class StorageMsgOuterClass {
       groupid_ = value.toStringUtf8();
     }
 
-    public static final int CONTENT_FIELD_NUMBER = 13;
+    public static final int VERSION_FIELD_NUMBER = 13;
+    private java.lang.String version_;
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    public java.lang.String getVersion() {
+      return version_;
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      version_ = value;
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    private void clearVersion() {
+      
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <pre>
+     * message version
+     * </pre>
+     *
+     * <code>optional string version = 13;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
+    public static final int MTYPE_FIELD_NUMBER = 14;
+    private java.lang.String mtype_;
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    public java.lang.String getMtype() {
+      return mtype_;
+    }
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMtypeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(mtype_);
+    }
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    private void setMtype(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      mtype_ = value;
+    }
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    private void clearMtype() {
+      
+      mtype_ = getDefaultInstance().getMtype();
+    }
+    /**
+     * <pre>
+     * the msg content type
+     * </pre>
+     *
+     * <code>optional string mtype = 14;</code>
+     */
+    private void setMtypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      mtype_ = value.toStringUtf8();
+    }
+
+    public static final int ISPUSH_FIELD_NUMBER = 15;
+    private java.lang.String ispush_;
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    public java.lang.String getIspush() {
+      return ispush_;
+    }
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    public com.google.protobuf.ByteString
+        getIspushBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(ispush_);
+    }
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    private void setIspush(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      ispush_ = value;
+    }
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    private void clearIspush() {
+      
+      ispush_ = getDefaultInstance().getIspush();
+    }
+    /**
+     * <pre>
+     * if this message need push
+     * </pre>
+     *
+     * <code>optional string ispush = 15;</code>
+     */
+    private void setIspushBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      ispush_ = value.toStringUtf8();
+    }
+
+    public static final int CONTENT_FIELD_NUMBER = 16;
     private com.google.protobuf.ByteString content_;
     /**
      * <pre>
      * message
      * </pre>
      *
-     * <code>optional bytes content = 13;</code>
+     * <code>optional bytes content = 16;</code>
      */
     public com.google.protobuf.ByteString getContent() {
       return content_;
@@ -913,7 +1168,7 @@ public final class StorageMsgOuterClass {
      * message
      * </pre>
      *
-     * <code>optional bytes content = 13;</code>
+     * <code>optional bytes content = 16;</code>
      */
     private void setContent(com.google.protobuf.ByteString value) {
       if (value == null) {
@@ -927,7 +1182,7 @@ public final class StorageMsgOuterClass {
      * message
      * </pre>
      *
-     * <code>optional bytes content = 13;</code>
+     * <code>optional bytes content = 16;</code>
      */
     private void clearContent() {
       
@@ -972,8 +1227,17 @@ public final class StorageMsgOuterClass {
       if (!groupid_.isEmpty()) {
         output.writeString(12, getGroupid());
       }
+      if (!version_.isEmpty()) {
+        output.writeString(13, getVersion());
+      }
+      if (!mtype_.isEmpty()) {
+        output.writeString(14, getMtype());
+      }
+      if (!ispush_.isEmpty()) {
+        output.writeString(15, getIspush());
+      }
       if (!content_.isEmpty()) {
-        output.writeBytes(13, content_);
+        output.writeBytes(16, content_);
       }
     }
 
@@ -1030,9 +1294,21 @@ public final class StorageMsgOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(12, getGroupid());
       }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(13, getVersion());
+      }
+      if (!mtype_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(14, getMtype());
+      }
+      if (!ispush_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(15, getIspush());
+      }
       if (!content_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(13, content_);
+          .computeBytesSize(16, content_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -1756,10 +2032,190 @@ public final class StorageMsgOuterClass {
 
       /**
        * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public java.lang.String getVersion() {
+        return instance.getVersion();
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setVersion(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public Builder clearVersion() {
+        copyOnWrite();
+        instance.clearVersion();
+        return this;
+      }
+      /**
+       * <pre>
+       * message version
+       * </pre>
+       *
+       * <code>optional string version = 13;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * the msg content type
+       * </pre>
+       *
+       * <code>optional string mtype = 14;</code>
+       */
+      public java.lang.String getMtype() {
+        return instance.getMtype();
+      }
+      /**
+       * <pre>
+       * the msg content type
+       * </pre>
+       *
+       * <code>optional string mtype = 14;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMtypeBytes() {
+        return instance.getMtypeBytes();
+      }
+      /**
+       * <pre>
+       * the msg content type
+       * </pre>
+       *
+       * <code>optional string mtype = 14;</code>
+       */
+      public Builder setMtype(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setMtype(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * the msg content type
+       * </pre>
+       *
+       * <code>optional string mtype = 14;</code>
+       */
+      public Builder clearMtype() {
+        copyOnWrite();
+        instance.clearMtype();
+        return this;
+      }
+      /**
+       * <pre>
+       * the msg content type
+       * </pre>
+       *
+       * <code>optional string mtype = 14;</code>
+       */
+      public Builder setMtypeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setMtypeBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * if this message need push
+       * </pre>
+       *
+       * <code>optional string ispush = 15;</code>
+       */
+      public java.lang.String getIspush() {
+        return instance.getIspush();
+      }
+      /**
+       * <pre>
+       * if this message need push
+       * </pre>
+       *
+       * <code>optional string ispush = 15;</code>
+       */
+      public com.google.protobuf.ByteString
+          getIspushBytes() {
+        return instance.getIspushBytes();
+      }
+      /**
+       * <pre>
+       * if this message need push
+       * </pre>
+       *
+       * <code>optional string ispush = 15;</code>
+       */
+      public Builder setIspush(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setIspush(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * if this message need push
+       * </pre>
+       *
+       * <code>optional string ispush = 15;</code>
+       */
+      public Builder clearIspush() {
+        copyOnWrite();
+        instance.clearIspush();
+        return this;
+      }
+      /**
+       * <pre>
+       * if this message need push
+       * </pre>
+       *
+       * <code>optional string ispush = 15;</code>
+       */
+      public Builder setIspushBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setIspushBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
        * message
        * </pre>
        *
-       * <code>optional bytes content = 13;</code>
+       * <code>optional bytes content = 16;</code>
        */
       public com.google.protobuf.ByteString getContent() {
         return instance.getContent();
@@ -1769,7 +2225,7 @@ public final class StorageMsgOuterClass {
        * message
        * </pre>
        *
-       * <code>optional bytes content = 13;</code>
+       * <code>optional bytes content = 16;</code>
        */
       public Builder setContent(com.google.protobuf.ByteString value) {
         copyOnWrite();
@@ -1781,7 +2237,7 @@ public final class StorageMsgOuterClass {
        * message
        * </pre>
        *
-       * <code>optional bytes content = 13;</code>
+       * <code>optional bytes content = 16;</code>
        */
       public Builder clearContent() {
         copyOnWrite();
@@ -1829,6 +2285,12 @@ public final class StorageMsgOuterClass {
               !other.ruserid_.isEmpty(), other.ruserid_);
           groupid_ = visitor.visitString(!groupid_.isEmpty(), groupid_,
               !other.groupid_.isEmpty(), other.groupid_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
+          mtype_ = visitor.visitString(!mtype_.isEmpty(), mtype_,
+              !other.mtype_.isEmpty(), other.mtype_);
+          ispush_ = visitor.visitString(!ispush_.isEmpty(), ispush_,
+              !other.ispush_.isEmpty(), other.ispush_);
           content_ = visitor.visitByteString(content_ != com.google.protobuf.ByteString.EMPTY, content_,
               other.content_ != com.google.protobuf.ByteString.EMPTY, other.content_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
@@ -1925,6 +2387,24 @@ public final class StorageMsgOuterClass {
                   break;
                 }
                 case 106: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
+                  break;
+                }
+                case 114: {
+                  String s = input.readStringRequireUtf8();
+
+                  mtype_ = s;
+                  break;
+                }
+                case 122: {
+                  String s = input.readStringRequireUtf8();
+
+                  ispush_ = s;
+                  break;
+                }
+                case 130: {
 
                   content_ = input.readBytes();
                   break;

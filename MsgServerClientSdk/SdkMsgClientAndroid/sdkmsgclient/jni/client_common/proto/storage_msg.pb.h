@@ -197,9 +197,42 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_groupid();
   void set_allocated_groupid(::std::string* groupid);
 
-  // optional bytes content = 13;
+  // optional string version = 13;
+  void clear_version();
+  static const int kVersionFieldNumber = 13;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
+  // optional string mtype = 14;
+  void clear_mtype();
+  static const int kMtypeFieldNumber = 14;
+  const ::std::string& mtype() const;
+  void set_mtype(const ::std::string& value);
+  void set_mtype(const char* value);
+  void set_mtype(const char* value, size_t size);
+  ::std::string* mutable_mtype();
+  ::std::string* release_mtype();
+  void set_allocated_mtype(::std::string* mtype);
+
+  // optional string ispush = 15;
+  void clear_ispush();
+  static const int kIspushFieldNumber = 15;
+  const ::std::string& ispush() const;
+  void set_ispush(const ::std::string& value);
+  void set_ispush(const char* value);
+  void set_ispush(const char* value, size_t size);
+  ::std::string* mutable_ispush();
+  ::std::string* release_ispush();
+  void set_allocated_ispush(::std::string* ispush);
+
+  // optional bytes content = 16;
   void clear_content();
-  static const int kContentFieldNumber = 13;
+  static const int kContentFieldNumber = 16;
   const ::std::string& content() const;
   void set_content(const ::std::string& value);
   void set_content(const char* value);
@@ -227,6 +260,9 @@ class StorageMsg : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr storeid_;
   ::google::protobuf::internal::ArenaStringPtr ruserid_;
   ::google::protobuf::internal::ArenaStringPtr groupid_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
+  ::google::protobuf::internal::ArenaStringPtr mtype_;
+  ::google::protobuf::internal::ArenaStringPtr ispush_;
   ::google::protobuf::internal::ArenaStringPtr content_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
@@ -634,7 +670,139 @@ inline void StorageMsg::set_allocated_groupid(::std::string* groupid) {
   // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.groupid)
 }
 
-// optional bytes content = 13;
+// optional string version = 13;
+inline void StorageMsg::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageMsg::version() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.version)
+  return version_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageMsg::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.version)
+}
+inline void StorageMsg::set_version(const char* value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.StorageMsg.version)
+}
+inline void StorageMsg::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.StorageMsg.version)
+}
+inline ::std::string* StorageMsg::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.StorageMsg.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageMsg::release_version() {
+  // @@protoc_insertion_point(field_release:pms.StorageMsg.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageMsg::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.version)
+}
+
+// optional string mtype = 14;
+inline void StorageMsg::clear_mtype() {
+  mtype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageMsg::mtype() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.mtype)
+  return mtype_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageMsg::set_mtype(const ::std::string& value) {
+  
+  mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.mtype)
+}
+inline void StorageMsg::set_mtype(const char* value) {
+  
+  mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.StorageMsg.mtype)
+}
+inline void StorageMsg::set_mtype(const char* value, size_t size) {
+  
+  mtype_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.StorageMsg.mtype)
+}
+inline ::std::string* StorageMsg::mutable_mtype() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.StorageMsg.mtype)
+  return mtype_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageMsg::release_mtype() {
+  // @@protoc_insertion_point(field_release:pms.StorageMsg.mtype)
+  
+  return mtype_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageMsg::set_allocated_mtype(::std::string* mtype) {
+  if (mtype != NULL) {
+    
+  } else {
+    
+  }
+  mtype_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), mtype);
+  // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.mtype)
+}
+
+// optional string ispush = 15;
+inline void StorageMsg::clear_ispush() {
+  ispush_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& StorageMsg::ispush() const {
+  // @@protoc_insertion_point(field_get:pms.StorageMsg.ispush)
+  return ispush_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageMsg::set_ispush(const ::std::string& value) {
+  
+  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.StorageMsg.ispush)
+}
+inline void StorageMsg::set_ispush(const char* value) {
+  
+  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.StorageMsg.ispush)
+}
+inline void StorageMsg::set_ispush(const char* value, size_t size) {
+  
+  ispush_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.StorageMsg.ispush)
+}
+inline ::std::string* StorageMsg::mutable_ispush() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.StorageMsg.ispush)
+  return ispush_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* StorageMsg::release_ispush() {
+  // @@protoc_insertion_point(field_release:pms.StorageMsg.ispush)
+  
+  return ispush_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void StorageMsg::set_allocated_ispush(::std::string* ispush) {
+  if (ispush != NULL) {
+    
+  } else {
+    
+  }
+  ispush_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ispush);
+  // @@protoc_insertion_point(field_set_allocated:pms.StorageMsg.ispush)
+}
+
+// optional bytes content = 16;
 inline void StorageMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }

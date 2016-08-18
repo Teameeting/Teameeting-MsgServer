@@ -96,6 +96,7 @@ bool EModuleType_IsValid(int value) {
     case 7:
     case 8:
     case 9:
+    case 10:
       return true;
     default:
       return false;
