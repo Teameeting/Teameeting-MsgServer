@@ -12,6 +12,14 @@
 #include "PRTConnManager.h"
 #include "PRTPusherManager.h"
 
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/entity_msg.pb.h"
+#include "MsgServer/proto/entity_msg_type.pb.h"
+
 #define TIMEOUT_TS (60*1000)
 
 PRTTransferSession::PRTTransferSession()
@@ -309,6 +317,20 @@ void PRTTransferSession::OnTypeTrans(const std::string& str)
 void PRTTransferSession::OnTypeQueue(const std::string& str)
 {
     LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    pms::RelayMsg r_msg;
+    if (!r_msg.ParseFromString(str)) {
+        LE("PRTTransferSession::OnTypeQueue r_msg ParseFromString error\n");
+        return;
+    }
+    LI("PRTTransferSession::OnTypeQueue svrcmd:%d, trmodule:%d, connector:%s, handlecmd:%s, handlemtype:%s, handledata:%s, users.size:%d, user.name:%s\n\n"\
+            , r_msg.svr_cmds()\
+            , r_msg.tr_module()\
+            , r_msg.content().c_str()\
+            , r_msg.handle_cmd().c_str()\
+            , r_msg.handle_mtype().c_str()\
+            , r_msg.handle_data().c_str()\
+            , r_msg.touser().users_size()\
+            , r_msg.touser().users(0).c_str());
 }
 
 void PRTTransferSession::OnTypeDispatch(const std::string& str)

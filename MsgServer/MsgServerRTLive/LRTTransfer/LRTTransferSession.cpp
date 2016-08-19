@@ -725,7 +725,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     resp.set_svr_cmds(pms::EServerCmd::CSNTFSEQN);
                     resp.set_mod_type(pms::EModuleType::TLIVE);
                     resp.set_rsp_code(store.msgs(i).result());
-                    resp.set_rsp_cont("");
+                    resp.set_rsp_cont(store.msgs(i).SerializeAsString());
 
                     // set relay
                     r_msg.set_svr_cmds(pms::EServerCmd::CSNDMSG);
@@ -733,6 +733,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     r_msg.set_connector("");
                     r_msg.set_content(resp.SerializeAsString());
 
+                    // this is for single sender notification push setting
                     r_msg.set_handle_cmd("push"); // set for push
                     r_msg.set_handle_mtype(store.msgs(i).mtype());
                     r_msg.set_handle_data(store.msgs(i).ispush());
@@ -750,7 +751,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     resp.set_svr_cmds(pms::EServerCmd::CSNTFSEQN);
                     resp.set_mod_type(pms::EModuleType::TLIVE);
                     resp.set_rsp_code(0);
-                    resp.set_rsp_cont("");
+                    resp.set_rsp_cont(store.msgs(i).SerializeAsString());
 
                     // set relay
                     r_msg.set_svr_cmds(pms::EServerCmd::CSNDMSG);
@@ -758,6 +759,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
                     r_msg.set_connector("");
                     r_msg.set_content(resp.SerializeAsString());
 
+                    // this is for single recver notification push setting
                     r_msg.set_handle_cmd("push"); // set for push
                     r_msg.set_handle_mtype(store.msgs(i).mtype());
                     r_msg.set_handle_data(store.msgs(i).ispush());
@@ -909,10 +911,7 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
             r_msg.set_tr_module(pms::ETransferModule::MLIVE);
             r_msg.set_connector("");
             r_msg.set_content(resp.SerializeAsString());
-            // no need anymore
-            //r_msg.set_handle_cmd("push"); // set for push
-            //r_msg.set_handle_mtype(store.msgs(i).mtype());
-            //r_msg.set_handle_data(store.msgs(i).ispush());
+            // read sync data no need push anymore!!!!!!
 
             pms::ToUser *pto = new pms::ToUser;
             pto->add_users()->assign(store.msgs(i).ruserid());
@@ -946,10 +945,7 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
             r_msg.set_tr_module(pms::ETransferModule::MLIVE);
             r_msg.set_connector("");
             r_msg.set_content(resp.SerializeAsString());
-            // no need anymore
-            //r_msg.set_handle_cmd("push"); // set for push
-            //r_msg.set_handle_mtype(store.msgs(i).mtype());
-            //r_msg.set_handle_data(store.msgs(i).ispush());
+            // read sync data no need push anymore!!!!!!
 
             pms::ToUser *pto = new pms::ToUser;
             pto->add_users()->assign(store.msgs(i).ruserid());
@@ -1028,6 +1024,7 @@ void LRTTransferSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType mod
         r_msg.set_connector("");
         r_msg.set_content(resp.SerializeAsString());
 
+        // this is for group notification push setting
         if (packed.msgs(i).ispush().compare("1")==0)
         {
             r_msg.set_handle_cmd("push"); // set for push
