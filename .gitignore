@@ -20,7 +20,6 @@ traces.1
 requests
 .run_build.sh
 tags
-*.conf
 *.png
 *.ycm_extra_conf.py
 *.ycm_extra_conf.pyc
@@ -41,6 +40,8 @@ MsgServer/MsgServerRTLive/MsgServerRTLive
 MsgServer/MsgServerRTLive/rtlive/bin
 MsgServer/MsgServerGrouper/MsgServerGrouper
 MsgServer/MsgServerGrouper/grouper/bin
+MsgServer/MsgServerPusher/MsgServerPusher
+MsgServer/MsgServerPusher/pusher/bin
 MsgServer/MsgServerModule/MsgServerModule
 MsgServer/MsgServerModule/module/bin
 MsgServer/MsgServer/MSCommon/MSThirdParty/xredis/examples/demo
