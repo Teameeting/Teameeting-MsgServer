@@ -465,7 +465,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
         }
         LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s\n", fromId.c_str(), nickName.c_str(), groupId.c_str());
         //IosPusher::Instance().ConfigPayload();
-        IosPusher::Instance().PushMsg();
+        //IosPusher::Instance().PushMsg();
     } else {
         LE("parse msg:%s error\n", entity.msg_cont().c_str());
         return;

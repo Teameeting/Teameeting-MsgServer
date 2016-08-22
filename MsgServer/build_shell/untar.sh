@@ -34,4 +34,8 @@ echo "untar grouper.tar.gz..."
 sleep 1
 tar -zxvf grouper.tar.gz
 
+echo "untar pusher.tar.gz..."
+sleep 1
+tar -zxvf pusher.tar.gz
+
 echo "untar end *_*..."

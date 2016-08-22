@@ -566,6 +566,25 @@ else
     logerr "building msgservergrouper not running..."
 fi
 
+####################    building msgserverpusher    ###########################
+if [ "yes"x = "yes"x ]
+then
+    SRC_PATH=$BASE_PATH/MsgServerPusher
+    BUILD_NAME=MsgServerPusher
+    PREFIX_PATH=$SRC_PATH/pusher
+    build_bin $SRC_PATH $PREFIX_PATH $BUILD_NAME
+    if [ $? -ne 0 ]
+    then
+        logerr "build_bin $BUILD_NAME error..."
+        exit 1
+    fi
+    cd $SRC_PATH
+    tar_tar_gz pusher
+else
+    logerr "building msgserverpusher not running..."
+fi
+
+
 
 ####################    taring all.tar.gz to msgserver    ###########################
 if [ "yes"x = "yes"x ]

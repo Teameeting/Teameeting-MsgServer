@@ -2,6 +2,10 @@
 
 echo "stop msgserver begin ok..."
 
+echo "stop pusher.."
+./pusher/pusher.sh stop
+sleep 3
+
 echo "stop grouper.."
 ./grouper/grouper.sh stop
 sleep 3

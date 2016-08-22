@@ -26,6 +26,7 @@ chmod 755 $SYS_BIN_PATH/pusher.sh
 cp -f pusher.conf $TARGET_CONF_PATH/
 cp -f params.conf $TARGET_CONF_PATH/
 cp -f bin/MsgServerPusher $TARGET_BIN_PATH/
+cp -rf cert $TARGET_BIN_PATH/
 printf "Install program ok!\r\n"
 else
 printf "UnInstall program....\r\n"

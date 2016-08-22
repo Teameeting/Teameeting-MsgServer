@@ -30,4 +30,8 @@ echo "start grouper..."
 ./grouper/grouper.sh start
 sleep 3
 
+echo "start pusher..."
+./pusher/pusher.sh start
+sleep 3
+
 echo "start msgserver finished ok..."

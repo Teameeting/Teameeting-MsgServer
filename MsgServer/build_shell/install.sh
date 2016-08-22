@@ -168,6 +168,13 @@ function install_msgserver()
     echo "module_dir:" $MODULE_DIR
     install_module $MODULE_DIR $MODULE_NAME
     sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=pusher
+    MODULE_NAME="pusher"
+    echo "module_dir:" $MODULE_DIR
+    install_module $MODULE_DIR $MODULE_NAME
+    sleep 1
 }
 
 
@@ -213,6 +220,12 @@ function uninstall_msgserver()
     cd $CUR_PATH
     MODULE_DIR=grouper
     MODULE_NAME="grouper"
+    uninstall_module $MODULE_DIR $MODULE_NAME
+    sleep 1
+
+    cd $CUR_PATH
+    MODULE_DIR=pusher
+    MODULE_NAME="pusher"
     uninstall_module $MODULE_DIR $MODULE_NAME
     sleep 1
 }
