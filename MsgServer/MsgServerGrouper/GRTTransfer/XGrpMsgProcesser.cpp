@@ -65,15 +65,15 @@ int XGrpMsgProcesser::EncodeDeleteGroupSeqn(std::string& outstr, const std::stri
     return 0;
 }
 
-int XGrpMsgProcesser::EncodeGrpSyncSeqnNotify(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush, int module)
+int XGrpMsgProcesser::EncodeGrpSyncSeqnNotify(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush, const std::string& version, int64 seqn, int module)
 {
     std::vector<std::string> v;
     v.push_back(userid);
-    EncodeGrpSyncSeqnNotifys(outstr, v, groupid, mtype, ispush, module);
+    EncodeGrpSyncSeqnNotifys(outstr, v, groupid, mtype, ispush, version, seqn, module);
     return 0;
 }
 
-int XGrpMsgProcesser::EncodeGrpSyncSeqnNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush, int module)
+int XGrpMsgProcesser::EncodeGrpSyncSeqnNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush, const std::string& version, int64 seqn, int module)
 {
     pms::MsgReq req;
     pms::TransferMsg tmsg;
@@ -83,11 +83,14 @@ int XGrpMsgProcesser::EncodeGrpSyncSeqnNotifys(std::string& outstr, const std::v
         m_packed.mutable_msgs(i)->set_rsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
         m_packed.mutable_msgs(i)->set_tsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
         m_packed.mutable_msgs(i)->set_mtag(pms::EStorageTag::TSEQN);
-        m_packed.mutable_msgs(i)->set_storeid(userids.at(i));
+        m_packed.mutable_msgs(i)->set_mflag(pms::EMsgFlag::FGROUP);
+        m_packed.mutable_msgs(i)->set_storeid(groupid);
         m_packed.mutable_msgs(i)->set_ruserid(userids.at(i));
         m_packed.mutable_msgs(i)->set_groupid(groupid);
         m_packed.mutable_msgs(i)->set_mtype(mtype);
         m_packed.mutable_msgs(i)->set_ispush(ispush);
+        m_packed.mutable_msgs(i)->set_version(version);
+        m_packed.mutable_msgs(i)->set_sequence(seqn);
     }
 
     //group33333
@@ -122,7 +125,8 @@ int XGrpMsgProcesser::EncodeGrpSyncDataNotifys(std::string& outstr, const std::v
         m_packed.mutable_msgs(i)->set_rsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
         m_packed.mutable_msgs(i)->set_tsvrcmd(pms::EServerCmd::CGROUPNOTIFY);
         m_packed.mutable_msgs(i)->set_mtag(pms::EStorageTag::TDATA);
-        m_packed.mutable_msgs(i)->set_storeid(userids.at(i));
+        m_packed.mutable_msgs(i)->set_mflag(pms::EMsgFlag::FGROUP);
+        m_packed.mutable_msgs(i)->set_storeid(groupid);
         m_packed.mutable_msgs(i)->set_ruserid(userids.at(i));
         m_packed.mutable_msgs(i)->set_groupid(groupid);
         m_packed.mutable_msgs(i)->set_sequence(curseqn);

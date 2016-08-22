@@ -116,6 +116,7 @@ public:
     bool DelUser(pms::EConnType type, const std::string& uid, std::string& token);
     ConnectionInfo*   findConnectionInfoById(const std::string& uid);
     bool SendToGroupModule(const std::string& userid, const std::string& msg);
+    bool SendToPushModule(const std::string& userid, const std::string& msg);
 
 
     void TransferSessionLostNotify(const std::string& sid);

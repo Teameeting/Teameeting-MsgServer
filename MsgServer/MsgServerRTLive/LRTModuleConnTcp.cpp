@@ -1,5 +1,5 @@
 //
-//  LRTGrpConnTcp.cpp
+//  LRTModuleConnTcp.cpp
 //  dyncRTRTLive
 //
 //  Created by hp on 12/11/15.
@@ -7,20 +7,20 @@
 //
 
 #include <string.h>
-#include "LRTGrpConnTcp.h"
+#include "LRTModuleConnTcp.h"
 #include "rtklog.h"
 
-LRTGrpConnTcp::LRTGrpConnTcp()
+LRTModuleConnTcp::LRTModuleConnTcp()
 {
 
 }
 
-LRTGrpConnTcp::~LRTGrpConnTcp()
+LRTModuleConnTcp::~LRTModuleConnTcp()
 {
 
 }
 
-int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
+int LRTModuleConnTcp::DoProcessData(const char* pData, int nLen)
 {
 #if DEF_PROTO
     std::string msg(pData, nLen);
@@ -30,9 +30,11 @@ int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
         return nLen;
     }
 
-    LI("LRTGrpConnTcp::DoProcessData request.svr_cmds:%d\n", request.svr_cmds());
+    LI("LRTModuleConnTcp::DoProcessData request.svr_cmds:%d\n", request.svr_cmds());
     if (request.svr_cmds() == pms::EServerCmd::CGROUPNOTIFY) {
         OnGroupNotify(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CPGETDATA) {
+        OnPGetData(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CCREATESEQN) {
         OnCreateGroupSeqn(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CDELETESEQN) {
@@ -50,12 +52,12 @@ int LRTGrpConnTcp::DoProcessData(const char* pData, int nLen)
     return nLen;
 }
 
-char* LRTGrpConnTcp::GenerateResponse(int code, const std::string&query, const char*pData, int nLen, int&outLen)
+char* LRTModuleConnTcp::GenerateResponse(int code, const std::string&query, const char*pData, int nLen, int&outLen)
 {
     return (char*)"";
 }
 
-void LRTGrpConnTcp::SendResponse(int code, const std::string&strContent)
+void LRTModuleConnTcp::SendResponse(int code, const std::string&strContent)
 {
     OnResponse(strContent.c_str(), (int)strContent.length());
 }

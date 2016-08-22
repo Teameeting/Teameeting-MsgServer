@@ -12,6 +12,10 @@
 #include "PRTConnManager.h"
 #include "PRTPusherManager.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+
 #include "MsgServer/proto/common_msg.pb.h"
 #include "MsgServer/proto/sys_msg_type.pb.h"
 #include "MsgServer/proto/storage_msg_type.pb.h"
@@ -19,6 +23,9 @@
 #include "MsgServer/proto/storage_msg.pb.h"
 #include "MsgServer/proto/entity_msg.pb.h"
 #include "MsgServer/proto/entity_msg_type.pb.h"
+
+#include "IosPusher.h"
+
 
 #define TIMEOUT_TS (60*1000)
 
@@ -31,6 +38,8 @@ PRTTransferSession::PRTTransferSession()
 , m_addr("")
 , m_port(0)
 , m_connectingStatus(0)
+, m_pPushMsgProcesser(nullptr)
+, m_module(pms::EModuleType::TLIVE)
 {
     AddObserver(this);
 }
@@ -54,7 +63,14 @@ void PRTTransferSession::Init()
 
     socket->SetTask(this);
     this->SetTimer(120*1000);
-
+    if (!m_pPushMsgProcesser) {
+        m_pPushMsgProcesser = new XPushMsgProcesser(*this);
+    }
+    if (!m_pPushMsgProcesser) {
+        LE("PRTTransferSession XPushMsgProcesser new error");
+        assert(false);
+    }
+    m_pPushMsgProcesser->Init();
 }
 
 void PRTTransferSession::Unit()
@@ -180,6 +196,7 @@ void PRTTransferSession::OnRecvData(const char*pData, int nLen)
 
 void PRTTransferSession::OnRecvMessage(const char*message, int nLen)
 {
+    LI("PRTTransferSession::OnRecvMessage ~~~~~~~~~~~~~~~~~~\n");
     RTTransfer::DoProcessData(message, nLen);
 }
 
@@ -310,13 +327,15 @@ void PRTTransferSession::OnTypeConn(const std::string& str)
 
 void PRTTransferSession::OnTypeTrans(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    LI("%s was called, str:%lu\n", __FUNCTION__, str.length());
     PRTPusherManager::Instance().RecvRequestCounter();
+
 }
 
+// this is from connector sequence push
 void PRTTransferSession::OnTypeQueue(const std::string& str)
 {
-    LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
+    //LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
     pms::RelayMsg r_msg;
     if (!r_msg.ParseFromString(str)) {
         LE("PRTTransferSession::OnTypeQueue r_msg ParseFromString error\n");
@@ -331,11 +350,127 @@ void PRTTransferSession::OnTypeQueue(const std::string& str)
             , r_msg.handle_data().c_str()\
             , r_msg.touser().users_size()\
             , r_msg.touser().users(0).c_str());
+
+    pms::MsgRep resp;
+    if (!resp.ParseFromString(r_msg.content()))
+    {
+        LE("PRTTransferSession::OnTypeQueue resp ParseFromString error\n");
+        return;
+    }
+    LI("PRTTransferSession::OnTypeQueue resp svr_cmd:%d, mod_type:%d, code:%d\n\n"\
+            , resp.svr_cmds()\
+            , resp.mod_type()\
+            , resp.rsp_code());
+
+    pms::StorageMsg store;
+    if (!store.ParseFromString(resp.rsp_cont()))
+    {
+        LE("PRTTransferSession::OnTypeQueue store ParseFromString error\n");
+        return;
+    }
+    LI("PRTTransferSession::OnTypeQueue sequence:%lld, ruseid:%s, storeid:%s, ispush:%s, version:%s, groupid:%s, mtype:%s, group or single flag:%d\n\n"\
+            , store.sequence()\
+            , store.ruserid().c_str()\
+            , store.storeid().c_str()\
+            , store.ispush().c_str()\
+            , store.version().c_str()\
+            , store.groupid().c_str()\
+            , store.mtype().c_str()\
+            , store.mflag());
+
+    store.set_rsvrcmd(pms::EServerCmd::CPGETDATA);
+    store.set_tsvrcmd(pms::EServerCmd::CPGETDATA);
+    store.set_mtag(pms::EStorageTag::TDATA);
+    std::string outstr("");
+    if (m_pPushMsgProcesser) {
+        m_pPushMsgProcesser->EncodePushGetDataNotify(outstr, store, m_module);
+    } else {
+        LE("PRTTransferSession::OnTypeQueue m_pPushMsgProcesser is null  return~~~~\n");
+        return;
+    }
+    if (outstr.length()==0)
+    {
+        LE("PRTTransferSession::OnTypeQueue outstr length is 0000000000 return~~~~\n");
+        return;
+    }
+    PRTConnManager::ModuleInfo* pmodule = PRTConnManager::Instance().findModuleInfo("", pms::ETransferModule::MLIVE);
+    if (pmodule && pmodule->pModule && pmodule->pModule->IsLiveSession())
+    {
+        LI("PRTTransferSession::OnTypeQueue module session is live~~~~\n");
+        pmodule->pModule->SendTransferData(outstr);
+    }
+
 }
 
 void PRTTransferSession::OnTypeDispatch(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
+    pms::StorageMsg store;
+    if (!store.ParseFromString(str))
+    {
+        LE("PRTTransferSession::OnTypeDispatch store ParseFromString error\n");
+        return;
+    }
+    LI("PRTTransferSession::OnTypeDispatch sequence:%lld, ruseid:%s, storeid:%s, ispush:%s, version:%s, groupid:%s, mtype:%s, group or single flag:%d\n\n"\
+            , store.sequence()\
+            , store.ruserid().c_str()\
+            , store.storeid().c_str()\
+            , store.ispush().c_str()\
+            , store.version().c_str()\
+            , store.groupid().c_str()\
+            , store.mtype().c_str()\
+            , store.mflag());
+    pms::Entity entity;
+    if (!entity.ParseFromString(store.content()))
+    {
+        LE("PRTTransferSession::OnTypeDispatch entity ParseFromString error\n");
+        return;
+    }
+    std::string fromId, nickName, groupId;
+    int msgType;
+    rapidjson::Document jsonMsgDoc;
+    if (!jsonMsgDoc.ParseInsitu<0>((char*)entity.msg_cont().c_str()).HasParseError())
+    {
+        if (jsonMsgDoc.HasMember("fromId"))
+        {
+            fromId = jsonMsgDoc["fromId"].GetString();
+            LI("push msg fromId :%s\n", fromId.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member fromId, jstr:%s\n", entity.msg_cont().c_str());
+            return;
+        }
+        if (jsonMsgDoc.HasMember("nickName"))
+        {
+            nickName = jsonMsgDoc["nickName"].GetString();
+            LI("push msg nickName :%s\n", nickName.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member nickname, jstr:%s\n", entity.msg_cont().c_str());
+            return;
+        }
+        if (jsonMsgDoc.HasMember("groupId"))
+        {
+            groupId = jsonMsgDoc["groupId"].GetString();
+            LI("push msg groupId: %s\n", groupId.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member groupId, jstr:%s\n", entity.msg_cont().c_str());
+            return;
+        }
+        if (jsonMsgDoc.HasMember("msgType"))
+        {
+            msgType = jsonMsgDoc["msgType"].GetInt();
+            LI("push msg msgType :%d\n", msgType);
+        } else {
+            LE("in jsonMsgDoc not has member msgType, jstr:%s\n", entity.msg_cont().c_str());
+            return;
+        }
+        LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s\n", fromId.c_str(), nickName.c_str(), groupId.c_str());
+        //IosPusher::Instance().ConfigPayload();
+        IosPusher::Instance().PushMsg();
+    } else {
+        LE("parse msg:%s error\n", entity.msg_cont().c_str());
+        return;
+    }
+
 }
 
 void PRTTransferSession::OnTypePush(const std::string& str)
@@ -353,6 +488,11 @@ void PRTTransferSession::OnTypeTLogout(const std::string& str)
     LI("%s was called\n", __FUNCTION__);
 }
 
+// this is get msg data
+void PRTTransferSession::OnPGetData(int code, const std::string& cont)
+{
+     LI("PRTTransferSession::OnPGetData was called, code:%d\n", code);
+}
 
 void PRTTransferSession::ConnectionDisconnected()
 {

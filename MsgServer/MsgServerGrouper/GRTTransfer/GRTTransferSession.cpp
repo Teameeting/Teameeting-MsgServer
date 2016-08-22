@@ -208,11 +208,11 @@ int GRTTransferSession::DeleteGroupSeqn(const std::string& cltUserid, const std:
     return 0;
 }
 
-int GRTTransferSession::GenGrpSyncSeqnNotify(const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush)
+int GRTTransferSession::GenGrpSyncSeqnNotify(const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush, const std::string& version, int64 seqn)
 {
     std::string outstr;
     if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeGrpSyncSeqnNotify(outstr, userid, groupid, mtype, ispush, m_module);
+        m_pGrpMsgProcesser->EncodeGrpSyncSeqnNotify(outstr, userid, groupid, mtype, ispush, version, seqn, m_module);
     } else {
         return -1;
     }
@@ -226,11 +226,11 @@ int GRTTransferSession::GenGrpSyncSeqnNotify(const std::string& userid, const st
 }
 
 
-int GRTTransferSession::GenGrpSyncSeqnNotifys(const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush)
+int GRTTransferSession::GenGrpSyncSeqnNotifys(const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush, const std::string& version, int64 seqn)
 {
     std::string outstr;
     if (m_pGrpMsgProcesser) {
-        m_pGrpMsgProcesser->EncodeGrpSyncSeqnNotifys(outstr, userids, groupid, mtype, ispush, m_module);
+        m_pGrpMsgProcesser->EncodeGrpSyncSeqnNotifys(outstr, userids, groupid, mtype, ispush, version, seqn, m_module);
     } else {
         return -1;
     }
@@ -469,19 +469,21 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
     store.ParseFromString(cont);
-    LI("GRTTransferSession::OnGroupNotify ruserid:%s, groupid:%s, mflag:%d, rsvrcmd:%d, push:%s, mtype:%s\n\n"\
+    LI("GRTTransferSession::OnGroupNotify ruserid:%s, groupid:%s, mflag:%d, rsvrcmd:%d, push:%s, mtype:%s, store.sequence:%lld, store.version:%s\n\n"\
             , store.ruserid().c_str()\
             , store.groupid().c_str()\
             , store.mflag()\
             , store.rsvrcmd()\
             , store.ispush().c_str()\
-            , store.mtype().c_str());
+            , store.mtype().c_str()\
+            , store.sequence()\
+            , store.version().c_str());
     if (store.groupid().compare("wocaowocaowocao")==0)
     {
         std::string u1("8ca64d158a505876");
         std::string u2("BCD9D958-985A-4454-B2C8-1551DB9C1A8A");
-        GenGrpSyncSeqnNotify(u1, store.groupid(), store.mtype(), store.ispush());
-        GenGrpSyncSeqnNotify(u2, store.groupid(), store.mtype(), store.ispush());
+        GenGrpSyncSeqnNotify(u1, store.groupid(), store.mtype(), store.ispush(), store.version(), store.sequence());
+        GenGrpSyncSeqnNotify(u2, store.groupid(), store.mtype(), store.ispush(), store.version(), store.sequence());
         return;
     }
     std::unordered_set<std::string> *puset = NULL;
@@ -501,7 +503,7 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
     {
         //group22222
         LI("GRTTransferSession::OnGroupNotify userid:%s, groupid:%s, seqn:%lld\n", l.c_str(), store.groupid().c_str(), store.sequence());
-        GenGrpSyncSeqnNotify(l, store.groupid(), store.mtype(), store.ispush());
+        GenGrpSyncSeqnNotify(l, store.groupid(), store.mtype(), store.ispush(), store.version(), store.sequence());
     }
 
     return;

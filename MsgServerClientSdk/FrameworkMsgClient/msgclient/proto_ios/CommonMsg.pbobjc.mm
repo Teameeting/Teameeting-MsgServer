@@ -35,7 +35,7 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
   if (!descriptor) {
     static const char *valueNames =
         "Clogin\000Csndmsg\000Cgetmsg\000Clogout\000Ckeepaliv"
-        "e\000Cseqn\000Cdata\000Csntfseqn\000Csntfdata\000Csyncs"
+        "e\000Cseqn\000Cdata\000Csntfseqn\000Cpgetdata\000Csyncs"
         "eqn\000Csseqn4Data\000Csyncdata\000Csyncgroupdata"
         "\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata\000Cgroupn"
         "otify\000Ccreateseqn\000Cdeleteseqn\000";
@@ -48,7 +48,7 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
         EServerCmd_Cseqn,
         EServerCmd_Cdata,
         EServerCmd_Csntfseqn,
-        EServerCmd_Csntfdata,
+        EServerCmd_Cpgetdata,
         EServerCmd_Csyncseqn,
         EServerCmd_Csseqn4Data,
         EServerCmd_Csyncdata,
@@ -85,7 +85,7 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cseqn:
     case EServerCmd_Cdata:
     case EServerCmd_Csntfseqn:
-    case EServerCmd_Csntfdata:
+    case EServerCmd_Cpgetdata:
     case EServerCmd_Csyncseqn:
     case EServerCmd_Csseqn4Data:
     case EServerCmd_Csyncdata:

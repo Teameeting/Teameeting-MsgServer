@@ -41,8 +41,8 @@ public:
 
     int EncodeCreateGroupSeqn(std::string& outstr, const std::string& userid, const std::string& cltUserid, const std::string& groupid, int module);
     int EncodeDeleteGroupSeqn(std::string& outstr, const std::string& userid, const std::string& cltUserid, const std::string& groupid, int module);
-    int EncodeGrpSyncSeqnNotify(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush, int module);
-    int EncodeGrpSyncSeqnNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush, int module);
+    int EncodeGrpSyncSeqnNotify(std::string& outstr, const std::string& userid, const std::string& groupid, const std::string& mtype, const std::string& ispush, const std::string& version, int64 seqn, int module);
+    int EncodeGrpSyncSeqnNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, const std::string& mtype, const std::string& ispush, const std::string& version, int64 seqn, int module);
 
     int EncodeGrpSyncDataNotify(std::string& outstr, const std::string& userid, const std::string& groupid, int64 curseqn, int module);
     int EncodeGrpSyncDataNotifys(std::string& outstr, const std::vector<std::string>& userids, const std::string& groupid, int64 curseqn,  int module);

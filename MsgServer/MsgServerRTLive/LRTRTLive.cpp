@@ -142,6 +142,7 @@ int	LRTRTLive::Start(const MsConfigParser& conf)
     }
 
     int nGrouperPort = conf.GetIntVal("global", "listen_grouper_port", 6690);
+    int nPusherPort = conf.GetIntVal("global", "listen_pusher_port", 6694);
     int nRtlivePort = conf.GetIntVal("global", "listen_rtlive_port", 6680);
     int nConnectorPort = conf.GetIntVal("global", "listen_connector_port", 6620);
     int nLogicalPort = conf.GetIntVal("global", "listen_logical_port", 6670);
@@ -157,6 +158,9 @@ int	LRTRTLive::Start(const MsConfigParser& conf)
         getchar();
         exit(0);
     }
+
+
+
     LRTRTLiveManager::Instance().InitManager();
     LRTConnManager::Instance().InitManager();
 
@@ -223,6 +227,19 @@ int	LRTRTLive::Start(const MsConfigParser& conf)
         }
         LI("Start RTLive group service:(%d) ok...,socketFD:%d\n", nGrouperPort, m_pGroupListener->GetSocketFD());
         m_pGroupListener->RequestEvent(EV_RE);
+    }
+
+    if (nPusherPort > 0) {
+        m_pPushListener = new LRTPushListener();
+        OS_Error err = m_pPushListener->Initialize(INADDR_ANY, nPusherPort);
+        if (err!=OS_NoErr) {
+            LE("CreatePushListener error port:%d\n", nPusherPort);
+            delete m_pPushListener;
+            m_pPushListener = NULL;
+            return -1;
+        }
+        LI("Start RTLive pusher service:(%d) ok...,socketFD:%d\n", nPusherPort, m_pPushListener->GetSocketFD());
+        m_pPushListener->RequestEvent(EV_RE);
     }
 	return 0;
 }

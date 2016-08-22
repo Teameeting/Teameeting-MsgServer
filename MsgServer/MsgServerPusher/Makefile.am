@@ -27,6 +27,7 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 
 MsgServerPusher_SOURCES=$(top_srcdir)/PRTListener/PRTPusherListener.cpp \
 						   $(top_srcdir)/PRTTransfer/PRTTransferSession.cpp \
+						   $(top_srcdir)/PRTTransfer/XPushMsgProcesser.cpp \
 						   $(top_srcdir)/Ios/IosPusher.cpp \
 						   $(top_srcdir)/PRTConnManager.cpp \
 						   $(top_srcdir)/PRTConnDispatcher.cpp \

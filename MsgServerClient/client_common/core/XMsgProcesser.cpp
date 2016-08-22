@@ -79,10 +79,10 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_msg_time(GetSecond());
     entity.set_version(MSG_VERSION);
     entity.set_ispush(std::to_string(push));
-    
+
     entity.set_cmsg_id(GetStrMicroSecond());
     outmsgid = entity.cmsg_id();
-    
+
     printf("XMsgProcesser::EncodeSndMsg to.size:%lu\n", to.size());
     if (to.size()>0) {
         pms::ToUser *touser = entity.mutable_usr_toto();
@@ -264,7 +264,7 @@ int XMsgProcesser::EncodeCreateSeqn(std::string& outstr, const std::string& user
     store.set_ruserid(userid);
     store.set_sequence(seqn);
     store.set_version(MSG_VERSION);
-    
+
     req.set_svr_cmds(pms::EServerCmd::CCREATESEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -284,7 +284,7 @@ int XMsgProcesser::EncodeDeleteSeqn(std::string& outstr, const std::string& user
     store.set_ruserid(userid);
     store.set_sequence(seqn);
     store.set_version(MSG_VERSION);
-    
+
     req.set_svr_cmds(pms::EServerCmd::CDELETESEQN);
     req.set_mod_type((pms::EModuleType)module);
     req.set_content(store.SerializeAsString());
@@ -325,30 +325,31 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         case pms::EServerCmd::CKEEPALIVE:
             DecodeKeepAlive(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSYNCSEQN:
             DecodeSyncSeqn(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSYNCDATA:
             DecodeSyncData(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CGROUPNOTIFY:
             DecodeGroupNotify(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSYNCGROUPDATA:
             DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
             break;
-            
+
         case pms::EServerCmd::CSNTFSEQN:
             DecodeNotifySeqn(resp.rsp_code(), resp.rsp_cont());
             break;
-            
-        case pms::EServerCmd::CSNTFDATA:
-            DecodeNotifyData(resp.rsp_code(), resp.rsp_cont());
-            break;
+
+        // this event case is no long used
+        //case pms::EServerCmd::CSNTFDATA:
+        //    DecodeNotifyData(resp.rsp_code(), resp.rsp_cont());
+        //    break;
 
         default:
             LOG(LS_ERROR) << "invalid svr_cmds type:" << resp.svr_cmds();

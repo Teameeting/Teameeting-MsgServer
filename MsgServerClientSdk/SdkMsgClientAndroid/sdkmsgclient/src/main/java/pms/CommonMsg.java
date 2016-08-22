@@ -55,12 +55,12 @@ public final class CommonMsg {
     CSNTFSEQN(7),
     /**
      * <pre>
-     * server notify sync data
+     * server notify sync data, because CSNTFDATA no longer used, so change to CPGETDATA, module pusher get data
      * </pre>
      *
-     * <code>CSNTFDATA = 8;</code>
+     * <code>CPGETDATA = 8;</code>
      */
-    CSNTFDATA(8),
+    CPGETDATA(8),
     /**
      * <code>CSYNCSEQN = 9;</code>
      */
@@ -142,12 +142,12 @@ public final class CommonMsg {
     public static final int CSNTFSEQN_VALUE = 7;
     /**
      * <pre>
-     * server notify sync data
+     * server notify sync data, because CSNTFDATA no longer used, so change to CPGETDATA, module pusher get data
      * </pre>
      *
-     * <code>CSNTFDATA = 8;</code>
+     * <code>CPGETDATA = 8;</code>
      */
-    public static final int CSNTFDATA_VALUE = 8;
+    public static final int CPGETDATA_VALUE = 8;
     /**
      * <code>CSYNCSEQN = 9;</code>
      */
@@ -212,7 +212,7 @@ public final class CommonMsg {
         case 5: return CSEQN;
         case 6: return CDATA;
         case 7: return CSNTFSEQN;
-        case 8: return CSNTFDATA;
+        case 8: return CPGETDATA;
         case 9: return CSYNCSEQN;
         case 10: return CSSEQN4DATA;
         case 11: return CSYNCDATA;

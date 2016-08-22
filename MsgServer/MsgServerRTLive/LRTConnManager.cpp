@@ -114,28 +114,6 @@ LRTConnManager::ConnectionInfo* LRTConnManager::findConnectionInfoById(const std
 
 bool LRTConnManager::SendToGroupModule(const std::string& userid, const std::string& msg)
 {
-#if 0
-    LRTConnManager::ConnectionInfo* pci = findConnectionInfoById(userid);
-    if (!pci) {
-        LE("LRTConnManager::SendToGroupModule not find user:%s connection\n", userid.c_str());
-        return false;
-    } else { //!pci
-        if (pci->_pConn && pci->_pConn->IsLiveSession()) {
-            if (pci->_connType == pms::EConnType::TTCP) {
-                LRTTransferSession *ct = dynamic_cast<LRTTransferSession*>(pci->_pConn);
-                if (ct) {
-                    ct->SendTransferData(msg);
-                }
-            } else {
-                LE("LRTConnManager::SendToGroupModule conn type not handle :%d\n", pci->_connType);
-            }
-            return true;
-        } else {
-            LE("LRTConnManager::SendToGroupModule conn not alive\n");
-             return false;
-        }
-    }
-#else
     LRTConnManager::ModuleInfo *pmi = findModuleInfo(userid, pms::ETransferModule::MGRPNOTIFY);
     if (!pmi) {
         LE("LRTConnManager::SendToGroupModule not find user:%s module MGRPNOTIFY\n", userid.c_str());
@@ -150,7 +128,24 @@ bool LRTConnManager::SendToGroupModule(const std::string& userid, const std::str
              return false;
         }
     }
-#endif
+}
+
+bool LRTConnManager::SendToPushModule(const std::string& userid, const std::string& msg)
+{
+    LRTConnManager::ModuleInfo *pmi = findModuleInfo(userid, pms::ETransferModule::MPUSHER);
+    if (!pmi) {
+        LE("LRTConnManager::SendToPushModule not find user:%s module MPUSHER\n", userid.c_str());
+        return false;
+    } else { //!pmi
+        if (pmi->pModule) {
+            LI("LRTConnManager::SendToPUSHModule find user:%s module MPUSHER send ok\n", userid.c_str());
+             pmi->pModule->SendTransferData(msg);
+             return true;
+        } else {
+            LE("LRTConnManager::SendToPUSHModule pmi->pModule is null module MPUSHER, userid:%s\n", userid.c_str());
+             return false;
+        }
+    }
 }
 
 void LRTConnManager::InitManager()

@@ -35,8 +35,8 @@ typedef GPB_ENUM(EServerCmd) {
   /// server notify sync seqn
   EServerCmd_Csntfseqn = 7,
 
-  /// server notify sync data
-  EServerCmd_Csntfdata = 8,
+  /// server notify sync data, because CSNTFDATA no longer used, so change to CPGETDATA, module pusher get data
+  EServerCmd_Cpgetdata = 8,
   EServerCmd_Csyncseqn = 9,
   EServerCmd_Csseqn4Data = 10,
   EServerCmd_Csyncdata = 11,

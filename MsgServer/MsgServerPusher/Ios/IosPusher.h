@@ -20,7 +20,8 @@ class IosPusher : public RTSingleton<IosPusher>{
     bool InitPusher();
     bool UninPusher();
 
-    bool ConfigPusher();
+    bool ConfigToken();
+    bool ConfigPayload();
 
     bool PushMsg();
 

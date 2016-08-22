@@ -13,6 +13,7 @@
 #include "RTUtils.hpp"
 #include "PRTPusherManager.h"
 #include "PRTConnManager.h"
+#include "IosPusher.h"
 
 
 static bool		g_inited = false;
@@ -144,7 +145,8 @@ int	PRTPusher::Start(const MsConfigParser& conf)
         exit(0);
     }
 
-    int nPusherPort = conf.GetIntVal("global", "listen_pusher_port", 6620);
+    int nConnectorPort = conf.GetIntVal("global", "listen_connector_port", 6620);
+    int nRtlivePusherPort = conf.GetIntVal("global", "listen_rtlivepusher_port", 6694);
     int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 9999);
     int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
 
@@ -164,14 +166,26 @@ int	PRTPusher::Start(const MsConfigParser& conf)
     sprintf(addr, "%s %d", strLocalIp.c_str(), nRedisPort1);
     PRTPusherManager::Instance().PushRedisHosts(addr);
 
-	if(nPusherPort > 0)
+	if(nConnectorPort > 0)
 	{
         char addr[24] = {0};
-        sprintf(addr, "%s %u", strLocalIp.c_str(), nPusherPort);
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nConnectorPort);
         PRTConnManager::Instance().GetConnectorAddrList()->push_front(addr);
 
         if (!(PRTConnManager::Instance().ConnectConnector())) {
             LE("Start to ConnectConnector failed\n");
+            return -1;
+        }
+	}
+
+    if(nRtlivePusherPort > 0)
+	{
+        char addr[24] = {0};
+        sprintf(addr, "%s %u", strLocalIp.c_str(), nRtlivePusherPort);
+        PRTConnManager::Instance().GetRtlivePusherAddrList()->push_front(addr);
+
+        if (!(PRTConnManager::Instance().ConnectRtlivePusher())) {
+            LE("Start to ConnectRtlivePusher failed\n");
             return -1;
         }
 	}
@@ -195,7 +209,7 @@ int	PRTPusher::Start(const MsConfigParser& conf)
 void PRTPusher::DoTick()
 {
 #if 1
-    //PRTPusherManager::Instance().GenerateModule();
+    PRTConnManager::Instance().RefreshConnection();
 #endif
 }
 

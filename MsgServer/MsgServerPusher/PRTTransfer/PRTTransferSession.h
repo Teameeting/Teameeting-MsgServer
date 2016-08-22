@@ -17,6 +17,7 @@
 #include "RTJSBuffer.h"
 #include "RTTransfer.h"
 #include "RTObserverConnection.h"
+#include "XPushMsgProcesser.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
@@ -25,6 +26,7 @@ class PRTTransferSession
     : public RTTcpNoTimeout
     , public RTJSBuffer
     , public RTTransfer
+    , public XPushMsgClientHelper
     , public RTObserverConnection{
 public:
     PRTTransferSession();
@@ -69,6 +71,9 @@ public:
     virtual void OnTypeTLogin(const std::string& str);
     virtual void OnTypeTLogout(const std::string& str);
 
+// from XPushMsgClientHelper
+public:
+    virtual void OnPGetData(int code, const std::string& cont);
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);
 // from RTObserverConnection
@@ -82,6 +87,8 @@ private:
     std::string     m_addr;
     int             m_port;
     int             m_connectingStatus;
+    XPushMsgProcesser    *m_pPushMsgProcesser;
+    pms::EModuleType     m_module;
 };
 
 #endif /* defined(__MsgServerPusher__PRTTransferSession__) */

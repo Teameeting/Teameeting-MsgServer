@@ -34,7 +34,7 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, pms::RelayMsg& r
 
                 std::string s = t_msg.SerializeAsString();
                 pmodule->pModule->SendTransferData(s.c_str(), (int)s.length());
-                LI("CRTDispatchConnection::DispatchMsg has send push msg to pusher!!!\n");
+                LI("CRTDispatchConnection::DispatchMsg has send push msg to pusher, module type:%d, module id:%s!!!\n\n", pmodule->othModuleType, pmodule->othModuleId.c_str());
             } else {
                 LE("CRTDispatchConnection::DispatchMsg module pusher is not liveeeeeeeeeeee!!!\n");
             }

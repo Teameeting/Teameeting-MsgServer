@@ -3,6 +3,7 @@
 #include "TCPListenerSocket.h"
 #include "LRTRTLiveListener.h"
 #include "LRTGroupListener.h"
+#include "LRTPushListener.h"
 #include "MsConfigParser.h"
 
 #include <iostream>
@@ -45,6 +46,7 @@ private:
 
     LRTRTLiveListener    *m_pRTLiveListener;
     LRTGroupListener    *m_pGroupListener;
+    LRTPushListener    *m_pPushListener;
 
 };
 

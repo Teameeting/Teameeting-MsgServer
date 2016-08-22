@@ -48,7 +48,7 @@ enum EServerCmd {
   CSEQN = 5,
   CDATA = 6,
   CSNTFSEQN = 7,
-  CSNTFDATA = 8,
+  CPGETDATA = 8,
   CSYNCSEQN = 9,
   CSSEQN4DATA = 10,
   CSYNCDATA = 11,

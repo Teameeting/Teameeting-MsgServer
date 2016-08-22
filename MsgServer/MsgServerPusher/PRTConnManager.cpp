@@ -159,7 +159,70 @@ bool PRTConnManager::TryConnectConnector(const std::string ip, unsigned short po
     }
 }
 
+bool PRTConnManager::ConnectRtlivePusher()
+{
+    if (m_rtlivepusherAddrList.size() == 0) {
+        return false;
+    }
+    if (m_pConnDispatcher==NULL)
+        m_pConnDispatcher = new PRTConnDispatcher();
+    std::list<std::string>::iterator it;
+    for (it=m_rtlivepusherAddrList.begin(); it!=m_rtlivepusherAddrList.end(); it++) {
+        std::string s = *it;
+        char ip[16] = {0};
+        unsigned int port = 0;
+        sscanf(s.c_str(), "%s %u", ip, &port);
+        LI("ip:%s, port:%u\n", ip, port);
+        if (strlen(ip)>0 && port > 2048) {
+            DoConnectRtlivePusher(ip, port);
+        }
+    }
+    return true;
+}
 
+
+
+bool PRTConnManager::DoConnectRtlivePusher(const std::string ip, unsigned short port)
+{
+    PRTTransferSession* rtlivepusherSession = new PRTTransferSession();
+    rtlivepusherSession->Init();
+    // conn to rtlive pusher
+    while (!rtlivepusherSession->Connect(ip, port)) {
+        LI("connecting to rtlive pusher server %s:%u waiting...\n", ip.c_str(), port);
+        usleep(100*1000);
+    }
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, rtlivepusherSession->GetSocket()->GetSocketFD());
+    rtlivepusherSession->EstablishConnection();
+    return true;
+}
+
+
+
+bool PRTConnManager::TryConnectRtlivePusher(const std::string ip, unsigned short port)
+{
+    LI("PRTConnManager::TryConneectRtlivePusher ip:%s, port:%u\n", ip.c_str(), port);
+    PRTTransferSession* rtlivepusherSession = new PRTTransferSession();
+    rtlivepusherSession->Init();
+    // conn to rtlive pusher
+
+    bool ok = false;
+    int times = 0;
+    do{
+        ok = rtlivepusherSession->Connect(ip, port);
+        LI("try %d times to connect rtlive pushesr server %s:%u, waiting...\n", times, ip.c_str(), port);
+        usleep(1000*1000);
+    }while(!ok && ++times < 5);
+
+    if (ok) {
+        rtlivepusherSession->EstablishConnection();
+        return true;
+    } else {
+        m_connectingSessList.push_back(rtlivepusherSession);
+        if (m_pConnDispatcher)
+            m_pConnDispatcher->Signal(Task::kIdleEvent);
+        return false;
+    }
+}
 void PRTConnManager::RefreshConnection()
 {
     ModuleInfo* pmi = NULL;

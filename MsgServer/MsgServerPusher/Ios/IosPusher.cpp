@@ -1,4 +1,5 @@
 #include "IosPusher.h"
+#include <assert.h>
 
 void IosPusher::ApnLogging(apn_log_levels level, const char* const message, uint32_t len)
 {
@@ -25,6 +26,7 @@ void IosPusher::ApnInvalidToken(const char* const token, uint32_t index)
 
 bool IosPusher::InitPusher()
 {
+    assert(apn_library_init() == APN_SUCCESS);
     mApnCtx = apn_init();
     if (nullptr == mApnCtx)
     {
@@ -32,6 +34,11 @@ bool IosPusher::InitPusher()
         apn_library_free();
         return false;
     }
+    apn_set_behavior(mApnCtx, APN_OPTION_RECONNECT);
+    apn_set_mode(mApnCtx, APN_MODE_SANDBOX);
+    apn_set_log_callback(mApnCtx, IosPusher::ApnLogging);
+    apn_set_invalid_token_callback(mApnCtx, IosPusher::ApnInvalidToken);
+    apn_set_pkcs12_file(mApnCtx, "./cert/com.dync.SdkMsgClientIos/dev/com_dync_SdkMsgClientIos_dev.p12", "123456");
 }
 
 bool IosPusher::UninPusher()
@@ -51,19 +58,41 @@ bool IosPusher::UninPusher()
     apn_library_free();
 }
 
-bool IosPusher::ConfigPusher()
+bool IosPusher::ConfigToken()
 {
-    apn_set_behavior(mApnCtx, APN_OPTION_RECONNECT);
-    apn_set_mode(mApnCtx, APN_MODE_SANDBOX);
-    apn_set_log_callback(mApnCtx, IosPusher::ApnLogging);
-    apn_set_invalid_token_callback(mApnCtx, IosPusher::ApnInvalidToken);
-    apn_set_pkcs12_file(mApnCtx, "push_test.p12", "12345678");
+    mTokens = apn_array_init(1, NULL, NULL);
+    if (!mTokens)
+    {
+        fprintf(stderr, "Unable to init apn_array:%d\n", errno);
+        if (mApnCtx)
+            apn_free(mApnCtx);
+        apn_library_free();
+        return false;
+    }
 
+
+    apn_array_insert(mTokens, (void*)"fbeab7b7599e6910ae89af7103376483434a575da0be51e6e46b5a5920e76af6");
+
+    if (APN_ERROR == apn_connect(mApnCtx))
+    {
+         printf("Could not connected to Apple Push Notification Service:%s, errno:%d\n", apn_error_string(errno), errno);
+         if (mApnCtx)
+             apn_free(mApnCtx);
+         if (mTokens)
+             apn_array_free(mTokens);
+         apn_library_free();
+         return false;
+    }
+}
+
+bool IosPusher::ConfigPayload()
+{
     mPayload = apn_payload_init();
     if (nullptr == mPayload)
     {
         fprintf(stderr, "Unable to init payload:%d\n", errno);
-        apn_free(mApnCtx);
+        if (mApnCtx)
+            apn_free(mApnCtx);
         apn_library_free();
         return false;
     }
@@ -71,36 +100,19 @@ bool IosPusher::ConfigPusher()
     time(&time_now);
 
     apn_payload_set_badge(mPayload, 10); // Icon badge
-    apn_payload_set_body(mPayload, "Test Push Message"); // notification text
+    //apn_payload_set_body(mPayload, "Test Push Message"); // notification text
     apn_payload_set_expiry(mPayload, time_now + 3600); // expire
     apn_payload_set_priority(mPayload, APN_NOTIFICATION_PRIORITY_HIGH);
     apn_payload_add_custom_property_integer(mPayload, "custom_property_integer", 100); // Custom property
 
-    mTokens = apn_array_init(1, NULL, NULL);
-    if (!mTokens)
-    {
-        fprintf(stderr, "Unable to init apn_array:%d\n", errno);
-        apn_free(mApnCtx);
-        apn_payload_free(mPayload);
-        apn_library_free();
-        return false;
-    }
-
-    apn_array_insert(mTokens, (void*)"ljsdlfkjlsadjflksj");
-
-    if (APN_ERROR == apn_connect(mApnCtx))
-    {
-         printf("Could not connected to Apple Push Notification Service:%s, errno:%d\n", apn_error_string(errno), errno);
-         apn_free(mApnCtx);
-         apn_payload_free(mPayload);
-         apn_array_free(mTokens);
-         apn_library_free();
-         return false;
-    }
 }
 
+int i = 0;
 bool IosPusher::PushMsg()
 {
+    char msg[10] = {0};
+    sprintf(msg, "%d msg pushed", i++);
+    apn_payload_set_body(mPayload, msg); // notification text
     apn_array_t *invalid_tokens = NULL;
     int ret = 0;
     if (APN_ERROR == apn_send(mApnCtx, mPayload, mTokens, &invalid_tokens)) {

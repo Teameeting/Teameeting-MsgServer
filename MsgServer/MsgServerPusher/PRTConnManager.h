@@ -85,9 +85,11 @@ public:
 
     bool    ConnectConnector();
     bool TryConnectConnector(const std::string ip, unsigned short port);
-
+    bool    ConnectRtlivePusher();
+    bool TryConnectRtlivePusher(const std::string ip, unsigned short port);
 
     std::list<std::string>* GetConnectorAddrList() { return &m_connectorAddrList; }
+    std::list<std::string>* GetRtlivePusherAddrList() { return &m_rtlivepusherAddrList; }
 
     void    RefreshConnection();
     void    SendTransferData(const std::string mid, const std::string uid, const std::string msg);
@@ -111,7 +113,9 @@ protected:
     ~PRTConnManager() { }
 private:
     bool DoConnectConnector(const std::string ip, unsigned short port);
+    bool DoConnectRtlivePusher(const std::string ip, unsigned short port);
     std::list<std::string>    m_connectorAddrList;
+    std::list<std::string>    m_rtlivepusherAddrList;
     std::string               m_logicalId;
     OSMutex                   m_mutexMembers;
     PRTConnDispatcher*        m_pConnDispatcher;

@@ -13,7 +13,7 @@ enum EServerCmd{
     CSEQN                   = 5;
     CDATA                   = 6;
     CSNTFSEQN               = 7; // server notify sync seqn
-    CSNTFDATA               = 8; // server notify sync data
+    CPGETDATA               = 8; // server notify sync data, because CSNTFDATA no longer used, so change to CPGETDATA, module pusher get data
     CSYNCSEQN               = 9;
     CSSEQN4DATA             = 10;
     CSYNCDATA               = 11;

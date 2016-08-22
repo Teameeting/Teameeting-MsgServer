@@ -21,6 +21,9 @@
 int main(int argc, const char * argv[]) {
     printf("Hello, Pusher!!!\n");
     IosPusher::Instance().InitPusher();
+    IosPusher::Instance().ConfigToken();
+    IosPusher::Instance().ConfigPayload();
+
     PRTPusher::PrintVersion();
 
     if (argc <= 2) {

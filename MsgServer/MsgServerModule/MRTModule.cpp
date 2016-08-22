@@ -207,7 +207,7 @@ int	MRTModule::Start(const MsConfigParser& conf)
 void MRTModule::DoTick()
 {
 #if 1
-    //MRTModuleManager::Instance().GenerateModule();
+    MRTModuleManager::Instance().RefreshConnection();
 #endif
 }
 
