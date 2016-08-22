@@ -47,8 +47,8 @@
     [mMsg setGroupId:[txtMsg getGroupId]];
     [mMsg setPush:[txtMsg getPush]];
     [mMsg setToId:[txtMsg getToId]];
-    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setMsgType:msgType];
     return mMsg;
@@ -61,8 +61,8 @@
     [mMsg setGroupId:[livMsg getGroupId]];
     [mMsg setToId:[livMsg getToId]];
     [mMsg setPush:[livMsg getPush]];
-    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setFlag:[livMsg getFlag]];
     [mMsg setMsgType:msgType];
@@ -76,8 +76,8 @@
     [mMsg setGroupId:[renMsg getGroupId]];
     [mMsg setToId:[renMsg getToId]];
     [mMsg setPush:[renMsg getPush]];
-    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setCash:[renMsg getCash]];
     [mMsg setWishcont:[renMsg getWishcont]];
@@ -92,8 +92,8 @@
     [mMsg setGroupId:[blkMsg getGroupId]];
     [mMsg setToId:[blkMsg getToId]];
     [mMsg setPush:[blkMsg getPush]];
-    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setFlag:[blkMsg getFlag]];
     [mMsg setMsgType:msgType];
@@ -107,8 +107,8 @@
     [mMsg setGroupId:[fbdMsg getGroupId]];
     [mMsg setToId:[fbdMsg getToId]];
     [mMsg setPush:[fbdMsg getPush]];
-    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setFlag:[fbdMsg getFlag]];
     [mMsg setMsgType:msgType];
@@ -122,8 +122,8 @@
     [mMsg setGroupId:[mgrMsg getGroupId]];
     [mMsg setToId:[mgrMsg getToId]];
     [mMsg setPush:[mgrMsg getPush]];
-    [mMsg setNickname:MsgClient::Instance().MCGetNsNickName()];
-    [mMsg setUiconurl:MsgClient::Instance().MCGetNsUIconUrl()];
+    [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
+    [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setFlag:[mgrMsg getFlag]];
     [mMsg setMsgType:msgType];

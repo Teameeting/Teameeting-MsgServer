@@ -22,7 +22,41 @@
     [self.window setRootViewController:[[UINavigationController alloc] initWithRootViewController:view]];
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound) categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        
+    } else
+#endif
+    {
+        /// 去除warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+#pragma clang diagnostic pop
+    }
     return YES;
+}
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
+{
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)]) {
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+}
+#endif
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString *realDeviceToken = [NSString stringWithFormat:@"%@",deviceToken];
+    realDeviceToken = [realDeviceToken stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    realDeviceToken = [realDeviceToken stringByReplacingOccurrencesOfString:@">" withString:@""];
+    realDeviceToken = [realDeviceToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    [user setObject:realDeviceToken forKey:@"realDeviceToken"];
+    [user synchronize];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

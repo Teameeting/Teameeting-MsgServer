@@ -69,6 +69,7 @@ public:
     int FetchGroupSeqn(const std::string& groupid);
     int SyncGroupSeqn(const std::string& groupid, int64 seqn, int role);
     int SyncGroupData(const std::string& gropuid, int64 seqn);
+    int UpdateSetting(const std::vector<std::string>& setting);
 
     MSState MSStatus() { return m_msState; }
     void SetUserId(const std::string& userid) { m_uid = userid; }
@@ -76,6 +77,16 @@ public:
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
 
     void SetUIconUrl(const std::string& uiconurl) { m_uicon = uiconurl; }
+    void SetEnablePush(int push)
+    {
+        m_enablePush = push;
+        std::vector<std::string> vec;
+        char val[4] = {0};
+        sprintf(val, "%d", push);
+        vec.push_back("push");
+        vec.push_back(val);
+        UpdateSetting(vec);
+    }
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
     {
@@ -341,6 +352,8 @@ private:
     std::string              m_uicon;
     std::string              m_server;
     std::string              m_version;
+    int                      m_devType;
+    int                      m_enablePush;
     int                      m_port;
     bool                     m_autoConnect;
     bool                     m_login;

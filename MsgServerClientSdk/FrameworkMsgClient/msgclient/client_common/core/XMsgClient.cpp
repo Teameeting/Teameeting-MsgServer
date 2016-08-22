@@ -291,6 +291,11 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
     return SendEncodeMsg(outstr);
 }
 
+int XMsgClient::UpdateSetting(const std::vector<std::string>& vec)
+{
+    return 0;
+}
+
 
 ////////////////////////////////////////////
 ////////////////private/////////////////////

@@ -291,6 +291,11 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
     return SendEncodeMsg(outstr);
 }
 
+int XMsgClient::UpdateSetting(const std::vector<std::string>& vec)
+{
+    return 0;
+}
+
 
 ////////////////////////////////////////////
 ////////////////private/////////////////////
@@ -669,7 +674,7 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
     UAddSyncedMsg(seqnKey, store);
     UUpdateUserSeqn();
-
+    
     printf("XMsgClient::OnHelpSyncData m_gRecvMsgList.size:%lu\n", m_gRecvMsgList.size());
     for (RecvMsgListIt it = m_uRecvMsgList.begin();it!=m_uRecvMsgList.end();++it)
     {
@@ -728,7 +733,6 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
     return;
 }
 
-// sync group seqn
 void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
@@ -770,7 +774,7 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 {
     printf("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());
-    if (code==0)
+    if ((code==0) && (cont.length()==0))
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
         printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is:%lld\n", itCurSeqn->second);

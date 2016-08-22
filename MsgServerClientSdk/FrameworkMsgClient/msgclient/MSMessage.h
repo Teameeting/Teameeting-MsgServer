@@ -27,9 +27,9 @@
 
 @property (nonatomic, strong) NSString* groupId;
 
-@property (nonatomic, strong) NSString* nickname;
+@property (nonatomic, strong) NSString* nickName;
 
-@property (nonatomic, strong) NSString* uiconurl;
+@property (nonatomic, strong) NSString* uiconUrl;
 
 @property (nonatomic, strong) NSString* cash;
 

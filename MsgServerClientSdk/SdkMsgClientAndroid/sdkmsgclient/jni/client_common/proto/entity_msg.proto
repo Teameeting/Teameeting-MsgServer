@@ -11,6 +11,8 @@ message Login{
     string         usr_token = 2; // user token
     string         usr_nname = 3;
     string         version   = 4;
+    sint32         dev_type = 5;
+    sint32         enable_push = 6;
 }
 
 message Logout{
@@ -22,6 +24,13 @@ message Logout{
 message Keep{
     string         usr_from = 1; // user id sending from
     string         version  = 2;
+}
+
+message Setting{
+    string         usr_from = 1; // user id sending from
+    string         version = 2;
+    sint64         set_type = 3; // which one are you setting
+    string         json_cont = 4; // key value json format
 }
 
 message Entity{

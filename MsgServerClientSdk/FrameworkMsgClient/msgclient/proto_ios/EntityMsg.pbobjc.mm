@@ -51,9 +51,13 @@ static GPBFileDescriptor *EntityMsgRoot_FileDescriptor(void) {
 @dynamic usrToken;
 @dynamic usrNname;
 @dynamic version;
+@dynamic devType;
+@dynamic enablePush;
 
 typedef struct Login__storage_ {
   uint32_t _has_storage_[1];
+  int32_t devType;
+  int32_t enablePush;
   NSString *usrFrom;
   NSString *usrToken;
   NSString *usrNname;
@@ -101,6 +105,24 @@ typedef struct Login__storage_ {
         .offset = (uint32_t)offsetof(Login__storage_, version),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "devType",
+        .dataTypeSpecific.className = NULL,
+        .number = Login_FieldNumber_DevType,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(Login__storage_, devType),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt32,
+      },
+      {
+        .name = "enablePush",
+        .dataTypeSpecific.className = NULL,
+        .number = Login_FieldNumber_EnablePush,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(Login__storage_, enablePush),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -229,6 +251,82 @@ typedef struct Keep__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(Keep__storage_)
+                                         flags:0];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
+#pragma mark - Setting
+
+@implementation Setting
+
+@dynamic usrFrom;
+@dynamic version;
+@dynamic setType;
+@dynamic jsonCont;
+
+typedef struct Setting__storage_ {
+  uint32_t _has_storage_[1];
+  NSString *usrFrom;
+  NSString *version;
+  NSString *jsonCont;
+  int64_t setType;
+} Setting__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "usrFrom",
+        .dataTypeSpecific.className = NULL,
+        .number = Setting_FieldNumber_UsrFrom,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(Setting__storage_, usrFrom),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "version",
+        .dataTypeSpecific.className = NULL,
+        .number = Setting_FieldNumber_Version,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(Setting__storage_, version),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "setType",
+        .dataTypeSpecific.className = NULL,
+        .number = Setting_FieldNumber_SetType,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(Setting__storage_, setType),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt64,
+      },
+      {
+        .name = "jsonCont",
+        .dataTypeSpecific.className = NULL,
+        .number = Setting_FieldNumber_JsonCont,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(Setting__storage_, jsonCont),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[Setting class]
+                                     rootClass:[EntityMsgRoot class]
+                                          file:EntityMsgRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(Setting__storage_)
                                          flags:0];
     NSAssert(descriptor == nil, @"Startup recursed!");
     descriptor = localDescriptor;

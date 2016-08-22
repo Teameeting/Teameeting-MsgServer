@@ -67,6 +67,16 @@ public final class EntityMsg {
      */
     com.google.protobuf.ByteString
         getVersionBytes();
+
+    /**
+     * <code>optional sint32 dev_type = 5;</code>
+     */
+    int getDevType();
+
+    /**
+     * <code>optional sint32 enable_push = 6;</code>
+     */
+    int getEnablePush();
   }
   /**
    * Protobuf type {@code pms.Login}
@@ -81,6 +91,8 @@ public final class EntityMsg {
       usrToken_ = "";
       usrNname_ = "";
       version_ = "";
+      devType_ = 0;
+      enablePush_ = 0;
     }
     public static final int USR_FROM_FIELD_NUMBER = 1;
     private java.lang.String usrFrom_;
@@ -306,6 +318,52 @@ public final class EntityMsg {
       version_ = value.toStringUtf8();
     }
 
+    public static final int DEV_TYPE_FIELD_NUMBER = 5;
+    private int devType_;
+    /**
+     * <code>optional sint32 dev_type = 5;</code>
+     */
+    public int getDevType() {
+      return devType_;
+    }
+    /**
+     * <code>optional sint32 dev_type = 5;</code>
+     */
+    private void setDevType(int value) {
+      
+      devType_ = value;
+    }
+    /**
+     * <code>optional sint32 dev_type = 5;</code>
+     */
+    private void clearDevType() {
+      
+      devType_ = 0;
+    }
+
+    public static final int ENABLE_PUSH_FIELD_NUMBER = 6;
+    private int enablePush_;
+    /**
+     * <code>optional sint32 enable_push = 6;</code>
+     */
+    public int getEnablePush() {
+      return enablePush_;
+    }
+    /**
+     * <code>optional sint32 enable_push = 6;</code>
+     */
+    private void setEnablePush(int value) {
+      
+      enablePush_ = value;
+    }
+    /**
+     * <code>optional sint32 enable_push = 6;</code>
+     */
+    private void clearEnablePush() {
+      
+      enablePush_ = 0;
+    }
+
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!usrFrom_.isEmpty()) {
@@ -319,6 +377,12 @@ public final class EntityMsg {
       }
       if (!version_.isEmpty()) {
         output.writeString(4, getVersion());
+      }
+      if (devType_ != 0) {
+        output.writeSInt32(5, devType_);
+      }
+      if (enablePush_ != 0) {
+        output.writeSInt32(6, enablePush_);
       }
     }
 
@@ -342,6 +406,14 @@ public final class EntityMsg {
       if (!version_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(4, getVersion());
+      }
+      if (devType_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt32Size(5, devType_);
+      }
+      if (enablePush_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt32Size(6, enablePush_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -629,6 +701,52 @@ public final class EntityMsg {
         return this;
       }
 
+      /**
+       * <code>optional sint32 dev_type = 5;</code>
+       */
+      public int getDevType() {
+        return instance.getDevType();
+      }
+      /**
+       * <code>optional sint32 dev_type = 5;</code>
+       */
+      public Builder setDevType(int value) {
+        copyOnWrite();
+        instance.setDevType(value);
+        return this;
+      }
+      /**
+       * <code>optional sint32 dev_type = 5;</code>
+       */
+      public Builder clearDevType() {
+        copyOnWrite();
+        instance.clearDevType();
+        return this;
+      }
+
+      /**
+       * <code>optional sint32 enable_push = 6;</code>
+       */
+      public int getEnablePush() {
+        return instance.getEnablePush();
+      }
+      /**
+       * <code>optional sint32 enable_push = 6;</code>
+       */
+      public Builder setEnablePush(int value) {
+        copyOnWrite();
+        instance.setEnablePush(value);
+        return this;
+      }
+      /**
+       * <code>optional sint32 enable_push = 6;</code>
+       */
+      public Builder clearEnablePush() {
+        copyOnWrite();
+        instance.clearEnablePush();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:pms.Login)
     }
     protected final Object dynamicMethod(
@@ -658,6 +776,10 @@ public final class EntityMsg {
               !other.usrNname_.isEmpty(), other.usrNname_);
           version_ = visitor.visitString(!version_.isEmpty(), version_,
               !other.version_.isEmpty(), other.version_);
+          devType_ = visitor.visitInt(devType_ != 0, devType_,
+              other.devType_ != 0, other.devType_);
+          enablePush_ = visitor.visitInt(enablePush_ != 0, enablePush_,
+              other.enablePush_ != 0, other.enablePush_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
           }
@@ -704,6 +826,16 @@ public final class EntityMsg {
                   String s = input.readStringRequireUtf8();
 
                   version_ = s;
+                  break;
+                }
+                case 40: {
+
+                  devType_ = input.readSInt32();
+                  break;
+                }
+                case 48: {
+
+                  enablePush_ = input.readSInt32();
                   break;
                 }
               }
@@ -1852,6 +1984,732 @@ public final class EntityMsg {
     private static volatile com.google.protobuf.Parser<Keep> PARSER;
 
     public static com.google.protobuf.Parser<Keep> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
+  public interface SettingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:pms.Setting)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    java.lang.String getUsrFrom();
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getUsrFromBytes();
+
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * which one are you setting
+     * </pre>
+     *
+     * <code>optional sint64 set_type = 3;</code>
+     */
+    long getSetType();
+
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    java.lang.String getJsonCont();
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getJsonContBytes();
+  }
+  /**
+   * Protobuf type {@code pms.Setting}
+   */
+  public  static final class Setting extends
+      com.google.protobuf.GeneratedMessageLite<
+          Setting, Setting.Builder> implements
+      // @@protoc_insertion_point(message_implements:pms.Setting)
+      SettingOrBuilder {
+    private Setting() {
+      usrFrom_ = "";
+      version_ = "";
+      setType_ = 0L;
+      jsonCont_ = "";
+    }
+    public static final int USR_FROM_FIELD_NUMBER = 1;
+    private java.lang.String usrFrom_;
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    public java.lang.String getUsrFrom() {
+      return usrFrom_;
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUsrFromBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(usrFrom_);
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFrom(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrFrom_ = value;
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void clearUsrFrom() {
+      
+      usrFrom_ = getDefaultInstance().getUsrFrom();
+    }
+    /**
+     * <pre>
+     * user id sending from
+     * </pre>
+     *
+     * <code>optional string usr_from = 1;</code>
+     */
+    private void setUsrFromBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrFrom_ = value.toStringUtf8();
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 2;
+    private java.lang.String version_;
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    public java.lang.String getVersion() {
+      return version_;
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(version_);
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    private void setVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      version_ = value;
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    private void clearVersion() {
+      
+      version_ = getDefaultInstance().getVersion();
+    }
+    /**
+     * <code>optional string version = 2;</code>
+     */
+    private void setVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      version_ = value.toStringUtf8();
+    }
+
+    public static final int SET_TYPE_FIELD_NUMBER = 3;
+    private long setType_;
+    /**
+     * <pre>
+     * which one are you setting
+     * </pre>
+     *
+     * <code>optional sint64 set_type = 3;</code>
+     */
+    public long getSetType() {
+      return setType_;
+    }
+    /**
+     * <pre>
+     * which one are you setting
+     * </pre>
+     *
+     * <code>optional sint64 set_type = 3;</code>
+     */
+    private void setSetType(long value) {
+      
+      setType_ = value;
+    }
+    /**
+     * <pre>
+     * which one are you setting
+     * </pre>
+     *
+     * <code>optional sint64 set_type = 3;</code>
+     */
+    private void clearSetType() {
+      
+      setType_ = 0L;
+    }
+
+    public static final int JSON_CONT_FIELD_NUMBER = 4;
+    private java.lang.String jsonCont_;
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    public java.lang.String getJsonCont() {
+      return jsonCont_;
+    }
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getJsonContBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(jsonCont_);
+    }
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    private void setJsonCont(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      jsonCont_ = value;
+    }
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    private void clearJsonCont() {
+      
+      jsonCont_ = getDefaultInstance().getJsonCont();
+    }
+    /**
+     * <pre>
+     * key value json format
+     * </pre>
+     *
+     * <code>optional string json_cont = 4;</code>
+     */
+    private void setJsonContBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      jsonCont_ = value.toStringUtf8();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!usrFrom_.isEmpty()) {
+        output.writeString(1, getUsrFrom());
+      }
+      if (!version_.isEmpty()) {
+        output.writeString(2, getVersion());
+      }
+      if (setType_ != 0L) {
+        output.writeSInt64(3, setType_);
+      }
+      if (!jsonCont_.isEmpty()) {
+        output.writeString(4, getJsonCont());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!usrFrom_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getUsrFrom());
+      }
+      if (!version_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getVersion());
+      }
+      if (setType_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt64Size(3, setType_);
+      }
+      if (!jsonCont_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(4, getJsonCont());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    public static pms.EntityMsg.Setting parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static pms.EntityMsg.Setting parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static pms.EntityMsg.Setting parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static pms.EntityMsg.Setting parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static pms.EntityMsg.Setting parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static pms.EntityMsg.Setting parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static pms.EntityMsg.Setting parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+    public static pms.EntityMsg.Setting parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static pms.EntityMsg.Setting parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static pms.EntityMsg.Setting parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(pms.EntityMsg.Setting prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * Protobuf type {@code pms.Setting}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          pms.EntityMsg.Setting, Builder> implements
+        // @@protoc_insertion_point(builder_implements:pms.Setting)
+        pms.EntityMsg.SettingOrBuilder {
+      // Construct using pms.EntityMsg.Setting.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * user id sending from
+       * </pre>
+       *
+       * <code>optional string usr_from = 1;</code>
+       */
+      public java.lang.String getUsrFrom() {
+        return instance.getUsrFrom();
+      }
+      /**
+       * <pre>
+       * user id sending from
+       * </pre>
+       *
+       * <code>optional string usr_from = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUsrFromBytes() {
+        return instance.getUsrFromBytes();
+      }
+      /**
+       * <pre>
+       * user id sending from
+       * </pre>
+       *
+       * <code>optional string usr_from = 1;</code>
+       */
+      public Builder setUsrFrom(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUsrFrom(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * user id sending from
+       * </pre>
+       *
+       * <code>optional string usr_from = 1;</code>
+       */
+      public Builder clearUsrFrom() {
+        copyOnWrite();
+        instance.clearUsrFrom();
+        return this;
+      }
+      /**
+       * <pre>
+       * user id sending from
+       * </pre>
+       *
+       * <code>optional string usr_from = 1;</code>
+       */
+      public Builder setUsrFromBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUsrFromBytes(value);
+        return this;
+      }
+
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public java.lang.String getVersion() {
+        return instance.getVersion();
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        return instance.getVersionBytes();
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setVersion(value);
+        return this;
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public Builder clearVersion() {
+        copyOnWrite();
+        instance.clearVersion();
+        return this;
+      }
+      /**
+       * <code>optional string version = 2;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setVersionBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * which one are you setting
+       * </pre>
+       *
+       * <code>optional sint64 set_type = 3;</code>
+       */
+      public long getSetType() {
+        return instance.getSetType();
+      }
+      /**
+       * <pre>
+       * which one are you setting
+       * </pre>
+       *
+       * <code>optional sint64 set_type = 3;</code>
+       */
+      public Builder setSetType(long value) {
+        copyOnWrite();
+        instance.setSetType(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * which one are you setting
+       * </pre>
+       *
+       * <code>optional sint64 set_type = 3;</code>
+       */
+      public Builder clearSetType() {
+        copyOnWrite();
+        instance.clearSetType();
+        return this;
+      }
+
+      /**
+       * <pre>
+       * key value json format
+       * </pre>
+       *
+       * <code>optional string json_cont = 4;</code>
+       */
+      public java.lang.String getJsonCont() {
+        return instance.getJsonCont();
+      }
+      /**
+       * <pre>
+       * key value json format
+       * </pre>
+       *
+       * <code>optional string json_cont = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getJsonContBytes() {
+        return instance.getJsonContBytes();
+      }
+      /**
+       * <pre>
+       * key value json format
+       * </pre>
+       *
+       * <code>optional string json_cont = 4;</code>
+       */
+      public Builder setJsonCont(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setJsonCont(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * key value json format
+       * </pre>
+       *
+       * <code>optional string json_cont = 4;</code>
+       */
+      public Builder clearJsonCont() {
+        copyOnWrite();
+        instance.clearJsonCont();
+        return this;
+      }
+      /**
+       * <pre>
+       * key value json format
+       * </pre>
+       *
+       * <code>optional string json_cont = 4;</code>
+       */
+      public Builder setJsonContBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setJsonContBytes(value);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:pms.Setting)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new pms.EntityMsg.Setting();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          pms.EntityMsg.Setting other = (pms.EntityMsg.Setting) arg1;
+          usrFrom_ = visitor.visitString(!usrFrom_.isEmpty(), usrFrom_,
+              !other.usrFrom_.isEmpty(), other.usrFrom_);
+          version_ = visitor.visitString(!version_.isEmpty(), version_,
+              !other.version_.isEmpty(), other.version_);
+          setType_ = visitor.visitLong(setType_ != 0L, setType_,
+              other.setType_ != 0L, other.setType_);
+          jsonCont_ = visitor.visitString(!jsonCont_.isEmpty(), jsonCont_,
+              !other.jsonCont_.isEmpty(), other.jsonCont_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 10: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrFrom_ = s;
+                  break;
+                }
+                case 18: {
+                  String s = input.readStringRequireUtf8();
+
+                  version_ = s;
+                  break;
+                }
+                case 24: {
+
+                  setType_ = input.readSInt64();
+                  break;
+                }
+                case 34: {
+                  String s = input.readStringRequireUtf8();
+
+                  jsonCont_ = s;
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (pms.EntityMsg.Setting.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:pms.Setting)
+    private static final pms.EntityMsg.Setting DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Setting();
+      DEFAULT_INSTANCE.makeImmutable();
+    }
+
+    public static pms.EntityMsg.Setting getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<Setting> PARSER;
+
+    public static com.google.protobuf.Parser<Setting> parser() {
       return DEFAULT_INSTANCE.getParserForType();
     }
   }

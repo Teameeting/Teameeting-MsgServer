@@ -78,7 +78,7 @@ int XMsgProcesser::EncodeSndMsg(std::string& outstr, std::string& outmsgid, cons
     entity.set_usr_token(token);
     entity.set_msg_time(GetSecond());
     entity.set_version(MSG_VERSION);
-    entity.set_ispush(std::to_string(push));
+    entity.set_ispush(push);
 
     entity.set_cmsg_id(GetStrMicroSecond());
     outmsgid = entity.cmsg_id();

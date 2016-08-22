@@ -42,6 +42,8 @@ typedef GPB_ENUM(Login_FieldNumber) {
   Login_FieldNumber_UsrToken = 2,
   Login_FieldNumber_UsrNname = 3,
   Login_FieldNumber_Version = 4,
+  Login_FieldNumber_DevType = 5,
+  Login_FieldNumber_EnablePush = 6,
 };
 
 @interface Login : GPBMessage
@@ -55,6 +57,10 @@ typedef GPB_ENUM(Login_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrNname;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
+@property(nonatomic, readwrite) int32_t devType;
+
+@property(nonatomic, readwrite) int32_t enablePush;
 
 @end
 
@@ -91,6 +97,30 @@ typedef GPB_ENUM(Keep_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
+@end
+
+#pragma mark - Setting
+
+typedef GPB_ENUM(Setting_FieldNumber) {
+  Setting_FieldNumber_UsrFrom = 1,
+  Setting_FieldNumber_Version = 2,
+  Setting_FieldNumber_SetType = 3,
+  Setting_FieldNumber_JsonCont = 4,
+};
+
+@interface Setting : GPBMessage
+
+/// user id sending from
+@property(nonatomic, readwrite, copy, null_resettable) NSString *usrFrom;
+
+@property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
+/// which one are you setting
+@property(nonatomic, readwrite) int64_t setType;
+
+/// key value json format
+@property(nonatomic, readwrite, copy, null_resettable) NSString *jsonCont;
 
 @end
 

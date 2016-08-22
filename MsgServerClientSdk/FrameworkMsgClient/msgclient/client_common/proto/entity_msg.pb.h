@@ -40,6 +40,7 @@ class Entity;
 class Keep;
 class Login;
 class Logout;
+class Setting;
 
 // ===================================================================
 
@@ -151,6 +152,18 @@ class Login : public ::google::protobuf::MessageLite {
   ::std::string* release_version();
   void set_allocated_version(::std::string* version);
 
+  // optional sint32 dev_type = 5;
+  void clear_dev_type();
+  static const int kDevTypeFieldNumber = 5;
+  ::google::protobuf::int32 dev_type() const;
+  void set_dev_type(::google::protobuf::int32 value);
+
+  // optional sint32 enable_push = 6;
+  void clear_enable_push();
+  static const int kEnablePushFieldNumber = 6;
+  ::google::protobuf::int32 enable_push() const;
+  void set_enable_push(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:pms.Login)
  private:
 
@@ -162,6 +175,8 @@ class Login : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
   ::google::protobuf::internal::ArenaStringPtr usr_nname_;
   ::google::protobuf::internal::ArenaStringPtr version_;
+  ::google::protobuf::int32 dev_type_;
+  ::google::protobuf::int32 enable_push_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -403,6 +418,134 @@ class Keep : public ::google::protobuf::MessageLite {
 
   void InitAsDefaultInstance();
   static Keep* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Setting : public ::google::protobuf::MessageLite {
+ public:
+  Setting();
+  virtual ~Setting();
+
+  Setting(const Setting& from);
+
+  inline Setting& operator=(const Setting& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const Setting& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Setting* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
+
+  void Swap(Setting* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Setting* New() const { return New(NULL); }
+
+  Setting* New(::google::protobuf::Arena* arena) const;
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
+  void CopyFrom(const Setting& from);
+  void MergeFrom(const Setting& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  void DiscardUnknownFields();
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Setting* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _arena_ptr_;
+  }
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
+  }
+  public:
+
+  ::std::string GetTypeName() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string usr_from = 1;
+  void clear_usr_from();
+  static const int kUsrFromFieldNumber = 1;
+  const ::std::string& usr_from() const;
+  void set_usr_from(const ::std::string& value);
+  void set_usr_from(const char* value);
+  void set_usr_from(const char* value, size_t size);
+  ::std::string* mutable_usr_from();
+  ::std::string* release_usr_from();
+  void set_allocated_usr_from(::std::string* usr_from);
+
+  // optional string version = 2;
+  void clear_version();
+  static const int kVersionFieldNumber = 2;
+  const ::std::string& version() const;
+  void set_version(const ::std::string& value);
+  void set_version(const char* value);
+  void set_version(const char* value, size_t size);
+  ::std::string* mutable_version();
+  ::std::string* release_version();
+  void set_allocated_version(::std::string* version);
+
+  // optional sint64 set_type = 3;
+  void clear_set_type();
+  static const int kSetTypeFieldNumber = 3;
+  ::google::protobuf::int64 set_type() const;
+  void set_set_type(::google::protobuf::int64 value);
+
+  // optional string json_cont = 4;
+  void clear_json_cont();
+  static const int kJsonContFieldNumber = 4;
+  const ::std::string& json_cont() const;
+  void set_json_cont(const ::std::string& value);
+  void set_json_cont(const char* value);
+  void set_json_cont(const char* value, size_t size);
+  ::std::string* mutable_json_cont();
+  ::std::string* release_json_cont();
+  void set_allocated_json_cont(::std::string* json_cont);
+
+  // @@protoc_insertion_point(class_scope:pms.Setting)
+ private:
+
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
+  ::google::protobuf::internal::ArenaStringPtr usr_from_;
+  ::google::protobuf::internal::ArenaStringPtr version_;
+  ::google::protobuf::int64 set_type_;
+  ::google::protobuf::internal::ArenaStringPtr json_cont_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
+  #else
+  friend void  protobuf_AddDesc_entity_5fmsg_2eproto();
+  #endif
+  friend void protobuf_AssignDesc_entity_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_entity_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static Setting* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -833,6 +976,34 @@ inline void Login::set_allocated_version(::std::string* version) {
   // @@protoc_insertion_point(field_set_allocated:pms.Login.version)
 }
 
+// optional sint32 dev_type = 5;
+inline void Login::clear_dev_type() {
+  dev_type_ = 0;
+}
+inline ::google::protobuf::int32 Login::dev_type() const {
+  // @@protoc_insertion_point(field_get:pms.Login.dev_type)
+  return dev_type_;
+}
+inline void Login::set_dev_type(::google::protobuf::int32 value) {
+  
+  dev_type_ = value;
+  // @@protoc_insertion_point(field_set:pms.Login.dev_type)
+}
+
+// optional sint32 enable_push = 6;
+inline void Login::clear_enable_push() {
+  enable_push_ = 0;
+}
+inline ::google::protobuf::int32 Login::enable_push() const {
+  // @@protoc_insertion_point(field_get:pms.Login.enable_push)
+  return enable_push_;
+}
+inline void Login::set_enable_push(::google::protobuf::int32 value) {
+  
+  enable_push_ = value;
+  // @@protoc_insertion_point(field_set:pms.Login.enable_push)
+}
+
 // -------------------------------------------------------------------
 
 // Logout
@@ -1059,6 +1230,156 @@ inline void Keep::set_allocated_version(::std::string* version) {
   }
   version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
   // @@protoc_insertion_point(field_set_allocated:pms.Keep.version)
+}
+
+// -------------------------------------------------------------------
+
+// Setting
+
+// optional string usr_from = 1;
+inline void Setting::clear_usr_from() {
+  usr_from_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Setting::usr_from() const {
+  // @@protoc_insertion_point(field_get:pms.Setting.usr_from)
+  return usr_from_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Setting::set_usr_from(const ::std::string& value) {
+  
+  usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Setting.usr_from)
+}
+inline void Setting::set_usr_from(const char* value) {
+  
+  usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Setting.usr_from)
+}
+inline void Setting::set_usr_from(const char* value, size_t size) {
+  
+  usr_from_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Setting.usr_from)
+}
+inline ::std::string* Setting::mutable_usr_from() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Setting.usr_from)
+  return usr_from_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Setting::release_usr_from() {
+  // @@protoc_insertion_point(field_release:pms.Setting.usr_from)
+  
+  return usr_from_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Setting::set_allocated_usr_from(::std::string* usr_from) {
+  if (usr_from != NULL) {
+    
+  } else {
+    
+  }
+  usr_from_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_from);
+  // @@protoc_insertion_point(field_set_allocated:pms.Setting.usr_from)
+}
+
+// optional string version = 2;
+inline void Setting::clear_version() {
+  version_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Setting::version() const {
+  // @@protoc_insertion_point(field_get:pms.Setting.version)
+  return version_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Setting::set_version(const ::std::string& value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Setting.version)
+}
+inline void Setting::set_version(const char* value) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Setting.version)
+}
+inline void Setting::set_version(const char* value, size_t size) {
+  
+  version_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Setting.version)
+}
+inline ::std::string* Setting::mutable_version() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Setting.version)
+  return version_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Setting::release_version() {
+  // @@protoc_insertion_point(field_release:pms.Setting.version)
+  
+  return version_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Setting::set_allocated_version(::std::string* version) {
+  if (version != NULL) {
+    
+  } else {
+    
+  }
+  version_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), version);
+  // @@protoc_insertion_point(field_set_allocated:pms.Setting.version)
+}
+
+// optional sint64 set_type = 3;
+inline void Setting::clear_set_type() {
+  set_type_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 Setting::set_type() const {
+  // @@protoc_insertion_point(field_get:pms.Setting.set_type)
+  return set_type_;
+}
+inline void Setting::set_set_type(::google::protobuf::int64 value) {
+  
+  set_type_ = value;
+  // @@protoc_insertion_point(field_set:pms.Setting.set_type)
+}
+
+// optional string json_cont = 4;
+inline void Setting::clear_json_cont() {
+  json_cont_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Setting::json_cont() const {
+  // @@protoc_insertion_point(field_get:pms.Setting.json_cont)
+  return json_cont_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Setting::set_json_cont(const ::std::string& value) {
+  
+  json_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Setting.json_cont)
+}
+inline void Setting::set_json_cont(const char* value) {
+  
+  json_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Setting.json_cont)
+}
+inline void Setting::set_json_cont(const char* value, size_t size) {
+  
+  json_cont_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Setting.json_cont)
+}
+inline ::std::string* Setting::mutable_json_cont() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Setting.json_cont)
+  return json_cont_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Setting::release_json_cont() {
+  // @@protoc_insertion_point(field_release:pms.Setting.json_cont)
+  
+  return json_cont_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Setting::set_allocated_json_cont(::std::string* json_cont) {
+  if (json_cont != NULL) {
+    
+  } else {
+    
+  }
+  json_cont_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), json_cont);
+  // @@protoc_insertion_point(field_set_allocated:pms.Setting.json_cont)
 }
 
 // -------------------------------------------------------------------
@@ -1588,6 +1909,8 @@ inline void Entity::set_allocated_usr_toto(::pms::ToUser* usr_toto) {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
