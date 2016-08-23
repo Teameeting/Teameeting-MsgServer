@@ -286,9 +286,11 @@ bool xRedisClient::command_string(const RedisDBIdx& dbi, string &data, const cha
     redisReply *reply = static_cast<redisReply *>(redisvCommand(pRedisConn->getCtx(), cmd, args));
     va_end(args);
     if (RedisPool::CheckReply(reply)) {
+        printf("command_string checkreply ok, reply->type:%d\n", reply->type);
         data.assign(reply->str, reply->len);
         bRet = true;
     } else {
+        printf("command_string checkreply false, reply->type:%d\n", reply->type);
         SetErrInfo(dbi, reply);
     }
 

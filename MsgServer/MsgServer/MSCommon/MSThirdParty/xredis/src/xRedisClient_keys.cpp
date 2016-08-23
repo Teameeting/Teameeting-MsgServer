@@ -108,6 +108,11 @@ bool xRedisClient::ttl(const RedisDBIdx& dbi, const string& key, int64_t &second
     return command_integer(dbi, seconds, "TTL %s", key.c_str());
 }
 
+bool xRedisClient::type(const RedisDBIdx& dbi, const string& key, string& value){
+    SETDEFAULTIOTYPE(MASTER);
+    return command_string(dbi, value, "TYPE %s", key.c_str());
+}
+
 bool xRedisClient::randomkey(const RedisDBIdx& dbi, KEY& key){
     SETDEFAULTIOTYPE(SLAVE);
     return command_string(dbi, key, "RANDOMKEY");
@@ -124,7 +129,7 @@ bool xRedisClient::sort(const RedisDBIdx& dbi, ArrayReply& array, const string& 
     if (0 == key.length()) {
         return false;
     }
-       
+
 
     VDATA vCmdData;
     vCmdData.push_back("sort");

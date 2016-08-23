@@ -451,6 +451,68 @@ void test_subscribe()
     xClient.FreexRedisContext(&ctx);
 }
 
+void test_type()
+{
+    test_set("test_set", "this key is set");
+    test_hset();
+    test_lpush();
+
+    {
+        char szKey[256] = { 0 };
+        sprintf(szKey, "test_set");
+        RedisDBIdx dbi(&xClient);
+        bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
+        if (bRet) {
+            string strData;
+            if (xClient.type(dbi, szKey, strData)) {
+                printf("%s success data:%s \r\n", __PRETTY_FUNCTION__, strData.c_str());
+            } else {
+                printf("%s error: %s \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
+            }
+            if (strcmp(dbi.GetErrInfo(), "string")==0)
+            {
+                 printf("-----------set test key type is string\n");
+            }
+        }
+    }
+    {
+        char szKey[256] = { 0 };
+        sprintf(szKey, "hashtest");
+        RedisDBIdx dbi(&xClient);
+        bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
+        if (bRet) {
+            string strData;
+            if (xClient.type(dbi, szKey, strData)) {
+                printf("%s success [%s] \r\n", __PRETTY_FUNCTION__, strData.c_str());
+            } else {
+                printf("%s error data:%s \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
+            }
+            if (strcmp(dbi.GetErrInfo(), "hash")==0)
+            {
+                 printf("----------hash test key type is hash\n");
+            }
+        }
+    }
+    {
+        char szKey[256] = { 0 };
+        sprintf(szKey, "list_test");
+        RedisDBIdx dbi(&xClient);
+        bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
+        if (bRet) {
+            string strData;
+            if (xClient.type(dbi, szKey, strData)) {
+                printf("%s success data:%s \r\n", __PRETTY_FUNCTION__, strData.c_str());
+            } else {
+                printf("%s error :%s \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
+            }
+            if (strcmp(dbi.GetErrInfo(), "list")==0)
+            {
+                 printf("------list test key type is list\n");
+            }
+        }
+    }
+}
+
 int main(int argc, char **argv)
 {
     printf("%d %s\r\n", argc, argv[0]);
@@ -463,9 +525,9 @@ int main(int argc, char **argv)
     //    {2, "127.0.0.1", 6379, "", 2, 5, 0}
     //};
     RedisNode RedisList1[3] = {
-        {0, "192.168.7.218", 6379, "", 2, 5, 0},
-        {1, "192.168.7.218", 6379, "", 2, 5, 0},
-        {2, "192.168.7.218", 6379, "", 2, 5, 0}
+        {0, "192.168.7.207", 6379, "", 2, 5, 0},
+        {1, "192.168.7.207", 6379, "", 2, 5, 0},
+        {2, "192.168.7.207", 6379, "", 2, 5, 0}
     };
 
     xClient.ConnectRedisCache(RedisList1, 3, CACHE_TYPE_1);
@@ -494,7 +556,9 @@ int main(int argc, char **argv)
     test_rpop();
 #endif
 
-    test_subscribe();
+    //test_subscribe();
+    test_type();
+
 
     //int n = 10;
     //while (n--) {
