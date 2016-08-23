@@ -23,6 +23,19 @@
 
 #include "RTMsgCommon.h"
 
+#include "webrtc/base/logging.h"
+
+#ifdef WEBRTC_ANDROID
+#include <android/log.h>
+#define  LOG_TAG    "XMsgClient"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+#else
+#include <iostream>
+#include <string>
+#endif
+
+
 class XMsgClientHelper {
 public:
     XMsgClientHelper() {}
@@ -90,7 +103,11 @@ public:
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
     {
-        printf("InitUserSeqns seqnid:%s, seqn:%lld\n", seqnid.c_str(), seqn);
+#if WEBRTC_ANDROID
+        LOGI("InitUserSeqns seqnid:%s, seqn:%lld\n", seqnid.c_str(), seqn);
+#else
+        LOG(INFO) << "InitUserSeqns seqnid:" << seqnid << ", seqn:" << seqn;
+#endif
         if (seqnid.compare(m_uid)==0)
         {
             m_uUserSeqnMap.insert(make_pair(seqnid, seqn));
@@ -101,7 +118,11 @@ public:
 
     void UpdateUserSeqns(const std::string& seqnid, int64 seqn)
     {
-        printf("UpdateUserSeqns seqnid:%s, seqn:%lld\n", seqnid.c_str(), seqn);
+#if WEBRTC_ANDROID
+        LOGI("UpdateUserSeqns seqnid:%s, seqn:%lld\n", seqnid.c_str(), seqn);
+#else
+        LOG(INFO) << "UpdateUserSeqns seqnid:" << seqnid << ", seqn:" << seqn;
+#endif
          if (seqnid.compare(m_uid)==0)
          {
             m_uUserSeqnMap[seqnid] = seqn;
@@ -192,15 +213,27 @@ private:
     bool UUpdateUserSeqn()
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
-        printf("UUpdateUserSeqn get here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#if WEBRTC_ANDROID
+        LOGI("UUpdateUserSeqn get here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#else
+        LOG(INFO) << "UUpdateUserSeqn get here, itCurSeqn is:" << itCurSeqn->second;
+#endif
         if (itCurSeqn->second<0)
         {
-            printf("XMsgClient::UUpdateUserSeqn itCurSeqn is <0, so return\n");
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::UUpdateUserSeqn itCurSeqn is <0, so return\n");
+#else
+            LOG(INFO) << "XMsgClient::UUpdateUserSeqn itCurSeqn is <0, so return";
+#endif
             return false;
         }
         while(1)
         {
-            printf("UUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
+#if WEBRTC_ANDROID
+            LOGI("UUpdateUserSeqn m_gSyncedMsgMap.size:%u\n", m_gSyncedMsgMap.size());
+#else
+            LOG(INFO) << "UUpdateUserSeqn m_gSyncedMsgMap.size:" << m_gSyncedMsgMap.size();
+#endif
             if (m_uSyncedMsgMap.size()==0) break;
             char sk[256] = {0};
             sprintf(sk, "%s:%lld", m_uid.c_str(), itCurSeqn->second +1);
@@ -210,22 +243,38 @@ private:
                 pms::Entity en;
                 if (!en.ParseFromString(it->second.content()))
                 {
-                    printf("UUpdateUserSeqn en.ParseFromString error\n");
+#if WEBRTC_ANDROID
+                    LOGI("UUpdateUserSeqn en.ParseFromString error\n");
+#else
+                    LOG(INFO) << "UUpdateUserSeqn en.ParseFromString error";
+#endif
                     m_uSyncedMsgMap.erase(sk);
                     continue;
                 }
                 // find curSeqn+1 msg, update curSeqn, and callback this msg, and continue
                 itCurSeqn->second += 1;
-                printf("UUpdateUserSeqn update here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#if WEBRTC_ANDROID
+                LOGI("UUpdateUserSeqn update here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#else
+                LOG(INFO) << "UUpdateUserSeqn update here, itCurSeqn is:" << itCurSeqn->second;
+#endif
                 if (m_uid.compare(en.usr_from())==0)
                 {
                     // recv the msg you send to other
                     // erase the msg in Wait4AckMsgMap by entity.cmsg_id
                     m_uWait4AckMsgMap.erase(en.cmsg_id());
-                    printf("UUpdateUserSeqn update the msg you send to other, msgid is:%s\n", en.cmsg_id().c_str());
+#if WEBRTC_ANDROID
+                    LOGI("UUpdateUserSeqn update the msg you send to other, msgid is:%s\n", en.cmsg_id().c_str());
+#else
+                    LOG(INFO) << "UUpdateUserSeqn update the msg you send to other, msgid is:" << en.cmsg_id();
+#endif
                 } else {
                     // recv the msg other send to you
-                    printf("UUpdateUserSeqn update the msg other send to you, seqnkey is:%s\n", sk);
+#if WEBRTC_ANDROID
+                    LOGI("UUpdateUserSeqn update the msg other send to you, seqnkey is:%s\n", sk);
+#else
+                    LOG(INFO) << "UUpdateUserSeqn update the msg other send ot you, seqnkey is:" << sk;
+#endif
                 }
                 CachedMsgInfo cmi;
                 cmi.seqn = itCurSeqn->second;
@@ -235,7 +284,11 @@ private:
                 m_uSyncedMsgMap.erase(sk);
                 continue;
             } else {
-                printf("UUpdateUserSeqn break here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#if WEBRTC_ANDROID
+                LOGI("UUpdateUserSeqn break here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#else
+                LOG(INFO) << "UUpdateUserSeqn break here, itCurSeqn is:" << itCurSeqn->second;
+#endif
                 break;
             }
         }
@@ -257,11 +310,19 @@ private:
     bool GAddSyncedMsg(const std::string& seqnKey, pms::StorageMsg pmsMsg)
     {
 	    rtc::CritScope cs(&m_csgSyncedMsg);
-        printf("GAddSyncedMsg seqnKey:%s\n", seqnKey.c_str());
+#if WEBRTC_ANDROID
+        LOGI("GAddSyncedMsg seqnKey:%s\n", seqnKey.c_str());
+#else
+        LOG(INFO) << "GAddSyncedMsg seqnKey:" << seqnKey;
+#endif
         SyncedMsgMapIt it = m_gSyncedMsgMap.find(seqnKey);
         if (it == m_gSyncedMsgMap.end())
         {
-            printf("GAddSyncedMsg seqnKey:%s insert into map\n", seqnKey.c_str());
+#if WEBRTC_ANDROID
+            LOGI("GAddSyncedMsg seqnKey:%s insert into map\n", seqnKey.c_str());
+#else
+            LOG(INFO) << "GAddSyncedMsg seqnKey:" << seqnKey << " insert into map";
+#endif
             m_gSyncedMsgMap.insert(make_pair(seqnKey, pmsMsg));
         }
         return true;
@@ -271,19 +332,35 @@ private:
     {
         // storeid here should be one groupid
         UserSeqnMapIt  itCurSeqn = m_gUserSeqnMap.find(storeid);
-        printf("GUpdateUserSeqn get here, itCurSeqn is:%lld, storeid:%s, storeid.len:%lu\n", itCurSeqn->second, storeid.c_str(), storeid.length());
+#if WEBRTC_ANDROID
+        LOGI("GUpdateUserSeqn get here, itCurSeqn is:%lld, storeid:%s, storeid.len:%u\n", itCurSeqn->second, storeid.c_str(), storeid.length());
+#else
+        LOG(INFO) << "GUpdateUserSeqn get here, itCurSeqn is:" << itCurSeqn->second << ", storeid:" << storeid << ", storeid.len:" << storeid.length();
+#endif
         if (itCurSeqn->second<0)
         {
-            printf("XMsgClient::GUpdateUserSeqn itCurSeqn is <0, so return\n");
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::GUpdateUserSeqn itCurSeqn is <0, so return\n");
+#else
+            LOG(INFO) << "XMsgClient::GUpdateUserSeqn itCurSeqn is <0, so return";
+#endif
             return false;
         }
         while(1)
         {
-            printf("GUpdateUserSeqn m_gSyncedMsgMap.size:%lu\n", m_gSyncedMsgMap.size());
+#if WEBRTC_ANDROID
+            LOGI("GUpdateUserSeqn m_gSyncedMsgMap.size:%u\n", m_gSyncedMsgMap.size());
+#else
+            LOG(INFO) << "GUpdateUserSeqn m_gSyncedMsgMap.size:" << m_gSyncedMsgMap.size();
+#endif
             if (m_gSyncedMsgMap.size()==0) break;
             for (auto &it : m_gSyncedMsgMap)
             {
-                printf("GUpdateUserSeqn SyncedMsgMap key:%s\n", it.first.c_str());
+#if WEBRTC_ANDROID
+                LOGI("GUpdateUserSeqn SyncedMsgMap key:%s\n", it.first.c_str());
+#else
+                LOG(INFO) << "GUpdateUserSeqn SyncedMsgMap:" << it.first;
+#endif
             }
             char sk[256] = {0};
             sprintf(sk, "%s:%lld", storeid.c_str(), itCurSeqn->second +1);
@@ -293,7 +370,11 @@ private:
                 pms::Entity en;
                 if (!en.ParseFromString(it->second.content()))
                 {
-                    printf("GUpdateUserSeqn en.ParseFromString error\n");
+#if WEBRTC_ANDROID
+                    LOGI("GUpdateUserSeqn en.ParseFromString error\n");
+#else
+                    LOG(INFO) << "GUpdateUserSeqn en.ParseFromString error";
+#endif
                     m_gSyncedMsgMap.erase(sk);
                     continue;
                 }
@@ -304,14 +385,26 @@ private:
                 // theoretically, this should not be happened
                 if (it->second.groupid().length()==0 || en.rom_id().length()==0)
                 {
-                    printf("GUpdateUserSeqn groupid or rom_id is 0, error\n");
+#if WEBRTC_ANDROID
+                    LOGI("GUpdateUserSeqn groupid or rom_id is 0, error\n");
+#else
+                    LOG(INFO) << "GUpdateUserSeqn groupid or rom_id is 0, error";
+#endif
                     m_gSyncedMsgMap.erase(sk);
                     continue;
                 }
-                printf("GUpdateUserSeqn update here, itCurSeqn is:%lld, ruserid:%s, fromid:%s, it.groupid:%s, en.romid:%s\n", itCurSeqn->second, it->second.ruserid().c_str(), en.usr_from().c_str(), it->second.groupid().c_str(), en.rom_id().c_str());
+#if WEBRTC_ANDROID
+                LOGI("GUpdateUserSeqn update here, itCurSeqn is:%lld, ruserid:%s, fromid:%s, it.groupid:%s, en.romid:%s\n", itCurSeqn->second, it->second.ruserid().c_str(), en.usr_from().c_str(), it->second.groupid().c_str(), en.rom_id().c_str());
+#else
+                LOG(INFO) << "GUpdateUserSeqn update here, itCurSeqn:" << itCurSeqn->second << ", ruserid:" << it->second.ruserid() << ", fromid:" << en.usr_from() << ", it.groupid:" << it->second.groupid() << ", en.romid:" << en.rom_id();
+#endif
                 if(it->second.groupid().compare(en.rom_id())!=0)
                 {
-                    printf("XMsgClient::GUpdateUserSeqn groupid and rom_id is not equal, so continue\n");
+#if WEBRTC_ANDROID
+                    LOGI("XMsgClient::GUpdateUserSeqn groupid and rom_id is not equal, so continue\n");
+#else
+                    LOG(INFO) << "XMsgClient::GUpdateUserSeqn groupid and rom_id is not equal, so continue";
+#endif
                     m_gSyncedMsgMap.erase(sk);
                     continue;
                 }
@@ -320,10 +413,18 @@ private:
                     // recv the msg you send to other
                     // erase the msg in Wait4AckMsgMap by entity.cmsg_id
                     m_gWait4AckMsgMap.erase(en.cmsg_id());
-                    printf("GUpdateUserSeqn update the msg you send to other, msgid is:%s\n", en.cmsg_id().c_str());
+#if WEBRTC_ANDROID
+                    LOGI("GUpdateUserSeqn update the msg you send to other, msgid is:%s\n", en.cmsg_id().c_str());
+#else
+                    LOG(INFO) << "GUpdateUserSeqn update the msg you send to other, msgid is:" << en.cmsg_id();
+#endif
                 } else {
                     // recv the msg other send to you
-                    printf("GUpdateUserSeqn update the msg other send to you, seqnkey is:%s\n", sk);
+#if WEBRTC_ANDROID
+                    LOGI("GUpdateUserSeqn update the msg other send to you, seqnkey is:%s\n", sk);
+#else
+                    LOG(INFO) << "GUpdateUserSeqn update the msg other send to you, sendkey is:" << sk;
+#endif
                 }
                 CachedMsgInfo cmi;
                 cmi.seqn = itCurSeqn->second;
@@ -334,7 +435,11 @@ private:
                 
                 continue;
             } else {
-                printf("GUpdateUserSeqn break here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#if WEBRTC_ANDROID
+                LOGI("GUpdateUserSeqn break here, itCurSeqn is:%lld\n", itCurSeqn->second);
+#else
+                LOG(INFO) << "GUpdateUserSeqn break here, itCurSeqn is:" << itCurSeqn->second;
+#endif
                 break;
             }
         }

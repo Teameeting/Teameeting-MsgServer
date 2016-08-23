@@ -7,17 +7,7 @@
 //
 
 #include "core/XMsgClient.h"
-#include "webrtc/base/logging.h"
 
-#ifdef WEBRTC_ANDROID
-#include <android/log.h>
-#define  LOG_TAG    "XMsgClient"
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-#else
-#include <iostream>
-#include <string>
-#endif
 
 #define TIMEOUT_TS (60*1000)
 
@@ -36,7 +26,11 @@ XMsgClient::XMsgClient()
 , m_login(false)
 , m_msState(MSNOT_CONNECTED)
 {
-    printf("XMsgClient XMsgClient ok!!\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient XMsgClient ok!!\n");
+#else
+    LOG(INFO) << "XMsgClient XMsgClient ok!!";
+#endif
 }
 
 XMsgClient::~XMsgClient()
@@ -68,7 +62,11 @@ int XMsgClient::Init(const std::string& uid, const std::string& token, const std
     m_nname = nname;
     m_module = (pms::EModuleType)module;
 
-    printf("XMsgClient Init ok!!\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient Init ok!!\n");
+#else
+    LOG(INFO) << "XMsgClient Init ok!!";
+#endif
     return 0;
 }
 
@@ -116,7 +114,12 @@ int XMsgClient::ConnToServer(const std::string& server, int port, bool bAutoConn
     {
         m_pCallback->OnMsgServerConnecting();
     } else {
-        printf("XMsgClient::OnServerDisconnect m_pCallback is null\n");
+
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnServerDisconnect m_pCallback is null\n");
+#else
+        LOG(INFO) << "XMsgClient::OnServerDisconnect m_pCallback is null";
+#endif
     }
     return 0;
 }
@@ -159,7 +162,11 @@ int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const 
     }
 
     UAddWait4AckMsg(outmsgid, outstr);
-    printf("XMsgClient SndMsg ok!!\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient SndMsg ok!!!\n");
+#else
+    LOG(INFO) << "XMsgClient SndMsg ok!!!";
+#endif
     return SendEncodeMsg(outstr);
 }
 
@@ -184,13 +191,21 @@ int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, cons
     }
 
     GAddWait4AckMsg(outmsgid, outstr);
-    printf("XMsgClient SndMsgTo ok!!\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient SndMsgTo ok!\n");
+#else
+    LOG(INFO) << "XMsgClient SndMsgTo ok!";
+#endif
     return SendEncodeMsg(outstr);
 }
 
 int XMsgClient::FetchSeqn()
 {
-    printf("XMsgClient::FetchSeqn seqn is wait...\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::FetchSeqn seqn is wait...\n");
+#else
+    LOG(INFO) << "XMsgClient::FetchSeqn seqn is wait...";
+#endif
     std::string outstr;
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, -1, m_module, pms::EStorageTag::TFETCHSEQN, pms::EMsgFlag::FSINGLE, pms::EMsgRole::RSENDER);
@@ -200,14 +215,22 @@ int XMsgClient::FetchSeqn()
     if (outstr.length()==0) {
         return -1;
     }
-    printf("XMsgClient::FetchSeqn was called\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::FetchSeqn was called\n");
+#else
+    LOG(INFO) << "XMsgClient::FetchSeqn was called";
+#endif
 
     return SendEncodeMsg(outstr);
 }
 
 int XMsgClient::SyncSeqn(int64 seqn, int role)
 {
-    printf("XMsgClient::SyncSeqn seqn is:%lld, wait...\n", seqn);
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncSeqn seqn is:%lld, wait...\n", seqn);
+#else
+    LOG(INFO) << "XMsgClient::SyncSeqn seqn is:" << seqn << ", wait...";
+#endif
     std::string outstr;
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSyncSeqn(outstr, m_uid, m_token, seqn, m_module, pms::EStorageTag::TSEQN, pms::EMsgFlag::FSINGLE, role);
@@ -217,14 +240,22 @@ int XMsgClient::SyncSeqn(int64 seqn, int role)
     if (outstr.length()==0) {
         return -1;
     }
-    printf("XMsgClient::SyncSeqn was called\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncSeqn was called\n");
+#else
+    LOG(INFO) << "XMsgClient::SyncSeqn was called";
+#endif
 
     return SendEncodeMsg(outstr);
 }
 
 int XMsgClient::SyncData(int64 seqn)
 {
-    printf("XMsgClient::SyncData seqn is:%lld, wait...\n", seqn);
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncData seqn is:%lld\n", seqn);
+#else
+    LOG(INFO) << "XMsgClient::SyncData seqn is:" << seqn;
+#endif
     std::string outstr;
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSyncData(outstr, m_uid, m_token, seqn, m_module, pms::EStorageTag::TDATA, pms::EMsgFlag::FSINGLE);
@@ -234,14 +265,22 @@ int XMsgClient::SyncData(int64 seqn)
     if (outstr.length()==0) {
         return -1;
     }
-    printf("XMsgClient::SyncData was called\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncData was called\n");
+#else
+    LOG(INFO) << "XMsgClient::SyncData was called";
+#endif
 
     return SendEncodeMsg(outstr);
 }
 
 int XMsgClient::FetchGroupSeqn(const std::string& groupid)
 {
-    printf("XMsgClient::FetchGroupSeqn groupid is:%s, wait...\n", groupid.c_str());
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::FetchGroupSeqn groupid is:%s\n", groupid.c_str());
+#else
+    LOG(INFO) << "XMsgClient::FetchGroupSeqn groupid is:" << groupid;
+#endif
     std::string outstr;
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSyncGroupSeqn(outstr, m_uid, groupid, m_token, -1, m_module, pms::EStorageTag::TFETCHSEQN, pms::EMsgFlag::FGROUP, pms::EMsgRole::RSENDER);
@@ -251,14 +290,22 @@ int XMsgClient::FetchGroupSeqn(const std::string& groupid)
     if (outstr.length()==0) {
         return -1;
     }
-    printf("XMsgClient::FetchGroupSeqn was called\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::FetchGroupSeqn was called\n");
+#else
+    LOG(INFO) << "XMsgClient::FetchGroupSeqn was called";
+#endif
 
     return SendEncodeMsg(outstr);
 }
 
 int XMsgClient::SyncGroupSeqn(const std::string& groupid, int64 seqn, int role)
 {
-    printf("XMsgClient::SyncGroupSeqn groupid is:%s, seqn :%lld, wait...\n", groupid.c_str(), seqn);
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncGroupSeqn groupid is:%s, seqn is:%lld\n", groupid.c_str(), seqn);
+#else
+    LOG(INFO) << "XMsgClient::SyncGroupSeqn groupid is:" << groupid << ", seqn is:" << seqn;
+#endif
     std::string outstr;
     if (m_pMsgProcesser) {
             m_pMsgProcesser->EncodeSyncGroupSeqn(outstr, m_uid, groupid, m_token, seqn, m_module, pms::EStorageTag::TSEQN, pms::EMsgFlag::FGROUP, role);
@@ -268,15 +315,23 @@ int XMsgClient::SyncGroupSeqn(const std::string& groupid, int64 seqn, int role)
     if (outstr.length()==0) {
         return -1;
     }
-    printf("XMsgClient::SyncGroupSeqn was called\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncGroupSeqn was called\n");
+#else
+    LOG(INFO) << "XMsgClient::SyncGroupSeqn was called";
+#endif
 
     return SendEncodeMsg(outstr);
 }
 
 int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
 {
-    printf("XMsgClient::SyncGroupData userid:%s, groupid:%s, seqn is:%lld, wait...\n"\
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncGroupData userid:%s, groupid:%s, seqn is:%lld, wait...\n"\
            , m_uid.c_str(), groupid.c_str(), seqn);
+#else
+    LOG(INFO) << "XMsgClientit::SyncGruopData userid:" << m_uid << ", groupid:" << groupid << ", seqn:" << seqn << ", wait...";
+#endif
     std::string outstr;
     if (m_pMsgProcesser) {
         m_pMsgProcesser->EncodeSyncGroupData(outstr, m_uid, m_token, groupid, seqn, m_module, pms::EStorageTag::TDATA, pms::EMsgFlag::FGROUP);
@@ -286,7 +341,11 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
     if (outstr.length()==0) {
         return -1;
     }
-    printf("XMsgClient::SyncGroupData was called\n");
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncGroupData was called\n");
+#else
+    LOG(INFO) << "XMsgClient::SyncGroupData was called";
+#endif
 
     return SendEncodeMsg(outstr);
 }
@@ -445,7 +504,11 @@ void XMsgClient::OnServerDisconnect()
     {
         m_pCallback->OnMsgServerDisconnect();
     } else {
-        printf("XMsgClient::OnServerDisconnect m_pCallback is null\n");
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnServerDisconnect m_pCallback is null\n");
+#else
+        LOG(INFO) << "XMsgClient::OnServerDisconnect m_pCallback is null";
+#endif
     }
 }
 
@@ -458,7 +521,11 @@ void XMsgClient::OnServerConnectionFailure()
     {
         m_pCallback->OnMsgServerConnectionFailure();
     } else {
-        printf("XMsgClient::OnServerConnectionFailure m_pCallback is null\n");
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnServerConnectionFailure m_pCallback is null\n");
+#else
+        LOG(INFO) << "XMsgClient::OnServerConnectionFailure m_pCallback is null";
+#endif
     }
 }
 
@@ -504,7 +571,11 @@ void XMsgClient::OnHelpLogin(int code, const std::string& userid)
             m_pCallback->OnMsgServerConnected();
             //printf("after connected to server, call SyncMsg once\n");
         } else {
-            printf("XMsgClient::OnHelpLogin m_pCallback is null\n");
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpLogin m_pCallback is null\n");
+#else
+            LOG(INFO) << "XMsgClient::OnHelpLogin m_pCallback is null";
+#endif
         }
     } else {
         Login();
@@ -524,7 +595,11 @@ void XMsgClient::OnHelpLogout(int code, const std::string& userid)
     {
         m_pCallback->OnMsgServerDisconnect();
     } else {
-        printf("XMsgClient::OnHelpLogout m_pCallback is null\n");
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnHelpLogout m_pCallback is null\n");
+#else
+        LOG(INFO) << "XMsgClient::OnHelpLogout m_pCallback is null";
+#endif
     }
 }
 
@@ -534,7 +609,11 @@ void XMsgClient::OnHelpSndMsg(int code, const std::string& cont)
     {
         m_pCallback->OnSndMsg(code, cont);
     } else {
-        printf("XMsgClient::OnHelpSndMsg m_pCallback is null\n");
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnHelpSndMsg m_pCallback is null\n");
+#else
+        LOG(INFO) << "XMsgClient::OnHelpSndMsg m_pCallback is null";
+#endif
     }
     return;
 }
@@ -549,16 +628,28 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
     pms::StorageMsg store;
     if (!store.ParseFromString(cont))
     {
-        printf("OnHelpSyncSeqn store.ParseFromString error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpSyncSeqn store.ParseFromString error\n");
+#else
+        LOG(INFO) << "OnHelpSyncSeqn store.ParseFromString error";
+#endif
         return;
     }
     if (store.result()!=0)
     {
-        printf("OnHelpSyncSeqn store.result is not 0, get msg error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpSyncSeqn store.result is not 0, get msg error\n");
+#else
+        LOG(INFO) << "OnHelpSyncSeqn store.result is not 0, get msg error";
+#endif
         return;
     }
-    printf("XMsgClient::OnHelpSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld\n"\
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncSeqn ruserid:%s, sequence:%lld, maxseqn:%lld\n"\
             , store.ruserid().c_str(), store.sequence(), store.maxseqn());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncSeqn ruserid:" << store.ruserid() << ", sequence:" << store.sequence() << ", maxseqn:" << store.maxseqn();
+#endif
     switch (store.mtag())
     {
         case pms::EStorageTag::TSEQN:
@@ -570,7 +661,11 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                 // then sync data with the smaller seqn
                 if (it != m_gUserSeqnMap.end() && it->second < store.maxseqn())
                 {
-                    printf("XMsgClient::OnHelpSyncSeqn group SyncGruopData storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
+#if WEBRTC_ANDROID
+                    LOGI("XMsgClient::OnHelpSyncSeqn group SyncGruopData storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
+#else
+                    LOG(INFO) << "XMsgClient::OnHelpSyncSeqn group SyncGroupData storeid:" << store.storeid() << ", seqn:" << it->second;
+#endif
                     SyncGroupData(store.storeid(), it->second);
                 }
             } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
@@ -580,11 +675,19 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                 // then sync data with the smaller seqn
                 if (it != m_uUserSeqnMap.end() && it->second < store.maxseqn())
                 {
-                    printf("XMsgClient::OnHelpSyncSeqn single SyncData storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
+#if WEBRTC_ANDROID
+                    LOGI("XMsgClient::OnHelpSyncSeqn single SyncData storeid:%s, seqn:%lld\n", store.storeid().c_str(), it->second);
+#else
+                    LOG(INFO) << "XMsgClient::OnHelpSyncSeqn single SyncData storeid:" << store.storeid() << ", seqn:" << it->second;
+#endif
                     SyncData(it->second);
                 }
             } else {
-                printf("XMsgClient::OnHelpSyncSeqn store.mflag:%d is not handled\n", store.mflag());
+#if WEBRTC_ANDROID
+                LOGI("XMsgClient::OnHelpSyncSeqn store.mflag:%d is not handled\n", store.mflag());
+#else
+                LOG(INFO) << "XMsgClient::OnHelpSyncSeqn store.mflag:" << store.mflag() << " is not handled";
+#endif
             }
         }
             break;
@@ -593,8 +696,12 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
         {
             if (store.mflag()==pms::EMsgFlag::FGROUP)
             {
-                printf("XMsgClient::OnHelpSyncSeqn fetchseqn group storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
+#if WEBRTC_ANDROID
+                LOGI("XMsgClient::OnHelpSyncSeqn fetchseqn group storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
                        , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
+#else
+                LOG(INFO) << "XMsgClient::OnHelpSyncSeqn fetchseqn group storeid:" << store.storeid() << ", ruserid" << store.ruserid() << ", seqn:" << store.sequence() << ", maxseqn:" << store.maxseqn();
+#endif
                 if (m_pCallback)
                 {
                     if (store.maxseqn()>=0)
@@ -615,12 +722,20 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                         m_pCallback->OnCmdCallback(-1, MSFETCH_SEQN, store.storeid(), cbData);
                     }
                 } else {
-                    printf("XMsgClient::OnHelpSyncSeqn fetchseqn group m_pCallback is null\n");
+#if WEBRTC_ANDROID
+                    LOGI("XMsgClient::OnHelpSyncSeqn fetchseqn group m_pCallback is null\n");
+#else
+                    LOG(INFO) << "XMsgClient::OnHelpSyncSeqn fetchseqn group m_pCallback is null";
+#endif
                 }
             } else if (store.mflag()==pms::EMsgFlag::FSINGLE)
             {
-                printf("XMsgClient::OnHelpSyncSeqn fetchseqn single storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
+#if WEBRTC_ANDROID
+                LOGI("XMsgClient::OnHelpSyncSeqn fetchseqn single storeid:%s, ruserid:%s, seqn:%lld, maxseqn:%lld\n"\
                        , store.storeid().c_str(), store.ruserid().c_str(), store.sequence(), store.maxseqn());
+#else
+                LOG(INFO) << "XMsgClient::OnHelpSyncSeqn fetch seqn single storeid:" << store.storeid() << ", ruserid:" << store.ruserid() << ", seqn:" << store.sequence() << ", maxseqn:" << store.maxseqn();
+#endif
                 if (m_pCallback)
                 {
                     if (store.maxseqn()>=0)
@@ -639,13 +754,21 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
                         m_pCallback->OnCmdCallback(-1, MSFETCH_SEQN, "", cbData);
                     }
                 } else {
-                    printf("XMsgClient::OnHelpSyncSeqn fetchseqn single m_pCallback is null\n");
+#if WEBRTC_ANDROID
+                    LOGI("XMsgClient::OnHelpSyncSeqn fetchseqn single m_pCallback is null\n");
+#else
+                    LOG(INFO) << "XMsgClient::OnHelpSyncSeqn fetchseqn single m_pCallback is null";
+#endif
                 }
             }
         }
             break;
         default:
-            printf("XMsgClient::OnHelpSyncSeqn mtag :%d not handle\n", store.mtag());
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpSyncSeqn mtag :%d not handle\n", store.mtag());
+#else
+            LOG(INFO) << "XMsgClient::OnHelpSyncSeqn mtag:" << store.mtag() << " not handle";
+#endif
             break;
     }
     return;
@@ -656,34 +779,62 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
     pms::StorageMsg store;
     if (!store.ParseFromString(cont))
     {
-        printf("OnHelpSyncData store.ParseFromString error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpSyncData store.ParseFromString error\n");
+#else
+        LOG(INFO) << "OnHelpSyncData store.ParseFromString error";
+#endif
         return;
     }
     if (store.result()!=0)
     {
-        printf("OnHelpSyncData store.result is not 0, get msg error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpSyncData store.result is not 0, get msg error\n");
+#else
+        LOG(INFO) << "OnHelpSyncData store.result is not 0, get msg error";
+#endif
         return;
     }
-    printf("XMsgClient::OnHelpSyncData ruserid:%s, storeid:%s, sequence:%lld, maxseqn:%lld\n\n"\
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncData ruserid:%s, storeid:%s, sequence:%lld, maxseqn:%lld\n\n"\
             , store.ruserid().c_str()\
             , store.storeid().c_str()\
             , store.sequence()\
             , store.maxseqn());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncData ruserid:" << store.ruserid() \
+                        << ", storeid:" << store.storeid() \
+                        << ", sequence:" << store.sequence() \
+                        << ", maxseqn:" << store.maxseqn();
+#endif
 
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
     UAddSyncedMsg(seqnKey, store);
+    LOG(INFO) <<
     UUpdateUserSeqn();
-    
-    printf("XMsgClient::OnHelpSyncData m_gRecvMsgList.size:%lu\n", m_gRecvMsgList.size());
+
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncData m_gRecvMsgList.size:%u\n", m_gRecvMsgList.size());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncData m_gRecvMsgList.size:" << m_gRecvMsgList.size();
+#endif
     for (RecvMsgListIt it = m_uRecvMsgList.begin();it!=m_uRecvMsgList.end();++it)
     {
         if (m_pCallback)
         {
-            printf("XMsgClient::OnHelpSyncData call OnRecvGroupMsg seqn:%lld, seqnid:%s\n", it->seqn, it->seqnid.c_str());
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpSyncData call OnRecvGroupMsg seqn:%lld, seqnid:%s\n", it->seqn, it->seqnid.c_str());
+#else
+            LOG(INFO) << "XMsgClient::OnHelpSyncData call OnRecvGroupMsg seqn:" << it->seqn << ", seqnid:" << it->seqnid;
+#endif
             m_pCallback->OnRecvMsg(it->seqn, it->msgcont);
         } else {
-            printf("XMsgClient::OnHelpSyncData m_pCallback is null\n");
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpSyncData m_pCallback is null\n");
+#else
+            LOG(INFO) << "XMsgClient::OnHelpSyncData m_pCallback is null";
+#endif
         }
     }
     m_uRecvMsgList.clear();
@@ -695,15 +846,24 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
     pms::StorageMsg store;
     if (!store.ParseFromString(cont))
     {
-        printf("OnHelpSyncGroupData store.ParseFromString error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpSyncGroupData store.ParseFromString error\n");
+#else
+        LOG(INFO) << "OnHelpSyncGroupData store.ParseFromString error";
+#endif
         return;
     }
     if (store.result()!=0)
     {
-        printf("OnHelpSyncGroupData store.result is not 0, get msg error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpSyncGroupData store.result is not 0, get msg error\n");
+#else
+        LOG(INFO) << "OnHelpSyncGroupData store.result is not 0, get msg error";
+#endif
         return;
     }
-    printf("XMsgClient::OnHelpSyncGroupData ruserid:%s, groupid:%s, storeid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncGroupData ruserid:%s, groupid:%s, storeid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld, maxseqn:%lld\n\n"\
             , store.ruserid().c_str()\
             , store.groupid().c_str()\
             , store.storeid().c_str()\
@@ -711,22 +871,47 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
             , store.mflag()\
             , store.sequence()\
             , store.maxseqn());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncGroupData ruserid:" << store.ruserid() \
+                        << ", groupid:" << store.groupid() \
+                        << ", storeid:" << store.storeid() \
+                        << ", rsvrcmd:" << store.rsvrcmd() \
+                        << ", mflag:" << store.mflag() \
+                        << ", sequence:" << store.sequence() \
+                        << ", maxseqn:" << store.maxseqn();
+#endif
 
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
-    printf("===>storeid.len:%lu, storeid:%s, seqn:%lld\n", store.storeid().length(), store.storeid().c_str(), store.sequence());
+#if WEBRTC_ANDROID
+    LOGI("===>OnHelpSyncGroupData storeid.len:%u, storeid:%s, seqn:%lld\n", store.storeid().length(), store.storeid().c_str(), store.sequence());
+#else
+    LOG(INFO) << "OnHelpSyncGroupData storeid.len:" << store.storeid().length() << ", storeid:" << store.storeid() << ", seqn:" << store.sequence();
+#endif
     GAddSyncedMsg(seqnKey, store);
     GUpdateUserSeqn(store.storeid());
 
-    printf("XMsgClient::OnHelpSyncGroupData m_gRecvMsgList.size:%lu\n", m_gRecvMsgList.size());
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncGroupData m_gRecvMsgList.size:%u\n", m_gRecvMsgList.size());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncGroupData m_gRecvMsgList.size:" << m_gRecvMsgList.size();
+#endif
     for (RecvMsgListIt it = m_gRecvMsgList.begin();it!=m_gRecvMsgList.end();++it)
     {
         if (m_pCallback)
         {
-            printf("XMsgClient::OnHelpSyncGroupData call OnRecvGroupMsg seqn:%lld, seqnid:%s\n", it->seqn, it->seqnid.c_str());
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpSyncGroupData call OnRecvGroupMsg seqn:%lld, seqnid:%s\n", it->seqn, it->seqnid.c_str());
+#else
+            LOG(INFO) << "XMsgClient::OnHelpSyncGroupData call OnRecvGroupMsg seqn:" << it->seqn << ", seqnid:" << it->seqnid;
+#endif
             m_pCallback->OnRecvGroupMsg(it->seqn, it->seqnid, it->msgcont);
         } else {
-            printf("XMsgClient::OnHelpSyncGroupData m_pCallback is null\n");
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpSyncGroupData m_pCallback is null\n");
+#else
+            LOG(INFO) << "XMsgClient::OnHelpSyncGroupData m_pCallback is null";
+#endif
         }
     }
     m_gRecvMsgList.clear();
@@ -738,33 +923,66 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
     pms::StorageMsg store;
     if (!store.ParseFromString(cont))
     {
-        printf("OnHelpGroupNotify store.ParseFromString error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpGroupNotify store.ParseFromString error\n");
+#else
+        LOG(INFO) << "OnHelpGroupNotify store.ParseFromString error";
+#endif
         return;
     }
     if (store.result()!=0)
     {
-        printf("OnHelpGroupNotify store.result is not 0, get msg error\n");
+#if WEBRTC_ANDROID
+        LOGI("OnHelpGroupNotify store.result is not 0, get msg error\n");
+#else
+        LOG(INFO) << "OnHelpGroupNotify store.result is not 0, get msg error";
+#endif
         return;
     }
-    printf("XMsgClient::OnHelpGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n\n"\
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpGroupNotify ruserid:%s, groupid:%s, rsvrcmd:%d, mflag:%d, sequence:%lld\n\n"\
            , store.ruserid().c_str()\
            , store.groupid().c_str()\
            , store.rsvrcmd()\
            , store.mflag()\
            , store.sequence());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpGroupNotify ruserid:" \
+           << store.ruserid() \
+           << ", groupid:" << store.groupid() \
+           << ", rsvrcmd:" << store.rsvrcmd() \
+           << ", mflag:" << store.mflag() \
+           << ", sequence:" << store.sequence();
+#endif
     if (m_pCallback)
     {
-        printf("XMsgClient::OnHelpGroupNotify finding...store.groupid:%s\n", store.groupid().c_str());
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnHelpGroupNotify finding...store.groupid:%s\n", store.groupid().c_str());
+#else
+        LOG(INFO) << "XMsgClient::OnHelpGroupNotify finding...store.groupid:" << store.groupid();
+#endif
         UserSeqnMapIt it = m_gUserSeqnMap.find(store.groupid());
         if (it != m_gUserSeqnMap.end())
         {
-            printf("XMsgClient::OnHelpGroupNotify SyncGroupSeqn was called, grouid:%s, seqn:%lld\n", it->first.c_str(), it->second);
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpGroupNotify SyncGroupSeqn was called, grouid:%s, seqn:%lld\n", it->first.c_str(), it->second);
+#else
+            LOG(INFO) << "XMsgClient::OnHelpGroupNotify SyncGroupSeqn was called, groupid:" << it->first << ", seqn:" << it->second;
+#endif
             SyncGroupSeqn(it->first, it->second, pms::EMsgRole::RSENDER);
         } else {
-            printf("XMsgClient::OnHelpGroupNotify not find store.groupid:%s\n", store.groupid().c_str());
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpGroupNotify not find store.groupid:%s\n", store.groupid().c_str());
+#else
+            LOG(INFO) << "XMsgClient::OnHelpGroupNotify not find store.groupid:" << store.groupid();
+#endif
         }
     } else {
-        printf("XMsgClient::OnHelpGroupNotify m_pCallback is null\n");
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnHelpGroupNotify m_pCallback is null\n");
+#else
+        LOG(INFO) << "XMsgClient::OnHelpGroupNotify m_pCallback is null";
+#endif
     }
     return;
 }
@@ -773,14 +991,26 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 // you just get new seqn from server
 void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 {
-    printf("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());
+#else
+    LOG(INFO) << "XMsgClient::OnHelpNotifySeqn code:" << code << ", cont:" << cont;
+#endif
     if ((code==0) && (cont.length()==0))
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
-        printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is:%lld\n", itCurSeqn->second);
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::OnHelpNotifySeqn itCurSeqn is:%lld\n", itCurSeqn->second);
+#else
+        LOG(INFO) << "XMsgClient::OnHelpNotifySeqn itCurSeqn is:" << itCurSeqn->second;
+#endif
         if (itCurSeqn->second<0)
         {
-            printf("XMsgClient::OnHelpNotifySeqn itCurSeqn is <0, so return\n");
+#if WEBRTC_ANDROID
+            LOGI("XMsgClient::OnHelpNotifySeqn itCurSeqn is <0, so return\n");
+#else
+            LOG(INFO) << "XMsgClient::OnHelpNotifySeqn itCurSeqn is <0, so return";
+#endif
             return;
         }
         this->SyncSeqn(itCurSeqn->second, pms::EMsgRole::RSENDER);
