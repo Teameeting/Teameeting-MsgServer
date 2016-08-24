@@ -5,7 +5,7 @@
  * Distributed under GPL license.
  * ----------------------------------------------------------------------------
  */
-
+ 
 #include "xRedisClient.h"
 #include "xRedisPool.h"
 #include <sstream>
@@ -96,7 +96,7 @@ bool xRedisClient::Init(unsigned int maxtype) {
         if (NULL==mRedisPool) {
             return false;
         }
-
+        
         return mRedisPool->Init(maxtype);
     }
     return false;
@@ -116,7 +116,7 @@ void xRedisClient::Keepalive() {
     }
 }
 
-inline RedisPool *xRedisClient::GetRedisPool() {
+inline RedisPool *xRedisClient::GetRedisPool() { 
     return mRedisPool;
 }
 
@@ -129,18 +129,18 @@ bool xRedisClient::ConnectRedisCache( const RedisNode *redisnodelist, unsigned i
     if (NULL==mRedisPool) {
         return false;
     }
-
+    
     if (!mRedisPool->setHashBase(cachetype, hashbase)) {
         return false;
     }
-
+    
     for (unsigned int n = 0; n<hashbase; n++) {
         const RedisNode *pNode = &redisnodelist[n];
         if (NULL==pNode) {
             return false;
         }
 
-        bool bRet = mRedisPool->ConnectRedisDB(cachetype, pNode->dbindex, pNode->host, pNode->port,
+        bool bRet = mRedisPool->ConnectRedisDB(cachetype, pNode->dbindex, pNode->host, pNode->port, 
             pNode->passwd, pNode->poolsize, pNode->timeout, pNode->role);
         if (!bRet) {
             return false;
@@ -236,7 +236,7 @@ bool xRedisClient::command_status(const RedisDBIdx& dbi, const char* cmd, ...) {
     redisReply *reply = static_cast<redisReply *>(redisvCommand(pRedisConn->getCtx(), cmd, args));
     va_end(args);
 
-    if (RedisPool::CheckReply(reply)) {
+    if (RedisPool::CheckReply(reply) && (strcasecmp(reply->str, "OK") == 0)) {
         bRet = true;
     } else {
         SetErrInfo(dbi, reply);
@@ -286,11 +286,9 @@ bool xRedisClient::command_string(const RedisDBIdx& dbi, string &data, const cha
     redisReply *reply = static_cast<redisReply *>(redisvCommand(pRedisConn->getCtx(), cmd, args));
     va_end(args);
     if (RedisPool::CheckReply(reply)) {
-        printf("command_string checkreply ok, reply->type:%d\n", reply->type);
         data.assign(reply->str, reply->len);
         bRet = true;
     } else {
-        printf("command_string checkreply false, reply->type:%d\n", reply->type);
         SetErrInfo(dbi, reply);
     }
 
@@ -411,11 +409,16 @@ void xRedisClient::FreexRedisContext(xRedisContext* ctx)
     mRedisPool->FreeConnection((RedisConn*)ctx->conn);
 }
 
+void xRedisClient::FreexRedisConnection(xRedisContext* ctx)
+{
+    if (mRedisPool && ctx && ctx->conn)
+        mRedisPool->FreeConnection((RedisConn*)ctx->conn);
+}
+
 bool xRedisClient::commandargv_bool(const RedisDBIdx& dbi, const VDATA& vData) {
     bool bRet = false;
     RedisConn *pRedisConn = mRedisPool->GetConnection(dbi.mType, dbi.mIndex, dbi.mIOtype);
     if (NULL == pRedisConn) {
-        printf("commandargv_bool getconnection null\n");
         SetErrString(dbi, GET_CONNECT_ERROR, ::strlen(GET_CONNECT_ERROR));
         return bRet;
     }
@@ -456,7 +459,7 @@ bool xRedisClient::commandargv_status(const RedisDBIdx& dbi, const VDATA& vData)
     }
 
     redisReply *reply = static_cast<redisReply *>(redisCommandArgv(pRedisConn->getCtx(), argv.size(), &(argv[0]), &(argvlen[0])));
-    if (RedisPool::CheckReply(reply)) {
+    if (RedisPool::CheckReply(reply) && (strcasecmp(reply->str, "OK") == 0)) {
         bRet = true;
     } else {
         SetErrInfo(dbi, reply);

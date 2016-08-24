@@ -191,6 +191,29 @@ void test_get()
     }
 }
 
+void test_type()
+{
+    char szKey[256] = {0};
+
+    strcpy(szKey, "test");
+    RedisDBIdx dbi(&xClient);
+    bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
+
+
+    xClient.set(dbi, szKey, "wwwwwwwwwwwwwwwwwwwwwwwww");
+    string strData;
+    if (xClient.type(dbi, szKey, strData)) {
+        printf("%s success data:%s \r\n", __PRETTY_FUNCTION__, strData.c_str());
+    } else {
+        printf("%s error [%s] \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
+    }
+    
+
+
+
+
+}
+
 void test_getrange()
 {
     test_set("test", "01234567890123456789");
@@ -349,7 +372,7 @@ void test_lrange()
     RedisDBIdx dbi(&xClient);
 
     VALUES vVal;
-
+    
     bool bRet = dbi.CreateDBIndex(szHKey, APHash, CACHE_TYPE_1);
     if (bRet) {
         ArrayReply Reply;
@@ -423,14 +446,13 @@ void test_publish()
 void test_subscribe()
 {
     char szHKey[256] = { 0 };
-    //strcpy(szHKey, "pubsub_test");
-    strcpy(szHKey, "follow_group");
+    strcpy(szHKey, "pubsub_test");
     RedisDBIdx dbi(&xClient);
     bool bRet = dbi.CreateDBIndex(szHKey, APHash, CACHE_TYPE_1);
     if (!bRet) {
         return;
     }
-
+    
     VDATA channels;
     channels.push_back(szHKey);
     xRedisContext ctx;
@@ -443,74 +465,12 @@ void test_subscribe()
                 printf("%d\t%s\r\n", (*iter).type, (*iter).str.c_str());
             }
         }
-
+        
     } else {
         printf("%s error [%s] \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
     }
     xClient.unsubscribe(dbi, channels, ctx);
     xClient.FreexRedisContext(&ctx);
-}
-
-void test_type()
-{
-    test_set("test_set", "this key is set");
-    test_hset();
-    test_lpush();
-
-    {
-        char szKey[256] = { 0 };
-        sprintf(szKey, "test_set");
-        RedisDBIdx dbi(&xClient);
-        bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
-        if (bRet) {
-            string strData;
-            if (xClient.type(dbi, szKey, strData)) {
-                printf("%s success data:%s \r\n", __PRETTY_FUNCTION__, strData.c_str());
-            } else {
-                printf("%s error: %s \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
-            }
-            if (strcmp(dbi.GetErrInfo(), "string")==0)
-            {
-                 printf("-----------set test key type is string\n");
-            }
-        }
-    }
-    {
-        char szKey[256] = { 0 };
-        sprintf(szKey, "hashtest");
-        RedisDBIdx dbi(&xClient);
-        bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
-        if (bRet) {
-            string strData;
-            if (xClient.type(dbi, szKey, strData)) {
-                printf("%s success [%s] \r\n", __PRETTY_FUNCTION__, strData.c_str());
-            } else {
-                printf("%s error data:%s \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
-            }
-            if (strcmp(dbi.GetErrInfo(), "hash")==0)
-            {
-                 printf("----------hash test key type is hash\n");
-            }
-        }
-    }
-    {
-        char szKey[256] = { 0 };
-        sprintf(szKey, "list_test");
-        RedisDBIdx dbi(&xClient);
-        bool bRet = dbi.CreateDBIndex(szKey, APHash, CACHE_TYPE_1);
-        if (bRet) {
-            string strData;
-            if (xClient.type(dbi, szKey, strData)) {
-                printf("%s success data:%s \r\n", __PRETTY_FUNCTION__, strData.c_str());
-            } else {
-                printf("%s error :%s \r\n", __PRETTY_FUNCTION__, dbi.GetErrInfo());
-            }
-            if (strcmp(dbi.GetErrInfo(), "list")==0)
-            {
-                 printf("------list test key type is list\n");
-            }
-        }
-    }
 }
 
 int main(int argc, char **argv)

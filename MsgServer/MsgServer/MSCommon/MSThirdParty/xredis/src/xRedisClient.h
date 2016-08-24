@@ -94,7 +94,7 @@ private:
 typedef struct _DATA_ITEM_{
     int         type;
     std::string str;
-
+    
     _DATA_ITEM_ & operator=(const _DATA_ITEM_ &data) {
         type = data.type;
         str  = data.str;
@@ -129,9 +129,9 @@ typedef enum _SORT_ORDER_{
 }SORTODER;
 
 typedef struct _SORT_LIMIT_
-{
-	int offset;
-	int count;
+{ 
+	int offset; 
+	int count; 
 }LIMIT;
 
 template<class T>
@@ -160,6 +160,7 @@ public:
     static void FreeReply(const rReply* reply);
     static int GetReply(xRedisContext* ctx, ReplyData& vData);
     void FreexRedisContext(xRedisContext* ctx);
+    void FreexRedisConnection(xRedisContext* ctx);
     bool ConnectRedisCache( const RedisNode *redisnodelist, unsigned int hashbase, unsigned int cachetype);
 
 public:
@@ -184,10 +185,10 @@ public:
     /* GETSET      */  bool getset(const RedisDBIdx& dbi,  const std::string& key, const std::string& newValue, std::string& oldValue);
     /* INCR        */  bool incr(const RedisDBIdx& dbi,    const std::string& key, int64_t& result);
     /* INCRBY      */  bool incrby(const RedisDBIdx& dbi,  const std::string& key, int by, int64_t& result);
-    /* INCRBYFLOAT */
+    /* INCRBYFLOAT */  
     /* MGET        */  bool mget(const DBIArray& dbi,    const KEYS &  keys, ReplyData& vDdata);
     /* MSET        */  bool mset(const DBIArray& dbi,    const VDATA& data);
-    /* MSETNX      */
+    /* MSETNX      */  
     /* PSETEX      */  bool psetex(const RedisDBIdx& dbi,  const std::string& key,  int milliseconds, const std::string& value);
     /* SET         */  bool set(const RedisDBIdx& dbi,     const std::string& key,  const std::string& value);
     /* SET         */  bool set(const RedisDBIdx& dbi,     const std::string& key, const char *value, int len, int second=0);
@@ -204,23 +205,23 @@ public:
     /* EXISTS       */  bool exists(const RedisDBIdx& dbi, const std::string& key);
     /* EXPIRE       */  bool expire(const RedisDBIdx& dbi, const std::string& key, unsigned int second);
     /* EXPIREAT     */  bool expireat(const RedisDBIdx& dbi, const std::string& key, unsigned int timestamp);
-    /* KEYS         */
-    /* MIGRATE      */
-    /* MOVE         */
-    /* OBJECT       */
+    /* KEYS         */  
+    /* MIGRATE      */  
+    /* MOVE         */  
+    /* OBJECT       */  
     /* PERSIST      */  bool persist(const RedisDBIdx& dbi, const std::string& key);
     /* PEXPIRE      */  bool pexpire(const RedisDBIdx& dbi, const std::string& key, unsigned int milliseconds);
     /* PEXPIREAT    */  bool pexpireat(const RedisDBIdx& dbi, const std::string& key, unsigned int millisecondstimestamp);
     /* PTTL         */  bool pttl(const RedisDBIdx& dbi, const std::string& key,  int64_t &milliseconds);
     /* RANDOMKEY    */  bool randomkey(const RedisDBIdx& dbi,  KEY& key);
-    /* RENAME       */
-    /* RENAMENX     */
-    /* RESTORE      */
-    /* SCAN         */
+    /* RENAME       */  
+    /* RENAMENX     */  
+    /* RESTORE      */  
+    /* SCAN         */  
 
-
+    
     /* SORT         */  bool sort(const RedisDBIdx& dbi, ArrayReply& array, const std::string& key, const char* by = NULL,
-                                    LIMIT *limit = NULL, bool alpha = false, const FILEDS* get = NULL,
+                                    LIMIT *limit = NULL, bool alpha = false, const FILEDS* get = NULL, 
                                     const SORTODER order = ASC, const char* destination = NULL);
 
     /* TTL          */  bool ttl(const RedisDBIdx& dbi, const std::string& key, int64_t& seconds);
@@ -238,14 +239,14 @@ public:
     /* HLEN         */  bool hlen(const RedisDBIdx& dbi,    const std::string& key, int64_t& count);
     /* HMGET        */  bool hmget(const RedisDBIdx& dbi,   const std::string& key, const KEYS& field, ArrayReply& array);
     /* HMSET        */  bool hmset(const RedisDBIdx& dbi,   const std::string& key, const VDATA& vData);
-    /* HSCAN        */
+    /* HSCAN        */                                      
     /* HSET         */  bool hset(const RedisDBIdx& dbi,    const std::string& key, const std::string& field, const std::string& value, int64_t& retval);
     /* HSETNX       */  bool hsetnx(const RedisDBIdx& dbi,  const std::string& key, const std::string& field, const std::string& value);
     /* HVALS        */  bool hvals(const RedisDBIdx& dbi,   const std::string& key, VALUES& values);
 
-    /* BLPOP        */
-    /* BRPOP        */
-    /* BRPOPLPUSH   */
+    /* BLPOP        */  
+    /* BRPOP        */  
+    /* BRPOPLPUSH   */  
     /* LINDEX       */  bool lindex(const RedisDBIdx& dbi,    const std::string& key, int64_t index, VALUE& value);
     /* LINSERT      */  bool linsert(const RedisDBIdx& dbi,  const std::string& key, LMODEL mod, const std::string& pivot, const std::string& value, int64_t& retval);
     /* LLEN         */  bool llen(const RedisDBIdx& dbi,     const std::string& key, int64_t& len);
@@ -275,7 +276,7 @@ public:
     /* SPOP         */  bool spop(const RedisDBIdx& dbi,        const KEY& key, VALUE& member);
     /* SRANDMEMBER  */  bool srandmember(const RedisDBIdx& dbi, const KEY& key, VALUES& vmember, int num=0);
     /* SREM         */  bool srem(const RedisDBIdx& dbi,        const KEY& key, const VALUES& vmembers, int64_t& count);
-    /* SSCAN        */
+    /* SSCAN        */  
     /* SUNION       */  bool sunion(const DBIArray& dbi,      const KEYS& vkey, VALUES& vValue);
     /* SUNIONSTORE  */  bool sunionstore(const RedisDBIdx& dbi, const KEY& deskey, const DBIArray& vdbi, const KEYS& vkey, int64_t& count);
 
@@ -283,21 +284,22 @@ public:
     /* ZCARD            */  bool zscrad(const RedisDBIdx& dbi,  const std::string& key, int64_t& num);
     /* ZCOUNT           */
     /* ZINCRBY          */  bool zincrby(const RedisDBIdx& dbi, const std::string& key, const double &increment, const std::string& member, std::string& value );
-    /* ZINTERSTORE      */
+    /* ZINTERSTORE      */  
     /* ZRANGE           */  bool zrange(const RedisDBIdx& dbi,  const std::string& key, int start, int end, VALUES& vValues, bool withscore=false);
-    /* ZRANGEBYSCORE    */
+    /* ZRANGEBYSCORE    */  
     /* ZRANK            */  bool zrank(const RedisDBIdx& dbi,   const std::string& key, const std::string& member, int64_t &rank);
     /* ZREM             */  bool zrem(const RedisDBIdx& dbi,    const KEY& key, const VALUES& vmembers, int64_t &num);
     /* ZREMRANGEBYRANK  */  bool zremrangebyrank(const RedisDBIdx& dbi,  const std::string& key, int start, int stop, int64_t& num);
-    /* ZREMRANGEBYSCORE */
+    /* ZREMRANGEBYSCORE */  
     /* ZREVRANGE        */  bool zrevrange(const RedisDBIdx& dbi,  const std::string& key, int start, int end, VALUES& vValues, bool withscore=false);
     /* ZREVRANGEBYLEX   */  bool zrevrangebylex(const RedisDBIdx& dbi, const string& key, string& start, string& end, VALUES& vValues, int offset = 0, int count = 0);
-    /* ZREVRANGEBYSCORE */
+    /* ZREVRANGEBYSCORE */  
     /* ZREVRANK         */  bool zrevrank(const RedisDBIdx& dbi,  const std::string& key, const std::string &member, int64_t& rank);
-    /* ZSCAN            */
+    /* ZSCAN            */  
     /* ZSCORE           */  bool zscore(const RedisDBIdx& dbi,  const std::string& key, const std::string &member, std::string& score);
-    /* ZUNIONSTORE      */
+    /* ZUNIONSTORE      */  
 
+    /*  注意： 使用下面的 pub/sub 命令时，一定要保证数据都在同一个REDIS实例里，xredis目前的pub/sub命令实现不支持多节点数据分布的场景。  */
     /* PSUBSCRIBE   */     bool psubscribe(const RedisDBIdx& dbi, const KEYS& patterns, xRedisContext& ctx);
     /* PUBLISH      */     bool publish(const RedisDBIdx& dbi, const KEY& channel, const std::string& message, int64_t& count);
     /* PUBSUB       */     bool pubsub_channels(const RedisDBIdx& dbi, const std::string &pattern, ArrayReply &reply);
@@ -325,7 +327,7 @@ private:
     void SetErrString(const RedisDBIdx& dbi, const char *str, int len);
     void SetErrMessage(const RedisDBIdx& dbi, const char* fmt, ...);
     void SetIOtype(const RedisDBIdx& dbi, unsigned int iotype, bool ioflag = false);
-
+    
 public:
 
     bool command_bool(const RedisDBIdx& dbi,                       const char* cmd, ...);

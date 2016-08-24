@@ -227,6 +227,8 @@ void GRTGrouper::Stop()
 {
     GRTGrouperManager::Instance().SignalKill();
     GRTGrouperManager::Instance().ClearAll();
-    GRTGrouperManager::Instance().UninManager();
     GRTChannelManager::Instance().UninManager();
+    GRTGrouperManager::Instance().UninManager();
+    GRTConnManager::Instance().SignalKill();
+    GRTConnManager::Instance().ClearAll();
 }

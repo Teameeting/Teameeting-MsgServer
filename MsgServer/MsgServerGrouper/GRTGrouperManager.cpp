@@ -66,7 +66,6 @@ bool GRTGrouperManager::InitManager(const std::string& ip, int port)
 
     m_RedisList = new RedisNode[m_RedisNodeNum];
     for (int i=0;i<m_RedisNodeNum;++i) {
-        RedisNode* redisNode = new RedisNode;
         m_RedisList[i].dbindex = i;
         m_RedisList[i].host = m_Ip.c_str();
         m_RedisList[i].port = m_Port;
@@ -87,7 +86,7 @@ bool GRTGrouperManager::UninManager()
 {
     if (m_RedisList)
     {
-        delete m_RedisList;
+        delete[] m_RedisList;
         m_RedisList = nullptr;
     }
     if (m_RedisDBIdx)
@@ -116,7 +115,8 @@ bool GRTGrouperManager::GetGroupMembersRedis(const std::string& groupid)
             uset->insert(s);
         }
         {
-            OSMutexLocker locker(&m_MutexGroupMembers);
+            //OSMutexLocker locker(&m_MutexGroupMembers);
+            // here it modify m_MapGroupMembers so no need lock
             m_MapGroupMembers.insert(make_pair(groupid, uset));
         }
         return true;
@@ -147,7 +147,8 @@ void GRTGrouperManager::UpdateGroupMembers(const std::string& groupid, const Grp
         if (GetGroupMembersRedis(groupid))
         {
             GroupMembersMapIt it = m_MapGroupMembers.find(groupid);
-            OSMutexLocker locker(&m_MutexGroupMembers);
+            //OSMutexLocker locker(&m_MutexGroupMembers);
+            // here it modify it->second so no need lock
             for (auto & x : members)
             {
                 if (x.second == ADD) {
@@ -195,9 +196,11 @@ void GRTGrouperManager::TmpStoreGroupMsg(const std::string& groupid, int64 seqn,
 
 void GRTGrouperManager::RemoveGroupMsg(const std::string& groupid)
 {
-    OSMutexLocker locker(&m_MutexTmpGroupMsg);
-    m_MapTmpGroupMsg.erase(groupid);
-    m_ListTmpGroup.pop_front();
+    {
+        OSMutexLocker locker(&m_MutexTmpGroupMsg);
+        m_MapTmpGroupMsg.erase(groupid);
+        m_ListTmpGroup.pop_front();
+    }
     LI("RemoveGroupMsg m_MapTmpGroupMsg.size:%lu, m_ListTmpGroup.size:%lu\n", m_MapTmpGroupMsg.size(), m_ListTmpGroup.size());
     Assert(m_MapTmpGroupMsg.size()==m_ListTmpGroup.size());
 }

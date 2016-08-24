@@ -33,6 +33,12 @@ GRTTransferSession::GRTTransferSession()
 
 GRTTransferSession::~GRTTransferSession()
 {
+    if (m_pGrpMsgProcesser)
+    {
+        m_pGrpMsgProcesser->Unin();
+        delete m_pGrpMsgProcesser;
+        m_pGrpMsgProcesser = nullptr;
+    }
     DelObserver(this);
     Unit();
 }

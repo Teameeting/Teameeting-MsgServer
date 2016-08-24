@@ -63,7 +63,6 @@ bool GRTSubChannel::Init()
 {
     m_RedisList = new RedisNode[m_RedisNodeNum];
     for (int i=0;i<m_RedisNodeNum;++i) {
-        RedisNode* redisNode = new RedisNode;
         m_RedisList[i].dbindex = i;
         m_RedisList[i].host = m_addr.c_str();
         m_RedisList[i].port = m_port;
@@ -97,11 +96,11 @@ bool GRTSubChannel::Unit()
     this->_Unin();
     if (m_RedisList)
     {
-        delete m_RedisList;
+        delete[] m_RedisList;
         m_RedisList = nullptr;
     }
 
-    m_xRedisClient.FreexRedisContext(&m_RedisContext);
+    m_xRedisClient.FreexRedisConnection(&m_RedisContext);
     if (m_RedisDBIdx)
     {
          delete m_RedisDBIdx;

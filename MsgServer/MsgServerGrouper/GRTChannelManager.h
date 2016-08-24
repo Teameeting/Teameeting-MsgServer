@@ -91,8 +91,8 @@ public:
                 delete pCh;
                 pCh = nullptr;
             }
-            m_SubChannelMap.erase((*it).first);
         }
+        m_SubChannelMap.clear();
     }
 
 

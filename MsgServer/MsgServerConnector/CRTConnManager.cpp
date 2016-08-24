@@ -207,6 +207,7 @@ void CRTConnManager::TransferSessionLostNotify(const std::string& sid)
 
 void CRTConnManager::TransferMsg(pms::EServerCmd cmd, pms::EModuleType module, const std::string& uid, const std::string& msg)
 {
+    LI("CRTConnManager::TransferMsg module is:%d\n", module);
     ModuleInfo* pmi = findModuleInfo(uid, (pms::ETransferModule)module);
     if (pmi && pmi->pModule) {
         pmi->pModule->TransferMsg(cmd, msg);

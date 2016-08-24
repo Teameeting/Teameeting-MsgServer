@@ -37,6 +37,12 @@ public:
         for (int i=0;i<PACKED_MSG_NUM_ONCE;++i)
             m_packed.add_msgs();
     }
+
+    void Unin()
+    {
+        for (int i=0;i<PACKED_MSG_NUM_ONCE;++i)
+            m_packed.mutable_msgs(i)->Clear();
+    }
 public:
 
     int EncodeCreateGroupSeqn(std::string& outstr, const std::string& userid, const std::string& cltUserid, const std::string& groupid, int module);

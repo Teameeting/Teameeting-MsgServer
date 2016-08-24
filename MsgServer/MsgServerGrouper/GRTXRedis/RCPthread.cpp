@@ -26,23 +26,27 @@ void RCPthread::_Init()
     assert(_p_thread);
     _p_thread->_self = this;
     _p_thread->_data = _p_data;
-    if(pthread_create(&_m_pid, 0, (void*(*)(void*))RCPthread::_Start, (void*)_p_thread) != 0)
+
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
+    if(pthread_create(&_m_pid, &attr, (void*(*)(void*))RCPthread::_Start, (void*)_p_thread) != 0)
     {
         std::cout << "pthread_create failed" << std::endl;
         assert(false);
     }
+    pthread_attr_destroy(&attr);
 }
 
 void RCPthread::_Unin()
 {
-    std::cout << "Join RCPthread..." << std::endl;
-    pthread_join(_m_pid, NULL);
-    std::cout << "Stop RCPthread..." << std::endl;
     if (_p_thread)
     {
          delete _p_thread;
          _p_thread = nullptr;
     }
+    _p_data = nullptr;
     std::cout << "Del STPthread..." << std::endl;
 }
 

@@ -56,13 +56,13 @@ int main(int argc, const char * argv[]) {
 
     GRTGrouper::Initialize(1024);
     GRTGrouper* pGrouper = GRTGrouper::Inst();
+    //int test = 0;
     int res = pGrouper->Start(conf);
     if (res != 0) {
         LI("GRTGrouper start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //int test = 0;
-    //while (test++ < 60) {
+    //while (test++ < 30) {
     while (1) {
         pGrouper->DoTick();
         sleep(1);

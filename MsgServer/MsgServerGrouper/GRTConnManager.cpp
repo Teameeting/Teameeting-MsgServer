@@ -114,21 +114,23 @@ bool GRTConnManager::ConnectGroupMgr()
 
 bool GRTConnManager::DoConnectGroupMgr(const std::string ip, unsigned short port)
 {
-    GRTTransferSession* groupMgrSession = new GRTTransferSession();
-    groupMgrSession->Init();
+    GRTTransferSession* m_pGroupMgrSession = new GRTTransferSession();
+    m_pGroupMgrSession->Init();
     // conn to connector
-    while (!groupMgrSession->Connect(ip, port)) {
+    while (!m_pGroupMgrSession->Connect(ip, port)) {
         LI("connecting to RTLive groupMgr server %s:%u waiting...\n", ip.c_str(), port);
         usleep(100*1000);
     }
-    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, groupMgrSession->GetSocket()->GetSocketFD());
-    groupMgrSession->EstablishConnection();
+    LI("%s port:%u, socketFD:%d\n", __FUNCTION__, port, m_pGroupMgrSession->GetSocket()->GetSocketFD());
+    m_pGroupMgrSession->EstablishConnection();
     return true;
 }
 
 bool GRTConnManager::TryConnectGroupMgr(const std::string ip, unsigned short port)
 {
     LI("GRTConnManager::TryConneectGroupMgr ip:%s, port:%u\n", ip.c_str(), port);
+    // TODO:
+    // bug here, fix later, groupMgrSession should be m_pGroupMgrSession
     GRTTransferSession* groupMgrSession = new GRTTransferSession();
     groupMgrSession->Init();
     // conn to connector
@@ -192,6 +194,9 @@ bool GRTConnManager::ClearAll()
     if (m_pConnDispatcher)
         m_pConnDispatcher->Signal(Task::kKillEvent);
     m_pConnDispatcher = nullptr;
+    //if (m_pGroupMgrSession)
+        //m_pGroupMgrSession->Signal(Task::kKillEvent);
+    //m_pGroupMgrSession = nullptr;
     {
         OSMutexLocker mlocker(&s_mutexModule);
         for (auto & x : s_ModuleInfoMap) {
@@ -294,6 +299,7 @@ bool GRTConnManager::DelTypeModuleSession(const std::string& sid)
 
 void GRTConnManager::TransferSessionLostNotify(const std::string& sid)
 {
+    LI("GRTConnManager::TransferSessionLostNotify was called...sid:%s\n", sid.c_str());
     EventData data;
     data.mtype = SESSEVENT::_sess_lost;
     DelModuleInfo(sid, data);

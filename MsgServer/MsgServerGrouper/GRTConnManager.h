@@ -114,6 +114,8 @@ private:
     GRTConnDispatcher*        m_pConnDispatcher;
     UserConnectorMaps         m_userConnectors;
     ConnectingSessList        m_connectingSessList;
+    GRTTransferSession*       m_pGroupMgrSession;
+
 };
 
 #endif /* defined(__MsgServerGrouper__GRTConnManager__) */
