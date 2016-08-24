@@ -24,6 +24,7 @@ enum EServerCmd{
     CGROUPNOTIFY            = 16;
     CCREATESEQN             = 17;
     CDELETESEQN             = 18;
+    CUPDATESETTING          = 19; // update setting
 }
 
 // different server module
@@ -43,6 +44,7 @@ enum EModuleType{
     TGRPNOTIFY  = 9;
     TPUSHER     = 10;
 }
+
 
 // the msg flag
 enum EMsgFlag{

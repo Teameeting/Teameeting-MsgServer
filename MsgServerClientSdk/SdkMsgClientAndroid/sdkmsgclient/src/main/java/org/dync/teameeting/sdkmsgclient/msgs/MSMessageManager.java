@@ -71,7 +71,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendTxtMsg(MSSubMessage.MSTxtMessage txtMsg) {
-            if (null==txtMsg) return null;
+            if (null==txtMsg || null == txtMsg.getGroupId() || null == txtMsg.getContent()) return null;
         if (txtMsg.getGroupId().length()==0 || txtMsg.getContent().length()==0) return null;
         return MsgClient.getInstance().MCSendTxtMsg(txtMsg);
     }
@@ -90,7 +90,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendTxtMsgTos(MSSubMessage.MSTxtMessage txtMsg, String[] userIds) {
-            if (null==txtMsg) return null;
+            if (null==txtMsg || null == txtMsg.getGroupId() || null == txtMsg.getContent() || null == userIds) return null;
         if (txtMsg.getGroupId().length()==0 || txtMsg.getContent().length()==0 || userIds.length==0) return null;
         return MsgClient.getInstance().MCSendTxtMsgTos(txtMsg, userIds);
     }
@@ -109,7 +109,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendTxtMsgToUser(MSSubMessage.MSTxtMessage txtMsg) {
-            if (null==txtMsg) return null;
+            if (null==txtMsg || null == txtMsg.getToId() || null == txtMsg.getContent()) return null;
         if (txtMsg.getToId().length()==0 || txtMsg.getContent().length()==0) return null;
         return MsgClient.getInstance().MCSendTxtMsgToUsr(txtMsg);
     }
@@ -128,7 +128,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendTxtMsgToUsers(MSSubMessage.MSTxtMessage txtMsg, String[] usrIds) {
-            if (null==txtMsg) return null;
+            if (null==txtMsg || null == txtMsg.getContent() || null == usrIds) return null;
         if (txtMsg.getContent().length()==0 || usrIds.length==0) return null;
         return MsgClient.getInstance().MCSendTxtMsgToUsrs(txtMsg, usrIds);
     }
@@ -148,7 +148,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyLive(MSSubMessage.MSLivMessage livMsg) {
-            if (null==livMsg) return null;
+            if (null==livMsg || null==livMsg.getGroupId() || null == livMsg.getToId()) return null;
         if (livMsg.getGroupId().length()==0 || livMsg.getToId().length()==0) return null;
         return MsgClient.getInstance().MCNotifyLive(livMsg);
     }
@@ -169,7 +169,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyRedEnvelope(MSSubMessage.MSRenMessage renMsg) {
-            if (null==renMsg) return null;
+            if (null==renMsg || null == renMsg.getGroupId() || null == renMsg.getToId() || null == renMsg.getCash() || null == renMsg.getWishcont()) return null;
         if (renMsg.getGroupId().length()==0 || renMsg.getToId().length()==0 || renMsg.getCash().length()==0 || renMsg.getWishcont().length()==0) return null;
         return MsgClient.getInstance().MCNotifyRedEnvelope(renMsg);
     }
@@ -190,7 +190,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyBlacklist(MSSubMessage.MSBlkMessage blkMsg, String[] notifys) {
-            if (null==blkMsg) return null;
+            if (null==blkMsg || null == blkMsg.getGroupId() || null == blkMsg.getToId() || null == notifys) return null;
         if (blkMsg.getGroupId().length()==0 || blkMsg.getToId().length()==0 || notifys.length==0) return null;
         return MsgClient.getInstance().MCNotifyBlacklist(blkMsg, notifys);
     }
@@ -211,7 +211,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyForbidden(MSSubMessage.MSFbdMessage fbdMsg, String[] notifys) {
-            if (null==fbdMsg) return null;
+            if (null==fbdMsg || null == fbdMsg.getGroupId() || null == fbdMsg.getToId() || null == notifys) return null;
         if (fbdMsg.getGroupId().length()==0 || fbdMsg.getToId().length()==0 || notifys.length==0) return null;
         return MsgClient.getInstance().MCNotifyForbidden(fbdMsg, notifys);
     }
@@ -231,7 +231,7 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifySettedMgr(MSSubMessage.MSMgrMessage mgrMsg) {
-            if (null==mgrMsg) return null;
+            if (null==mgrMsg || null == mgrMsg.getGroupId() || null == mgrMsg.getToId()) return null;
         if (mgrMsg.getGroupId().length()==0 || mgrMsg.getToId().length()==0) return null;
         String[] notifys = {};
         return MsgClient.getInstance().MCNotifySettedMgr(mgrMsg, notifys);

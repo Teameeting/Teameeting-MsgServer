@@ -13,8 +13,6 @@
 #import "msgclient/proto_ios/EntityMsg.pbobjc.h"
 #import "msgclient/proto_ios/EntityMsgType.pbobjc.h"
 
-
-
 #import "msgclient/MSMsgUtil.h"
 
 int MsgClient::MCInit(const std::string& uid, const std::string& token, const std::string& nname)
@@ -35,7 +33,7 @@ int MsgClient::MCInit(const std::string& uid, const std::string& token, const st
     CheckUserOrInit(m_nsUserId);
     GetLocalSeqnsFromDb();
     SyncSeqnFromDb2Core();
-    return Init(uid, token, nname, pms::EModuleType(EModuleType_Tlive));
+    return Init(uid, token, nname, pms::EModuleType(EModuleType_Tlive), DEVICE_IOS, PUSH_ENABLE);
 }
 
 int MsgClient::MCUnin()

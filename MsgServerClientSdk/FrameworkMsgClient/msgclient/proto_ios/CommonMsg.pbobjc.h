@@ -47,6 +47,9 @@ typedef GPB_ENUM(EServerCmd) {
   EServerCmd_Cgroupnotify = 16,
   EServerCmd_Ccreateseqn = 17,
   EServerCmd_Cdeleteseqn = 18,
+
+  /// update setting
+  EServerCmd_Cupdatesetting = 19,
 };
 
 GPBEnumDescriptor *EServerCmd_EnumDescriptor(void);

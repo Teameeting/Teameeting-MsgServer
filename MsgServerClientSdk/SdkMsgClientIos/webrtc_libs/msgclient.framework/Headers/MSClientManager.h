@@ -136,6 +136,17 @@
  */
 -(void)setUIconUrl:(NSString*)url;
 
+/**
+ *  set if need push
+ *
+ *  params:
+ *      push: 1, enable push, 2, disable push
+ *
+ *  return:
+ *      void
+ */
+-(void)enablePush:(int)push;
+
 @end
 
 #endif /* MSClientManager_h */

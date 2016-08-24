@@ -35,6 +35,11 @@
 #include <string>
 #endif
 
+#define DEVICE_IOS (1)
+#define DEVICE_ANDROID (2)
+
+#define PUSH_ENABLE (1)
+#define PUSH_DISABLE (2)
 
 class XMsgClientHelper {
 public:
@@ -62,7 +67,7 @@ public:
     XMsgClient();
     ~XMsgClient();
 
-    int Init(const std::string& uid, const std::string& token, const std::string& nname, int module);
+    int Init(const std::string& uid, const std::string& token, const std::string& nname, int devType, int push, int module);
     int Unin();
 
     int RegisterMsgCb(XMsgCallback* cb);
@@ -82,7 +87,7 @@ public:
     int FetchGroupSeqn(const std::string& groupid);
     int SyncGroupSeqn(const std::string& groupid, int64 seqn, int role);
     int SyncGroupData(const std::string& gropuid, int64 seqn);
-    int UpdateSetting(const std::vector<std::string>& setting);
+    int UpdateSetting(int64 setType, const std::vector<std::string>& setting);
 
     MSState MSStatus() { return m_msState; }
     void SetUserId(const std::string& userid) { m_uid = userid; }
@@ -93,12 +98,6 @@ public:
     void SetEnablePush(int push)
     {
         m_enablePush = push;
-        std::vector<std::string> vec;
-        char val[4] = {0};
-        sprintf(val, "%d", push);
-        vec.push_back("push");
-        vec.push_back(val);
-        UpdateSetting(vec);
     }
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
@@ -488,7 +487,5 @@ private:
 
 
 };
-
-
 
 #endif /* defined(__dyncRTCMsgClient__XMsgClient__) */

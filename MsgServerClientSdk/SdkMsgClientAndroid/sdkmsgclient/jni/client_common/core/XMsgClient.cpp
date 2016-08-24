@@ -38,7 +38,7 @@ XMsgClient::~XMsgClient()
 
 }
 
-int XMsgClient::Init(const std::string& uid, const std::string& token, const std::string& nname, int module)
+int XMsgClient::Init(const std::string& uid, const std::string& token, const std::string& nname, int devType, int push, int module)
 {
     if (!m_pMsgProcesser) {
         m_pMsgProcesser = new XMsgProcesser(*this);
@@ -60,6 +60,9 @@ int XMsgClient::Init(const std::string& uid, const std::string& token, const std
     m_uid = uid;
     m_token = token;
     m_nname = nname;
+    m_version = MSG_VERSION;
+    m_devType = devType;
+    m_enablePush = push;
     m_module = (pms::EModuleType)module;
 
 #if WEBRTC_ANDROID
@@ -350,8 +353,30 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::UpdateSetting(const std::vector<std::string>& vec)
+int XMsgClient::UpdateSetting(int64 setType, const std::vector<std::string>& vec)
 {
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::UpdateSetting vec.size:%lu wait...\n", vec.size());
+#else
+    LOG(INFO) << "XMsgClientit::UpdateSetting vec.size:" << vec.size() << " wait...";
+#endif
+    std::string json;
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeUpdateSetting(outstr, m_uid, setType, json, m_module);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::UpdateSetting was called\n");
+#else
+    LOG(INFO) << "XMsgClient::UpdateSetting was called";
+#endif
+    
+    return SendEncodeMsg(outstr);
     return 0;
 }
 

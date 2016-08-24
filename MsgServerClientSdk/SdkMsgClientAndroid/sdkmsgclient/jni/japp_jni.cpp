@@ -42,13 +42,13 @@ JOWW(jlong, JMClientApp_Create)(JNIEnv *jni, jclass j_app, jobject j_obj)
 }
 
 
-JOWW(jint, JMClientApp_Init)(JNIEnv *jni, jobject j_app, jstring strUid, jstring strToken, jstring strNname, jint module)
+JOWW(jint, JMClientApp_Init)(JNIEnv *jni, jobject j_app, jstring strUid, jstring strToken, jstring strNname, jint devType, jint push, jint module)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	JavaString jstrUid(strUid);
 	JavaString jstrToken(strToken);
 	JavaString jstrNname(strNname);
-	return jApp->Init(jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), module);
+	return jApp->Init(jstrUid.ToString8().c_str(), jstrToken.ToString8().c_str(), jstrNname.ToString8().c_str(), devType, push, module);
 }
 
 
@@ -206,6 +206,12 @@ JOWW(void, JMClientApp_SetUIconUrl)(JNIEnv *jni, jobject j_app, jstring strUIcon
 	JMClientApp* jApp = GetJApp(jni, j_app);
 	JavaString jstrUIcon(strUIcon);
 	jApp->SetUIconUrl(jstrUIcon.ToString8().c_str());
+}
+
+JOWW(void, JMClientApp_EnablePush)(JNIEnv *jni, jobject j_app, jint push)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	jApp->SetEnablePush(push);
 }
 
 JOWW(void, JMClientApp_InitUserSeqns)(JNIEnv *jni, jobject j_app, jstring strSeqnid, jlong seqn)

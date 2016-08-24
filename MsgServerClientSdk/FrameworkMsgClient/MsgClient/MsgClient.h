@@ -85,6 +85,17 @@ public:
         SetUIconUrl(uiconurl);
     }
     
+    void MCEnablePush(int push) {
+        std::vector<std::string> vec;
+        char val[4] = {0};
+        sprintf(val, "%d", push);
+        vec.push_back("push");
+        vec.push_back(val);
+        int64 setType = 1;
+        SetEnablePush(push);
+        UpdateSetting(setType, vec);
+    }
+    
     NSString* MCGetNsUserId() { return m_nsUserId; }
     NSString* MCGetNsToken() { return m_nsToken; }
     NSString* MCGetNsNickName() { return m_nsNname; }

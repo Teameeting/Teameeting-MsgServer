@@ -292,6 +292,22 @@ int XMsgProcesser::EncodeDeleteSeqn(std::string& outstr, const std::string& user
     return 0;
 }
 
+int XMsgProcesser::EncodeUpdateSetting(std::string& outstr, const std::string& userid, int64 setType, const std::string& json, int module)
+{
+    pms::MsgReq req;
+    pms::Setting setting;
+    setting.set_usr_from(userid);
+    setting.set_version(MSG_VERSION);
+    setting.set_set_type(setType);
+    setting.set_json_cont(json);
+    
+    req.set_svr_cmds(pms::EServerCmd::CUPDATESETTING);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(setting.SerializeAsString());
+    outstr = req.SerializeAsString();
+    return 0;
+}
+
 /////////////////////////////////////////////////////
 ///////////////////DECODE MEETMSG////////////////////
 /////////////////////////////////////////////////////

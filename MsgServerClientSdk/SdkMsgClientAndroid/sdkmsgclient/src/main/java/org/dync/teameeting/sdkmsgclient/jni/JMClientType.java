@@ -23,4 +23,12 @@ public class JMClientType {
     public static final int MC_MSGTYPE_TFBD = 23;
     public static final int MC_MSGTYPE_TMGR = 24;
 
+    public static final int MC_DEVICE_IOS = 1;
+    public static final int MC_DEVICE_ANDROID = 2;
+
+    public static final int MC_PUSH_ENABLE = 1;
+    public static final int MC_PUSH_DISABLE = 2;
+
+
+
 }

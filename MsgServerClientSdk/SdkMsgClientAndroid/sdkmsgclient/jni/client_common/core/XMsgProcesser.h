@@ -41,6 +41,9 @@ public:
 
     int EncodeCreateSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag);
     int EncodeDeleteSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag);
+    
+    int EncodeUpdateSetting(std::string& outstr, const std::string& userid, int64 setType, const std::string& json, int module);
+    
     int DecodeRecvData(const char* pData, int nLen);
 
 protected:

@@ -38,7 +38,8 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
         "e\000Cseqn\000Cdata\000Csntfseqn\000Cpgetdata\000Csyncs"
         "eqn\000Csseqn4Data\000Csyncdata\000Csyncgroupdata"
         "\000Cnewmsg\000Cnewmsgseqn\000Cnewmsgdata\000Cgroupn"
-        "otify\000Ccreateseqn\000Cdeleteseqn\000";
+        "otify\000Ccreateseqn\000Cdeleteseqn\000Cupdateset"
+        "ting\000";
     static const int32_t values[] = {
         EServerCmd_Clogin,
         EServerCmd_Csndmsg,
@@ -59,6 +60,7 @@ GPBEnumDescriptor *EServerCmd_EnumDescriptor(void) {
         EServerCmd_Cgroupnotify,
         EServerCmd_Ccreateseqn,
         EServerCmd_Cdeleteseqn,
+        EServerCmd_Cupdatesetting,
     };
     static const char *extraTextFormatInfo = "\001\nf\002c\000";
     GPBEnumDescriptor *worker =
@@ -96,6 +98,7 @@ BOOL EServerCmd_IsValidValue(int32_t value__) {
     case EServerCmd_Cgroupnotify:
     case EServerCmd_Ccreateseqn:
     case EServerCmd_Cdeleteseqn:
+    case EServerCmd_Cupdatesetting:
       return YES;
     default:
       return NO;

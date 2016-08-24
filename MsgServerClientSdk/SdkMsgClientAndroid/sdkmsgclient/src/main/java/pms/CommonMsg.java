@@ -101,6 +101,14 @@ public final class CommonMsg {
      * <code>CDELETESEQN = 18;</code>
      */
     CDELETESEQN(18),
+    /**
+     * <pre>
+     * update setting
+     * </pre>
+     *
+     * <code>CUPDATESETTING = 19;</code>
+     */
+    CUPDATESETTING(19),
     UNRECOGNIZED(-1),
     ;
 
@@ -188,6 +196,14 @@ public final class CommonMsg {
      * <code>CDELETESEQN = 18;</code>
      */
     public static final int CDELETESEQN_VALUE = 18;
+    /**
+     * <pre>
+     * update setting
+     * </pre>
+     *
+     * <code>CUPDATESETTING = 19;</code>
+     */
+    public static final int CUPDATESETTING_VALUE = 19;
 
 
     public final int getNumber() {
@@ -223,6 +239,7 @@ public final class CommonMsg {
         case 16: return CGROUPNOTIFY;
         case 17: return CCREATESEQN;
         case 18: return CDELETESEQN;
+        case 19: return CUPDATESETTING;
         default: return null;
       }
     }

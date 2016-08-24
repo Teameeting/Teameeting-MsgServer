@@ -78,4 +78,9 @@
     MsgClient::Instance().MCSetUIconUrl([url cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
+-(void)enablePush:(int)push
+{
+    MsgClient::Instance().MCEnablePush(push);
+}
+
 @end

@@ -127,7 +127,7 @@ public class MsgClient implements JMClientHelper{
         CheckUserOrInit(mStrUserId);
         GetLocalSeqnsFromDb();
         SyncSeqnFromDb2Core();
-        return mMApp.Init(strUid, strToken, strNname, CommonMsg.EModuleType.TLIVE_VALUE);
+        return mMApp.Init(strUid, strToken, strNname, JMClientType.MC_DEVICE_ANDROID, JMClientType.MC_PUSH_ENABLE, CommonMsg.EModuleType.TLIVE_VALUE);
     }
 
     public int MCUnin() {
@@ -327,30 +327,24 @@ public class MsgClient implements JMClientHelper{
     }
 
     public void MCSetUserId(String strUserId) {
-        if (null != mMApp) {
-            setmStrUserId(strUserId);
-            mMApp.SetUserId(strUserId);
-        }
+        setmStrUserId(strUserId);
     }
 
     public void MCSetToken(String strToken) {
-        if (null != mMApp) {
-            setmStrToken(strToken);
-            mMApp.SetToken(strToken);
-        }
+        setmStrToken(strToken);
     }
 
     public void MCSetNickName(String strNickName) {
-        if (null != mMApp) {
-            setmStrNname(strNickName);
-            mMApp.SetNickName(strNickName);
-        }
+        setmStrNname(strNickName);
     }
 
     public void MCSetUIconUrl(String strUiconUrl) {
+        setmStrUicon(strUiconUrl);
+    }
+
+    public void MCEnablePush(int push) {
         if (null != mMApp) {
-            setmStrUicon(strUiconUrl);
-            mMApp.SetUIconUrl(strUiconUrl);
+            mMApp.EnablePush(push);
         }
     }
 

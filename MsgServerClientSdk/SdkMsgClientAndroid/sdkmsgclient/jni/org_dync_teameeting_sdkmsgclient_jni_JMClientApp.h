@@ -18,10 +18,10 @@ JNIEXPORT jlong JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Cr
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    Init
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)I
  */
 JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Init
-  (JNIEnv *, jobject, jstring, jstring, jstring, jint);
+  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
@@ -174,6 +174,14 @@ JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Set
  */
 JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUIconUrl
   (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    EnablePush
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_EnablePush
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp

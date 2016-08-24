@@ -18,7 +18,7 @@ public class JMClientApp {
     private static native long Create(JMClientHelper helper);
 
 
-    public native int Init(String strUid, String strToken, String strName, int module);
+    public native int Init(String strUid, String strToken, String strName, int devType, int push, int module);
     public native int Unin();
 
     public native int RegisterMsgCb();
@@ -45,6 +45,7 @@ public class JMClientApp {
     public native void SetToken(String strToken);
     public native void SetNickName(String strNname);
     public native void SetUIconUrl(String strUicon);
+    public native void EnablePush(int push);
 
     public native void InitUserSeqns(String strSeqnid, long seqn);
     public native void UpdateUserSeqns(String strSeqnid, long seqn);
