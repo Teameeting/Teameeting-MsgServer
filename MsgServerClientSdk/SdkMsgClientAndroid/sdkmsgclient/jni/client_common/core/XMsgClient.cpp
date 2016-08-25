@@ -75,6 +75,24 @@ int XMsgClient::Init(const std::string& uid, const std::string& token, const std
 
 int XMsgClient::Unin()
 {
+    if (m_uWait4AckMsgMap.size()>0)
+        m_uWait4AckMsgMap.clear();
+    if (m_uSyncedMsgMap.size()>0)
+        m_uSyncedMsgMap.clear();
+    if (m_uUserSeqnMap.size()>0)
+        m_uUserSeqnMap.clear();
+    if (m_uRecvMsgList.size()>0)
+        m_uRecvMsgList.clear();
+    
+    if (m_gWait4AckMsgMap.size()>0)
+        m_gWait4AckMsgMap.clear();
+    if (m_gSyncedMsgMap.size()>0)
+        m_gSyncedMsgMap.clear();
+    if (m_gUserSeqnMap.size()>0)
+        m_gUserSeqnMap.clear();
+    if (m_gRecvMsgList.size()>0)
+        m_gRecvMsgList.clear();
+    
     if (m_pClientImpl) {
         m_pClientImpl->Disconnect();
         if (m_pMsgProcesser) {
@@ -836,13 +854,12 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
     UAddSyncedMsg(seqnKey, store);
-    LOG(INFO) <<
     UUpdateUserSeqn();
 
 #if WEBRTC_ANDROID
-    LOGI("XMsgClient::OnHelpSyncData m_gRecvMsgList.size:%u\n", m_gRecvMsgList.size());
+    LOGI("XMsgClient::OnHelpSyncData m_uRecvMsgList.size:%u\n", m_uRecvMsgList.size());
 #else
-    LOG(INFO) << "XMsgClient::OnHelpSyncData m_gRecvMsgList.size:" << m_gRecvMsgList.size();
+    LOG(INFO) << "XMsgClient::OnHelpSyncData m_uRecvMsgList.size:" << m_uRecvMsgList.size();
 #endif
     for (RecvMsgListIt it = m_uRecvMsgList.begin();it!=m_uRecvMsgList.end();++it)
     {
@@ -1017,11 +1034,11 @@ void XMsgClient::OnHelpGroupNotify(int code, const std::string& cont)
 void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 {
 #if WEBRTC_ANDROID
-    LOGI("XMsgClient::OnHelpNotifySeqn code:%d, cont:%s\n", code, cont.c_str());
+    LOGI("XMsgClient::OnHelpNotifySeqn code:%d, cont.size:%d\n", code, cont.size());
 #else
-    LOG(INFO) << "XMsgClient::OnHelpNotifySeqn code:" << code << ", cont:" << cont;
+    LOG(INFO) << "XMsgClient::OnHelpNotifySeqn code:" << code << ", cont.size:" << cont.size();
 #endif
-    if ((code==0) && (cont.length()==0))
+    if (code==0)
     {
         UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(m_uid);
 #if WEBRTC_ANDROID

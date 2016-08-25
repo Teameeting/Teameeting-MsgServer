@@ -316,14 +316,14 @@
     
     mGroupId = @"wocaowocaowocao";
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
+    //NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    //NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
     MSBlkMessage *blkMsg = [[MSBlkMessage alloc] init];
     [blkMsg setGroupId:mGroupId];
     [blkMsg setToId:touser1];
     [blkMsg setFlag:1];
     [blkMsg setPush:1];
-    NSString *outmsgid = [msgMgr sendNotifyBlacklist:blkMsg notifys:arr];
+    NSString *outmsgid = [msgMgr sendNotifyBlacklist:blkMsg notifys:nil];
     NSString* info = nil;
     if (outmsgid) {
         info = [NSString stringWithFormat:@"sendBlkMsg outmsgid is :%@", outmsgid];
@@ -341,7 +341,7 @@
     
     mGroupId = @"wocaowocaowocao";
     NSString *touser1 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
-    NSString *touser2 = [NSString stringWithCString:"BCD9D958-985A-4454-B2C8-1551DB9C1A8A" encoding:NSUTF8StringEncoding];
+    NSString *touser2 = [NSString stringWithCString:"8ca64d158a505876" encoding:NSUTF8StringEncoding];
     NSArray *arr = [NSArray arrayWithObjects:touser1, touser2, nil];
     
     MSFbdMessage *fbdMsg = [[MSFbdMessage alloc] init];

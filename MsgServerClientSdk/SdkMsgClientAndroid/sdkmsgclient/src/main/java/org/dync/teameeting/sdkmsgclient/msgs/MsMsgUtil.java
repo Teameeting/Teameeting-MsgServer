@@ -50,6 +50,10 @@ public class MsMsgUtil {
             mMsg.setWishcont(jobj.getString("wishcont"));
         else
             mMsg.setWishcont("");
+        if (jobj.has("toNickName"))
+            mMsg.setToNickName(jobj.getString("toNickName"));
+        else
+            mMsg.setToNickName("");
         if (jobj.has("millSec"))
             mMsg.setMillSec(jobj.getInt("millSec"));
         else
@@ -81,6 +85,7 @@ public class MsMsgUtil {
         jsonObj.put("uiconUrl", mobj.getUiconUrl());
         jsonObj.put("cash", mobj.getCash());
         jsonObj.put("wishcont", mobj.getWishcont());
+        jsonObj.put("toNickName", mobj.getToNickName());
         jsonObj.put("millSec", mobj.getMillSec());
         jsonObj.put("msgType", mobj.getMsgType());
         jsonObj.put("flag", mobj.getFlag());
@@ -112,6 +117,7 @@ public class MsMsgUtil {
         mMsg.setNickName(MsgClient.getInstance().getmStrNname());
         mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setToNickName(livMsg.getToNickName());
         mMsg.setFlag(livMsg.getFlag());
         mMsg.setMsgType(msgType);
 
@@ -128,6 +134,7 @@ public class MsMsgUtil {
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
         mMsg.setCash(renMsg.getCash());
         mMsg.setWishcont(renMsg.getWishcont());
+        mMsg.setToNickName(renMsg.getToNickName());
         mMsg.setMsgType(msgType);
 
         return mMsg;
@@ -141,6 +148,7 @@ public class MsMsgUtil {
         mMsg.setNickName(MsgClient.getInstance().getmStrNname());
         mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setToNickName(blkMsg.getToNickName());
         mMsg.setFlag(blkMsg.getFlag());
         mMsg.setMsgType(msgType);
 
@@ -155,6 +163,7 @@ public class MsMsgUtil {
         mMsg.setNickName(MsgClient.getInstance().getmStrNname());
         mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setToNickName(fbdMsg.getToNickName());
         mMsg.setFlag(fbdMsg.getFlag());
         mMsg.setMsgType(msgType);
 
@@ -169,6 +178,7 @@ public class MsMsgUtil {
         mMsg.setNickName(MsgClient.getInstance().getmStrNname());
         mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setToNickName(mgrMsg.getToNickName());
         mMsg.setFlag(mgrMsg.getFlag());
         mMsg.setMsgType(msgType);
 

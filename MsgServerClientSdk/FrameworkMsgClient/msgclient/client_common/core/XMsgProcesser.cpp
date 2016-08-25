@@ -321,6 +321,11 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
         LOG(LS_ERROR) << "RecvData resp.ParseFromString error!";
         return -1;
     }
+#if WEBRTC_ANDROID
+    LOGI("XMsgProcesser::DecodeRecvData resp.svr_cmds:%d!!\n", resp.svr_cmds());
+#else
+    LOG(INFO) << "XMsgProcesser::DecodeRecvData resp.svr_cmds:" << resp.svr_cmds() << " ok!!";
+#endif
     switch (resp.svr_cmds()) {
         case pms::EServerCmd::CLOGIN:
             DecodeLogin(resp.rsp_code(), resp.rsp_cont());

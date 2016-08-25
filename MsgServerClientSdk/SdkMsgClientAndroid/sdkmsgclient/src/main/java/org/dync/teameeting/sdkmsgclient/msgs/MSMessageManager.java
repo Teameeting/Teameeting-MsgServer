@@ -190,8 +190,8 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyBlacklist(MSSubMessage.MSBlkMessage blkMsg, String[] notifys) {
-            if (null==blkMsg || null == blkMsg.getGroupId() || null == blkMsg.getToId() || null == notifys) return null;
-        if (blkMsg.getGroupId().length()==0 || blkMsg.getToId().length()==0 || notifys.length==0) return null;
+            if (null==blkMsg || null == blkMsg.getGroupId() || null == blkMsg.getToId()) return null;
+        if (blkMsg.getGroupId().length()==0 || blkMsg.getToId().length()==0) return null;
         return MsgClient.getInstance().MCNotifyBlacklist(blkMsg, notifys);
     }
 
@@ -211,8 +211,8 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyForbidden(MSSubMessage.MSFbdMessage fbdMsg, String[] notifys) {
-            if (null==fbdMsg || null == fbdMsg.getGroupId() || null == fbdMsg.getToId() || null == notifys) return null;
-        if (fbdMsg.getGroupId().length()==0 || fbdMsg.getToId().length()==0 || notifys.length==0) return null;
+            if (null==fbdMsg || null == fbdMsg.getGroupId() || null == fbdMsg.getToId()) return null;
+        if (fbdMsg.getGroupId().length()==0 || fbdMsg.getToId().length()==0) return null;
         return MsgClient.getInstance().MCNotifyForbidden(fbdMsg, notifys);
     }
 

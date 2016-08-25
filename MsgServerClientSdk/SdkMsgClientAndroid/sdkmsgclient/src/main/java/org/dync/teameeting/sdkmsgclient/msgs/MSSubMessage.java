@@ -82,6 +82,10 @@ public final class MSSubMessage {
         public void setGroupId(String groupId) {
             _message.setGroupId(groupId);
         }
+
+        public String getToNickName() { return _message.getToNickName(); }
+
+        public void setToNickName(String toNickName) { _message.setToNickName(toNickName); }
     }
 
     public static final class MSRenMessage {
@@ -130,6 +134,10 @@ public final class MSSubMessage {
         public void setWishcont(String wishcont) {
             _message.setWishcont(wishcont);
         }
+
+        public String getToNickName() { return _message.getToNickName(); }
+
+        public void setToNickName(String toNickName) { _message.setToNickName(toNickName); }
     }
 
     public static final class MSBlkMessage {
@@ -170,6 +178,10 @@ public final class MSSubMessage {
         public void setGroupId(String groupId) {
             _message.setGroupId(groupId);
         }
+
+        public String getToNickName() { return _message.getToNickName(); }
+
+        public void setToNickName(String toNickName) { _message.setToNickName(toNickName); }
     }
 
     public static final class MSFbdMessage {
@@ -210,6 +222,10 @@ public final class MSSubMessage {
         public void setGroupId(String groupId) {
             _message.setGroupId(groupId);
         }
+
+        public String getToNickName() { return _message.getToNickName(); }
+
+        public void setToNickName(String toNickName) { _message.setToNickName(toNickName); }
     }
 
     public static final class MSMgrMessage  {
@@ -250,5 +266,9 @@ public final class MSSubMessage {
         public void setGroupId(String groupId) {
             _message.setGroupId(groupId);
         }
+
+        public String getToNickName() { return _message.getToNickName(); }
+
+        public void setToNickName(String toNickName) { _message.setToNickName(toNickName); }
     }
 }

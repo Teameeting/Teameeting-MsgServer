@@ -175,7 +175,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         MSSubMessage.MSBlkMessage blkMsg = new MSSubMessage.MSBlkMessage();
         String groupid = "wocaowocaowocao";
         String touser1 = "dcd54ddf2ee1df11";
-        String touser2 = "dcd54ddf2ee1df11";
+        String touser2 = "BCD9D958-985A-4454-B2C8-1551DB9C1A8A";
         String[] arr = {touser1, touser2};
         blkMsg.setGroupId(groupid);
         blkMsg.setToId(touser1);
@@ -192,12 +192,12 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String groupid = "wocaowocaowocao";
         String touser1 = "dcd54ddf2ee1df11";
         String touser2 = "dcd54ddf2ee1df11";
-        String[] arr = {touser1, touser2};
+        //String[] arr = {touser1, touser2};
         fbdMsg.setGroupId(groupid);
         fbdMsg.setToId(touser1);
         fbdMsg.setFlag(1);
         fbdMsg.setPush(1);
-        String outmsgid = mMsMessageManager.sendNotifyForbidden(fbdMsg, arr);
+        String outmsgid = mMsMessageManager.sendNotifyForbidden(fbdMsg, null);
         System.out.println("NotifyMsgForbidden sendNotifyForbidden get msgid:"+outmsgid);
     }
 

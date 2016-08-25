@@ -33,7 +33,7 @@ int MsgClient::MCInit(const std::string& uid, const std::string& token, const st
     CheckUserOrInit(m_nsUserId);
     GetLocalSeqnsFromDb();
     SyncSeqnFromDb2Core();
-    return Init(uid, token, nname, pms::EModuleType(EModuleType_Tlive), DEVICE_IOS, PUSH_ENABLE);
+    return Init(uid, token, nname, DEVICE_IOS, PUSH_ENABLE, pms::EModuleType(EModuleType_Tlive));
 }
 
 int MsgClient::MCUnin()
@@ -42,6 +42,30 @@ int MsgClient::MCUnin()
     if (m_sqlite3Manager)
     {
         [m_sqlite3Manager uninManager];
+        m_sqlite3Manager = nil;
+    }
+    if (m_recurLock)
+    {
+        m_recurLock = nil;
+    }
+    if (m_nsGroupInfo)
+    {
+        [m_nsGroupInfo removeAllObjects];
+        m_nsGroupInfo = nil;
+    }
+    if (m_groupSeqn.size()>0)
+        m_groupSeqn.clear();
+    if (m_nsNname)
+    {
+        m_nsNname = nil;
+    }
+    if (m_nsToken)
+    {
+        m_nsToken = nil;
+    }
+    if (m_nsUserId)
+    {
+        m_nsUserId = nil;
     }
     m_isFetched = false;
     return Unin();
@@ -189,12 +213,6 @@ int MsgClient::MCNotifyRedEnvelope(std::string& outmsgid, MSRenMessage *renMsg)
 
 int MsgClient::MCNotifyBlacklist(std::string& outmsgid, MSBlkMessage *blkMsg, const std::vector<std::string>& notifys)
 {
-    std::vector<std::string> uvec;
-    uvec.push_back([[blkMsg getToId] cStringUsingEncoding:NSASCIIStringEncoding]);
-    for (auto &it : notifys) {
-        uvec.push_back(it);
-    }
-    
     MSMessage *mMsg = [MSMsgUtil EncodeMessageWithBlkMsg:blkMsg msgType:MCMsgTypeTblk];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[mMsg mj_keyValues]];
     
@@ -203,18 +221,22 @@ int MsgClient::MCNotifyBlacklist(std::string& outmsgid, MSBlkMessage *blkMsg, co
         NSLog(@"MCSendTxtMsgToUsr JSONToNSString error");
         return -3;
     }
-
-    return SndMsgTo(outmsgid, [[blkMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], uvec);
+    
+    if (notifys.size()==0) {
+        return SndMsg(outmsgid, [[blkMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, [mMsg push]);
+    } else {
+        
+        std::vector<std::string> uvec;
+        uvec.push_back([[blkMsg getToId] cStringUsingEncoding:NSASCIIStringEncoding]);
+        for (auto &it : notifys) {
+            uvec.push_back(it);
+        }
+        return SndMsgTo(outmsgid, [[blkMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tblk, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], uvec);
+    }
 }
 
 int MsgClient::MCNotifyForbidden(std::string& outmsgid, MSFbdMessage *fbdMsg, const std::vector<std::string>& notifys)
 {
-    std::vector<std::string> uvec;
-    uvec.push_back([[fbdMsg getToId] cStringUsingEncoding:NSASCIIStringEncoding]);
-    for (auto &it : notifys) {
-        uvec.push_back(it);
-    }
-    
     MSMessage *mMsg = [MSMsgUtil EncodeMessageWithFbdMsg:fbdMsg msgType:MCMsgTypeTfbd];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[mMsg mj_keyValues]];
     
@@ -224,7 +246,16 @@ int MsgClient::MCNotifyForbidden(std::string& outmsgid, MSFbdMessage *fbdMsg, co
         return -3;
     }
 
-    return SndMsgTo(outmsgid, [[fbdMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], uvec);
+    if (notifys.size()==0) {
+       return SndMsg(outmsgid, [[fbdMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fgroup, [mMsg push]);
+    } else {
+        std::vector<std::string> uvec;
+        uvec.push_back([[fbdMsg getToId] cStringUsingEncoding:NSASCIIStringEncoding]);
+        for (auto &it : notifys) {
+            uvec.push_back(it);
+        }
+        return SndMsgTo(outmsgid, [[fbdMsg getGroupId] cStringUsingEncoding:NSASCIIStringEncoding], "grpname", [jsonString cStringUsingEncoding:NSUTF8StringEncoding], (pms::EMsgTag)EMsgTag_Tchat, (pms::EMsgType)EMsgType_Tfbd, (pms::EModuleType)EModuleType_Tlive, (pms::EMsgFlag)EMsgFlag_Fmulti, [mMsg push], uvec);
+    }
 }
 
 int MsgClient::MCNotifySettedMgr(std::string& outmsgid, MSMgrMessage *mgrMsg, const std::vector<std::string>& notifys)
@@ -516,10 +547,12 @@ void MsgClient::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const std:
             break;
         case pms::EMsgType::TBLK:
         {
+            [m_subMsgDelegate OnNotifyBlacklistMessage:mMsg];
         }
             break;
         case pms::EMsgType::TFBD:
         {
+            [m_subMsgDelegate OnNotifyForbiddenMessage:mMsg];
         }
             break;
         case pms::EMsgType::TMGR:

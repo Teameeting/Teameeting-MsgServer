@@ -21,6 +21,7 @@
 @synthesize uiconUrl = _uiconUrl;
 @synthesize cash = _cash;
 @synthesize wishcont = _wishcont;
+@synthesize toNickName = _toNickName;
 @synthesize millSec = _millSec;
 @synthesize msgType = _msgType;
 @synthesize flag = _flag;

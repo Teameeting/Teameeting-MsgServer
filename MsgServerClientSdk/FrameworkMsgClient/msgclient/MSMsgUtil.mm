@@ -64,6 +64,7 @@
     [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
     [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setToNickName:[livMsg getToNickName]?[livMsg getToNickName]:@""];
     [mMsg setFlag:[livMsg getFlag]];
     [mMsg setMsgType:msgType];
     return mMsg;
@@ -81,6 +82,7 @@
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
     [mMsg setCash:[renMsg getCash]];
     [mMsg setWishcont:[renMsg getWishcont]];
+    [mMsg setToNickName:[renMsg getToNickName]?[renMsg getToNickName]:@""];
     [mMsg setMsgType:msgType];
     return mMsg;
 }
@@ -95,6 +97,7 @@
     [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
     [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setToNickName:[blkMsg getToNickName]?[blkMsg getToNickName]:@""];
     [mMsg setFlag:[blkMsg getFlag]];
     [mMsg setMsgType:msgType];
     return mMsg;
@@ -110,6 +113,7 @@
     [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
     [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setToNickName:[fbdMsg getToNickName]?[fbdMsg getToNickName]:@""];
     [mMsg setFlag:[fbdMsg getFlag]];
     [mMsg setMsgType:msgType];
     return mMsg;
@@ -125,6 +129,7 @@
     [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
     [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setToNickName:[mgrMsg getToNickName]?[mgrMsg getToNickName]:@""];
     [mMsg setFlag:[mgrMsg getFlag]];
     [mMsg setMsgType:msgType];
     return mMsg;

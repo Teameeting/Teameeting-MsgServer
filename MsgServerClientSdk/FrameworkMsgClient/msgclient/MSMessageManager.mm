@@ -114,12 +114,13 @@
 {
     if (nil==blkMsg) return nil;
     if ((nil==[blkMsg getGroupId] || 0==[[blkMsg getGroupId] length])
-        ||(nil==[blkMsg getToId] || 0==[[blkMsg getToId] length])
-        ||(nil==notifys || 0==[notifys count])) return nil;
+        ||(nil==[blkMsg getToId] || 0==[[blkMsg getToId] length])) return nil;
     std::string msgid;
     std::vector<std::string> vusers;
-    for (NSString* name in notifys) {
-        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (nil != notifys && [notifys count]>0) {
+        for (NSString* name in notifys) {
+            vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+        }
     }
     MsgClient::Instance().MCNotifyBlacklist(msgid, blkMsg, vusers);
     return [NSString stringWithUTF8String:msgid.c_str()];
@@ -130,12 +131,13 @@
 {
     if (nil==fbdMsg) return nil;
     if ((nil==[fbdMsg getGroupId] || 0==[[fbdMsg getGroupId] length])
-        ||(nil==[fbdMsg getToId] || 0==[[fbdMsg getToId] length])
-        ||(nil==notifys || [notifys count]==0)) return nil;
+        ||(nil==[fbdMsg getToId] || 0==[[fbdMsg getToId] length])) return nil;
     std::string msgid;
     std::vector<std::string> vusers;
-    for (NSString* name in notifys) {
-        vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (nil != notifys && [notifys count]>0) {
+        for (NSString* name in notifys) {
+            vusers.push_back([name cStringUsingEncoding:NSUTF8StringEncoding]);
+        }
     }
     MsgClient::Instance().MCNotifyForbidden(msgid, fbdMsg, vusers);
     return [NSString stringWithUTF8String:msgid.c_str()];

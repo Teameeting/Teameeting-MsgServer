@@ -35,6 +35,8 @@
 
 @property (nonatomic, strong) NSString* wishcont;
 
+@property (nonatomic, strong) NSString* toNickName;
+
 @property (nonatomic) unsigned int  millSec;//send second
 
 @property (nonatomic) MCMsgType   msgType;

@@ -113,6 +113,17 @@
 {
     [_message setToId:toId];
 }
+
+-(NSString*) getToNickName
+{
+    return [_message toNickName];
+}
+
+-(void) setToNickName:(NSString*)toNickName
+{
+    [_message setToNickName:toNickName];
+}
+
 @end
 
 #pragma mark - MSRenMessage
@@ -177,6 +188,16 @@
     [_message setWishcont:wishcont];
 }
 
+-(NSString*) getToNickName
+{
+    return [_message toNickName];
+}
+
+-(void) setToNickName:(NSString*)toNickName
+{
+    [_message setToNickName:toNickName];
+}
+
 @end
 
 #pragma mark - MSBlkMessage
@@ -230,6 +251,17 @@
 {
     [_message setToId:toId];
 }
+
+-(NSString*) getToNickName
+{
+    return [_message toNickName];
+}
+
+-(void) setToNickName:(NSString*)toNickName
+{
+    [_message setToNickName:toNickName];
+}
+
 @end
 
 #pragma mark - MSFbdMessage
@@ -283,6 +315,17 @@
 {
     [_message setToId:toId];
 }
+
+-(NSString*) getToNickName
+{
+    return [_message toNickName];
+}
+
+-(void) setToNickName:(NSString*)toNickName
+{
+    [_message setToNickName:toNickName];
+}
+
 @end
 
 #pragma mark - MSMgrMessage
@@ -336,4 +379,15 @@
 {
     [_message setToId:toId];
 }
+
+-(NSString*) getToNickName
+{
+    return [_message toNickName];
+}
+
+-(void) setToNickName:(NSString*)toNickName
+{
+    [_message setToNickName:toNickName];
+}
+
 @end

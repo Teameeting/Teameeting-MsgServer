@@ -14,6 +14,7 @@ public final class MSMessage {
     private String uiconUrl = null;
     private String cash = null;
     private String wishcont = null;
+    private String toNickName = null;
 
     private int    millSec = 0;//send second
     private int    msgType = 0;
@@ -134,4 +135,8 @@ public final class MSMessage {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getToNickName() { return toNickName; }
+
+    public void setToNickName(String toNickName) { this.toNickName = toNickName; }
 }

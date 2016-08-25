@@ -36,6 +36,8 @@
 -(void) setGroupId:(NSString*)groupId;
 -(NSString*) getToId;
 -(void) setToId:(NSString*)toId;
+-(NSString*) getToNickName;
+-(void) setToNickName:(NSString*)toNickName;
 @end
 
 @interface MSRenMessage : NSObject{
@@ -51,6 +53,8 @@
 -(void) setCash:(NSString*)cash;
 -(NSString*) getWishcont;
 -(void) setWishcont:(NSString*)wishcont;
+-(NSString*) getToNickName;
+-(void) setToNickName:(NSString*)toNickName;
 @end
 
 @interface MSBlkMessage : NSObject{
@@ -64,6 +68,8 @@
 -(void) setGroupId:(NSString*)groupId;
 -(NSString*) getToId;
 -(void) setToId:(NSString*)toId;
+-(NSString*) getToNickName;
+-(void) setToNickName:(NSString*)toNickName;
 @end
 
 @interface MSFbdMessage : NSObject{
@@ -77,6 +83,8 @@
 -(void) setGroupId:(NSString*)groupId;
 -(NSString*) getToId;
 -(void) setToId:(NSString*)toId;
+-(NSString*) getToNickName;
+-(void) setToNickName:(NSString*)toNickName;
 @end
 
 @interface MSMgrMessage : NSObject{
@@ -90,6 +98,8 @@
 -(void) setGroupId:(NSString*)groupId;
 -(NSString*) getToId;
 -(void) setToId:(NSString*)toId;
+-(NSString*) getToNickName;
+-(void) setToNickName:(NSString*)toNickName;
 @end
 
 #endif /* MSSubMessage_h */
