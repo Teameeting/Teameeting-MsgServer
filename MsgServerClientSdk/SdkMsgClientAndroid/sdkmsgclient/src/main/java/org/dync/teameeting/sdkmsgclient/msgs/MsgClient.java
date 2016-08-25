@@ -9,6 +9,8 @@ import org.dync.teameeting.sdkmsgclient.jni.JMClientHelper;
 import org.dync.teameeting.sdkmsgclient.jni.JMClientType;
 import org.dync.teameeting.sdkmsgclient.jni.JMSCbData;
 import org.dync.teameeting.sdkmsgclient.jni.NativeContextRegistry;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -374,8 +376,18 @@ public class MsgClient implements JMClientHelper{
     }
 
     public void MCEnablePush(int push) {
-        if (null != mMApp) {
+        if (push<=0) return;
+        long setType = 1;
+        JSONObject jobj = new JSONObject();
+        try {
+            jobj.put("push", Integer.toString(push));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (null != jobj && null != mMApp) {
             mMApp.EnablePush(push);
+            mMApp.UpdateSetting(setType, jobj.toString());
         }
     }
 

@@ -215,6 +215,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 
+    public void EnablePush() {
+        System.out.println("EnablePush  mMsClientManager.enable was called");
+        mMsClientManager.enablePush(1);
+    }
 
     ////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////

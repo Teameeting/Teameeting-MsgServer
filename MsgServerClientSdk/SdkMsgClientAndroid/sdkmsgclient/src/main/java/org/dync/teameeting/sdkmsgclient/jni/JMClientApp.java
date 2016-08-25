@@ -46,6 +46,7 @@ public class JMClientApp {
     public native void SetNickName(String strNname);
     public native void SetUIconUrl(String strUicon);
     public native void EnablePush(int push);
+    public native void UpdateSetting(long setType, String jsonSetting);
 
     public native void InitUserSeqns(String strSeqnid, long seqn);
     public native void UpdateUserSeqns(String strSeqnid, long seqn);

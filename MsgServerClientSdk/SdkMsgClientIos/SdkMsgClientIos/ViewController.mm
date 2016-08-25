@@ -25,6 +25,7 @@
     UIButton *mNotifyForbiddenButton;
     UIButton *mNotifySettedMgrButton;
     UITextView *textViewDisplay;
+    UIButton *mSettingPush;
     NSString *mGroupId;
 }
 
@@ -118,6 +119,11 @@
     textViewDisplay.textColor = [UIColor blackColor];
     textViewDisplay.text = @"Result";
     [self.view addSubview:textViewDisplay];
+    
+    mSettingPush = [[UIButton alloc] initWithFrame:CGRectMake(250, 300, 200, 30)];
+    [self SetButtonParamsButton:mSettingPush title:@"SettingPush" state:@"SettingPushing..."];
+    [mSettingPush addTarget:self action:@selector(settingPushButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mSettingPush];
     
     ////////////////////////////////////////////////////
     clientMgr = [[MSClientManager alloc] init];
@@ -382,6 +388,17 @@
         info = [NSString stringWithFormat:@"sendMgrMsg outmsgid is :null"];
         NSLog(@"%@", info);
     }
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)settingPushButton:(id)sender {
+    NSString *settingPush = @"settingPushButton was called";
+    NSLog(@"%@", settingPush);
+    
+    [clientMgr enablePush:1];
+    
+    NSString* info = [NSString stringWithFormat:@"settingPush enablePush :%d", 1];
+    NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }
 

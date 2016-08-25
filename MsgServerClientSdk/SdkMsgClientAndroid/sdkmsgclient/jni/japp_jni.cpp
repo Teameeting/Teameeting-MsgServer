@@ -214,6 +214,13 @@ JOWW(void, JMClientApp_EnablePush)(JNIEnv *jni, jobject j_app, jint push)
 	jApp->SetEnablePush(push);
 }
 
+JOWW(void, JMClientApp_UpdateSetting)(JNIEnv *jni, jobject j_app, jlong setType, jstring jsonSetting)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jjsonSetting(jsonSetting);
+	jApp->UpdateSetting(setType, jjsonSetting.ToString8().c_str());
+}
+
 JOWW(void, JMClientApp_InitUserSeqns)(JNIEnv *jni, jobject j_app, jstring strSeqnid, jlong seqn)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);

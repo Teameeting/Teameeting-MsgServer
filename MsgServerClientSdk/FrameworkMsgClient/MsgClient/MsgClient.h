@@ -86,14 +86,20 @@ public:
     }
     
     void MCEnablePush(int push) {
-        std::vector<std::string> vec;
+        int64 setType = 1;
+        
         char val[4] = {0};
         sprintf(val, "%d", push);
-        vec.push_back("push");
-        vec.push_back(val);
-        int64 setType = 1;
+        NSString *nsPush = [NSString stringWithUTF8String:val];
+        
+        NSMutableDictionary *dicSetting = [[NSMutableDictionary alloc] init];
+        [dicSetting setValue:nsPush forKey:@"push"];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dicSetting options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
         SetEnablePush(push);
-        UpdateSetting(setType, vec);
+        UpdateSetting(setType, [jsonStr cStringUsingEncoding:NSASCIIStringEncoding]);
+        NSLog(@"UpdateSetting jsonStr is:%@", jsonStr);
     }
     
     NSString* MCGetNsUserId() { return m_nsUserId; }

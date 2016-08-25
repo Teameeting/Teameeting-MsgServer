@@ -87,7 +87,7 @@ public:
     int FetchGroupSeqn(const std::string& groupid);
     int SyncGroupSeqn(const std::string& groupid, int64 seqn, int role);
     int SyncGroupData(const std::string& gropuid, int64 seqn);
-    int UpdateSetting(int64 setType, const std::vector<std::string>& setting);
+    int UpdateSetting(int64 setType, const std::string& jsonSetting);
 
     MSState MSStatus() { return m_msState; }
     void SetUserId(const std::string& userid) { m_uid = userid; }

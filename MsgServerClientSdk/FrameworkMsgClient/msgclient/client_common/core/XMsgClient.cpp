@@ -371,17 +371,16 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
     return SendEncodeMsg(outstr);
 }
 
-int XMsgClient::UpdateSetting(int64 setType, const std::vector<std::string>& vec)
+int XMsgClient::UpdateSetting(int64 setType, const std::string& jsonSetting)
 {
 #if WEBRTC_ANDROID
-    LOGI("XMsgClient::UpdateSetting vec.size:%lu wait...\n", vec.size());
+    LOGI("XMsgClient::UpdateSetting setType:%lld wait...\n", setType);
 #else
-    LOG(INFO) << "XMsgClientit::UpdateSetting vec.size:" << vec.size() << " wait...";
+    LOG(INFO) << "XMsgClientit::UpdateSetting setType:" << setType << " wait...";
 #endif
-    std::string json;
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeUpdateSetting(outstr, m_uid, setType, json, m_module);
+        m_pMsgProcesser->EncodeUpdateSetting(outstr, m_uid, setType, jsonSetting, m_module);
     } else {
         return -1;
     }

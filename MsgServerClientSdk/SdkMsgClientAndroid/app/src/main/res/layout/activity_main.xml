@@ -147,6 +147,15 @@
                 android:layout_toRightOf="@+id/btnenter"
                 android:layout_toEndOf="@+id/btnenter" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="settingpush"
+                android:id="@+id/btnsettingpush"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textViewResult" />
+
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
