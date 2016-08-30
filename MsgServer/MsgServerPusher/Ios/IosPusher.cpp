@@ -59,6 +59,7 @@ bool IosPusher::UninPusher()
 bool IosPusher::ConnectApns()
 {
     if (!mApnCtx) return false;
+    apn_close(mApnCtx);
     if (APN_ERROR == apn_connect(mApnCtx))
     {
         printf("Could not connected to Apple Push Notification Service:%s, errno:%d\n", apn_error_string(errno), errno);
