@@ -84,7 +84,7 @@ void SRTSequenceRedis::OnPostEvent(const char*pData, int nSize)
     if (!pData || nSize<=0) return;
     std::string str(pData, nSize);
     pms::StorageMsg request;
-    request.ParseFromString(str);
+    if (!request.ParseFromString(str)) return;
     {
         if (request.mflag()==pms::EMsgFlag::FGROUP)
         {
@@ -200,7 +200,7 @@ void SRTSequenceRedis::OnPushEvent(const char*pData, int nSize)
     }
     std::string str(pData, nSize);
     pms::StorageMsg request;
-    request.ParseFromString(str);
+    if (!request.ParseFromString(str)) return;
     {
         if (request.mflag()==pms::EMsgFlag::FGROUP)
         {

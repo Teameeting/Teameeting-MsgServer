@@ -474,7 +474,7 @@ void GRTTransferSession::OnTypeTLogout(const std::string& str)
 void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont)) return;
     LI("GRTTransferSession::OnGroupNotify ruserid:%s, groupid:%s, mflag:%d, rsvrcmd:%d, push:%s, mtype:%s, store.sequence:%lld, store.version:%s\n\n"\
             , store.ruserid().c_str()\
             , store.groupid().c_str()\
@@ -518,7 +518,7 @@ void GRTTransferSession::OnGroupNotify(int code, const std::string& cont)
 void GRTTransferSession::OnCreateGroupSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont)) return;
     LI("GRTTransferSession::OnCreateGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
             , code, cont.length(), store.result());
     return;
@@ -527,7 +527,7 @@ void GRTTransferSession::OnCreateGroupSeqn(int code, const std::string& cont)
 void GRTTransferSession::OnDeleteGroupSeqn(int code, const std::string& cont)
 {
     pms::StorageMsg store;
-    store.ParseFromString(cont);
+    if (!store.ParseFromString(cont)) return;
     LI("GRTTransferSession::OnDeleteGroupSeqn =====>code:%d, cont.length:%lu, store.result:%d\n\n"\
             , code, cont.length(), store.result());
     return;

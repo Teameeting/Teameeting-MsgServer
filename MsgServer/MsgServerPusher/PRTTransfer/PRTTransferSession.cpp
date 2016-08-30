@@ -672,11 +672,11 @@ void PRTTransferSession::OnTypePush(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
     pms::RelayMsg r_msg;
-    r_msg.ParseFromString(str);
+    if (!r_msg.ParseFromString(str)) return;
     pms::MsgReq m_req;
-    m_req.ParseFromString(r_msg.content());
+    if (!m_req.ParseFromString(r_msg.content())) return;
     pms::Setting m_set;
-    m_set.ParseFromString(m_req.content());
+    if (!m_set.ParseFromString(m_req.content())) return;
     LI("PRTTransferSession::OnTypePush setting usr_from:%s, version:%s, set_type:%lld, json_cont:%s\n" \
             , m_set.usr_from().c_str()\
             , m_set.version().c_str()\
@@ -725,9 +725,9 @@ void PRTTransferSession::OnTypeTLogin(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
     pms::RelayMsg r_msg;
-    r_msg.ParseFromString(str);
+    if (!r_msg.ParseFromString(str)) return;
     pms::MsgReq m_req;
-    m_req.ParseFromString(r_msg.content());
+    if (!m_req.ParseFromString(r_msg.content())) return;
     pms::Login login;
     if (!login.ParseFromString(m_req.content())) {
         LE("login.ParseFromString error\n");

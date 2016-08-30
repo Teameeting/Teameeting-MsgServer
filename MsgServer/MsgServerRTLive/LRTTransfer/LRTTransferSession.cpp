@@ -486,7 +486,7 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     //LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
     LRTRTLiveManager::Instance().RecvRequestCounter();
     pms::RelayMsg r_msg;
-    r_msg.ParseFromString(str);
+    if (!r_msg.ParseFromString(str)) return;
     LI("LRTTransferSession::OnTypeTrans srv:cmd:%d\n", r_msg.svr_cmds());
     if (r_msg.svr_cmds() == pms::EServerCmd::CSNDMSG)
     {
@@ -614,13 +614,13 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CSYNCSEQN)
     {
         pms::StorageMsg s_msg;
-        s_msg.ParseFromString(r_msg.content());
+        if (!s_msg.ParseFromString(r_msg.content())) return;
         LI("SYNC SEQN sequence:%lld, ruserid:%s\n", s_msg.sequence(), s_msg.ruserid().c_str());
         LRTConnManager::Instance().PushSeqnReq2Queue(r_msg.content());
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CSYNCDATA)
     {
         pms::StorageMsg s_msg;
-        s_msg.ParseFromString(r_msg.content());
+        if (!s_msg.ParseFromString(r_msg.content())) return;
         LI("SYNC DATA sequence:%lld, ruserid:%s\n"\
                 , s_msg.sequence(), s_msg.ruserid().c_str());
 
@@ -629,7 +629,7 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
     } else if (r_msg.svr_cmds() == pms::EServerCmd::CUPDATESETTING)
     {
         pms::Setting s_set;
-        s_set.ParseFromString(r_msg.content());
+        if (!s_set.ParseFromString(r_msg.content())) return;
         LI("UPDATE SETTING usr_from:%s, set_type:%lld, json_cont:%s, version:%s\n", s_set.usr_from().c_str(), s_set.set_type(), s_set.json_cont().c_str(), s_set.version().c_str());
     }
 }
@@ -639,7 +639,7 @@ void LRTTransferSession::OnTypeQueue(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
     pms::PackedStoreMsg store;
-    store.ParseFromString(str);
+    if (!store.ParseFromString(str)) return;
     for(int i=0;i<store.msgs_size();++i)
     {
         if (store.msgs(i).ruserid().length()==0) break;
@@ -857,7 +857,7 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
     pms::PackedStoreMsg store;
-    store.ParseFromString(str);
+    if (!store.ParseFromString(str)) return;
     for(int i=0;i<store.msgs_size();++i)
     {
         if (store.msgs(i).ruserid().length()==0)
@@ -1046,7 +1046,7 @@ void LRTTransferSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType mod
     // this request is coming from group module client
     LI("%s was called\n", __FUNCTION__);
     pms::PackedStoreMsg packed;
-    packed.ParseFromString(msg);
+    if (!packed.ParseFromString(msg)) return;
     for(int i=0;i<packed.msgs_size();++i)
     {
         if (packed.msgs(i).ruserid().length()==0)break;
@@ -1132,7 +1132,7 @@ void LRTTransferSession::OnCreateGroupSeqn(pms::EServerCmd cmd, pms::EModuleType
     LI("%s was called, cmd:%d, msg.len:%d\n", __FUNCTION__, cmd, msg.length());
     LRTConnManager::Instance().PushNewMsg2Queue(msg);
     pms::StorageMsg store;
-    store.ParseFromString(msg);
+    if (!store.ParseFromString(msg)) return;
     LI("LRTTransferSession::OnCreateGroupSeqn --->create group seqn rsrvcmd:%d from who ruserid:%s,by client:%s to groupid:%s\n\n"\
             , store.rsvrcmd()\
             , store.ruserid().c_str()\
@@ -1146,7 +1146,7 @@ void LRTTransferSession::OnDeleteGroupSeqn(pms::EServerCmd cmd, pms::EModuleType
     LI("%s was called, cmd:%d, msg.len:%d\n", __FUNCTION__, cmd, msg.length());
     LRTConnManager::Instance().PushNewMsg2Queue(msg);
     pms::StorageMsg store;
-    store.ParseFromString(msg);
+    if (!store.ParseFromString(msg)) return;
     LI("LRTTransferSession::OnCreateGroupSeqn --->delete group seqn rsrvcmd:%d from who ruserid:%s,by client:%s to groupid:%s\n\n"\
             , store.rsvrcmd()\
             , store.ruserid().c_str()\

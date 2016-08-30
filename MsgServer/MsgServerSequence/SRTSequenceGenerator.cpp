@@ -45,7 +45,7 @@ void SRTSequenceGenerator::OnPostEvent(const char*pData, int nSize)
     }
     std::string str(pData, nSize);
     pms::PackedStoreMsg packed;
-    packed.ParseFromString(str);
+    if (!packed.ParseFromString(str)) return;
     for(int i=0;i<packed.msgs_size();++i)
     {
         if (packed.msgs(i).ruserid().compare("keepalive")==0)
@@ -84,7 +84,7 @@ void SRTSequenceGenerator::OnPushEvent(const char*pData, int nSize)
     }
     std::string str(pData, nSize);
     pms::PackedStoreMsg packed;
-    packed.ParseFromString(str);
+    if (!packed.ParseFromString(str)) return;
     for(int i=0;i<packed.msgs_size();++i)
     {
         if (packed.msgs(i).ruserid().compare("keepalive")==0)

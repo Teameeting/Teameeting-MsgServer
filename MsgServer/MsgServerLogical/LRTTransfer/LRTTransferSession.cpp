@@ -461,7 +461,7 @@ void LRTTransferSession::OnTypePush(const std::string& str)
 void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
 {
     pms::RelayMsg rmsg;
-    rmsg.ParseFromString(str);
+    if (!rmsg.ParseFromString(str)) return;
 
     switch (rmsg.svr_cmds())
     {
@@ -471,7 +471,7 @@ void LRTTransferSession::OnTypeWriteRequest(const std::string& str)
             {
                 LRTLogicalManager::Instance().RecvRequestCounter();
                 pms::PackedStoreMsg store;
-                store.ParseFromString(rmsg.content());
+                if (!store.ParseFromString(rmsg.content())) return;
                 for(int i=0;i<store.msgs_size();++i)
                 {
                     if (store.msgs(i).ruserid().length()==0)
@@ -509,14 +509,14 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
 {
 
     pms::RelayMsg rmsg;
-    rmsg.ParseFromString(str);
+    if (!rmsg.ParseFromString(str)) return;
 
     //if (rmsg.svr_cmds()==pms::EServerCmd::CNEWMSGSEQN)
     // this is response from wirte seqn
     if (rmsg.svr_cmds()==pms::EServerCmd::CSEQN)
     {
         pms::PackedStoreMsg store, newmsg_store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).ruserid().length()==0)
@@ -577,7 +577,7 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
     } else if (rmsg.svr_cmds()==pms::EServerCmd::CDATA)
     {
         pms::PackedStoreMsg store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
         for(int i=0;i<store.msgs_size();++i)
         {
@@ -601,12 +601,12 @@ void LRTTransferSession::OnTypeWriteResponse(const std::string& str)
 void LRTTransferSession::OnTypeReadRequest(const std::string& str)
 {
     pms::RelayMsg rmsg;
-    rmsg.ParseFromString(str);
+    if (!rmsg.ParseFromString(str)) return;
 
     if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCSEQN)
     {
         pms::PackedStoreMsg store, s_store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).ruserid().length()==0)
@@ -648,7 +648,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
     } else if (rmsg.svr_cmds()==pms::EServerCmd::CSYNCDATA) {
         // first get cur seqn
         pms::PackedStoreMsg store, d_store, s_store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).ruserid().length()==0)
@@ -738,7 +738,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
         // this request is from pusher to get data, this implement should be same as CSYNCDATA
         // the only difference is here it get THE sequence-data
         pms::PackedStoreMsg store, d_store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         for(int i=0;i<store.msgs_size();++i)
         {
             if (store.msgs(i).ruserid().length()==0)
@@ -780,12 +780,12 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
 void LRTTransferSession::OnTypeReadResponse(const std::string& str)
 {
     pms::RelayMsg rmsg;
-    rmsg.ParseFromString(str);
+    if (!rmsg.ParseFromString(str)) return;
 
     if (rmsg.svr_cmds()==pms::EServerCmd::CSEQN)
     {
         pms::PackedStoreMsg store, d_store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
         for(int i=0;i<store.msgs_size();++i)
         {
@@ -846,7 +846,7 @@ void LRTTransferSession::OnTypeReadResponse(const std::string& str)
     } else if (rmsg.svr_cmds()==pms::EServerCmd::CDATA)
     {
         pms::PackedStoreMsg store;
-        store.ParseFromString(rmsg.content());
+        if (!store.ParseFromString(rmsg.content())) return;
         LI("%s was called, store.msgs_size:%d\n", __FUNCTION__, store.msgs_size());
         for(int i=0;i<store.msgs_size();++i)
         {

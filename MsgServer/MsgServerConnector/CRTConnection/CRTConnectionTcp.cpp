@@ -145,7 +145,7 @@ void CRTConnectionTcp::OnSndMsg(pms::EServerCmd cmd, pms::EModuleType module, co
 
     // enclosing msg in CRTTransferSession::TransferMsg
     pms::Entity request;
-    request.ParseFromString(msg);
+    if (!request.ParseFromString(msg)) return;
     CRTConnManager::Instance().TransferMsg(cmd, module, m_userId, msg);
     std::string resp;
     GenericResponse(pms::EServerCmd::CSNDMSG, module, 0, *request.mutable_cmsg_id(), resp);
