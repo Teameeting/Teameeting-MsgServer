@@ -141,15 +141,18 @@ int	CRTConnector::Start(const MsConfigParser& conf)
 
     std::string strLocalIp("");
     std::string strHttpIp("");
+    std::string strRedisIp1("");
     if (debug==1)
     {
         strLocalIp = conf.GetValue("global", "connector_int_ip", "127.0.0.1");
         strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_int_ip1", "127.0.0.1");
     } else {
         strLocalIp = conf.GetValue("global", "connector_ext_ip", "127.0.0.1");
         strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
     }
-    if (strLocalIp.length()==0 || strHttpIp.length()==0) {
+    if (strLocalIp.length()==0 || strHttpIp.length()==0 || strRedisIp1.length()==0) {
         std::cout << "Error: Ip length is 0!" << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -160,6 +163,7 @@ int	CRTConnector::Start(const MsConfigParser& conf)
     int nModulePort = conf.GetIntVal("global", "listen_module_port", 6620);
     int nCliConPort = conf.GetIntVal("global", "listen_clicon_port", 6630);
     int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+    int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
 
     int log_level = conf.GetIntVal("log", "level", 5);
     std::string strLogPath = conf.GetValue("log", "path");
@@ -171,6 +175,7 @@ int	CRTConnector::Start(const MsConfigParser& conf)
         exit(0);
     }
 
+    CRTConnManager::Instance().Init(strRedisIp1, nRedisPort1);
     std::string ssid;
     GenericSessionId(ssid);
     CRTConnManager::Instance().SetConnectorInfo(strLocalIp, nWebConPort, ssid.c_str());
@@ -232,4 +237,5 @@ void CRTConnector::Stop()
 {
     CRTConnManager::Instance().SignalKill();
     CRTConnManager::Instance().ClearAll();
+    CRTConnManager::Instance().Unin();
 }

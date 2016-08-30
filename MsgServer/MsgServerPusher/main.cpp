@@ -20,9 +20,15 @@
 
 int main(int argc, const char * argv[]) {
     printf("Hello, Pusher!!!\n");
-    //IosPusher::Instance().InitPusher();
-    //IosPusher::Instance().ConfigToken();
-    //IosPusher::Instance().ConfigPayload();
+    //Assert(IosPusher::Instance().InitPusher());
+    //Assert(IosPusher::Instance().ConnectApns());
+    //Assert(IosPusher::Instance().InitConfig());
+
+    if (!IosPusher::Instance().InitPusher()) exit(0);
+    if (!IosPusher::Instance().ConnectApns()) exit(0);
+    if (!IosPusher::Instance().InitConfig()) exit(0);
+    printf("Connect to Apns Ok!!!\n");
+
 
     PRTPusher::PrintVersion();
 

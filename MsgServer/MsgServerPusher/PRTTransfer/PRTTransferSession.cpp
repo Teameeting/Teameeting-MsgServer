@@ -39,7 +39,7 @@ PRTTransferSession::PRTTransferSession()
 , m_port(0)
 , m_connectingStatus(0)
 , m_pPushMsgProcesser(nullptr)
-, m_module(pms::EModuleType::TLIVE)
+, m_module(pms::EModuleType::TPUSHER)
 {
     AddObserver(this);
 }
@@ -71,10 +71,26 @@ void PRTTransferSession::Init()
         assert(false);
     }
     m_pPushMsgProcesser->Init();
+    std::vector<std::string> vec;
+    PRTPusherManager::Instance().GetRedisHosts(&vec);
+    if (vec.size()>0)
+    {
+        char ip[16] = {0};
+        unsigned int port = 0;
+        sscanf(vec.at(0).c_str(), "%s %u", ip, &port);
+        LI("PUSHER redis ip:%s, port:%u\n", ip, port);
+        if (strlen(ip)>0 && port > 2048)
+            m_xRedis.Init(ip, port);
+        else
+            LE("xRedis ip or port error\n");
+    } else {
+        LE("PRTTransferSession::Init redis vec.size:%d not bigger 0\n", vec.size());
+    }
 }
 
 void PRTTransferSession::Unit()
 {
+    m_xRedis.Unin();
     Disconn();
     m_connectingStatus = 0;
 }
@@ -199,6 +215,68 @@ void PRTTransferSession::OnRecvMessage(const char*message, int nLen)
     LI("PRTTransferSession::OnRecvMessage ~~~~~~~~~~~~~~~~~~\n");
     RTTransfer::DoProcessData(message, nLen);
 }
+
+void PRTTransferSession::OnPushEvent(const char*pData, int nLen)
+{
+    // get 10 needed push msg in redis each time
+    int64_t start=0, stop=9;
+    ArrayReply reply;
+    if (!m_xRedis.GetNeedPushMsg("ios", reply, start, stop))
+    {
+        LE("PRTTransferSession::OnPushEvent GetNeedPushMsg start:%lld stop:%lld failed\n", start, stop);
+        return;
+    }
+
+    // parse each msg one by one
+    ReplyData::iterator iter = reply.begin();
+    for (; iter != reply.end(); iter++) {
+        printf("%d\t%s\r\n", (*iter).type, (*iter).str.c_str());
+        if (((*iter).str.empty()) || ((*iter).str.length()==0)) continue;
+        rapidjson::Document jReqDoc;
+        if (jReqDoc.ParseInsitu<0>((char*)(*iter).str.c_str()).HasParseError())
+        {
+            continue;
+        }
+
+        if (!(jReqDoc.HasMember("token")&&jReqDoc["token"].IsString()))
+        {
+            continue;
+        }
+        std::string token = jReqDoc["token"].GetString();
+
+        if (!(jReqDoc.HasMember("cont")&&jReqDoc["cont"].IsString()))
+        {
+            continue;
+        }
+        std::string cont = jReqDoc["cont"].GetString();
+
+        if (!(jReqDoc.HasMember("groupid")&&jReqDoc["groupid"].IsString()))
+        {
+            continue;
+        }
+        std::string groupid = jReqDoc["groupid"].GetString();
+
+        if (token.length()==0 || cont.length()==0 || groupid.length()==0) continue;
+
+        std::vector<const char*> extra;
+        extra.push_back("groupid");
+        extra.push_back(groupid.c_str());
+        if (!IosPusher::Instance().PushMsg(token.c_str(), cont.c_str(), extra.data(), extra.size()))
+        {
+            // push failed, so store msg to redis
+            m_xRedis.SetNeedPushMsg("ios", (*iter).str);
+        }
+    }
+
+    // if still has need push msg in redis, signal
+    int64_t count = 0;
+    if (m_xRedis.LenListMsg("ios", count))
+    {
+         if (count > 0)
+             this->Signal(Task::kPushEvent);
+    }
+}
+
 
 
 // from RTTransfer
@@ -402,11 +480,19 @@ void PRTTransferSession::OnTypeQueue(const std::string& str)
 
 }
 
+// this is from rtlive module push data
 void PRTTransferSession::OnTypeDispatch(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
+    pms::MsgRep resp;
+    if (!resp.ParseFromString(str))
+    {
+        LE("PRTTransferSession::OnTypeDispatch resp ParseFromString error\n");
+        return;
+    }
+
     pms::StorageMsg store;
-    if (!store.ParseFromString(str))
+    if (!store.ParseFromString(resp.rsp_cont()))
     {
         LE("PRTTransferSession::OnTypeDispatch store ParseFromString error\n");
         return;
@@ -420,18 +506,21 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             , store.groupid().c_str()\
             , store.mtype().c_str()\
             , store.mflag());
+
     pms::Entity entity;
     if (!entity.ParseFromString(store.content()))
     {
         LE("PRTTransferSession::OnTypeDispatch entity ParseFromString error\n");
         return;
     }
-    std::string fromId, nickName, groupId;
+
+    // parse to get msg info
+    std::string fromId, nickName, groupId, toNickName, toId;
     int msgType;
     rapidjson::Document jsonMsgDoc;
     if (!jsonMsgDoc.ParseInsitu<0>((char*)entity.msg_cont().c_str()).HasParseError())
     {
-        if (jsonMsgDoc.HasMember("fromId"))
+        if (jsonMsgDoc.HasMember("fromId")&&jsonMsgDoc["fromId"].IsString())
         {
             fromId = jsonMsgDoc["fromId"].GetString();
             LI("push msg fromId :%s\n", fromId.c_str());
@@ -439,7 +528,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             LE("in jsonMsgDoc not has member fromId, jstr:%s\n", entity.msg_cont().c_str());
             return;
         }
-        if (jsonMsgDoc.HasMember("nickName"))
+        if (jsonMsgDoc.HasMember("nickName")&&jsonMsgDoc["nickName"].IsString())
         {
             nickName = jsonMsgDoc["nickName"].GetString();
             LI("push msg nickName :%s\n", nickName.c_str());
@@ -447,7 +536,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             LE("in jsonMsgDoc not has member nickname, jstr:%s\n", entity.msg_cont().c_str());
             return;
         }
-        if (jsonMsgDoc.HasMember("groupId"))
+        if (jsonMsgDoc.HasMember("groupId")&&jsonMsgDoc["groupId"].IsString())
         {
             groupId = jsonMsgDoc["groupId"].GetString();
             LI("push msg groupId: %s\n", groupId.c_str());
@@ -455,7 +544,22 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             LE("in jsonMsgDoc not has member groupId, jstr:%s\n", entity.msg_cont().c_str());
             return;
         }
-        if (jsonMsgDoc.HasMember("msgType"))
+        if (jsonMsgDoc.HasMember("toNickName")&&jsonMsgDoc["toNickName"].IsString())
+        {
+            toNickName = jsonMsgDoc["toNickName"].GetString();
+            LI("push msg toNickName :%s\n", toNickName.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member toNickName, jstr:%s\n", entity.msg_cont().c_str());
+            return;
+        }
+        if (jsonMsgDoc.HasMember("toId")&&jsonMsgDoc["toId"].IsString())
+        {
+            toId = jsonMsgDoc["toId"].GetString();
+            LI("push msg toId :%s\n", toId.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member toId, jstr:%s\n", entity.msg_cont().c_str());
+        }
+        if (jsonMsgDoc.HasMember("msgType")&&jsonMsgDoc["msgType"].IsInt())
         {
             msgType = jsonMsgDoc["msgType"].GetInt();
             LI("push msg msgType :%d\n", msgType);
@@ -463,24 +567,176 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             LE("in jsonMsgDoc not has member msgType, jstr:%s\n", entity.msg_cont().c_str());
             return;
         }
-        LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s\n", fromId.c_str(), nickName.c_str(), groupId.c_str());
-        //IosPusher::Instance().ConfigPayload();
-        //IosPusher::Instance().PushMsg();
+        LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s\n"\
+                , fromId.c_str()\
+                , nickName.c_str()\
+                , groupId.c_str()\
+                , toNickName.c_str());
+
+
+        // store.ruserid() is that this push msg will push to
+        // fromId is that this entity msg is send from
+        // toId is that this entity msg is send to
+        std::string token;
+        m_xRedis.GetSettingPush(store.ruserid(), resp.mod_type(), "token", token);
+        LI("PRTTransferSession::OnTypeDispatch user:%s in module:%d push token is:%s\n", store.ruserid().c_str(), resp.mod_type(), token.c_str());
+        if (token.length()==0) return;
+
+        LI("PRTTransferSession::OnTypeDispatch msg type is:%d\n", msgType);
+        // compose push msg
+        char cont[128] = {0};
+        switch (msgType) {
+        case pms::EMsgType::TLIV:
+             {
+                 if (store.ruserid().compare(fromId)==0) break; // push to sender is not fittable
+                 sprintf(cont, "%s 正在直播，赶快来看吧!!!", nickName.c_str());
+             }
+             break;
+        case pms::EMsgType::TREN:
+             {
+                 if (store.ruserid().compare(fromId)==0) break; // push to sender is not fittable
+                 if (store.ruserid().compare(toId)==0) { // push to client
+                     sprintf(cont, "%s 给你发送了红包，快去查看吧!!!", nickName.c_str());
+                 } else {
+                     sprintf(cont, "%s 给 %s 发送了红包，快去查看吧!!!", nickName.c_str(), toNickName.c_str());
+                 }
+             }
+             break;
+        case pms::EMsgType::TBLK:
+             {
+                 if (store.ruserid().compare(fromId)==0) break; // push to sender is not fittable
+                 if (store.ruserid().compare(toId)==0) { // push to client
+                     sprintf(cont, "%s 把你拉入了黑名单!!!", nickName.c_str());
+                 } else {
+                     sprintf(cont, "%s 把 %s 拉入了黑名单!!!", nickName.c_str(), toNickName.c_str());
+                 }
+             }
+             break;
+        case pms::EMsgType::TFBD:
+             {
+                 if (store.ruserid().compare(fromId)==0) break; // push to sender is not fittable
+                 if (store.ruserid().compare(toId)==0) { // push to client
+                     sprintf(cont, "%s 把你禁言了!!!", nickName.c_str());
+                 } else {
+                     sprintf(cont, "%s 把 %s 禁言了!!!", nickName.c_str(), toNickName.c_str());
+                 }
+             }
+             break;
+        case pms::EMsgType::TMGR:
+             {
+                 if (store.ruserid().compare(fromId)==0) break; // push to sender is not fittable
+                 if (store.ruserid().compare(toId)==0) { // push to client
+                     sprintf(cont, "%s 把你设置为管理员!!!", nickName.c_str());
+                 } else {
+                     sprintf(cont, "%s 把 %s 设置为管理员!!!", nickName.c_str(), toNickName.c_str());
+                 }
+             }
+             break;
+        default:
+             return;
+        }
+
+        if (strlen(cont)==0) return;
+        LI("push content:%s\n", cont);
+
+        // redis push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
+        // redis push msg key:'push:msg:module:userid' by lpush, value...
+        rapidjson::Document jDoc;
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        jDoc.SetObject();
+        jDoc.AddMember("token", token.c_str(), jDoc.GetAllocator());
+        jDoc.AddMember("cont", cont, jDoc.GetAllocator());
+        jDoc.AddMember("groupid", groupId.c_str(), jDoc.GetAllocator());
+        jDoc.AddMember("userid", store.ruserid().c_str(), jDoc.GetAllocator());
+        jDoc.AddMember("modtype", resp.mod_type(), jDoc.GetAllocator());
+        jDoc.AddMember("devtype", "ios", jDoc.GetAllocator());
+
+        jDoc.Accept(writer);
+        std::string s = sb.GetString();
+        // write to redis
+        if (!m_xRedis.SetNeedPushMsg("ios", s))
+        {
+            LE("PRTTransferSession::OnTypeDispatch push msg to redis failed\n");
+            return;
+        }
+        this->Signal(Task::kPushEvent);
     } else {
         LE("parse msg:%s error\n", entity.msg_cont().c_str());
         return;
     }
-
 }
 
+// this is from connector update setting
 void PRTTransferSession::OnTypePush(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
+    pms::RelayMsg r_msg;
+    r_msg.ParseFromString(str);
+    pms::MsgReq m_req;
+    m_req.ParseFromString(r_msg.content());
+    pms::Setting m_set;
+    m_set.ParseFromString(m_req.content());
+    LI("PRTTransferSession::OnTypePush setting usr_from:%s, version:%s, set_type:%lld, json_cont:%s\n" \
+            , m_set.usr_from().c_str()\
+            , m_set.version().c_str()\
+            , m_set.set_type()\
+            , m_set.json_cont().c_str());
+
+    int msgType;
+    rapidjson::Document jsonMsgDoc;
+    if (jsonMsgDoc.ParseInsitu<0>((char*)m_set.json_cont().c_str()).HasParseError())
+    {
+        LE("PRTTransferSession::OnTypePush parse json cont:%s, error\n", m_set.json_cont().c_str());
+        return;
+    }
+    if (m_set.set_type()==1)
+    {
+        std::string enablepush;
+        if (jsonMsgDoc.HasMember("enablepush")&&jsonMsgDoc["enablepush"].IsString())
+        {
+            enablepush = jsonMsgDoc["enablepush"].GetString();
+            LI("push msg enablepush :%s\n", enablepush.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member enablepush, jstr:%s\n", m_set.json_cont().c_str());
+            return;
+        }
+        LI("PRTTransferSession::OnTypePush usr:%s, module:%d, setting enablepush:%s\n", m_set.usr_from().c_str(), m_req.mod_type(), enablepush.c_str());
+        // redis user push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
+        m_xRedis.SetSettingPush(m_set.usr_from(), m_req.mod_type(), "enablepush", enablepush);
+    } else if (m_set.set_type()==2)
+    {
+        std::string token;
+        if (jsonMsgDoc.HasMember("token")&&jsonMsgDoc["token"].IsString())
+        {
+            token = jsonMsgDoc["token"].GetString();
+            LI("push msg token :%s\n", token.c_str());
+        } else {
+            LE("in jsonMsgDoc not has member token, jstr:%s\n", m_set.json_cont().c_str());
+            return;
+        }
+        LI("PRTTransferSession::OnTypePush usr:%s, module:%d, setting token:%s\n", m_set.usr_from().c_str(), m_req.mod_type(), token.c_str());
+        // redis user push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
+        m_xRedis.SetSettingPush(m_set.usr_from(), m_req.mod_type(), "token", token);
+    }
 }
 
 void PRTTransferSession::OnTypeTLogin(const std::string& str)
 {
     LI("%s was called\n", __FUNCTION__);
+    pms::RelayMsg r_msg;
+    r_msg.ParseFromString(str);
+    pms::MsgReq m_req;
+    m_req.ParseFromString(r_msg.content());
+    pms::Login login;
+    if (!login.ParseFromString(m_req.content())) {
+        LE("login.ParseFromString error\n");
+        return;
+    }
+
+    LI("PRTTransferSession::OnTypeTLogin usr:%s, module:%d, setting token:%s\n", login.usr_from().c_str(), m_req.mod_type(), login.usr_token().c_str());
+    // redis user push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
+    m_xRedis.SetSettingPush(login.usr_from(), m_req.mod_type(), "token", login.usr_token());
 }
 
 void PRTTransferSession::OnTypeTLogout(const std::string& str)

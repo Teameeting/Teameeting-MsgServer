@@ -29,6 +29,7 @@ MsgServerPusher_SOURCES=$(top_srcdir)/PRTListener/PRTPusherListener.cpp \
 						   $(top_srcdir)/PRTTransfer/PRTTransferSession.cpp \
 						   $(top_srcdir)/PRTTransfer/XPushMsgProcesser.cpp \
 						   $(top_srcdir)/Ios/IosPusher.cpp \
+						   $(top_srcdir)/PRTXRedis.cpp \
 						   $(top_srcdir)/PRTConnManager.cpp \
 						   $(top_srcdir)/PRTConnDispatcher.cpp \
 						   $(top_srcdir)/PRTPusherManager.cpp \

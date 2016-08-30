@@ -316,6 +316,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
         return;
     }
     LI("DRTTransferSession::OnTypeQueue was called\n");
+
     //get all user
     pms::ToUser auser = rmsg.touser();
     bool needDispatch = false;
@@ -372,21 +373,7 @@ void DRTTransferSession::OnTypeQueue(const std::string& str)
     std::string sd = rmsg.SerializeAsString();
     m_msgDispatch.SendData(sd.c_str(), (int)sd.length());
 #endif
-    {
-        //if offline, push to offline msgqueue
-        if (needPush) {
-            pmsg.set_svr_cmds(rmsg.svr_cmds());
-            pmsg.set_tr_module(rmsg.tr_module());
-            pmsg.set_content(rmsg.content());
-            pmsg.set_connector(rmsg.connector());//which connector comes from
 
-            std::string sp = pmsg.SerializeAsString();
-            m_msgDispatch.PushData(sp.c_str(), (int)sp.length());
-
-            LI("OnTypeQueue push msg--->:\n");
-            //pmsg.PrintDebugString();
-        }
-    }
 #else
     LI("not define DEF_PROTO\n");
 #endif

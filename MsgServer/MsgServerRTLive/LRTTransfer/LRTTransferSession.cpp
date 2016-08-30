@@ -480,6 +480,7 @@ void LRTTransferSession::OnTypeConn(const std::string& str)
 #endif
 }
 
+// recv msg from connector
 void LRTTransferSession::OnTypeTrans(const std::string& str)
 {
     //LI("%s was called, str:%s\n", __FUNCTION__, str.c_str());
@@ -625,6 +626,11 @@ void LRTTransferSession::OnTypeTrans(const std::string& str)
 
         // first set sync seqn for data cmd, send to sync seqn
         LRTConnManager::Instance().PushDataReq2Queue(r_msg.content());
+    } else if (r_msg.svr_cmds() == pms::EServerCmd::CUPDATESETTING)
+    {
+        pms::Setting s_set;
+        s_set.ParseFromString(r_msg.content());
+        LI("UPDATE SETTING usr_from:%s, set_type:%lld, json_cont:%s, version:%s\n", s_set.usr_from().c_str(), s_set.set_type(), s_set.json_cont().c_str(), s_set.version().c_str());
     }
 }
 
@@ -890,6 +896,7 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
             // set relay
             r_msg.set_svr_cmds(store.msgs(i).rsvrcmd());
             r_msg.set_tr_module(pms::ETransferModule::MLIVE);
+            r_msg.set_cont_module(pms::EModuleType::TLIVE); // in connector, check get enablepush
             r_msg.set_connector("");
             r_msg.set_content(resp.SerializeAsString());
             pms::ToUser *pto = new pms::ToUser;
@@ -982,7 +989,7 @@ void LRTTransferSession::OnTypeDispatch(const std::string& str)
             pms::TransferMsg tmsg;
 
             tmsg.set_type(pms::ETransferType::TDISPATCH);
-            tmsg.set_content(store.msgs(i).SerializeAsString());
+            tmsg.set_content(resp.SerializeAsString());
 
             std::string s = tmsg.SerializeAsString();
             LI("LRTTransferSession::OnTypeQueue --->group msg seqn:%lld, from who ruserid:%s, to groupid:%s\n\n"\
@@ -1064,6 +1071,7 @@ void LRTTransferSession::OnGroupNotify(pms::EServerCmd cmd, pms::EModuleType mod
         // set relay
         r_msg.set_svr_cmds(pms::EServerCmd::CGROUPNOTIFY);
         r_msg.set_tr_module(pms::ETransferModule::MLIVE);
+        r_msg.set_cont_module(pms::EModuleType::TLIVE); // in connector, check get enablepush
         r_msg.set_connector("");
         r_msg.set_content(resp.SerializeAsString());
 

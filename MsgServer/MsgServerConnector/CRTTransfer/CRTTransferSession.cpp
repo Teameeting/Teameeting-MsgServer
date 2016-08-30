@@ -10,6 +10,15 @@
 #include "CRTConnManager.h"
 #include "RTUtils.hpp"
 
+#include "MsgServer/proto/common_msg.pb.h"
+#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
+#include "MsgServer/proto/sys_msg.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/entity_msg.pb.h"
+#include "MsgServer/proto/entity_msg_type.pb.h"
+
+
 CRTTransferSession::CRTTransferSession()
 : RTJSBuffer()
 , RTTransfer()
@@ -283,6 +292,7 @@ void CRTTransferSession::OnTypeDispatch(const std::string& str)
     }
     pms::ToUser to = dmsg.touser();
 
+    LI("OnTypeDispatch dmsg--->transfer module:%d, content module:%d\n\n", dmsg.tr_module(), dmsg.cont_module());
     {
         for(int i = 0;i < to.users_size(); ++i) {
             LI("OnTypeDispatch dmsg--->:to.user:%s\n", to.users(i).c_str());

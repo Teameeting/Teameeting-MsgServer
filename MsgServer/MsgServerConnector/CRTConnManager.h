@@ -19,6 +19,7 @@
 #include "RTTcp.h"
 #include "RTType.h"
 #include "RTSingleton.h"
+#include "CRTXRedis.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
@@ -137,7 +138,14 @@ public:
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void ConnectionConnNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
+
     void TransferMsg(pms::EServerCmd cmd, pms::EModuleType type, const std::string& uid, const std::string& msg);
+    void TransferToPusher(pms::EServerCmd cmd, pms::EModuleType type, const std::string& uid, const std::string& msg);
+
+    void Init(const std::string redisIP, int redisPort);
+    void Unin();
+    bool GetEnablePush(const std::string& userid, pms::EModuleType type);
+
     bool    SignalKill();
     bool    ClearAll();
 
@@ -154,6 +162,9 @@ private:
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
+
+    CRTXRedis       m_xRedis;
+
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnManager__) */

@@ -138,7 +138,7 @@ int	PRTPusher::Start(const MsConfigParser& conf)
         strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
         strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
     }
-    if (strLocalIp.length()==0) {
+    if (strLocalIp.length()==0 || strRedisIp1.length()==0) {
         std::cout << "Error: Ip length is 0!" << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -163,7 +163,7 @@ int	PRTPusher::Start(const MsConfigParser& conf)
     PRTPusherManager::Instance().InitManager();
 
     char addr[24] = {0};
-    sprintf(addr, "%s %d", strLocalIp.c_str(), nRedisPort1);
+    sprintf(addr, "%s %d", strRedisIp1.c_str(), nRedisPort1);
     PRTPusherManager::Instance().PushRedisHosts(addr);
 
 	if(nConnectorPort > 0)
@@ -190,19 +190,6 @@ int	PRTPusher::Start(const MsConfigParser& conf)
         }
 	}
 
-    //std::string ssid;
-    //if (nModulePort > 0) {
-    //    m_pModuleListener = new PRTPusherListener();
-    //    OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, nModulePort);
-    //    if (err!=OS_NoErr) {
-    //        LE("CreateModuleListener error port:%d\n", nModulePort);
-    //        delete m_pModuleListener;
-    //        m_pModuleListener = NULL;
-    //        return -1;
-    //    }
-    //    LI("Start Module service:(%d) ok...,socketFD:%d\n", nModulePort, m_pModuleListener->GetSocketFD());
-    //    m_pModuleListener->RequestEvent(EV_RE);
-    //}
 	return 0;
 }
 

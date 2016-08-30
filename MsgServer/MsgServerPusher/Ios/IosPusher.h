@@ -20,11 +20,11 @@ class IosPusher : public RTSingleton<IosPusher>{
     bool InitPusher();
     bool UninPusher();
 
-    bool ConfigToken();
-    bool ConfigPayload();
+    bool ConnectApns();
 
-    bool PushMsg();
+    bool InitConfig();
 
+    bool PushMsg(const char* token, const char* cont, const char** arr, uint32_t size);
 
     protected:
     IosPusher(){}
@@ -33,7 +33,6 @@ class IosPusher : public RTSingleton<IosPusher>{
     private:
     apn_ctx_t               *mApnCtx;
     apn_payload_t           *mPayload;
-    apn_array_t             *mTokens;
 };
 
 #endif // _IOS_PUSHER_H_

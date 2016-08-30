@@ -19,12 +19,13 @@ message ConnMsg{
 message RelayMsg{
     EServerCmd         svr_cmds = 1;
     ETransferModule    tr_module = 2; // the server module
-    string             connector = 3;
-    string             handle_cmd = 4;
-    string             handle_mtype = 5;
-    string             handle_data = 6;
-    bytes              content = 7; // this is the application or module msg
-    ToUser             touser = 8;
+    EModuleType        cont_module = 3; // the msg content's module
+    string             connector = 4;
+    string             handle_cmd = 5;
+    string             handle_mtype = 6;
+    string             handle_data = 7;
+    bytes              content = 8; // this is the application or module msg
+    ToUser             touser = 9;
 }
 
 // this is for msg relaying between server

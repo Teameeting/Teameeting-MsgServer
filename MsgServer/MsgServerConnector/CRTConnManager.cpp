@@ -218,6 +218,68 @@ void CRTConnManager::TransferMsg(pms::EServerCmd cmd, pms::EModuleType module, c
     }
 }
 
+void CRTConnManager::TransferToPusher(pms::EServerCmd cmd, pms::EModuleType type, const std::string& uid, const std::string& msg)
+{
+    CRTConnManager::ModuleInfo* pmodule = CRTConnManager::Instance().findModuleInfo("", pms::ETransferModule::MPUSHER);
+    if (pmodule && pmodule->pModule && pmodule->pModule->IsLiveSession()) {
+
+        // msg is pms::MsgReq->pms::Setting
+        pms::RelayMsg r_msg;
+        pms::TransferMsg t_msg;
+
+        r_msg.set_svr_cmds(cmd);
+        r_msg.set_tr_module(pms::ETransferModule::MCONNECTOR);
+        r_msg.set_connector(CRTConnManager::Instance().ConnectorId());
+        r_msg.set_content(msg);
+
+        if (cmd==pms::EServerCmd::CUPDATESETTING)
+        {
+            t_msg.set_type(pms::ETransferType::TPUSH);
+        } else if (cmd==pms::EServerCmd::CLOGIN)
+        {
+            t_msg.set_type(pms::ETransferType::TLOGIN);
+        } else {
+            return;
+        }
+        t_msg.set_content(r_msg.SerializeAsString());
+
+        // t_msg is pms::TransferMsg->pms::RelayMsg->pms::MsgReq->pms::Setting
+        std::string s = t_msg.SerializeAsString();
+        pmodule->pModule->SendTransferData(s.c_str(), (int)s.length());
+        LI("CRTConnManager::TransferToPusher send push msg to pusher, module type:%d, module id:%s!!!\n\n", pmodule->othModuleType, pmodule->othModuleId.c_str());
+    } else {
+        LE("CRTConnManager::TransferToPusher module pusher is not liveeeeeeeeeeee!!!\n");
+    }
+    return;
+}
+
+void CRTConnManager::Init(const std::string redisIp, int redisPort)
+{
+    m_xRedis.Init(redisIp, redisPort);
+}
+
+void CRTConnManager::Unin()
+{
+    m_xRedis.Unin();
+}
+
+bool CRTConnManager::GetEnablePush(const std::string& userid, pms::EModuleType type)
+{
+    std::string enablepush;
+    if (m_xRedis.GetSettingPush(userid, type, "enablepush", enablepush))
+    {
+        LI("CRTConnManager::GetEnablePush enablepush:%s\n", enablepush.c_str());
+        if (enablepush.compare("1")==0)
+        {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 
 bool CRTConnManager::SignalKill()
 {

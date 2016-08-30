@@ -16,6 +16,7 @@ CF_EXTERN_C_BEGIN
 
 @class ToUser;
 GPB_ENUM_FWD_DECLARE(EConnTag);
+GPB_ENUM_FWD_DECLARE(EModuleType);
 GPB_ENUM_FWD_DECLARE(EServerCmd);
 GPB_ENUM_FWD_DECLARE(ETransferFlag);
 GPB_ENUM_FWD_DECLARE(ETransferModule);
@@ -81,12 +82,13 @@ void SetConnMsg_TrModule_RawValue(ConnMsg *message, int32_t value);
 typedef GPB_ENUM(RelayMsg_FieldNumber) {
   RelayMsg_FieldNumber_SvrCmds = 1,
   RelayMsg_FieldNumber_TrModule = 2,
-  RelayMsg_FieldNumber_Connector = 3,
-  RelayMsg_FieldNumber_HandleCmd = 4,
-  RelayMsg_FieldNumber_HandleMtype = 5,
-  RelayMsg_FieldNumber_HandleData = 6,
-  RelayMsg_FieldNumber_Content = 7,
-  RelayMsg_FieldNumber_Touser = 8,
+  RelayMsg_FieldNumber_ContModule = 3,
+  RelayMsg_FieldNumber_Connector = 4,
+  RelayMsg_FieldNumber_HandleCmd = 5,
+  RelayMsg_FieldNumber_HandleMtype = 6,
+  RelayMsg_FieldNumber_HandleData = 7,
+  RelayMsg_FieldNumber_Content = 8,
+  RelayMsg_FieldNumber_Touser = 9,
 };
 
 /// this is for msg relaying between server
@@ -97,6 +99,9 @@ typedef GPB_ENUM(RelayMsg_FieldNumber) {
 
 /// the server module
 @property(nonatomic, readwrite) enum ETransferModule trModule;
+
+/// the msg content's module
+@property(nonatomic, readwrite) enum EModuleType contModule;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *connector;
 
@@ -130,6 +135,14 @@ int32_t RelayMsg_TrModule_RawValue(RelayMsg *message);
 /// it to be set to a value that was not defined by the enum at the time the code
 /// was generated.
 void SetRelayMsg_TrModule_RawValue(RelayMsg *message, int32_t value);
+
+/// Fetches the raw value of a @c RelayMsg's @c contModule property, even
+/// if the value was not defined by the enum at the time the code was generated.
+int32_t RelayMsg_ContModule_RawValue(RelayMsg *message);
+/// Sets the raw value of an @c RelayMsg's @c contModule property, allowing
+/// it to be set to a value that was not defined by the enum at the time the code
+/// was generated.
+void SetRelayMsg_ContModule_RawValue(RelayMsg *message, int32_t value);
 
 #pragma mark - TransferMsg
 

@@ -18,6 +18,7 @@
 #include "RTTransfer.h"
 #include "RTObserverConnection.h"
 #include "XPushMsgProcesser.h"
+#include "PRTXRedis.h"
 
 #define DEF_PROTO 1
 #include "ProtoCommon.h"
@@ -56,7 +57,7 @@ public:
     virtual void OnRecvData(const char*pData, int nLen);
     virtual void OnSendEvent(const char*pData, int nLen) {}
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
-    virtual void OnPushEvent(const char*pData, int nLen) {}
+    virtual void OnPushEvent(const char*pData, int nLen);
     virtual void OnTickEvent(const char*pData, int nLen) {}
 
 // from RTTransfer
@@ -89,6 +90,8 @@ private:
     int             m_connectingStatus;
     XPushMsgProcesser    *m_pPushMsgProcesser;
     pms::EModuleType     m_module;
+    PRTXRedis       m_xRedis;
+
 };
 
 #endif /* defined(__MsgServerPusher__PRTTransferSession__) */

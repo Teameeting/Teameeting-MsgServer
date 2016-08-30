@@ -91,6 +91,8 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
     {
         std::string str("");
         char key[512] = {'\0'};
+        // TODO:
+        // better change to module:grp:userid:sequence
         sprintf(key, "grp:%s:%lld", store.storeid().c_str(), store.sequence());
         // grp:storeid:mtype:push:sequence
         m_RedisDBIdx->CreateDBIndex(key, APHash, CACHE_TYPE_1);

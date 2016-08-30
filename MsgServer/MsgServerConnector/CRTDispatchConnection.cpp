@@ -12,6 +12,7 @@
 #include "CRTConnectionTcp.h"
 #include "rtklog.h"
 
+
 void CRTDispatchConnection::DispatchMsg(const std::string& uid, pms::RelayMsg& r_msg)
 {
     //find connector
@@ -19,25 +20,43 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, pms::RelayMsg& r
     if (!pci) {
         LE("CRTDispatchConnection::DispatchMsg not find user:%s connection\n", uid.c_str());
         LI("CRTDispatchConnection::DispatchMsg handle_cmd:%s, handle_mtype:%s, handle_data:%s\n", r_msg.handle_cmd().c_str(), r_msg.handle_mtype().c_str(), r_msg.handle_data().c_str());
+        // not set push in this msg
+        if (r_msg.handle_cmd().length()==0 \
+                || r_msg.handle_cmd().compare("push")!=0 \
+                || r_msg.handle_data().length()==0 \
+                ||  r_msg.handle_data().compare("1")!=0)
+        {
+            LE("CRTDispatchConnection::DispatchMsg this type of message is no need to push, so return\n");
+            return;
+        }
+
+        LI("CRTDispatchConnection::DispatchMsg userid:%s, r_msg.cont_module:%d\n\n", uid.c_str(), r_msg.cont_module());
+        // user set not accept push
+        if (!CRTConnManager::Instance().GetEnablePush(uid, r_msg.cont_module()))
+        {
+            LE("CRTDispatchConnection::DispatchMsg user set do not accept push, so return\n");
+            return;
+        }
+        // get redis setting enablepush
         // find pusher module and sent to pusher
         CRTConnManager::ModuleInfo* pmodule = CRTConnManager::Instance().findModuleInfo("", pms::ETransferModule::MPUSHER);
-            if (pmodule && pmodule->pModule && pmodule->pModule->IsLiveSession()) {
+        if (pmodule && pmodule->pModule && pmodule->pModule->IsLiveSession()) {
 
-                pms::TransferMsg t_msg;
+            pms::TransferMsg t_msg;
 
-                //r_msg.set_svr_cmds(cmd);
-                r_msg.set_tr_module(pms::ETransferModule::MCONNECTOR);
-                r_msg.set_connector(CRTConnManager::Instance().ConnectorId());
+            //r_msg.set_svr_cmds(cmd);
+            r_msg.set_tr_module(pms::ETransferModule::MCONNECTOR);
+            r_msg.set_connector(CRTConnManager::Instance().ConnectorId());
 
-                t_msg.set_type(pms::ETransferType::TQUEUE);
-                t_msg.set_content(r_msg.SerializeAsString());
+            t_msg.set_type(pms::ETransferType::TQUEUE);
+            t_msg.set_content(r_msg.SerializeAsString());
 
-                std::string s = t_msg.SerializeAsString();
-                pmodule->pModule->SendTransferData(s.c_str(), (int)s.length());
-                LI("CRTDispatchConnection::DispatchMsg has send push msg to pusher, module type:%d, module id:%s!!!\n\n", pmodule->othModuleType, pmodule->othModuleId.c_str());
-            } else {
-                LE("CRTDispatchConnection::DispatchMsg module pusher is not liveeeeeeeeeeee!!!\n");
-            }
+            std::string s = t_msg.SerializeAsString();
+            pmodule->pModule->SendTransferData(s.c_str(), (int)s.length());
+            LI("CRTDispatchConnection::DispatchMsg has send push msg to pusher, module type:%d, module id:%s!!!\n\n", pmodule->othModuleType, pmodule->othModuleId.c_str());
+        } else {
+            LE("CRTDispatchConnection::DispatchMsg module pusher is not liveeeeeeeeeeee!!!\n");
+        }
         return;
     } else { //!pci
         if (pci->_pConn && pci->_pConn->IsLiveSession()) {

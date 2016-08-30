@@ -71,14 +71,23 @@ void CRTConnectionTcp::OnRecvMessage(const char*message, int nLen)
 void CRTConnectionTcp::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
 #if DEF_PROTO
+    pms::MsgReq request;
+    if (!request.ParseFromString(msg)) {
+        LE("request.ParseFromString MsgReq error\n");
+        return;
+    }
+
     pms::Login login;
-    if (!login.ParseFromString(msg)) {
-        LE("login.ParseFromString error\n");
+    if (!login.ParseFromString(request.content())) {
+        LE("login.ParseFromString Login error\n");
+        return;
     }
 
     m_userId = login.usr_from();
     m_token = login.usr_token();
     m_nname = login.usr_nname();
+
+    CRTConnManager::Instance().TransferToPusher(cmd, module, m_userId, msg);
     LI("Onlogin user:%s login\n", m_userId.c_str());
     std::string sid;
     {
@@ -233,6 +242,17 @@ void CRTConnectionTcp::OnDeleteSeqn(pms::EServerCmd cmd, pms::EModuleType module
 #if DEF_PROTO
     if (m_login) {
         CRTConnManager::Instance().TransferMsg(cmd, module, m_userId, msg);
+    }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
+}
+
+void CRTConnectionTcp::OnUpdateSetting(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+#if DEF_PROTO
+    if (m_login) {
+        CRTConnManager::Instance().TransferToPusher(cmd, module, m_userId, msg);
     }
 #else
     LE("not define DEF_PROTO\n");

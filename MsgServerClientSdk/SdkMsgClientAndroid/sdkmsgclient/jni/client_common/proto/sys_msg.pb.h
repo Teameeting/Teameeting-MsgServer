@@ -241,9 +241,15 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::pms::ETransferModule tr_module() const;
   void set_tr_module(::pms::ETransferModule value);
 
-  // optional string connector = 3;
+  // optional .pms.EModuleType cont_module = 3;
+  void clear_cont_module();
+  static const int kContModuleFieldNumber = 3;
+  ::pms::EModuleType cont_module() const;
+  void set_cont_module(::pms::EModuleType value);
+
+  // optional string connector = 4;
   void clear_connector();
-  static const int kConnectorFieldNumber = 3;
+  static const int kConnectorFieldNumber = 4;
   const ::std::string& connector() const;
   void set_connector(const ::std::string& value);
   void set_connector(const char* value);
@@ -252,9 +258,9 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_connector();
   void set_allocated_connector(::std::string* connector);
 
-  // optional string handle_cmd = 4;
+  // optional string handle_cmd = 5;
   void clear_handle_cmd();
-  static const int kHandleCmdFieldNumber = 4;
+  static const int kHandleCmdFieldNumber = 5;
   const ::std::string& handle_cmd() const;
   void set_handle_cmd(const ::std::string& value);
   void set_handle_cmd(const char* value);
@@ -263,9 +269,9 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_handle_cmd();
   void set_allocated_handle_cmd(::std::string* handle_cmd);
 
-  // optional string handle_mtype = 5;
+  // optional string handle_mtype = 6;
   void clear_handle_mtype();
-  static const int kHandleMtypeFieldNumber = 5;
+  static const int kHandleMtypeFieldNumber = 6;
   const ::std::string& handle_mtype() const;
   void set_handle_mtype(const ::std::string& value);
   void set_handle_mtype(const char* value);
@@ -274,9 +280,9 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_handle_mtype();
   void set_allocated_handle_mtype(::std::string* handle_mtype);
 
-  // optional string handle_data = 6;
+  // optional string handle_data = 7;
   void clear_handle_data();
-  static const int kHandleDataFieldNumber = 6;
+  static const int kHandleDataFieldNumber = 7;
   const ::std::string& handle_data() const;
   void set_handle_data(const ::std::string& value);
   void set_handle_data(const char* value);
@@ -285,9 +291,9 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_handle_data();
   void set_allocated_handle_data(::std::string* handle_data);
 
-  // optional bytes content = 7;
+  // optional bytes content = 8;
   void clear_content();
-  static const int kContentFieldNumber = 7;
+  static const int kContentFieldNumber = 8;
   const ::std::string& content() const;
   void set_content(const ::std::string& value);
   void set_content(const char* value);
@@ -296,10 +302,10 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::std::string* release_content();
   void set_allocated_content(::std::string* content);
 
-  // optional .pms.ToUser touser = 8;
+  // optional .pms.ToUser touser = 9;
   bool has_touser() const;
   void clear_touser();
-  static const int kTouserFieldNumber = 8;
+  static const int kTouserFieldNumber = 9;
   const ::pms::ToUser& touser() const;
   ::pms::ToUser* mutable_touser();
   ::pms::ToUser* release_touser();
@@ -320,6 +326,7 @@ class RelayMsg : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr handle_data_;
   ::google::protobuf::internal::ArenaStringPtr content_;
   ::pms::ToUser* touser_;
+  int cont_module_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_sys_5fmsg_2eproto_impl();
@@ -606,7 +613,21 @@ inline void RelayMsg::set_tr_module(::pms::ETransferModule value) {
   // @@protoc_insertion_point(field_set:pms.RelayMsg.tr_module)
 }
 
-// optional string connector = 3;
+// optional .pms.EModuleType cont_module = 3;
+inline void RelayMsg::clear_cont_module() {
+  cont_module_ = 0;
+}
+inline ::pms::EModuleType RelayMsg::cont_module() const {
+  // @@protoc_insertion_point(field_get:pms.RelayMsg.cont_module)
+  return static_cast< ::pms::EModuleType >(cont_module_);
+}
+inline void RelayMsg::set_cont_module(::pms::EModuleType value) {
+  
+  cont_module_ = value;
+  // @@protoc_insertion_point(field_set:pms.RelayMsg.cont_module)
+}
+
+// optional string connector = 4;
 inline void RelayMsg::clear_connector() {
   connector_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -650,7 +671,7 @@ inline void RelayMsg::set_allocated_connector(::std::string* connector) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.connector)
 }
 
-// optional string handle_cmd = 4;
+// optional string handle_cmd = 5;
 inline void RelayMsg::clear_handle_cmd() {
   handle_cmd_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -694,7 +715,7 @@ inline void RelayMsg::set_allocated_handle_cmd(::std::string* handle_cmd) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_cmd)
 }
 
-// optional string handle_mtype = 5;
+// optional string handle_mtype = 6;
 inline void RelayMsg::clear_handle_mtype() {
   handle_mtype_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -738,7 +759,7 @@ inline void RelayMsg::set_allocated_handle_mtype(::std::string* handle_mtype) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_mtype)
 }
 
-// optional string handle_data = 6;
+// optional string handle_data = 7;
 inline void RelayMsg::clear_handle_data() {
   handle_data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -782,7 +803,7 @@ inline void RelayMsg::set_allocated_handle_data(::std::string* handle_data) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.handle_data)
 }
 
-// optional bytes content = 7;
+// optional bytes content = 8;
 inline void RelayMsg::clear_content() {
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -826,7 +847,7 @@ inline void RelayMsg::set_allocated_content(::std::string* content) {
   // @@protoc_insertion_point(field_set_allocated:pms.RelayMsg.content)
 }
 
-// optional .pms.ToUser touser = 8;
+// optional .pms.ToUser touser = 9;
 inline bool RelayMsg::has_touser() const {
   return !_is_default_instance_ && touser_ != NULL;
 }

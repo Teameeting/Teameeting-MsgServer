@@ -33,7 +33,7 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
     if (request.svr_cmds() == pms::EServerCmd::CKEEPALIVE) {
         OnKeepAlive(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CLOGIN) {
-        OnLogin(request.svr_cmds(), request.mod_type(), request.content());
+        OnLogin(request.svr_cmds(), request.mod_type(), msg);
     } else if (request.svr_cmds() == pms::EServerCmd::CSNDMSG) {
         OnSndMsg(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CGETMSG) {
@@ -48,6 +48,8 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
         OnCreateSeqn(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CDELETESEQN) {
         OnDeleteSeqn(request.svr_cmds(), request.mod_type(), request.content());
+    } else if (request.svr_cmds() == pms::EServerCmd::CUPDATESETTING) {
+        OnUpdateSetting(request.svr_cmds(), request.mod_type(), msg);
     } else {
         LE("parse MsgReq params error\n");
     }

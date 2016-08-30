@@ -149,6 +149,7 @@ void SetConnMsg_TrModule_RawValue(ConnMsg *message, int32_t value) {
 
 @dynamic svrCmds;
 @dynamic trModule;
+@dynamic contModule;
 @dynamic connector;
 @dynamic handleCmd;
 @dynamic handleMtype;
@@ -160,6 +161,7 @@ typedef struct RelayMsg__storage_ {
   uint32_t _has_storage_[1];
   EServerCmd svrCmds;
   ETransferModule trModule;
+  EModuleType contModule;
   NSString *connector;
   NSString *handleCmd;
   NSString *handleMtype;
@@ -193,10 +195,19 @@ typedef struct RelayMsg__storage_ {
         .dataType = GPBDataTypeEnum,
       },
       {
+        .name = "contModule",
+        .dataTypeSpecific.enumDescFunc = EModuleType_EnumDescriptor,
+        .number = RelayMsg_FieldNumber_ContModule,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(RelayMsg__storage_, contModule),
+        .flags = GPBFieldOptional | GPBFieldHasEnumDescriptor,
+        .dataType = GPBDataTypeEnum,
+      },
+      {
         .name = "connector",
         .dataTypeSpecific.className = NULL,
         .number = RelayMsg_FieldNumber_Connector,
-        .hasIndex = 2,
+        .hasIndex = 3,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, connector),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
@@ -205,7 +216,7 @@ typedef struct RelayMsg__storage_ {
         .name = "handleCmd",
         .dataTypeSpecific.className = NULL,
         .number = RelayMsg_FieldNumber_HandleCmd,
-        .hasIndex = 3,
+        .hasIndex = 4,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, handleCmd),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
@@ -214,7 +225,7 @@ typedef struct RelayMsg__storage_ {
         .name = "handleMtype",
         .dataTypeSpecific.className = NULL,
         .number = RelayMsg_FieldNumber_HandleMtype,
-        .hasIndex = 4,
+        .hasIndex = 5,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, handleMtype),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
@@ -223,7 +234,7 @@ typedef struct RelayMsg__storage_ {
         .name = "handleData",
         .dataTypeSpecific.className = NULL,
         .number = RelayMsg_FieldNumber_HandleData,
-        .hasIndex = 5,
+        .hasIndex = 6,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, handleData),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
@@ -232,7 +243,7 @@ typedef struct RelayMsg__storage_ {
         .name = "content",
         .dataTypeSpecific.className = NULL,
         .number = RelayMsg_FieldNumber_Content,
-        .hasIndex = 6,
+        .hasIndex = 7,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, content),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeBytes,
@@ -241,7 +252,7 @@ typedef struct RelayMsg__storage_ {
         .name = "touser",
         .dataTypeSpecific.className = GPBStringifySymbol(ToUser),
         .number = RelayMsg_FieldNumber_Touser,
-        .hasIndex = 7,
+        .hasIndex = 8,
         .offset = (uint32_t)offsetof(RelayMsg__storage_, touser),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeMessage,
@@ -284,6 +295,18 @@ int32_t RelayMsg_TrModule_RawValue(RelayMsg *message) {
 void SetRelayMsg_TrModule_RawValue(RelayMsg *message, int32_t value) {
   GPBDescriptor *descriptor = [RelayMsg descriptor];
   GPBFieldDescriptor *field = [descriptor fieldWithNumber:RelayMsg_FieldNumber_TrModule];
+  GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
+}
+
+int32_t RelayMsg_ContModule_RawValue(RelayMsg *message) {
+  GPBDescriptor *descriptor = [RelayMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:RelayMsg_FieldNumber_ContModule];
+  return GPBGetMessageInt32Field(message, field);
+}
+
+void SetRelayMsg_ContModule_RawValue(RelayMsg *message, int32_t value) {
+  GPBDescriptor *descriptor = [RelayMsg descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:RelayMsg_FieldNumber_ContModule];
   GPBSetInt32IvarWithFieldInternal(message, field, value, descriptor.file.syntax);
 }
 

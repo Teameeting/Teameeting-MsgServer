@@ -5,7 +5,7 @@
  * Distributed under GPL license.
  * ----------------------------------------------------------------------------
  */
- 
+
 #include "xRedisClient.h"
 #include "xRedisPool.h"
 #include <sstream>
@@ -96,7 +96,7 @@ bool xRedisClient::Init(unsigned int maxtype) {
         if (NULL==mRedisPool) {
             return false;
         }
-        
+
         return mRedisPool->Init(maxtype);
     }
     return false;
@@ -116,7 +116,7 @@ void xRedisClient::Keepalive() {
     }
 }
 
-inline RedisPool *xRedisClient::GetRedisPool() { 
+inline RedisPool *xRedisClient::GetRedisPool() {
     return mRedisPool;
 }
 
@@ -129,18 +129,18 @@ bool xRedisClient::ConnectRedisCache( const RedisNode *redisnodelist, unsigned i
     if (NULL==mRedisPool) {
         return false;
     }
-    
+
     if (!mRedisPool->setHashBase(cachetype, hashbase)) {
         return false;
     }
-    
+
     for (unsigned int n = 0; n<hashbase; n++) {
         const RedisNode *pNode = &redisnodelist[n];
         if (NULL==pNode) {
             return false;
         }
 
-        bool bRet = mRedisPool->ConnectRedisDB(cachetype, pNode->dbindex, pNode->host, pNode->port, 
+        bool bRet = mRedisPool->ConnectRedisDB(cachetype, pNode->dbindex, pNode->host, pNode->port,
             pNode->passwd, pNode->poolsize, pNode->timeout, pNode->role);
         if (!bRet) {
             return false;
@@ -236,8 +236,15 @@ bool xRedisClient::command_status(const RedisDBIdx& dbi, const char* cmd, ...) {
     redisReply *reply = static_cast<redisReply *>(redisvCommand(pRedisConn->getCtx(), cmd, args));
     va_end(args);
 
-    if (RedisPool::CheckReply(reply) && (strcasecmp(reply->str, "OK") == 0)) {
+    if (RedisPool::CheckReply(reply)) {
+        // Assume good reply until further inspection
         bRet = true;
+
+        if (REDIS_REPLY_STRING == reply->type) {
+            if (!reply->len || !reply->str || strcasecmp(reply->str, "OK") != 0) {
+                bRet = false;
+            }
+        }
     } else {
         SetErrInfo(dbi, reply);
     }
@@ -459,8 +466,15 @@ bool xRedisClient::commandargv_status(const RedisDBIdx& dbi, const VDATA& vData)
     }
 
     redisReply *reply = static_cast<redisReply *>(redisCommandArgv(pRedisConn->getCtx(), argv.size(), &(argv[0]), &(argvlen[0])));
-    if (RedisPool::CheckReply(reply) && (strcasecmp(reply->str, "OK") == 0)) {
+    if (RedisPool::CheckReply(reply)) {
+        // Assume good reply until further inspection
         bRet = true;
+
+        if (REDIS_REPLY_STRING == reply->type) {
+            if (!reply->len || !reply->str || strcasecmp(reply->str, "OK") != 0) {
+                bRet = false;
+            }
+        }
     } else {
         SetErrInfo(dbi, reply);
     }
