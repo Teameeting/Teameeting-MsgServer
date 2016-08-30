@@ -42,6 +42,10 @@ public final class MSSubMessage {
         public void setToId(String toId) {
             _message.setToId(toId);
         }
+
+        public String getToNickName() { return _message.getToNickName(); }
+
+        public void setToNickName(String toNickName) { _message.setToNickName(toNickName); }
     }
 
     public static final class MSLivMessage {

@@ -148,6 +148,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         livMsg.setToId(touser);
         livMsg.setFlag(1);
         livMsg.setPush(1);
+        livMsg.setToNickName("to测试NickName测试");
         String outmsgid = mMsMessageManager.sendNotifyLive(livMsg);
         System.out.println("NotifyMsgLive sendNotifyLive get msgid:"+outmsgid);
     }
@@ -165,6 +166,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         renMsg.setCash(cash);
         renMsg.setWishcont(wishcont);
         renMsg.setPush(1);
+        renMsg.setToNickName("to测试NickName测试");
         String outmsgid = mMsMessageManager.sendNotifyRedEnvelope(renMsg);
         System.out.println("NotifyMsgRedEnvelope sendNotifyRedEnvelope get msgid:"+outmsgid);
     }
@@ -181,6 +183,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         blkMsg.setToId(touser1);
         blkMsg.setFlag(1);
         blkMsg.setPush(1);
+        blkMsg.setToNickName("to测试NickName测试");
         String outmsgid = mMsMessageManager.sendNotifyBlacklist(blkMsg, arr);
         System.out.println("NotifyMsgBlacklist sendNotifyBlacklist get msgid:"+outmsgid);
     }
@@ -197,6 +200,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         fbdMsg.setToId(touser1);
         fbdMsg.setFlag(1);
         fbdMsg.setPush(1);
+        fbdMsg.setToNickName("to测试NickName测试");
         String outmsgid = mMsMessageManager.sendNotifyForbidden(fbdMsg, null);
         System.out.println("NotifyMsgForbidden sendNotifyForbidden get msgid:"+outmsgid);
     }
@@ -211,13 +215,14 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         mgrMsg.setToId(touser1);
         mgrMsg.setFlag(1);
         mgrMsg.setPush(1);
+        mgrMsg.setToNickName("to测试NickName测试");
         String outmsgid = mMsMessageManager.sendNotifySettedMgr(mgrMsg);
         System.out.println("NotifyMsgSettedMgr sendNotifySettedMgr get msgid:"+outmsgid);
     }
 
     public void EnablePush() {
         System.out.println("EnablePush  mMsClientManager.enable was called");
-        mMsClientManager.enablePush(1);
+        mMsClientManager.enablePush(2);
     }
 
     ////////////////////////////////////////////////////////////

@@ -75,6 +75,15 @@ public:
     void MCSetToken(const std::string& token) {
         m_nsToken = [NSString stringWithCString:token.c_str() encoding:NSUTF8StringEncoding];
         SetToken(token);
+        
+        int64 setType = 2;// token is 2
+        NSMutableDictionary *dicSetting = [[NSMutableDictionary alloc] init];
+        [dicSetting setValue:m_nsToken forKey:@"token"];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dicSetting options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        UpdateSetting(setType, [jsonStr cStringUsingEncoding:NSASCIIStringEncoding]);
+        NSLog(@"UpdateSetting token jsonStr is:%@", jsonStr);
     }
     void MCSetNickName(const std::string& nickname) {
         m_nsNname = [NSString stringWithCString:nickname.c_str() encoding:NSUTF8StringEncoding];
@@ -86,20 +95,20 @@ public:
     }
     
     void MCEnablePush(int push) {
-        int64 setType = 1;
+        int64 setType = 1;// push is 1
         
         char val[4] = {0};
         sprintf(val, "%d", push);
-        NSString *nsPush = [NSString stringWithUTF8String:val];
+        NSString *nsEnablePush = [NSString stringWithUTF8String:val];
         
         NSMutableDictionary *dicSetting = [[NSMutableDictionary alloc] init];
-        [dicSetting setValue:nsPush forKey:@"push"];
+        [dicSetting setValue:nsEnablePush forKey:@"enablepush"];
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dicSetting options:NSJSONWritingPrettyPrinted error:nil];
         NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         
         SetEnablePush(push);
         UpdateSetting(setType, [jsonStr cStringUsingEncoding:NSASCIIStringEncoding]);
-        NSLog(@"UpdateSetting jsonStr is:%@", jsonStr);
+        NSLog(@"UpdateSetting push jsonStr is:%@", jsonStr);
     }
     
     NSString* MCGetNsUserId() { return m_nsUserId; }

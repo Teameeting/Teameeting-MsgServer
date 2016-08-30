@@ -95,9 +95,9 @@ public:
     void SetNickName(const std::string& nickname) { m_nname = nickname; }
 
     void SetUIconUrl(const std::string& uiconurl) { m_uicon = uiconurl; }
-    void SetEnablePush(int push)
+    void SetEnablePush(int enablePush)
     {
-        m_enablePush = push;
+        m_enablePush = enablePush;
     }
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
@@ -185,6 +185,10 @@ private:
     //<StorageMsg>
     typedef std::list<CachedMsgInfo>                            RecvMsgList;
     typedef RecvMsgList::iterator                               RecvMsgListIt;
+    
+    //<seqnkey, synctimes>
+    typedef std::unordered_map<std::string, int>                Wait4CheckSeqnKeyMap;
+    typedef Wait4CheckSeqnKeyMap::iterator                      Wait4CheckSeqnKeyMapIt;
 
     // for user
     bool UAddWait4AckMsg(const std::string& msgid, const std::string& strMsg)
@@ -288,7 +292,48 @@ private:
 #else
                 LOG(INFO) << "UUpdateUserSeqn break here, itCurSeqn is:" << itCurSeqn->second;
 #endif
-                break;
+                UserSeqnMapIt uit = m_MaxSeqnMap.find(m_uid);
+                if (uit==m_MaxSeqnMap.end()) {
+                    break;
+                }
+                Wait4CheckSeqnKeyMapIt skit = m_Wait4CheckSeqnKeyMap.find(sk);
+                if (skit==m_Wait4CheckSeqnKeyMap.end()) { // not find sk in map, so sync data
+                    // only when curseqn is smaller than the max seqn, then sync data
+                    if (itCurSeqn->second < uit->second) {
+                        SyncData(itCurSeqn->second+1);
+                    }
+                    break;
+                } else { // int waitCheckMap find sk
+#if WEBRTC_ANDROID
+                LOGI("UUpdateUserSeqn find sk:%s, sk time:%d\n", sk, skit->second);
+#else
+                LOG(INFO) << "UUpdateUserSeqn find sk:" << sk << ", sk time:" << skit->second;
+#endif
+                    if (skit->second > 5) { // has try sync data 5 times
+                        UserSeqnMapIt uit = m_MaxSeqnMap.find(m_uid);
+                        if (uit!=m_MaxSeqnMap.end()) {
+                            // if curseqn < maxseqn, drop current seqn sync, itCurSeqn->second += 1;
+                            // sync the next one
+                            // if curseqn equal maxseqn, just drop current seqn sync
+                            // do not make itCurSeqn + 1
+                            if (itCurSeqn->second < uit->second) {
+                                itCurSeqn->second += 1;
+                            }
+                        }
+                        {
+                            rtc::CritScope cs(&m_csWait4CheckSeqnKey);
+                            m_Wait4CheckSeqnKeyMap.erase(sk);
+                        }
+                        continue;
+                    } else {
+                        // not reach 5 times, try to sync data again
+                        // only when curseqn is smaller than the max seqn, then sync data
+                        if (itCurSeqn->second < uit->second) {
+                            SyncData(itCurSeqn->second+1);
+                        }
+                        break;
+                    }
+                }
             }
         }
         return true;
@@ -439,7 +484,49 @@ private:
 #else
                 LOG(INFO) << "GUpdateUserSeqn break here, itCurSeqn is:" << itCurSeqn->second;
 #endif
-                break;
+                UserSeqnMapIt uit = m_MaxSeqnMap.find(storeid);
+                if (uit==m_MaxSeqnMap.end()) {
+                    break;
+                }
+                Wait4CheckSeqnKeyMapIt skit = m_Wait4CheckSeqnKeyMap.find(sk);
+                if (skit==m_Wait4CheckSeqnKeyMap.end()) { // not find sk in map, so sync data
+                    // only when curseqn is smaller than the max seqn, then sync data
+                    if (itCurSeqn->second < uit->second) {
+                        SyncGroupData(storeid.c_str(), itCurSeqn->second +1);
+                    }
+                    break;
+                } else { // find sk
+#if WEBRTC_ANDROID
+                    LOGI("GUpdateUserSeqn find sk:%s, sk time:%d\n", sk, skit->second);
+#else
+                    LOG(INFO) << "GUpdateUserSeqn find sk:" << sk << ", sk time:" << skit->second;
+#endif
+                    if (skit->second > 5) { // has try sync data 5 times
+                        UserSeqnMapIt uit = m_MaxSeqnMap.find(storeid);
+                        if (uit!=m_MaxSeqnMap.end()) {
+                            // if curseqn < maxseqn, drop current seqn sync, itCurSeqn->second += 1;
+                            // sync the next one
+                            // if curseqn equal maxseqn, just drop current seqn sync
+                            // do not make itCurSeqn + 1
+                            if (itCurSeqn->second < uit->second) {
+                                itCurSeqn->second += 1;
+                            }
+                        }
+                        m_gSyncedMsgMap.erase(sk);
+                        {
+                            rtc::CritScope cs(&m_csWait4CheckSeqnKey);
+                            m_Wait4CheckSeqnKeyMap.erase(sk);
+                        }
+                        continue;
+                    } else {
+                        // not reach 5 times, try to sync data again
+                        // only when curseqn is smaller than the max seqn, then sync data
+                        if (itCurSeqn->second < uit->second) {
+                            SyncGroupData(storeid.c_str(), itCurSeqn->second+1);
+                        }
+                        break;
+                    }
+                }
             }
         }
         return true;
@@ -474,6 +561,9 @@ private:
     SyncedMsgMap            m_gSyncedMsgMap;
     UserSeqnMap             m_gUserSeqnMap;
     RecvMsgList             m_gRecvMsgList;
+    
+    Wait4CheckSeqnKeyMap    m_Wait4CheckSeqnKeyMap;
+    UserSeqnMap             m_MaxSeqnMap;
 
 	rtc::CriticalSection	m_csuWait4AckMsg;
 	rtc::CriticalSection	m_csuSyncedMsg;
@@ -484,6 +574,8 @@ private:
 	rtc::CriticalSection	m_csgSyncedMsg;
 	rtc::CriticalSection	m_csgUserSeqn;
 	rtc::CriticalSection	m_csgRecvMsg;
+    
+    rtc::CriticalSection    m_csWait4CheckSeqnKey;
 
 
 };

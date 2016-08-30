@@ -50,6 +50,7 @@
     [mMsg setNickName:MsgClient::Instance().MCGetNsNickName()];
     [mMsg setUiconUrl:MsgClient::Instance().MCGetNsUIconUrl()];
     [mMsg setFromId:MsgClient::Instance().MCGetNsUserId()];
+    [mMsg setToNickName:[txtMsg getToNickName]?[txtMsg getToNickName]:@""];
     [mMsg setMsgType:msgType];
     return mMsg;
 }

@@ -104,6 +104,7 @@ public class MsMsgUtil {
         mMsg.setNickName(MsgClient.getInstance().getmStrNname());
         mMsg.setUiconUrl(MsgClient.getInstance().getmStrUicon());
         mMsg.setFromId(MsgClient.getInstance().getmStrUserId());
+        mMsg.setToNickName(txtMsg.getToNickName());
         mMsg.setMsgType(msgType);
 
         return mMsg;

@@ -364,7 +364,18 @@ public class MsgClient implements JMClientHelper{
     }
 
     public void MCSetToken(String strToken) {
-        setmStrToken(strToken);
+        long setType = 2;// token is 2
+        JSONObject jobj = new JSONObject();
+        try {
+            jobj.put("token", strToken);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (null != jobj && null != mMApp) {
+            setmStrToken(strToken);
+            mMApp.UpdateSetting(setType, jobj.toString());
+        }
     }
 
     public void MCSetNickName(String strNickName) {
@@ -377,10 +388,10 @@ public class MsgClient implements JMClientHelper{
 
     public void MCEnablePush(int push) {
         if (push<=0) return;
-        long setType = 1;
+        long setType = 1;// push is 1
         JSONObject jobj = new JSONObject();
         try {
-            jobj.put("push", Integer.toString(push));
+            jobj.put("enablepush", Integer.toString(push));
         } catch (JSONException e) {
             e.printStackTrace();
             return;

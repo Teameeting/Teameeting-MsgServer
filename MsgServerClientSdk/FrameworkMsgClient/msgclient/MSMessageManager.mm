@@ -91,7 +91,7 @@
 -(NSString*)sendNotifyLive:(MSLivMessage*)livMsg
 {
     if (nil==livMsg) return nil;
-    if ((nil==[livMsg getGroupId] || 0==[[livMsg getGroupId] length])||(nil==[livMsg getToId] || 0==[[livMsg getToId] length])) return nil;
+    if ((nil==[livMsg getGroupId] || 0==[[livMsg getGroupId] length])) return nil;
     std::string msgid("");
     MsgClient::Instance().MCNotifyLive(msgid, livMsg);
     return [NSString stringWithUTF8String:msgid.c_str()];

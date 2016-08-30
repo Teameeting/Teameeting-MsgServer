@@ -137,7 +137,7 @@
     port   = 6630;
     uid = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     NSLog(@"this device uid is:%@", uid);
-    token = @"a405f2ad61030c3e354a144137213f819d32516896d7ed883d1dfb05dcd993bd8578d422bbf1e84f5cce15316374a217";
+    token = @"ff6fda83c4331774e99eaf3553d68d21771efb344811e08fc649bdbbb10d449d";
     nname = @"nickname";
     roomid = @"400000000440";
     msg = @"hello world";
@@ -150,7 +150,7 @@
     [clientMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr connToServer:server port:port];
     [clientMgr setNickName:@"hehe"];
-    [clientMgr setToken:@"hehehe"];
+    [clientMgr setToken:@"ff6fda83c4331774e99eaf3553d68d21771efb344811e08fc649bdbbb10d449d"];
     [clientMgr setUIconUrl:@"hehehehe"];
 }
 

@@ -205,6 +205,11 @@
 					2D38013B1C5DA07200138CF0 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = EM2HUYWNJ6;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -268,8 +273,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
@@ -302,7 +307,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.SdkMsgClientIos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "00eb5bb3-8638-4461-8f64-35734d89b880";
+				PROVISIONING_PROFILE = "f81459af-086e-4b10-b120-7870d7249319";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 			};
@@ -314,8 +319,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: xiaochuan zhou (63ZHPEL54J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -342,7 +347,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.SdkMsgClientIos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "00eb5bb3-8638-4461-8f64-35734d89b880";
+				PROVISIONING_PROFILE = "f81459af-086e-4b10-b120-7870d7249319";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 			};

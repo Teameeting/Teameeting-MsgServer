@@ -23,6 +23,8 @@
 -(void) setGroupId:(NSString*)groupId;
 -(NSString*) getToId;
 -(void) setToId:(NSString*)toId;
+-(NSString*) getToNickName;
+-(void) setToNickName:(NSString*)toNickName;
 @end
 
 @interface MSLivMessage : NSObject{

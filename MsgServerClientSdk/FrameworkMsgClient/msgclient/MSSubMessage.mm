@@ -60,6 +60,17 @@
 {
     [_message setToId:toId];
 }
+
+-(NSString*) getToNickName
+{
+    return [_message toNickName];
+}
+
+-(void) setToNickName:(NSString*)toNickName
+{
+    [_message setToNickName:toNickName];
+}
+
 @end
 
 #pragma mark - MSLivMessage

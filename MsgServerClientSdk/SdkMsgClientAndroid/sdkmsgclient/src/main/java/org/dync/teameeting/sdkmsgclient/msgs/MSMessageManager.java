@@ -148,8 +148,8 @@ public class MSMessageManager {
      *      msgid: the id of this msg
      */
     public String sendNotifyLive(MSSubMessage.MSLivMessage livMsg) {
-            if (null==livMsg || null==livMsg.getGroupId() || null == livMsg.getToId()) return null;
-        if (livMsg.getGroupId().length()==0 || livMsg.getToId().length()==0) return null;
+            if (null==livMsg || null==livMsg.getGroupId()) return null;
+        if (livMsg.getGroupId().length()==0) return null;
         return MsgClient.getInstance().MCNotifyLive(livMsg);
     }
 

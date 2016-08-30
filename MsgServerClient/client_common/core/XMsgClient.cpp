@@ -93,6 +93,12 @@ int XMsgClient::Unin()
     if (m_gRecvMsgList.size()>0)
         m_gRecvMsgList.clear();
     
+    if (m_Wait4CheckSeqnKeyMap.size()>0)
+        m_Wait4CheckSeqnKeyMap.clear();
+    
+    if (m_MaxSeqnMap.size()>0)
+        m_MaxSeqnMap.clear();
+    
     if (m_pClientImpl) {
         m_pClientImpl->Disconnect();
         if (m_pMsgProcesser) {
@@ -291,8 +297,23 @@ int XMsgClient::SyncData(int64 seqn)
 #else
     LOG(INFO) << "XMsgClient::SyncData was called";
 #endif
-
-    return SendEncodeMsg(outstr);
+    int ret = SendEncodeMsg(outstr);
+    if (ret>0) {
+        rtc::CritScope cs(&m_csWait4CheckSeqnKey);
+        char seqnKey[256] = {0};
+        sprintf(seqnKey, "%s:%lld", m_uid.c_str(), seqn);
+        if (m_Wait4CheckSeqnKeyMap.find(seqnKey)==m_Wait4CheckSeqnKeyMap.end()) {
+            m_Wait4CheckSeqnKeyMap.insert(make_pair(seqnKey, 1));
+        } else {
+            m_Wait4CheckSeqnKeyMap[seqnKey]++;
+        }
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::SyncData seqnKey:%s, times:%d\n", seqnKey, m_Wait4CheckSeqnKeyMap[seqnKey]);
+#else
+        LOG(INFO) << "XMsgClient::SyncData seqnKey:" << seqnKey << ", times:" << m_Wait4CheckSeqnKeyMap[seqnKey];
+#endif       
+    }
+    return ret;
 }
 
 int XMsgClient::FetchGroupSeqn(const std::string& groupid)
@@ -368,7 +389,23 @@ int XMsgClient::SyncGroupData(const std::string& groupid, int64 seqn)
     LOG(INFO) << "XMsgClient::SyncGroupData was called";
 #endif
 
-    return SendEncodeMsg(outstr);
+    int ret = SendEncodeMsg(outstr);
+    if (ret>0) {
+        rtc::CritScope cs(&m_csWait4CheckSeqnKey);
+        char seqnKey[256] = {0};
+        sprintf(seqnKey, "%s:%lld", groupid.c_str(), seqn);
+        if (m_Wait4CheckSeqnKeyMap.find(seqnKey)==m_Wait4CheckSeqnKeyMap.end()) {
+            m_Wait4CheckSeqnKeyMap.insert(make_pair(seqnKey, 1));
+        } else {
+            m_Wait4CheckSeqnKeyMap[seqnKey]++;
+        }
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::SyncGroupData seqnKey:%s, times:%d\n", seqnKey, m_Wait4CheckSeqnKeyMap[seqnKey]);
+#else
+        LOG(INFO) << "XMsgClient::SyncGroupData seqnKey:" << seqnKey << ", times:" << m_Wait4CheckSeqnKeyMap[seqnKey];
+#endif
+    }
+    return ret;
 }
 
 int XMsgClient::UpdateSetting(int64 setType, const std::string& jsonSetting)
@@ -692,6 +729,23 @@ void XMsgClient::OnHelpSyncSeqn(int code, const std::string& cont)
 #else
     LOG(INFO) << "XMsgClient::OnHelpSyncSeqn ruserid:" << store.ruserid() << ", sequence:" << store.sequence() << ", maxseqn:" << store.maxseqn();
 #endif
+    // store or update storeid's max seqn
+    if (store.maxseqn()>0) {
+        UserSeqnMapIt uit =  m_MaxSeqnMap.find(store.storeid());
+        if (uit == m_MaxSeqnMap.end()) {
+            m_MaxSeqnMap.insert(make_pair(store.storeid(), store.maxseqn()));
+        } else {
+            if (uit->second < store.maxseqn()) {
+#if WEBRTC_ANDROID
+                LOGI("XMsgClient::OnHelpSyncSeqn update max seqn old:%lld, new:%lld\n"\
+                     , uit->second, store.maxseqn());
+#else
+                LOG(INFO) << "XMsgClient::OnHelpSyncSeqn update max seqn old:" << uit->second << ", new:" << store.maxseqn();
+#endif
+                uit->second = store.maxseqn();
+            }
+        }
+    }
     switch (store.mtag())
     {
         case pms::EStorageTag::TSEQN:
