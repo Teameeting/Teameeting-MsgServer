@@ -38,7 +38,9 @@ bool IosPusher::InitPusher()
     apn_set_mode(mApnCtx, APN_MODE_SANDBOX);
     apn_set_log_callback(mApnCtx, IosPusher::ApnLogging);
     apn_set_invalid_token_callback(mApnCtx, IosPusher::ApnInvalidToken);
-    apn_set_pkcs12_file(mApnCtx, "./cert/com.dync.SdkMsgClientIos/dev/com_dync_SdkMsgClientIos_dev.p12", "123456");
+    //apn_set_pkcs12_file(mApnCtx, "./cert/com.dync.SdkMsgClientIos/dev/com_dync_SdkMsgClientIos_dev.p12", "123456");
+    apn_set_pkcs12_file(mApnCtx, "/usr/local/dync/msgserver/pusher/bin/cert/com.avcon.BuddhismLiving/dev/com_avcon_BuddhismLiving_dev.p12", "123456");
+
     return true;
 }
 
