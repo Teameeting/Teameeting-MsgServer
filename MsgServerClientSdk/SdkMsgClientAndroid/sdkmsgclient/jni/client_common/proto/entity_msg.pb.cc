@@ -21,6 +21,7 @@ void protobuf_ShutdownFile_entity_5fmsg_2eproto() {
   delete Logout::default_instance_;
   delete Keep::default_instance_;
   delete Setting::default_instance_;
+  delete Pushing::default_instance_;
   delete Entity::default_instance_;
 }
 
@@ -42,11 +43,13 @@ void protobuf_AddDesc_entity_5fmsg_2eproto() {
   Logout::default_instance_ = new Logout();
   Keep::default_instance_ = new Keep();
   Setting::default_instance_ = new Setting();
+  Pushing::default_instance_ = new Pushing();
   Entity::default_instance_ = new Entity();
   Login::default_instance_->InitAsDefaultInstance();
   Logout::default_instance_->InitAsDefaultInstance();
   Keep::default_instance_->InitAsDefaultInstance();
   Setting::default_instance_->InitAsDefaultInstance();
+  Pushing::default_instance_->InitAsDefaultInstance();
   Entity::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_entity_5fmsg_2eproto);
 }
@@ -1907,6 +1910,337 @@ void Setting::clear_json_cont() {
   }
   json_cont_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), json_cont);
   // @@protoc_insertion_point(field_set_allocated:pms.Setting.json_cont)
+}
+
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Pushing::kTypeFieldNumber;
+const int Pushing::kContentFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+Pushing::Pushing()
+  : ::google::protobuf::MessageLite(), _arena_ptr_(NULL) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:pms.Pushing)
+}
+
+void Pushing::InitAsDefaultInstance() {
+  _is_default_instance_ = true;
+}
+
+Pushing::Pushing(const Pushing& from)
+  : ::google::protobuf::MessageLite(),
+    _arena_ptr_(NULL) {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:pms.Pushing)
+}
+
+void Pushing::SharedCtor() {
+    _is_default_instance_ = false;
+  ::google::protobuf::internal::GetEmptyString();
+  _cached_size_ = 0;
+  type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  content_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+Pushing::~Pushing() {
+  // @@protoc_insertion_point(destructor:pms.Pushing)
+  SharedDtor();
+}
+
+void Pushing::SharedDtor() {
+  type_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  content_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  if (this != &default_instance()) {
+  #else
+  if (this != default_instance_) {
+  #endif
+  }
+}
+
+void Pushing::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const Pushing& Pushing::default_instance() {
+#ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  protobuf_AddDesc_entity_5fmsg_2eproto();
+#else
+  if (default_instance_ == NULL) protobuf_AddDesc_entity_5fmsg_2eproto();
+#endif
+  return *default_instance_;
+}
+
+Pushing* Pushing::default_instance_ = NULL;
+
+Pushing* Pushing::New(::google::protobuf::Arena* arena) const {
+  Pushing* n = new Pushing;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void Pushing::Clear() {
+// @@protoc_insertion_point(message_clear_start:pms.Pushing)
+  type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+bool Pushing::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:pms.Pushing)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string type = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_type()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->type().data(), this->type().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.Pushing.type"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(18)) goto parse_content;
+        break;
+      }
+
+      // optional string content = 2;
+      case 2: {
+        if (tag == 18) {
+         parse_content:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_content()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->content().data(), this->content().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "pms.Pushing.content"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:pms.Pushing)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:pms.Pushing)
+  return false;
+#undef DO_
+}
+
+void Pushing::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:pms.Pushing)
+  // optional string type = 1;
+  if (this->type().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->type().data(), this->type().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.Pushing.type");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->type(), output);
+  }
+
+  // optional string content = 2;
+  if (this->content().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->content().data(), this->content().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "pms.Pushing.content");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      2, this->content(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:pms.Pushing)
+}
+
+int Pushing::ByteSize() const {
+// @@protoc_insertion_point(message_byte_size_start:pms.Pushing)
+  int total_size = 0;
+
+  // optional string type = 1;
+  if (this->type().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->type());
+  }
+
+  // optional string content = 2;
+  if (this->content().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->content());
+  }
+
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Pushing::CheckTypeAndMergeFrom(
+    const ::google::protobuf::MessageLite& from) {
+  MergeFrom(*::google::protobuf::down_cast<const Pushing*>(&from));
+}
+
+void Pushing::MergeFrom(const Pushing& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:pms.Pushing)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  if (from.type().size() > 0) {
+
+    type_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.type_);
+  }
+  if (from.content().size() > 0) {
+
+    content_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.content_);
+  }
+}
+
+void Pushing::CopyFrom(const Pushing& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:pms.Pushing)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Pushing::IsInitialized() const {
+
+  return true;
+}
+
+void Pushing::Swap(Pushing* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Pushing::InternalSwap(Pushing* other) {
+  type_.Swap(&other->type_);
+  content_.Swap(&other->content_);
+  _unknown_fields_.Swap(&other->_unknown_fields_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::std::string Pushing::GetTypeName() const {
+  return "pms.Pushing";
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// Pushing
+
+// optional string type = 1;
+void Pushing::clear_type() {
+  type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& Pushing::type() const {
+  // @@protoc_insertion_point(field_get:pms.Pushing.type)
+  return type_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Pushing::set_type(const ::std::string& value) {
+  
+  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Pushing.type)
+}
+ void Pushing::set_type(const char* value) {
+  
+  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Pushing.type)
+}
+ void Pushing::set_type(const char* value, size_t size) {
+  
+  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Pushing.type)
+}
+ ::std::string* Pushing::mutable_type() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Pushing.type)
+  return type_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Pushing::release_type() {
+  // @@protoc_insertion_point(field_release:pms.Pushing.type)
+  
+  return type_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Pushing::set_allocated_type(::std::string* type) {
+  if (type != NULL) {
+    
+  } else {
+    
+  }
+  type_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), type);
+  // @@protoc_insertion_point(field_set_allocated:pms.Pushing.type)
+}
+
+// optional string content = 2;
+void Pushing::clear_content() {
+  content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ const ::std::string& Pushing::content() const {
+  // @@protoc_insertion_point(field_get:pms.Pushing.content)
+  return content_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Pushing::set_content(const ::std::string& value) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Pushing.content)
+}
+ void Pushing::set_content(const char* value) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Pushing.content)
+}
+ void Pushing::set_content(const char* value, size_t size) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Pushing.content)
+}
+ ::std::string* Pushing::mutable_content() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Pushing.content)
+  return content_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ ::std::string* Pushing::release_content() {
+  // @@protoc_insertion_point(field_release:pms.Pushing.content)
+  
+  return content_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+ void Pushing::set_allocated_content(::std::string* content) {
+  if (content != NULL) {
+    
+  } else {
+    
+  }
+  content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
+  // @@protoc_insertion_point(field_set_allocated:pms.Pushing.content)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

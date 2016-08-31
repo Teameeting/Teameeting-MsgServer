@@ -209,7 +209,7 @@ bool PRTXRedis::GetNeedPushMsg(const std::string& devType, ArrayReply& reply, in
 //    }
 //}
 
-bool PRTXRedis::LenListMsg(const std::string& devType, int64_t count)
+bool PRTXRedis::LenListMsg(const std::string& devType, int64_t& count)
 {
     char key[128] = {0};
     sprintf(key, "push:msg:%s", devType.c_str());

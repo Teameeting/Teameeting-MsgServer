@@ -1,1 +1,2 @@
-##ln -s pusher/cert cert
+#!/bin/sh
+ln -s pusher/cert cert

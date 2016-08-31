@@ -33,6 +33,11 @@ message Setting{
     string         json_cont = 4; // key value json format
 }
 
+message Pushing{
+    string         type = 1; // backup
+    string         content = 2; // push content
+}
+
 message Entity{
     EMsgHead       msg_head  = 1; // msg type
     EMsgTag        msg_tag   = 2; // msg tag

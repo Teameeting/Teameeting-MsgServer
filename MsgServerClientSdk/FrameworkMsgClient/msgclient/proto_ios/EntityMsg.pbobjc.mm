@@ -336,6 +336,60 @@ typedef struct Setting__storage_ {
 
 @end
 
+#pragma mark - Pushing
+
+@implementation Pushing
+
+@dynamic type;
+@dynamic content;
+
+typedef struct Pushing__storage_ {
+  uint32_t _has_storage_[1];
+  NSString *type;
+  NSString *content;
+} Pushing__storage_;
+
+// This method is threadsafe because it is initially called
+// in +initialize for each subclass.
++ (GPBDescriptor *)descriptor {
+  static GPBDescriptor *descriptor = nil;
+  if (!descriptor) {
+    static GPBMessageFieldDescription fields[] = {
+      {
+        .name = "type",
+        .dataTypeSpecific.className = NULL,
+        .number = Pushing_FieldNumber_Type,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(Pushing__storage_, type),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "content",
+        .dataTypeSpecific.className = NULL,
+        .number = Pushing_FieldNumber_Content,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(Pushing__storage_, content),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+    };
+    GPBDescriptor *localDescriptor =
+        [GPBDescriptor allocDescriptorForClass:[Pushing class]
+                                     rootClass:[EntityMsgRoot class]
+                                          file:EntityMsgRoot_FileDescriptor()
+                                        fields:fields
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
+                                   storageSize:sizeof(Pushing__storage_)
+                                         flags:0];
+    NSAssert(descriptor == nil, @"Startup recursed!");
+    descriptor = localDescriptor;
+  }
+  return descriptor;
+}
+
+@end
+
 #pragma mark - Entity
 
 @implementation Entity

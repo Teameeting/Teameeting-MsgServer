@@ -124,6 +124,23 @@ typedef GPB_ENUM(Setting_FieldNumber) {
 
 @end
 
+#pragma mark - Pushing
+
+typedef GPB_ENUM(Pushing_FieldNumber) {
+  Pushing_FieldNumber_Type = 1,
+  Pushing_FieldNumber_Content = 2,
+};
+
+@interface Pushing : GPBMessage
+
+/// backup
+@property(nonatomic, readwrite, copy, null_resettable) NSString *type;
+
+/// push content
+@property(nonatomic, readwrite, copy, null_resettable) NSString *content;
+
+@end
+
 #pragma mark - Entity
 
 typedef GPB_ENUM(Entity_FieldNumber) {

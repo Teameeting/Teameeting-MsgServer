@@ -2714,6 +2714,526 @@ public final class EntityMsg {
     }
   }
 
+  public interface PushingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:pms.Pushing)
+      com.google.protobuf.MessageLiteOrBuilder {
+
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    java.lang.String getType();
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
+
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    java.lang.String getContent();
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getContentBytes();
+  }
+  /**
+   * Protobuf type {@code pms.Pushing}
+   */
+  public  static final class Pushing extends
+      com.google.protobuf.GeneratedMessageLite<
+          Pushing, Pushing.Builder> implements
+      // @@protoc_insertion_point(message_implements:pms.Pushing)
+      PushingOrBuilder {
+    private Pushing() {
+      type_ = "";
+      content_ = "";
+    }
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private java.lang.String type_;
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    public java.lang.String getType() {
+      return type_;
+    }
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(type_);
+    }
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    private void setType(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      type_ = value;
+    }
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    private void clearType() {
+      
+      type_ = getDefaultInstance().getType();
+    }
+    /**
+     * <pre>
+     * backup
+     * </pre>
+     *
+     * <code>optional string type = 1;</code>
+     */
+    private void setTypeBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      type_ = value.toStringUtf8();
+    }
+
+    public static final int CONTENT_FIELD_NUMBER = 2;
+    private java.lang.String content_;
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    public java.lang.String getContent() {
+      return content_;
+    }
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getContentBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(content_);
+    }
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    private void setContent(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      content_ = value;
+    }
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    private void clearContent() {
+      
+      content_ = getDefaultInstance().getContent();
+    }
+    /**
+     * <pre>
+     * push content
+     * </pre>
+     *
+     * <code>optional string content = 2;</code>
+     */
+    private void setContentBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      content_ = value.toStringUtf8();
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!type_.isEmpty()) {
+        output.writeString(1, getType());
+      }
+      if (!content_.isEmpty()) {
+        output.writeString(2, getContent());
+      }
+    }
+
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!type_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(1, getType());
+      }
+      if (!content_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(2, getContent());
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    public static pms.EntityMsg.Pushing parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static pms.EntityMsg.Pushing parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+    public static pms.EntityMsg.Pushing parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input);
+    }
+    public static pms.EntityMsg.Pushing parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageLite.parseFrom(
+          DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(pms.EntityMsg.Pushing prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+
+    /**
+     * Protobuf type {@code pms.Pushing}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          pms.EntityMsg.Pushing, Builder> implements
+        // @@protoc_insertion_point(builder_implements:pms.Pushing)
+        pms.EntityMsg.PushingOrBuilder {
+      // Construct using pms.EntityMsg.Pushing.newBuilder()
+      private Builder() {
+        super(DEFAULT_INSTANCE);
+      }
+
+
+      /**
+       * <pre>
+       * backup
+       * </pre>
+       *
+       * <code>optional string type = 1;</code>
+       */
+      public java.lang.String getType() {
+        return instance.getType();
+      }
+      /**
+       * <pre>
+       * backup
+       * </pre>
+       *
+       * <code>optional string type = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        return instance.getTypeBytes();
+      }
+      /**
+       * <pre>
+       * backup
+       * </pre>
+       *
+       * <code>optional string type = 1;</code>
+       */
+      public Builder setType(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setType(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * backup
+       * </pre>
+       *
+       * <code>optional string type = 1;</code>
+       */
+      public Builder clearType() {
+        copyOnWrite();
+        instance.clearType();
+        return this;
+      }
+      /**
+       * <pre>
+       * backup
+       * </pre>
+       *
+       * <code>optional string type = 1;</code>
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setTypeBytes(value);
+        return this;
+      }
+
+      /**
+       * <pre>
+       * push content
+       * </pre>
+       *
+       * <code>optional string content = 2;</code>
+       */
+      public java.lang.String getContent() {
+        return instance.getContent();
+      }
+      /**
+       * <pre>
+       * push content
+       * </pre>
+       *
+       * <code>optional string content = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getContentBytes() {
+        return instance.getContentBytes();
+      }
+      /**
+       * <pre>
+       * push content
+       * </pre>
+       *
+       * <code>optional string content = 2;</code>
+       */
+      public Builder setContent(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setContent(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * push content
+       * </pre>
+       *
+       * <code>optional string content = 2;</code>
+       */
+      public Builder clearContent() {
+        copyOnWrite();
+        instance.clearContent();
+        return this;
+      }
+      /**
+       * <pre>
+       * push content
+       * </pre>
+       *
+       * <code>optional string content = 2;</code>
+       */
+      public Builder setContentBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setContentBytes(value);
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:pms.Pushing)
+    }
+    protected final Object dynamicMethod(
+        com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+        Object arg0, Object arg1) {
+      switch (method) {
+        case NEW_MUTABLE_INSTANCE: {
+          return new pms.EntityMsg.Pushing();
+        }
+        case IS_INITIALIZED: {
+          return DEFAULT_INSTANCE;
+        }
+        case MAKE_IMMUTABLE: {
+          return null;
+        }
+        case NEW_BUILDER: {
+          return new Builder();
+        }
+        case VISIT: {
+          Visitor visitor = (Visitor) arg0;
+          pms.EntityMsg.Pushing other = (pms.EntityMsg.Pushing) arg1;
+          type_ = visitor.visitString(!type_.isEmpty(), type_,
+              !other.type_.isEmpty(), other.type_);
+          content_ = visitor.visitString(!content_.isEmpty(), content_,
+              !other.content_.isEmpty(), other.content_);
+          if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
+              .INSTANCE) {
+          }
+          return this;
+        }
+        case MERGE_FROM_STREAM: {
+          com.google.protobuf.CodedInputStream input =
+              (com.google.protobuf.CodedInputStream) arg0;
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry =
+              (com.google.protobuf.ExtensionRegistryLite) arg1;
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!input.skipField(tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 10: {
+                  String s = input.readStringRequireUtf8();
+
+                  type_ = s;
+                  break;
+                }
+                case 18: {
+                  String s = input.readStringRequireUtf8();
+
+                  content_ = s;
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw new RuntimeException(e.setUnfinishedMessage(this));
+          } catch (java.io.IOException e) {
+            throw new RuntimeException(
+                new com.google.protobuf.InvalidProtocolBufferException(
+                    e.getMessage()).setUnfinishedMessage(this));
+          } finally {
+          }
+        }
+        case GET_DEFAULT_INSTANCE: {
+          return DEFAULT_INSTANCE;
+        }
+        case GET_PARSER: {
+          if (PARSER == null) {    synchronized (pms.EntityMsg.Pushing.class) {
+              if (PARSER == null) {
+                PARSER = new DefaultInstanceBasedParser(DEFAULT_INSTANCE);
+              }
+            }
+          }
+          return PARSER;
+        }
+      }
+      throw new UnsupportedOperationException();
+    }
+
+
+    // @@protoc_insertion_point(class_scope:pms.Pushing)
+    private static final pms.EntityMsg.Pushing DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new Pushing();
+      DEFAULT_INSTANCE.makeImmutable();
+    }
+
+    public static pms.EntityMsg.Pushing getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static volatile com.google.protobuf.Parser<Pushing> PARSER;
+
+    public static com.google.protobuf.Parser<Pushing> parser() {
+      return DEFAULT_INSTANCE.getParserForType();
+    }
+  }
+
   public interface EntityOrBuilder extends
       // @@protoc_insertion_point(interface_extends:pms.Entity)
       com.google.protobuf.MessageLiteOrBuilder {

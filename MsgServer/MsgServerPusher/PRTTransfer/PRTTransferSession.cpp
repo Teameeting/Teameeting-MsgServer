@@ -226,45 +226,72 @@ void PRTTransferSession::OnPushEvent(const char*pData, int nLen)
         LE("PRTTransferSession::OnPushEvent GetNeedPushMsg start:%lld stop:%lld failed\n", start, stop);
         return;
     }
+    LI("PRTTransferSession::OnPushEvent GetNeedPushMsg reply.size:%d\n", reply.size());
 
     // parse each msg one by one
     ReplyData::iterator iter = reply.begin();
     for (; iter != reply.end(); iter++) {
-        printf("%d\t%s\r\n", (*iter).type, (*iter).str.c_str());
         if (((*iter).str.empty()) || ((*iter).str.length()==0)) continue;
-        rapidjson::Document jReqDoc;
-        if (jReqDoc.ParseInsitu<0>((char*)(*iter).str.c_str()).HasParseError())
+
+        pms::Pushing pushMsg;
+        if (!pushMsg.ParseFromString((*iter).str))
         {
+            LE("PRTTransferSession::OnPushEvent pushMsg.ParseFromString failed, continue\n");
+            continue;
+        }
+        std::string strJson = pushMsg.content();
+        rapidjson::Document jReqDoc;
+        if (jReqDoc.ParseInsitu<0>((char*)strJson.c_str()).HasParseError())
+        {
+            LE("PRTTransferSession::OnPushEvent ParseInsitu failed\n");
             continue;
         }
 
         if (!(jReqDoc.HasMember("token")&&jReqDoc["token"].IsString()))
         {
+            LE("PRTTransferSession::OnPushEvent has no member token\n");
             continue;
         }
         std::string token = jReqDoc["token"].GetString();
 
         if (!(jReqDoc.HasMember("cont")&&jReqDoc["cont"].IsString()))
         {
+            LE("PRTTransferSession::OnPushEvent has no member cont\n");
             continue;
         }
         std::string cont = jReqDoc["cont"].GetString();
 
         if (!(jReqDoc.HasMember("groupid")&&jReqDoc["groupid"].IsString()))
         {
+            LE("PRTTransferSession::OnPushEvent has no member groupid\n");
             continue;
         }
         std::string groupid = jReqDoc["groupid"].GetString();
 
-        if (token.length()==0 || cont.length()==0 || groupid.length()==0) continue;
+        if (!(jReqDoc.HasMember("frommsgid")&&jReqDoc["frommsgid"].IsString()))
+        {
+            LE("PRTTransferSession::OnPushEvent has no member frommsgid\n");
+            continue;
+        }
+        std::string frommsgid = jReqDoc["frommsgid"].GetString();
+
+        if (token.length()==0 || cont.length()==0 || groupid.length()==0 || frommsgid.length()==0)
+        {
+            LE("PRTTransferSession::OnPushEvent member length is 0\n");
+            continue;
+        }
 
         std::vector<const char*> extra;
         extra.push_back("groupid");
         extra.push_back(groupid.c_str());
+        extra.push_back("frommsgid");
+        extra.push_back(frommsgid.c_str());
+        LI("PRTTransferSession::OnPushEvent GetNeedPushMsg call push msg\n");
         if (!IosPusher::Instance().PushMsg(token.c_str(), cont.c_str(), extra.data(), extra.size()))
         {
             // push failed, so store msg to redis
-            m_xRedis.SetNeedPushMsg("ios", (*iter).str);
+            LI("PRTTransferSession::OnPushEvent SetNeedPushMsg call push msg:%s\n", pushMsg.content().c_str());
+            m_xRedis.SetNeedPushMsg("ios", pushMsg.SerializeAsString());
         }
     }
 
@@ -272,8 +299,9 @@ void PRTTransferSession::OnPushEvent(const char*pData, int nLen)
     int64_t count = 0;
     if (m_xRedis.LenListMsg("ios", count))
     {
-         if (count > 0)
-             this->Signal(Task::kPushEvent);
+        LI("PRTTransferSession::OnPushEvent LenListMsg count:%lld\n", count);
+        if (count > 0)
+            this->Signal(Task::kPushEvent);
     }
 }
 
@@ -567,11 +595,12 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             LE("in jsonMsgDoc not has member msgType, jstr:%s\n", entity.msg_cont().c_str());
             return;
         }
-        LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s\n"\
+        LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s, msgId:%s\n"\
                 , fromId.c_str()\
                 , nickName.c_str()\
                 , groupId.c_str()\
-                , toNickName.c_str());
+                , toNickName.c_str()\
+                , entity.cmsg_id().c_str());
 
 
         // store.ruserid() is that this push msg will push to
@@ -641,6 +670,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
 
         // redis push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
         // redis push msg key:'push:msg:module:userid' by lpush, value...
+        std::string fromMsgId = fromId + ":" + entity.cmsg_id();
         rapidjson::Document jDoc;
         rapidjson::StringBuffer sb;
         rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
@@ -648,14 +678,20 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
         jDoc.AddMember("token", token.c_str(), jDoc.GetAllocator());
         jDoc.AddMember("cont", cont, jDoc.GetAllocator());
         jDoc.AddMember("groupid", groupId.c_str(), jDoc.GetAllocator());
+        jDoc.AddMember("frommsgid", fromMsgId.c_str(), jDoc.GetAllocator());
         jDoc.AddMember("userid", store.ruserid().c_str(), jDoc.GetAllocator());
         jDoc.AddMember("modtype", resp.mod_type(), jDoc.GetAllocator());
         jDoc.AddMember("devtype", "ios", jDoc.GetAllocator());
 
         jDoc.Accept(writer);
         std::string s = sb.GetString();
+
+        pms::Pushing pushMsg;
+        pushMsg.set_type("ios");
+        pushMsg.set_content(s);
+        LI("PRTTransferSession::OnTypeDispatch push msg to redis:%s\n", s.c_str());
         // write to redis
-        if (!m_xRedis.SetNeedPushMsg("ios", s))
+        if (!m_xRedis.SetNeedPushMsg("ios", pushMsg.SerializeAsString()))
         {
             LE("PRTTransferSession::OnTypeDispatch push msg to redis failed\n");
             return;

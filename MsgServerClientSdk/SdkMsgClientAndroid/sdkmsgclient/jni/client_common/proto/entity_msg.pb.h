@@ -40,6 +40,7 @@ class Entity;
 class Keep;
 class Login;
 class Logout;
+class Pushing;
 class Setting;
 
 // ===================================================================
@@ -546,6 +547,115 @@ class Setting : public ::google::protobuf::MessageLite {
 
   void InitAsDefaultInstance();
   static Setting* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Pushing : public ::google::protobuf::MessageLite {
+ public:
+  Pushing();
+  virtual ~Pushing();
+
+  Pushing(const Pushing& from);
+
+  inline Pushing& operator=(const Pushing& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const Pushing& default_instance();
+
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  // Returns the internal default instance pointer. This function can
+  // return NULL thus should not be used by the user. This is intended
+  // for Protobuf internal code. Please use default_instance() declared
+  // above instead.
+  static inline const Pushing* internal_default_instance() {
+    return default_instance_;
+  }
+  #endif
+
+  void Swap(Pushing* other);
+
+  // implements Message ----------------------------------------------
+
+  inline Pushing* New() const { return New(NULL); }
+
+  Pushing* New(::google::protobuf::Arena* arena) const;
+  void CheckTypeAndMergeFrom(const ::google::protobuf::MessageLite& from);
+  void CopyFrom(const Pushing& from);
+  void MergeFrom(const Pushing& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  void DiscardUnknownFields();
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(Pushing* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _arena_ptr_;
+  }
+  inline ::google::protobuf::Arena* MaybeArenaPtr() const {
+    return _arena_ptr_;
+  }
+  public:
+
+  ::std::string GetTypeName() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string type = 1;
+  void clear_type();
+  static const int kTypeFieldNumber = 1;
+  const ::std::string& type() const;
+  void set_type(const ::std::string& value);
+  void set_type(const char* value);
+  void set_type(const char* value, size_t size);
+  ::std::string* mutable_type();
+  ::std::string* release_type();
+  void set_allocated_type(::std::string* type);
+
+  // optional string content = 2;
+  void clear_content();
+  static const int kContentFieldNumber = 2;
+  const ::std::string& content() const;
+  void set_content(const ::std::string& value);
+  void set_content(const char* value);
+  void set_content(const char* value, size_t size);
+  ::std::string* mutable_content();
+  ::std::string* release_content();
+  void set_allocated_content(::std::string* content);
+
+  // @@protoc_insertion_point(class_scope:pms.Pushing)
+ private:
+
+  ::google::protobuf::internal::ArenaStringPtr _unknown_fields_;
+  ::google::protobuf::Arena* _arena_ptr_;
+
+  bool _is_default_instance_;
+  ::google::protobuf::internal::ArenaStringPtr type_;
+  ::google::protobuf::internal::ArenaStringPtr content_;
+  mutable int _cached_size_;
+  #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
+  friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
+  #else
+  friend void  protobuf_AddDesc_entity_5fmsg_2eproto();
+  #endif
+  friend void protobuf_AssignDesc_entity_5fmsg_2eproto();
+  friend void protobuf_ShutdownFile_entity_5fmsg_2eproto();
+
+  void InitAsDefaultInstance();
+  static Pushing* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1384,6 +1494,98 @@ inline void Setting::set_allocated_json_cont(::std::string* json_cont) {
 
 // -------------------------------------------------------------------
 
+// Pushing
+
+// optional string type = 1;
+inline void Pushing::clear_type() {
+  type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Pushing::type() const {
+  // @@protoc_insertion_point(field_get:pms.Pushing.type)
+  return type_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Pushing::set_type(const ::std::string& value) {
+  
+  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Pushing.type)
+}
+inline void Pushing::set_type(const char* value) {
+  
+  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Pushing.type)
+}
+inline void Pushing::set_type(const char* value, size_t size) {
+  
+  type_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Pushing.type)
+}
+inline ::std::string* Pushing::mutable_type() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Pushing.type)
+  return type_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Pushing::release_type() {
+  // @@protoc_insertion_point(field_release:pms.Pushing.type)
+  
+  return type_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Pushing::set_allocated_type(::std::string* type) {
+  if (type != NULL) {
+    
+  } else {
+    
+  }
+  type_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), type);
+  // @@protoc_insertion_point(field_set_allocated:pms.Pushing.type)
+}
+
+// optional string content = 2;
+inline void Pushing::clear_content() {
+  content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Pushing::content() const {
+  // @@protoc_insertion_point(field_get:pms.Pushing.content)
+  return content_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Pushing::set_content(const ::std::string& value) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Pushing.content)
+}
+inline void Pushing::set_content(const char* value) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Pushing.content)
+}
+inline void Pushing::set_content(const char* value, size_t size) {
+  
+  content_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Pushing.content)
+}
+inline ::std::string* Pushing::mutable_content() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Pushing.content)
+  return content_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Pushing::release_content() {
+  // @@protoc_insertion_point(field_release:pms.Pushing.content)
+  
+  return content_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Pushing::set_allocated_content(::std::string* content) {
+  if (content != NULL) {
+    
+  } else {
+    
+  }
+  content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
+  // @@protoc_insertion_point(field_set_allocated:pms.Pushing.content)
+}
+
+// -------------------------------------------------------------------
+
 // Entity
 
 // optional .pms.EMsgHead msg_head = 1;
@@ -1909,6 +2111,8 @@ inline void Entity::set_allocated_usr_toto(::pms::ToUser* usr_toto) {
 }
 
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
