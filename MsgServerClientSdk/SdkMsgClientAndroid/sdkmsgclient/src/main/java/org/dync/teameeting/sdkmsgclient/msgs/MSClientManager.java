@@ -160,4 +160,17 @@ public class MSClientManager {
     public void enablePush(int push) {
         MsgClient.getInstance().MCEnablePush(push);
     }
+
+    /**
+     *  if mute notifications
+     *
+     *  params:
+     *      mute: 1, mute notification, 2, not mute notification
+     *
+     *  return:
+     *      void
+     */
+    public void muteNotify(int mute) {
+        MsgClient.getInstance().MCMuteNotify(mute);
+    }
 }

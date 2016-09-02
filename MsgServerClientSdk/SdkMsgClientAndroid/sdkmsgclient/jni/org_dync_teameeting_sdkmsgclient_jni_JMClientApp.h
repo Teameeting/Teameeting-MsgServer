@@ -185,6 +185,14 @@ JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Ena
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    MuteNotify
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_MuteNotify
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    UpdateSetting
  * Signature: (JLjava/lang/String;)V
  */

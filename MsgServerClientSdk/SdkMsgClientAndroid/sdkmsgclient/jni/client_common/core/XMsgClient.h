@@ -99,6 +99,11 @@ public:
     {
         m_enablePush = enablePush;
     }
+    
+    void SetMuteNotify(int mutenotify)
+    {
+        m_muteNotify = mutenotify;
+    }
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
     {
@@ -545,6 +550,7 @@ private:
     std::string              m_version;
     int                      m_devType;
     int                      m_enablePush;
+    int                      m_muteNotify;
     int                      m_port;
     bool                     m_autoConnect;
     bool                     m_login;

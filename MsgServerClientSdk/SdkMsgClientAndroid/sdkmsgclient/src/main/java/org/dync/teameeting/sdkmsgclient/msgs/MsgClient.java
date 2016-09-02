@@ -399,6 +399,24 @@ public class MsgClient implements JMClientHelper{
         if (null != jobj && null != mMApp) {
             mMApp.EnablePush(push);
             mMApp.UpdateSetting(setType, jobj.toString());
+            System.out.println("UpdateSetting push jsonStr is:"+jobj.toString());
+        }
+    }
+
+    public void MCMuteNotify(int mute) {
+        if (mute<=0) return;
+        long setType = 4;// mute is 1
+        JSONObject jobj = new JSONObject();
+        try {
+            jobj.put("mutenotify", Integer.toString(mute));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (null != jobj && null != mMApp) {
+            mMApp.MuteNotify(mute);
+            mMApp.UpdateSetting(setType, jobj.toString());
+            System.out.println("UpdateSetting mute jsonStr is:"+jobj.toString());
         }
     }
 

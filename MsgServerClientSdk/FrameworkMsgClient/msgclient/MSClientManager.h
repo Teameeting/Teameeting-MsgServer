@@ -147,6 +147,18 @@
  */
 -(void)enablePush:(int)push;
 
+/**
+ *  if mute notifications
+ *
+ *  params:
+ *      mute: 1, mute notification, 2, not mute notification
+ *
+ *  return:
+ *      void
+ */
+-(void)muteNotify:(int)mute;
+
+
 @end
 
 #endif /* MSClientManager_h */

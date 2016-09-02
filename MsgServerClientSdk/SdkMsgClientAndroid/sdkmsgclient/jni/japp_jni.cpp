@@ -214,6 +214,12 @@ JOWW(void, JMClientApp_EnablePush)(JNIEnv *jni, jobject j_app, jint push)
 	jApp->SetEnablePush(push);
 }
 
+JOWW(void, JMClientApp_MuteNotify)(JNIEnv *jni, jobject j_app, jint mute)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	jApp->SetMuteNotify(mute);
+}
+
 JOWW(void, JMClientApp_UpdateSetting)(JNIEnv *jni, jobject j_app, jlong setType, jstring jsonSetting)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);

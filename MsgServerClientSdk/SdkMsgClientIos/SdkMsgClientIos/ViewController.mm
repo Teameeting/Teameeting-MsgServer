@@ -26,6 +26,7 @@
     UIButton *mNotifySettedMgrButton;
     UITextView *textViewDisplay;
     UIButton *mSettingPush;
+    UIButton *mSettingMuteNotify;
     NSString *mGroupId;
 }
 
@@ -124,6 +125,11 @@
     [self SetButtonParamsButton:mSettingPush title:@"SettingPush" state:@"SettingPushing..."];
     [mSettingPush addTarget:self action:@selector(settingPushButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:mSettingPush];
+   
+    mSettingMuteNotify = [[UIButton alloc] initWithFrame:CGRectMake(250, 350, 200, 30)];
+    [self SetButtonParamsButton:mSettingMuteNotify title:@"SettingMuteNotify" state:@"SettingMuteNotify..."];
+    [mSettingMuteNotify addTarget:self action:@selector(settingMuteButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:mSettingMuteNotify];
     
     ////////////////////////////////////////////////////
     clientMgr = [[MSClientManager alloc] init];
@@ -398,6 +404,17 @@
     [clientMgr enablePush:1];
     
     NSString* info = [NSString stringWithFormat:@"settingPush enablePush :%d", 1];
+    NSLog(@"%@", info);
+    [self resultDisplayCallback:info mMsg:@"" nInt:0];
+}
+
+- (IBAction)settingMuteButton:(id)sender {
+    NSString *settingMute = @"settingMuteButton was called";
+    NSLog(@"%@", settingMute);
+    
+    [clientMgr muteNotify:1];
+    
+    NSString* info = [NSString stringWithFormat:@"settingMute muteNotification :%d", 1];
     NSLog(@"%@", info);
     [self resultDisplayCallback:info mMsg:@"" nInt:0];
 }

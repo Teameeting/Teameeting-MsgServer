@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public Button                 mBtnNotifySettedMgr  = null;
     public TextView               mTxtView    = null;
     public Button                 mBtnSettingPush = null;
+    public Button                 mBtnSettingMute = null;
 
     public MsgClientDelegateImplement       mMsgClient = null;
     public Context mContext    = null;
@@ -91,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mBtnSettingPush = (Button)findViewById(R.id.btnsettingpush);
         mBtnSettingPush.setOnClickListener(this);
+
+        mBtnSettingMute = (Button)findViewById(R.id.btnsettingmute);
+        mBtnSettingMute.setOnClickListener(this);
 
         mContext = this;
         mMsgClient = new MsgClientDelegateImplement(mContext, mHandler);
@@ -240,6 +244,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 System.out.println("MainActivity call mMsgClient.EnablePush...");
                 mMsgClient.EnablePush();
+                try {
+                    Thread.sleep(1);
+                } catch  (Exception e) {
+
+                }
+            }
+            break;
+            case R.id.btnsettingmute:
+            {
+                System.out.println("MainActivity call mMsgClient.MuteNotify...");
+                mMsgClient.MuteNotify();
                 try {
                     Thread.sleep(1);
                 } catch  (Exception e) {

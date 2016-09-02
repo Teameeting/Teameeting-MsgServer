@@ -111,6 +111,23 @@ public:
         NSLog(@"UpdateSetting push jsonStr is:%@", jsonStr);
     }
     
+    void MCMuteNotify(int mute) {
+        int64 setType = 1;// mute is 4
+        
+        char val[4] = {0};
+        sprintf(val, "%d", mute);
+        NSString *nsMuteNotify = [NSString stringWithUTF8String:val];
+        
+        NSMutableDictionary *dicSetting = [[NSMutableDictionary alloc] init];
+        [dicSetting setValue:nsMuteNotify forKey:@"mutenotify"];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dicSetting options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        
+        SetMuteNotify(mute);
+        UpdateSetting(setType, [jsonStr cStringUsingEncoding:NSASCIIStringEncoding]);
+        NSLog(@"UpdateSetting mute jsonStr is:%@", jsonStr);
+    }
+    
     NSString* MCGetNsUserId() { return m_nsUserId; }
     NSString* MCGetNsToken() { return m_nsToken; }
     NSString* MCGetNsNickName() { return m_nsNname; }

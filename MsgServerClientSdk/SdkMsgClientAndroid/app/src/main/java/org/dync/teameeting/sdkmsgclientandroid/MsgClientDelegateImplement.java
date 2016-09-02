@@ -221,8 +221,13 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     }
 
     public void EnablePush() {
-        System.out.println("EnablePush  mMsClientManager.enable was called");
+        System.out.println("EnablePush  mMsClientManager.enable push was called");
         mMsClientManager.enablePush(2);
+    }
+
+    public void MuteNotify() {
+        System.out.println("MuteNotify  mMsClientManager.mute notify was called");
+        mMsClientManager.muteNotify(2);
     }
 
     ////////////////////////////////////////////////////////////

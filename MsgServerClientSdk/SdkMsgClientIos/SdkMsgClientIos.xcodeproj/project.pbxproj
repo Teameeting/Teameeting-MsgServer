@@ -273,8 +273,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.dync.SdkMsgClientIos";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.dync.SdkMsgClientIos";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
@@ -307,7 +307,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.SdkMsgClientIos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f81459af-086e-4b10-b120-7870d7249319";
+				PROVISIONING_PROFILE = "8c43a394-78e4-4fff-b065-becc34a07cd2";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 			};
@@ -319,8 +319,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: kevin whiplash (9UB6HD6ZLJ)";
+				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.dync.SdkMsgClientIos";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.dync.SdkMsgClientIos";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -347,7 +347,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dync.SdkMsgClientIos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f81459af-086e-4b10-b120-7870d7249319";
+				PROVISIONING_PROFILE = "8c43a394-78e4-4fff-b065-becc34a07cd2";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = armv7;
 			};

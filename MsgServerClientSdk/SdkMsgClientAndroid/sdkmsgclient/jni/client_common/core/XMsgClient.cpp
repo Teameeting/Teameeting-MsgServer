@@ -431,7 +431,6 @@ int XMsgClient::UpdateSetting(int64 setType, const std::string& jsonSetting)
 #endif
     
     return SendEncodeMsg(outstr);
-    return 0;
 }
 
 

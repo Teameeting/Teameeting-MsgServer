@@ -83,4 +83,9 @@
     MsgClient::Instance().MCEnablePush(push);
 }
 
+-(void)muteNotify:(int)mute
+{
+    MsgClient::Instance().MCMuteNotify(mute);
+}
+
 @end
