@@ -127,7 +127,7 @@ int MsgClient::MCSendTxtMsg(std::string& outmsgid, MSTxtMessage *txtMsg)
 {
     MSMessage *mMsg = [MSMsgUtil EncodeMessageWithTxtMsg:txtMsg msgType:MCMsgTypeTtxt];
     NSString *jsonString = [MSMsgUtil JSONToNSString:[mMsg mj_keyValues]];
-    NSLog(@"MCSendTxtMsg jsonString length:%d", [[jsonString length]]);
+    
     if (!jsonString)
     {
         NSLog(@"MCSendTxtMsg JSONToNSString error");
