@@ -172,7 +172,7 @@ int XMsgClient::RmvGroup(const std::string& groupid)
 
 int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, int push)
 {
-    if (groupid.length()==0 || msg.length()==0 || msg.length()>1024 || grpname.length()>128) {
+    if (groupid.length()==0 || msg.length()==0 || msg.length()>2048 || grpname.length()>128) {
         return -2;
     }
     std::string outstr;
@@ -199,7 +199,7 @@ int XMsgClient::SndMsg(std::string& outmsgid, const std::string& groupid, const 
 
 int XMsgClient::SndMsgTo(std::string& outmsgid, const std::string& groupid, const std::string& grpname, const std::string& msg, int tag, int type, int module, int flag, int push, const std::vector<std::string>& uvec)
 {
-    if (groupid.length()==0 || msg.length()==0 || msg.length()>1024 || grpname.length()>128) {
+    if (groupid.length()==0 || msg.length()==0 || msg.length()>2048 || grpname.length()>128) {
         return -2;
     }
     if (uvec.size()==0) {
@@ -431,7 +431,6 @@ int XMsgClient::UpdateSetting(int64 setType, const std::string& jsonSetting)
 #endif
     
     return SendEncodeMsg(outstr);
-    return 0;
 }
 
 

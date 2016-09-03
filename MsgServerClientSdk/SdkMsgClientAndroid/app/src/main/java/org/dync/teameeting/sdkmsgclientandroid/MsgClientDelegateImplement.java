@@ -90,7 +90,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String groupid = "wocaowocaowocao";
         txtMsg.setContent(cont);
         txtMsg.setGroupId(groupid);
-        txtMsg.setPush(0);
+        txtMsg.setPush(1);
         String outmsgid = mMsMessageManager.sendTxtMsg(txtMsg);
         System.out.println("SendMsgTo sendTxtMsg get msgid:"+outmsgid);
     }
@@ -106,7 +106,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String[] arr = {touser1, touser2};
         txtMsg.setContent(cont);
         txtMsg.setGroupId(groupid);
-        txtMsg.setPush(0);
+        txtMsg.setPush(1);
         String outmsgid = mMsMessageManager.sendTxtMsgTos(txtMsg, arr);
         System.out.println("SendMsgTos sendTxtMsgTos get msgid:" + outmsgid);
     }
@@ -119,7 +119,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String touser = "BCD9D958-985A-4454-B2C8-1551DB9C1A8A";
         txtMsg.setContent(cont);
         txtMsg.setToId(touser);
-        txtMsg.setPush(0);
+        txtMsg.setPush(1);
         String outmsgid = mMsMessageManager.sendTxtMsgToUser(txtMsg);
         System.out.println("SendMsgToUser sendTxtMsgToUser get msgid:" + outmsgid);
     }
@@ -133,6 +133,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String touser2 = "dcd54ddf2ee1df11";
         String[] arr = {touser1, touser2};
         txtMsg.setContent(cont);
+        txtMsg.setPush(1);
         String outmsgid = mMsMessageManager.sendTxtMsgToUsers(txtMsg, arr);
         System.out.println("SendMsgToUsers sendTxtMsgToUsers get msgid:" + outmsgid);
     }

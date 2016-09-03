@@ -69,7 +69,7 @@ public class MsMsgUtil {
         if (jobj.has("push"))
             mMsg.setPush(jobj.getInt("push"));
         else
-            mMsg.setFlag(0);
+            mMsg.setPush(0);
         return mMsg;
     }
 
