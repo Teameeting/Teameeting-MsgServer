@@ -24,8 +24,9 @@ void IosPusher::ApnInvalidToken(const char* const token, uint32_t index)
     printf("======> Invalid token: %s (index: %d)\n", token, index);
 }
 
-bool IosPusher::InitPusher()
+bool IosPusher::InitPusher(const char* p12_dir, const char* p12_file, const char* pass)
 {
+    if (!p12_dir || !p12_file || !pass) return false;
     assert(apn_library_init() == APN_SUCCESS);
     mApnCtx = apn_init();
     if (!mApnCtx)
@@ -34,25 +35,29 @@ bool IosPusher::InitPusher()
         apn_library_free();
         return false;
     }
+    char p12_path[256] = {0};
+    sprintf(p12_path, "%s/%s", p12_dir, p12_file);
     apn_set_behavior(mApnCtx, APN_OPTION_RECONNECT);
     apn_set_mode(mApnCtx, APN_MODE_SANDBOX);
     apn_set_log_callback(mApnCtx, IosPusher::ApnLogging);
     apn_set_invalid_token_callback(mApnCtx, IosPusher::ApnInvalidToken);
-    //apn_set_pkcs12_file(mApnCtx, "./cert/com.dync.SdkMsgClientIos/dev/com_dync_SdkMsgClientIos_dev.p12", "123456");
-    apn_set_pkcs12_file(mApnCtx, "/usr/local/dync/msgserver/pusher/bin/cert/com.avcon.BuddhismLiving/dev/com_avcon_BuddhismLiving_dev.p12", "123456");
+    apn_set_pkcs12_file(mApnCtx, p12_path, pass);
 
     return true;
 }
 
 bool IosPusher::UninPusher()
 {
-    if (mApnCtx)
-    {
-        apn_free(mApnCtx);
-    }
     if (mPayload)
     {
         apn_payload_free(mPayload);
+        mPayload = nullptr;
+    }
+    if (mApnCtx)
+    {
+        apn_close(mApnCtx);
+        apn_free(mApnCtx);
+        mApnCtx = nullptr;
     }
     apn_library_free();
     return true;
@@ -61,7 +66,6 @@ bool IosPusher::UninPusher()
 bool IosPusher::ConnectApns()
 {
     if (!mApnCtx) return false;
-    apn_close(mApnCtx);
     if (APN_ERROR == apn_connect(mApnCtx))
     {
         printf("Could not connected to Apple Push Notification Service:%s, errno:%d\n", apn_error_string(errno), errno);
@@ -74,8 +78,6 @@ bool IosPusher::ConnectApns()
 
 bool IosPusher::InitConfig()
 {
-
-
     mPayload = apn_payload_init();
     if (!mPayload)
     {
@@ -120,6 +122,7 @@ bool IosPusher::PushMsg(const char* token, const char* cont, const char** arr, u
     bool ret = true;
     if (APN_ERROR == apn_send(mApnCtx, mPayload, tmp_tokens, &invalid_tokens)) {
         printf("Could not send push: %s (errno: %d)\n", apn_error_string(errno), errno);
+        apn_close(mApnCtx);
         ConnectApns();
         ret = false;
     } else {
@@ -132,6 +135,7 @@ bool IosPusher::PushMsg(const char* token, const char* cont, const char** arr, u
                 printf("    %u. %s\n", i, apn_array_item_at_index(invalid_tokens, i));
             }
             apn_array_free(invalid_tokens);
+            apn_close(mApnCtx);
             ConnectApns();
             ret = false;
         }

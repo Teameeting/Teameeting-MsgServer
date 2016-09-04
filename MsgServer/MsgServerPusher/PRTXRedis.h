@@ -29,7 +29,6 @@ public:
     bool GetSettingPush(const std::string& userid, int module, const std::string& field, std::string& value);
     bool SetNeedPushMsg(const std::string& devType, const std::string& value);
     bool GetNeedPushMsg(const std::string& devType, ArrayReply& reply, int64_t start, int64_t stop);
-    //bool TrimListMsg(const std::string& devType, int64_t start, int64_t stop);
     bool LenListMsg(const std::string& devType, int64_t& count);
 
 private:

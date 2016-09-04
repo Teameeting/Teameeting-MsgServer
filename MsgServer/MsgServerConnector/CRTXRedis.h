@@ -26,6 +26,7 @@ public:
     bool Echo();
     bool SetSettingPush(const std::string& userid, int module, const std::string& field, const std::string& value);
     bool GetSettingPush(const std::string& userid, int module, const std::string& field, std::string& value);
+    bool GetSettingPush(const std::string& userid, int module, const std::string& field1, std::string& value1, const std::string& field2, std::string& value2);
 
 private:
     std::string                      m_Ip;

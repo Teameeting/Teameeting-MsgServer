@@ -145,6 +145,7 @@ public:
     void Init(const std::string redisIP, int redisPort);
     void Unin();
     bool GetEnablePush(const std::string& userid, pms::EModuleType type);
+    bool CouldPush(const std::string& userid, pms::EModuleType type);
 
     bool    SignalKill();
     bool    ClearAll();

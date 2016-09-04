@@ -144,4 +144,28 @@ bool CRTXRedis::GetSettingPush(const std::string& userid, int module, const std:
     return true;
 }
 
+bool CRTXRedis::GetSettingPush(const std::string& userid, int module, const std::string& field1, std::string& value1, const std::string& field2, std::string& value2)
+{
+    ArrayReply reply;
+    VDATA vdata;
+    vdata.push_back(field1);
+    vdata.push_back(field2);
+
+    char key[128] = {0};
+    sprintf(key, "push:set:%d:%s", module, userid.c_str());
+    printf("CRTXRedis::GetSettingPush key is:%s\n\n", key);
+
+    if (!m_xRedisClient.hmget(*m_RedisDBIdx, key, vdata, reply))
+    {
+        char* err = m_RedisDBIdx->GetErrInfo();
+        if (err) {
+            LE("CRTXRedis::StoreSettingPush m_xRedisClient.hmset err:%s\n", err);
+        }
+        return false;
+    }
+    value1 = reply.at(0).str;
+    value2 = reply.at(1).str;
+    return true;
+}
+
 ///////////////////////////////////////////////////////

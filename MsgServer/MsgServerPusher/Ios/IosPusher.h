@@ -17,7 +17,7 @@ class IosPusher : public RTSingleton<IosPusher>{
     static void ApnInvalidToken(const char* const token, uint32_t index);
 
     public:
-    bool InitPusher();
+    bool InitPusher(const char* p12_dir, const char* p12_file, const char* pass);
     bool UninPusher();
 
     bool ConnectApns();

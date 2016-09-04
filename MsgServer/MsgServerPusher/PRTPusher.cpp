@@ -205,4 +205,6 @@ void PRTPusher::Stop()
     PRTPusherManager::Instance().SignalKill();
     PRTPusherManager::Instance().ClearAll();
     PRTPusherManager::Instance().UninManager();
+    PRTConnManager::Instance().SignalKill();
+    PRTConnManager::Instance().ClearAll();
 }

@@ -32,9 +32,10 @@ void CRTDispatchConnection::DispatchMsg(const std::string& uid, pms::RelayMsg& r
 
         LI("CRTDispatchConnection::DispatchMsg userid:%s, r_msg.cont_module:%d\n\n", uid.c_str(), r_msg.cont_module());
         // user set not accept push
-        if (!CRTConnManager::Instance().GetEnablePush(uid, r_msg.cont_module()))
+        // user set mute notification
+        if (!CRTConnManager::Instance().CouldPush(uid, r_msg.cont_module()))
         {
-            LE("CRTDispatchConnection::DispatchMsg user set do not accept push, so return\n");
+            LE("CRTDispatchConnection::DispatchMsg user set do not accept push or mute notify, so return\n");
             return;
         }
         // get redis setting enablepush

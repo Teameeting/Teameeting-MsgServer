@@ -184,6 +184,7 @@ bool PRTXRedis::GetNeedPushMsg(const std::string& devType, ArrayReply& reply, in
         // get list msg stop-start once, and them remove them
         bool res = false;
         {
+            //TODO:maybe has dead lock???
             OSMutexLocker locker(&m_MutexLPush);
             if (m_xRedisClient.lrange(*m_RedisDBIdx, key, start, stop, reply)) {
                 m_xRedisClient.ltrim(*m_RedisDBIdx, key, stop+1, -1);
@@ -193,21 +194,6 @@ bool PRTXRedis::GetNeedPushMsg(const std::string& devType, ArrayReply& reply, in
         return res;
     }
 }
-
-//bool PRTXRedis::TrimListMsg(const std::string& devType, int64_t start, int64_t stop)
-//{
-//    char key[128] = {0};
-//    sprintf(key, "push:msg:%s", devType.c_str());
-//    // remove msg from start to stop
-//    if (m_xRedisClient.ltrim(*m_RedisDBIdx, key, start, stop)) {
-//        LI("%s success start:%lld, stop:%lld \r\n", __PRETTY_FUNCTION__, start, stop);
-//        return true;
-//    }
-//    else {
-//        LE("%s error [%s] \r\n", __PRETTY_FUNCTION__, m_RedisDBIdx->GetErrInfo());
-//        return false;
-//    }
-//}
 
 bool PRTXRedis::LenListMsg(const std::string& devType, int64_t& count)
 {

@@ -117,7 +117,6 @@ private:
     std::list<std::string>    m_connectorAddrList;
     std::list<std::string>    m_rtlivepusherAddrList;
     std::string               m_logicalId;
-    OSMutex                   m_mutexMembers;
     PRTConnDispatcher*        m_pConnDispatcher;
     UserConnectorMaps         m_userConnectors;
     ConnectingSessList        m_connectingSessList;

@@ -35,6 +35,13 @@ public:
         for (int i=0;i<PACKED_MSG_NUM_ONCE;++i)
             m_packed.add_msgs();
     }
+
+    void Unin()
+    {
+        for (int i=0;i<PACKED_MSG_NUM_ONCE;++i)
+            m_packed.mutable_msgs(i)->Clear();
+    }
+
 public:
 
     int EncodePushGetDataNotify(std::string& outstr, pms::StorageMsg& msg, int module);

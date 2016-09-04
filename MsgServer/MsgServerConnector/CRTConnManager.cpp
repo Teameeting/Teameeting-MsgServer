@@ -280,6 +280,24 @@ bool CRTConnManager::GetEnablePush(const std::string& userid, pms::EModuleType t
     }
 }
 
+bool CRTConnManager::CouldPush(const std::string& userid, pms::EModuleType type)
+{
+    std::string enablepush;
+    std::string mutenotify;
+    if (m_xRedis.GetSettingPush(userid, type, "enablepush", enablepush, "mutenotify", mutenotify))
+    {
+        LI("CRTConnManager::GetEnablePush enablepush:%s, mutenotify:%s\n", enablepush.c_str(), mutenotify.c_str());
+        if (enablepush.compare("1")==0 && mutenotify.compare("1")!=0)
+        {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 
 bool CRTConnManager::SignalKill()
 {
