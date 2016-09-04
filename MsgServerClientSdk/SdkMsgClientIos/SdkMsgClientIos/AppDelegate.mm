@@ -66,6 +66,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     [user setObject:realDeviceToken forKey:@"realDeviceToken"];
     [user synchronize];
+    NSLog(@"=======>>>realDeviceToken:%@", realDeviceToken);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler

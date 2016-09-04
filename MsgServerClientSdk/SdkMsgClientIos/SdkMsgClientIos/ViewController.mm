@@ -156,7 +156,7 @@
     [clientMgr addDelegateId:impl delegateQueue:nil];
     [clientMgr connToServer:server port:port];
     [clientMgr setNickName:@"hehe"];
-    [clientMgr setToken:@"ff6fda83c4331774e99eaf3553d68d21771efb344811e08fc649bdbbb10d449d"];
+    [clientMgr setToken:@"ef2e594e1b2cbe75daebf205f2b2d0e2805ec51a6fc254b9b01d89a0dfd6015e"];
     [clientMgr setUIconUrl:@"hehehehe"];
 }
 
