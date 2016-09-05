@@ -1,5 +1,6 @@
 # MsgServerClientSdk
 generate MsgServerClient Sdk Project
 
-according to protobuf Makefile.am, compile android & ios libprotobuf-lite.a
-
+直接下载即可使用Sdk
+Ios提供msgclient.Framework
+Android提供msgclient的jar,protobuf-lite的jar, libmsgclient-jni.so
