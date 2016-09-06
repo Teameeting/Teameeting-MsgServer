@@ -109,6 +109,22 @@ public final class CommonMsg {
      * <code>CUPDATESETTING = 19;</code>
      */
     CUPDATESETTING(19),
+    /**
+     * <pre>
+     * sync one data once
+     * </pre>
+     *
+     * <code>CSYNCONEDATA = 20;</code>
+     */
+    CSYNCONEDATA(20),
+    /**
+     * <pre>
+     * sync one group data once
+     * </pre>
+     *
+     * <code>CSYNCONEGROUPDATA = 21;</code>
+     */
+    CSYNCONEGROUPDATA(21),
     UNRECOGNIZED(-1),
     ;
 
@@ -204,6 +220,22 @@ public final class CommonMsg {
      * <code>CUPDATESETTING = 19;</code>
      */
     public static final int CUPDATESETTING_VALUE = 19;
+    /**
+     * <pre>
+     * sync one data once
+     * </pre>
+     *
+     * <code>CSYNCONEDATA = 20;</code>
+     */
+    public static final int CSYNCONEDATA_VALUE = 20;
+    /**
+     * <pre>
+     * sync one group data once
+     * </pre>
+     *
+     * <code>CSYNCONEGROUPDATA = 21;</code>
+     */
+    public static final int CSYNCONEGROUPDATA_VALUE = 21;
 
 
     public final int getNumber() {
@@ -240,6 +272,8 @@ public final class CommonMsg {
         case 17: return CCREATESEQN;
         case 18: return CDELETESEQN;
         case 19: return CUPDATESETTING;
+        case 20: return CSYNCONEDATA;
+        case 21: return CSYNCONEGROUPDATA;
         default: return null;
       }
     }

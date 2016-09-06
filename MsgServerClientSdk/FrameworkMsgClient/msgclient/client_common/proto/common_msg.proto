@@ -25,6 +25,8 @@ enum EServerCmd{
     CCREATESEQN             = 17;
     CDELETESEQN             = 18;
     CUPDATESETTING          = 19; // update setting
+    CSYNCONEDATA            = 20; // sync one data once
+    CSYNCONEGROUPDATA       = 21; // sync one group data once
 }
 
 // different server module

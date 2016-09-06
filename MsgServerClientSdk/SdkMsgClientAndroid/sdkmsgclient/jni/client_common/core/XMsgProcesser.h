@@ -43,6 +43,8 @@ public:
     int EncodeDeleteSeqn(std::string& outstr, const std::string& userid, const std::string& storeid, int64 seqn, int module, int tag, int flag);
     
     int EncodeUpdateSetting(std::string& outstr, const std::string& userid, int64 setType, const std::string& json, int module);
+    int EncodeSyncOneData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag);
+    int EncodeSyncOneGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module, int tag, int flag);
     
     int DecodeRecvData(const char* pData, int nLen);
 

@@ -433,6 +433,78 @@ int XMsgClient::UpdateSetting(int64 setType, const std::string& jsonSetting)
     return SendEncodeMsg(outstr);
 }
 
+int XMsgClient::SyncOneData(int64 seqn)
+{
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncOneData seqn is:%lld\n", seqn);
+#else
+    LOG(INFO) << "XMsgClient::SyncOneData seqn is:" << seqn;
+#endif
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncOneData(outstr, m_uid, m_token, seqn, m_module, pms::EStorageTag::TDATA, pms::EMsgFlag::FSINGLE);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+    int ret = SendEncodeMsg(outstr);
+    if (ret>0) {
+        rtc::CritScope cs(&m_csWait4CheckSeqnKey);
+        char seqnKey[256] = {0};
+        sprintf(seqnKey, "%s:%lld", m_uid.c_str(), seqn);
+        if (m_Wait4CheckSeqnKeyMap.find(seqnKey)==m_Wait4CheckSeqnKeyMap.end()) {
+            m_Wait4CheckSeqnKeyMap.insert(make_pair(seqnKey, 1));
+        } else {
+            m_Wait4CheckSeqnKeyMap[seqnKey]++;
+        }
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::SyncOneData seqnKey:%s, times:%d\n", seqnKey, m_Wait4CheckSeqnKeyMap[seqnKey]);
+#else
+        LOG(INFO) << "XMsgClient::SyncOneData seqnKey:" << seqnKey << ", times:" << m_Wait4CheckSeqnKeyMap[seqnKey];
+#endif
+        }
+        return ret;
+}
+
+
+int XMsgClient::SyncOneGroupData(const std::string& groupid, int64 seqn)
+{
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::SyncOneGroupData userid:%s, groupid:%s, seqn is:%lld, wait...\n"\
+         , m_uid.c_str(), groupid.c_str(), seqn);
+#else
+    LOG(INFO) << "XMsgClientit::SyncOneGruopData userid:" << m_uid << ", groupid:" << groupid << ", seqn:" << seqn << ", wait...";
+#endif
+    std::string outstr;
+    if (m_pMsgProcesser) {
+        m_pMsgProcesser->EncodeSyncOneGroupData(outstr, m_uid, m_token, groupid, seqn, m_module, pms::EStorageTag::TDATA, pms::EMsgFlag::FGROUP);
+    } else {
+        return -1;
+    }
+    if (outstr.length()==0) {
+        return -1;
+    }
+    int ret = SendEncodeMsg(outstr);
+    if (ret>0) {
+        rtc::CritScope cs(&m_csWait4CheckSeqnKey);
+        char seqnKey[256] = {0};
+        sprintf(seqnKey, "%s:%lld", groupid.c_str(), seqn);
+        if (m_Wait4CheckSeqnKeyMap.find(seqnKey)==m_Wait4CheckSeqnKeyMap.end()) {
+            m_Wait4CheckSeqnKeyMap.insert(make_pair(seqnKey, 1));
+        } else {
+            m_Wait4CheckSeqnKeyMap[seqnKey]++;
+        }
+#if WEBRTC_ANDROID
+        LOGI("XMsgClient::SyncOneGroupData seqnKey:%s, times:%d\n", seqnKey, m_Wait4CheckSeqnKeyMap[seqnKey]);
+#else
+        LOG(INFO) << "XMsgClient::SyncOneGroupData seqnKey:" << seqnKey << ", times:" << m_Wait4CheckSeqnKeyMap[seqnKey];
+#endif
+    }
+    return ret;
+}
+
 
 ////////////////////////////////////////////
 ////////////////private/////////////////////

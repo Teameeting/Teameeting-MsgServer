@@ -308,6 +308,57 @@ int XMsgProcesser::EncodeUpdateSetting(std::string& outstr, const std::string& u
     return 0;
 }
 
+int XMsgProcesser::EncodeSyncOneData(std::string& outstr, const std::string& userid, const std::string& token, int64 seqn, int module, int tag, int flag)
+{
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CSYNCONEDATA);
+    store.set_tsvrcmd(pms::EServerCmd::CSYNCONEDATA);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(userid);
+    store.set_ruserid(userid);
+    store.set_sequence(seqn);
+    store.set_version(MSG_VERSION);
+    
+    req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
+#endif
+    return 0;
+}
+
+int XMsgProcesser::EncodeSyncOneGroupData(std::string& outstr, const std::string& userid, const std::string& token, const std::string& groupid, int64 seqn, int module, int tag, int flag)
+{
+#if DEF_PROTO
+    pms::MsgReq req;
+    pms::StorageMsg store;
+    store.set_rsvrcmd(pms::EServerCmd::CSYNCONEGROUPDATA);
+    store.set_tsvrcmd(pms::EServerCmd::CSYNCONEGROUPDATA);
+    store.set_mtag((pms::EStorageTag)tag);
+    store.set_mflag((pms::EMsgFlag)flag);
+    store.set_storeid(groupid);
+    store.set_ruserid(userid);
+    store.set_groupid(groupid);
+    store.set_sequence(seqn);
+    store.set_version(MSG_VERSION);
+    
+    req.set_svr_cmds(pms::EServerCmd::CSYNCDATA);
+    req.set_mod_type((pms::EModuleType)module);
+    req.set_content(store.SerializeAsString());
+    outstr = req.SerializeAsString();
+#else
+#endif
+    return 0;
+}
+
+
+
+
+
 /////////////////////////////////////////////////////
 ///////////////////DECODE MEETMSG////////////////////
 /////////////////////////////////////////////////////
@@ -365,6 +416,12 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
 
         case pms::EServerCmd::CSNTFSEQN:
             DecodeNotifySeqn(resp.rsp_code(), resp.rsp_cont());
+            break;
+        case pms::EServerCmd::CSYNCONEDATA:
+            DecodeSyncData(resp.rsp_code(), resp.rsp_cont());
+            break;
+        case pms::EServerCmd::CSYNCONEGROUPDATA:
+            DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
             break;
 
         // this event case is no long used

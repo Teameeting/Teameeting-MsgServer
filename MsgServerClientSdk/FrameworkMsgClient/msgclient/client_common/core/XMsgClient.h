@@ -88,6 +88,8 @@ public:
     int SyncGroupSeqn(const std::string& groupid, int64 seqn, int role);
     int SyncGroupData(const std::string& gropuid, int64 seqn);
     int UpdateSetting(int64 setType, const std::string& jsonSetting);
+    int SyncOneData(int64 seqn);
+    int SyncOneGroupData(const std::string& groupid, int64 seqn);
 
     MSState MSStatus() { return m_msState; }
     void SetUserId(const std::string& userid) { m_uid = userid; }
@@ -303,9 +305,9 @@ private:
                 }
                 Wait4CheckSeqnKeyMapIt skit = m_Wait4CheckSeqnKeyMap.find(sk);
                 if (skit==m_Wait4CheckSeqnKeyMap.end()) { // not find sk in map, so sync data
-                    // only when curseqn is smaller than the max seqn, then sync data
+                    // only when curseqn is smaller than the max seqn, then begin sync one data once
                     if (itCurSeqn->second < uit->second) {
-                        SyncData(itCurSeqn->second+1);
+                        SyncOneData(itCurSeqn->second+1);
                     }
                     break;
                 } else { // int waitCheckMap find sk
@@ -334,7 +336,7 @@ private:
                         // not reach 5 times, try to sync data again
                         // only when curseqn is smaller than the max seqn, then sync data
                         if (itCurSeqn->second < uit->second) {
-                            SyncData(itCurSeqn->second+1);
+                            SyncOneData(itCurSeqn->second+1);
                         }
                         break;
                     }
@@ -495,9 +497,9 @@ private:
                 }
                 Wait4CheckSeqnKeyMapIt skit = m_Wait4CheckSeqnKeyMap.find(sk);
                 if (skit==m_Wait4CheckSeqnKeyMap.end()) { // not find sk in map, so sync data
-                    // only when curseqn is smaller than the max seqn, then sync data
+                    // only when curseqn is smaller than the max seqn, then sync one group data once
                     if (itCurSeqn->second < uit->second) {
-                        SyncGroupData(storeid.c_str(), itCurSeqn->second +1);
+                        SyncOneGroupData(storeid.c_str(), itCurSeqn->second +1);
                     }
                     break;
                 } else { // find sk
@@ -527,7 +529,7 @@ private:
                         // not reach 5 times, try to sync data again
                         // only when curseqn is smaller than the max seqn, then sync data
                         if (itCurSeqn->second < uit->second) {
-                            SyncGroupData(storeid.c_str(), itCurSeqn->second+1);
+                            SyncOneGroupData(storeid.c_str(), itCurSeqn->second+1);
                         }
                         break;
                     }

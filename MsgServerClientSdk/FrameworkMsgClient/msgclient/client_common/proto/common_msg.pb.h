@@ -60,12 +60,14 @@ enum EServerCmd {
   CCREATESEQN = 17,
   CDELETESEQN = 18,
   CUPDATESETTING = 19,
+  CSYNCONEDATA = 20,
+  CSYNCONEGROUPDATA = 21,
   EServerCmd_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   EServerCmd_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool EServerCmd_IsValid(int value);
 const EServerCmd EServerCmd_MIN = CLOGIN;
-const EServerCmd EServerCmd_MAX = CUPDATESETTING;
+const EServerCmd EServerCmd_MAX = CSYNCONEGROUPDATA;
 const int EServerCmd_ARRAYSIZE = EServerCmd_MAX + 1;
 
 enum EModuleType {

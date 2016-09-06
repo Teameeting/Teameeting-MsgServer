@@ -50,6 +50,12 @@ typedef GPB_ENUM(EServerCmd) {
 
   /// update setting
   EServerCmd_Cupdatesetting = 19,
+
+  /// sync one data once
+  EServerCmd_Csynconedata = 20,
+
+  /// sync one group data once
+  EServerCmd_Csynconegroupdata = 21,
 };
 
 GPBEnumDescriptor *EServerCmd_EnumDescriptor(void);

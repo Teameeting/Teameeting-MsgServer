@@ -79,6 +79,8 @@ bool EServerCmd_IsValid(int value) {
     case 17:
     case 18:
     case 19:
+    case 20:
+    case 21:
       return true;
     default:
       return false;
