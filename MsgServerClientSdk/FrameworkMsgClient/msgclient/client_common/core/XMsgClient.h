@@ -240,9 +240,9 @@ private:
         while(1)
         {
 #if WEBRTC_ANDROID
-            LOGI("UUpdateUserSeqn m_gSyncedMsgMap.size:%u\n", m_gSyncedMsgMap.size());
+            LOGI("UUpdateUserSeqn m_uSyncedMsgMap.size:%u\n", m_uSyncedMsgMap.size());
 #else
-            LOG(INFO) << "UUpdateUserSeqn m_gSyncedMsgMap.size:" << m_gSyncedMsgMap.size();
+            LOG(INFO) << "UUpdateUserSeqn m_uSyncedMsgMap.size:" << m_uSyncedMsgMap.size();
 #endif
             if (m_uSyncedMsgMap.size()==0) break;
             char sk[256] = {0};
