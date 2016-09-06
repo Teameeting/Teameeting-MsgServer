@@ -8,12 +8,7 @@
 
 #include "SRTSequenceRedis.h"
 #include "SRTRedisManager.h"
-
-#define Err_Redis_Ok                         (0)
-#define Err_Redis_Key_Not_Exist              (-1)
-#define Err_Redis_Key_Exist                  (-2)
-#define Err_Redis_Key_Expire                 (-3)
-#define Err_Redis_Key_Expire_Or_Not_Exist    (-4)
+#include "StatusCode.h"
 
 static unsigned int APHash(const char *str) {
     unsigned int hash = 0;

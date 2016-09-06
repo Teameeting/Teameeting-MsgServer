@@ -35,6 +35,8 @@ LRTTransferSession::LRTTransferSession()
 , m_tmpRPDataId(0)
 , m_tmpRPSeqn4DataId(0)
 , m_tmpRData2Id(0)
+, m_tmpOData2Id(0)
+, m_tmpOGData2Id(0)
 {
     AddObserver(this);
 }
@@ -662,6 +664,7 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
             // then send request to sequence server
             // if get seqn from local, then send sync data request
 
+            // sync the pointed sequence data
             if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CPGETDATA)
             {
                 char msgid[16] = {0};
@@ -673,7 +676,28 @@ void LRTTransferSession::OnTypeReadRequest(const std::string& str)
                         , store.msgs(i).sequence());
                 LRTLogicalManager::Instance().InsertDataRead(this, store.mutable_msgs(i));
                 d_store.add_msgs()->MergeFrom(store.msgs(i));
+            } else if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CSYNCONEDATA) {
+                char msgid[16] = {0};
+                sprintf(msgid, "ord:%u", m_tmpOData2Id++);
+                store.mutable_msgs(i)->set_msgid(msgid);
+                LI("----------++++++++--------------LRTTransferSession::OnTypeReadRequest CSYNCONEDATA msgid:%s, rsvrcmd:%d, seqn:%lld\n"\
+                        , store.msgs(i).msgid().c_str()\
+                        , store.msgs(i).rsvrcmd()\
+                        , store.msgs(i).sequence());
+                LRTLogicalManager::Instance().InsertDataRead(this, store.mutable_msgs(i));
+                d_store.add_msgs()->MergeFrom(store.msgs(i));
+            } else if (store.msgs(i).rsvrcmd()==pms::EServerCmd::CSYNCONEGROUPDATA) {
+                char msgid[16] = {0};
+                sprintf(msgid, "ogrd:%u", m_tmpOGData2Id++);
+                store.mutable_msgs(i)->set_msgid(msgid);
+                LI("----------++++++++--------------LRTTransferSession::OnTypeReadRequest CSYNCONEGROUPDATA msgid:%s, rsvrcmd:%d, seqn:%lld\n"\
+                        , store.msgs(i).msgid().c_str()\
+                        , store.msgs(i).rsvrcmd()\
+                        , store.msgs(i).sequence());
+                LRTLogicalManager::Instance().InsertDataRead(this, store.mutable_msgs(i));
+                d_store.add_msgs()->MergeFrom(store.msgs(i));
             } else { // this is from pusher CPGETDATA
+                // sync the client current seqn +1 data
                 int64 seqn = -1;
                 if (LRTLogicalManager::Instance().ReadLocalSeqn(store.mutable_msgs(i), &seqn))
                 {

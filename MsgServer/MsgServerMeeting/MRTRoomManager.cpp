@@ -15,7 +15,6 @@
 #include "OS.h"
 #include "rtklog.h"
 #include "MRTMeetingRoom.h"
-#include "StatusCode.h"
 #include "RTUtils.hpp"
 #include "RTZKClient.hpp"
 

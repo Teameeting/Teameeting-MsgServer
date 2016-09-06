@@ -8,7 +8,6 @@
 
 #include "CRTConnectionTcp.h"
 #include "CRTConnManager.h"
-#include "StatusCode.h"
 #include "RTUtils.hpp"
 
 #include "MsgServer/proto/entity_msg.pb.h"

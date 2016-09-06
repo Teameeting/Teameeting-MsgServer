@@ -9,18 +9,7 @@
 #include "SRTStorageRedis.h"
 #include "SRTRedisGroup.h"
 #include "OSThread.h"
-
-#define MAX_MESSAGE_EXPIRE_TIME (7*24*60*60)
-
-#define Err_Redis_Ok                     (0)
-#define Err_Redis_Not_Exist              (-1)
-#define Err_Redis_Exist                  (-2)
-#define Err_Redis_Expire                 (-3)
-#define Err_Redis_Expire_Or_Not_Exist    (-4)
-#define Err_Vsersion_Not_Support         (-5)
-#define Err_Redis_Setex                  (-6)
-#define Err_Redis_Hmset                  (-7)
-#define Err_Redis_Type                   (-8)
+#include "StatusCode.h"
 
 static int g_push_event_counter = 0;
 static OSMutex      g_push_event_mutex;
@@ -112,7 +101,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
                 {
                     m_xRedisClient.get(*m_RedisDBIdx, key, str);
                     if (str.length()==0) {
-                        store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                        store.set_result(Err_Redis_Key_Expire_Or_Not_Exist);
                     } else {
                         store.set_result(Err_Redis_Ok);
                     }
@@ -130,7 +119,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
                         if (err) {
                             LE("SRTStorageRedis::OnTickEvent g write group msg error, hmset err:%s\n", err);
                         }
-                        store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                        store.set_result(Err_Redis_Key_Expire_Or_Not_Exist);
                     }
                 }
             } else {
@@ -138,7 +127,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
                 *store.mutable_content() = str;
             }
         } else {
-            store.set_result(Err_Redis_Not_Exist);// key is not exists
+            store.set_result(Err_Redis_Key_Not_Exist);// key is not exists
             *store.mutable_content() = str;
         }
         LI("SRTStorageRedis::OnWakeupEvent g read key:%s, msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\
@@ -171,7 +160,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
                 {
                     m_xRedisClient.get(*m_RedisDBIdx, key, str);
                     if (str.length()==0) {
-                        store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                        store.set_result(Err_Redis_Key_Expire_Or_Not_Exist);
                     } else {
                         store.set_result(Err_Redis_Ok);
                     }
@@ -188,7 +177,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
                         if (err) {
                             LI("SRTStorageRedis::OnTickEvent s write single msg error, hmset err:%s\n", err);
                         }
-                        store.set_result(Err_Redis_Expire_Or_Not_Exist);
+                        store.set_result(Err_Redis_Key_Expire_Or_Not_Exist);
                     }
                 }
             } else {
@@ -196,7 +185,7 @@ void SRTStorageRedis::OnWakeupEvent(const void*pData, int nSize)
                 *store.mutable_content() = str;
             }
         } else {
-            store.set_result(Err_Redis_Not_Exist);// key is not exists
+            store.set_result(Err_Redis_Key_Not_Exist);// key is not exists
             *store.mutable_content() = str;
         }
         LI("SRTStorageRedis::OnWakeupEvent s read key:%s, msgid:%s, storeid:%s, seqn:%lld, maxseqn:%lld, result:%d\n"\

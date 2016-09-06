@@ -112,6 +112,8 @@ private:
     unsigned int                    m_tmpRPDataId; // this is for pusher CGETDATA
     unsigned int                    m_tmpRPSeqn4DataId; // this is for pusher CGETDATA
     unsigned int                    m_tmpRData2Id;
+    unsigned int                    m_tmpOData2Id; // one data
+    unsigned int                    m_tmpOGData2Id; // one group data
 };
 
 #endif /* defined(__MsgServerLogical__LRTTransferSession__) */
