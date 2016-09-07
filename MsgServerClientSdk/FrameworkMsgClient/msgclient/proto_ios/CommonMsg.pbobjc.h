@@ -56,6 +56,9 @@ typedef GPB_ENUM(EServerCmd) {
 
   /// sync one group data once
   EServerCmd_Csynconegroupdata = 21,
+
+  /// other user login
+  EServerCmd_Cotherlogin = 22,
 };
 
 GPBEnumDescriptor *EServerCmd_EnumDescriptor(void);

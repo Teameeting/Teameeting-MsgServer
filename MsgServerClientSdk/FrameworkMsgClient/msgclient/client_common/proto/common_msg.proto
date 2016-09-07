@@ -27,6 +27,7 @@ enum EServerCmd{
     CUPDATESETTING          = 19; // update setting
     CSYNCONEDATA            = 20; // sync one data once
     CSYNCONEGROUPDATA       = 21; // sync one group data once
+    COTHERLOGIN             = 22; // other user login
 }
 
 // different server module

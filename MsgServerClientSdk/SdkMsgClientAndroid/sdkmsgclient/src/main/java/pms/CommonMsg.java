@@ -125,6 +125,14 @@ public final class CommonMsg {
      * <code>CSYNCONEGROUPDATA = 21;</code>
      */
     CSYNCONEGROUPDATA(21),
+    /**
+     * <pre>
+     * other user login
+     * </pre>
+     *
+     * <code>COTHERLOGIN = 22;</code>
+     */
+    COTHERLOGIN(22),
     UNRECOGNIZED(-1),
     ;
 
@@ -236,6 +244,14 @@ public final class CommonMsg {
      * <code>CSYNCONEGROUPDATA = 21;</code>
      */
     public static final int CSYNCONEGROUPDATA_VALUE = 21;
+    /**
+     * <pre>
+     * other user login
+     * </pre>
+     *
+     * <code>COTHERLOGIN = 22;</code>
+     */
+    public static final int COTHERLOGIN_VALUE = 22;
 
 
     public final int getNumber() {
@@ -274,6 +290,7 @@ public final class CommonMsg {
         case 19: return CUPDATESETTING;
         case 20: return CSYNCONEDATA;
         case 21: return CSYNCONEGROUPDATA;
+        case 22: return COTHERLOGIN;
         default: return null;
       }
     }
