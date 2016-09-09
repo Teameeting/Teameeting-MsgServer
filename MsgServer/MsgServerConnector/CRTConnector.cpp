@@ -112,12 +112,17 @@ CRTConnector::CRTConnector(void)
 : m_pConnListener(NULL)
 , m_pModuleListener(NULL)
 , m_pConnTcpListener(NULL)
+, m_pWebSvrListener(NULL)
 {
 
 }
 
 CRTConnector::~CRTConnector(void)
 {
+    if (m_pWebSvrListener) {
+        delete m_pWebSvrListener;
+        m_pWebSvrListener = NULL;
+    }
     if (m_pConnTcpListener) {
         delete m_pConnTcpListener;
         m_pConnTcpListener = NULL;
@@ -162,6 +167,7 @@ int	CRTConnector::Start(const MsConfigParser& conf)
     int nWebConPort = conf.GetIntVal("global", "listen_webcon_port", 6610);
     int nModulePort = conf.GetIntVal("global", "listen_module_port", 6620);
     int nCliConPort = conf.GetIntVal("global", "listen_clicon_port", 6630);
+    int nWebSvrPort = conf.GetIntVal("global", "listen_websvr_port", 6612);
     int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
     int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
 
@@ -222,6 +228,24 @@ int	CRTConnector::Start(const MsConfigParser& conf)
         LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", nCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
     }
+
+#if 0
+    if(nWebSvrPort > 0)
+	{
+		m_pWebSvrListener = new CRTWebServerListener();
+		OS_Error err = m_pWebSvrListener->Initialize(INADDR_ANY, nWebSvrPort);
+		if (err!=OS_NoErr)
+		{
+			LE("Create WebServerListener error port=%d \n", nWebSvrPort);
+			delete m_pWebSvrListener;
+			m_pWebSvrListener=NULL;
+
+			return -1;
+		}
+		LI("Start Connector WebServer service:(%d) ok...,socketFD:%d\n", nWebSvrPort, m_pWebSvrListener->GetSocketFD());
+		m_pWebSvrListener->RequestEvent(EV_RE);
+	}
+#endif
 
 	return 0;
 }

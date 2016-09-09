@@ -19,7 +19,7 @@ class RTEventTimer
 {
 public:
     typedef int (*ExecutorDelay)(const char*pData, int nLen);
-    typedef int (*ExecutorDelay2)(const void*self, const void*caller);
+    typedef int (*ExecutorDelay2)(void*self, void*caller);
 
 	RTEventTimer(int timeout, ExecutorDelay executor);
 	virtual ~RTEventTimer(void);

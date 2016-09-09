@@ -50,6 +50,8 @@ int CRTConnTcp::DoProcessData(const char* pData, int nLen)
         OnDeleteSeqn(request.svr_cmds(), request.mod_type(), request.content());
     } else if (request.svr_cmds() == pms::EServerCmd::CUPDATESETTING) {
         OnUpdateSetting(request.svr_cmds(), request.mod_type(), msg);
+    } else if (request.svr_cmds() == pms::EServerCmd::COTHERLOGIN) {
+        OnOtherLogin(request.svr_cmds(), request.mod_type(), request.content());
     } else {
         LE("parse MsgReq params error\n");
     }

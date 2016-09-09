@@ -12,6 +12,8 @@
 
 #include "MsgServer/proto/entity_msg.pb.h"
 #include "MsgServer/proto/entity_msg_type.pb.h"
+#include "MsgServer/proto/storage_msg.pb.h"
+#include "MsgServer/proto/storage_msg_type.pb.h"
 
 
 CRTConnectionTcp::CRTConnectionTcp()
@@ -20,6 +22,7 @@ CRTConnectionTcp::CRTConnectionTcp()
 , m_userId("")
 , m_token("")
 , m_nname("")
+, m_uuid("")
 , m_login(false)
 {
     AddObserver(this);
@@ -52,6 +55,50 @@ void CRTConnectionTcp::GenericResponse(pms::EServerCmd cmd, pms::EModuleType mod
 #endif
 }
 
+// the WebServer notify here, the user was login in other place
+// here I will send msg notify user this account was login in other place
+void CRTConnectionTcp::NotifyOtherLogin(const std::string& userid, const std::string& uuid)
+{
+    LI("CRTConnectionTcp::NotifyOtherLogin was called, userid:%s, uuid:%s\n", userid.c_str(), uuid.c_str());
+
+    CRTConnManager::ConnectionInfo* pci = CRTConnManager::Instance().findConnectionInfoById(userid);
+    CRTConnectionTcp* ct = nullptr;
+    if (pci) {
+        if (pci->_pConn && pci->_pConn->IsLiveSession()) {
+            if (pci->_connType == pms::EConnType::TTCP) {
+                ct = dynamic_cast<CRTConnectionTcp*>(pci->_pConn);
+            } else {
+                return;
+            }
+        }
+    }
+    if (!ct) return;
+
+    if (ct->GetUserId().compare(userid)==0 && ct->GetUUID().compare(uuid)!=0) {
+        LI("CRTConnectionTcp::NotifyOtherLogin begin to notify\n");
+        pms::StorageMsg smsg;
+        smsg.set_rsvrcmd(pms::EServerCmd::COTHERLOGIN);
+        smsg.set_tsvrcmd(pms::EServerCmd::COTHERLOGIN);
+
+        pms::MsgRep resp;
+        resp.set_svr_cmds(pms::EServerCmd::COTHERLOGIN);
+        resp.set_rsp_code(0);
+        if (ct)
+            ct->SendDispatch("", resp.SerializeAsString());
+
+        std::string token;
+        CRTConnManager::Instance().DelUser(pms::EConnType::TTCP, userid, token);
+        CRTConnManager::Instance().ConnectionLostNotify(userid, token);
+        ct->SetUserId("");
+        ct->SetToken("");
+        ct->SetNickName("");
+        ct->SetUUID("");
+        ct->SetIsLogin(false);
+        LI("CRTConnectionTcp::NotifyOtherLogin finish to notify\n");
+    }
+}
+
+
 //* For RCTcp
 void CRTConnectionTcp::OnRecvData(const char*pData, int nLen)
 {
@@ -65,6 +112,7 @@ void CRTConnectionTcp::OnRecvMessage(const char*message, int nLen)
 {
     CRTConnTcp::DoProcessData(message, nLen);
 }
+
 
 //* For RTConnTcp
 void CRTConnectionTcp::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
@@ -82,9 +130,18 @@ void CRTConnectionTcp::OnLogin(pms::EServerCmd cmd, pms::EModuleType module, con
         return;
     }
 
+    // if has login, and uuid is different, i think this account was login in another device
+    // so notify original device to logout
+    // and disconnect the original connection
+    LI("CRTConnectionTcp::OnLogin login:%d, usr_from:%s, uuid:%s\n", m_login, login.usr_from().c_str(), login.usr_uuid().c_str());
+    this->NotifyOtherLogin(login.usr_from(), login.usr_uuid());
+
+    LI("CRTConnectionTcp::OnLogin will real begin\n");
+
     m_userId = login.usr_from();
     m_token = login.usr_token();
     m_nname = login.usr_nname();
+    m_uuid = login.usr_uuid();
 
     CRTConnManager::Instance().TransferToPusher(cmd, module, m_userId, msg);
     LI("Onlogin user:%s login\n", m_userId.c_str());
@@ -162,6 +219,7 @@ void CRTConnectionTcp::OnGetMsg(pms::EServerCmd cmd, pms::EModuleType module, co
 void CRTConnectionTcp::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
 {
 #if DEF_PROTO
+    if (!m_login) return;
     pms::Logout logout;
     if (!logout.ParseFromString(msg)) {
         LE("login.ParseFromString error\n");
@@ -176,6 +234,7 @@ void CRTConnectionTcp::OnLogout(pms::EServerCmd cmd, pms::EModuleType module, co
     m_userId = "";
     m_token = "";
     m_nname = "";
+    m_uuid = "";
     std::string resp;
     std::string result("logout ok");
     GenericResponse(pms::EServerCmd::CLOGOUT, module, 0, result, resp);
@@ -258,6 +317,18 @@ void CRTConnectionTcp::OnUpdateSetting(pms::EServerCmd cmd, pms::EModuleType mod
 #endif
 }
 
+// this callback maybe useless...
+void CRTConnectionTcp::OnOtherLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg)
+{
+#if DEF_PROTO
+    if (m_login) {
+        LE("CRTConnectionTcp::OnOtherLogin was called, this callback should not be called!!!!!\n");
+    }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
+}
+
 void CRTConnectionTcp::OnResponse(const char*pData, int nLen)
 {
     RTTcp::SendTransferData(pData, nLen);
@@ -270,6 +341,11 @@ void CRTConnectionTcp::ConnectionDisconnected()
         std::string token;
         CRTConnManager::Instance().DelUser(pms::EConnType::THTTP, m_userId, token);
         CRTConnManager::Instance().ConnectionLostNotify(m_userId, m_token);
+        m_userId = "";
+        m_token = "";
+        m_nname = "";
+        m_uuid = "";
+        m_login = false;
     }
 }
 
