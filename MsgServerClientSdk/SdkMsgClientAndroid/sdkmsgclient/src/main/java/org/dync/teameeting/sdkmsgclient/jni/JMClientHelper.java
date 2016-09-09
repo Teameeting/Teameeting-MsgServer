@@ -14,6 +14,7 @@ public interface JMClientHelper {
     public void OnGroupNotify(int code, String seqnid);
     public void OnNotifySeqn(int code, String seqnid);
     public void OnNotifyData(int code, String seqnid);
+    public void OnNotifyOtherLogin(int code);
 
     public void OnMsgServerConnected();
     public void OnMsgServerConnecting();

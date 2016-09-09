@@ -110,4 +110,14 @@ public interface MSSubMessageDelegate {
      *  if userid not equals your id, means you are notified to know
      */
     public void OnNotifySettedMgr(MSMessage mgrMsg);
+
+    /**
+     *  when this account was loggined on another device
+     *  you will receive this notification
+     *  what you need to do is invoke method 'delDelegateId' and 'uninMsgClient' in MSClientManager
+     *
+     *  params:
+     *      code: the code
+     */
+    public void OnNotifyOtherLogin(int code);
 }

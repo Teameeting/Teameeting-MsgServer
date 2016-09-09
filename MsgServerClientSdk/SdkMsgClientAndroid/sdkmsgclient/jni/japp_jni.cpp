@@ -227,6 +227,13 @@ JOWW(void, JMClientApp_UpdateSetting)(JNIEnv *jni, jobject j_app, jlong setType,
 	jApp->UpdateSetting(setType, jjsonSetting.ToString8().c_str());
 }
 
+JOWW(void, JMClientApp_SetUUID)(JNIEnv *jni, jobject j_app, jstring strUUID)
+{
+	JMClientApp* jApp = GetJApp(jni, j_app);
+	JavaString jstrUUID(strUUID);
+	jApp->SetUUID(jstrUUID.ToString8().c_str());
+}
+
 JOWW(void, JMClientApp_InitUserSeqns)(JNIEnv *jni, jobject j_app, jstring strSeqnid, jlong seqn)
 {
 	JMClientApp* jApp = GetJApp(jni, j_app);

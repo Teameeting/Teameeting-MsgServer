@@ -51,6 +51,7 @@ static GPBFileDescriptor *EntityMsgRoot_FileDescriptor(void) {
 @dynamic usrToken;
 @dynamic usrNname;
 @dynamic version;
+@dynamic usrUuid;
 @dynamic devType;
 @dynamic enablePush;
 
@@ -62,6 +63,7 @@ typedef struct Login__storage_ {
   NSString *usrToken;
   NSString *usrNname;
   NSString *version;
+  NSString *usrUuid;
 } Login__storage_;
 
 // This method is threadsafe because it is initially called
@@ -107,10 +109,19 @@ typedef struct Login__storage_ {
         .dataType = GPBDataTypeString,
       },
       {
+        .name = "usrUuid",
+        .dataTypeSpecific.className = NULL,
+        .number = Login_FieldNumber_UsrUuid,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(Login__storage_, usrUuid),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeString,
+      },
+      {
         .name = "devType",
         .dataTypeSpecific.className = NULL,
         .number = Login_FieldNumber_DevType,
-        .hasIndex = 4,
+        .hasIndex = 5,
         .offset = (uint32_t)offsetof(Login__storage_, devType),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeSInt32,
@@ -119,7 +130,7 @@ typedef struct Login__storage_ {
         .name = "enablePush",
         .dataTypeSpecific.className = NULL,
         .number = Login_FieldNumber_EnablePush,
-        .hasIndex = 5,
+        .hasIndex = 6,
         .offset = (uint32_t)offsetof(Login__storage_, enablePush),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeSInt32,

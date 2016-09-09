@@ -25,6 +25,12 @@ int MsgClient::MCInit(const std::string& uid, const std::string& token, const st
     m_nsToken = [[NSString alloc] initWithUTF8String:token.c_str()];
     m_nsNname = [[NSString alloc] initWithUTF8String:nname.c_str()];
     
+    // get UUID
+    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidStr = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+    CFRelease(uuid);
+    SetUUID([uuidStr cStringUsingEncoding:NSASCIIStringEncoding]);
+    
     m_isFetched = false;
     m_nsGroupInfo = [[NSMutableArray alloc] init];
     m_recurLock = [[NSRecursiveLock alloc] init];
@@ -602,6 +608,12 @@ void MsgClient::OnNotifySeqn(int code, const std::string& seqnid)
 void MsgClient::OnNotifyData(int code, const std::string& seqnid)
 {
     NSLog(@"MsgClient::OnNotifyData NOT IMPLEMENT!!!");
+}
+
+void MsgClient::OnNotifyOtherLogin(int code)
+{
+    NSLog(@"MsgClient::OnNotifyOtherLogin code:%d!!!", code);
+    [m_subMsgDelegate OnNotifyOtherLogin:code];
 }
 
 //////////////Above Used in this class//////////////////////////

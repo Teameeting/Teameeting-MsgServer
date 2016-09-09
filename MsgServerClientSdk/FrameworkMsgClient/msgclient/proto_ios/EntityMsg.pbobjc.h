@@ -42,8 +42,9 @@ typedef GPB_ENUM(Login_FieldNumber) {
   Login_FieldNumber_UsrToken = 2,
   Login_FieldNumber_UsrNname = 3,
   Login_FieldNumber_Version = 4,
-  Login_FieldNumber_DevType = 5,
-  Login_FieldNumber_EnablePush = 6,
+  Login_FieldNumber_UsrUuid = 5,
+  Login_FieldNumber_DevType = 6,
+  Login_FieldNumber_EnablePush = 7,
 };
 
 @interface Login : GPBMessage
@@ -57,6 +58,9 @@ typedef GPB_ENUM(Login_FieldNumber) {
 @property(nonatomic, readwrite, copy, null_resettable) NSString *usrNname;
 
 @property(nonatomic, readwrite, copy, null_resettable) NSString *version;
+
+/// usr uuid
+@property(nonatomic, readwrite, copy, null_resettable) NSString *usrUuid;
 
 @property(nonatomic, readwrite) int32_t devType;
 

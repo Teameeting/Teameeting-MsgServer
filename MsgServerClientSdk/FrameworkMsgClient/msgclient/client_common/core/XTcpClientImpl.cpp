@@ -211,8 +211,10 @@ void XTcpClientImpl::DoConnect()
 }
 void XTcpClientImpl::Close()
 {
-	if (m_asynSock.get() != NULL)
+    if (m_asynSock.get() != NULL) {
 		m_asynSock->Close();
+        m_asynSock.reset(nullptr);
+    }
 	if (m_asynResolver != NULL) {
 		m_asynResolver->Destroy(false);
 		m_asynResolver = NULL;

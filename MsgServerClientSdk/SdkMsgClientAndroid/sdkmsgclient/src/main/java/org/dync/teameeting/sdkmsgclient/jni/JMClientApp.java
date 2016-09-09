@@ -48,6 +48,7 @@ public class JMClientApp {
     public native void EnablePush(int push);
     public native void MuteNotify(int mute);
     public native void UpdateSetting(long setType, String jsonSetting);
+    public native void SetUUID(String strUUID);
 
     public native void InitUserSeqns(String strSeqnid, long seqn);
     public native void UpdateUserSeqns(String strSeqnid, long seqn);

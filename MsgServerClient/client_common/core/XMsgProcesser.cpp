@@ -42,7 +42,7 @@ static std::string GetStrMicroSecond()
     return std::string(ct);
 }
 
-int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module)
+int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& uuid, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -50,6 +50,7 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     login.set_usr_from(userid);
     login.set_usr_token(token);
     login.set_usr_nname(nname);
+    login.set_usr_uuid(uuid);
     login.set_version(MSG_VERSION);
 
     req.set_svr_cmds(pms::EServerCmd::CLOGIN);
@@ -358,7 +359,6 @@ int XMsgProcesser::EncodeSyncOneGroupData(std::string& outstr, const std::string
 
 
 
-
 /////////////////////////////////////////////////////
 ///////////////////DECODE MEETMSG////////////////////
 /////////////////////////////////////////////////////
@@ -422,6 +422,9 @@ int XMsgProcesser::DecodeRecvData(const char* pData, int nLen)
             break;
         case pms::EServerCmd::CSYNCONEGROUPDATA:
             DecodeSyncGroupData(resp.rsp_code(), resp.rsp_cont());
+            break;
+        case pms::EServerCmd::COTHERLOGIN:
+            DecodeOtherLogin(resp.rsp_code(), resp.rsp_cont());
             break;
 
         // this event case is no long used
@@ -488,6 +491,12 @@ int XMsgProcesser::DecodeGroupNotify(int code, const std::string& cont)
 int XMsgProcesser::DecodeSyncGroupData(int code, const std::string& cont)
 {
     m_helper.OnHelpSyncGroupData(code, cont);
+    return 0;
+}
+
+int XMsgProcesser::DecodeOtherLogin(int code, const std::string& cont)
+{
+    m_helper.OnHelpOtherLogin(code, cont);
     return 0;
 }
 

@@ -96,6 +96,11 @@
     NSLog(@"MsgClientProtocolImpl function:%@, grpid:%@, userid:%@\n", [NSString stringWithUTF8String:__FUNCTION__], [mgrMsg groupId], [mgrMsg fromId]);
 }
 
+-(void)OnNotifyOtherLogin:(int)code
+{
+    NSLog(@"MsgClientProtocolImpl function:%@, code:%d\n", [NSString stringWithUTF8String:__FUNCTION__], code);
+}
+
 - (void) OnMsgServerConnected
 {
     NSString *ns_msc = @"Callback OnMsgServerConnected was called";

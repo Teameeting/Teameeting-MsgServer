@@ -69,12 +69,30 @@ public final class EntityMsg {
         getVersionBytes();
 
     /**
-     * <code>optional sint32 dev_type = 5;</code>
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    java.lang.String getUsrUuid();
+    /**
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getUsrUuidBytes();
+
+    /**
+     * <code>optional sint32 dev_type = 6;</code>
      */
     int getDevType();
 
     /**
-     * <code>optional sint32 enable_push = 6;</code>
+     * <code>optional sint32 enable_push = 7;</code>
      */
     int getEnablePush();
   }
@@ -91,6 +109,7 @@ public final class EntityMsg {
       usrToken_ = "";
       usrNname_ = "";
       version_ = "";
+      usrUuid_ = "";
       devType_ = 0;
       enablePush_ = 0;
     }
@@ -318,46 +337,112 @@ public final class EntityMsg {
       version_ = value.toStringUtf8();
     }
 
-    public static final int DEV_TYPE_FIELD_NUMBER = 5;
+    public static final int USR_UUID_FIELD_NUMBER = 5;
+    private java.lang.String usrUuid_;
+    /**
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    public java.lang.String getUsrUuid() {
+      return usrUuid_;
+    }
+    /**
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUsrUuidBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(usrUuid_);
+    }
+    /**
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    private void setUsrUuid(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      usrUuid_ = value;
+    }
+    /**
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    private void clearUsrUuid() {
+      
+      usrUuid_ = getDefaultInstance().getUsrUuid();
+    }
+    /**
+     * <pre>
+     * usr uuid
+     * </pre>
+     *
+     * <code>optional string usr_uuid = 5;</code>
+     */
+    private void setUsrUuidBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      usrUuid_ = value.toStringUtf8();
+    }
+
+    public static final int DEV_TYPE_FIELD_NUMBER = 6;
     private int devType_;
     /**
-     * <code>optional sint32 dev_type = 5;</code>
+     * <code>optional sint32 dev_type = 6;</code>
      */
     public int getDevType() {
       return devType_;
     }
     /**
-     * <code>optional sint32 dev_type = 5;</code>
+     * <code>optional sint32 dev_type = 6;</code>
      */
     private void setDevType(int value) {
       
       devType_ = value;
     }
     /**
-     * <code>optional sint32 dev_type = 5;</code>
+     * <code>optional sint32 dev_type = 6;</code>
      */
     private void clearDevType() {
       
       devType_ = 0;
     }
 
-    public static final int ENABLE_PUSH_FIELD_NUMBER = 6;
+    public static final int ENABLE_PUSH_FIELD_NUMBER = 7;
     private int enablePush_;
     /**
-     * <code>optional sint32 enable_push = 6;</code>
+     * <code>optional sint32 enable_push = 7;</code>
      */
     public int getEnablePush() {
       return enablePush_;
     }
     /**
-     * <code>optional sint32 enable_push = 6;</code>
+     * <code>optional sint32 enable_push = 7;</code>
      */
     private void setEnablePush(int value) {
       
       enablePush_ = value;
     }
     /**
-     * <code>optional sint32 enable_push = 6;</code>
+     * <code>optional sint32 enable_push = 7;</code>
      */
     private void clearEnablePush() {
       
@@ -378,11 +463,14 @@ public final class EntityMsg {
       if (!version_.isEmpty()) {
         output.writeString(4, getVersion());
       }
+      if (!usrUuid_.isEmpty()) {
+        output.writeString(5, getUsrUuid());
+      }
       if (devType_ != 0) {
-        output.writeSInt32(5, devType_);
+        output.writeSInt32(6, devType_);
       }
       if (enablePush_ != 0) {
-        output.writeSInt32(6, enablePush_);
+        output.writeSInt32(7, enablePush_);
       }
     }
 
@@ -407,13 +495,17 @@ public final class EntityMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(4, getVersion());
       }
+      if (!usrUuid_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeStringSize(5, getUsrUuid());
+      }
       if (devType_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(5, devType_);
+          .computeSInt32Size(6, devType_);
       }
       if (enablePush_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(6, enablePush_);
+          .computeSInt32Size(7, enablePush_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -702,13 +794,73 @@ public final class EntityMsg {
       }
 
       /**
-       * <code>optional sint32 dev_type = 5;</code>
+       * <pre>
+       * usr uuid
+       * </pre>
+       *
+       * <code>optional string usr_uuid = 5;</code>
+       */
+      public java.lang.String getUsrUuid() {
+        return instance.getUsrUuid();
+      }
+      /**
+       * <pre>
+       * usr uuid
+       * </pre>
+       *
+       * <code>optional string usr_uuid = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUsrUuidBytes() {
+        return instance.getUsrUuidBytes();
+      }
+      /**
+       * <pre>
+       * usr uuid
+       * </pre>
+       *
+       * <code>optional string usr_uuid = 5;</code>
+       */
+      public Builder setUsrUuid(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setUsrUuid(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * usr uuid
+       * </pre>
+       *
+       * <code>optional string usr_uuid = 5;</code>
+       */
+      public Builder clearUsrUuid() {
+        copyOnWrite();
+        instance.clearUsrUuid();
+        return this;
+      }
+      /**
+       * <pre>
+       * usr uuid
+       * </pre>
+       *
+       * <code>optional string usr_uuid = 5;</code>
+       */
+      public Builder setUsrUuidBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setUsrUuidBytes(value);
+        return this;
+      }
+
+      /**
+       * <code>optional sint32 dev_type = 6;</code>
        */
       public int getDevType() {
         return instance.getDevType();
       }
       /**
-       * <code>optional sint32 dev_type = 5;</code>
+       * <code>optional sint32 dev_type = 6;</code>
        */
       public Builder setDevType(int value) {
         copyOnWrite();
@@ -716,7 +868,7 @@ public final class EntityMsg {
         return this;
       }
       /**
-       * <code>optional sint32 dev_type = 5;</code>
+       * <code>optional sint32 dev_type = 6;</code>
        */
       public Builder clearDevType() {
         copyOnWrite();
@@ -725,13 +877,13 @@ public final class EntityMsg {
       }
 
       /**
-       * <code>optional sint32 enable_push = 6;</code>
+       * <code>optional sint32 enable_push = 7;</code>
        */
       public int getEnablePush() {
         return instance.getEnablePush();
       }
       /**
-       * <code>optional sint32 enable_push = 6;</code>
+       * <code>optional sint32 enable_push = 7;</code>
        */
       public Builder setEnablePush(int value) {
         copyOnWrite();
@@ -739,7 +891,7 @@ public final class EntityMsg {
         return this;
       }
       /**
-       * <code>optional sint32 enable_push = 6;</code>
+       * <code>optional sint32 enable_push = 7;</code>
        */
       public Builder clearEnablePush() {
         copyOnWrite();
@@ -776,6 +928,8 @@ public final class EntityMsg {
               !other.usrNname_.isEmpty(), other.usrNname_);
           version_ = visitor.visitString(!version_.isEmpty(), version_,
               !other.version_.isEmpty(), other.version_);
+          usrUuid_ = visitor.visitString(!usrUuid_.isEmpty(), usrUuid_,
+              !other.usrUuid_.isEmpty(), other.usrUuid_);
           devType_ = visitor.visitInt(devType_ != 0, devType_,
               other.devType_ != 0, other.devType_);
           enablePush_ = visitor.visitInt(enablePush_ != 0, enablePush_,
@@ -828,12 +982,18 @@ public final class EntityMsg {
                   version_ = s;
                   break;
                 }
-                case 40: {
+                case 42: {
+                  String s = input.readStringRequireUtf8();
+
+                  usrUuid_ = s;
+                  break;
+                }
+                case 48: {
 
                   devType_ = input.readSInt32();
                   break;
                 }
-                case 48: {
+                case 56: {
 
                   enablePush_ = input.readSInt32();
                   break;

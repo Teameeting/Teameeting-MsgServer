@@ -45,6 +45,7 @@ public:
     virtual void OnGroupNotify(int code, const std::string& seqnid) = 0;
     virtual void OnNotifySeqn(int code, const std::string& seqnid) = 0;
     virtual void OnNotifyData(int code, const std::string& seqnid) = 0;
+    virtual void OnNotifyOtherLogin(int code) = 0;
     
 public:
     virtual void OnMsgServerConnected() = 0;

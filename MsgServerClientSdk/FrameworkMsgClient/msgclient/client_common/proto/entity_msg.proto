@@ -11,8 +11,9 @@ message Login{
     string         usr_token = 2; // user token
     string         usr_nname = 3;
     string         version   = 4;
-    sint32         dev_type = 5;
-    sint32         enable_push = 6;
+    string         usr_uuid = 5; // usr uuid
+    sint32         dev_type = 6;
+    sint32         enable_push = 7;
 }
 
 message Logout{

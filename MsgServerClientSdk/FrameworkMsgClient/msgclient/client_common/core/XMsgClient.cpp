@@ -20,6 +20,8 @@ XMsgClient::XMsgClient()
 , m_uid("")
 , m_token("")
 , m_nname("")
+, m_version("")
+, m_uuid("")
 , m_server("180.150.179.128")
 , m_port(6630)
 , m_autoConnect(true)
@@ -75,6 +77,11 @@ int XMsgClient::Init(const std::string& uid, const std::string& token, const std
 
 int XMsgClient::Unin()
 {
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient Unin !!\n");
+#else
+    LOG(INFO) << "XMsgClient Unin !!";
+#endif
     if (m_uWait4AckMsgMap.size()>0)
         m_uWait4AckMsgMap.clear();
     if (m_uSyncedMsgMap.size()>0)
@@ -98,17 +105,21 @@ int XMsgClient::Unin()
     
     if (m_MaxSeqnMap.size()>0)
         m_MaxSeqnMap.clear();
-    
+
     if (m_pClientImpl) {
         m_pClientImpl->Disconnect();
-        if (m_pMsgProcesser) {
-            delete m_pMsgProcesser;
-            m_pMsgProcesser = nullptr;
-        }
         delete m_pClientImpl;
         m_pClientImpl = nullptr;
     }
-
+    if (m_pMsgProcesser) {
+        delete m_pMsgProcesser;
+        m_pMsgProcesser = nullptr;
+    }
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient Unin over!!\n");
+#else
+    LOG(INFO) << "XMsgClient Unin over!!";
+#endif
     return 0;
 }
 
@@ -121,7 +132,7 @@ int XMsgClient::RegisterMsgCb(XMsgCallback* cb)
 
 int XMsgClient::UnRegisterMsgCb(XMsgCallback* cb)
 {
-    if (!cb) return -1;
+    //if (!cb) return -1;
     m_pCallback = nullptr;
     return 0;
 }
@@ -514,7 +525,7 @@ int XMsgClient::Login()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token, m_nname, m_module);
+        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token, m_nname, m_uuid, m_module);
     } else {
         return -1;
     }
@@ -1290,10 +1301,6 @@ void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
         }
         this->SyncSeqn(itCurSeqn->second, pms::EMsgRole::RSENDER);
     }
-    //if (m_pCallback)
-    //{
-    //    m_pCallback->OnNotifySeqn(code, cont);
-    //}
     return;
 }
 
@@ -1301,11 +1308,30 @@ void XMsgClient::OnHelpNotifySeqn(int code, const std::string& cont)
 // instead server will notify to sync seqn
 void XMsgClient::OnHelpNotifyData(int code, const std::string& cont)
 {
-    //if (m_pCallback)
-    //{
-    //    m_pCallback->OnNotifyData(code, cont);
-    //}
-    //return;
+    
+}
+
+void XMsgClient::OnHelpOtherLogin(int code, const std::string& cont)
+{
+    pms::StorageMsg store;
+    if (!store.ParseFromString(cont))
+    {
+#if WEBRTC_ANDROID
+        LOGI("OnHelpOtherLogin store.ParseFromString error\n");
+#else
+        LOG(INFO) << "OnHelpOtherLogin store.ParseFromString error";
+#endif
+        return;
+    }
+    if (m_pCallback)
+    {
+#if WEBRTC_ANDROID
+        LOGI("OnHelpOtherLogin OnNotifyOtherLogin was called code:%d\n", code);
+#else
+        LOG(INFO) << "OnHelpOtherLogin OnNotifyOtherLogin code:" << code;
+#endif
+        m_pCallback->OnNotifyOtherLogin(code);
+    }
 }
 
 

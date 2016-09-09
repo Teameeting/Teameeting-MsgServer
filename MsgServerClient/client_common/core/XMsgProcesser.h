@@ -27,7 +27,7 @@ public:
     ~XMsgProcesser(){}
 public:
 
-    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, int module);
+    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& uuid, int module);
     int EncodeSndMsg(std::string& outstr, std::string& outmsgid, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag, int push);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag, int module);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);
@@ -60,6 +60,7 @@ protected:
     int DecodeSyncGroupData(int code, const std::string& cont);
     int DecodeNotifySeqn(int code, const std::string& cont);
     int DecodeNotifyData(int code, const std::string& cont);
+    int DecodeOtherLogin(int code, const std::string& cont);
 private:
     XMsgClientHelper    &m_helper;
 };

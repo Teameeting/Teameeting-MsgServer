@@ -379,4 +379,10 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
         String s = "OnNotifySettedMgrg msg:" + fbdMsg;
         System.out.println(s);
     }
+
+    @Override
+    public void OnNotifyOtherLogin(int code) {
+        String s = "OnNotifyOtherLogin code:" + code;
+        System.out.println(s);
+    }
 }

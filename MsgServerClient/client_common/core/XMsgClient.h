@@ -57,6 +57,7 @@ public:
     virtual void OnHelpGroupNotify(int code, const std::string& cont) = 0;
     virtual void OnHelpNotifySeqn(int code, const std::string& cont) = 0;
     virtual void OnHelpNotifyData(int code, const std::string& cont) = 0;
+    virtual void OnHelpOtherLogin(int code, const std::string& cont) = 0;
 };
 
 class XMsgClient
@@ -105,6 +106,11 @@ public:
     void SetMuteNotify(int mutenotify)
     {
         m_muteNotify = mutenotify;
+    }
+    
+    void SetUUID(const std::string& uuid)
+    {
+        m_uuid = uuid;
     }
 
     void InitUserSeqns(const std::string& seqnid, int64 seqn)
@@ -158,6 +164,7 @@ public:
     virtual void OnHelpSyncGroupData(int code, const std::string& cont);
     virtual void OnHelpNotifySeqn(int code, const std::string& cont);
     virtual void OnHelpNotifyData(int code, const std::string& cont);
+    virtual void OnHelpOtherLogin(int code, const std::string& cont);
 
     // For XJSBuffer
     virtual void OnRecvMessage(const char*message, int nLen);
@@ -550,6 +557,7 @@ private:
     std::string              m_uicon;
     std::string              m_server;
     std::string              m_version;
+    std::string              m_uuid;
     int                      m_devType;
     int                      m_enablePush;
     int                      m_muteNotify;

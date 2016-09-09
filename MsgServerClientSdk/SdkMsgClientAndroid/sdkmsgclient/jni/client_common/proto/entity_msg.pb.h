@@ -153,15 +153,26 @@ class Login : public ::google::protobuf::MessageLite {
   ::std::string* release_version();
   void set_allocated_version(::std::string* version);
 
-  // optional sint32 dev_type = 5;
+  // optional string usr_uuid = 5;
+  void clear_usr_uuid();
+  static const int kUsrUuidFieldNumber = 5;
+  const ::std::string& usr_uuid() const;
+  void set_usr_uuid(const ::std::string& value);
+  void set_usr_uuid(const char* value);
+  void set_usr_uuid(const char* value, size_t size);
+  ::std::string* mutable_usr_uuid();
+  ::std::string* release_usr_uuid();
+  void set_allocated_usr_uuid(::std::string* usr_uuid);
+
+  // optional sint32 dev_type = 6;
   void clear_dev_type();
-  static const int kDevTypeFieldNumber = 5;
+  static const int kDevTypeFieldNumber = 6;
   ::google::protobuf::int32 dev_type() const;
   void set_dev_type(::google::protobuf::int32 value);
 
-  // optional sint32 enable_push = 6;
+  // optional sint32 enable_push = 7;
   void clear_enable_push();
-  static const int kEnablePushFieldNumber = 6;
+  static const int kEnablePushFieldNumber = 7;
   ::google::protobuf::int32 enable_push() const;
   void set_enable_push(::google::protobuf::int32 value);
 
@@ -176,6 +187,7 @@ class Login : public ::google::protobuf::MessageLite {
   ::google::protobuf::internal::ArenaStringPtr usr_token_;
   ::google::protobuf::internal::ArenaStringPtr usr_nname_;
   ::google::protobuf::internal::ArenaStringPtr version_;
+  ::google::protobuf::internal::ArenaStringPtr usr_uuid_;
   ::google::protobuf::int32 dev_type_;
   ::google::protobuf::int32 enable_push_;
   mutable int _cached_size_;
@@ -1086,7 +1098,51 @@ inline void Login::set_allocated_version(::std::string* version) {
   // @@protoc_insertion_point(field_set_allocated:pms.Login.version)
 }
 
-// optional sint32 dev_type = 5;
+// optional string usr_uuid = 5;
+inline void Login::clear_usr_uuid() {
+  usr_uuid_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Login::usr_uuid() const {
+  // @@protoc_insertion_point(field_get:pms.Login.usr_uuid)
+  return usr_uuid_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Login::set_usr_uuid(const ::std::string& value) {
+  
+  usr_uuid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:pms.Login.usr_uuid)
+}
+inline void Login::set_usr_uuid(const char* value) {
+  
+  usr_uuid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:pms.Login.usr_uuid)
+}
+inline void Login::set_usr_uuid(const char* value, size_t size) {
+  
+  usr_uuid_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:pms.Login.usr_uuid)
+}
+inline ::std::string* Login::mutable_usr_uuid() {
+  
+  // @@protoc_insertion_point(field_mutable:pms.Login.usr_uuid)
+  return usr_uuid_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Login::release_usr_uuid() {
+  // @@protoc_insertion_point(field_release:pms.Login.usr_uuid)
+  
+  return usr_uuid_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Login::set_allocated_usr_uuid(::std::string* usr_uuid) {
+  if (usr_uuid != NULL) {
+    
+  } else {
+    
+  }
+  usr_uuid_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), usr_uuid);
+  // @@protoc_insertion_point(field_set_allocated:pms.Login.usr_uuid)
+}
+
+// optional sint32 dev_type = 6;
 inline void Login::clear_dev_type() {
   dev_type_ = 0;
 }
@@ -1100,7 +1156,7 @@ inline void Login::set_dev_type(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:pms.Login.dev_type)
 }
 
-// optional sint32 enable_push = 6;
+// optional sint32 enable_push = 7;
 inline void Login::clear_enable_push() {
   enable_push_ = 0;
 }

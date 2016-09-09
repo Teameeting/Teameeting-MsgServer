@@ -71,7 +71,7 @@ void JMClientApp::OnCmdCallback(int code, int cmd, const std::string& groupid, c
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnCmdCallback callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnCmdCallback", "(IILjava/lang/String;Lorg/dync/teameeting/sdkmsgclient/jni/JMSCbData;)V");
 		// Callback with params
 		JavaString jgroupid(groupid);
@@ -102,7 +102,7 @@ void JMClientApp::OnRecvMsg(int64 seqn, const std::string& msg)
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnRecvMsg callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnRecvMsg", "(J[B)V");
 
 		// Callback with params
@@ -127,7 +127,7 @@ void JMClientApp::OnRecvGroupMsg(int64 seqn, const std::string& seqnid, const st
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnRecvGroupMsg callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnRecvGroupMsg", "(JLjava/lang/String;[B)V");
 		// Callback with params
 		JavaString jseqnid(seqnid);
@@ -152,7 +152,7 @@ void JMClientApp::OnSyncSeqn(int64 seqn, int role)
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnSyncSeqn callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnSyncSeqn", "(JI)V");
 		// Callback with params
 		jni->CallVoidMethod(m_jJavaObj, j_callJavaMId, seqn, role);
@@ -164,7 +164,7 @@ void JMClientApp::OnSyncGroupSeqn(const std::string& groupid, int64 seqn)
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnSyncGroupSeqn callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnSyncGroupSeqn", "(Ljava/lang/String;J)V");
 		// Callback with params
 		JavaString jmsg(groupid);
@@ -177,7 +177,7 @@ void JMClientApp::OnGroupNotify(int code, const std::string& seqnid)
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnGroupNotify callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnGroupNotify", "(ILjava/lang/String;)V");
 		// Callback with params
 		JavaString jmsg(seqnid);
@@ -190,7 +190,7 @@ void JMClientApp::OnNotifySeqn(int code, const std::string& seqnid)
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnNotifySeqn callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnNotifySeqn", "(ILjava/lang/String;)V");
 		// Callback with params
 		JavaString jmsg(seqnid);
@@ -203,11 +203,23 @@ void JMClientApp::OnNotifyData(int code, const std::string& seqnid)
 	AttachThreadScoped ats(JContext::g_vm);
 	JNIEnv* jni = ats.env();
 	{
-		// Get OnSndMsg callback interface method id
+		// Get OnNotifyData callback interface method id
 		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnNotifyData", "(ILjava/lang/String;)V");
 		// Callback with params
 		JavaString jmsg(seqnid);
 		jni->CallVoidMethod(m_jJavaObj, j_callJavaMId, code, jmsg.Get());
+	}
+}
+
+void JMClientApp::OnNotifyOtherLogin(int code)
+{
+	AttachThreadScoped ats(JContext::g_vm);
+	JNIEnv* jni = ats.env();
+	{
+		// Get OnNotifyOtherLogin callback interface method id
+		jmethodID j_callJavaMId = JGetMethodID(jni, m_jClass, "OnNotifyOtherLogin", "(I)V");
+		// Callback with params
+		jni->CallVoidMethod(m_jJavaObj, j_callJavaMId, code);
 	}
 }
 

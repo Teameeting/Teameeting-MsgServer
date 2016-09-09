@@ -146,6 +146,7 @@ public:
     virtual void OnGroupNotify(int code, const std::string& seqnid);
     virtual void OnNotifySeqn(int code, const std::string& seqnid);
     virtual void OnNotifyData(int code, const std::string& seqnid);
+    virtual void OnNotifyOtherLogin(int code);
     
     virtual void OnMsgServerConnected();
     virtual void OnMsgServerConnecting();

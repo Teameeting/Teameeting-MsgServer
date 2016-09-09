@@ -201,6 +201,14 @@ JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Upd
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetUUID
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUUID
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    InitUserSeqns
  * Signature: (Ljava/lang/String;J)V
  */

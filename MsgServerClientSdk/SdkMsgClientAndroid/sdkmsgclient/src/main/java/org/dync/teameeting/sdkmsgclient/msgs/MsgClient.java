@@ -1,6 +1,7 @@
 package org.dync.teameeting.sdkmsgclient.msgs;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 import pms.CommonMsg;
@@ -122,6 +124,15 @@ public class MsgClient implements JMClientHelper{
         mStrUserId = strUid;
         mStrToken = strToken;
         mStrNname = strNname;
+
+        // get UUID
+        final TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        final String tmDevice, tmSerial, androidId;
+        tmDevice = "" + tm.getDeviceId();
+        tmSerial = "" + tm.getSimSerialNumber();
+        androidId = "" + android.provider.Settings.Secure.getString(mContext.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
+        mMApp.SetUUID(deviceUuid.toString());
 
         mGroupSeqn = new HashMap<String, Long>();
         mGroupInfo = new ArrayList<GroupInfo>();
@@ -902,6 +913,14 @@ public class MsgClient implements JMClientHelper{
     @Override
     public void OnNotifyData(int code, String seqnid) {
         System.out.println("MsgClient::OnNotifyData NOT IMPLEMENT!!!");
+    }
+
+    @Override
+    public void OnNotifyOtherLogin(int code) {
+        System.out.println("MsgClient::OnNotifyOtherLogin code:" + code + "!!!");
+        if (null != mSubMsgDelegate) {
+            mSubMsgDelegate.OnNotifyOtherLogin(code);
+        }
     }
 
     //////////////Above Used in this class//////////////////////////
