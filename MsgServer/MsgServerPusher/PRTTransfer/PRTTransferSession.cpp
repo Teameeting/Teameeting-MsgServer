@@ -467,7 +467,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
 
     // parse to get msg info
     std::string fromId(""), nickName(""), groupId(""), toNickName(""), toId("");
-    int msgType;
+    int msgType, flag =0;
     rapidjson::Document jsonMsgDoc;
     if (!jsonMsgDoc.ParseInsitu<0>((char*)entity.msg_cont().c_str()).HasParseError())
     {
@@ -517,6 +517,13 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
             LE("in jsonMsgDoc not has member msgType, jstr:%s\n", entity.msg_cont().c_str());
             return;
         }
+        if (jsonMsgDoc.HasMember("flag")&&jsonMsgDoc["flag"].IsInt())
+        {
+            flag = jsonMsgDoc["flag"].GetInt();
+            LI("push msg flag :%d\n", flag);
+        } else {
+            LE("in jsonMsgDoc not has member flag, jstr:%s\n", entity.msg_cont().c_str());
+        }
         LI("PRTTransferSession::OnTypeDispatch invoke PushMsg test, rapidjson fromId:%s, nickName:%s, groupId:%s, msgId:%s\n"\
                 , fromId.c_str()\
                 , nickName.c_str()\
@@ -540,7 +547,8 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
         case pms::EMsgType::TLIV:
              {
                  if (store.ruserid().compare(fromId)==0) break; // push to sender is not fittable
-                 sprintf(cont, "%s 正在直播，赶快来看吧!!!", nickName.c_str());
+                 if (1==flag)
+                     sprintf(cont, "%s 正在直播，赶快来看吧!!!", nickName.c_str());
              }
              break;
         case pms::EMsgType::TREN:
