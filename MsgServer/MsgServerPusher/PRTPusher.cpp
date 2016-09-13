@@ -107,6 +107,7 @@ PRTPusher* PRTPusher::Inst()
 
 PRTPusher::PRTPusher(void)
 : m_pModuleListener(NULL)
+, m_apnsPusher(NULL)
 {
 
 }
@@ -165,6 +166,20 @@ int	PRTPusher::Start(const MsConfigParser& conf)
     char addr[24] = {0};
     sprintf(addr, "%s %d", strRedisIp1.c_str(), nRedisPort1);
     PRTPusherManager::Instance().PushRedisHosts(addr);
+    m_apnsPusher = new PRTApnsPusher(strRedisIp1, nRedisPort1);
+    if (!m_apnsPusher)
+    {
+        LE("PRTPusher new PRTApnsPusher failed\n");
+        return -1;
+    }
+    if (!m_apnsPusher->Init())
+    {
+        LE("PRTPusher APNS init failed\n");
+        delete m_apnsPusher;
+        m_apnsPusher = nullptr;
+        return -1;
+    }
+    LI("PRTPusher start APNS pusher ok~~~\n");
 
 	if(nConnectorPort > 0)
 	{
@@ -202,6 +217,13 @@ void PRTPusher::DoTick()
 
 void PRTPusher::Stop()
 {
+    if (m_apnsPusher)
+    {
+         m_apnsPusher->Stop();
+         m_apnsPusher->Unit();
+         delete m_apnsPusher;
+         m_apnsPusher = nullptr;
+    }
     PRTPusherManager::Instance().SignalKill();
     PRTPusherManager::Instance().ClearAll();
     PRTPusherManager::Instance().UninManager();

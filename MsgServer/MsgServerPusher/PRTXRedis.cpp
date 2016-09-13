@@ -8,18 +8,7 @@
 
 #include "PRTXRedis.h"
 #include "rtklog.h"
-
-#define MAX_MESSAGE_EXPIRE_TIME (7*24*60*60)
-
-#define Err_Redis_Ok                     (0)
-#define Err_Redis_Not_Exist              (-1)
-#define Err_Redis_Exist                  (-2)
-#define Err_Redis_Expire                 (-3)
-#define Err_Redis_Expire_Or_Not_Exist    (-4)
-#define Err_Vsersion_Not_Support         (-5)
-#define Err_Redis_Setex                  (-6)
-#define Err_Redis_Hmset                  (-7)
-#define Err_Redis_Type                   (-8)
+#include "StatusCode.h"
 
 static unsigned int APHash(const char *str) {
     unsigned int hash = 0;

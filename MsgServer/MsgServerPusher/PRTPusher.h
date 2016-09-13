@@ -3,6 +3,7 @@
 #include "TCPListenerSocket.h"
 #include "PRTPusherListener.h"
 #include "MsConfigParser.h"
+#include "PRTApnsPusher.h"
 
 #include <iostream>
 #include <map>
@@ -42,6 +43,7 @@ public:
 private:
 
     PRTPusherListener    *m_pModuleListener;
+    PRTApnsPusher        *m_apnsPusher;
 
 };
 

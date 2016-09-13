@@ -9,6 +9,7 @@ AM_CPPFLAGS=$(AM_CFLAGS)
 AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/PRTListener/ \
 			 -I$(top_srcdir)/PRTTransfer/ \
+			 -I$(top_srcdir)/PRTXRedis/ \
 			 -I$(top_srcdir)/Ios/
 
 AM_CPPFLAGS+= -I$(top_srcdir)/../ \
@@ -28,6 +29,8 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 MsgServerPusher_SOURCES=$(top_srcdir)/PRTListener/PRTPusherListener.cpp \
 						   $(top_srcdir)/PRTTransfer/PRTTransferSession.cpp \
 						   $(top_srcdir)/PRTTransfer/XPushMsgProcesser.cpp \
+						   $(top_srcdir)/PRTXRedis/PRTApnsPusher.cpp \
+						   $(top_srcdir)/PRTXRedis/RCPthread.cpp \
 						   $(top_srcdir)/Ios/IosPusher.cpp \
 						   $(top_srcdir)/PRTXRedis.cpp \
 						   $(top_srcdir)/PRTConnManager.cpp \
