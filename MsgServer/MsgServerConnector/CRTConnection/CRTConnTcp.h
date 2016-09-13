@@ -36,6 +36,7 @@ public:
     virtual void OnCreateSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnDeleteSeqn(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnUpdateSetting(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
+    virtual void OnOtherLogin(pms::EServerCmd cmd, pms::EModuleType module, const std::string& msg) = 0;
     virtual void OnResponse(const char*pData, int nLen)=0;
 
 private:

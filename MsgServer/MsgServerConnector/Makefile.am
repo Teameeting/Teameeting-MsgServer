@@ -29,9 +29,12 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/CRTConnection/CRTConnTcp.cpp \
 						   $(top_srcdir)/CRTConnection/CRTConnection.cpp \
 						   $(top_srcdir)/CRTConnection/CRTConnectionTcp.cpp \
+						   $(top_srcdir)/CRTConnection/CRTWebServerHttp.cpp \
+						   $(top_srcdir)/CRTConnection/CRTWebServerWaiter.cpp \
 						   $(top_srcdir)/CRTListener/CRTConnListener.cpp \
 						   $(top_srcdir)/CRTListener/CRTConnTcpListener.cpp \
 						   $(top_srcdir)/CRTListener/CRTModuleListener.cpp \
+						   $(top_srcdir)/CRTListener/CRTWebServerListener.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp \
 						   $(top_srcdir)/CRTXRedis.cpp \
 						   $(top_srcdir)/CRTConnManager.cpp \

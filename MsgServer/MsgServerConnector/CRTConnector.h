@@ -4,6 +4,7 @@
 #include "CRTConnListener.h"
 #include "CRTModuleListener.h"
 #include "CRTConnTcpListener.h"
+#include "CRTWebServerListener.h"
 #include "MsConfigParser.h"
 
 #include <iostream>
@@ -45,6 +46,7 @@ private:
 	CRTConnListener		*m_pConnListener;
     CRTModuleListener    *m_pModuleListener;
     CRTConnTcpListener   *m_pConnTcpListener;
+    CRTWebServerListener   *m_pWebSvrListener;
 
 };
 
