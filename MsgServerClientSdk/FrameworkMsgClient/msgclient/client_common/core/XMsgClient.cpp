@@ -730,7 +730,6 @@ void XMsgClient::OnHelpLogin(int code, const std::string& userid)
         if (m_pCallback)
         {
             m_pCallback->OnMsgServerConnected();
-            //printf("after connected to server, call SyncMsg once\n");
         } else {
 #if WEBRTC_ANDROID
             LOGI("XMsgClient::OnHelpLogin m_pCallback is null\n");
@@ -977,7 +976,23 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
                         << ", sequence:" << store.sequence() \
                         << ", maxseqn:" << store.maxseqn();
 #endif
-    
+    // this is max seqn
+    UserSeqnMapIt uitmax = m_MaxSeqnMap.find(store.storeid());
+    if (uitmax==m_MaxSeqnMap.end()) {
+        return;
+    }
+    // this is cur seqn
+    UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(store.storeid());
+    if (itCurSeqn->second<0 || itCurSeqn->second > uitmax->second)
+    {
+        // cur seqn <0 || cur seqn > max seqn
+        return;
+    }
+    if (store.sequence() <= itCurSeqn->second)
+    {
+        // if recved msg sequence <= curseqn, return
+        return;
+    }
     // sync data failed
     if (store.result()!=0) {
         // 1 check if cur seqn < max seqn
@@ -985,28 +1000,13 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
         // if has data, check if 5 times enough
         // if not has, SyncOneData(curseqn +1)
         
-        // this is max seqn
-        UserSeqnMapIt uitmax = m_MaxSeqnMap.find(store.storeid());
-        if (uitmax==m_MaxSeqnMap.end()) {
-            return;
-        }
-        // this is cur seqn
-        UserSeqnMapIt  itCurSeqn = m_uUserSeqnMap.find(store.storeid());
-        if (itCurSeqn->second<0 || itCurSeqn->second >= uitmax->second)
-        {
-            // cur seqn <0 || cur seqn >= max seqn
-            return;
-        }
-        
         // because sync data failed, so sync curseqn+1 data
         char sk[256] = {0};
-        sprintf(sk, "%s:%lld", store.storeid().c_str(), itCurSeqn->second +1);
+        sprintf(sk, "%s:%lld", store.storeid().c_str(), store.sequence());
         Wait4CheckSeqnKeyMapIt skit = m_Wait4CheckSeqnKeyMap.find(sk);
         if (skit==m_Wait4CheckSeqnKeyMap.end()) { // not find sk in map, so sync data
             // only when curseqn is smaller than the max seqn, then sync one group data once
-            if (itCurSeqn->second < uitmax->second) {
-                SyncOneData(itCurSeqn->second +1);
-            }
+            SyncOneData(store.sequence());
             return;
         } else { // find sk
 #if WEBRTC_ANDROID
@@ -1019,8 +1019,9 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
                 // sync the next one
                 // if curseqn equal maxseqn, just drop current seqn sync
                 // do not make itCurSeqn + 1
-                if (itCurSeqn->second < uitmax->second) {
-                    itCurSeqn->second += 1;
+                if ((itCurSeqn->second < uitmax->second)
+                    && (store.sequence() == itCurSeqn->second+1)) {
+                    itCurSeqn->second += 1;//drop cur+1 msg
                 }
                 m_uSyncedMsgMap.erase(sk);
                 {
@@ -1031,15 +1032,17 @@ void XMsgClient::OnHelpSyncData(int code, const std::string& cont)
             } else {
                 // not reach 5 times, try to sync data again
                 // only when curseqn is smaller than the max seqn, then sync data
-                if (itCurSeqn->second < uitmax->second) {
-                    SyncOneData(itCurSeqn->second+1);
-                }
+                SyncOneData(store.sequence());
                 return;
             }
         }
         return;
     }
-
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncData=======>>>>group store.sequence:%lld, itCurSeqn:%lld, uitmax->second:%lld, itCurSeqn:%lld\n", store.sequence(), itCurSeqn->second, uitmax->second);
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncData=======>>>>group store.sequence:" << store.sequence() << ", itCurSeqn:" << itCurSeqn->second << ", uitmax->second:" << uitmax->second;
+#endif
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());
     UAddSyncedMsg(seqnKey, store);
@@ -1104,12 +1107,24 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
     << ", maxseqn:" << store.maxseqn();
 #endif
     
-#if WEBRTC_ANDROID
-    LOGI("===>OnHelpSyncGroupData storeid.len:%u, storeid:%s, seqn:%lld\n", store.storeid().length(), store.storeid().c_str(), store.sequence());
-#else
-    LOG(INFO) << "OnHelpSyncGroupData storeid.len:" << store.storeid().length() << ", storeid:" << store.storeid() << ", seqn:" << store.sequence();
-#endif
     
+    // this is max seqn
+    UserSeqnMapIt uitmax = m_MaxSeqnMap.find(store.storeid());
+    if (uitmax==m_MaxSeqnMap.end()) {
+        return;
+    }
+    // this is cur seqn
+    UserSeqnMapIt  itCurSeqn = m_gUserSeqnMap.find(store.storeid());
+    if (itCurSeqn->second<0 || itCurSeqn->second > uitmax->second)
+    {
+        // cur seqn <0 || cur seqn > max seqn
+        return;
+    }
+    if (store.sequence() <= itCurSeqn->second)
+    {
+        // if recved msg sequence <= curseqn, return
+        return;
+    }
     // sync data failed
     if (store.result()!=0) {
         // 1 check if cur seqn < max seqn
@@ -1117,28 +1132,13 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
         // if has data, check if 5 times enough
         // if not has, SyncOneGroupData(curseqn +1)
         
-        // this is max seqn
-        UserSeqnMapIt uitmax = m_MaxSeqnMap.find(store.storeid());
-        if (uitmax==m_MaxSeqnMap.end()) {
-            return;
-        }
-        // this is cur seqn
-        UserSeqnMapIt  itCurSeqn = m_gUserSeqnMap.find(store.storeid());
-        if (itCurSeqn->second<0 || itCurSeqn->second >= uitmax->second)
-        {
-            // cur seqn <0 || cur seqn >= max seqn
-            return;
-        }
-        
         // because sync data failed, so sync curseqn+1 data
         char sk[256] = {0};
-        sprintf(sk, "%s:%lld", store.storeid().c_str(), itCurSeqn->second +1);
+        sprintf(sk, "%s:%lld", store.storeid().c_str(), store.sequence());
         Wait4CheckSeqnKeyMapIt skit = m_Wait4CheckSeqnKeyMap.find(sk);
         if (skit==m_Wait4CheckSeqnKeyMap.end()) { // not find sk in map, so sync data
             // only when curseqn is smaller than the max seqn, then sync one group data once
-            if (itCurSeqn->second < uitmax->second) {
-                SyncOneGroupData(store.storeid().c_str(), itCurSeqn->second +1);
-            }
+            SyncOneGroupData(store.storeid().c_str(), store.sequence());
             return;
         } else { // find sk
 #if WEBRTC_ANDROID
@@ -1151,8 +1151,9 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
                 // sync the next one
                 // if curseqn equal maxseqn, just drop current seqn sync
                 // do not make itCurSeqn + 1
-                if (itCurSeqn->second < uitmax->second) {
-                    itCurSeqn->second += 1;
+                if ((itCurSeqn->second < uitmax->second)
+                    && (store.sequence() == itCurSeqn->second+1)) {
+                    itCurSeqn->second += 1;//drop cur+1 msg
                 }
                 m_gSyncedMsgMap.erase(sk);
                 {
@@ -1164,13 +1165,18 @@ void XMsgClient::OnHelpSyncGroupData(int code, const std::string& cont)
                 // not reach 5 times, try to sync data again
                 // only when curseqn is smaller than the max seqn, then sync data
                 if (itCurSeqn->second < uitmax->second) {
-                    SyncOneGroupData(store.storeid().c_str(), itCurSeqn->second+1);
+                    SyncOneGroupData(store.storeid().c_str(), store.sequence());
                 }
                 return;
             }
         }
         return;
     }
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::OnHelpSyncGroupData=======>>>>group store.sequence:%lld, itCurSeqn:%lld, uitmax->second:%lld, itCurSeqn:%lld\n", store.sequence(), itCurSeqn->second, uitmax->second);
+#else
+    LOG(INFO) << "XMsgClient::OnHelpSyncGroupData=======>>>>group store.sequence:" << store.sequence() << ", itCurSeqn:" << itCurSeqn->second << ", uitmax->second:" << uitmax->second;
+#endif
     
     char seqnKey[256] = {0};
     sprintf(seqnKey, "%s:%lld", store.storeid().c_str(), store.sequence());

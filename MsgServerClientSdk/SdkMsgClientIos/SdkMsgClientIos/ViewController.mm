@@ -47,9 +47,43 @@
     uibutton.backgroundColor = [UIColor redColor];
 }
 
+-(void) packString:(NSString*)message
+{
+    
+    NSUInteger numberOfBytes = [message lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"message length:%u, numberOfBytes:%u", [message length], numberOfBytes);
+    void *buffer = malloc(numberOfBytes);
+    if (!buffer) return;
+    NSUInteger usedLength = 0;
+    NSRange range = NSMakeRange(0, [message length]);
+    BOOL result = [message getBytes:buffer maxLength:numberOfBytes usedLength:&usedLength encoding:NSUTF8StringEncoding options:0 range:range remainingRange:NULL];
+    NSLog(@"result is:%d", result);
+    Byte header[2] = {};
+    header[0] = 0x04;
+    header[1] = numberOfBytes;
+    NSUInteger alllen = sizeof(header)+usedLength;
+    Byte *all = (Byte*)malloc(alllen);
+    if (!all)
+    {
+        if (buffer) free(buffer);
+        return;
+    }
+    memcpy(all, header, sizeof(header));
+    memcpy(all+sizeof(header), buffer, usedLength);
+    
+    NSData *nsd = [[NSData alloc] initWithBytes:all length:alllen];
+    NSString *nss = [[NSString alloc] initWithData:nsd encoding:NSUTF8StringEncoding];
+    NSLog(@"nss is:%@", nss);
+    
+    free(buffer);
+    free(all);
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    [self packString:@"123456789"];
     
     mEnterButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 100, 200, 30)];
     [self SetButtonParamsButton:mEnterButton title:@"Enter" state:@"Entering..."];

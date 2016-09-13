@@ -324,15 +324,17 @@ private:
                 LOG(INFO) << "UUpdateUserSeqn find sk:" << sk << ", sk time:" << skit->second;
 #endif
                     if (skit->second > 5) { // has try sync data 5 times
-                        UserSeqnMapIt uit = m_MaxSeqnMap.find(m_uid);
-                        if (uit!=m_MaxSeqnMap.end()) {
-                            // if curseqn < maxseqn, drop current seqn sync, itCurSeqn->second += 1;
-                            // sync the next one
-                            // if curseqn equal maxseqn, just drop current seqn sync
-                            // do not make itCurSeqn + 1
-                            if (itCurSeqn->second < uit->second) {
-                                itCurSeqn->second += 1;
-                            }
+                        // if curseqn < maxseqn, drop current seqn sync, itCurSeqn->second += 1;
+                        // sync the next one
+                        // if curseqn equal maxseqn, just drop current seqn sync
+                        // do not make itCurSeqn + 1
+                        if (itCurSeqn->second < uit->second) {
+#if WEBRTC_ANDROID
+                            LOGI("------------------UUpdateUserSeqn update curseqn :%lld\n", itCurSeqn->second);
+#else
+                            LOG(INFO) << "-----------------UUpdateUserSeqn update curseqn :" << itCurSeqn->second;
+#endif
+                            itCurSeqn->second += 1;
                         }
                         {
                             rtc::CritScope cs(&m_csWait4CheckSeqnKey);
@@ -368,11 +370,6 @@ private:
     bool GAddSyncedMsg(const std::string& seqnKey, pms::StorageMsg pmsMsg)
     {
 	    rtc::CritScope cs(&m_csgSyncedMsg);
-#if WEBRTC_ANDROID
-        LOGI("GAddSyncedMsg seqnKey:%s\n", seqnKey.c_str());
-#else
-        LOG(INFO) << "GAddSyncedMsg seqnKey:" << seqnKey;
-#endif
         SyncedMsgMapIt it = m_gSyncedMsgMap.find(seqnKey);
         if (it == m_gSyncedMsgMap.end())
         {
@@ -417,7 +414,7 @@ private:
 #if WEBRTC_ANDROID
                 LOGI("GUpdateUserSeqn SyncedMsgMap key:%s\n", it.first.c_str());
 #else
-                LOG(INFO) << "GUpdateUserSeqn SyncedMsgMap:" << it.first;
+                LOG(INFO) << "GUpdateUserSeqn SyncedMsgMap key:" << it.first;
 #endif
             }
             char sk[256] = {0};
@@ -516,15 +513,17 @@ private:
                     LOG(INFO) << "GUpdateUserSeqn find sk:" << sk << ", sk time:" << skit->second;
 #endif
                     if (skit->second > 5) { // has try sync data 5 times
-                        UserSeqnMapIt uit = m_MaxSeqnMap.find(storeid);
-                        if (uit!=m_MaxSeqnMap.end()) {
-                            // if curseqn < maxseqn, drop current seqn sync, itCurSeqn->second += 1;
-                            // sync the next one
-                            // if curseqn equal maxseqn, just drop current seqn sync
-                            // do not make itCurSeqn + 1
-                            if (itCurSeqn->second < uit->second) {
-                                itCurSeqn->second += 1;
-                            }
+                        // if curseqn < maxseqn, drop current seqn sync, itCurSeqn->second += 1;
+                        // sync the next one
+                        // if curseqn equal maxseqn, just drop current seqn sync
+                        // do not make itCurSeqn + 1
+                        if (itCurSeqn->second < uit->second) {
+#if WEBRTC_ANDROID
+                            LOGI("------------------GUpdateUserSeqn update curseqn :%lld\n", itCurSeqn->second);
+#else
+                            LOG(INFO) << "-----------------GUpdateUserSeqn update curseqn :" << itCurSeqn->second;
+#endif
+                            itCurSeqn->second += 1;
                         }
                         m_gSyncedMsgMap.erase(sk);
                         {
