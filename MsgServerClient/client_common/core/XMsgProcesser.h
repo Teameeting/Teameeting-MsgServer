@@ -27,7 +27,7 @@ public:
     ~XMsgProcesser(){}
 public:
 
-    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& uuid, int module);
+    int EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& uuid, int devType, int enablePush, int module);
     int EncodeSndMsg(std::string& outstr, std::string& outmsgid, const std::string& userid, const std::string& token, const std::string& nname, const std::string& roomid, const std::string& rname, const std::vector<std::string>& to, const std::string& msg, int tag, int type, int module, int flag, int push);
     int EncodeGetMsg(std::string& outstr, const std::string& userid, const std::string& token, int tag, int module);
     int EncodeLogout(std::string& outstr, const std::string& userid, const std::string& token, int module);

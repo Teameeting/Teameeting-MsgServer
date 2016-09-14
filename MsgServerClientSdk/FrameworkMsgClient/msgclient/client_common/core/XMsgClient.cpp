@@ -525,7 +525,7 @@ int XMsgClient::Login()
 {
     std::string outstr;
     if (m_pMsgProcesser) {
-        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token, m_nname, m_uuid, m_module);
+        m_pMsgProcesser->EncodeLogin(outstr, m_uid, m_token, m_nname, m_uuid, m_devType, m_enablePush, m_module);
     } else {
         return -1;
     }

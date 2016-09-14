@@ -42,7 +42,7 @@ static std::string GetStrMicroSecond()
     return std::string(ct);
 }
 
-int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& uuid, int module)
+int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, const std::string& token, const std::string& nname, const std::string& uuid, int devType, int enablePush, int module)
 {
 #if DEF_PROTO
     pms::MsgReq req;
@@ -51,6 +51,8 @@ int XMsgProcesser::EncodeLogin(std::string& outstr, const std::string& userid, c
     login.set_usr_token(token);
     login.set_usr_nname(nname);
     login.set_usr_uuid(uuid);
+    login.set_dev_type(devType);
+    login.set_enable_push(enablePush);
     login.set_version(MSG_VERSION);
 
     req.set_svr_cmds(pms::EServerCmd::CLOGIN);
