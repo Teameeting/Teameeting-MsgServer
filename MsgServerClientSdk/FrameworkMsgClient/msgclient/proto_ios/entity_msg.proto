@@ -37,6 +37,7 @@ message Setting{
 message Pushing{
     string         type = 1; // backup
     string         content = 2; // push content
+    sint32         ptimes = 3; // push times
 }
 
 message Entity{

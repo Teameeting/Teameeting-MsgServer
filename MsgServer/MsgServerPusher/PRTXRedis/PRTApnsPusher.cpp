@@ -16,6 +16,9 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 
+#include "MsgServer/proto/entity_msg.pb.h"
+#include "MsgServer/proto/entity_msg_type.pb.h"
+
 #if 1
 #include <sys/syscall.h>
 #define gettidv1() syscall(__NR_gettid)
@@ -152,8 +155,13 @@ void PRTApnsPusher::Run(void* data)
             if (!IosPusher::Instance().PushMsg(token.c_str(), cont.c_str(), extra.data(), extra.size()))
             {
                 // push failed, so store msg to redis
-                LI("PRTApnsPusher::Run SetNeedPushMsg call push msg:%s\n", pushMsg.content().c_str());
-                m_xRedis.SetNeedPushMsg("ios", pushMsg.SerializeAsString());
+                int pushtimes = pushMsg.ptimes();
+                LI("PRTApnsPusher::Run SetNeedPushMsg ====>>>>>pushtimes is:%d\n", pushtimes);
+                if (pushtimes <5) {
+                    pushMsg.set_ptimes(++pushtimes);
+                    LI("PRTApnsPusher::Run SetNeedPushMsg call pushmsg push times:%d\n", pushMsg.ptimes());
+                    m_xRedis.SetNeedPushMsg("ios", pushMsg.SerializeAsString());
+                }
             }
         }
     }

@@ -22,12 +22,16 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/efnfw \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
 
+AM_CPPFLAGS+= -I$(top_srcdir)/../client_common \
+			  -I$(top_srcdir)/../client_common/core
+
 SeqnClient_SOURCES=$(top_srcdir)/ClientSession/ClientSession.cpp \
 						   $(top_srcdir)/ClientManager.cpp \
 						   $(top_srcdir)/SeqnClient.cpp \
 						   $(top_srcdir)/main.cpp
 
 SeqnClient_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
+SeqnClient_LDADD+=-L$(top_srcdir)/../client_common/ -lclient_common
 SeqnClient_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 SeqnClient_LDADD+=-lpthread -lrt -ldl
 

@@ -353,9 +353,11 @@ typedef struct Setting__storage_ {
 
 @dynamic type;
 @dynamic content;
+@dynamic ptimes;
 
 typedef struct Pushing__storage_ {
   uint32_t _has_storage_[1];
+  int32_t ptimes;
   NSString *type;
   NSString *content;
 } Pushing__storage_;
@@ -383,6 +385,15 @@ typedef struct Pushing__storage_ {
         .offset = (uint32_t)offsetof(Pushing__storage_, content),
         .flags = GPBFieldOptional,
         .dataType = GPBDataTypeString,
+      },
+      {
+        .name = "ptimes",
+        .dataTypeSpecific.className = NULL,
+        .number = Pushing_FieldNumber_Ptimes,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(Pushing__storage_, ptimes),
+        .flags = GPBFieldOptional,
+        .dataType = GPBDataTypeSInt32,
       },
     };
     GPBDescriptor *localDescriptor =

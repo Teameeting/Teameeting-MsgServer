@@ -648,6 +648,12 @@ class Pushing : public ::google::protobuf::MessageLite {
   ::std::string* release_content();
   void set_allocated_content(::std::string* content);
 
+  // optional sint32 ptimes = 3;
+  void clear_ptimes();
+  static const int kPtimesFieldNumber = 3;
+  ::google::protobuf::int32 ptimes() const;
+  void set_ptimes(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:pms.Pushing)
  private:
 
@@ -657,6 +663,7 @@ class Pushing : public ::google::protobuf::MessageLite {
   bool _is_default_instance_;
   ::google::protobuf::internal::ArenaStringPtr type_;
   ::google::protobuf::internal::ArenaStringPtr content_;
+  ::google::protobuf::int32 ptimes_;
   mutable int _cached_size_;
   #ifdef GOOGLE_PROTOBUF_NO_STATIC_INITIALIZER
   friend void  protobuf_AddDesc_entity_5fmsg_2eproto_impl();
@@ -1638,6 +1645,20 @@ inline void Pushing::set_allocated_content(::std::string* content) {
   }
   content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
   // @@protoc_insertion_point(field_set_allocated:pms.Pushing.content)
+}
+
+// optional sint32 ptimes = 3;
+inline void Pushing::clear_ptimes() {
+  ptimes_ = 0;
+}
+inline ::google::protobuf::int32 Pushing::ptimes() const {
+  // @@protoc_insertion_point(field_get:pms.Pushing.ptimes)
+  return ptimes_;
+}
+inline void Pushing::set_ptimes(::google::protobuf::int32 value) {
+  
+  ptimes_ = value;
+  // @@protoc_insertion_point(field_set:pms.Pushing.ptimes)
 }
 
 // -------------------------------------------------------------------

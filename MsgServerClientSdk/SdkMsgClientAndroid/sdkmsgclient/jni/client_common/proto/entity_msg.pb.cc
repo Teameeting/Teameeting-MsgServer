@@ -2006,6 +2006,7 @@ void Setting::clear_json_cont() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Pushing::kTypeFieldNumber;
 const int Pushing::kContentFieldNumber;
+const int Pushing::kPtimesFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Pushing::Pushing()
@@ -2032,6 +2033,7 @@ void Pushing::SharedCtor() {
   _cached_size_ = 0;
   type_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ptimes_ = 0;
 }
 
 Pushing::~Pushing() {
@@ -2078,6 +2080,7 @@ void Pushing::Clear() {
 // @@protoc_insertion_point(message_clear_start:pms.Pushing)
   type_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   content_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ptimes_ = 0;
 }
 
 bool Pushing::MergePartialFromCodedStream(
@@ -2116,6 +2119,21 @@ bool Pushing::MergePartialFromCodedStream(
             this->content().data(), this->content().length(),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "pms.Pushing.content"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_ptimes;
+        break;
+      }
+
+      // optional sint32 ptimes = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_ptimes:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_SINT32>(
+                 input, &ptimes_)));
+
         } else {
           goto handle_unusual;
         }
@@ -2167,6 +2185,11 @@ void Pushing::SerializeWithCachedSizes(
       2, this->content(), output);
   }
 
+  // optional sint32 ptimes = 3;
+  if (this->ptimes() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteSInt32(3, this->ptimes(), output);
+  }
+
   // @@protoc_insertion_point(serialize_end:pms.Pushing)
 }
 
@@ -2186,6 +2209,13 @@ int Pushing::ByteSize() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->content());
+  }
+
+  // optional sint32 ptimes = 3;
+  if (this->ptimes() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::SInt32Size(
+        this->ptimes());
   }
 
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
@@ -2210,6 +2240,9 @@ void Pushing::MergeFrom(const Pushing& from) {
 
     content_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.content_);
   }
+  if (from.ptimes() != 0) {
+    set_ptimes(from.ptimes());
+  }
 }
 
 void Pushing::CopyFrom(const Pushing& from) {
@@ -2231,6 +2264,7 @@ void Pushing::Swap(Pushing* other) {
 void Pushing::InternalSwap(Pushing* other) {
   type_.Swap(&other->type_);
   content_.Swap(&other->content_);
+  std::swap(ptimes_, other->ptimes_);
   _unknown_fields_.Swap(&other->_unknown_fields_);
   std::swap(_cached_size_, other->_cached_size_);
 }
@@ -2328,6 +2362,20 @@ void Pushing::clear_content() {
   }
   content_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), content);
   // @@protoc_insertion_point(field_set_allocated:pms.Pushing.content)
+}
+
+// optional sint32 ptimes = 3;
+void Pushing::clear_ptimes() {
+  ptimes_ = 0;
+}
+ ::google::protobuf::int32 Pushing::ptimes() const {
+  // @@protoc_insertion_point(field_get:pms.Pushing.ptimes)
+  return ptimes_;
+}
+ void Pushing::set_ptimes(::google::protobuf::int32 value) {
+  
+  ptimes_ = value;
+  // @@protoc_insertion_point(field_set:pms.Pushing.ptimes)
 }
 
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS

@@ -606,6 +606,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
 
         // redis push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
         // redis push msg key:'push:msg:module:userid' by lpush, value...
+        int pushtimes = 0;
         std::string fromMsgId = fromId + ":" + entity.cmsg_id();
         rapidjson::Document jDoc;
         rapidjson::StringBuffer sb;
@@ -625,6 +626,7 @@ void PRTTransferSession::OnTypeDispatch(const std::string& str)
         pms::Pushing pushMsg;
         pushMsg.set_type("ios");
         pushMsg.set_content(s);
+        pushMsg.set_ptimes(pushtimes);
         LI("PRTTransferSession::OnTypeDispatch push msg to redis:%s\n", s.c_str());
         // write to redis
         if (!m_xRedis.SetNeedPushMsg("ios", pushMsg.SerializeAsString()))
@@ -722,6 +724,7 @@ void PRTTransferSession::OnTypeTLogin(const std::string& str)
     LI("PRTTransferSession::OnTypeTLogin usr:%s, module:%d, setting token:%s\n", login.usr_from().c_str(), m_req.mod_type(), login.usr_token().c_str());
     // redis user push setting key:'push:set:module:userid' by hmset, 'token':token, 'enablepush':enablepush
     m_xRedis.SetSettingPush(login.usr_from(), m_req.mod_type(), "token", login.usr_token());
+    m_xRedis.SetSettingPush(login.usr_from(), m_req.mod_type(), "enablepush", std::to_string(login.enable_push()));
 }
 
 void PRTTransferSession::OnTypeTLogout(const std::string& str)

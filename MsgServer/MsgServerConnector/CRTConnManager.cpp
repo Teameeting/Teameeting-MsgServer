@@ -287,7 +287,7 @@ bool CRTConnManager::CouldPush(const std::string& userid, pms::EModuleType type)
     if (m_xRedis.GetSettingPush(userid, type, "enablepush", enablepush, "mutenotify", mutenotify))
     {
         LI("CRTConnManager::GetEnablePush enablepush:%s, mutenotify:%s\n", enablepush.c_str(), mutenotify.c_str());
-        if (enablepush.compare("1")==0 && mutenotify.compare("1")!=0)
+        if (enablepush.compare("2")!=0 && mutenotify.compare("1")!=0)
         {
             return true;
         } else {

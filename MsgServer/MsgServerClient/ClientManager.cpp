@@ -149,7 +149,7 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
 			std::string msgId;
 			GenericMsgId(msgId);
-			p_storage->set_mflag(pms::EStorageType::TREAD);
+			p_storage->set_mflag(pms::EMsgFlag::FGROUP);
 			p_storage->set_msgid(msgId);
 			p_storage->set_storeid(userid);
 			p_storage->set_ruserid(userid);
@@ -158,12 +158,12 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			m_storeWait2SndList.push_back(p_storage);
 		}
 	} else if (type == MSG_TYPE_LOGIC_W) {
-        printf("type:%d, logicw:%d, twrite:%d\n", type, MSG_TYPE_LOGIC_W, pms::EStorageType::TWRITE);
+        printf("type:%d, logicw:%d, group:%d\n", type, MSG_TYPE_LOGIC_W, pms::EMsgFlag::FGROUP);
 		for(int i=0;i<PACKED_MSG_NUM;++i) {
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
 			std::string msgId;
 			GenericMsgId(msgId);
-			p_storage->set_mflag(pms::EStorageType::TWRITE);
+			p_storage->set_mflag(pms::EMsgFlag::FGROUP);
 			p_storage->set_msgid(msgId);
 			p_storage->set_storeid(userid);
 			p_storage->set_ruserid(userid);
@@ -187,7 +187,7 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 		//for(int i=0;i<PACKED_MSG_NUM;++i) {
 		for(int i=0;i<5;++i) {
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
-			p_storage->set_mflag(pms::EStorageType::TREAD);
+			p_storage->set_mflag(pms::EMsgFlag::FGROUP);
 			std::string msgId;
 			GenericMsgId(msgId);
 			p_storage->set_msgid(msgId);
@@ -198,12 +198,12 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			m_logicR2SndList.push_back(p_storage);
 		}
 	} else if (type == MSG_TYPE_LSEQN_W) {
-        printf("type:%d, lseqn_w:%d, twrite:%d\n", type, MSG_TYPE_LSEQN_W, pms::EStorageType::TWRITE);
+        printf("type:%d, lseqn_w:%d, group:%d\n", type, MSG_TYPE_LSEQN_W, pms::EMsgFlag::FGROUP);
 		for(int i=0;i<PACKED_MSG_NUM;++i) {
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
 			std::string msgId;
 			GenericMsgId(msgId);
-			p_storage->set_mflag(pms::EStorageType::TWRITE);
+			p_storage->set_mflag(pms::EMsgFlag::FGROUP);
 			p_storage->set_msgid(msgId);
 			p_storage->set_storeid(userid);
 			p_storage->set_ruserid(userid);
@@ -212,12 +212,12 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			m_logicW2SndList.push_back(p_storage);
 		}
 	} else if (type == MSG_TYPE_LSEQN_R) {
-        printf("type:%d, lseqn_r:%d, tread:%d\n", type, MSG_TYPE_LSEQN_R, pms::EStorageType::TWRITE);
+        printf("type:%d, lseqn_r:%d, tread:%d\n", type, MSG_TYPE_LSEQN_R, pms::EMsgFlag::FGROUP);
 		for(int i=0;i<PACKED_MSG_NUM;++i) {
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
 			std::string msgId;
 			GenericTempMsgId(msgId);
-			p_storage->set_mflag(pms::EStorageType::TREAD);
+			p_storage->set_mflag(pms::EMsgFlag::FGROUP);
 			p_storage->set_msgid(msgId);
 			p_storage->set_storeid(userid);
 			p_storage->set_ruserid(userid);
@@ -226,12 +226,12 @@ void ClientManager::GenericMsg(int type, const std::string& userid)
 			m_logicR2SndList.push_back(p_storage);
 		}
 	} else if (type == MSG_TYPE_SYNC_MSG) {
-        printf("type:%d, sync_msg:%d, tread:%d\n", type, MSG_TYPE_SYNC_MSG, pms::EStorageType::TWRITE);
+        printf("type:%d, sync_msg:%d, group:%d\n", type, MSG_TYPE_SYNC_MSG, pms::EMsgFlag::FGROUP);
 		//for(int i=0;i<PACKED_MSG_NUM;++i) {
 			pms::StorageMsg* p_storage = new pms::StorageMsg;
 			std::string msgId;
 			GenericTempMsgId(msgId);
-			p_storage->set_mflag(pms::EStorageType::TREAD);
+			p_storage->set_mflag(pms::EMsgFlag::FGROUP);
 			p_storage->set_msgid(msgId);
 			p_storage->set_storeid(userid);
 			p_storage->set_ruserid(userid);
@@ -390,9 +390,9 @@ void ClientManager::DoPackage(int type)
 			}
 		}
 
-        printf("DoPacked MSG_TYPE_LSEQN_R was called, TREQUEST:%d\n", pms::ETransferType::TREQUEST);
+        printf("DoPacked MSG_TYPE_LSEQN_R was called, TREQUEST:%d\n", pms::ETransferType::TREAD_REQUEST);
         pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TREQUEST);
+        tmsg.set_type(pms::ETransferType::TREAD_REQUEST);
         tmsg.set_flag(pms::ETransferFlag::FNEEDACK);
         tmsg.set_priority(pms::ETransferPriority::PNORMAL);
         tmsg.set_content(pit->SerializeAsString());
@@ -415,9 +415,9 @@ void ClientManager::DoPackage(int type)
 			}
 		}
 
-        printf("DoPacked MSG_TYPE_LSEQN_R was called, TREQUEST:%d\n", pms::ETransferType::TREQUEST);
+        printf("DoPacked MSG_TYPE_LSEQN_R was called, TREQUEST:%d\n", pms::ETransferType::TREAD_REQUEST);
         pms::TransferMsg tmsg;
-        tmsg.set_type(pms::ETransferType::TREQUEST);
+        tmsg.set_type(pms::ETransferType::TREAD_REQUEST);
         tmsg.set_flag(pms::ETransferFlag::FNEEDACK);
         tmsg.set_priority(pms::ETransferPriority::PNORMAL);
         tmsg.set_content(pit->SerializeAsString());
@@ -503,10 +503,10 @@ void ClientManager::ProcessRecvMessage(const char*data, int nLen)
         } else if (tmsg.type() == pms::ETransferType::TLOGOUT) {
             LI("TLOGOUT msg received\n");
             //OnTypeTLogout(m_msg.content());
-        } else if (tmsg.type() == pms::ETransferType::TREQUEST) {
-            LI("TREQUEST msg received\n");
-        } else if (tmsg.type() == pms::ETransferType::TRESPONSE) {
-            LI("TRESPONSE msg received\n");
+        } else if (tmsg.type() == pms::ETransferType::TREAD_REQUEST) {
+            LI("TREAD_REQUEST msg received\n");
+        } else if (tmsg.type() == pms::ETransferType::TREAD_RESPONSE) {
+            LI("TREAD_RESPONSE msg received\n");
             pms::PackedStoreMsg store;
             store.ParseFromString(tmsg.content());
             for(int i=0;i<store.msgs_size();++i)

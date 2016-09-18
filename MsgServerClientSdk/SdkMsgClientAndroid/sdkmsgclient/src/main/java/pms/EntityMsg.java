@@ -2913,6 +2913,15 @@ public final class EntityMsg {
      */
     com.google.protobuf.ByteString
         getContentBytes();
+
+    /**
+     * <pre>
+     * push times
+     * </pre>
+     *
+     * <code>optional sint32 ptimes = 3;</code>
+     */
+    int getPtimes();
   }
   /**
    * Protobuf type {@code pms.Pushing}
@@ -2925,6 +2934,7 @@ public final class EntityMsg {
     private Pushing() {
       type_ = "";
       content_ = "";
+      ptimes_ = 0;
     }
     public static final int TYPE_FIELD_NUMBER = 1;
     private java.lang.String type_;
@@ -3058,6 +3068,41 @@ public final class EntityMsg {
       content_ = value.toStringUtf8();
     }
 
+    public static final int PTIMES_FIELD_NUMBER = 3;
+    private int ptimes_;
+    /**
+     * <pre>
+     * push times
+     * </pre>
+     *
+     * <code>optional sint32 ptimes = 3;</code>
+     */
+    public int getPtimes() {
+      return ptimes_;
+    }
+    /**
+     * <pre>
+     * push times
+     * </pre>
+     *
+     * <code>optional sint32 ptimes = 3;</code>
+     */
+    private void setPtimes(int value) {
+      
+      ptimes_ = value;
+    }
+    /**
+     * <pre>
+     * push times
+     * </pre>
+     *
+     * <code>optional sint32 ptimes = 3;</code>
+     */
+    private void clearPtimes() {
+      
+      ptimes_ = 0;
+    }
+
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!type_.isEmpty()) {
@@ -3065,6 +3110,9 @@ public final class EntityMsg {
       }
       if (!content_.isEmpty()) {
         output.writeString(2, getContent());
+      }
+      if (ptimes_ != 0) {
+        output.writeSInt32(3, ptimes_);
       }
     }
 
@@ -3080,6 +3128,10 @@ public final class EntityMsg {
       if (!content_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeStringSize(2, getContent());
+      }
+      if (ptimes_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeSInt32Size(3, ptimes_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -3287,6 +3339,41 @@ public final class EntityMsg {
         return this;
       }
 
+      /**
+       * <pre>
+       * push times
+       * </pre>
+       *
+       * <code>optional sint32 ptimes = 3;</code>
+       */
+      public int getPtimes() {
+        return instance.getPtimes();
+      }
+      /**
+       * <pre>
+       * push times
+       * </pre>
+       *
+       * <code>optional sint32 ptimes = 3;</code>
+       */
+      public Builder setPtimes(int value) {
+        copyOnWrite();
+        instance.setPtimes(value);
+        return this;
+      }
+      /**
+       * <pre>
+       * push times
+       * </pre>
+       *
+       * <code>optional sint32 ptimes = 3;</code>
+       */
+      public Builder clearPtimes() {
+        copyOnWrite();
+        instance.clearPtimes();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:pms.Pushing)
     }
     protected final Object dynamicMethod(
@@ -3312,6 +3399,8 @@ public final class EntityMsg {
               !other.type_.isEmpty(), other.type_);
           content_ = visitor.visitString(!content_.isEmpty(), content_,
               !other.content_.isEmpty(), other.content_);
+          ptimes_ = visitor.visitInt(ptimes_ != 0, ptimes_,
+              other.ptimes_ != 0, other.ptimes_);
           if (visitor == com.google.protobuf.GeneratedMessageLite.MergeFromVisitor
               .INSTANCE) {
           }
@@ -3346,6 +3435,11 @@ public final class EntityMsg {
                   String s = input.readStringRequireUtf8();
 
                   content_ = s;
+                  break;
+                }
+                case 24: {
+
+                  ptimes_ = input.readSInt32();
                   break;
                 }
               }

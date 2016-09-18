@@ -176,8 +176,11 @@ bool PRTXRedis::GetNeedPushMsg(const std::string& devType, ArrayReply& reply, in
             //TODO:maybe has dead lock???
             OSMutexLocker locker(&m_MutexLPush);
             if (m_xRedisClient.lrange(*m_RedisDBIdx, key, start, stop, reply)) {
+                LI("xRedisClient lrange ok~~~~~~~\n");
                 m_xRedisClient.ltrim(*m_RedisDBIdx, key, stop+1, -1);
                 res = true;
+            } else {
+                LI("xRedisClient lrange failed, start:%d, stop:%d, key:%s~~~~~~~\n", start, stop, key);
             }
         }
         return res;

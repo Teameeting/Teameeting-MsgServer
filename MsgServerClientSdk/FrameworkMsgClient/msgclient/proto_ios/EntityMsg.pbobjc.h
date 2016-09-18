@@ -133,6 +133,7 @@ typedef GPB_ENUM(Setting_FieldNumber) {
 typedef GPB_ENUM(Pushing_FieldNumber) {
   Pushing_FieldNumber_Type = 1,
   Pushing_FieldNumber_Content = 2,
+  Pushing_FieldNumber_Ptimes = 3,
 };
 
 @interface Pushing : GPBMessage
@@ -142,6 +143,9 @@ typedef GPB_ENUM(Pushing_FieldNumber) {
 
 /// push content
 @property(nonatomic, readwrite, copy, null_resettable) NSString *content;
+
+/// push times
+@property(nonatomic, readwrite) int32_t ptimes;
 
 @end
 
