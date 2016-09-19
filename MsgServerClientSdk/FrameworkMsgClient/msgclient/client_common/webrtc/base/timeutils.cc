@@ -30,10 +30,16 @@
 
 namespace rtc {
 
-const uint32_t HALF = 0x80000000;
+ClockInterface* g_clock = nullptr;
 
-uint64_t TimeNanos() {
-  int64_t ticks = 0;
+ClockInterface* SetClockForTesting(ClockInterface* clock) {
+  ClockInterface* prev = g_clock;
+  g_clock = clock;
+  return prev;
+}
+
+uint64_t SystemTimeNanos() {
+  int64_t ticks;
 #if defined(WEBRTC_MAC)
   static mach_timebase_info_data_t timebase;
   if (timebase.denom == 0) {
@@ -47,8 +53,8 @@ uint64_t TimeNanos() {
   ticks = mach_absolute_time() * timebase.numer / timebase.denom;
 #elif defined(WEBRTC_POSIX)
   struct timespec ts;
-  // TODO: Do we need to handle the case when CLOCK_MONOTONIC
-  // is not supported?
+  // TODO(deadbeef): Do we need to handle the case when CLOCK_MONOTONIC is not
+  // supported?
   clock_gettime(CLOCK_MONOTONIC, &ts);
   ticks = kNumNanosecsPerSec * static_cast<int64_t>(ts.tv_sec) +
           static_cast<int64_t>(ts.tv_nsec);
@@ -60,8 +66,7 @@ uint64_t TimeNanos() {
   // Atomically update the last gotten time
   DWORD old = InterlockedExchange(last_timegettime_ptr, now);
   if (now < old) {
-    // If now is earlier than old, there may have been a race between
-    // threads.
+    // If now is earlier than old, there may have been a race between threads.
     // 0x0fffffff ~3.1 days, the code will not take that long to execute
     // so it must have been a wrap around.
     if (old > 0xf0000000 && now < 0x0fffffff) {
@@ -69,8 +74,8 @@ uint64_t TimeNanos() {
     }
   }
   ticks = now + (num_wrap_timegettime << 32);
-  // TODO: Calculate with nanosecond precision.  Otherwise, we're just
-  // wasting a multiply and divide when doing Time() on Windows.
+  // TODO(deadbeef): Calculate with nanosecond precision. Otherwise, we're
+  // just wasting a multiply and divide when doing Time() on Windows.
   ticks = ticks * kNumNanosecsPerMillisec;
 #else
 #error Unsupported platform.
@@ -78,11 +83,22 @@ uint64_t TimeNanos() {
   return ticks;
 }
 
+int64_t SystemTimeMillis() {
+  return static_cast<int64_t>(SystemTimeNanos() / kNumNanosecsPerMillisec);
+}
+
+uint64_t TimeNanos() {
+  if (g_clock) {
+    return g_clock->TimeNanos();
+  }
+  return SystemTimeNanos();
+}
+
 uint32_t Time32() {
   return static_cast<uint32_t>(TimeNanos() / kNumNanosecsPerMillisec);
 }
 
-int64_t Time64() {
+int64_t TimeMillis() {
   return static_cast<int64_t>(TimeNanos() / kNumNanosecsPerMillisec);
 }
 
@@ -90,27 +106,16 @@ uint64_t TimeMicros() {
   return static_cast<uint64_t>(TimeNanos() / kNumNanosecsPerMicrosec);
 }
 
-uint32_t TimeAfter(int32_t elapsed) {
+int64_t TimeAfter(int64_t elapsed) {
   RTC_DCHECK_GE(elapsed, 0);
-  RTC_DCHECK_LT(static_cast<uint32_t>(elapsed), HALF);
-  return Time() + elapsed;
+  return TimeMillis() + elapsed;
 }
 
-bool TimeIsLaterOrEqual(uint32_t earlier, uint32_t later) {
-  int32_t diff = later - earlier;
-  return (diff >= 0 && static_cast<uint32_t>(diff) < HALF);
-}
-
-bool TimeIsLater(uint32_t earlier, uint32_t later) {
-  int32_t diff = later - earlier;
-  return (diff > 0 && static_cast<uint32_t>(diff) < HALF);
-}
-
-int32_t TimeDiff(uint32_t later, uint32_t earlier) {
+int32_t TimeDiff32(uint32_t later, uint32_t earlier) {
   return later - earlier;
 }
 
-int64_t TimeDiff64(int64_t later, int64_t earlier) {
+int64_t TimeDiff(int64_t later, int64_t earlier) {
   return later - earlier;
 }
 

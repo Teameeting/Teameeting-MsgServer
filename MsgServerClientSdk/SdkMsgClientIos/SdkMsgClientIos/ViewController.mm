@@ -12,6 +12,15 @@
 #import <msgclient/MSGroupManager.h>
 #import <msgclient/MSMessageManager.h>
 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
 @interface ViewController () {
     UIButton *mEnterButton;
     UIButton *mLeaveButton;
@@ -173,7 +182,7 @@
     impl.delegate = self;
     
     
-    server = @"192.168.7.207";
+    server = @"hui.msg.anyrtc.io";//@"192.168.7.207";
     port   = 6630;
     uid = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     NSLog(@"this device uid is:%@", uid);
@@ -181,6 +190,7 @@
     nname = @"nickname";
     roomid = @"400000000440";
     msg = @"hello world";
+    
     int ret = [clientMgr initMsgClientUsrId:uid token:token nName:nname];
     if (ret != 0) {
         NSLog(@"clientMgr Init error, return -1!!!");

@@ -54,28 +54,24 @@ namespace webrtc {
 
 class Config;
 
-class InStream
-{
-public:
- // Reads |length| bytes from file to |buf|. Returns the number of bytes read
- // or -1 on error.
-    virtual int Read(void *buf, size_t len) = 0;
-    virtual int Rewind();
-    virtual ~InStream() {}
-protected:
-    InStream() {}
+class RewindableStream {
+ public:
+  virtual ~RewindableStream() {}
+  virtual int Rewind() = 0;
 };
 
-class OutStream
-{
-public:
- // Writes |length| bytes from |buf| to file. The actual writing may happen
- // some time later. Call Flush() to force a write.
-    virtual bool Write(const void *buf, size_t len) = 0;
-    virtual int Rewind();
-    virtual ~OutStream() {}
-protected:
-    OutStream() {}
+class InStream : public RewindableStream {
+ public:
+  // Reads |len| bytes from file to |buf|. Returns the number of bytes read
+  // or -1 on error.
+  virtual int Read(void* buf, size_t len) = 0;
+};
+
+class OutStream : public RewindableStream {
+ public:
+  // Writes |len| bytes from |buf| to file. The actual writing may happen
+  // some time later. Call Flush() to force a write.
+  virtual bool Write(const void* buf, size_t len) = 0;
 };
 
 enum TraceModule
@@ -294,6 +290,18 @@ class SendSideDelayObserver {
   virtual void SendSideDelayUpdated(int avg_delay_ms,
                                     int max_delay_ms,
                                     uint32_t ssrc) = 0;
+};
+
+// Callback, used to notify an observer whenever a packet is sent to the
+// transport.
+// TODO(asapersson): This class will remove the need for SendSideDelayObserver.
+// Remove SendSideDelayObserver once possible.
+class SendPacketObserver {
+ public:
+  virtual ~SendPacketObserver() {}
+  virtual void OnSendPacket(uint16_t packet_id,
+                            int64_t capture_time_ms,
+                            uint32_t ssrc) = 0;
 };
 
 // ==================================================================
@@ -693,6 +701,7 @@ struct VideoCodec {
   SpatialLayer spatialLayers[kMaxSpatialLayers];
 
   VideoCodecMode      mode;
+  bool                expect_encode_from_texture;
 
   bool operator==(const VideoCodec& other) const = delete;
   bool operator!=(const VideoCodec& other) const = delete;
@@ -739,6 +748,24 @@ struct PacketTime {
                        // If unknown, this value will be set to zero.
 };
 
+// Minimum and maximum playout delay values from capture to render.
+// These are best effort values.
+//
+// A value < 0 indicates no change from previous valid value.
+//
+// min = max = 0 indicates that the receiver should try and render
+// frame as soon as possible.
+//
+// min = x, max = y indicates that the receiver is free to adapt
+// in the range (x, y) based on network jitter.
+//
+// Note: Given that this gets embedded in a union, it is up-to the owner to
+// initialize these values.
+struct PlayoutDelay {
+  int min_ms;
+  int max_ms;
+};
+
 struct RTPHeaderExtension {
   RTPHeaderExtension();
 
@@ -760,6 +787,8 @@ struct RTPHeaderExtension {
   // ts_126114v120700p.pdf
   bool hasVideoRotation;
   uint8_t videoRotation;
+
+  PlayoutDelay playout_delay = {-1, -1};
 };
 
 struct RTPHeader {
@@ -879,6 +908,11 @@ class StreamDataCountersCallback {
 // RTCP mode to use. Compound mode is described by RFC 4585 and reduced-size
 // RTCP mode is described by RFC 5506.
 enum class RtcpMode { kOff, kCompound, kReducedSize };
+
+enum NetworkState {
+  kNetworkUp,
+  kNetworkDown,
+};
 
 }  // namespace webrtc
 

@@ -15,6 +15,7 @@
 #include <string>
 
 #include "webrtc/base/asyncsocket.h"
+#include "webrtc/base/constructormagic.h"
 #include "webrtc/base/cryptstring.h"
 #include "webrtc/base/logging.h"
 
@@ -35,7 +36,7 @@ class BufferedReadAdapter : public AsyncSocketAdapter {
   ~BufferedReadAdapter() override;
 
   int Send(const void* pv, size_t cb) override;
-  int Recv(void* pv, size_t cb) override;
+  int Recv(void* pv, size_t cb, int64_t* timestamp) override;
 
  protected:
   int DirectSend(const void* pv, size_t cb) {
@@ -223,8 +224,11 @@ class LoggingSocketAdapter : public AsyncSocketAdapter {
 
   int Send(const void* pv, size_t cb) override;
   int SendTo(const void* pv, size_t cb, const SocketAddress& addr) override;
-  int Recv(void* pv, size_t cb) override;
-  int RecvFrom(void* pv, size_t cb, SocketAddress* paddr) override;
+  int Recv(void* pv, size_t cb, int64_t* timestamp) override;
+  int RecvFrom(void* pv,
+               size_t cb,
+               SocketAddress* paddr,
+               int64_t* timestamp) override;
   int Close() override;
 
  protected:

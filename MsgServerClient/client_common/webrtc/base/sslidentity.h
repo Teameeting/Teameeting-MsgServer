@@ -14,12 +14,13 @@
 #define WEBRTC_BASE_SSLIDENTITY_H_
 
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "webrtc/base/buffer.h"
+#include "webrtc/base/constructormagic.h"
 #include "webrtc/base/messagedigest.h"
-#include "webrtc/base/scoped_ptr.h"
 #include "webrtc/base/timeutils.h"
 
 namespace rtc {
@@ -53,7 +54,7 @@ class SSLCertificate {
 
   // Provides the cert chain, or null. The chain includes a copy of each
   // certificate, excluding the leaf.
-  virtual rtc::scoped_ptr<SSLCertChain> GetChain() const = 0;
+  virtual std::unique_ptr<SSLCertChain> GetChain() const = 0;
 
   // Returns a PEM encoded string representation of the certificate.
   virtual std::string ToPEMString() const = 0;
@@ -113,13 +114,10 @@ class SSLCertChain {
   RTC_DISALLOW_COPY_AND_ASSIGN(SSLCertChain);
 };
 
-// KT_DEFAULT is currently an alias for KT_RSA.  This is likely to change.
 // KT_LAST is intended for vector declarations and loops over all key types;
 // it does not represent any key type in itself.
-// TODO(hbos,torbjorng): Don't change KT_DEFAULT without first updating
-// PeerConnectionFactory_nativeCreatePeerConnection's certificate generation
-// code.
-enum KeyType { KT_RSA, KT_ECDSA, KT_LAST, KT_DEFAULT = KT_RSA };
+// KT_DEFAULT is used as the default KeyType for KeyParams.
+enum KeyType { KT_RSA, KT_ECDSA, KT_LAST, KT_DEFAULT = KT_ECDSA };
 
 static const int kRsaDefaultModSize = 1024;
 static const int kRsaDefaultExponent = 0x10001;  // = 2^16+1 = 65537
@@ -226,6 +224,8 @@ class SSLIdentity {
 
   // Returns a temporary reference to the certificate.
   virtual const SSLCertificate& certificate() const = 0;
+  virtual std::string PrivateKeyToPEMString() const = 0;
+  virtual std::string PublicKeyToPEMString() const = 0;
 
   // Helpers for parsing converting between PEM and DER format.
   static bool PemToDer(const std::string& pem_type,
@@ -235,6 +235,9 @@ class SSLIdentity {
                               const unsigned char* data,
                               size_t length);
 };
+
+bool operator==(const SSLIdentity& a, const SSLIdentity& b);
+bool operator!=(const SSLIdentity& a, const SSLIdentity& b);
 
 // Convert from ASN1 time as restricted by RFC 5280 to seconds from 1970-01-01
 // 00.00 ("epoch").  If the ASN1 time cannot be read, return -1.  The data at

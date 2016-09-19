@@ -22,16 +22,16 @@
 
 #include "webrtc/base/common.h"
 #include "webrtc/base/logging.h"
+#include "webrtc/base/nullsocketserver.h"
 #include "webrtc/base/platform_thread.h"
 #include "webrtc/base/stringutils.h"
 #include "webrtc/base/timeutils.h"
+#include "webrtc/base/trace_event.h"
 
 #if !__has_feature(objc_arc) && (defined(WEBRTC_MAC))
 #include "webrtc/base/maccocoathreadhelper.h"
 #include "webrtc/base/scoped_autorelease_pool.h"
 #endif
-
-#include "webrtc/base/trace_event.h"
 
 namespace rtc {
 
@@ -138,7 +138,9 @@ Thread::ScopedDisallowBlockingCalls::~ScopedDisallowBlockingCalls() {
   thread_->SetAllowBlockingCalls(previous_state_);
 }
 
-Thread::Thread(SocketServer* ss, bool init_queue)
+Thread::Thread() : Thread(SocketServer::CreateDefault()) {}
+
+Thread::Thread(SocketServer* ss)
     : MessageQueue(ss, false),
       running_(true, false),
 #if defined(WEBRTC_WIN)
@@ -148,14 +150,34 @@ Thread::Thread(SocketServer* ss, bool init_queue)
       owned_(true),
       blocking_calls_allowed_(true) {
   SetName("Thread", this);  // default name
-  if (init_queue) {
-    DoInit();
-  }
+  DoInit();
+}
+
+Thread::Thread(std::unique_ptr<SocketServer> ss)
+    : MessageQueue(std::move(ss), false),
+      running_(true, false),
+#if defined(WEBRTC_WIN)
+      thread_(NULL),
+      thread_id_(0),
+#endif
+      owned_(true),
+      blocking_calls_allowed_(true) {
+  SetName("Thread", this);  // default name
+  DoInit();
 }
 
 Thread::~Thread() {
   Stop();
   DoDestroy();
+}
+
+std::unique_ptr<Thread> Thread::CreateWithSocketServer() {
+  return std::unique_ptr<Thread>(new Thread(SocketServer::CreateDefault()));
+}
+
+std::unique_ptr<Thread> Thread::Create() {
+  return std::unique_ptr<Thread>(
+      new Thread(std::unique_ptr<SocketServer>(new NullSocketServer())));
 }
 
 bool Thread::SleepMs(int milliseconds) {
@@ -320,7 +342,10 @@ void Thread::Stop() {
   Join();
 }
 
-void Thread::Send(MessageHandler* phandler, uint32_t id, MessageData* pdata) {
+void Thread::Send(const Location& posted_from,
+                  MessageHandler* phandler,
+                  uint32_t id,
+                  MessageData* pdata) {
   if (fStop_)
     return;
 
@@ -328,6 +353,7 @@ void Thread::Send(MessageHandler* phandler, uint32_t id, MessageData* pdata) {
   // of "thread", like Win32 SendMessage. If in the right context,
   // call the handler directly.
   Message msg;
+  msg.posted_from = posted_from;
   msg.phandler = phandler;
   msg.message_id = id;
   msg.pdata = pdata;
@@ -421,12 +447,12 @@ bool Thread::PopSendMessageFromThread(const Thread* source, _SendMessage* msg) {
   return false;
 }
 
-void Thread::InvokeBegin() {
-  TRACE_EVENT_BEGIN0("webrtc", "Thread::Invoke");
-}
-
-void Thread::InvokeEnd() {
-  TRACE_EVENT_END0("webrtc", "Thread::Invoke");
+void Thread::InvokeInternal(const Location& posted_from,
+                            MessageHandler* handler) {
+  TRACE_EVENT2("webrtc", "Thread::Invoke", "src_file_and_line",
+               posted_from.file_and_line(), "src_func",
+               posted_from.function_name());
+  Send(posted_from, handler);
 }
 
 void Thread::Clear(MessageHandler* phandler,
@@ -459,7 +485,7 @@ void Thread::Clear(MessageHandler* phandler,
 }
 
 bool Thread::ProcessMessages(int cmsLoop) {
-  uint32_t msEnd = (kForever == cmsLoop) ? 0 : TimeAfter(cmsLoop);
+  int64_t msEnd = (kForever == cmsLoop) ? 0 : TimeAfter(cmsLoop);
   int cmsNext = cmsLoop;
 
   while (true) {
@@ -479,7 +505,7 @@ bool Thread::ProcessMessages(int cmsLoop) {
       Dispatch(&msg);
 
       if (cmsLoop != kForever) {
-        cmsNext = TimeUntil(msEnd);
+        cmsNext = static_cast<int>(TimeUntil(msEnd));
         if (cmsNext < 0)
           return true;
       }
@@ -513,7 +539,7 @@ bool Thread::WrapCurrentWithThreadManager(ThreadManager* thread_manager,
   return true;
 }
 
-AutoThread::AutoThread(SocketServer* ss) : Thread(ss) {
+AutoThread::AutoThread() {
   if (!ThreadManager::Instance()->CurrentThread()) {
     ThreadManager::Instance()->SetCurrentThread(this);
   }

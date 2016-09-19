@@ -22,7 +22,7 @@ XMsgClient::XMsgClient()
 , m_nname("")
 , m_version("")
 , m_uuid("")
-, m_server("180.150.179.128")
+, m_server("180.150.179.131")
 , m_port(6630)
 , m_autoConnect(true)
 , m_login(false)
@@ -145,6 +145,11 @@ int XMsgClient::ConnToServer(const std::string& server, int port, bool bAutoConn
     if (port>2048) {
         m_port = port;
     }
+#if WEBRTC_ANDROID
+    LOGI("XMsgClient::ConnToServer server:%s, port:%d\n", server.c_str(), port);
+#else
+    LOG(INFO) << "XMsgClient::ConnToServer server:" << server << ", port:" << port;
+#endif
     m_autoConnect = bAutoConnect;
     m_pClientImpl->Connect(server, port, bAutoConnect);
     m_msState = MSCONNECTTING;

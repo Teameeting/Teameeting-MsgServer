@@ -28,7 +28,7 @@ public class MsgClientDelegateImplement implements MSClientDelegate, MSGroupDele
     private String              mStrUserId = null;
     private String              mStrToken = null;
     private String              mStrNname = null;
-    private String              mServer = "192.168.7.207";
+    private String              mServer = "hui.msg.anyrtc.io";//"192.168.7.207";
     private int                 mPort = 6630;
 
     private Context             mContext = null;

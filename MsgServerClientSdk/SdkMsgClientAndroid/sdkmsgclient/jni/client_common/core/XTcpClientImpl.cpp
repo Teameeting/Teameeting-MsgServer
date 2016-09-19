@@ -66,8 +66,6 @@ void XTcpClientImpl::Connect(const std::string& server, int port, bool bAutoConn
 
 	m_bAutoConnect = bAutoConnect;
 	if (m_nState != NOT_CONNECTED) {
-		LOG(WARNING)
-			<< "The client must not be connected before you can call Connect()";
 		m_rCallback.OnServerConnectionFailure();
 		return;
 	}
@@ -84,10 +82,10 @@ void XTcpClientImpl::Connect(const std::string& server, int port, bool bAutoConn
 	m_svrSockAddr.SetPort(port);
 
 	if (m_svrSockAddr.IsUnresolvedIP()) {
-		CurThread()->PostDelayed(1, this, 1);
+		CurThread()->PostDelayed(RTC_FROM_HERE, 1, this, 1);
 	}
 	else {
-		CurThread()->PostDelayed(1, this, 0);
+		CurThread()->PostDelayed(RTC_FROM_HERE, 1, this, 0);
 	}
 }
 
@@ -176,7 +174,7 @@ void XTcpClientImpl::OnMessage(rtc::Message* msg)
 #else
             LOG(WARNING) << "XTcpClientImpl::OnMessage receive 1001, reconnect after 2s...";
 #endif
-            rtc::Thread::Current()->PostDelayed(kReconnectDelay, this, 0);
+            rtc::Thread::Current()->PostDelayed(RTC_FROM_HERE, kReconnectDelay, this, 0);
         }
     }
 }
@@ -189,7 +187,8 @@ void XTcpClientImpl::DoResolver()
 		m_asynResolver = new rtc::AsyncResolver();
 		m_asynResolver->SignalDone.connect(this, &XTcpClientImpl::OnResolveResult);
 		m_asynResolver->Start(m_svrSockAddr);
-	}
+    } else {
+    }
 }
 
 void XTcpClientImpl::DoConnect()
@@ -206,7 +205,7 @@ void XTcpClientImpl::DoConnect()
         LOG(WARNING) << "XTcpClientImpl::DoConnect false, try to reconnect after 3s...";
 #endif
 		m_rCallback.OnServerConnectionFailure();
-        CurThread()->PostDelayed(kTryReconnectDelay, this, 1001);
+        CurThread()->PostDelayed(RTC_FROM_HERE, kTryReconnectDelay, this, 1001);
     }
 }
 void XTcpClientImpl::Close()
@@ -252,8 +251,9 @@ void XTcpClientImpl::OnConnect(rtc::AsyncSocket* socket)
 void XTcpClientImpl::OnRead(rtc::AsyncSocket* socket)
 {
 	char buffer[0xffff];
+    int64_t timestamp = 0;
 	do {
-		int bytes = socket->Recv(buffer, sizeof(buffer));
+		int bytes = socket->Recv(buffer, sizeof(buffer), &timestamp);
 		if (bytes <= 0)
 			break;
 		m_rCallback.OnMessageRecv(buffer, bytes);
@@ -289,8 +289,12 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 
 		if (m_bAutoConnect)
 		{// Auto Connect...
-			LOG(WARNING) << "Connection refused; retrying in 2 seconds";
-			rtc::Thread::Current()->PostDelayed(kReconnectDelay, this, 0);
+#ifdef WEBRTC_ANDROID
+            LOGI("XTcpClientImpl::OnClose  Connection refused; retrying in 2 seconds\n");
+#else
+			LOG(WARNING) << "XTcpClientImpl::OnClose Connection refused; retrying in 2 seconds";
+#endif
+			rtc::Thread::Current()->PostDelayed(RTC_FROM_HERE, kReconnectDelay, this, 0);
 		}
 		else
 		{
@@ -301,14 +305,24 @@ void XTcpClientImpl::OnClose(rtc::AsyncSocket* socket, int err)
 
 void XTcpClientImpl::OnResolveResult(rtc::AsyncResolverInterface* resolver)
 {
-	if (m_asynResolver->GetError() != 0) {
-		m_rCallback.OnServerConnectionFailure();
-		m_asynResolver->Destroy(false);
-		m_asynResolver = NULL;
-		m_nState = NOT_CONNECTED;
-	}
-	else {
-		m_svrSockAddr = m_asynResolver->address();
-		DoConnect();
-	}
+#ifdef WEBRTC_ANDROID
+    LOGI("XTcpClientImpl::OnResolverResult was called m_asynResolver->GetError:%d\n", m_asynResolver->GetError());
+#else
+    LOG(WARNING) << "XTcpClientImpl::OnResolverResult was called m_asynResolver->GetError:" << m_asynResolver->GetError();
+#endif
+    if (m_asynResolver->GetError() != 0) {
+        m_rCallback.OnServerConnectionFailure();
+        m_nState = NOT_CONNECTED;
+    }
+    else {
+        if(m_asynResolver->GetResolvedAddress(AF_INET, &m_svrSockAddr)
+           || m_asynResolver->GetResolvedAddress(AF_INET6, &m_svrSockAddr)) {
+            DoConnect();
+        } else {
+            m_rCallback.OnServerConnectionFailure();
+            m_nState = NOT_CONNECTED;
+        }
+    }
+    m_asynResolver->Destroy(false);
+    m_asynResolver = NULL;
 }

@@ -322,6 +322,10 @@
 		E6415E061D45E82100572DB5 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DF11D45E82000572DB5 /* NSObject+MJProperty.m */; };
 		E6415E071D45E82100572DB5 /* NSString+MJExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E6415DF21D45E82000572DB5 /* NSString+MJExtension.h */; };
 		E6415E081D45E82100572DB5 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E6415DF31D45E82000572DB5 /* NSString+MJExtension.m */; };
+		E645FB9A1D8F8133009EB224 /* location.cc in Sources */ = {isa = PBXBuildFile; fileRef = E645FB991D8F8133009EB224 /* location.cc */; };
+		E645FB9E1D8F8147009EB224 /* location.h in Headers */ = {isa = PBXBuildFile; fileRef = E645FB9D1D8F8147009EB224 /* location.h */; };
+		E645FBA21D8F8266009EB224 /* stringize_macros.h in Headers */ = {isa = PBXBuildFile; fileRef = E645FBA11D8F8266009EB224 /* stringize_macros.h */; };
+		E645FBA41D8F84D8009EB224 /* nullsocketserver.cc in Sources */ = {isa = PBXBuildFile; fileRef = E645FBA31D8F84D8009EB224 /* nullsocketserver.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -695,6 +699,10 @@
 		E6415DF11D45E82000572DB5 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
 		E6415DF21D45E82000572DB5 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
 		E6415DF31D45E82000572DB5 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
+		E645FB991D8F8133009EB224 /* location.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = location.cc; sourceTree = "<group>"; };
+		E645FB9D1D8F8147009EB224 /* location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = location.h; sourceTree = "<group>"; };
+		E645FBA11D8F8266009EB224 /* stringize_macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringize_macros.h; sourceTree = "<group>"; };
+		E645FBA31D8F84D8009EB224 /* nullsocketserver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = nullsocketserver.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -931,6 +939,7 @@
 		E64159661D4302A400572DB5 /* webrtc */ = {
 			isa = PBXGroup;
 			children = (
+				E645FB9F1D8F8266009EB224 /* system_wrappers */,
 				E64159671D4302A400572DB5 /* base */,
 				E6415A301D4302A500572DB5 /* common.h */,
 				E6415A311D4302A500572DB5 /* common_types.h */,
@@ -943,6 +952,9 @@
 		E64159671D4302A400572DB5 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				E645FBA31D8F84D8009EB224 /* nullsocketserver.cc */,
+				E645FB9D1D8F8147009EB224 /* location.h */,
+				E645FB991D8F8133009EB224 /* location.cc */,
 				E6415DD71D45E4BB00572DB5 /* buffer.cc */,
 				E6415D991D45E35600572DB5 /* asyncfile.cc */,
 				E6415D9A1D45E35600572DB5 /* asyncpacketsocket.cc */,
@@ -1222,6 +1234,22 @@
 			path = MJExtension;
 			sourceTree = "<group>";
 		};
+		E645FB9F1D8F8266009EB224 /* system_wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				E645FBA01D8F8266009EB224 /* include */,
+			);
+			path = system_wrappers;
+			sourceTree = "<group>";
+		};
+		E645FBA01D8F8266009EB224 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E645FBA11D8F8266009EB224 /* stringize_macros.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1314,6 +1342,7 @@
 				E6415D411D43062500572DB5 /* referencecountedsingletonfactory.h in Headers */,
 				E6415CDE1D43062500572DB5 /* bind.h in Headers */,
 				E6415BBC1D4302A500572DB5 /* MSSqlite3ClientSql.h in Headers */,
+				E645FBA21D8F8266009EB224 /* stringize_macros.h in Headers */,
 				E6415D3F1D43062500572DB5 /* ratetracker.h in Headers */,
 				E6415D7E1D43062500572DB5 /* transformadapter.h in Headers */,
 				E6415BCF1D4302A500572DB5 /* StorageMsg.pbobjc.h in Headers */,
@@ -1458,6 +1487,7 @@
 				E6415CC71D43062500572DB5 /* arraysize.h in Headers */,
 				E6415D391D43062500572DB5 /* posix.h in Headers */,
 				E6415D2A1D43062500572DB5 /* networkmonitor.h in Headers */,
+				E645FB9E1D8F8147009EB224 /* location.h in Headers */,
 				E6415D661D43062500572DB5 /* sslstreamadapter.h in Headers */,
 				E6415D311D43062500572DB5 /* optionsfile.h in Headers */,
 				E6415D421D43062500572DB5 /* rollingaccumulator.h in Headers */,
@@ -1731,6 +1761,7 @@
 				E6415AA21D4302A500572DB5 /* entity_msg_type.pb.cc in Sources */,
 				E6415DD31D45E35700572DB5 /* stringencode.cc in Sources */,
 				E6415E081D45E82100572DB5 /* NSString+MJExtension.m in Sources */,
+				E645FB9A1D8F8133009EB224 /* location.cc in Sources */,
 				E6415DC11D45E35600572DB5 /* criticalsection.cc in Sources */,
 				E6415DBF1D45E35600572DB5 /* checks.cc in Sources */,
 				E6415BBB1D4302A500572DB5 /* MSSqlite3.mm in Sources */,
@@ -1759,6 +1790,7 @@
 				E6415BCC1D4302A500572DB5 /* EntityMsgType.pbobjc.mm in Sources */,
 				E6415DBD1D45E35600572DB5 /* asyncudpsocket.cc in Sources */,
 				E6415BD61D4302A500572DB5 /* SysMsg.pbobjc.mm in Sources */,
+				E645FBA41D8F84D8009EB224 /* nullsocketserver.cc in Sources */,
 				E6415DCE1D45E35700572DB5 /* scoped_autorelease_pool.mm in Sources */,
 				E6415AAE1D4302A500572DB5 /* sys_msg_type.pb.cc in Sources */,
 				E6415DC61D45E35700572DB5 /* logging.cc in Sources */,
