@@ -15,3 +15,7 @@ void MRTRoomDispatcher::OnTickEvent(const char*pData, int nLen)
     MRTRoomManager::Instance().ProcessTickEvent(pData, nLen);
 }
 
+void MRTRoomDispatcher::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
+}

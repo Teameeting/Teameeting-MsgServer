@@ -11,9 +11,13 @@
 
 #include <stdio.h>
 #include "RTDispatch.h"
+#include "RTObserverConnection.h"
+
+#define DEF_PROTO 1
 
 class DRTMsgDispatch
-    :public RTDispatch{
+    : public RTDispatch
+    , public RTObserverConnection{
 public:
     DRTMsgDispatch();
     virtual ~DRTMsgDispatch();
@@ -25,6 +29,10 @@ public:
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen);
     virtual void OnTickEvent(const char*pData, int nLen) {}
+
+// from RTObserverConnection
+public:
+    virtual void ConnectionDisconnected();
 };
 
 #endif /* DRTMsgDispatch_hpp */

@@ -1,16 +1,23 @@
 apply plugin: 'com.android.application'
+def cfg = rootProject.ext.configuration
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion cfg.compileSdkVersion
+    buildToolsVersion cfg.buildToolsVersion
 
     defaultConfig {
         applicationId "org.dync.teameeting.sdkmsgclientandroid"
-        minSdkVersion 15
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion cfg.minSdkVersion
+        targetSdkVersion cfg.targetSdkVersion
+        versionCode cfg.versionCode
+        versionName cfg.versionName
     }
+
+    dexOptions {
+        maxProcessCount 4 // this is the default value
+        javaMaxHeapSize "2g"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -23,5 +30,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile project(':sdkmsgclient')
+    compile files('libs/msgclient_r1.0.1.jar')
+    compile files('libs/protobuf-lite-3.0.0-beta-2.jar')
 }

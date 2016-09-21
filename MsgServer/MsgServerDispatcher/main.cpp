@@ -10,17 +10,17 @@
 #include "rtklog.h"
 #include "DRTMsgQueue.h"
 #include "RTZKClient.hpp"
+#include <google/protobuf/message.h>
 
 #ifndef _TEST_
-#define _TEST_ 0
+#define _TEST_ 1
 #endif
 
 int main(int argc, const char * argv[]) {
-    std::cout << "Hello, World!\n";
-    LI("Hello, MsgQueue!!!");
+    printf("Hello, Dispatcher!!!");
     DRTMsgQueue::PrintVersion();
 
-    if (argc <= 1) {
+    if (argc <= 2) {
         std::cout << "Error: Please usage:$0 {conf_path} " << std::endl;
         std::cout << "Please enter any key to exit ..." << std::endl;
         getchar();
@@ -37,22 +37,25 @@ int main(int argc, const char * argv[]) {
         exit(0);
     }
 
-    L_Init(0, NULL);
+    int level = RTZKClient::Instance().GetServerConfig().Level;
+    std::string logpath = RTZKClient::Instance().GetServerConfig().LogPath;
+    if (logpath.empty())
+        L_Init(level, NULL);
+    else
+        L_Init(level, logpath.c_str());
+
+    MsConfigParser conf;
+    conf.LoadFromFile(argv[2]);
+
     DRTMsgQueue::Initialize(1024);
     DRTMsgQueue* pMsgQueue = DRTMsgQueue::Inst();
-    int res = pMsgQueue->Start(RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                     RTZKClient::Instance().RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.AcceptConn,
-                     RTZKClient::Instance().GetServerConfig().IP.c_str(),
-                     RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.ListenDisp,
-                     RTZKClient::Instance().GetServerConfig().HttpIp.c_str(),
-                     RTZKClient::Instance().GetServerConfig().portConfig.dispatcher.ListenHttp
-                     );
-    int test = 0;
+    int res = pMsgQueue->Start(conf);
     if (res != 0) {
         LI("DRTMsgQueue start failed and goto exit, res:%d\n", res);
         goto EXIT;
     }
-    //while (test++ < 110) {
+    //int test = 0;
+    //while (test++ < 100) {
     while (1) {
         pMsgQueue->DoTick();
         sleep(1);
@@ -64,5 +67,6 @@ EXIT:
     DRTMsgQueue::DeInitialize();
     L_Deinit();
     RTZKClient::Instance().Unin();
+    google::protobuf::ShutdownProtobufLibrary();
     return 0;
 }

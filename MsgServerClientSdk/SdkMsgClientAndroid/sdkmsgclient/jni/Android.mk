@@ -36,14 +36,15 @@ LOCAL_CFLAGS := -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS -std=c++11
 LOCAL_C_INCLUDES += $(NDK_STL_INC) \
 					$(LOCAL_PATH)/ \
 					$(LOCAL_PATH)/jutils \
-					$(LOCAL_PATH)/dyncRTCMsgClient/ \
-                    $(LOCAL_PATH)/dyncRTCMsgClient/rtcmsgs \
-                    $(LOCAL_PATH)/dyncRTCMsgClient/client
+					$(LOCAL_PATH)/client_common/ \
+                    $(LOCAL_PATH)/client_common/proto \
+                    $(LOCAL_PATH)/protobuf/src
 
 										
 
 LOCAL_STATIC_LIBRARIES := jni_utils
 LOCAL_STATIC_LIBRARIES += rtcmsgclient-android
 LOCAL_STATIC_LIBRARIES += libgnustl
+LOCAL_STATIC_LIBRARIES += protobuf-lite
 
 include $(BUILD_SHARED_LIBRARY)

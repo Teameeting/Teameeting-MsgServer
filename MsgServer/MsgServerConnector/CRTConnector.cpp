@@ -112,12 +112,17 @@ CRTConnector::CRTConnector(void)
 : m_pConnListener(NULL)
 , m_pModuleListener(NULL)
 , m_pConnTcpListener(NULL)
+, m_pWebSvrListener(NULL)
 {
 
 }
 
 CRTConnector::~CRTConnector(void)
 {
+    if (m_pWebSvrListener) {
+        delete m_pWebSvrListener;
+        m_pWebSvrListener = NULL;
+    }
     if (m_pConnTcpListener) {
         delete m_pConnTcpListener;
         m_pConnTcpListener = NULL;
@@ -133,65 +138,114 @@ CRTConnector::~CRTConnector(void)
 	}
 }
 
-int	CRTConnector::Start(const char*pWebConIp, unsigned short usWebConPort
-                  , const char*pModuleIp, unsigned short usModulePort
-                  , const char*pCliConIp, unsigned short usCliConPort)
+int	CRTConnector::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pWebConIp != NULL && strlen(pWebConIp)>0);
-	Assert(pModuleIp != NULL && strlen(pModuleIp)>0);
-    Assert(pCliConIp != NULL && strlen(pCliConIp)>0);
 
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    std::string strRedisIp1("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "connector_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_int_ip1", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "connector_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+        strRedisIp1 = conf.GetValue("redis", "redis_ext_ip1", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0 || strRedisIp1.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nWebConPort = conf.GetIntVal("global", "listen_webcon_port", 6610);
+    int nModulePort = conf.GetIntVal("global", "listen_module_port", 6620);
+    int nCliConPort = conf.GetIntVal("global", "listen_clicon_port", 6630);
+    int nWebSvrPort = conf.GetIntVal("global", "listen_websvr_port", 6612);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+    int nRedisPort1 = conf.GetIntVal("redis", "redis_port1", 6379);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    CRTConnManager::Instance().Init(strRedisIp1, nRedisPort1);
     std::string ssid;
-	CRTConnection::gStrAddr = pWebConIp;
-    CRTConnection::gUsPort = usWebConPort;
-    CRTDispatchConnection::m_connIp = pWebConIp;
-    CRTDispatchConnection::m_connPort = usWebConPort;
     GenericSessionId(ssid);
-    CRTConnManager::Instance().SetConnectorInfo(pWebConIp, usWebConPort, ssid.c_str());
+    CRTConnManager::Instance().SetConnectorInfo(strLocalIp, nWebConPort, ssid.c_str());
     LI("[][]ConnectorId:%s\n", ssid.c_str());
 
-	if(usWebConPort > 0)
+	if(nWebConPort > 0)
 	{
 		m_pConnListener = new CRTConnListener();
-		OS_Error err = m_pConnListener->Initialize(INADDR_ANY, usWebConPort);
+		OS_Error err = m_pConnListener->Initialize(INADDR_ANY, nWebConPort);
 		if (err!=OS_NoErr)
 		{
-			LE("CreateConnListener error port=%d \n", usWebConPort);
+			LE("CreateConnListener error port=%d \n", nWebConPort);
 			delete m_pConnListener;
 			m_pConnListener=NULL;
 
 			return -1;
 		}
-		LI("Start Connector Conn service:(%d) ok...,socketFD:%d\n", usWebConPort, m_pConnListener->GetSocketFD());
+		LI("Start Connector Conn service:(%d) ok...,socketFD:%d\n", nWebConPort, m_pConnListener->GetSocketFD());
 		m_pConnListener->RequestEvent(EV_RE);
 	}
 
-    if (usModulePort > 0) {
+    if (nModulePort > 0) {
         m_pModuleListener = new CRTModuleListener();
-        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, usModulePort);
+        OS_Error err = m_pModuleListener->Initialize(INADDR_ANY, nModulePort);
         if (err!=OS_NoErr) {
-            LE("CreateModuleListener error port:%d\n", usModulePort);
+            LE("CreateModuleListener error port:%d\n", nModulePort);
             delete m_pModuleListener;
             m_pModuleListener = NULL;
             return -1;
         }
-        LI("Start Connector Module service:(%d) ok...,socketFD:%d\n", usModulePort, m_pModuleListener->GetSocketFD());
+        LI("Start Connector Module service:(%d) ok...,socketFD:%d\n", nModulePort, m_pModuleListener->GetSocketFD());
         m_pModuleListener->RequestEvent(EV_RE);
     }
 
-    if (usCliConPort > 0) {
+    if (nCliConPort > 0) {
         m_pConnTcpListener = new CRTConnTcpListener();
-        OS_Error err = m_pConnTcpListener->Initialize(INADDR_ANY, usCliConPort);
+        OS_Error err = m_pConnTcpListener->Initialize(INADDR_ANY, nCliConPort);
         if (err!=OS_NoErr) {
-            LE("CreateConnTcpListener error port:%d\n", usCliConPort);
+            LE("CreateConnTcpListener error port:%d\n", nCliConPort);
             delete m_pConnTcpListener;
             m_pConnTcpListener = NULL;
             return -1;
         }
-        LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", usCliConPort, m_pConnTcpListener->GetSocketFD());
+        LI("Start Connector ConnTcp service:(%d) ok...,socketFD:%d\n", nCliConPort, m_pConnTcpListener->GetSocketFD());
         m_pConnTcpListener->RequestEvent(EV_RE);
     }
+
+#if 0
+    if(nWebSvrPort > 0)
+	{
+		m_pWebSvrListener = new CRTWebServerListener();
+		OS_Error err = m_pWebSvrListener->Initialize(INADDR_ANY, nWebSvrPort);
+		if (err!=OS_NoErr)
+		{
+			LE("Create WebServerListener error port=%d \n", nWebSvrPort);
+			delete m_pWebSvrListener;
+			m_pWebSvrListener=NULL;
+
+			return -1;
+		}
+		LI("Start Connector WebServer service:(%d) ok...,socketFD:%d\n", nWebSvrPort, m_pWebSvrListener->GetSocketFD());
+		m_pWebSvrListener->RequestEvent(EV_RE);
+	}
+#endif
 
 	return 0;
 }
@@ -207,4 +261,5 @@ void CRTConnector::Stop()
 {
     CRTConnManager::Instance().SignalKill();
     CRTConnManager::Instance().ClearAll();
+    CRTConnManager::Instance().Unin();
 }

@@ -1,0 +1,60 @@
+syntax="proto3";
+package pms;
+
+import "common_msg.proto";
+import "entity_msg_type.proto";
+
+option optimize_for = LITE_RUNTIME;
+
+message Login{
+    string         usr_from  = 1; // user id sending from
+    string         usr_token = 2; // user token
+    string         usr_nname = 3;
+    string         version   = 4;
+    string         usr_uuid = 5; // usr uuid
+    sint32         dev_type = 6;
+    sint32         enable_push = 7;
+}
+
+message Logout{
+    string         usr_from  = 1; // user id sending from
+    string         usr_token = 2; // user token
+    string         version   = 3;
+}
+
+message Keep{
+    string         usr_from = 1; // user id sending from
+    string         version  = 2;
+}
+
+message Setting{
+    string         usr_from = 1; // user id sending from
+    string         version = 2;
+    sint64         set_type = 3; // which one are you setting
+    string         json_cont = 4; // key value json format
+}
+
+message Pushing{
+    string         type = 1; // backup
+    string         content = 2; // push content
+    sint32         ptimes = 3; // push times
+}
+
+message Entity{
+    EMsgHead       msg_head  = 1; // msg type
+    EMsgTag        msg_tag   = 2; // msg tag
+    EMsgType       msg_type  = 3; // msg type
+    EMsgFlag       msg_flag  = 4; // msg flag
+    string         usr_from  = 5; // user id sending from
+    string         msg_cont  = 6; // msg content
+    string         rom_id    = 7; // user room id
+    string         rom_name  = 8; // user room name
+    string         nck_name  = 9; // user nick name
+    string         usr_token = 10; // user token
+    string         cmsg_id   = 11; // client local msgid
+    string         extra     = 12;
+    string         version   = 13; // message version
+    sint32         ispush    = 14; // if this msg need push when offline
+    uint32         msg_time  = 15; // msg send time
+    ToUser         usr_toto  = 16; // user ids sending to, the string from pms::ToUser
+}

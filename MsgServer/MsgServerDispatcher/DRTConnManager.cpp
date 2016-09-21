@@ -13,6 +13,7 @@
 #include "OSMutex.h"
 #include "DRTTransferSession.h"
 #include "RTZKClient.hpp"
+#include "ProtoCommon.h"
 
 std::string     DRTConnManager::s_cohttpIp;
 unsigned short  DRTConnManager::s_cohttpPort;
@@ -30,10 +31,10 @@ static DRTConnManager::UserSessionInfoMaps            s_UserSessionInfoMap(0);
 
 DRTConnManager::ModuleInfo* DRTConnManager::findConnectorInfo(const std::string& userid)
 {
-    return findModuleInfo(userid, TRANSFERMODULE::mconnector);
+    return findModuleInfo(userid, pms::ETransferModule::MCONNECTOR);
 }
 
-DRTConnManager::ModuleInfo* DRTConnManager::findModuleInfo(const std::string& uid, TRANSFERMODULE module)
+DRTConnManager::ModuleInfo* DRTConnManager::findModuleInfo(const std::string& uid, pms::ETransferModule module)
 {
     DRTConnManager::ModuleInfo *pInfo = NULL;
     {
@@ -108,7 +109,7 @@ bool DRTConnManager::ConnectConnector()
         char ip[16] = {0};
         unsigned int port = 0;
         sscanf(s.c_str(), "%s %u", ip, &port);
-        printf("ip:%s, port:%u\n", ip, port);
+        LI("ip:%s, port:%u\n", ip, port);
         if (strlen(ip)>0 && port > 2048) {
             DoConnectConnector(ip, port);
         }
@@ -164,7 +165,7 @@ void DRTConnManager::RefreshConnection()
         ModuleInfoMapsIt it = s_ModuleInfoMap.begin();
         for (; it!=s_ModuleInfoMap.end(); it++) {
             pmi = it->second;
-            if (pmi && pmi->othModuleType == TRANSFERMODULE::mconnector) {
+            if (pmi && pmi->othModuleType == pms::ETransferModule::MCONNECTOR) {
                 if (pmi->pModule && pmi->pModule->RefreshTime()) {
                     pmi->pModule->KeepAlive();
                 }
@@ -190,6 +191,7 @@ bool DRTConnManager::ClearAll()
 {
     if (m_pConnDispatcher)
         m_pConnDispatcher->Signal(Task::kKillEvent);
+    m_pConnDispatcher = nullptr;
     {
         OSMutexLocker mlocker(&s_mutexModule);
         for (auto & x : s_ModuleInfoMap) {
@@ -244,7 +246,7 @@ bool DRTConnManager::DelModuleInfo(const std::string& sid, EventData& data)
     return true;
 }
 
-bool DRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid)
+bool DRTConnManager::AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid)
 {
     TypeModuleSessionInfo* pInfo = NULL;
     bool found = false;
@@ -262,7 +264,7 @@ bool DRTConnManager::AddTypeModuleSession(TRANSFERMODULE mtype, const std::strin
             pInfo->sessionIds.insert(sid);
         } else {
             pInfo = new TypeModuleSessionInfo();
-            pInfo->moduleType = mtype;
+            pInfo->moduleType = module;
             pInfo->moduleId = mid;
             pInfo->sessionIds.insert(sid);
             s_TypeModuleSessionInfoList.push_front(pInfo);
@@ -441,7 +443,7 @@ void DRTConnManager::ProcessRecvEvent(const char*pData, int nLen)
         memcpy(data.connect.ip, root["ip"].asString().c_str(), (int)root["ip"].asString().length());
         data.connect.port = root["port"].asInt();
         LI("OnReadEvent EventData mtype:%d, module:%d, ip:%s, port:%d\n", data.mtype, data.connect.module, data.connect.ip, data.connect.port);
-        if (data.connect.module == TRANSFERMODULE::mconnector) {// connect to connector
+        if (data.connect.module == pms::ETransferModule::MCONNECTOR) {// connect to connector
             TryConnectConnector(data.connect.ip, data.connect.port);
         }
     }
@@ -487,8 +489,8 @@ int DRTConnManager::DispTimerCallback(const char*pData, int nLen)
         }
         if (root["type"].asInt() == SESSEVENT::_sess_lost) {//offline and reconnect
             std::string s("");
-            if (root["module"].asInt()==TRANSFERMODULE::mconnector) {// connect to connector
-                s = "/dync/teameeting/connector/" + root["ip"].asString();
+            if (root["module"].asInt()== pms::ETransferModule::MCONNECTOR) {// connect to connector
+                s = "/dync/msgserver/connector/" + root["ip"].asString();
             } else {
                 return 0;
             }

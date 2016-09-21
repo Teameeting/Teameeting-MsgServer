@@ -15,10 +15,12 @@
 #include <utility>
 #include <list>
 #include <set>
-#include "RTMessage.h"
 #include "MRTConnDispatcher.h"
 #include "RTEventTimer.h"
 #include "RTSingleton.h"
+
+#define DEF_PROTO 1
+#include "ProtoCommon.h"
 
 class MRTTransferSession;
 
@@ -27,12 +29,12 @@ class MRTConnManager : public RTSingleton< MRTConnManager >{
 public:
     typedef struct _ModuleInfo{
         int             flag;
-        TRANSFERMODULE  othModuleType;
+        pms::ETransferModule  othModuleType;
         std::string     othModuleId;
         MRTTransferSession*     pModule;
         _ModuleInfo() {
             flag = 0;
-            othModuleType = transfermodule_invalid;
+            othModuleType = pms::ETransferModule::MMEETING;
             othModuleId = "";
             pModule = NULL;
         }
@@ -42,11 +44,11 @@ public:
     //meet meet123456  session123456
     //msgqueue queue123456  session234567
     typedef struct _TypeModuleSessionInfo{
-        TRANSFERMODULE moduleType;
+        pms::ETransferModule moduleType;
         std::string moduleId;
         std::set<std::string> sessionIds;
         _TypeModuleSessionInfo() {
-            moduleType = transfermodule_invalid;
+            moduleType = pms::ETransferModule::MMEETING;
             moduleId = "";
             sessionIds.clear();
         }
@@ -54,10 +56,10 @@ public:
 
     //match the module type and session id
     typedef struct _TypeSessionInfo{
-        TRANSFERMODULE moduleType;
+        pms::ETransferModule moduleType;
         std::string sessionId;
         _TypeSessionInfo() {
-            moduleType = transfermodule_invalid;
+            moduleType = pms::ETransferModule::MMEETING;
             sessionId = "";
         }
     }TypeSessionInfo;
@@ -87,11 +89,11 @@ public:
     typedef std::list< MRTTransferSession* > ConnectingSessList;
 
 
-    ModuleInfo*  findModuleInfo(const std::string& userid, TRANSFERMODULE module);
+    ModuleInfo*  findModuleInfo(const std::string& userid, pms::ETransferModule module);
 
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
     bool DelModuleInfo(const std::string& sid, EventData& data);
-    bool AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid);
+    bool AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid);
     bool DelTypeModuleSession(const std::string& sid);
 
     void TransferSessionLostNotify(const std::string& sid);

@@ -17,19 +17,11 @@ JNIEXPORT jlong JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Cr
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
- * Method:    ConnStatus
- * Signature: ()I
- */
-JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_ConnStatus
-  (JNIEnv *, jobject);
-
-/*
- * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    Init
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;III)I
  */
 JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Init
-  (JNIEnv *, jobject, jstring, jstring, jstring, jstring, jint);
+  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
@@ -41,43 +33,131 @@ JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Uni
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    RegisterMsgCb
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_RegisterMsgCb
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    UnRegisterMsgCb
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_UnRegisterMsgCb
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    ConnToServer
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_ConnToServer
+  (JNIEnv *, jobject, jstring, jint);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    AddGroup
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_AddGroup
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    RmvGroup
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_RmvGroup
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    SndMsg
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIIII)Ljava/lang/String;
  */
-JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SndMsg
-  (JNIEnv *, jobject, jstring, jstring, jstring);
-
-/*
- * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
- * Method:    GetMsg
- * Signature: (I)I
- */
-JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_GetMsg
-  (JNIEnv *, jobject, jint);
-
-/*
- * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
- * Method:    OptRoom
- * Signature: (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
- */
-JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_OptRoom
-  (JNIEnv *, jobject, jint, jstring, jstring, jstring);
+JNIEXPORT jstring JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SndMsg
+  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint, jint, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
  * Method:    SndMsgTo
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IIIII[Ljava/lang/String;I)Ljava/lang/String;
  */
-JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SndMsgTo
-  (JNIEnv *, jobject, jstring, jstring, jstring, jobjectArray);
+JNIEXPORT jstring JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SndMsgTo
+  (JNIEnv *, jobject, jstring, jstring, jstring, jint, jint, jint, jint, jint, jobjectArray, jint);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
- * Method:    NotifyMsg
- * Signature: (Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)I
+ * Method:    FetchSeqn
+ * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_NotifyMsg
-  (JNIEnv *, jobject, jstring, jstring, jint, jstring);
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_FetchSeqn
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SyncSeqn
+ * Signature: (JI)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SyncSeqn
+  (JNIEnv *, jobject, jlong, jint);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SyncData
+ * Signature: (J)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SyncData
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    FetchGroupSeqn
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_FetchGroupSeqn
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SyncGroupSeqn
+ * Signature: (Ljava/lang/String;JI)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SyncGroupSeqn
+  (JNIEnv *, jobject, jstring, jlong, jint);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SyncGroupData
+ * Signature: (Ljava/lang/String;J)I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SyncGroupData
+  (JNIEnv *, jobject, jstring, jlong);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    ConnStatus
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_ConnStatus
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetUserId
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUserId
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetToken
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetToken
+  (JNIEnv *, jobject, jstring);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
@@ -86,6 +166,62 @@ JNIEXPORT jint JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_Not
  */
 JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetNickName
   (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetUIconUrl
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUIconUrl
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    EnablePush
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_EnablePush
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    MuteNotify
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_MuteNotify
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    UpdateSetting
+ * Signature: (JLjava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_UpdateSetting
+  (JNIEnv *, jobject, jlong, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    SetUUID
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_SetUUID
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    InitUserSeqns
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_InitUserSeqns
+  (JNIEnv *, jobject, jstring, jlong);
+
+/*
+ * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp
+ * Method:    UpdateUserSeqns
+ * Signature: (Ljava/lang/String;J)V
+ */
+JNIEXPORT void JNICALL Java_org_dync_teameeting_sdkmsgclient_jni_JMClientApp_UpdateUserSeqns
+  (JNIEnv *, jobject, jstring, jlong);
 
 /*
  * Class:     org_dync_teameeting_sdkmsgclient_jni_JMClientApp

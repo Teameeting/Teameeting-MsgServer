@@ -69,7 +69,7 @@
 /* #undef HAVE_LIBEV */
 
 /* Define to 1 if you have the `event' library (-levent). */
-/* #undef HAVE_LIBEVENT */
+#define HAVE_LIBEVENT 1
 
 /* Define to 1 if you have the `hiredis' library (-lhiredis). */
 #define HAVE_LIBHIREDIS 1

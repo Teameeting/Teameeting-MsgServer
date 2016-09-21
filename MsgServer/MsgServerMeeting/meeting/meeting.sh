@@ -24,9 +24,9 @@ echo 1024 65000 > /proc/sys/net/ipv4/ip_local_port_range
 # GLOBAL
 #---------------------------------------------------------------------------
 
-RT_HOME=/usr/local/dync/teameeting/meeting/bin
-RT_CONF=/usr/local/dync/teameeting/meeting/conf
-RT_LIB=/usr/local/dync/teameeting/meeting/lib
+RT_HOME=/usr/local/dync/msgserver/meeting/bin
+RT_CONF=/usr/local/dync/msgserver/meeting/conf
+RT_LIB=/usr/local/dync/msgserver/meeting/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${RT_LIB}
 retval=0
 
@@ -50,7 +50,7 @@ Start()
 	fi
 		
 	echo -n "Starting Meeting Server(MsgServerMeeting): "
-	${RT_HOME}/MsgServerMeeting ${RT_CONF}/meeting.conf & 2> /dev/null
+	${RT_HOME}/MsgServerMeeting ${RT_CONF}/meeting.conf ${RT_CONF}/params.conf & 2> /dev/null
 	retval=$?
 	if [ ${retval} == 0 ]; then
 		echo_success

@@ -16,10 +16,13 @@
 #include <list>
 #include <set>
 #include "CRTTransferSession.h"
-#include "RTMessage.h"
 #include "RTTcp.h"
 #include "RTType.h"
 #include "RTSingleton.h"
+#include "CRTXRedis.h"
+
+#define DEF_PROTO 1
+#include "ProtoCommon.h"
 
 #define HR_USERID       "hr_userid"
 #define HR_CONNECTORID  "hr_connectorid"
@@ -30,12 +33,12 @@ public:
     //store the session's module type and transfer_session_id and transfer_session
     typedef struct _ModuleInfo{
         int             flag;
-        TRANSFERMODULE  othModuleType;
+        pms::ETransferModule  othModuleType;
         std::string     othModuleId;
         CRTTransferSession*     pModule;
         _ModuleInfo() {
             flag = 0;
-            othModuleType = transfermodule_invalid;
+            othModuleType = pms::ETransferModule::MCONNECTOR;
             othModuleId = "";
             pModule = NULL;
         }
@@ -49,7 +52,7 @@ public:
         std::string     _userId;
         std::string     _token;
         RTTcp*          _pConn;
-        CONNECTIONTYPE  _connType;
+        pms::EConnType  _connType;
         int             _flag;
         _ConnectionInfo():_connId("")
                         , _connAddr("")
@@ -57,7 +60,7 @@ public:
                         , _userId("")
                         , _token("")
                         , _pConn(NULL)
-                        , _connType(connectiontype_invalid)
+                        , _connType(pms::EConnType::TTCP)
                         , _flag(0){
         }
     }ConnectionInfo;
@@ -66,11 +69,11 @@ public:
     //meet meet123456  session123456
     //msgqueue queue123456  session234567
     typedef struct _TypeModuleSessionInfo{
-        TRANSFERMODULE moduleType;
+        pms::ETransferModule moduleType;
         std::string moduleId;
         std::set<std::string> sessionIds;
         _TypeModuleSessionInfo() {
-            moduleType = transfermodule_invalid;
+            moduleType = pms::ETransferModule::MCONNECTOR;
             moduleId = "";
             sessionIds.clear();
         }
@@ -78,10 +81,10 @@ public:
 
     //match the module type and session id
     typedef struct _TypeSessionInfo{
-        TRANSFERMODULE moduleType;
+        pms::ETransferModule moduleType;
         std::string sessionId;
         _TypeSessionInfo() {
-            moduleType = transfermodule_invalid;
+            moduleType = pms::ETransferModule::MCONNECTOR;
             sessionId = "";
         }
     }TypeSessionInfo;
@@ -112,30 +115,38 @@ public:
     typedef UserSessionInfoMaps::iterator                                   UserSessionInfoMapsIt;
 
 
-    void    SetConnectorInfo(const char* Ip, unsigned short port, const char* Id) { m_connectorIp = Ip;
+    void    SetConnectorInfo(const std::string& Ip, unsigned short port, const std::string& Id) { m_connectorIp = Ip;
         m_connectorPort = port;
         m_connectorId = Id;
     }
 
-    ModuleInfo*       findModuleInfo(const std::string& userid, TRANSFERMODULE module);
+    ModuleInfo*       findModuleInfo(const std::string& userid, pms::ETransferModule module);
     ConnectionInfo*   findConnectionInfoById(const std::string& uid);
 
     bool AddModuleInfo(ModuleInfo* pmi, const std::string& sid);
     bool DelModuleInfo(const std::string& sid);
-    bool AddTypeModuleSession(TRANSFERMODULE mtype, const std::string& mid, const std::string& sid);
+    bool AddTypeModuleSession(pms::ETransferModule module, const std::string& mid, const std::string& sid);
 
     //if session lost, del session
     //if programer lost, del module
     bool DelTypeModuleSession(const std::string& sid);
-    bool AddUser(CONNECTIONTYPE type, const std::string& uid, ConnectionInfo* pInfo);
+    bool AddUser(pms::EConnType type, const std::string& uid, ConnectionInfo* pInfo);
     // return true means delete one
     // return false means not delete
-    bool DelUser(CONNECTIONTYPE type, const std::string& uid, std::string& token);
+    bool DelUser(pms::EConnType type, const std::string& uid, std::string& token);
 
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void ConnectionConnNotify(const std::string& uid, const std::string& token);
     void TransferSessionLostNotify(const std::string& sid);
-    void TransferMsg(MSGTYPE mType, long long mseq, const std::string& uid, const std::string& msg);
+
+    void TransferMsg(pms::EServerCmd cmd, pms::EModuleType type, const std::string& uid, const std::string& msg);
+    void TransferToPusher(pms::EServerCmd cmd, pms::EModuleType type, const std::string& uid, const std::string& msg);
+
+    void Init(const std::string redisIP, int redisPort);
+    void Unin();
+    bool GetEnablePush(const std::string& userid, pms::EModuleType type);
+    bool CouldPush(const std::string& userid, pms::EModuleType type);
+
     bool    SignalKill();
     bool    ClearAll();
 
@@ -152,6 +163,9 @@ private:
     std::string m_connectorIp;
     std::string m_connectorPort;
     std::string m_connectorId;
+
+    CRTXRedis       m_xRedis;
+
 };
 
 #endif /* defined(__MsgServerConnector__CRTConnManager__) */

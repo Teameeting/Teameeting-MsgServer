@@ -15,8 +15,6 @@
 #include <utility>
 #include "refcount.h"
 #include "scoped_ref_ptr.h"
-#include "RTMeetMsg.h"
-#include "RTSignalMsg.h"
 #include "MRTTransferSession.h"
 #include "MRTMeetingRoom.h"
 #include "MRTHttpSvrConn.h"
@@ -24,16 +22,19 @@
 #include "RTEventTimer.h"
 #include "RTSingleton.h"
 
+#define DEF_PROTO 1
+#include "ProtoCommon.h"
+
 class MRTRoomManager : public RTSingleton< MRTRoomManager >{
     friend class RTSingleton< MRTRoomManager >;
 public:
 
-    void HandleOptRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
-    void HandleOptRoomWithData(int cmd, TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void HandleDcommRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    void HandleOptRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
+    void HandleOptRoomWithData(int cmd, pms::RelayMsg& rmsg, pms::Entity& emsg, std::string& data);
+    void HandleDcommRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
 
-    void EnterRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
-    void LeaveRoom(TRANSMSG& tmsg, MEETMSG& mmsg);
+    void EnterRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
+    void LeaveRoom(pms::RelayMsg& rmsg, pms::Entity& emsg);
 
     bool Init(const std::string& msgQueueIp, unsigned short msgQueuePort, const std::string& httpIp, unsigned short httpPort, const std::string& httpHost);
     bool ConnectMsgQueue(const std::string& msgQueueIp, unsigned short msgQueuePort);
@@ -72,10 +73,10 @@ private:
 
     int ChangeToJson(const std::string from, std::string& users);
     void SendWaitingMsgs(MeetingRoomMapIt mit);
-    void OnGetMemberList(TRANSMSG& tmsg, MEETMSG& mmsg, std::string& data);
-    void GenericResponse(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response);
-    void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, SENDTAGS tags, int nmem, const std::string& cont, const std::string& tos, std::string& response);
-    void ResponseSndMsg(TRANSMSG tmsg, MEETMSG mmsg, MESSAGETYPE msgtype, SIGNALTYPE stype, int code, const std::string& tos, std::string& response);
+    void OnGetMemberList(pms::RelayMsg& rmsg, pms::Entity& emsg, std::string& data);
+    void GenericResponse(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::Entity& emsg, const pms::ToUser* tos, std::string& response);
+    void GenericConnLostResponse(const std::string& uid, const std::string& token, const std::string& roomid, const std::string& connector, int nmem, const std::string& cont, const pms::ToUser* tos, std::string& response);
+    void ResponseSndMsg(pms::EServerCmd cmd, const pms::RelayMsg& rmsg, const pms::Entity& emsg, const pms::ToUser* tos, std::string& response);
 
 
     void AddUserMeetingRoomId(const std::string& uid, const std::string& roomid) {

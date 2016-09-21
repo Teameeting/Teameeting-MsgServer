@@ -114,14 +114,44 @@ MRTMeeting::~MRTMeeting(void)
 
 }
 
-int	MRTMeeting::Start(const char*pConnIp, unsigned short usConnPort, const char*pDispIp, unsigned short usDispPort, const char* pHttpIp, unsigned short usHttpPort)
+int	MRTMeeting::Start(const MsConfigParser& conf)
 {
 	Assert(g_inited);
-	Assert(pConnIp != NULL && strlen(pConnIp)>0);
-	Assert(pDispIp != NULL && strlen(pDispIp)>0);
-	Assert(pHttpIp != NULL && strlen(pHttpIp)>0);
+    int debug = conf.GetIntVal("global", "debug", 1);
+
+    std::string strLocalIp("");
+    std::string strHttpIp("");
+    if (debug==1)
+    {
+        strLocalIp = conf.GetValue("global", "meeting_int_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_int_ip", "127.0.0.1");
+    } else {
+        strLocalIp = conf.GetValue("global", "meeting_ext_ip", "127.0.0.1");
+        strHttpIp = conf.GetValue("resetful", "http_ext_ip", "127.0.0.1");
+    }
+    if (strLocalIp.length()==0 || strHttpIp.length()==0) {
+        std::cout << "Error: Ip length is 0!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
+    int nConnPort = conf.GetIntVal("global", "listen_conn_port", 6610);
+    int nDispPort = conf.GetIntVal("global", "listen_disp_port", 6620);
+    int nHttpPort = conf.GetIntVal("resetful", "listen_http_port", 8055);
+
+    int log_level = conf.GetIntVal("log", "level", 5);
+    std::string strLogPath = conf.GetValue("log", "path");
+    if (log_level < 0 || log_level > 5)
+    {
+        std::cout << "Error: Log level=" << log_level << " extend range(0 - 5)!" << std::endl;
+        std::cout << "Please enter any key to exit ..." << std::endl;
+        getchar();
+        exit(0);
+    }
+
     char hh[24] = {0};
-    sprintf(hh, "%s:%u", pHttpIp, usHttpPort);
+    sprintf(hh, "%s:%d", strHttpIp.c_str(), nHttpPort);
 
     std::string mid;
     GenericSessionId(mid);
@@ -129,7 +159,7 @@ int	MRTMeeting::Start(const char*pConnIp, unsigned short usConnPort, const char*
     LI("[][]MeetingId:%s\n", mid.c_str());
 
     char addr[24] = {0};
-    sprintf(addr, "%s %u", pConnIp, usConnPort);
+    sprintf(addr, "%s %u", strLocalIp.c_str(), nConnPort);
     MRTConnManager::Instance().GetAddrsList()->push_front(addr);
 
     if (!(MRTConnManager::Instance().ConnectConnector())) {
@@ -137,7 +167,7 @@ int	MRTMeeting::Start(const char*pConnIp, unsigned short usConnPort, const char*
         return -1;
     }
 
-    if (!(MRTRoomManager::Instance().Init(pDispIp, usDispPort, pHttpIp, usHttpPort, hh))) {
+    if (!(MRTRoomManager::Instance().Init(strLocalIp.c_str(), nDispPort, strHttpIp.c_str(), nHttpPort, hh))) {
         LE("Start to RoomManager Init failed\n");
         return -1;
     }

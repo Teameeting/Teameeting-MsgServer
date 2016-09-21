@@ -54,6 +54,13 @@ SInt64 RTHttp::Run()
     // So return -1.
     if(events&Task::kKillEvent)
     {
+        ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
+        if (it != m_mapConnectObserver.end()) {
+            RTObserverConnection *conn = it->second;
+            if (conn) {
+                conn->ConnectionDisconnected();
+            }
+        }
         return -1;
     }
 
@@ -100,4 +107,18 @@ SInt64 RTHttp::Run()
     //
     // At this point, however, the session is DEAD.
     return 0;
+}
+
+void RTHttp::AddObserver(RTObserverConnection* conn)
+{
+    m_OCMItPair = m_mapConnectObserver.insert(std::make_pair(this, conn));
+    if (!m_OCMItPair.second) {
+        m_mapConnectObserver.erase(this);
+        m_mapConnectObserver.insert(std::make_pair(this, conn));
+    }
+}
+
+void RTHttp::DelObserver(RTObserverConnection* conn)
+{
+    m_mapConnectObserver.erase(this);
 }

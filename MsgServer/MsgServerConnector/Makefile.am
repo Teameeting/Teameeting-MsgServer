@@ -11,13 +11,14 @@ AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/CRTListener/ \
 			 -I$(top_srcdir)/CRTTransfer/
 
-AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
+AM_CPPFLAGS+= -I$(top_srcdir)/../ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/xredis/src \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/libhttp/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/RTComm/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/common/include \
@@ -28,16 +29,20 @@ MsgServerConnector_SOURCES=$(top_srcdir)/CRTConnection/CRTConnHttp.cpp \
 						   $(top_srcdir)/CRTConnection/CRTConnTcp.cpp \
 						   $(top_srcdir)/CRTConnection/CRTConnection.cpp \
 						   $(top_srcdir)/CRTConnection/CRTConnectionTcp.cpp \
+						   $(top_srcdir)/CRTConnection/CRTWebServerHttp.cpp \
+						   $(top_srcdir)/CRTConnection/CRTWebServerWaiter.cpp \
 						   $(top_srcdir)/CRTListener/CRTConnListener.cpp \
 						   $(top_srcdir)/CRTListener/CRTConnTcpListener.cpp \
 						   $(top_srcdir)/CRTListener/CRTModuleListener.cpp \
+						   $(top_srcdir)/CRTListener/CRTWebServerListener.cpp \
 						   $(top_srcdir)/CRTTransfer/CRTTransferSession.cpp \
+						   $(top_srcdir)/CRTXRedis.cpp \
 						   $(top_srcdir)/CRTConnManager.cpp \
 						   $(top_srcdir)/CRTConnector.cpp \
 						   $(top_srcdir)/CRTDispatchConnection.cpp \
 						   $(top_srcdir)/main.cpp
 
-MsgServerConnector_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-MsgServerConnector_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a
+MsgServerConnector_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lxredis -lhiredis -lhttp -lrtklog -lzkclient
+MsgServerConnector_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerConnector_LDADD+=-lpthread -lrt -ldl
 

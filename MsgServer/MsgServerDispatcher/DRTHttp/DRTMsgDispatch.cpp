@@ -7,108 +7,114 @@
 //
 
 #include "DRTMsgDispatch.hpp"
-#include "RTMeetMsg.h"
 #include "DRTConnManager.h"
 #include "RTUtils.hpp"
 #include "DRTTransferSession.h"
+#include "ProtoCommon.h"
 
 DRTMsgDispatch::DRTMsgDispatch()
 : RTDispatch()
 {
-
+    AddObserver(this);
 }
 
 DRTMsgDispatch::~DRTMsgDispatch()
 {
-
+    DelObserver(this);
 }
 
 void DRTMsgDispatch::OnPushEvent(const char* pData, int nLen)
 {
+#if DEF_PROTO
     if (!pData || nLen<= 0) {
         LE("DRTMsgDispatch::OnPushEvent params error\n");
         return;
     }
-    PUSHMSG pmsg;
-    MEETMSG mmsg;
-    std::string err("");
-    pmsg.GetMsg(pData, err);
-    if (err.length()>0) {
-        LE("DRTMsgDispatch::OnPushEvent get PushMsg err:%s\n", err.c_str());
+    std::string msg(pData, nLen);
+    pms::RelayMsg pmsg;
+    pms::MsgRep respmsg;
+    pms::Entity mmsg;
+    if (!pmsg.ParseFromString(msg)) {
+        LE("pmsg.ParseFromString error\n");
         return;
     }
-    mmsg.GetMsg(pmsg._content, err);
-    if (err.length()>0) {
-        LE("DRTMsgDispatch::OnPushEvent get MeetMsg err:%s\n", err.c_str());
+    if (!respmsg.ParseFromString(pmsg.content())) {
+        LE("respmsg.ParseFromString error\n");
+        return;
+    }
+    if (!mmsg.ParseFromString(respmsg.rsp_cont())) {
+        LE("mmsg.ParseFromString error\n");
         return;
     }
 
-#if 1
+    LI("DRTMsgDispatch::OnPushEvent RelayMsg--->:\n");
+    //pmsg.PrintDebugString();
+
+    LI("DRTMsgDispatch::OnPushEvent the Push function not implement!!!!!!!!!!\n");
+    return;
+    assert(false);
+#if 0
     TOPUSHUSER pushUser;
-    TOJSONUSER jsonUser;
-    jsonUser.GetMsg(pmsg._touser, err);
-    if (err.length()>0) {
-        LE("DRTMsgDispatch::OnPushEvent get JsonUser err:%s\n", err.c_str());
-        return;
+    for(int i=0;i<pmsg.touser().users_size();++i) {
+        pushUser._us.push_back((pmsg.touser().users(i)));
     }
-    std::list<std::string>::iterator it = jsonUser._us.begin();
-    for (; it!=jsonUser._us.end(); it++) {
-        pushUser._us.push_back((*it));
-    }
-#endif
 
     TOPUSHMSG pushMsg;
-    pushMsg._tags = mmsg._tags;
-    pushMsg._roomid = mmsg._room;
+    pushMsg._tags = mmsg.msg_tag();
+    pushMsg._roomid = mmsg.rom_id();
     std::string strPushMsg = pushMsg.ToJson();
-    printf("pushUser.ToJson:%s\n", pushUser.ToJson().c_str());
 
-    if (mmsg._tags == SENDTAGS::sendtags_talk) {
-        std::string no = mmsg._rname + " - " + mmsg._nname + ": " + mmsg._cont;
-        //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnManager::Instance().PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-    } else if (mmsg._tags == SENDTAGS::sendtags_enter) {
-        std::string no = mmsg._nname + "进入\"" + mmsg._rname + "\"房间正在等你哦~";
-        //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnManager::Instance().PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-    } else if (mmsg._tags == SENDTAGS::sendtags_leave) {
-        //std::string no = mmsg._nname + "离开房间\"" + mmsg._rname + "\"";
-        //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, mmsg._room, mmsg._cont, no, strPushMsg);
-    } else if (mmsg._tags == SENDTAGS::sendtags_call) {
-        std::string no = mmsg._nname + "喊你进房间\"" + mmsg._rname + "\"啦~";
-        //DRTConnManager::Instance().PushCommonMsg(mmsg._pass, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
-        DRTConnManager::Instance().PushMeetingMsg(mmsg._room, mmsg._from, pushUser.ToJson(), mmsg._cont, no, strPushMsg);
+    if (mmsg.msg_tag() == pms::EMsgTag::TCHAT) {
+        std::string no = mmsg.rom_name() + " - " + mmsg.nck_name() + ": " + mmsg.msg_cont();
+        DRTConnManager::Instance().PushMeetingMsg(mmsg.rom_id(), mmsg.usr_from(), pushUser.ToJson(), mmsg.msg_cont(), no, strPushMsg);
+    } else if (mmsg.msg_tag() == pms::EMsgTag::TENTER) {
+        std::string no = mmsg.nck_name() + "进入\"" + mmsg.rom_name() + "\"房间正在等你哦~";
+        DRTConnManager::Instance().PushMeetingMsg(mmsg.rom_id(), mmsg.usr_from(), pushUser.ToJson(), mmsg.msg_cont(), no, strPushMsg);
+    } else if (mmsg.msg_tag() == pms::EMsgTag::TLEAVE) {
+        //std::string no = mmsg.nck_name() + "离开房间\"" + mmsg.rom_name() + "\"";
+        //DRTConnManager::Instance().PushMeetingMsg(mmsg.rom_id(), mmsg.usr_from(), pushUser.ToJson(), mmsg.msg_cont(), no, strPushMsg);
+    } else if (mmsg.msg_tag() == pms::EMsgTag::TNOTIFY) {
+        std::string no = mmsg.nck_name() + "喊你进房间\"" + mmsg.rom_name() + "\"啦~";
+        DRTConnManager::Instance().PushMeetingMsg(mmsg.rom_id(), mmsg.usr_from(), pushUser.ToJson(), mmsg.msg_cont(), no, strPushMsg);
     }
+#endif
+#else
+    LE("not define DEF_PROTO\n");
+#endif
 }
 
 void DRTMsgDispatch::OnSendEvent(const char*pData, int nLen)
 {
+#if DEF_PROTO
     if (!pData || nLen<=0) {
         return;
     }
-    DISPATCHMSG dmsg;
-    std::string err("");
-    dmsg.GetMsg(pData, err);
-    if (err.length()>0) {
-        LE("DRTMsgDispatch::OnSendEvent get DispatchMsg err:%s\n", err.c_str());
+    std::string msg(pData, nLen);
+    pms::RelayMsg dmsg;
+    if (!dmsg.ParseFromString(msg)) {
+        LE("dmsg.ParseFromString error\n");
         return;
     }
-    TRANSFERMSG trmsg;
-    trmsg._action = TRANSFERACTION::req;
-    trmsg._fmodule = TRANSFERMODULE::mmsgqueue;
-    trmsg._type = TRANSFERTYPE::dispatch;
-    trmsg._trans_seq = GenericTransSeq();
-    trmsg._trans_seq_ack = 0;
-    trmsg._valid = 1;
-    std::string sd = pData;
-    trmsg._content = sd;
-    std::string st = trmsg.ToJson();
+    pms::TransferMsg trmsg;
+    trmsg.set_type(pms::ETransferType::TDISPATCH);
+    trmsg.set_content(msg);
 
-    DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance().findConnectorInfoById("notnull", dmsg._connector);
+    std::string st = trmsg.SerializeAsString();
+
+    //DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance().findConnectorInfoById("notnull", dmsg.connector());
+    DRTConnManager::ModuleInfo* pmi = DRTConnManager::Instance().findConnectorInfo("notnull");
     if (pmi && pmi->pModule) {
         pmi->pModule->SendTransferData(st.c_str(), (int)st.length());
     } else {
-        LE("mi.pModule is NULL\n");
+        LE("DRTMsgDispatch::OnSendEvent connector module %s is NULL\n", dmsg.connector().c_str());
     }
+#else
+    LE("not define DEF_PROTO\n");
+#endif
+}
+
+
+void DRTMsgDispatch::ConnectionDisconnected()
+{
+    LI("%s was called\n", __FUNCTION__);
 }

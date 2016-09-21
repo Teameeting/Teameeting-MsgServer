@@ -8,7 +8,11 @@ RTEventTimer::RTEventTimer(int timeout, ExecutorDelay executor)
 , mTimeout(timeout+1)
 , fTimeoutTask(NULL, (timeout+1) * 1000)
 , fTickTime(0)
+, mOutTime(-1)
 , mExecutorDelay(executor)
+, mExecutorDelay2(NULL)
+, mExecutor2Param1(NULL)
+, mExecutor2Param2(NULL)
 {
 	ListZero(&mListDelay);
 	fTimeoutTask.SetTask(this);
@@ -46,6 +50,13 @@ SInt64 RTEventTimer::Run()
 
     if(events&Task::kKillEvent)
     {
+        ObserverConnectionMapIt it = m_mapConnectObserver.find(this);
+        if (it != m_mapConnectObserver.end()) {
+            RTObserverConnection *conn = it->second;
+            if (conn) {
+                conn->ConnectionDisconnected();
+            }
+        }
         return -1;
     }
 
@@ -61,11 +72,14 @@ SInt64 RTEventTimer::Run()
                     if (mExecutorDelay) {
                         mExecutorDelay((const char*)elem->content, (int)elem->size);
                     }
+                    if (mExecutorDelay2) {
+                        mExecutorDelay2(mExecutor2Param1, mExecutor2Param2);
+                    }
                     ListRemoveHead(&mListDelay);
                 }
             }
 			events -= Task::kTimeoutEvent;
-            return -1;
+            return mOutTime;
 		}
 		else
 		{
@@ -73,4 +87,18 @@ SInt64 RTEventTimer::Run()
 		}
 	}
     return 0;
+}
+
+void RTEventTimer::AddObserver(RTObserverConnection* conn)
+{
+    m_OCMItPair = m_mapConnectObserver.insert(std::make_pair(this, conn));
+    if (!m_OCMItPair.second) {
+        m_mapConnectObserver.erase(this);
+        m_mapConnectObserver.insert(std::make_pair(this, conn));
+    }
+}
+
+void RTEventTimer::DelObserver(RTObserverConnection* conn)
+{
+    m_mapConnectObserver.erase(this);
 }

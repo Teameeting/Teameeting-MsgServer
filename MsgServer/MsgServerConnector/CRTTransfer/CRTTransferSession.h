@@ -19,6 +19,9 @@
 #include "CRTDispatchConnection.h"
 #include "RTObserverConnection.h"
 
+#define DEF_PROTO 1
+#include "ProtoCommon.h"
+
 class CRTTransferSession
     : public RTTcp
     , public RTJSBuffer
@@ -31,17 +34,17 @@ public:
     void Unit();
     bool Connect(const std::string addr, int port);
     void Disconn();
-    
+
     void SendTransferData(const char* pData, int nLen);
     void ConnectionLostNotify(const std::string& uid, const std::string& token);
     void ConnectionConnNotify(const std::string& uid, const std::string& token);
-    void TransferMsg(const std::string& msg);
-    
+    void TransferMsg(pms::EServerCmd cmd, const std::string& msg);
+
     void TestConnection();
-        
+
 public:
     void EstablishConnection();
-    
+
 // from RTTcp
 public:
     virtual void OnRecvData(const char*pData, int nLen);
@@ -49,19 +52,19 @@ public:
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen) {}
     virtual void OnTickEvent(const char*pData, int nLen) {}
-    
+
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
-    virtual void OnMsgAck(TRANSFERMSG& tmsg);
-    virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str);
-        
+    virtual void OnMsgAck(pms::TransferMsg& tmsg);
+    virtual void OnTypeConn(const std::string& str);
+    virtual void OnTypeTrans(const std::string& str);
+    virtual void OnTypeQueue(const std::string& str);
+    virtual void OnTypeDispatch(const std::string& str);
+    virtual void OnTypePush(const std::string& str);
+    virtual void OnTypeTLogin(const std::string& str);
+    virtual void OnTypeTLogout(const std::string& str);
+
 // from RTObserverConnection
     virtual void ConnectionDisconnected();
 protected:
@@ -69,7 +72,7 @@ protected:
 private:
     std::string     m_transferSessId;
     CRTDispatchConnection  m_dispatchConnection;
-    
+
 };
 
 #endif /* defined(__MsgServerConnector__CRTTransferSession__) */

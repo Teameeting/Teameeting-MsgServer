@@ -84,6 +84,7 @@ SInt64 RTTcp::Run()
                 conn->ConnectionDisconnected();
             }
         }
+        printf("RTTcp timeout or killed\n");
 		return -1;
 	}
 
@@ -141,12 +142,12 @@ SInt64 RTTcp::Run()
 		}
 		else if(events&Task::kWakeupEvent)
 		{
-			//OnWakeupEvent("", 0);
+			OnWakeupEvent("", 0);
 			events -= Task::kWakeupEvent;
 		}
 		else if(events&Task::kPushEvent)
 		{
-			//OnPushEvent("", 0);
+			OnPushEvent("", 0);
 			events -= Task::kPushEvent;
 		}
 		else if(events&Task::kIdleEvent)
@@ -171,6 +172,7 @@ SInt64 RTTcp::Run()
             conn->ConnectionDisconnected();
         }
     }
+    printf("RTTcp session die...\n");
     return -1;
 }
 

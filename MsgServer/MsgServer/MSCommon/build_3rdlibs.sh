@@ -81,7 +81,18 @@ then
 fi
 sleep 1
 
+####################    building libxredis  ##########################
+LIB_SRC_PATH=$LIB_BASE_PATH/xredis
+LIB_NAME=libxredis.a
+build_lib $LIB_SRC_PATH $LIB_NAME
+if [ $? -ne 0 ]
+then
+    logerr "build_lib $LIB_NAME error..."
+    exit 2
+fi
+sleep 1
 ####################    building libhttp  ##########################
+
 LIB_SRC_PATH=$LIB_BASE_PATH/libhttp
 LIB_NAME=libhttp.a
 build_lib $LIB_SRC_PATH $LIB_NAME
@@ -118,8 +129,13 @@ sleep 1
 LIB_SRC_PATH=$LIB_BASE_PATH/zkclient
 LIB_NAME=libzkclient.a
 cd $LIB_SRC_PATH
-sh build.sh
+if [ "$PARAM_FORCE"x = "yes"x ]
+then
+    sh build.sh
+fi
 build_lib $LIB_SRC_PATH $LIB_NAME
+cd $LIB_SRC_PATH
+rm -rf CMakeCache.txt  CMakeFiles  cmake_install.cmake
 if [ $? -ne 0 ]
 then
     logerr "build_lib $LIB_NAME error..."

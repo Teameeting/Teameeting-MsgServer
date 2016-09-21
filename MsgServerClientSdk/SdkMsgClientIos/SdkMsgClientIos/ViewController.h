@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "MsgClientProtocolImpl.h"
-@class TMMsgSender;
+@class MSClientManager;
+@class MSGroupManager;
+@class MSMessageManager;
 
 @interface ViewController : UIViewController<ShowResultProtocol>{
-    TMMsgSender *msgsender;
+    MSClientManager *clientMgr;
+    MSGroupManager *groupMgr;
+    MSMessageManager *msgMgr;
     MsgClientProtocolImpl *impl;
     int         port;
     NSString    *server;

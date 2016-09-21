@@ -24,6 +24,9 @@ typedef struct _PortConfig{
 			int AcceptDisp;
 			int AcceptHttp;
 		}meeting;
+		struct {
+			int ListenClicon;
+		}sequence;
 	};
 }PortConfig;
 

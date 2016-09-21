@@ -12,12 +12,11 @@
 Task* DRTModuleListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
 {
     TCPSocket* theSocket = NULL;
-    //Assert(outSocket != NULL);
     Assert(osSocket != EventContext::kInvalidFileDesc);
-    
+
     // when the server is behing a round robin DNS, the client needs to knwo the IP address ot the server
     // so that it can direct the "POST" half of the connection to the same machine when tunnelling RTSP thru HTTP
-    
+
     DRTTransferSession* theTask = new DRTTransferSession();
     if(NULL == theTask)
         return NULL;
@@ -36,12 +35,11 @@ Task* DRTModuleListener::GetSessionTask(int osSocket, struct sockaddr_in* addr)
     //theTask will get an kReadEvent event
     theSocket->RequestEvent(EV_RE);
     theTask->SetTimer(120*1000);
-    
-#if 0
+
     StrPtrLen* remoteStr = theSocket->GetRemoteAddrStr();
-    LI("\n*** RTModuleListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
-#endif
+    LI("RTModuleListener Get a connection,ip:%.*s port:%d \n",remoteStr->Len, remoteStr->Ptr, ntohs(addr->sin_port));
+
     this->RunNormal();
-    
+
     return theTask;
 }

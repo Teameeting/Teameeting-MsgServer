@@ -1,0 +1,31 @@
+syntax="proto3";
+package pms;
+
+import "storage_msg_type.proto";
+import "common_msg.proto";
+
+option optimize_for = LITE_RUNTIME;
+
+// this is the msg for store msg to redis
+message StorageMsg{
+    EServerCmd      rsvrcmd     = 1; // real server cmd
+    EServerCmd      tsvrcmd     = 2; // temp server cmd for backup group cmd
+    EStorageTag     mtag        = 3; // seqn or data
+    EMsgFlag        mflag       = 4; // group or single
+    EMsgRole        mrole       = 5; // sender or recver
+    sint32          result      = 6; // the redis opt result
+    sint64          sequence    = 7; // sequence
+    sint64          maxseqn     = 8; // max sequence
+    string          msgid       = 9; // message id
+    string          storeid     = 10; // storage userid
+    string          ruserid     = 11; // real userid
+    string          groupid     = 12; // groupid
+    string          version     = 13; // message version
+    string          mtype       = 14; // the msg content type
+    string          ispush      = 15; // if this message need push
+    bytes           content     = 16; // message
+}
+
+message PackedStoreMsg{
+    repeated    StorageMsg     msgs = 1;
+}

@@ -19,6 +19,9 @@
 #include "RTObserverConnection.h"
 #include "DRTMsgDispatch.hpp"
 
+#define DEF_PROTO 1
+#include "ProtoCommon.h"
+
 class DRTTransferSession
     : public RTTcp
     , public RTJSBuffer
@@ -34,7 +37,7 @@ public:
     void Disconn();
     bool RefreshTime();
     void KeepAlive();
-    
+
     void SendTransferData(const char* pData, int nLen);
     void SetModuleId(std::string& moduleId) { m_moduleId = moduleId; }
     void TestConnection();
@@ -52,25 +55,25 @@ public:
     virtual void OnWakeupEvent(const char*pData, int nLen) {}
     virtual void OnPushEvent(const char*pData, int nLen) {}
     virtual void OnTickEvent(const char*pData, int nLen) {}
-    
+
 // from RTTransfer
 public:
     virtual void OnTransfer(const std::string& str);
-    virtual void OnMsgAck(TRANSFERMSG& tmsg);
-    virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str);
-    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str);
+    virtual void OnMsgAck(pms::TransferMsg& tmsg);
+    virtual void OnTypeConn(const std::string& str);
+    virtual void OnTypeTrans(const std::string& str);
+    virtual void OnTypeQueue(const std::string& str);
+    virtual void OnTypeDispatch(const std::string& str);
+    virtual void OnTypePush(const std::string& str);
+    virtual void OnTypeTLogin(const std::string& str);
+    virtual void OnTypeTLogout(const std::string& str);
 
 protected:
    virtual void OnRecvMessage(const char*message, int nLen);
 // from RTObserverConnection
 public:
     virtual void ConnectionDisconnected();
-        
+
 private:
     std::string     m_transferSessId;
     UInt64          m_lastUpdateTime;

@@ -11,28 +11,29 @@
 
 #include <stdio.h>
 #include <string>
-#include "RTMeetMsg.h"
-#include "RTMessage.h"
 #include "rtklog.h"
 #include "OSMutex.h"
+
+#define DEF_PROTO 1
+#include "../../ProtoCommon.h"
 
 class RTTransfer{
 public:
     RTTransfer();
     virtual ~RTTransfer();
-    
+
     int DoProcessData(const char* pData, int nLen);
 
 public:
     virtual void OnTransfer(const std::string& str) = 0;
-    virtual void OnMsgAck(TRANSFERMSG& tmsg) = 0;
-    virtual void OnTypeConn(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    virtual void OnTypeTrans(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    virtual void OnTypeQueue(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    virtual void OnTypeDispatch(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    virtual void OnTypePush(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    virtual void OnTypeTLogin(TRANSFERMODULE fmodule, const std::string& str) = 0;
-    virtual void OnTypeTLogout(TRANSFERMODULE fmodule, const std::string& str) = 0;
+    virtual void OnMsgAck(pms::TransferMsg& tmsg) = 0;
+    virtual void OnTypeConn(const std::string& str) = 0;
+    virtual void OnTypeTrans(const std::string& str) = 0;
+    virtual void OnTypeQueue(const std::string& str) = 0;
+    virtual void OnTypeDispatch(const std::string& str) = 0;
+    virtual void OnTypePush(const std::string& str) = 0;
+    virtual void OnTypeTLogin(const std::string& str) = 0;
+    virtual void OnTypeTLogout(const std::string& str) = 0;
 
 private:
 

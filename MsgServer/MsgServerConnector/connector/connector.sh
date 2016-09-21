@@ -24,9 +24,9 @@ echo 1024 65000 > /proc/sys/net/ipv4/ip_local_port_range
 # GLOBAL
 #---------------------------------------------------------------------------
 
-RT_HOME=/usr/local/dync/teameeting/connector/bin
-RT_CONF=/usr/local/dync/teameeting/connector/conf
-RT_LIB=/usr/local/dync/teameeting/connector/lib
+RT_HOME=/usr/local/dync/msgserver/connector/bin
+RT_CONF=/usr/local/dync/msgserver/connector/conf
+RT_LIB=/usr/local/dync/msgserver/connector/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${RT_LIB}
 retval=0
 
@@ -50,7 +50,7 @@ Start()
 	fi
 		
 	echo -n "Starting Connector Server(MsgServerConnector): "
-	${RT_HOME}/MsgServerConnector ${RT_CONF}/connector.conf & 2> /dev/null
+	${RT_HOME}/MsgServerConnector ${RT_CONF}/connector.conf ${RT_CONF}/params.conf & 2> /dev/null
 	retval=$?
 	if [ ${retval} == 0 ]; then
 		echo_success

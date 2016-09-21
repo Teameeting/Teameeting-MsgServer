@@ -10,11 +10,11 @@ AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/MRTHttp/ \
 			 -I$(top_srcdir)/MRTTransfer/
 
-AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
+AM_CPPFLAGS+=-I$(top_srcdir)/../ \
+		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSHttp/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
@@ -35,5 +35,5 @@ MsgServerMeeting_SOURCES=$(top_srcdir)/MRTHttp/MRTHttpSvrConn.cpp \
 						   $(top_srcdir)/main.cpp
 
 MsgServerMeeting_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-MsgServerMeeting_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a
+MsgServerMeeting_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerMeeting_LDADD+=-lpthread -lrt -ldl

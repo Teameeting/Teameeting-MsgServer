@@ -152,45 +152,4 @@ void CRTConnHttp::OnHttpMessage(http_message* httpMsg)
 		//SendResponse(HPS_NOT_ACCEPTABLE, "");
         return;
     }
-
-    MEETMSG m_mmsg;
-    std::string str(pContent, nContentLen), err("");
-    m_mmsg.GetMsg(str, err);
-    if (err.length() > 0) {
-        LE("OnHttpMessage pContent error:%s\n", err.c_str());
-		//SendResponse(HPS_NOT_ACCEPTABLE, "");
-        return;
-    }
-
-    if (strcmp(pPath, "/login") == 0) {
-        if (m_mmsg._from.length()>0 && m_mmsg._pass.length()>0 && m_mmsg._nname.length()>0) {
-            OnLogin(m_mmsg._from.c_str(), m_mmsg._pass.c_str(), m_mmsg._nname.c_str());
-        } else {
-            LE("login params errors\n");
-        }
-    } else if(strcmp(pPath, "/sndmsg") == 0) {
-        if (m_mmsg._from.length()>0) {
-            const char* pContentDump = strdup(pContent);
-            OnSndMsg(m_mmsg._from.c_str(), m_mmsg._mtype, pContentDump, (int)strlen(pContentDump));
-            free((void*)pContentDump);
-            pContentDump = NULL;
-        } else {
-            LE("sndmsg params errors\n");
-        }
-    } else if(strcmp(pPath, "/getmsg") == 0) {
-        if (m_mmsg._from.length()>0) {
-            OnGetMsg(m_mmsg._from.c_str(), m_mmsg._mtype);
-        } else {
-            LE("getmsg params errors\n");
-        }
-    } else if (strcmp(pPath, "/logout") == 0) {
-        if (m_mmsg._from.length()>0) {
-            OnLogout(m_mmsg._from.c_str());
-        } else {
-            LE("logout params errors\n");
-        }
-    } else {
-        SendResponse(HPS_NOT_ACCEPTABLE, "");
-        return;
-    }
 }

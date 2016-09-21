@@ -3,12 +3,11 @@
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "CRTConnManager.h"
-#include "RTMessage.h"
 #include "RTUtils.hpp"
 
+#define DEF_PTORO 1
+#include "ProtoCommon.h"
 
-std::string		CRTConnection::gStrAddr;
-unsigned short	CRTConnection::gUsPort = 0;
 CRTConnection::CRTConnection(void)
 : m_pBuffer(NULL)
 , m_nBufLen(0)
@@ -81,12 +80,7 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* 
     {
         //check & auth
 #if 0
-        std::string pass;
-        RTHiredisRemote::Instance().CmdGet(pUserid, pass);
-        if (pass.compare(pPass)!=0) {
-            LE("OnLogin pass not same redis error\n");
-            return;
-        }
+
 #endif
         m_userId = pUserid;
         m_token = pPass;
@@ -106,17 +100,17 @@ void CRTConnection::OnLogin(const char* pUserid, const char* pPass, const char* 
             pci->_userId = pUserid;
             pci->_token = pPass;
             pci->_pConn = NULL;
-            pci->_connType = CONNECTIONTYPE::_chttp;
+            pci->_connType = pms::EConnType::THTTP;
             pci->_flag = 1;
             std::string uid(pUserid);
-            CRTConnManager::Instance().AddUser(CONNECTIONTYPE::_chttp, uid, pci);
+            CRTConnManager::Instance().AddUser(pms::EConnType::THTTP, uid, pci);
         } else {
             LE("new ConnectionInfo error!!!\n");
         }
     } else {
         std::string uid(pUserid);
         CRTConnManager::ConnectionInfo* pci = NULL;
-        CRTConnManager::Instance().AddUser(CONNECTIONTYPE::_chttp, uid, pci);
+        CRTConnManager::Instance().AddUser(pms::EConnType::THTTP, uid, pci);
     }
     {
         // send response
@@ -147,29 +141,6 @@ void CRTConnection::OnSndMsg(const char* pUserid, int mType, const char* pData, 
     //find an TrasnferSession By mtype
     //transfer msg by TransferSession
 
-    TRANSFERMSG t_trmsg;
-    TRANSMSG t_msg;
-    t_msg._flag = 0;
-    t_msg._touser = "";
-    t_msg._connector = CRTConnManager::Instance().ConnectorId();
-    t_msg._content = pData;
-
-    t_trmsg._action = TRANSFERACTION::req;
-    t_trmsg._fmodule = TRANSFERMODULE::mconnector;
-    t_trmsg._type = TRANSFERTYPE::trans;
-    t_trmsg._trans_seq = GenericTransSeq();
-    t_trmsg._trans_seq_ack = 0;
-    t_trmsg._valid = 1;
-    t_trmsg._content = t_msg.ToJson();
-
-    const std::string s = t_trmsg.ToJson();
-    CRTConnManager::ModuleInfo* pmi = CRTConnManager::Instance().findModuleInfo(pUserid, (TRANSFERMODULE)mType);
-    if (pmi && pmi->pModule) {
-        pmi->pModule->SendTransferData(s.c_str(), (int)s.length());
-    } else {
-        LE("pmi->pModule is NULL\n");
-    }
-    SendResponse(HPS_OK, "");
 }
 
 void CRTConnection::OnGetMsg(const char* pUserid, int mType)
@@ -183,40 +154,11 @@ void CRTConnection::OnGetMsg(const char* pUserid, int mType)
         //get msg
         RTTcp::UpdateTimer();
     }
-    {
-        //send back to user
-        rapidjson::Document      jsonDoc;
-        rapidjson::StringBuffer  jsonStr;
-        rapidjson::Writer<rapidjson::StringBuffer>   jsonWriter(jsonStr);
-        jsonDoc.SetObject();
-
-        jsonDoc.AddMember("getmsg", "success", jsonDoc.GetAllocator());
-        jsonDoc.Accept(jsonWriter);
-        SendResponse(HPS_OK, jsonStr.GetString());
-    }
 }
 
 void CRTConnection::OnLogout(const char* pUserid)
 {
-    {
-        //logout
-        std::string uid(pUserid);
-        std::string token;
-        CRTConnManager::Instance().DelUser(CONNECTIONTYPE::_chttp, uid, token);
-        m_userId = "";
-        m_token = "";
-        m_nname = "";
-    }
-    {
-        //send response
-        rapidjson::Document       jsonDoc;
-        rapidjson::StringBuffer   jsonStr;
-        rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStr);
-        jsonDoc.SetObject();
-        jsonDoc.AddMember("logout", "success", jsonDoc.GetAllocator());
-        jsonDoc.Accept(jsonWriter);
-        SendResponse(HPS_OK, jsonStr.GetString());
-    }
+
 }
 
 void CRTConnection::OnResponse(const char*pData, int nLen)
@@ -228,7 +170,7 @@ void CRTConnection::ConnectionDisconnected()
 {
     if (m_userId.length()) {
         std::string token;
-        CRTConnManager::Instance().DelUser(CONNECTIONTYPE::_chttp, m_userId, token);
+        CRTConnManager::Instance().DelUser(pms::EConnType::THTTP, m_userId, token);
         CRTConnManager::Instance().ConnectionLostNotify(m_userId, m_token);
     } else {
         LE("RTConnection::ConnectionDisconnected m_userId.length is 0\n");

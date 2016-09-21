@@ -1,13 +1,41 @@
 #!/bin/sh
 
-echo "tar connector.tar.bz2..."
-sleep 1
-tar -jcvf connector.tar.bz2 connector
+echo "tar begin *_*..."
 
-echo "tar connector.tar.bz2..."
+echo "tar connector.tar.gz..."
 sleep 1
-tar -jcvf dispatcher.tar.bz2 dispatcher
+tar -zcvf connector.tar.gz connector
 
-echo "tar connector.tar.bz2..."
+echo "tar dispatcher.tar.gz..."
 sleep 1
-tar -jcvf meeting.tar.bz2 meeting
+tar -zcvf dispatcher.tar.gz dispatcher
+
+echo "tar meeting.tar.gz..."
+sleep 1
+tar -zcvf meeting.tar.gz meeting
+
+echo "tar rtlive.tar.gz..."
+sleep 1
+tar -zcvf rtlive.tar.gz rtlive
+
+echo "tar logical.tar.gz..."
+sleep 1
+tar -zcvf logical.tar.gz logical
+
+echo "tar sequence.tar.gz..."
+sleep 1
+tar -zcvf sequence.tar.gz sequence
+
+echo "tar storage.tar.gz..."
+sleep 1
+tar -zcvf storage.tar.gz storage
+
+echo "tar grouper.tar.gz..."
+sleep 1
+tar -zcvf grouper.tar.gz grouper
+
+echo "tar pusher.tar.gz..."
+sleep 1
+tar -zcvf pusher.tar.gz pusher
+
+echo "tar end *_*..."

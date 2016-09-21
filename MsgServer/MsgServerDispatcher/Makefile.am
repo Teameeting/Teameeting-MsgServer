@@ -11,11 +11,11 @@ AM_CPPFLAGS+=-I$(top_srcdir)/ \
 			 -I$(top_srcdir)/DRTTransfer/ \
 			 -I$(top_srcdir)/DRTHttp
 
-AM_CPPFLAGS+= -I$(top_srcdir)/../MsgServer/MSCommon/ \
+AM_CPPFLAGS+=-I$(top_srcdir)/../ \ 
+		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSBase/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSCommon/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSHttp/ \
-		   -I$(top_srcdir)/../MsgServer/MSCommon/MSProtocol/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/autoref/ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/hiredis/ \
@@ -35,5 +35,5 @@ MsgServerDispatcher_SOURCES=$(top_srcdir)/DRTListener/DRTModuleListener.cpp \
 						   $(top_srcdir)/main.cpp
 
 MsgServerDispatcher_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-MsgServerDispatcher_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a
+MsgServerDispatcher_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
 MsgServerDispatcher_LDADD+=-lpthread -lrt -ldl

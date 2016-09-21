@@ -28,8 +28,10 @@ RTK_LOG_API void L_Printf(const char*file, int line, int level, const char *form
 RTK_LOG_API void L_Deinit();
 
 // Marco for easy use.
-#define LD(format, ...) L_Printf(__FILE__, __LINE__,L_WARNING,format, ##__VA_ARGS__)
+#define LA(format, ...) L_Printf(__FILE__, __LINE__,L_ALL,format, ##__VA_ARGS__)
+#define LN(format, ...) L_Printf(__FILE__, __LINE__,L_NORMAL,format, ##__VA_ARGS__)
 #define LI(format, ...) L_Printf(__FILE__, __LINE__,L_INFO,format, ##__VA_ARGS__)
+#define LW(format, ...) L_Printf(__FILE__, __LINE__,L_WARNING,format, ##__VA_ARGS__)
 #define LE(format, ...) L_Printf(__FILE__, __LINE__,L_ERROR,format, ##__VA_ARGS__)
 
 #endif	//	__RTK_LOG_H__
