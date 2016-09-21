@@ -26,7 +26,7 @@ typedef DbResultVector::iterator                DbResultVectorIt;
 class MSSqlite3DB {
 public:
 
-    bool OpenDb();
+    bool OpenDb(const std::string& dirUserId);
     bool CloseDb();
     bool IsUserExistsInDb(const std::string& userId, const std::string& seqnId);
     bool InsertSeqn(const std::string& userId, const std::string& seqnId, ::google::protobuf::int64 seqn);

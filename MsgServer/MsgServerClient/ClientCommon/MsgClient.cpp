@@ -44,7 +44,7 @@ int MsgClient::MCInit(const std::string& uid, const std::string& token, const st
     //m_recurLock = [[NSRecursiveLock alloc] init];
     m_sqlite3Manager = new MSSqlite3Manager();
     if (!m_sqlite3Manager) return -1;
-    m_sqlite3Manager->InitManager();
+    m_sqlite3Manager->InitManager(m_strUserId);
     CheckUserOrInit(m_nsUserId);
     GetLocalSeqnsFromDb();
     SyncSeqnFromDb2Core();

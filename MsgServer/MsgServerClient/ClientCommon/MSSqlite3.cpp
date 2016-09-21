@@ -9,6 +9,9 @@
 #include <string>
 #include <sstream>
 #include <utility>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include "MSSqlite3.h"
 #include "rtklog.h"
 
@@ -16,10 +19,23 @@
 #define MC_MSG_SQL_TABLE_STOREID_SEQN "mc_storeid_seqn"
 #define MC_MSG_SQL_TABLE_GROUPS_ID "mc_groups_id"
 
-bool MSSqlite3DB::OpenDb()
+bool MSSqlite3DB::OpenDb(const std::string& dirUserId)
 {
-    std::string path("./");
-    std::string sqlFile = path.append(MC_MSG_SQL_DB_NAME);
+    std::string path("./client_dbs/");
+    std::string dir = path.append(dirUserId);
+    if (access(dir.c_str(), NULL)==F_OK)
+    {
+        LI("MSSqlite3DB::OpenDb dir:%s already exists\n", dir.c_str());
+    } else {
+        LI("MSSqlite3DB::OpenDb dir:%s not exists\n", dir.c_str());
+        if (mkdir(dir.c_str(), 0775)==-1)
+        {
+            LI("MSSqlite3DB::OpenDb mkdir:%s failed\n", dir.c_str());
+        } else {
+            LI("MSSqlite3DB::OpenDb mkdir:%s success\n", dir.c_str());
+        }
+    }
+    std::string sqlFile = dir.append("/").append(MC_MSG_SQL_DB_NAME);
     printf("OpenDb sqlFile path:%s\n", sqlFile.c_str());
     int result = sqlite3_open(sqlFile.c_str(), &_sql3Db);
 

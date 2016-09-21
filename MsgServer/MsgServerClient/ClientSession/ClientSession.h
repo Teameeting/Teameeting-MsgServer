@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <stdlib.h>
+#include <unistd.h>
 #include "MSGroupDelegate.h"
 #include "MSClientDelegate.h"
 #include "MSSubMessageDelegate.h"
@@ -72,6 +74,15 @@ private:
     MSGroupManager*         mGroupManager;
     MSClientManager*        mClientManager;
     MSMessageManager*       mMessageManager;
+
+    // log file
+    FILE*                   mSendLog;
+    FILE*                   mRecvLog;
+
+    std::string             mGroupId;
+    std::string             mUserId;
+    std::string             mToken;
+    std::string             mNname;
 
 };
 

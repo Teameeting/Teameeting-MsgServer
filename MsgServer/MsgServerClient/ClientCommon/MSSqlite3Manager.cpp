@@ -8,12 +8,12 @@
 
 #include "MSSqlite3Manager.h"
 
-void MSSqlite3Manager::InitManager()
+void MSSqlite3Manager::InitManager(const std::string& userId)
 {
     _sqlite3Db = new MSSqlite3DB();
     if (_sqlite3Db)
     {
-        _sqlite3Db->OpenDb();
+        _sqlite3Db->OpenDb(userId);
     }
 }
 

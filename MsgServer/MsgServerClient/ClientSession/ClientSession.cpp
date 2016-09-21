@@ -11,6 +11,9 @@
 #include "RTUtils.hpp"
 #include "rtklog.h"
 
+static long s_send_msg_times = 0;
+static long s_recv_msg_times = 0;
+
 ClientSession::ClientSession()
 : mGroupManager(nullptr)
 , mMessageManager(nullptr)
@@ -106,6 +109,10 @@ void ClientSession::OnSendMessage(const std::string& msgId, int code)
 void ClientSession::OnRecvTxtMessage(MSMessage* txtMsg)
 {
     LI("%s was called, msg:%s\n", __FUNCTION__, txtMsg->GetContent().c_str());
+    char buf[256] = {0};
+    sprintf(buf, "Grp:%s:Usr:%s:%ld\n", mGroupId.c_str(), mUserId.c_str(), s_recv_msg_times++);
+    fwrite(buf, 1, strlen(buf), mRecvLog);
+    fflush(mRecvLog);
 
 }
 
@@ -161,15 +168,15 @@ void ClientSession::Init(const std::string& strGroupId, const std::string& strUs
     mClientManager->AddDelegate(this);
     mMessageManager->AddDelegate(this);
 
-    std::string userid = strUserId;
-    std::string token = "token";
-    std::string nname = "nname";
-    std::string roomid = strGroupId;
+    mUserId = strUserId;
+    mToken = "token";
+    mNname = "nname";
+    mGroupId = strGroupId;
 
-    mClientManager->SetNickName(nname);
-    mClientManager->SetToken(token);
+    mClientManager->SetNickName(mNname);
+    mClientManager->SetToken(mToken);
     mClientManager->SetUIconUrl("hehehe");
-    int ret = mClientManager->InitMsgClient(userid, token, nname);
+    int ret = mClientManager->InitMsgClient(mUserId, mToken, mNname);
     if (ret != 0)
     {
          printf("ClientSession::Init InitMsgClient failed, ret:%d\n", ret);
@@ -177,10 +184,34 @@ void ClientSession::Init(const std::string& strGroupId, const std::string& strUs
     }
 
     mClientManager->ConnToServer(strIp, nPort);
+
+    std::string sendLogPath("./client_logs/Send_");
+    sendLogPath.append(strGroupId).append("_").append(strUserId);
+
+    std::string recvLogPath("./client_logs/Recv_");
+    recvLogPath.append(strGroupId).append("_").append(strUserId);
+
+    mSendLog = fopen(sendLogPath.c_str(), "w+");
+    mRecvLog = fopen(recvLogPath.c_str(), "w+");
+    if (!mSendLog || !mRecvLog)
+    {
+        printf("ClientSession::Init fopen file failed\n");
+         exit(0);
+    }
 }
 
 void ClientSession::Unin()
 {
+    if (mRecvLog)
+    {
+         fclose(mRecvLog);
+         mRecvLog = nullptr;
+    }
+    if (mSendLog)
+    {
+        fclose(mSendLog);
+        mSendLog = nullptr;
+    }
     if (mMessageManager)
     {
         mMessageManager->DelDelegate(nullptr);
@@ -217,6 +248,14 @@ int ClientSession::SendGroupMsg(const std::string& groupid, const std::string& m
     const char* msgid = mMessageManager->SendTxtMsg(txtMsg);
     if (!msgid) return -1;
     LI("ClientSession::SendGroupMsg msgid:%s\n", msgid);
+
+    char buf[256] = {0};
+    sprintf(buf, "Grp:%s:Usr:%s:%ld\n", mGroupId.c_str(), mUserId.c_str(), s_send_msg_times++);
+    LI("ClientSession::SendGroupMsg write log msg:%s\n", buf);
+    size_t n = fwrite(buf, 1, strlen(buf), mSendLog);
+    fflush(mSendLog);
+    printf("ClientSession::SendGroupMsg fwrite num:%u, strlen(buf):%u\n, ", n, strlen(buf));
+
     if (msgid)
     {
          free((void*)msgid);

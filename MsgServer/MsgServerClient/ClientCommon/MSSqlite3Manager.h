@@ -17,7 +17,7 @@ class MSSqlite3Manager {
 public:
     MSSqlite3Manager():_sqlite3Db(nullptr){}
     ~MSSqlite3Manager(){}
-    void InitManager();
+    void InitManager(const std::string& userId);
     void UninManager();
     bool IsUserExists(const std::string& userId, const std::string& seqnId);
     bool IsGroupExists(const std::string& userId, const std::string& grpId);
