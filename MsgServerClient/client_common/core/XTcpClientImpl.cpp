@@ -66,6 +66,8 @@ void XTcpClientImpl::Connect(const std::string& server, int port, bool bAutoConn
 
 	m_bAutoConnect = bAutoConnect;
 	if (m_nState != NOT_CONNECTED) {
+		LOG(WARNING)
+			<< "The client must not be connected before you can call Connect()";
 		m_rCallback.OnServerConnectionFailure();
 		return;
 	}

@@ -47,9 +47,11 @@ CCFILES :=  webrtc/base/asyncfile.cc \
 			webrtc/base/ifaddrs-android.cc \
 			webrtc/base/ipaddress.cc \
 			webrtc/base/logging.cc \
+			webrtc/base/location.cc \
 			webrtc/base/messagehandler.cc \
 			webrtc/base/messagequeue.cc \
 			webrtc/base/nethelpers.cc \
+			webrtc/base/nullsocketserver.cc \
 			webrtc/base/physicalsocketserver.cc \
 			webrtc/base/platform_thread.cc \
 			webrtc/base/signalthread.cc \

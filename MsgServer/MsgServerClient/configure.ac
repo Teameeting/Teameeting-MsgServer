@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT(SeqnClient, 1.0.1)
+AC_INIT(MsgServerClient, 1.0.1)
 AC_CONFIG_SRCDIR([ClientManager.cpp])
 AM_INIT_AUTOMAKE()
 AC_CONFIG_HEADERS([config.h])

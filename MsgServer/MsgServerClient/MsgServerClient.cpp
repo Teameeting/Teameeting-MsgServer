@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "SeqnClient.h"
+#include "MsgServerClient.h"
 #include "atomic.h"
 #include "OS.h"
 #include "OSThread.h"
@@ -16,9 +16,9 @@
 
 static bool		g_inited = false;
 static char*	g_pVersion = (char*)"0.01.20150810";
-static SeqnClient*	g_pSClient = NULL;
+static MsgServerClient*	g_pSClient = NULL;
 
-void SeqnClient::PrintVersion()
+void MsgServerClient::PrintVersion()
 {
 	printf("<******** DYNC MSG Server ********>\r\n");
 	printf("* Version:\t %s \r\n", g_pVersion);
@@ -30,7 +30,7 @@ void SeqnClient::PrintVersion()
 }
 
 
-void SeqnClient::Initialize(int evTbSize)
+void MsgServerClient::Initialize(int evTbSize)
 {
 	// Initialize utility classes
     LI("Hello server...");
@@ -70,11 +70,11 @@ void SeqnClient::Initialize(int evTbSize)
 
 	Socket::StartThread();// start EventThread
 	OSThread::Sleep(100);
-	g_pSClient = new SeqnClient();
+	g_pSClient = new MsgServerClient();
 	g_inited = true;
 }
 
-void SeqnClient::DeInitialize()
+void MsgServerClient::DeInitialize()
 {
 	delete g_pSClient;
 	g_pSClient = NULL;
@@ -97,39 +97,38 @@ void SeqnClient::DeInitialize()
     LI("ByeBye server...");
 }
 
-SeqnClient* SeqnClient::Inst()
+MsgServerClient* MsgServerClient::Inst()
 {
 	Assert(g_pSClient != NULL);
 	return g_pSClient;
 }
 
-SeqnClient::SeqnClient(void)
+MsgServerClient::MsgServerClient(void)
 {
 
 }
 
-SeqnClient::~SeqnClient(void)
+MsgServerClient::~MsgServerClient(void)
 {
 
 }
 
-int	SeqnClient::Start(const char* userid, const char* ip, unsigned short port)
+int	MsgServerClient::Start(const char* userid, const char* ip, unsigned short port)
 {
 	Assert(g_inited);
-    ClientManager::Instance().InitClient(userid, ip, port);;
+    const char* groupid = "TestGroupId01";
+    ClientManager::Instance().InitClient(groupid, userid, ip, port);
+    // after connect server ok, do AddGroup in Callback
 	return 0;
 }
 
-void SeqnClient::DoTick()
+void MsgServerClient::DoTick()
 {
 #if 1
-    ClientManager::Instance().RequestLoop();
+    ClientManager::Instance().SendGroupMsg();
 #endif
 }
 
-void SeqnClient::Stop()
+void MsgServerClient::Stop()
 {
-    ClientManager::Instance().UninClient();
-    ClientManager::Instance().SignalKill();
-    ClientManager::Instance().ClearAll();
 }

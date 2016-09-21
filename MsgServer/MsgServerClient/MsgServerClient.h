@@ -1,16 +1,16 @@
-#ifndef __SeqnClient_SEQN_CLIENT_H__
-#define __SeqnClient_SEQN_CLIENT_H__
+#ifndef __MsgServerClient_SEQN_CLIENT_H__
+#define __MsgServerClient_SEQN_CLIENT_H__
 
 #include <iostream>
 #include <map>
 
-class SeqnClient
+class MsgServerClient
 {
 protected:
-	SeqnClient(void);
+	MsgServerClient(void);
 public:
 
-	virtual ~SeqnClient(void);
+	virtual ~MsgServerClient(void);
 
 	/* 打印服务版本号
 	 * 参数:	无
@@ -28,7 +28,7 @@ public:
 	/*
 	 *
 	 */
-	static SeqnClient* Inst();
+	static MsgServerClient* Inst();
 
 public:
 	int		Start(const char* pUserid, const char*pIp, unsigned short usPort);
@@ -39,4 +39,4 @@ private:
 
 };
 
-#endif	// __SeqnClient_SEQN_CLIENT_H__
+#endif	// __MsgServerClient_SEQN_CLIENT_H__

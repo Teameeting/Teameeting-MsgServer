@@ -51,19 +51,19 @@
 #define HAVE__BOOL 1
 
 /* Name of package */
-#define PACKAGE "seqnclient"
+#define PACKAGE "msgserverclient"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT ""
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "SeqnClient"
+#define PACKAGE_NAME "MsgServerClient"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "SeqnClient 1.0.1"
+#define PACKAGE_STRING "MsgServerClient 1.0.1"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "seqnclient"
+#define PACKAGE_TARNAME "msgserverclient"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL ""

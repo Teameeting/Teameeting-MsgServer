@@ -11,53 +11,68 @@
 
 #include <stdio.h>
 #include <iostream>
-#include "SocketUtils.h"
-#include "TCPSocket.h"
-#include "RTTcp.h"
-#include "RTJSBuffer.h"
-#include "RTTransfer.h"
-#include "RTObserverConnection.h"
+#include "MSGroupDelegate.h"
+#include "MSClientDelegate.h"
+#include "MSSubMessageDelegate.h"
+#include "MSGroupManager.h"
+#include "MSClientManager.h"
+#include "MSMessageManager.h"
 
 #define DEF_PROTO 1
-#include "MsgServer/proto/common_msg.pb.h"
-#include "MsgServer/proto/entity_msg.pb.h"
-#include "MsgServer/proto/entity_msg_type.pb.h"
-#include "MsgServer/proto/sys_msg.pb.h"
-#include "MsgServer/proto/sys_msg_type.pb.h"
+#include "client_common/proto/common_msg.pb.h"
+#include "client_common/proto/entity_msg.pb.h"
+#include "client_common/proto/entity_msg_type.pb.h"
+#include "client_common/proto/sys_msg.pb.h"
+#include "client_common/proto/sys_msg_type.pb.h"
 
 class ClientSession
-    : public RTTcp
-    , public RTJSBuffer
-    , public RTObserverConnection{
+    : public MSGroupDelegate
+    , public MSClientDelegate
+    , public MSSubMessageDelegate {
 public:
     ClientSession();
     virtual ~ClientSession();
-    void Init();
-    void Unit();
-    bool Connect(const std::string addr, int port);
-    void Disconn();
-
-    void SendTransferData(const char* pData, int nLen);
-    void SendTransferData(const std::string& data);
-    void UpdateTime();
 
 public:
+    // from MSGroupDelegate
+    virtual void OnAddGroupSuccess(const std::string& grpId);
+    virtual void OnAddGroupFailed(const std::string& grpId, const std::string& reason, int code);
+    virtual void OnRmvGroupSuccess(const std::string& grpId);
+    virtual void OnRmvGroupFailed(const std::string& grpId, const std::string& reason, int code);
 
-// from RTTcp
+    // from MSClientDelegate
+    virtual void OnMsgServerConnected();
+    virtual void OnMsgServerConnecting();
+    virtual void OnMsgServerDisconnect();
+    virtual void OnMsgServerConnectionFailure();
+    virtual void OnMsgClientInitializing();
+    virtual void OnMsgClientInitialized();
+    virtual void OnMsgClientUnInitialize();
+    virtual void OnMsgClientInitializeFailure();
+
+    // from MSSubMessageDelegate
+    virtual void OnSendMessage(const std::string& msgId, int code);
+    virtual void OnRecvTxtMessage(MSMessage* txtMsg);
+    virtual void OnRecvSelfDefMessage(MSMessage* sdefMsg);
+    virtual void OnNotifyLiveMessage(MSMessage* livMsg);
+    virtual void OnNotifyRedEnvelopeMessage(MSMessage* renMsg);
+    virtual void OnNotifyBlacklistMessage(MSMessage* blkMsg);
+    virtual void OnNotifyForbiddenMessage(MSMessage* fbdMsg);
+    virtual void OnNotifySettedMgrMessage(MSMessage* mgrMsg);
+    virtual void OnNotifyOtherLogin(int code);
+
+
 public:
-    virtual void OnRecvData(const char*pData, int nLen);
-    virtual void OnSendEvent(const char*pData, int nLen) {}
-    virtual void OnWakeupEvent(const char*pData, int nLen) {}
-    virtual void OnPushEvent(const char*pData, int nLen) {}
-    virtual void OnTickEvent(const char*pData, int nLen) {}
+    void Init(const std::string& strGroupId, const std::string& strUserId, const std::string& strIp, int port);
+    void Unin();
 
-// from RTObserverConnection
-    virtual void ConnectionDisconnected();
-protected:
-    virtual void OnRecvMessage(const char*message, int nLen);
+    int AddGroup(const std::string& groupid);
+    int SendGroupMsg(const std::string& groupid, const std::string& msg);
 private:
-    long long   mRecvResponse;
-    long long   mSendRequest;
+    MSGroupManager*         mGroupManager;
+    MSClientManager*        mClientManager;
+    MSMessageManager*       mMessageManager;
+
 };
 
 #endif /* defined(__SeqnClient__ClientSession__) */

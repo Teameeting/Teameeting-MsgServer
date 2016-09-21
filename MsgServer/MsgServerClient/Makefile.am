@@ -1,13 +1,16 @@
-bin_PROGRAMS=SeqnClient
+bin_PROGRAMS=MsgServerClient
 
-AM_CFLAGS=-g -O0 -std=c++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES__
+AM_CFLAGS=-g -O0 -std=c++11 -Wall -fPIC -D__PTHREADS__ -D__PTHREADS_MUTEXES__ -DPOSIX -DENABLE_DEBUG=1 -DWEBRTC_LINUX -DWEBRTC_POSIX -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS
 ###AM_CFLAGS+=-DAUTO_RECONNECT
-SeqnClient_LDFLAGS=-static-libgcc
+MsgServerClient_LDFLAGS=-static-libgcc
 
 AM_CPPFLAGS=$(AM_CFLAGS)
 
 AM_CPPFLAGS+=-I$(top_srcdir)/ \
-			 -I$(top_srcdir)/ClientSession/
+			 -I$(top_srcdir)/ClientSession/ \
+			 -I$(top_srcdir)/ClientCommon/ \
+			 -I$(top_srcdir)/client_common \
+			 -I$(top_srcdir)/client_common/core
 
 AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/ \
@@ -22,16 +25,23 @@ AM_CPPFLAGS+= -I$(top_srcdir)/../ \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/zkclient/efnfw \
 		   -I$(top_srcdir)/../MsgServer/MSCommon/MSThirdParty/rtklog/
 
-AM_CPPFLAGS+= -I$(top_srcdir)/../client_common \
-			  -I$(top_srcdir)/../client_common/core
 
-SeqnClient_SOURCES=$(top_srcdir)/ClientSession/ClientSession.cpp \
+MsgServerClient_SOURCES=$(top_srcdir)/ClientSession/ClientSession.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSClientManager.cpp \
+				   		   $(top_srcdir)/ClientCommon/MsgClient.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSGroupManager.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSMessage.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSMessageManager.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSMsgUtil.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSSqlite3.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSSqlite3Manager.cpp \
+				   		   $(top_srcdir)/ClientCommon/MSSubMessage.cpp \
 						   $(top_srcdir)/ClientManager.cpp \
-						   $(top_srcdir)/SeqnClient.cpp \
+						   $(top_srcdir)/MsgServerClient.cpp \
 						   $(top_srcdir)/main.cpp
 
-SeqnClient_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
-SeqnClient_LDADD+=-L$(top_srcdir)/../client_common/ -lclient_common
-SeqnClient_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a
-SeqnClient_LDADD+=-lpthread -lrt -ldl
+MsgServerClient_LDADD=-L$(top_srcdir)/../MsgServer/MSCommonLib/ -lMSCommon -lRtComm -lhiredis -lhttp -lrtklog -lzkclient
+MsgServerClient_LDADD+=-L$(top_srcdir)/client_common/ -lclient_common
+MsgServerClient_LDADD+=/usr/local/lib/libjsoncpp.a /usr/local/lib/libzookeeper_mt.a /usr/local/lib/libprotobuf-lite.a /usr/local/lib/libsqlite3.a
+MsgServerClient_LDADD+=-lpthread -lrt -ldl
 
