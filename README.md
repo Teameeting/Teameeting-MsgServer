@@ -50,10 +50,6 @@ MsgServerClientSdk提供MsgServerClient的sdk，目前提供ios和android<br>
 
 ---
 
-### 项目编译<br>
-参考每个目录下的README.md<br>
-有任何问题欢迎联系[zhengxiaokai@dync.cc](zhengxiaokai@dync.cc)<br>
-
 ---
 
 ### 开原协议<br>
